@@ -1,0 +1,1025 @@
+%% hpstatement-mt.inc.sty
+%% 2024-01-29
+%% Copyright 2019-2024 Martin Hensel
+%
+%% This file is part of the mhchem bundle for LaTeX
+%
+%% For the content of the phrases:
+% This work is licensed under the Creative Commons Attribution 4.0 International licence
+% (https://creativecommons.org/licenses/by/4.0/). This means that you can re-use the content
+% provided you acknowledge the source and indicate any changes you have made.
+% The data is not necessarily comprehensive, complete, accurate or up to date.
+% The acknowledgement is not needed when using statements of the data set for labelling products, of course, as this is the intended usage.
+% (c) European Union, https://eur-lex.europa.eu, 1998-2023, CC BY 4.0
+% (c) hpstatements contributors, https://github.com/mhchem/hpstatements/contributors, 2019-2024, CC BY 4.0
+%
+%
+\ExplSyntaxOn
+\group_begin:
+\char_set_catcode_space:n {`\ }% allow spaces
+\char_set_catcode_letter:n {`\@}%
+%
+\tl_gset:cn{g__mhchem_hp_mt_H200-0_tl}{{H200}{%
+  \__mhchem_hp_s:nnn{20081216}{Splussivi instabbli.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H201-0_tl}{{H201}{%
+  \__mhchem_hp_s:nnn{20081216}{Splussiv; periklu li jisplodu kollha f'daqqa.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H202-0_tl}{{H202}{%
+  \__mhchem_hp_s:nnn{20081216}{Splussiv, periklu serju ta' projezzjoni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H203-0_tl}{{H203}{%
+  \__mhchem_hp_s:nnn{20081216}{Splussiv; periklu ta' nar, blast jew projezzjoni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H204-0_tl}{{H204}{%
+  \__mhchem_hp_s:nnn{20081216}{Periklu ta' nar jew ta' projezzjoni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H205-0_tl}{{H205}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jisplodi f'daqqa fin-nar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H206-0_tl}{{H206}{%
+  \__mhchem_hp_s:nnn{20201017}{Periklu ta' nar, blast jew projjezzjoni; riskju ikbar ta' splużjoni jekk l-aġent disensitizzanti jitnaqqas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H207-0_tl}{{H207}{%
+  \__mhchem_hp_s:nnn{20201017}{Periklu ta' nar jew projezzjoni; riskju ikbar ta' splużjoni jekk l-aġent disensitizzanti jitnaqqas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H208-0_tl}{{H208}{%
+  \__mhchem_hp_s:nnn{20201017}{Periklu ta' nar; riskju ikbar ta' splużjoni jekk l-aġent disensitizzanti jitnaqqas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H220-0_tl}{{H220}{%
+  \__mhchem_hp_s:nnn{20081216}{Gass li jaqbad malajr ħafna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H221-0_tl}{{H221}{%
+  \__mhchem_hp_s:nnn{20081216}{Gass li jaqbad.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H222-0_tl}{{H222}{%
+  \__mhchem_hp_s:nnn{20081216}{Aerosol li jaqbad malajr ħafna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H223-0_tl}{{H223}{%
+  \__mhchem_hp_s:nnn{20081216}{Aerosol li jaqbad.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H224-0_tl}{{H224}{%
+  \__mhchem_hp_s:nnn{20081216}{Likwidu u fwar li jaqbdu malajr ħafna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H225-0_tl}{{H225}{%
+  \__mhchem_hp_s:nnn{20081216}{Likwidu u fwar li jaqbdu malajr ħafna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H226-0_tl}{{H226}{%
+  \__mhchem_hp_s:nnn{20081216}{Likwidu u fwar li jaqbdu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H228-0_tl}{{H228}{%
+  \__mhchem_hp_s:nnn{20081216}{Solidu li jaqbad.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H229-0_tl}{{H229}{%
+  \__mhchem_hp_s:nnn{20150601}{Kontenitur taħt pressjoni. Jista jinfaqa meta jissaħħan.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H230-0_tl}{{H230}{%
+  \__mhchem_hp_s:nnn{20150601}{Jista jisplodi anke fin-nuqqas ta' l-arja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H231-0_tl}{{H231}{%
+  \__mhchem_hp_s:nnn{20150601}{Jista jisplodi anke fin-nuqqas ta' l-arja fi pressjoni għolja u/\hskip\z@skip{}jew f'temperatura għolja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H232-0_tl}{{H232}{%
+  \__mhchem_hp_s:nnn{20201017}{Jista' jieħu n-nar spontanjament jekk ikun espost għall-arja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H240-0_tl}{{H240}{%
+  \__mhchem_hp_s:nnn{20081216}{It-tisħin jista' jikkawża splużjoni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H241-0_tl}{{H241}{%
+  \__mhchem_hp_s:nnn{20081216}{It-tisħin jista' jikkawża nar jew splużjoni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H242-0_tl}{{H242}{%
+  \__mhchem_hp_s:nnn{20081216}{It-tisħin jista' jikkawża nar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H250-0_tl}{{H250}{%
+  \__mhchem_hp_s:nnn{20081216}{Jieħu n-nar spontanjament jekk ikun espost għall-arja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H251-0_tl}{{H251}{%
+  \__mhchem_hp_s:nnn{20081216}{Jisħon waħdu: jista' jieħu n-nar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H252-0_tl}{{H252}{%
+  \__mhchem_hp_s:nnn{20081216}{Jisħon waħdu f'kwantitajiet kbar; jista' jieħu n-nar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H260-0_tl}{{H260}{%
+  \__mhchem_hp_s:nnn{20081216}{Meta jmiss ma' l-ilma jerħi gassijiet li jaqbdu li jistgħu jieħdu n-nar spontanjament.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H261-0_tl}{{H261}{%
+  \__mhchem_hp_s:nnn{20081216}{Meta jmiss ma' l-ilma jerħi gassijiet li jaqbdu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H270-0_tl}{{H270}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża jew iżid in-nar; ossidant.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H271-0_tl}{{H271}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża nar jew splużjoni; ossidant qawwi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H272-0_tl}{{H272}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jżid in-nar; ossidant.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H280-0_tl}{{H280}{%
+  \__mhchem_hp_s:nnn{20081216}{Fih gass taħt pressjoni; jista' jisplodi jekk jissaħħan.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H281-0_tl}{{H281}{%
+  \__mhchem_hp_s:nnn{20081216}{Fih gass imkessaħ; jista' jikkawża ħruq jew dannu minn temperaturi baxxi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H290-0_tl}{{H290}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jkun korrużiv għall-metalli.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H300-0_tl}{{H300}{%
+  \__mhchem_hp_s:nnn{20081216}{Fatali jekk jinbela'.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H301-0_tl}{{H301}{%
+  \__mhchem_hp_s:nnn{20081216}{Tossiku jekk jinbela'.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H302-0_tl}{{H302}{%
+  \__mhchem_hp_s:nnn{20081216}{Jagħmel il-ħsara jekk jinbela'.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H304-0_tl}{{H304}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jkun fatali jekk jinbela' u jidħol fil-pajpijiet tan-nifs.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H310-0_tl}{{H310}{%
+  \__mhchem_hp_s:nnn{20081216}{Fatali jekk imiss mal-ġilda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H311-0_tl}{{H311}{%
+  \__mhchem_hp_s:nnn{20081216}{Tossiku meta jmiss mal-ġilda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H312-0_tl}{{H312}{%
+  \__mhchem_hp_s:nnn{20081216}{Jagħmel il-ħsara meta jmiss mal-ġilda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H314-0_tl}{{H314}{%
+  \__mhchem_hp_s:nnn{20081216}{Jagħmel ħruq serju lill-ġilda u ħsara lill-għajnejn.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H315-0_tl}{{H315}{%
+  \__mhchem_hp_s:nnn{20081216}{Jagħmel irritazzjoni tal-ġilda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H317-0_tl}{{H317}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża reazzjoni allerġika tal-ġilda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H318-0_tl}{{H318}{%
+  \__mhchem_hp_s:nnn{20081216}{Jagħmel ħsara serja lill-għajnejn.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H319-0_tl}{{H319}{%
+  \__mhchem_hp_s:nnn{20081216}{Jagħmel irritazzjoni serja lill-għajnejn.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H330-0_tl}{{H330}{%
+  \__mhchem_hp_s:nnn{20081216}{Fatali jekk jinxtamm.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H331-0_tl}{{H331}{%
+  \__mhchem_hp_s:nnn{20081216}{Tossiku jekk jinxtamm.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H332-0_tl}{{H332}{%
+  \__mhchem_hp_s:nnn{20081216}{Jagħmel il-ħsara jekk jinxtamm.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H334-0_tl}{{H334}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża sintomi ta' allerġija jew ta' ażma jew diffikultajiet biex jittieħed in-nifs jekk jinxtamm.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H335-0_tl}{{H335}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża irritazzjoni respiratorja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H336-0_tl}{{H336}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża ħedla jew sturdament.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H340-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża difetti ġenetiċi \noexpand\textless{}semmi l-mod ta' espożizzjoni jekk ikun pruvat b'mod konklużiv li l-ebda mod ta' espożizzjoni ieħor ma jikkawża l-periklu\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H340.0-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H340-1empty_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H340-1_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H341-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{20081216}{Suspettat li jikkawża difetti ġenetiċi \noexpand\textless{}semmi l-mod ta' espożizzjoni jekk ikun pruvat b'mod konklużiv li l-ebda mod ta' espożizzjoni ieħor ma jikkawża l-periklu\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H341.0-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H341-1empty_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H341-1_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H350-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża l-kanċer \noexpand\textless{}semmi l-mod ta' espożizzjoni jekk ikun pruvat b'mod konklużiv li l-ebda mod ta' espożizzjoni ieħor ma jikkawża l-periklu\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H350.0-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H350-1empty_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H350-1_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H350i-0_tl}{{H350i}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża l-kanċer meta jinġibed man-nifs.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H351-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{20081216}{Suspettat li jikkawża l-kanċer \noexpand\textless{}ara l-mod ta' espożizzjoni jekk ikun pruvat b'mod konklużiv li l-ebda mod ta' espożizzjoni ieħor ma jikkawża l-periklu \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H351.0-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H351-1empty_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H351-1_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H360-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jagħmel ħsara lill-fertilit\`a jew lit-tarbija li għadha fil-ġuf \noexpand\textless{}semmi l-effett speċifiku jekk ikun magħruf\noexpand\textgreater{} \noexpand\textless{}semmi l-mod ta' espożizzjoni jekk ikun pruvat b'mod konklużiv li l-ebda mod ta' espożizzjoni ieħor ma jikkawża l-periklu\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H360.0-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H360-1empty_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H360-1_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H360F-0_tl}{{H360F}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jagħmel ħsara lill-fertilit\`a.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H360D-0_tl}{{H360D}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jagħmel ħsara lit-tarbija li għadha ma twelditx.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H360FD-0_tl}{{H360FD}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jagħmel ħsara lill-fertilit\`a. Jista' jagħmel ħsara lit-tarbija li għadha ma twelditx.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H360Fd-0_tl}{{H360Fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jagħmel ħsara lill-fertilit\`a. Suspettat li jagħmel ħsara lit-tarbija li għadha ma twelditx.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H360Df-0_tl}{{H360Df}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jagħmel ħsara lit-tarbija li għadha ma twelditx. Suspettat li jagħmel il-ħsara lill-fertilit\`a.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H361-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{20081216}{Suspettat li jagħmel ħsara lill-fertilit\`a jew lit-tarbija li għadha fil-ġuf \noexpand\textless{}semmi l-effett speċifiku jekk ikun magħruf\noexpand\textgreater{} \noexpand\textless{}semmi l-mod ta' espożizzjoni jekk ikun pruvat b'mod konklużiv li l-ebda mod ta' espożizzjoni ieħor ma jikkawża l-periklu \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H361.0-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H361-1empty_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H361-1_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H361f-0_tl}{{H361f}{%
+  \__mhchem_hp_s:nnn{20081216}{Suspettat li jagħmel il-ħsara lill-fertilit\`a.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H361d-0_tl}{{H361d}{%
+  \__mhchem_hp_s:nnn{20081216}{Suspettat li jagħmel ħsara lit-tarbija li għadha ma twelditx.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H361fd-0_tl}{{H361fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Suspettat li jagħmel il-ħsara lill-fertilit\`a. Suspettat li jagħmel ħsara lit-tarbija li għadha ma twelditx.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H362-0_tl}{{H362}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jagħmel ħsara lit-tfal imreddgħa.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H370-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{20081216}{Jagħmel ħsara lill-organi \noexpand\textless{}jew semmi l-organi kollha affettwati, jekk ikunu magħrufa\noexpand\textgreater{} \noexpand\textless{}semmi l-mod ta' espożizzjoni jekk ikun pruvat b'mod konklużiv li l-ebda mod ta' espożizzjoni ieħor ma jikkawża l-periklu\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H370.0-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H370.1-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H370.1-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H370-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H370-2_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H371-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża ħsara lill-organi \noexpand\textless{}jew semmi l-organi kollha affettwati, jekk ikunu magħrufa\noexpand\textgreater{} \noexpand\textless{}semmi l-mod ta' espożizzjoni jekk ikun pruvat b'mod konklużiv li l-ebda mod ta'' espożizzjoni ieħor ma jikkawża l-periklu\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H371.0-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H371.1-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H371.1-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H371-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H371-2_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H372-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{20081216}{Jikkawża ħsara lill-organi \noexpand\textless{}jew semmi l-organi kollha affettwati, jekk ikunu magħrufa\noexpand\textgreater{} minħabba espożizzjoni fit-tul jew ripetuta \noexpand\textless{}semmi l-mod ta' espożizzjoni jekk ikun pruvat b'mod konklużiv li l-ebda mod ta' espożizzjoni ieħor ma jikkawża l-periklu\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H372.0-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H372.1-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H372.1-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H372-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H372-2_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H373-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża ħsara lill-organi \noexpand\textless{}jew semmi l-organi kollha affettwati, jekk ikunu magħrufa\noexpand\textgreater{} minħabba espożizzjoni fit-tul jew ripetuta \noexpand\textless{}semmi l-mod ta' espożizzjoni jekk ikun pruvat b'mod konklużiv li l-ebda mod ta' espożizzjoni ieħor ma jikkawża l-periklu\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H373.0-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H373.1-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H373.1-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H373-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H373-2_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H300+H310-0_tl}{{H300\,+\,\hskip\z@skip{}H310}{%
+  \__mhchem_hp_s:nnn{20110419}{Fatali jekk tinbela' jew tmiss mal-ġilda}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H300+H310+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Fatali jekk tinbela', tmiss mal-ġilda jew tittieħed bin-nifs}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H300+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Fatali jekk tinbela' jew tittieħed bin-nifs}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H301+H311-0_tl}{{H301\,+\,\hskip\z@skip{}H311}{%
+  \__mhchem_hp_s:nnn{20110419}{Tossika jekk tinbela' jew tmiss mal-ġilda}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H301+H311+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Tossika jekk tinbela', tmiss mal-ġilda jew tittieħed bin-nifs}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H301+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Tossika jekk tinbela' jew tittieħed bin-nifs}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H302+H312-0_tl}{{H302\,+\,\hskip\z@skip{}H312}{%
+  \__mhchem_hp_s:nnn{20180301}{Tagħmel ħsara jekk tinbela' jew jekk tmiss mal- ġilda}{%
+  \__mhchem_hp_s:nnn{20110419}{Tagħmel ħsara jekk tinbela' jew jekk tmiss mal-ġilda}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H302+H312+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Tagħmel il-ħsara jekk tinbela', tmiss mal-ġilda jew tittiħed bin-nifs}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H302+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Tagħmel ħsara jekk tinbela' jew tittieħed bin-nifs}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H310+H330-0_tl}{{H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Fatali f'kuntatt mal-ġilda jew jekk tittieħed bin-nifs}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H311+H331-0_tl}{{H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20180301}{Tossika jekk tmiss mal-ġilda jew tittieħeb bin- nifs}{%
+  \__mhchem_hp_s:nnn{20110419}{Tossika jekk tmiss mal-ġilda jew tittieħeb bin-nifs}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H312+H332-0_tl}{{H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Tagħmel ħsara jekk tmiss mal-ġilda jew jekk tittieħed bin-nifs}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H400-0_tl}{{H400}{%
+  \__mhchem_hp_s:nnn{20081216}{Tossiku ħafna għall-organiżmi akwatiċi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H410-0_tl}{{H410}{%
+  \__mhchem_hp_s:nnn{20081216}{Tossiku ħafna għall-organiżmi akwatiċi b'mod li jħalli effetti dejjiema.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H411-0_tl}{{H411}{%
+  \__mhchem_hp_s:nnn{20081216}{Tossiku għall-organiżmi akwatiċi b'mod li jħalli effetti dejjiema.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H412-0_tl}{{H412}{%
+  \__mhchem_hp_s:nnn{20081216}{Jagħmel ħsara lill-organiżmi akwatiċi b'mod li jħalli effetti dejjiema.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H413-0_tl}{{H413}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jikkawża effetti ta' ħsara dejjiema lill-organiżmi akwatiċi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_H420-0_tl}{{H420}{%
+  \__mhchem_hp_s:nnn{20110419}{Tagħmel ħsara lis-saħħa tal-pubbliku u lill-ambjent billi teqred l-ożonu fl-atmosfera ta' fuq}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH001-0_tl}{{EUH001}{%
+  \__mhchem_hp_s:nnn{20201017}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Jisplodi meta jinxef.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH006-0_tl}{{EUH006}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jisplodi b'kuntatt jew bla kuntatt ma' l-ajra.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH014-0_tl}{{EUH014}{%
+  \__mhchem_hp_s:nnn{20081216}{Jirreaġixxi bil-qawwa meta jmiss l-ilma.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH018-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{20081216}{Meta jintuża jista' jifforma taħlitiet esplussivi jew li jaqbdu jekk jitħallat ma' l-arja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH018.0-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH018.1-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH018.2-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH019-0_tl}{{EUH019}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jifforma perossidi esplussivi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH029-0_tl}{{EUH029}{%
+  \__mhchem_hp_s:nnn{20081216}{Jitfa' gass tossiku meta jmiss l-ilma.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH031-0_tl}{{EUH031}{%
+  \__mhchem_hp_s:nnn{20081216}{Jitfa' gass tossiku meta jmiss l-aċidi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH032-0_tl}{{EUH032}{%
+  \__mhchem_hp_s:nnn{20081216}{Jitfa' gass tossiku ħafna meta jmiss l-aċidi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH044-0_tl}{{EUH044}{%
+  \__mhchem_hp_s:nnn{20081216}{Riskju ta' splużjoni jekk jissaħħan fil-magħluq.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH059-0_tl}{{EUH059}{%
+  \__mhchem_hp_s:nnn{20110419}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Perikoluż għas-saff ta' l-ożonu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH066-0_tl}{{EUH066}{%
+  \__mhchem_hp_s:nnn{20081216}{Espożizzjoni ripetuta tista' tikkaġuna nxif jew qsim tal-ġilda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH070-0_tl}{{EUH070}{%
+  \__mhchem_hp_s:nnn{20081216}{Tossiku meta jmiss ma' l-għajnejn.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH071-0_tl}{{EUH071}{%
+  \__mhchem_hp_s:nnn{20081216}{Korrużiv għas-sistema respiratorja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH201-0_tl}{{EUH201}{%
+  \__mhchem_hp_s:nnn{20081216}{Fih iċ-ċomb. M'għandux jintuża' fuq uċuh li x'aktarx jomogħduhom jew jerdgħuhom it-tfal.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH201A-0_tl}{{EUH201A}{%
+  \__mhchem_hp_s:nnn{20081216}{Twissija! Fih iċ-ċomb.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH202-0_tl}{{EUH202}{%
+  \__mhchem_hp_s:nnn{20081216}{Cyanoacrylate. Periklu. Iwaħħal il-ġilda u l-għajnejn fi ftit sekondi. Żomm ‘il bogħod minn fejn jistgħu jilħquh it-tfal.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH203-0_tl}{{EUH203}{%
+  \__mhchem_hp_s:nnn{20081216}{Fih il-kromju (VI). Jista' joħloq reazzjoni allerġika.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH204-0_tl}{{EUH204}{%
+  \__mhchem_hp_s:nnn{20081216}{Fih l-isocyanates. Jista' jagħmel reazzjoni allerġika.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH205-0_tl}{{EUH205}{%
+  \__mhchem_hp_s:nnn{20081216}{Fih kostitwenti ta' l-eposside. Jista' jagħmel reazzjoni allerġika.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH206-0_tl}{{EUH206}{%
+  \__mhchem_hp_s:nnn{20081216}{Twissija! Tużahx flimkien ma' prodotti oħra. Jista' jerħi gassijiet perikolużi (kloru).}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH207-0_tl}{{EUH207}{%
+  \__mhchem_hp_s:nnn{20081216}{Twissija! Fih il-kadmju. Waqt li jintuża jiffurmaw dħaħen perikolużi. Ara l-informazzjoni mogħtija mill-fabbrikant. Ħares l-istruzzjonijiet dwar is-sigurt\`a.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH208-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{20081216}{Fih \noexpand\textless{}l-isem tas-sustanza sensibbli\noexpand\textgreater{}. Jista' jagħmel reazzjoni allerġika.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH208.0-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH208-1_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH209-0_tl}{{EUH209}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jieħu n-nar faċilment meta jintuża.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH209A-0_tl}{{EUH209A}{%
+  \__mhchem_hp_s:nnn{20081216}{Jista' jieħu n-nar meta jintuża.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH210-0_tl}{{EUH210}{%
+  \__mhchem_hp_s:nnn{20081216}{Il-karta tad-data dwar is-sikurezza hija disponibbli meta tintalab.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH211-0_tl}{{EUH211}{%
+  \__mhchem_hp_s:nnn{20211001}{Twissija! Jista' jifforma qtar perikoluż li jinġibed man-nifs meta tisprejja minn dan. Tiġbidx l-isprej jew l-irxiex man-nifs.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH212-0_tl}{{EUH212}{%
+  \__mhchem_hp_s:nnn{20211001}{Twissija! Meta jintuża dan, jista' jifforma trab perikoluż li jinġibed man-nifs. Tiġbidx it-trab man-nifs.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH380-0_tl}{{EUH380}{%
+  \__mhchem_hp_s:nnn{20230420}{Jistgħu jikkawżaw tfixkil fis-sistema endokrinali fil-bnedmin}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH381-0_tl}{{EUH381}{%
+  \__mhchem_hp_s:nnn{20230420}{Suspettati li jikkawżaw tfixkil fis-sistema endokrinali fil-bnedmin}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH401-0_tl}{{EUH401}{%
+  \__mhchem_hp_s:nnn{20081216}{Biex jiġu evitati r-riskji għal saħħet il-bniedem u għall-ambjent, ħares l-istruzzjonijiet dwar l-użu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH430-0_tl}{{EUH430}{%
+  \__mhchem_hp_s:nnn{20230420}{Jistgħu jikkawżaw tfixkil fis-sistema endokrinali fl-ambjent}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH431-0_tl}{{EUH431}{%
+  \__mhchem_hp_s:nnn{20230420}{Suspettati li jikkawżaw tfixkil fis-sistema endokrinali fl-ambjent}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH440-0_tl}{{EUH440}{%
+  \__mhchem_hp_s:nnn{20230420}{Jakkumulaw fl-ambjent u fl-organiżmi ħajjin inkluż fil-bnedmin}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH441-0_tl}{{EUH441}{%
+  \__mhchem_hp_s:nnn{20230420}{Jakkumulaw ħafna fl-ambjent u fl-organiżmi ħajjin inkluż fil-bnedmin}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH450-0_tl}{{EUH450}{%
+  \__mhchem_hp_s:nnn{20230420}{Jistgħu jikkawżaw kontaminazzjoni dejjiema u diffuża tar-riżorsi tal-ilma}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_EUH451-0_tl}{{EUH451}{%
+  \__mhchem_hp_s:nnn{20230420}{Jistgħu jikkawżaw kontaminazzjoni dejjiema u diffuża ħafna tar-riżorsi tal-ilma}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P101-0_tl}{{P101}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk ikun meħtieġ parir mediku, ara li jkollok il-kontenitur jew it-tikketta tal-prodott fil-qrib.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P102-0_tl}{{P102}{%
+  \__mhchem_hp_s:nnn{20081216}{Żommu ‘l bogħod minn fejn jistgħu jilħquh it-tfal.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P103-0_tl}{{P103}{%
+  \__mhchem_hp_s:nnn{20081216}{Aqra t-tikketta qabel l-użu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P201-0_tl}{{P201}{%
+  \__mhchem_hp_s:nnn{20081216}{Ikseb struzzjonijiet speċjali qabel l-użu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P202-0_tl}{{P202}{%
+  \__mhchem_hp_s:nnn{20081216}{Tmissux qabel ma tkun qrajt u fhimt l-istruzzjonijiet kollha ta' prekawzjoni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P210-0_tl}{{P210}{%
+  \__mhchem_hp_s:nnn{20150601}{Biegħed mis-sħana, uċuħ jaħarqu, xrar tan-nar, fjammi miftuħa u sorsi oħra li jaqbdu. Tpejjipx.}{%
+  \__mhchem_hp_s:nnn{20081216}{Żomm ‘il bogħod mis-sħana/\hskip\z@skip{}xrar tan-nar/\hskip\z@skip{}fjammiet mikxufa/\hskip\z@skip{}uċuħ jaħarqu. -- Tpejjipx.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P211-0_tl}{{P211}{%
+  \__mhchem_hp_s:nnn{20081216}{Tisprejjax fuq fjamma mikxufa jew sors ieħor li jaqbad.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P212-0_tl}{{P212}{%
+  \__mhchem_hp_s:nnn{20201017}{Evita t-tisħin fil-magħluq jew it-tnaqqis tal-aġenti disensitizzanti.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P220-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{20180301}{Żomm 'il bogħod mill-ħwejjeġ u materjali oħra li jaqbdu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Żomm/\hskip\z@skip{}Aħżen ‘il bogħod mill-ħwejjeġ/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}materjali li jaqbdu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P220.0-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P220.1.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P220.1.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P220.1-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P220.2.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P220.2.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P220.2-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P221-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Ħu kull prekawzjoni biex tevita li jitħallat mal-kombustibbli\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P221.0-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P221.1-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P221-1_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P222-0_tl}{{P222}{%
+  \__mhchem_hp_s:nnn{20081216}{Tħallix li jkun hemm kuntatt ma' l-arja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P223-0_tl}{{P223}{%
+  \__mhchem_hp_s:nnn{20150601}{Tħallihx imiss mal-ilma.}{%
+  \__mhchem_hp_s:nnn{20081216}{Żomm ‘il bogħod minn kull kuntatt possibbli ma' l-ilma, minħabba li jirreaġġixxi bil-qawwa u jista' jkun hemm fjamma nar.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P230-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{20081216}{Żommu mxarrab bi \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P230.0-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P230-1_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P231-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{20180301}{Uża u aħżen il-kontenut taħt gass inerti /\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Immaniġġja taħt gass inerti.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P231.0-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P231.1-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P231-1_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P232-0_tl}{{P232}{%
+  \__mhchem_hp_s:nnn{20081216}{Ipproteġi mill-umdit\`a.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P233-0_tl}{{P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Żomm il-kontenitur magħluq sew.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P234-0_tl}{{P234}{%
+  \__mhchem_hp_s:nnn{20180301}{Żomm biss fl-imballaġġ oriġinali.}{%
+  \__mhchem_hp_s:nnn{20081216}{Żomm biss fil-kontenitur oriġinali.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P235-0_tl}{{P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Żomm frisk.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P240-0_tl}{{P240}{%
+  \__mhchem_hp_s:nnn{20180301}{Poġġi mal-art u waħħal il-kontenitur u t-tagħmir riċevitur.}{%
+  \__mhchem_hp_s:nnn{20081216}{Poġġi ma' l-art/\hskip\z@skip{}waħħal il-kontenitur u t-tagħmir li jirċievi.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P241-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{20180301}{Uża' tagħmir [elettriku /\hskip\z@skip{} ta' ventilazzjoni /\hskip\z@skip{} ta' dawl/\hskip\z@skip{}\noexpand\textellipsis{}] li jiflaħ għal splużjoni.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uża' tagħmir elettriku/\hskip\z@skip{}ta' ventilazzjoni/\hskip\z@skip{}ta' dawl/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}li jiflaħ għal splużjoni.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P241.0-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P241.1-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P241.2-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P241.3-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P241-1_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P242-0_tl}{{P242}{%
+  \__mhchem_hp_s:nnn{20180301}{Uża għodda li ma ttajjarx żnied.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uża' biss għodda li ma jtajrux żnied.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P243-0_tl}{{P243}{%
+  \__mhchem_hp_s:nnn{20180301}{Ħu azzjoni biex tipprevjeni l-ħruġ ta' elettriku statiku.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ħu miżuri ta' prekawzjoni kontra l-ħruġ ta' elettriku statiku.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P244-0_tl}{{P244}{%
+  \__mhchem_hp_s:nnn{20150601}{Żomm il-valvi u fittings ħielsa miż-żejt u l-grease.}{%
+  \__mhchem_hp_s:nnn{20081216}{Żomm il-valvs ta' tnaqqis ħielsa mill-griż u ż-żejt.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P250-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{20180301}{Tissottoponix għal brix /\hskip\z@skip{} xokk /\hskip\z@skip{} frizzjoni /\hskip\z@skip{}\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{Tissottoponihomx għal brix/\hskip\z@skip{}xokk/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}frizzjoni.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P250.0-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P250.1-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P250.2-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P250.3-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P250-1_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P251-0_tl}{{P251}{%
+  \__mhchem_hp_s:nnn{20150601}{Ittaqqbux u taħarqux, anki wara li tużah.}{%
+  \__mhchem_hp_s:nnn{20081216}{Kontenitur taħt pressjoni: Ittaqqbux jew taħarqux, anki wara li tużah.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P260-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{20081216}{Tiblax bin-nifs trabijiet/\hskip\z@skip{}dħaħen/\hskip\z@skip{}gass/\hskip\z@skip{}raxx/\hskip\z@skip{}fwar/\hskip\z@skip{}sprej.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P260.0-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P260.1-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P260.2-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P260.3-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P260.4-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P260.5-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P260.6-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P261-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{20081216}{Evita li tibla' bin-nifs trabijiet/\hskip\z@skip{}dħaħen/\hskip\z@skip{}gass/\hskip\z@skip{}raxx/\hskip\z@skip{}fwar/\hskip\z@skip{}sprej.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P261.0-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P261.1-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P261.2-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P261.3-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P261.4-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P261.5-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P261.6-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P262-0_tl}{{P262}{%
+  \__mhchem_hp_s:nnn{20081216}{Iddaħħalx fl-għajnejn, fuq il-ġilda, jew fuq il-ħwejjeġ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P263-0_tl}{{P263}{%
+  \__mhchem_hp_s:nnn{20180301}{Evita l-kuntatt waqt it-tqala u t-treddigħ.}{%
+  \__mhchem_hp_s:nnn{20081216}{Evita l-kuntatt waqt it-tqala/\hskip\z@skip{}waqt it-treddigħ.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P264-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħsel \noexpand\textellipsis{} sew wara li timmaniġġjah.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P264.0-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P264-1_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P270-0_tl}{{P270}{%
+  \__mhchem_hp_s:nnn{20081216}{Tikolx, tixrobx u tpejjipx waqt li tuża' dan il-prodott.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P271-0_tl}{{P271}{%
+  \__mhchem_hp_s:nnn{20081216}{Uża biss barra jew f'post ventilat sew.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P272-0_tl}{{P272}{%
+  \__mhchem_hp_s:nnn{20081216}{Ilbies tax-xogħol kontaminat m'għandux jitħalla joħroġ mill-post tax-xogħol.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P273-0_tl}{{P273}{%
+  \__mhchem_hp_s:nnn{20081216}{Evita r-rilaxx fl-ambjent.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P280-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{20081216}{Ilbes ingwanti protettivi/\hskip\z@skip{}ilbies protettiv/\hskip\z@skip{}protezzjoni għall-għajnejn/\hskip\z@skip{}protezzjoni għall-wiċċ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P280.0-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P280.1-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P280.2-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P280.3-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P280.4-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P281-0_tl}{{P281}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Uża' t-tagħmir personali protettiv kif meħtieġ.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P282-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{20180301}{Ilbes ingwanti kiesħa li ma jinfidx minnhom u jew ilqugħ għall-wiċċ jew protezzjoni għall-għajnejn.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ilbies ingwanti kiesħa li ma jinfedx minnhom/\hskip\z@skip{}ilqugħ għall-wiċċ/\hskip\z@skip{}protezzjoni għall-għajnejn.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P282.0-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P282.1-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P282.2-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P282.3-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P283-0_tl}{{P283}{%
+  \__mhchem_hp_s:nnn{20180301}{Ilbes ħwejjeġ reżistenti għan-nar u retardanti tal-fjammi.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ilbies ħwejjeġ reżistenti għan-nar/\hskip\z@skip{}fjammi.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P284-0_tl}{{P284}{%
+  \__mhchem_hp_s:nnn{20150601}{[F'każ ta' ventilazzjoni inadegwata] ilbes protezzjoni respiratorja.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ilbes protezzjoni respiratorja.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P285-0_tl}{{P285}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{F'każ ta' ventilazzjoni inadegwata ilbes protezzjoni respiratorja.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P231+P232-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{20180301}{Uża u aħżen il-kontenut taħt gass inerti /\hskip\z@skip{}\noexpand\textellipsis{}. Ipproteġi mill-umdit\`a.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uża' taħt gass inerti. Ipproteġi mill-umdit\`a.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P231+P232.0-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P231+P232.1-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P231+P232-1_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P235+P410-0_tl}{{P235\,+\,\hskip\z@skip{}P410}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Żomm frisk. Ipproteġi mir-raġġi tax-xemx.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301-0_tl}{{P301}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK JINBELA':}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302-0_tl}{{P302}{%
+  \__mhchem_hp_s:nnn{20081216}{F'KAŻ TA' KUNTATT MAL-ĠILDA:}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P303-0_tl}{{P303}{%
+  \__mhchem_hp_s:nnn{20081216}{F'KAŻ TA' KUNTATT MAL-ĠILDA (jew ix-xagħar):}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P304-0_tl}{{P304}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK JINĠIBED MAN-NIFS:}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P305-0_tl}{{P305}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK JIDĦOL FL-GĦAJNEJN:}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P306-0_tl}{{P306}{%
+  \__mhchem_hp_s:nnn{20081216}{F'KAŻ TA' KUNTATT MA' L-ILBIES:}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P307-0_tl}{{P307}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK espost:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P308-0_tl}{{P308}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK espost jew konċernat:}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P309-0_tl}{{P309}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK espost jew tħossok ma tiflaħx:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P310-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{20150601}{Sejjaħ minnufih ĊENTRU TAL-AVVELENAMENT/\hskip\z@skip{}tabib/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Ikkuntattja ĊENTRU TA' L-AVVELENAMENT jew tabib.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P310.0-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P310.1-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P310.2-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P310-1_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P311-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Sejjaħ ĊENTRU TAL-AVVELENAMENT/\hskip\z@skip{}tabib/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Ikkuntattja ĊENTRU TA' L-AVVELENAMENT jew tabib.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P311.0-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P311.1-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P311.2-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P311-1_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P312-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{20180301}{Ikkuntattja ĊENTRU TAL-AVVELENAMENT /\hskip\z@skip{} tabib /\hskip\z@skip{} \noexpand\textellipsis{} jekk tħossok ma tiflaħx.}{%
+  \__mhchem_hp_s:nnn{20150601}{Sejjaħ ĊENTRU TAL-AVVELENAMENT/\hskip\z@skip{}tabib/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}jekk ma tħossokx f'sikktek.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ikkuntattja ĊENTRU TA' L-AVVELENAMENT jew tabib jekk tħossok ma tiflaħx.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P312.0-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P312.1-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P312.2-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P312-1_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P313-0_tl}{{P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Ikkonsulta tabib.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P314-0_tl}{{P314}{%
+  \__mhchem_hp_s:nnn{20081216}{Ikkonsulta tabib jekk tħossok ma tiflaħx.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P315-0_tl}{{P315}{%
+  \__mhchem_hp_s:nnn{20081216}{Ikkonsulta tabib minnufih.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P320-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{20081216}{Trattament speċifiku hu urġenti (ara \noexpand\textellipsis{} fuq din it-tikketta).}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P320.0-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P320-1_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P320.nolabel-1_tl}{{P320.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P321-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{20081216}{Trattament speċifiku (ara \noexpand\textellipsis{} fuq din it-tikketta).}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P321.0-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P321-1_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P321.nolabel-1_tl}{{P321.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P322-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Miżuri speċifiċi (ara \noexpand\textellipsis{} fuq din it-tikketta).}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P322.0-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P322-1_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P322.nolabel-1_tl}{{P322.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P330-0_tl}{{P330}{%
+  \__mhchem_hp_s:nnn{20081216}{Laħlaħ ħalqek.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P331-0_tl}{{P331}{%
+  \__mhchem_hp_s:nnn{20081216}{TIPPROVOKAX ir-remettar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P332-0_tl}{{P332}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk ikun hemm irritazzjoni tal-ġilda:}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P333-0_tl}{{P333}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk ikun hemm irritazzjoni jew raxx tal-ġilda:}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P334-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{20180301}{Daħħal fl-ilma kiesaħ [jew kebbeb f'faxex imxarrbin].}{%
+  \__mhchem_hp_s:nnn{20081216}{Daħħal fl-ilma kiesaħ/\hskip\z@skip{}kebbeb f'faxex imxarrbin.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P334.0-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P334.1-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P334.2-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P335-0_tl}{{P335}{%
+  \__mhchem_hp_s:nnn{20081216}{Farfar il-frak mhux imwaħħla minn fuq il-ġilda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P336-0_tl}{{P336}{%
+  \__mhchem_hp_s:nnn{20081216}{Ħoll il-partijiet kiesħa bl-ilma fietel. Togħrokx il-parti affettwata.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P337-0_tl}{{P337}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk l-irritazzjoni ta' l-għajnejn tibqa':}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P338-0_tl}{{P338}{%
+  \__mhchem_hp_s:nnn{20081216}{Neħħi l-lentijiet tal-kuntatt, jekk ikun hemm u jkunu faċli biex tneħħihom. Kompli laħlaħ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P340-0_tl}{{P340}{%
+  \__mhchem_hp_s:nnn{20150601}{Qiegħed lill-persuna għall-arja friska f'pożizzjoni komda biex tieħu n-nifs.}{%
+  \__mhchem_hp_s:nnn{20081216}{Esponi lill-vittma għall-arja friska u żommha mistrieħa f'pożizzjoni komda biex tkun tista' tieħu n-nifs.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P341-0_tl}{{P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk in-nifs ikun diffiċli, esponi lill-vittma għall-arja friska u żommha mistrieħa f'pożizzjoni komda biex tkun tista' tieħu n-nifs.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P342-0_tl}{{P342}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk tkun qed tbati minn sintomi respiratorji:}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P350-0_tl}{{P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħsel bil-mod b'ħafna sapun u ilma.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P351-0_tl}{{P351}{%
+  \__mhchem_hp_s:nnn{20081216}{Laħlaħ b'attenzjoni bl-ilma għal diversi minuti.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P352-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{20150601}{Baħbaħ b'ħafna ilma/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħsel b'ħafna sapun u ilma.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P352.0-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P352.1-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P352-1_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P353-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{20180301}{Laħlaħ il-ġilda bl-ilma [jew bix-xawer].}{%
+  \__mhchem_hp_s:nnn{20081216}{Laħlaħ il-ġilda bl-ilma/\hskip\z@skip{}bix-xawer.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P353.0-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P353.1-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P353.2-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P360-0_tl}{{P360}{%
+  \__mhchem_hp_s:nnn{20081216}{Laħlaħ mall-ewwel l-ilbies ikkontaminat u l-ġilda b'ħafna ilma qabel ma tneħħi l-ilbies.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P361-0_tl}{{P361}{%
+  \__mhchem_hp_s:nnn{20150601}{Neħħi minnufih il-ħwejjeg kontaminati kollha.}{%
+  \__mhchem_hp_s:nnn{20081216}{Neħħi/\hskip\z@skip{}Inża' mall-ewwel l-ilbies ikkontaminat.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P362-0_tl}{{P362}{%
+  \__mhchem_hp_s:nnn{20150601}{Neħħi l-ħwejjeġ kontaminati.}{%
+  \__mhchem_hp_s:nnn{20081216}{Inża' l-ħwejjeġ kontaminati u aħsilhom qabel ma terġa' tużahom.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P363-0_tl}{{P363}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħsel il-ħwejjeġ kontaminati qabel terġa' tużahom.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P364-0_tl}{{P364}{%
+  \__mhchem_hp_s:nnn{20150601}{U aħslu qabel terġa' tużah.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370-0_tl}{{P370}{%
+  \__mhchem_hp_s:nnn{20081216}{F'każ ta' nar:}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P371-0_tl}{{P371}{%
+  \__mhchem_hp_s:nnn{20081216}{F'każ ta' nar kbir u kwantitajiet kbar:}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P372-0_tl}{{P372}{%
+  \__mhchem_hp_s:nnn{20180301}{Riskju ta' splużjoni.}{%
+  \__mhchem_hp_s:nnn{20081216}{Riskju ta' splużjoni f'każ ta' nar.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P373-0_tl}{{P373}{%
+  \__mhchem_hp_s:nnn{20081216}{TIPPRUVAX TITFI n-nar meta n-nar jilħaq l-isplussivi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P374-0_tl}{{P374}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Itfi n-nar bil-prekawzjonijiet normali minn distanza raġonevoli.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P375-0_tl}{{P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Itfi n-nar mill-bogħod minħabba r-riskju ta' splużjoni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P376-0_tl}{{P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Waqqaf it-tnixxija jekk ma jkunx hemm periklu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P377-0_tl}{{P377}{%
+  \__mhchem_hp_s:nnn{20081216}{Tnixxija ta' gass tan-nar: Tippruvax titfiha, sakemm it-tnixxija ma tkunx tista' titwaqqaf bla periklu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P378-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{20150601}{Uża\noexpand\textellipsis{} biex titfi.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uża' \noexpand\textellipsis{} biex titfi.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P378.0-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P378-1_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P380-0_tl}{{P380}{%
+  \__mhchem_hp_s:nnn{20081216}{Evakwa ż-żona.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P381-0_tl}{{P381}{%
+  \__mhchem_hp_s:nnn{20180301}{F'każ ta' tnixxija, elimina s-sorsi kollha li jqabbdu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Elimina s-sorsi kollha li jqabbdu sakemm ma jkunx perikoluż li tagħmel dan.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P390-0_tl}{{P390}{%
+  \__mhchem_hp_s:nnn{20081216}{Assorbi t-tixrid biex tipprevjeni ħsara fil-materjal.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P391-0_tl}{{P391}{%
+  \__mhchem_hp_s:nnn{20081216}{Iġbor it-tixrid.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P310-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{20150601}{JEKK JINBELA': Sejjaħ minnufih ĊENTRU TAL-AVVELENAMENT/\hskip\z@skip{}tabib/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK JINBELA': Ikkuntattja ĊENTRU TA' L-AVVELENAMENT jew tabib.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P310.0-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P310.1-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P310.2-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P310-1_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P312-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{20180301}{JEKK JINBELA': Ikkuntattja ĊENTRU TAL-AVVELENAMENT /\hskip\z@skip{} tabib /\hskip\z@skip{}\noexpand\textellipsis{} jekk tħossok ma tiflaħx.}{%
+  \__mhchem_hp_s:nnn{20150601}{JEKK JINBELA': Sejjaħ ĊENTRU TAL-AVVELENAMENT/\hskip\z@skip{}tabib/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}jekk ma tħossokx f'sikktek.}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK JINBELA': Ikkuntattja ĊENTRU TA' L-AVVELENAMENT jew tabib jekk tħossok ma tiflaħx.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P312.0-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P312.1-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P312.2-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P312-1_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P301+P330+P331-0_tl}{{P301\,+\,\hskip\z@skip{}P330\,+\,\hskip\z@skip{}P331}{%
+  \__mhchem_hp_s:nnn{20180301}{JEKK JINBELA': Laħlaħ il-ħalq. TIPPROVOKAX ir-remettar.}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK JINBELA': laħlaħ il-ħalq. TIPPROVOKAX ir-remettar.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{JEKK FUQ IL-ĠILDA: Daħħal fl-ilma frisk jew kebbeb f'faxex imxarrbin.}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK FUQ IL-ĠILDA: Daħħal fl-ilma frisk/\hskip\z@skip{}kebbeb f'faxex imxarrbin.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P335+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{JEKK FUQ IL-ĠILDA: Farfar il-frak mhux imwaħħal minn mal-ġilda. Daħħal fl-ilma frisk [jew kebbeb f'faxex imxarrbin].}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P335+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P335+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P335+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P350-0_tl}{{P302\,+\,\hskip\z@skip{}P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK FUQ IL-ĠILDA: Aħsel bil-mod b'ħafna sapun u ilma.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P352-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{20150601}{JEKK JIĠI FUQ IL-ĠILDA: Baħbaħ b'ħafna ilma/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK FUQ IL-ĠILDA: Aħsel b'ħafna sapun u ilma.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P352.0-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P352.1-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P302+P352-1_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P303+P361+P353-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{20180301}{JEKK FUQ IL-ĠILDA (jew ix-xagħar): Inża' minnufih l-ilbies kontaminat. Laħlaħ il-ġilda bl-ilma [jew bix-xawer].}{%
+  \__mhchem_hp_s:nnn{20150601}{JEKK JIĠI FUQ IL-ĠILDA (jew fuq ix-xagħar) Neħħi minnufih il-ħwejjeg kontaminati kollha. Baħbaħ il-ġilda bl-ilma/\hskip\z@skip{}taħt ix-xawer.}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK FUQ IL-ĠILDA (jew xagħar): Neħħi/\hskip\z@skip{}inża' minnufih l-ilbies kontaminat. Laħlaħ il-ġilda bl-ilma/\hskip\z@skip{}bix-xawer.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P303+P361+P353.0-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P303+P361+P353.1-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P303+P361+P353.2-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P304+P340-0_tl}{{P304\,+\,\hskip\z@skip{}P340}{%
+  \__mhchem_hp_s:nnn{20150601}{JEKK JINĠIBED MAN-NIFS: Qiegħed lill-persuna għall-arja friska f'pożizzjoni komda biex tieħu n-nifs.}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK JITTIEĦED FIN-NIFS: Esponi lill-vittma għall-arja friska u żommha mistrieħa f'pożizzjoni komda biex tkun tista' tieħu n-nifs.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P304+P341-0_tl}{{P304\,+\,\hskip\z@skip{}P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK JITTIEĦED FIN-NIFS: Jekk in-nifs ikun diffiċli, esponi lill-vittma għall-arja friska u żommha mistrieħa f'pożizzjoni komda biex tkun tista' tieħu n-nifs.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P305+P351+P338-0_tl}{{P305\,+\,\hskip\z@skip{}P351\,+\,\hskip\z@skip{}P338}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK JIDĦOL FL-GĦAJNEJN: Laħlaħ b'attenzjoni bl-ilma għal diversi minuti. Neħħi l-lentijiet tal-kuntatt, jekk ikun hemm u jkunu faċli biex tneħħihom. Kompli laħlaħ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P306+P360-0_tl}{{P306\,+\,\hskip\z@skip{}P360}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK FUQ L-ILBIES: laħlaħ mall-ewwel l-ilbies ikkontaminat u l-ġilda b'ħafna ilma qabel ma tneħħi l-ilbies.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P307+P311-0_tl}{{P307\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk espost: Ikkuntattja ĊENTRU TA' L-AVVELENAMENT jew tabib.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P308+P311-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{JEKK espost jew konċernat: Sejjaħ ĊENTRU TAL-AVVELENAMENT/\hskip\z@skip{}tabib/\hskip\z@skip{}\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P308+P311.0-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P308+P311.1-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P308+P311.2-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P308+P311-1_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P308+P313-0_tl}{{P308\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk espost jew konċernat: Ikkonsulta tabib.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P309+P311-0_tl}{{P309\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{JEKK espost jew tħossok ma tiflaħx: Ikkuntattja ĊENTRU TA' L-AVVELENAMENT jew tabib.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P332+P313-0_tl}{{P332\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk ikun hemm irritazzjoni tal-ġilda: Ikkonsulta tabib.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P333+P313-0_tl}{{P333\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk ikun hemm irritazzjoni jew raxx tal-ġilda: Ikkonsulta tabib.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P335+P334-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Farfar il-frak mhux imwaħħal minn mal-ġilda. Daħħal fl-ilma frisk/\hskip\z@skip{}kebbeb f'faxex imxarrbin.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P335+P334.0-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P335+P334.1-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P335+P334.2-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P336+P315-0_tl}{{P336\,+\,\hskip\z@skip{}P315}{%
+  \__mhchem_hp_s:nnn{20180301}{Ħoll il-partijiet kiesħa bl-ilma fietel. Togħrokx il-parti affettwata. Ikkonsulta tabib minnufih.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P337+P313-0_tl}{{P337\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk l-irritazzjoni ta' l-għajnejn tippersisti: Ikkonsulta tabib.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P342+P311-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Jekk ikollok sintomi respiratorji: Sejjaħ ĊENTRU TAL-AVVELENAMENT/\hskip\z@skip{}tabib/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Jekk ikollok sintomi respiratorji: Ikkuntattja ĊENTRU TA' L-AVVELENAMENT jew tabib.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P342+P311.0-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P342+P311.1-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P342+P311.2-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P342+P311-1_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P361+P364-0_tl}{{P361\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Neħħi minnufih il-ħwejjeġ kontaminati kollha u aħsilhom qabel terġa' tilbishom.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P362+P364-0_tl}{{P362\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Neħħi l-ħwejjeġ kontaminati kollha u aħsilhom qabel terġa' tilbishom.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P372+P380+P373-0_tl}{{P370\,+\,\hskip\z@skip{}P372\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P373}{%
+  \__mhchem_hp_s:nnn{20180301}{F'każ ta' nar: Riskju ta' splużjoni. Evakwa ż-żona. TIPPRUVAX TITFI n-nar meta n-nar jilħaq l-isplussivi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P376-0_tl}{{P370\,+\,\hskip\z@skip{}P376}{%
+  \__mhchem_hp_s:nnn{20081216}{F'każ ta' nar: Waqqaf it-tnixxija sakemm ma jkunx ta' periklu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{20150601}{F'każ ta' nar: Uża\noexpand\textellipsis{} biex titfi.}{%
+  \__mhchem_hp_s:nnn{20081216}{F'każ ta' nar: Uża' \noexpand\textellipsis{} għat-tifi.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P380-0_tl}{{P370\,+\,\hskip\z@skip{}P380}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{F'każ ta' nar: Evakwa ż-żona.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P380+P375-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{F'każ ta' nar: Evakwa ż-żona. Itfi n-nar mill-bogħod minħabba r-riskju ta' splużjoni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P380+P375+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P380+P375+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P380+P375+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P371+P380+P375-0_tl}{{P371\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{F'każ ta' nar kbir u kwantitajiet kbar: Evakwa ż-żona. Itfi n-nar mill-bogħod minħabba r-riskju ta' splużjoni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P401-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{20180301}{Aħżen skont\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20101201}{Aħżen \noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen \noexpand\textellipsis{}}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P401.0-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P401-1_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P402-0_tl}{{P402}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen f'post niexef.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P403-0_tl}{{P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen f'post b'ventilazzjoni tajba.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P404-0_tl}{{P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen f'kontenitur magħluq.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P405-0_tl}{{P405}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen f'post imsakkar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P406-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{20180301}{Aħżen f'post reżistenti għall-korrużjoni /\hskip\z@skip{}\noexpand\textellipsis{} kontenitur li huwa infurrat minn ġewwa b'materjal reżistenti.}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen f'post reżistenti għall-korrużjoni/\hskip\z@skip{}\noexpand\textellipsis{} kontenitur li huwa infurrat minn ġewwa b'materjal reżistenti.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P406.0-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P406.1-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P406-1_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P407-0_tl}{{P407}{%
+  \__mhchem_hp_s:nnn{20180301}{Ħalli l-arja tgħaddi bejn l-imniezel jew il-palits.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ħalli l-arja tgħaddi bejn l-imniezel/\hskip\z@skip{}il-palits.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P410-0_tl}{{P410}{%
+  \__mhchem_hp_s:nnn{20081216}{Ipproteġi mid-dawl tax-xemx.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P411-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{20101201}{Aħżen f'temperaturi li ma jeċċedux \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen f'temperaturi li ma jeċċedux \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P411.0-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P411.1-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P411.2-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P412-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Tesponix għal temperaturi li jeċċedu l-50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Tesponix għal temperaturi li jeċċedu l-50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P412.0-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P412.1-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P412.2-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P413-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{20101201}{Aħżen il-kwantitajiet f'massa ta' akbar minn \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{}\,lbs f'temperaturi ta' mhux aktar minn \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen il-kwantitajiet f'massa ta' akbar minn \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{}\,lbs f'temperaturi ta' mhux aktar minn \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P413.0-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P413.1-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P413.2-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P420-0_tl}{{P420}{%
+  \__mhchem_hp_s:nnn{20180301}{Aħżen separatament.}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen ‘l bogħod minn materjal ieħor.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P422-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen il-kontenut taħt \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P422.0-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P422-1_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P402+P404-0_tl}{{P402\,+\,\hskip\z@skip{}P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen f'post niexef. Aħżen f'kontenitur magħluq.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P403+P233-0_tl}{{P403\,+\,\hskip\z@skip{}P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen f'post b'ventilazzjoni tajba. Żomm il-kontenitur magħluq sew.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P403+P235-0_tl}{{P403\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen f'post b'ventilazzjoni tajba. Żomm frisk.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P410+P403-0_tl}{{P410\,+\,\hskip\z@skip{}P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Ipproteġi mid-dawl tax-xemx. Aħżen f'post b'ventilazzjoni tajba.}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P410+P412-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Ipproteġi mid-dawl tax-xemx. Tesponix għal temperatura li teċċedi l-50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ipproteġi mid-dawl tax-xemx. Tesponix għal temperatura li teċċedi l-50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P410+P412.0-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P410+P412.1-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P410+P412.2-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P411+P235-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20101201}{Aħżen f'temperaturi li ma jeċċedux \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Żomm frisk.}{%
+  \__mhchem_hp_s:nnn{20081216}{Aħżen f'temperaturi li ma jeċċedux \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Żomm frisk.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P411+P235.0-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P411+P235.1-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P411+P235.2-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P501-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{20081216}{Armi l-kontenut/\hskip\z@skip{}il-kontenitur fi \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P501.0-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P501.0-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P501.1-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P501.2-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P502-0_tl}{{P502}{%
+  \__mhchem_hp_s:nnn{20180301}{Irreferi għall-manifattur jew il-fornitur għal informazzjoni dwar l-irkupru jew ir-riċiklaġġ.}{%
+  \__mhchem_hp_s:nnn{20110419}{Irreferi għall-manifattur/\hskip\z@skip{}fornitur rigward informazzjoni dwar l-irkupru/\hskip\z@skip{}riċiklaġġ}{}}}}%
+\tl_gset:cn{g__mhchem_hp_mt_P370+P380+P375[+P378]-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375[\,+\,\hskip\z@skip{}P378]}{%
+  \__mhchem_hp_s:nnn{20180301}{F'każ ta' nar: Evakwa ż-żona. Itfi n-nar mill-bogħod minħabba r-riskju ta' splużjoni. [Uża \noexpand\textellipsis{} biex titfi].}{}}}%
+%
+\group_end:
+\ExplSyntaxOff

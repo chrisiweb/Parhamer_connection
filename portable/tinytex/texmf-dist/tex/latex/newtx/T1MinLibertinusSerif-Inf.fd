@@ -1,0 +1,116 @@
+\ProvidesFile{T1MinLibertinusSerif-Inf.fd}
+    [2022/09/14 (msharpe)  Font definitions for T1/MinLibertinusSerif-Inf.]
+
+\ifcsname s@fct@alias\endcsname\else
+\gdef\s@fct@alias{\sub@sfcnt\@font@aliasinfo}
+\gdef\@font@aliasinfo#1{%
+    \@font@info{Font\space shape\space `\curr@fontshape'\space will
+        \space be\space aliased\MessageBreak to\space `\mandatory@arg'}%
+}
+\fi
+
+\expandafter\ifx\csname LibertinusSerif@scale\endcsname\relax
+    \let\LibertinusSerif@@scale\@empty
+\else
+    \edef\LibertinusSerif@@scale{s*[\csname LibertinusSerif@scale\endcsname]}%
+\fi
+
+\DeclareFontFamily{T1}{MinLibertinusSerif-Inf}{}
+
+
+%   ----  m = regular  ----
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{m}{n}{
+      <-> \LibertinusSerif@@scale LibertinusSerif-Regular-inf-t1
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{regular}{n}{
+      <-> alias * MinLibertinusSerif-Inf/m/n
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{m}{it}{
+      <-> \LibertinusSerif@@scale LibertinusSerif-Italic-inf-t1
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{regular}{it}{
+      <-> alias * MinLibertinusSerif-Inf/m/it
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{m}{sl}{
+    <-> ssub * MinLibertinusSerif-Inf/m/it
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{regular}{sl}{
+    <-> ssub * MinLibertinusSerif-Inf/regular/it
+}{}
+
+
+%   ----  sb = semibold  ----
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{sb}{n}{
+      <-> \LibertinusSerif@@scale LibertinusSerif-Semibold-inf-t1
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{semibold}{n}{
+      <-> alias * MinLibertinusSerif-Inf/sb/n
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{sb}{it}{
+      <-> \LibertinusSerif@@scale LibertinusSerif-SemiboldItalic-inf-t1
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{semibold}{it}{
+      <-> alias * MinLibertinusSerif-Inf/sb/it
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{sb}{sl}{
+    <-> ssub * MinLibertinusSerif-Inf/sb/it
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{semibold}{sl}{
+    <-> ssub * MinLibertinusSerif-Inf/semibold/it
+}{}
+
+
+%   ----  b = bold  ----
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{b}{n}{
+      <-> \LibertinusSerif@@scale LibertinusSerif-Bold-inf-t1
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{bold}{n}{
+      <-> alias * MinLibertinusSerif-Inf/b/n
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{b}{it}{
+      <-> \LibertinusSerif@@scale LibertinusSerif-BoldItalic-inf-t1
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{bold}{it}{
+      <-> alias * MinLibertinusSerif-Inf/b/it
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{b}{sl}{
+    <-> ssub * MinLibertinusSerif-Inf/b/it
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{bold}{sl}{
+    <-> ssub * MinLibertinusSerif-Inf/bold/it
+}{}
+
+
+%   ----  Extra 'ssub' rules to map 'bx' to 'b'  ----
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{bx}{n}{
+      <-> ssub * MinLibertinusSerif-Inf/b/n
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{bx}{sl}{
+      <-> ssub * MinLibertinusSerif-Inf/b/sl
+}{}
+
+\DeclareFontShape{T1}{MinLibertinusSerif-Inf}{bx}{it}{
+      <-> ssub * MinLibertinusSerif-Inf/b/it
+}{}
+
+\endinput

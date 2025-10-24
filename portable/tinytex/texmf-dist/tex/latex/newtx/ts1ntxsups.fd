@@ -1,0 +1,62 @@
+\ProvidesFile{ts1ntxsups.fd}[2023/08/19 v1.0]
+\expandafter\ifx\csname ntx@scaled\endcsname\relax
+  \global\let\ntx@scaled\@empty%
+\fi
+
+\DeclareFontFamily{TS1}{ntxsups}{}
+\DeclareFontShape{TS1}{ntxsups}{m}{n}{	%medium
+     <-> \ntx@scaled ntxsups-Regular-ts1%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{m}{it}{	%italic
+     <-> \ntx@scaled ntxsups-Italic-ts1%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{b}{n}{	%bold 
+     <-> \ntx@scaled ntxsups-Bold-ts1%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{b}{it}{   	%bold italic
+     <-> ssub * ntxsups/b/it%%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{m}{sl}{	%medium
+     <-> ssub * ntxsups/m/it%%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{b}{sl}{	%medium
+     <-> \ntx@scaled ntxsups-BoldItalic-ts1%
+}{}
+
+\DeclareFontShape{TS1}{ntxsups}{m}{sc}{	%cap & small cap
+     <-> ssub * ntxsups/m/n%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{m}{scit}{	%italic
+     <-> ssub * ntxsups/m/it%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{m}{ui}{   	%unslanted italic
+     <-> ssub * ntxsups/m/n%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{bx}{sc}{	%bold extended cap & small cap
+     <-> ssub * ntxsups/b/n%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{bx}{sl}{	%bold extended slanted
+     <-> ssub * ntxsups/b/sl%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{bx}{it}{	%bold extended italic
+     <-> ssub * ntxsups/b/it%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{bx}{scit}{	%bold extended italic
+     <-> ssub * ntxsups/b/it%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{bx}{ui}{  	%bold extended unslanted italic
+     <-> ssub * ntxsups/b/n%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{bx}{n}{	%bold extended
+     <-> ssub * ntxsups/b/n%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{b}{sc}{	%bold cap & small cap
+     <-> ssub * ntxsups/b/n%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{b}{ui}{   	%bold unslanted italic
+     <-> ssub * ntxsups/b/n%
+}{}
+\DeclareFontShape{TS1}{ntxsups}{b}{scit}{   	%bold italic
+     <-> ssub * ntxsups/b/it%
+}{}
+\endinput

@@ -1,0 +1,282 @@
+%% hpstatement.sty
+%% 2024-01-29
+%% Copyright 2004-2024 Martin Hensel
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License version 1.3c
+% which is included as lppl-1-3c.txt.
+%
+% This work has the LPPL maintenance status "maintained".
+% The Current Maintainer of this work is Martin Hensel.
+%
+% ( In order to fight spam, the maintainer's contact      )
+% ( information is "encrypted" with ROT13.                )
+% ( If you do not know ROT13 yet and have no tool for     )
+% ( decryption, simply do an Internet search for "ROT13". )
+%
+% ,---[ ROT 13 ]---
+% | Gur Pheerag Znvagnvare bs guvf jbex vf Znegva Urafry
+% |   jub pna or pbagnpgrq ivn
+% |     zupurz@ZnegvaUrafry.qr
+% |   be ivn znvy
+% |     Znegva Urafry
+% |     Cbfgfge. 20
+% |     09232 Unegznaafqbes
+% |     Treznal
+% `----------
+%
+% This work consists of all files listed in manifest.txt.
+%
+%
+\RequirePackage{expl3}
+\@ifundefined{NewDocumentCommand}{}{\RequirePackage{xparse}}
+\RequirePackage{l3keys2e}
+\RequirePackage{iflang}
+\ProvidesExplPackage
+  {hpstatement}
+  {2024/01/29}
+  {2.1.0}
+  {H and P statements (mhchem bundle)}
+
+\cs_generate_variant:Nn \tl_if_eq:nnT { V }
+
+\msg_new:nnn { hpstatement } { language-not-supported }
+  { Language~not~supported. }
+\msg_new:nnn { hpstatement } { initial }
+  { You~haven't~specified~a~statement~number,~yet. }
+\msg_new:nnn { hpstatement } { undefined }
+  { H~or~P~statement~"#1"~is~not~defined~for~the~selected~language. }
+\msg_new:nnn { hpstatement } { undefined-date }
+  { H~or~P~statement~"#1"~is~not~defined~for~the~selected~language~and~date. }
+\msg_new:nnn { hpstatement } { undefined-enhancement }
+  { This~statement~has~not~been~"translated".~If~you~know~the~language~and~want~to~contibute,~please~contact~the~package~author. }
+\msg_new:nnn { hpstatement } { /A }
+  { This~statement~has~1~optional~text~argument.~Please~use~\c_backslash_str hpstatement[]\{#1\}~or~\c_backslash_str hpstatement[text]\{#1\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~a~placeholder. }
+\msg_new:nnn { hpstatement } { /B }
+  { This~statement~needs~1~mandatory~text~argument.~Please~specify~this~with~\c_backslash_str hpstatement[text]\{#1\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~a~placeholder. }
+\msg_new:nnn { hpstatement } { /C }
+  { This~statement~has~2~variants.~Please~use~\c_backslash_str hpstatement\{#1.1\}~or~\c_backslash_str hpstatement\{#1.2\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~both~variants. }
+\msg_new:nnn { hpstatement } { /D }
+  { This~statement~has~3~variants.~Please~use~\c_backslash_str hpstatement\{#1.1\}~thru~\c_backslash_str hpstatement\{#1.3\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~all~variants. }
+\msg_new:nnn { hpstatement } { /E }
+  { This~statement~has~4~variants.~Please~use~\c_backslash_str hpstatement\{#1.1\}~thru~\c_backslash_str hpstatement\{#1.4\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~all~variants. }
+\msg_new:nnn { hpstatement } { /F }
+  { This~statement~has~6~variants.~Please~use~\c_backslash_str hpstatement\{#1.1\}~thru~\c_backslash_str hpstatement\{#1.6\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~all~variants. }
+\msg_new:nnn { hpstatement } { /G }
+  { This~statement~has~1~variant~or~1~text~argument.~Please~use~\c_backslash_str hpstatement\{#1.1\}~or~\c_backslash_str hpstatement[text]\{#1\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~a~placeholder. }
+\msg_new:nnn { hpstatement } { /H }
+{ This~statement~has~2~variants~or~1~text~argument.~Please~use~\c_backslash_str hpstatement\{#1.1\}~or~\c_backslash_str hpstatement\{#1.2\}.~Or~\c_backslash_str hpstatement[text]\{#1\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~placeholders. }
+\msg_new:nnn { hpstatement } { /I }
+  { This~statement~has~3~variants~or~1~text~argument.~Please~use~\c_backslash_str hpstatement\{#1.1\}~thru~\c_backslash_str hpstatement\{#1.3\}.~Or~\c_backslash_str hpstatement[text]\{#1\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~placeholders. }
+\msg_new:nnn { hpstatement } { /J }
+  { This~statement~has~multiple~variants.~Use~\c_backslash_str hpstatemen[text]\{#1\}~or~\c_backslash_str hpstatement[text][text]\{#1\}~or~\c_backslash_str hpstatement\{#1.1\}~or~\c_backslash_str hpstatement[text]\{#1.1\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~placeholders.  }
+\msg_new:nnn { hpstatement } { /K }
+  { This~statement~has~2~variants~with~1~mandatory~text~argument.~Use~\c_backslash_str hpstatemen[text]\{#1.1\}~or~\c_backslash_str hpstatement[text]\{#1.2\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~placeholders. }
+\msg_new:nnn { hpstatement } { /L }
+    { This~statement~has~2~variants~with~2~mandatory~text~arguments.~Please~use~\c_backslash_str hpstatement[text][text]\{#1.1\}~or~\c_backslash_str hpstatement[text][text]\{#1.2\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~both~variants. }
+\msg_new:nnn { hpstatement } { /M }
+  { This~statement~has~2~variants~and~1~mandatory~text~argument.~Please~use~\c_backslash_str hpstatement[text]\{#1.1\}~or~\c_backslash_str hpstatement[text]\{#1.2\}.~Or~use~\c_backslash_str hpstatement[text]\{#1.0\}~or~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~both~variants. }
+\msg_new:nnn { hpstatement } { /N }
+  { This~statement~has~2~variants~with~2~variants.~Please~use~\c_backslash_str hpstatement\{#1.1.1\}~or~\c_backslash_str hpstatement\{#1.1.2\}~or~\c_backslash_str hpstatement\{#1.2.1\}~or~\c_backslash_str hpstatement\{#1.2.2\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~all~variants. }
+\msg_new:nnn { hpstatement } { /O }
+  { This~statement~has~multiple~variants.~Please~use~\c_backslash_str hpstatement\{#1.1.1\}~or~\c_backslash_str hpstatement\{#1.1.2\}~or~\c_backslash_str hpstatement[text]\{#1.1\}.~Or~\c_backslash_str hpstatement\{#1.2.1\}~or~\c_backslash_str hpstatement\{#1.2.2\}~or~\c_backslash_str hpstatement[text]\{#1.2\}.~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~all~variants. }
+\msg_new:nnn { hpstatement } { /P }
+  { This~statement~needs~1~mandatory~text~argument.~Please~use~\c_backslash_str hpstatement[text]\{#1\}.~Or~use~\c_backslash_str hpstatement[text]\{#1.nolabel\}~for~a~non-official~version~without~"this label".~Or~use~\c_backslash_str hpstatement\{#1.0\}~for~the~original~form~containing~all~variants. }
+
+%% Settings and variables
+\int_new:N \g__mhchem_hp_date_int
+\tl_new:N \g__mhchem_hp_rawnumber_tl
+\tl_new:N \g__mhchem_hp_number_tl
+\tl_new:N \g__mhchem_hp_statement_tl
+\tl_new:N \g__mhchem_hp_p_tl  % parameter 1
+\tl_new:N \g__mhchem_hp_q_tl  % parameter 2
+
+\int_gset:Nn \g__mhchem_hp_date_int { 99999999 }
+\tl_gset:Nn \g__mhchem_hp_number_tl
+  { \msg_error:nnn { hpstatement } { initial } }
+\tl_gset:Nn \g__mhchem_hp_statement_tl
+  { \msg_error:nnn { hpstatement } { initial } }
+
+\keys_define:nn { hpstatement }
+  {
+    date .code:n = {
+      \int_gset:Nn \g__mhchem_hp_date_int
+      {
+        \tl_range:nnn {#1} { 1 } { 4 }
+        \tl_range:nnn {#1} { 6 } { 7 }
+        \tl_range:nnn {#1} { 9 } { 10 }
+      }
+    }
+  }
+\ProcessKeysPackageOptions { hpstatement }
+
+%% User-level commands
+\NewDocumentCommand \hpsetup { m }
+  { \keys_set:nn { hpstatement } { #1 }  }
+\NewDocumentCommand \hpnumber { o o m }  % #1,#2 optional statement parameters, #3 statement number
+  {
+    \tl_if_empty:nTF {#3}
+      {}
+      { \__mhchem_hp_main:nnn {#1} {#2} {#3} }
+    \tl_use:N \g__mhchem_hp_number_tl
+  }
+\NewDocumentCommand \hpstatement { o o m }  % #1,#2 optional statement parameters, #3 statement number
+  {
+    \tl_if_empty:nF {#3}
+      { \__mhchem_hp_main:nnn {#1} {#2} {#3} }
+    \tl_use:N \g__mhchem_hp_statement_tl
+  }
+
+%% Populates hp@statement and hp@number
+\tl_new:N \l__mhchem_hp_argumentsCount_tl
+\tl_new:N \l__mhchem_hp_id_tl
+\bool_new:N \l__mhchem_hp_idExists_bool
+\cs_new:Npn \__mhchem_hp_main:nnn #1#2#3  % #1,#2 statement parameters, #3 statement number
+  {
+    \tl_gset:Nn \g__mhchem_hp_rawnumber_tl {#3}
+    %% determine argumentsCount
+    \IfNoValueTF {#1}
+      { \tl_set:Nn \l__mhchem_hp_argumentsCount_tl { 0 } }
+      {
+        \tl_gset:Nn \g__mhchem_hp_p_tl {#1}
+        \IfNoValueTF {#2}
+          {
+            \tl_if_empty:nTF {#1}
+              {
+                \tl_set:Nn \l__mhchem_hp_argumentsCount_tl { 1empty }
+              }
+              {
+                \tl_set:Nn \l__mhchem_hp_argumentsCount_tl { 1 }
+              }
+          }
+          {
+            \tl_set:Nn \l__mhchem_hp_argumentsCount_tl { 2 }
+            \tl_gset:Nn \g__mhchem_hp_q_tl {#2}
+          }
+      }
+    %% determine language and load file if needed, more specificly if EUH001 does not exist
+    \__mhchem_hp_getLanguage:
+    \tl_if_exist:cF
+      {
+        g__mhchem_hp
+        _ \tl_use:N \l__mhchem_hp_language_tl
+        _EUH001-0
+        _tl
+      }
+      { \file_input:n { hpstatement.inc/hpstatement- \tl_use:N \l__mhchem_hp_language_tl .inc.sty } }
+    %% find value
+    \tl_clear:N \g__mhchem_hp_statement_tl
+    \bool_set_false:N \l__mhchem_hp_idExists_bool
+    \tl_set:Nx \l__mhchem_hp_id_tl
+      { g__mhchem_hp_ \tl_use:N \l__mhchem_hp_language_tl _ #3 - \tl_use:N \l__mhchem_hp_argumentsCount_tl _tl }
+    %% extract values [**1**], P231.0-0
+    \tl_if_exist:cT \l__mhchem_hp_id_tl
+      {
+        \bool_set_true:N \l__mhchem_hp_idExists_bool
+        \tl_gset_eq:Nc \g__mhchem_hp_statement_tl \l__mhchem_hp_id_tl  % -> {number}{\__mhchem_hp_s:nnn ...}
+        %%% populate number
+        \tl_gset:Nx \g__mhchem_hp_number_tl % first part
+          { \tl_head:N \g__mhchem_hp_statement_tl }
+        %% populate statement
+        \tl_gset:Nx \g__mhchem_hp_statement_tl % second part
+          { \tl_tail:N \g__mhchem_hp_statement_tl }
+        \tl_gset:Nx \g__mhchem_hp_statement_tl % remove braces
+          { \tl_head:N \g__mhchem_hp_statement_tl }
+        \tl_gset:Nx \g__mhchem_hp_statement_tl { \g__mhchem_hp_statement_tl } % expand
+      }
+    %% if not successful yet, find -e
+    \tl_if_empty:NT \g__mhchem_hp_statement_tl
+      {
+        \regex_replace_once:nnN { ([.\-]\d).* } { -e_tl } \l__mhchem_hp_id_tl
+        %% extract values [**1**], P231-e
+        \tl_if_exist:cT \l__mhchem_hp_id_tl
+          {
+            \bool_set_true:N \l__mhchem_hp_idExists_bool
+            \tl_gset_eq:Nc \g__mhchem_hp_statement_tl \l__mhchem_hp_id_tl  % -> {number}{\__mhchem_hp_s:nnn ...}
+            %%% populate number
+            \tl_gset:Nx \g__mhchem_hp_number_tl % first part
+              { \tl_head:N \g__mhchem_hp_statement_tl }
+            %% populate statement
+            \tl_gset:Nx \g__mhchem_hp_statement_tl % second part
+              { \tl_tail:N \g__mhchem_hp_statement_tl }
+            \tl_gset:Nx \g__mhchem_hp_statement_tl % remove braces
+              { \tl_head:N \g__mhchem_hp_statement_tl }
+            \tl_gset:Nx \g__mhchem_hp_statement_tl { \g__mhchem_hp_statement_tl } % expand
+          }
+      }
+    %% if no match yet, error
+    \tl_if_empty:NT \g__mhchem_hp_statement_tl
+      {
+        \bool_if:NTF  \l__mhchem_hp_idExists_bool
+          {
+            \tl_gset:Nx \g__mhchem_hp_number_tl
+              { \msg_error:nnn { hpstatement } { undefined-date } {#3} }
+            \tl_gset:Nx \g__mhchem_hp_statement_tl
+              { \msg_error:nnn { hpstatement } { undefined-date } {#3} }
+          }
+          {
+            \tl_gset:Nx \g__mhchem_hp_number_tl
+              { \msg_error:nnn { hpstatement } { undefined } {#3} }
+            \tl_gset:Nx \g__mhchem_hp_statement_tl
+              { \msg_error:nnn { hpstatement } { undefined } {#3} }
+          }
+      }
+  }
+
+\tl_new:N \l__mhchem_hp_language_tl
+\cs_new:Npn \__mhchem_hp_getLanguage:
+  {
+    \IfLanguageName { english    } { \tl_set:Nn \l__mhchem_hp_language_tl { en } } {
+    \IfLanguageName { USenglish  } { \tl_set:Nn \l__mhchem_hp_language_tl { en } } {
+    \IfLanguageName { american   } { \tl_set:Nn \l__mhchem_hp_language_tl { en } } {
+    \IfLanguageName { UKenglish  } { \tl_set:Nn \l__mhchem_hp_language_tl { en } } {
+    \IfLanguageName { british    } { \tl_set:Nn \l__mhchem_hp_language_tl { en } } {
+    \IfLanguageName { canadian   } { \tl_set:Nn \l__mhchem_hp_language_tl { en } } {
+    \IfLanguageName { australian } { \tl_set:Nn \l__mhchem_hp_language_tl { en } } {
+    \IfLanguageName { newzealand } { \tl_set:Nn \l__mhchem_hp_language_tl { en } } {
+    %
+    \IfLanguageName { german     } { \tl_set:Nn \l__mhchem_hp_language_tl { de } } {
+    \IfLanguageName { ngerman    } { \tl_set:Nn \l__mhchem_hp_language_tl { de } } {
+    \IfLanguageName { germanb    } { \tl_set:Nn \l__mhchem_hp_language_tl { de } } {
+    \IfLanguageName { austrian   } { \tl_set:Nn \l__mhchem_hp_language_tl { de } } {
+    \IfLanguageName { naustrian  } { \tl_set:Nn \l__mhchem_hp_language_tl { de } } {
+    %
+    \IfLanguageName { french     } { \tl_set:Nn \l__mhchem_hp_language_tl { fr } } {
+    \IfLanguageName { francais   } { \tl_set:Nn \l__mhchem_hp_language_tl { fr } } {
+    \IfLanguageName { canadien   } { \tl_set:Nn \l__mhchem_hp_language_tl { fr } } {
+    \IfLanguageName { acadian    } { \tl_set:Nn \l__mhchem_hp_language_tl { fr } } {
+    %
+    \IfLanguageName { bulgarian  } { \tl_set:Nn \l__mhchem_hp_language_tl { bg } } {
+    \IfLanguageName { croatian   } { \tl_set:Nn \l__mhchem_hp_language_tl { hr } } {
+    \IfLanguageName { czech      } { \tl_set:Nn \l__mhchem_hp_language_tl { cs } } {
+    \IfLanguageName { danish     } { \tl_set:Nn \l__mhchem_hp_language_tl { da } } {
+    \IfLanguageName { dutch      } { \tl_set:Nn \l__mhchem_hp_language_tl { nl } } {
+    \IfLanguageName { estonian   } { \tl_set:Nn \l__mhchem_hp_language_tl { et } } {
+    \IfLanguageName { finnish    } { \tl_set:Nn \l__mhchem_hp_language_tl { fi } } {
+    \IfLanguageName { greek      } { \tl_set:Nn \l__mhchem_hp_language_tl { el } } {
+    \IfLanguageName { polutonikogreek } { \tl_set:Nn \l__mhchem_hp_language_tl { el } } {
+    \IfLanguageName { hungarian  } { \tl_set:Nn \l__mhchem_hp_language_tl { hu } } {
+    \IfLanguageName { irish      } { \tl_set:Nn \l__mhchem_hp_language_tl { ga } } {
+    \IfLanguageName { italian    } { \tl_set:Nn \l__mhchem_hp_language_tl { it } } {
+    \IfLanguageName { lithuanian } { \tl_set:Nn \l__mhchem_hp_language_tl { lt } } {
+    \IfLanguageName { latvian    } { \tl_set:Nn \l__mhchem_hp_language_tl { lv } } {
+    \IfLanguageName { malti      } { \tl_set:Nn \l__mhchem_hp_language_tl { mt } } {
+    \IfLanguageName { polish     } { \tl_set:Nn \l__mhchem_hp_language_tl { pl } } {
+    \IfLanguageName { portuguese } { \tl_set:Nn \l__mhchem_hp_language_tl { pt } } {
+    \IfLanguageName { brazilian  } { \tl_set:Nn \l__mhchem_hp_language_tl { pt } } {
+    \IfLanguageName { romanian   } { \tl_set:Nn \l__mhchem_hp_language_tl { ro } } {
+    \IfLanguageName { spanish    } { \tl_set:Nn \l__mhchem_hp_language_tl { es } } {
+    \IfLanguageName { slovak     } { \tl_set:Nn \l__mhchem_hp_language_tl { sk } } {
+    \IfLanguageName { slovene    } { \tl_set:Nn \l__mhchem_hp_language_tl { sl } } {
+    \IfLanguageName { swedish    } { \tl_set:Nn \l__mhchem_hp_language_tl { sv } } {
+    %
+    \msg_error:nn { hpstatement } { language-not-supported }
+    }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+  }
+
+\cs_new:Npn \__mhchem_hp_s:nnn #1#2#3 % #1 date #2 statement #3 else
+  {
+    \int_compare:nNnTF { \g__mhchem_hp_date_int } < {#1}%
+      {#3}
+      {#2}
+  }

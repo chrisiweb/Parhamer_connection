@@ -1,0 +1,1020 @@
+%% hpstatement-lv.inc.sty
+%% 2024-01-29
+%% Copyright 2019-2024 Martin Hensel
+%
+%% This file is part of the mhchem bundle for LaTeX
+%
+%% For the content of the phrases:
+% This work is licensed under the Creative Commons Attribution 4.0 International licence
+% (https://creativecommons.org/licenses/by/4.0/). This means that you can re-use the content
+% provided you acknowledge the source and indicate any changes you have made.
+% The data is not necessarily comprehensive, complete, accurate or up to date.
+% The acknowledgement is not needed when using statements of the data set for labelling products, of course, as this is the intended usage.
+% (c) European Union, https://eur-lex.europa.eu, 1998-2023, CC BY 4.0
+% (c) hpstatements contributors, https://github.com/mhchem/hpstatements/contributors, 2019-2024, CC BY 4.0
+%
+%
+\ExplSyntaxOn
+\group_begin:
+\char_set_catcode_space:n {`\ }% allow spaces
+\char_set_catcode_letter:n {`\@}%
+%
+\tl_gset:cn{g__mhchem_hp_lv_H200-0_tl}{{H200}{%
+  \__mhchem_hp_s:nnn{20081216}{Nestabili sprādzienbīstami materiāli.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H201-0_tl}{{H201}{%
+  \__mhchem_hp_s:nnn{20081216}{Sprādzienbīstams; masveida sprādzienbīstamība.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H202-0_tl}{{H202}{%
+  \__mhchem_hp_s:nnn{20081216}{Sprādzienbīstams; augsta izmetes bīstamība.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H203-0_tl}{{H203}{%
+  \__mhchem_hp_s:nnn{20081216}{Sprādzienbīstams; uguns, triecienviļņa vai izmetes bīstamība.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H204-0_tl}{{H204}{%
+  \__mhchem_hp_s:nnn{20081216}{Uguns vai izmetes bīstamība.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H205-0_tl}{{H205}{%
+  \__mhchem_hp_s:nnn{20081216}{Ugunī var masveidā eksplodēt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H206-0_tl}{{H206}{%
+  \__mhchem_hp_s:nnn{20201017}{Ugunsbīstamība, triecienviļņbīstamība vai izmetbīstamība; ja desensibilizācijas līdzekļa daudzums samazinājies, palielinās eksplozijas risks.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H207-0_tl}{{H207}{%
+  \__mhchem_hp_s:nnn{20201017}{Ugunsbīstamība vai izmetbīstamība; ja desensibilizācijas līdzekļa daudzums samazinājies, palielinās eksplozijas risks.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H208-0_tl}{{H208}{%
+  \__mhchem_hp_s:nnn{20201017}{Ugunsbīstamība; ja desensibilizācijas līdzekļa daudzums samazinājies, palielinās eksplozijas risks.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H220-0_tl}{{H220}{%
+  \__mhchem_hp_s:nnn{20081216}{Īpaši viegli uzliesmojoša gāze.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H221-0_tl}{{H221}{%
+  \__mhchem_hp_s:nnn{20081216}{Uzliesmojoša gāze.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H222-0_tl}{{H222}{%
+  \__mhchem_hp_s:nnn{20081216}{Īpaši viegli uzliesmojošs aerosols.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H223-0_tl}{{H223}{%
+  \__mhchem_hp_s:nnn{20081216}{Uzliesmojošs aerosols.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H224-0_tl}{{H224}{%
+  \__mhchem_hp_s:nnn{20081216}{Īpaši viegli uzliesmojošs šķidrums un tvaiki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H225-0_tl}{{H225}{%
+  \__mhchem_hp_s:nnn{20081216}{Viegli uzliesmojošs šķidrums un tvaiki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H226-0_tl}{{H226}{%
+  \__mhchem_hp_s:nnn{20081216}{Uzliesmojošs šķidrums un tvaiki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H228-0_tl}{{H228}{%
+  \__mhchem_hp_s:nnn{20081216}{Uzliesmojoša cieta viela.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H229-0_tl}{{H229}{%
+  \__mhchem_hp_s:nnn{20150601}{Tvertne zem spiediena: karstumā var eksplodēt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H230-0_tl}{{H230}{%
+  \__mhchem_hp_s:nnn{20150601}{Var eksplodēt pat bezgaisa vidē.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H231-0_tl}{{H231}{%
+  \__mhchem_hp_s:nnn{20150601}{Var eksplodēt pat bezgaisa vidē, paaugstinoties spiedienam un/\hskip\z@skip{}vai temperatūrai.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H232-0_tl}{{H232}{%
+  \__mhchem_hp_s:nnn{20201017}{Saskarē ar gaisu var spontāni aizdegties.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H240-0_tl}{{H240}{%
+  \__mhchem_hp_s:nnn{20081216}{Sakaršana var izraisīt eksploziju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H241-0_tl}{{H241}{%
+  \__mhchem_hp_s:nnn{20081216}{Sakaršana var izraisīt degšanu vai eksploziju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H242-0_tl}{{H242}{%
+  \__mhchem_hp_s:nnn{20081216}{Sakaršana var izraisīt degšanu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H250-0_tl}{{H250}{%
+  \__mhchem_hp_s:nnn{20081216}{Spontāni aizdegas saskarē ar gaisu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H251-0_tl}{{H251}{%
+  \__mhchem_hp_s:nnn{20081216}{Pašsasilstošs; var aizdegties.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H252-0_tl}{{H252}{%
+  \__mhchem_hp_s:nnn{20081216}{Lielos apjomos pašsasilstošs; var aizdegties.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H260-0_tl}{{H260}{%
+  \__mhchem_hp_s:nnn{20081216}{Nonākot saskarē ar ūdeni, izdala uzliesmojošas gāzes, kas var spontāni aizdegties.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H261-0_tl}{{H261}{%
+  \__mhchem_hp_s:nnn{20081216}{Nonākot saskarē ar ūdeni, izdala uzliesmojošu gāzi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H270-0_tl}{{H270}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt vai pastiprināt degšanu, oksidētājs.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H271-0_tl}{{H271}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt degšanu vai eksploziju, oksidētājs.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H272-0_tl}{{H272}{%
+  \__mhchem_hp_s:nnn{20081216}{Var pastiprināt degšanu; oksidētājs.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H280-0_tl}{{H280}{%
+  \__mhchem_hp_s:nnn{20081216}{Satur gāzi zem spiediena; karstumā var eksplodēt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H281-0_tl}{{H281}{%
+  \__mhchem_hp_s:nnn{20081216}{Satur atdzesētu gāzi; var radīt kriogēnus apdegumus vai ievainojumus.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H290-0_tl}{{H290}{%
+  \__mhchem_hp_s:nnn{20081216}{Var kodīgi iedarboties uz metāliem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H300-0_tl}{{H300}{%
+  \__mhchem_hp_s:nnn{20081216}{Norijot iestājas nāve.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H301-0_tl}{{H301}{%
+  \__mhchem_hp_s:nnn{20081216}{Toksisks, ja norij.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H302-0_tl}{{H302}{%
+  \__mhchem_hp_s:nnn{20081216}{Kaitīgs, ja norij.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H304-0_tl}{{H304}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt nāvi, ja norij vai iekļūst elpceļos.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H310-0_tl}{{H310}{%
+  \__mhchem_hp_s:nnn{20081216}{Nonākot saskarē ar ādu, iestājas nāve.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H311-0_tl}{{H311}{%
+  \__mhchem_hp_s:nnn{20081216}{Toksisks, ja nonāk saskarē ar ādu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H312-0_tl}{{H312}{%
+  \__mhchem_hp_s:nnn{20081216}{Kaitīgs, ja nonāk saskarē ar ādu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H314-0_tl}{{H314}{%
+  \__mhchem_hp_s:nnn{20081216}{Izraisa smagus ādas apdegumus un acu bojājumus.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H315-0_tl}{{H315}{%
+  \__mhchem_hp_s:nnn{20081216}{Kairina ādu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H317-0_tl}{{H317}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt alerģisku ādas reakciju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H318-0_tl}{{H318}{%
+  \__mhchem_hp_s:nnn{20081216}{Izraisa nopietnus acu bojājumus.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H319-0_tl}{{H319}{%
+  \__mhchem_hp_s:nnn{20081216}{Izraisa nopietnu acu kairinājumu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H330-0_tl}{{H330}{%
+  \__mhchem_hp_s:nnn{20081216}{Ieelpojot, iestājas nāve.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H331-0_tl}{{H331}{%
+  \__mhchem_hp_s:nnn{20081216}{Toksisks ieelpojot.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H332-0_tl}{{H332}{%
+  \__mhchem_hp_s:nnn{20081216}{Kaitīgs ieelpojot.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H334-0_tl}{{H334}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja ieelpo, var izraisīt alerģiju vai astmas simptomus, vai apgrūtināt elpošanu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H335-0_tl}{{H335}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt elpceļu kairinājumu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H336-0_tl}{{H336}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt miegainību vai reiboņus.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H340-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt ģenētiskus bojājumus \noexpand\textless{}norādīt iedarbības ceļu, ja ir nepārprotami pierādīts, ka citi iedarbības ceļi nerada bīstamību\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H340.0-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H340-1empty_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H340-1_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H341-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{20081216}{Ir aizdomas, ka var izraisīt ģenētiskus bojājumus \noexpand\textless{}norādīt iedarbības ceļu, ja ir nepārprotami pierādīts, ka citi iedarbības ceļi nerada bīstamību\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H341.0-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H341-1empty_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H341-1_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H350-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt vēzi \noexpand\textless{}norādīt iedarbības ceļu, ja ir nepārprotami pierādīts, ka citi iedarbības ceļi nerada bīstamību\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H350.0-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H350-1empty_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H350-1_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H350i-0_tl}{{H350i}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt vēzi ieelpojot.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H351-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{20081216}{Ir aizdomas, ka var izraisīt vēzi \noexpand\textless{}norādīt iedarbības ceļu, ja ir nepārprotami pierādīts, ka citi iedarbības ceļi nerada bīstamību\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H351.0-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H351-1empty_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H351-1_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H360-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{20081216}{Var kaitēt auglībai vai nedzimušajam bērnam \noexpand\textless{}norādīt īpašo ietekmi, ja tā ir zināma\noexpand\textgreater{} \noexpand\textless{}norādīt iedarbības ceļu, ja ir nepārprotami pierādīts, ka citi iedarbības ceļi nerada bīstamību\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H360.0-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H360-1empty_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H360-1_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H360F-0_tl}{{H360F}{%
+  \__mhchem_hp_s:nnn{20081216}{Var negatīvi ietekmēt auglību.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H360D-0_tl}{{H360D}{%
+  \__mhchem_hp_s:nnn{20081216}{Var nodarīt kaitējumu nedzimušam bērnam.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H360FD-0_tl}{{H360FD}{%
+  \__mhchem_hp_s:nnn{20081216}{Var negatīvi ietekmēt auglību. Var nodarīt kaitējumu nedzimušam bērnam.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H360Fd-0_tl}{{H360Fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Var negatīvi ietekmēt auglību. Ir aizdomas, ka var nodarīt kaitējumu nedzimušam bērnam.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H360Df-0_tl}{{H360Df}{%
+  \__mhchem_hp_s:nnn{20081216}{Var nodarīt kaitējumu nedzimušam bērnam. Ir aizdomas, ka negatīvi ietekmē auglību.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H361-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{20081216}{Ir aizdomas, ka var kaitēt auglībai vai nedzimušajam bērnam \noexpand\textless{}norādīt īpašo ietekmi, ja tā ir zināma\noexpand\textgreater{} \noexpand\textless{}norādīt iedarbības ceļu, ja ir nepārprotami pierādīts, ka citi iedarbības ceļi nerada bīstamību\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H361.0-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H361-1empty_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H361-1_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H361f-0_tl}{{H361f}{%
+  \__mhchem_hp_s:nnn{20081216}{Ir aizdomas, ka negatīvi ietekmē auglību.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H361d-0_tl}{{H361d}{%
+  \__mhchem_hp_s:nnn{20081216}{Ir aizdomas, ka var nodarīt kaitējumu nedzimušam bērnam.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H361fd-0_tl}{{H361fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Ir aizdomas, ka negatīvi ietekmē auglību. Ir aizdomas, ka var nodarīt kaitējumu nedzimušam bērnam.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H362-0_tl}{{H362}{%
+  \__mhchem_hp_s:nnn{20081216}{Var radīt kaitējumu ar krūti barotam bērnam.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H370-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{20081216}{Rada orgānu bojājumus \noexpand\textless{}vai norādīt visus skartos orgānus, ja tie ir zināmi\noexpand\textgreater{} \noexpand\textless{}norādīt iedarbības ceļu, ja ir nepārprotami pierādīts, ka citi iedarbības ceļi nerada bīstamību\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H370.0-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H370.1-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H370.1-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H370-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H370-2_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H371-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt orgānu bojājumus \noexpand\textless{}vai norādīt visus skartos orgānus, ja tie ir zināmi\noexpand\textgreater{} \noexpand\textless{}norādīt iedarbības ceļu, ja ir nepārprotami pierādīts, ka citi iedarbības ceļi nerada bīstamību\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H371.0-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H371.1-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H371.1-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H371-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H371-2_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H372-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{20081216}{Izraisa orgānu bojājumus \noexpand\textless{}vai norādīt visus skartos orgānus, ja tie ir zināmi\noexpand\textgreater{} ilgstošas vai atkārtotas iedarbības rezultātā \noexpand\textless{}norādīt iedarbības ceļu, ja ir nepārprotami pierādīts, ka citi iedarbības ceļi nerada bīstamību\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H372.0-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H372.1-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H372.1-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H372-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H372-2_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H373-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{20081216}{Var izraisīt orgānu bojājumus \noexpand\textless{}vai norādīt visus skartos orgānus, ja tie ir zināmi\noexpand\textgreater{} ilgstošas vai atkārtotas iedarbības rezultātā \noexpand\textless{}norādīt iedarbības ceļu, ja ir nepārprotami pierādīts, ka citi iedarbības ceļi nerada bīstamību\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H373.0-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H373.1-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H373.1-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H373-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H373-2_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H300+H310-0_tl}{{H300\,+\,\hskip\z@skip{}H310}{%
+  \__mhchem_hp_s:nnn{20110419}{Var izraisīt nāvi, ja norīts vai saskaras ar ādu}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H300+H310+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Var izraisīt nāvi, ja norīts, saskaras ar ādu vai iekļūst elpceļos}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H300+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Var izraisīt nāvi, ja norīts vai iekļūst elpceļos}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H301+H311-0_tl}{{H301\,+\,\hskip\z@skip{}H311}{%
+  \__mhchem_hp_s:nnn{20110419}{Toksisks, ja norīts vai saskaras ar ādu}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H301+H311+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Toksisks, ja norīts, saskaras ar ādu vai iekļūst elpceļos}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H301+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Toksisks, ja norīts vai iekļūst elpceļos}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H302+H312-0_tl}{{H302\,+\,\hskip\z@skip{}H312}{%
+  \__mhchem_hp_s:nnn{20110419}{Kaitīgs, ja norīts vai saskaras ar ādu}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H302+H312+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Kaitīgs, ja norīts, saskaras ar ādu vai nonāk elpceļos}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H302+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Kaitīgs, ja norīts vai iekļūst elpceļos}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H310+H330-0_tl}{{H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Var izraisīt nāvi, ja saskaras ar ādu vai nonāk elpceļos}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H311+H331-0_tl}{{H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Toksisks saskarē ar ādu vai ja iekļūst elpceļos}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H312+H332-0_tl}{{H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Kaitīgs saskarē ar ādu vai ja iekļūst elpceļos}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H400-0_tl}{{H400}{%
+  \__mhchem_hp_s:nnn{20081216}{Ļoti toksisks ūdens organismiem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H410-0_tl}{{H410}{%
+  \__mhchem_hp_s:nnn{20081216}{Ļoti toksisks ūdens organismiem ar ilgstošām sekām.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H411-0_tl}{{H411}{%
+  \__mhchem_hp_s:nnn{20081216}{Toksisks ūdens organismiem ar ilgstošām sekām.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H412-0_tl}{{H412}{%
+  \__mhchem_hp_s:nnn{20081216}{Kaitīgs ūdens organismiem ar ilgstošām sekām.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H413-0_tl}{{H413}{%
+  \__mhchem_hp_s:nnn{20081216}{Var radīt ilgstošas kaitīgas sekas ūdens organismiem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_H420-0_tl}{{H420}{%
+  \__mhchem_hp_s:nnn{20110419}{Bīstams sabiedrības veselībai un videi, jo iznīcina ozonu atmosfēras augšējā slānī}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH001-0_tl}{{EUH001}{%
+  \__mhchem_hp_s:nnn{20201017}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Sprādzienbīstams sausā veidā.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH006-0_tl}{{EUH006}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Sprādzienbīstams gaisa un bezgaisa vidē.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH014-0_tl}{{EUH014}{%
+  \__mhchem_hp_s:nnn{20081216}{Aktīvi reaģē ar ūdeni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH018-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{20081216}{Izmantojot var veidot uzliesmojošu vai sprādzienbīstamu tvaiku un gaisa maisījumu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH018.0-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH018.1-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH018.2-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH019-0_tl}{{EUH019}{%
+  \__mhchem_hp_s:nnn{20081216}{Var veidot sprādzienbīstamus peroksīdus.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH029-0_tl}{{EUH029}{%
+  \__mhchem_hp_s:nnn{20081216}{Saskaroties ar ūdeni, izdala toksiskas gāzes.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH031-0_tl}{{EUH031}{%
+  \__mhchem_hp_s:nnn{20081216}{Saskaroties ar skābēm, izdala toksiskas gāzes.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH032-0_tl}{{EUH032}{%
+  \__mhchem_hp_s:nnn{20081216}{Saskaroties ar skābēm, izdala ļoti toksiskas gāzes.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH044-0_tl}{{EUH044}{%
+  \__mhchem_hp_s:nnn{20081216}{Sprādziena draudi, karsējot slēgtā vidē.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH059-0_tl}{{EUH059}{%
+  \__mhchem_hp_s:nnn{20110419}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Bīstams ozona slānim.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH066-0_tl}{{EUH066}{%
+  \__mhchem_hp_s:nnn{20081216}{Atkārtota iedarbība var radīt sausu ādu vai izraisīt tās sprēgāšanu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH070-0_tl}{{EUH070}{%
+  \__mhchem_hp_s:nnn{20081216}{Toksisks saskarē ar acīm.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH071-0_tl}{{EUH071}{%
+  \__mhchem_hp_s:nnn{20081216}{Kodīgs elpceļiem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH201-0_tl}{{EUH201}{%
+  \__mhchem_hp_s:nnn{20081216}{Satur svinu. Nedrīkst lietot uz virsmām, kuras var nonākt bērnam mutē.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH201A-0_tl}{{EUH201A}{%
+  \__mhchem_hp_s:nnn{20081216}{Brīdinājums! Satur svinu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH202-0_tl}{{EUH202}{%
+  \__mhchem_hp_s:nnn{20081216}{Ciānakrilāts. Bīstami. Iedarbība uz acīm un ādu tūlītēja. Sargāt no bērniem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH203-0_tl}{{EUH203}{%
+  \__mhchem_hp_s:nnn{20081216}{Satur hromu (VI). Var izraisīt alerģisku reakciju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH204-0_tl}{{EUH204}{%
+  \__mhchem_hp_s:nnn{20081216}{Satur izocianātus. Var izraisīt alerģisku reakciju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH205-0_tl}{{EUH205}{%
+  \__mhchem_hp_s:nnn{20081216}{Satur epoksīda sastāvdaļas. Var izraisīt alerģisku reakciju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH206-0_tl}{{EUH206}{%
+  \__mhchem_hp_s:nnn{20081216}{Brīdinājums! Nelietot kopā ar citiem produktiem. Var izdalīt bīstamas gāzes (hloru).}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH207-0_tl}{{EUH207}{%
+  \__mhchem_hp_s:nnn{20081216}{Brīdinājums! Satur kadmiju. Lietojot veidojas bīstami izgarojumi. Sk. ražotāja sniegto informāciju. Ievērot drošības instrukcijas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH208-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{20081216}{Satur \noexpand\textless{}sensibilizējošās vielas nosaukums\noexpand\textgreater{}. Var izraisīt alerģisku reakciju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH208.0-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH208-1_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH209-0_tl}{{EUH209}{%
+  \__mhchem_hp_s:nnn{20081216}{Lietojot var viegli uzliesmot.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH209A-0_tl}{{EUH209A}{%
+  \__mhchem_hp_s:nnn{20081216}{Kļūt uzliesmojošs.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH210-0_tl}{{EUH210}{%
+  \__mhchem_hp_s:nnn{20081216}{Drošības datu lapa ir pieejama pēc pieprasījuma.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH211-0_tl}{{EUH211}{%
+  \__mhchem_hp_s:nnn{20211001}{Uzmanību! Izsmidzinot var veidoties bīstami ieelpojami pilieni. Ne smidzinājumu, ne miglu neieelpot.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH212-0_tl}{{EUH212}{%
+  \__mhchem_hp_s:nnn{20211001}{Uzmanību! Izmantojot var veidoties bīstami ieelpojami putekļi. Putekļus neieelpot.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH380-0_tl}{{EUH380}{%
+  \__mhchem_hp_s:nnn{20230420}{Var izraisīt endokrīnu disrupciju cilvēka organismā}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH381-0_tl}{{EUH381}{%
+  \__mhchem_hp_s:nnn{20230420}{Domājams, ka var izraisīt endokrīnu disrupciju cilvēka organismā}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH401-0_tl}{{EUH401}{%
+  \__mhchem_hp_s:nnn{20081216}{Lai izvairītos no riska cilvēku veselībai un videi, ievērojiet lietošanas pamācību.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH430-0_tl}{{EUH430}{%
+  \__mhchem_hp_s:nnn{20230420}{Var izraisīt endokrīnu disrupciju vidē}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH431-0_tl}{{EUH431}{%
+  \__mhchem_hp_s:nnn{20230420}{Domājams, ka var izraisīt endokrīnu disrupciju vidē}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH440-0_tl}{{EUH440}{%
+  \__mhchem_hp_s:nnn{20230420}{Uzkrājas vidē un dzīvos organismos, tai skaitā cilvēka organismā}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH441-0_tl}{{EUH441}{%
+  \__mhchem_hp_s:nnn{20230420}{Izteikti uzkrājas vidē un dzīvos organismos, tai skaitā cilvēka organismā}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH450-0_tl}{{EUH450}{%
+  \__mhchem_hp_s:nnn{20230420}{Var izraisīt ilgstošu un difūzu ūdens resursu kontamināciju}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_EUH451-0_tl}{{EUH451}{%
+  \__mhchem_hp_s:nnn{20230420}{Var izraisīt ļoti ilgstošu un difūzu ūdens resursu kontamināciju}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P101-0_tl}{{P101}{%
+  \__mhchem_hp_s:nnn{20081216}{Medicīniska padoma nepieciešamības gadījumā attiecīgā informācija ir norādīta uz iepakojuma vai etiķetes.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P102-0_tl}{{P102}{%
+  \__mhchem_hp_s:nnn{20081216}{Sargāt no bērniem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P103-0_tl}{{P103}{%
+  \__mhchem_hp_s:nnn{20081216}{Pirms izmantošanas izlasīt etiķeti.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P201-0_tl}{{P201}{%
+  \__mhchem_hp_s:nnn{20081216}{Pirms lietošanas saņemt speciālu instruktāžu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P202-0_tl}{{P202}{%
+  \__mhchem_hp_s:nnn{20081216}{Neizmantot pirms nav izlasīti un saprasti visi apzīmējumi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P210-0_tl}{{P210}{%
+  \__mhchem_hp_s:nnn{20150601}{Sargāt no karstuma, karstām virsmām, dzirkstelēm, atklātas uguns un citiem aizdegšanās avotiem. Nesmēķēt.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nelietot vietās, kur ir sastopams karstums/\hskip\z@skip{}dzirksteles/\hskip\z@skip{}atklāta uguns/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}karstas virsmas. Nesmēķēt.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P211-0_tl}{{P211}{%
+  \__mhchem_hp_s:nnn{20081216}{Neizsmidzināt uz atklātas uguns vai citiem aizdegšanās avotiem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P212-0_tl}{{P212}{%
+  \__mhchem_hp_s:nnn{20201017}{Nepieļaut karsēšanu slēgtā vidē vai desensibilizējošā aģenta daudzuma samazināšanos.”}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P220-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{20180301}{Nepieļaut saskari ar apģērbu un citiem uzliesmojošiem materiāliem.}{%
+  \__mhchem_hp_s:nnn{20081216}{Turēt/\hskip\z@skip{}uzglabāt vietās, kur nav piekļuves drēbēm/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}uzliesmojošiem materiāliem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P220.0-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P220.1.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P220.1.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P220.1-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P220.2.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P220.2.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P220.2-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P221-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Nekādā gadījumā nemaisīt ar viegli uzliesmojošām vielām\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P221.0-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P221.1-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P221-1_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P222-0_tl}{{P222}{%
+  \__mhchem_hp_s:nnn{20081216}{Nepieļaut kontaktu ar gaisu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P223-0_tl}{{P223}{%
+  \__mhchem_hp_s:nnn{20150601}{Nepieļaut saskari ar ūdeni.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nepieļaut kontaktu ar ūdeni īpaši stipras reakcijas un iespējamas eksplozijas dēļ.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P230-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{20081216}{Vienmēr samitrināt ar \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P230.0-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P230-1_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P231-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{20180301}{Saturu izmantot un glabāt tikai inertas gāzes vidē/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Rīkoties tikai inertas gāzes apstākļos.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P231.0-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P231.1-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P231-1_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P232-0_tl}{{P232}{%
+  \__mhchem_hp_s:nnn{20081216}{Aizsargāt no mitruma.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P233-0_tl}{{P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Tvertni stingri noslēgt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P234-0_tl}{{P234}{%
+  \__mhchem_hp_s:nnn{20180301}{Turēt tikai oriģināliepakojumā.}{%
+  \__mhchem_hp_s:nnn{20081216}{Turēt tikai oriģinālā iepakojumā.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P235-0_tl}{{P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Turēt vēsumā.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P240-0_tl}{{P240}{%
+  \__mhchem_hp_s:nnn{20180301}{Tvertnes un saņēmējiekārtas iezemēt un savienot.}{%
+  \__mhchem_hp_s:nnn{20081216}{Tvertnes un iekārtas saņemšanai ievietot zemē/\hskip\z@skip{}sasaistīt}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P241-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{20180301}{Izmantot sprādziendrošas [elektriskās/\hskip\z@skip{}ventilācijas/\hskip\z@skip{}apgaismošanas/\hskip\z@skip{}\noexpand\textellipsis{}] iekārtas.}{%
+  \__mhchem_hp_s:nnn{20081216}{Izmantot sprādziendrošas elektriskas/\hskip\z@skip{}ar ventilāciju/\hskip\z@skip{}izgaismotas/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}iekārtas}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P241.0-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P241.1-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P241.2-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P241.3-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P241-1_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P242-0_tl}{{P242}{%
+  \__mhchem_hp_s:nnn{20081216}{Izmantot instrumentus, kas nerada dzirksteles.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P243-0_tl}{{P243}{%
+  \__mhchem_hp_s:nnn{20081216}{Nodrošināties pret statiskās enerģijas izlādi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P244-0_tl}{{P244}{%
+  \__mhchem_hp_s:nnn{20150601}{Uzturēt ventiļus un savienojumus tīrus no eļļas un taukvielām.}{%
+  \__mhchem_hp_s:nnn{20081216}{Turēt reducēšanās vārstus tīrus no taukiem un eļļas.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P250-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{20180301}{Nepakļaut drupināšanai/\hskip\z@skip{}triecienam/\hskip\z@skip{}berzei/\hskip\z@skip{}\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{Nepakļaut drupināšanai/\hskip\z@skip{}triecienam/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}berzei}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P250.0-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P250.1-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P250.2-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P250.3-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P250-1_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P251-0_tl}{{P251}{%
+  \__mhchem_hp_s:nnn{20150601}{Nedurt vai nededzināt, arī pēc izlietošanas.}{%
+  \__mhchem_hp_s:nnn{20081216}{Tvertne zem spiediena: nedurt vai nededzināt, arī pēc izlietošanas.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P260-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{20081216}{Neieelpot putekļus/\hskip\z@skip{}tvaikus/\hskip\z@skip{}gāzi/\hskip\z@skip{}dūmus/\hskip\z@skip{}izgarojumus/\hskip\z@skip{}smidzinājumu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P260.0-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P260.1-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P260.2-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P260.3-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P260.4-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P260.5-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P260.6-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P261-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{20081216}{Izvairīties ieelpot putekļus/\hskip\z@skip{}tvaikus/\hskip\z@skip{}gāzi/\hskip\z@skip{}dūmus/\hskip\z@skip{}izgarojumus/\hskip\z@skip{}smidzinājumu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P261.0-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P261.1-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P261.2-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P261.3-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P261.4-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P261.5-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P261.6-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P262-0_tl}{{P262}{%
+  \__mhchem_hp_s:nnn{20081216}{Nepieļaut nokļūšanu acīs, uz ādas vai uz drēbēm.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P263-0_tl}{{P263}{%
+  \__mhchem_hp_s:nnn{20180301}{Izvairīties no saskares grūtniecības laikā un barojot bērnu ar krūti.}{%
+  \__mhchem_hp_s:nnn{20081216}{Izvairīties no saskares grūtniecības laikā/\hskip\z@skip{}barojot bērnu ar krūti.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P264-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{20081216}{Pēc izmantošanas \noexpand\textellipsis{} kārtīgi nomazgāt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P264.0-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P264-1_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P270-0_tl}{{P270}{%
+  \__mhchem_hp_s:nnn{20081216}{Neēst, nedzert un nesmēķēt produkta izmantošanas laikā.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P271-0_tl}{{P271}{%
+  \__mhchem_hp_s:nnn{20081216}{Izmantot tikai ārā vai labi vēdināmās telpās.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P272-0_tl}{{P272}{%
+  \__mhchem_hp_s:nnn{20081216}{Piesārņoto darba apģērbu neiznest ārpus darba telpām.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P273-0_tl}{{P273}{%
+  \__mhchem_hp_s:nnn{20081216}{Izvairīties no izplatīšanas apkārtējā vidē.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P280-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{20081216}{Izmantot aizsargcimdus/\hskip\z@skip{}aizsargdrēbes/\hskip\z@skip{}acu aizsargus/\hskip\z@skip{}sejas aizsargus.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P280.0-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P280.1-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P280.2-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P280.3-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P280.4-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P281-0_tl}{{P281}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Izmantot personisko aizsargaprīkojumu atbilstoši prasībām.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P282-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{20180301}{Izmantot aukstumizolējošus aizsargcimdus un sejas vai acu aizsargu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Izmantot aizsargcimdus/\hskip\z@skip{}sejas aizsargus/\hskip\z@skip{}acu aizsargus ar aukstuma izolāciju.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P282.0-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P282.1-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P282.2-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P282.3-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P283-0_tl}{{P283}{%
+  \__mhchem_hp_s:nnn{20180301}{Izmantot ugunsizturīgu vai liesmas aizturošu apģērbu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Izmantot aizsargapģērbu pret uguni/\hskip\z@skip{}liesmām.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P284-0_tl}{{P284}{%
+  \__mhchem_hp_s:nnn{20150601}{[Neatbilstošas ventilācijas gadījumā] lietot elpošanas orgānu aizsargierīces.}{%
+  \__mhchem_hp_s:nnn{20081216}{Izmantot gāzmasku.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P285-0_tl}{{P285}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Neatbilstošas ventilācijas gadījumā izmantot gāzmasku.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P231+P232-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{20180301}{Saturu izmantot un glabāt tikai inertas gāzes vidē/\hskip\z@skip{}\noexpand\textellipsis{} Sargāt no mitruma.}{%
+  \__mhchem_hp_s:nnn{20081216}{Izmantot tikai inertas gāzes apstākļos. Aizsargāt no mitruma.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P231+P232.0-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P231+P232.1-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P231+P232-1_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P235+P410-0_tl}{{P235\,+\,\hskip\z@skip{}P410}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Turēt vēsumā. Aizsargāt no saules gaismas.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301-0_tl}{{P301}{%
+  \__mhchem_hp_s:nnn{20081216}{NORĪŠANAS GADĪJUMĀ:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302-0_tl}{{P302}{%
+  \__mhchem_hp_s:nnn{20081216}{SASKARĒ AR ĀDU:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P303-0_tl}{{P303}{%
+  \__mhchem_hp_s:nnn{20081216}{SASKARĒ AR ĀDU (vai matiem):}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P304-0_tl}{{P304}{%
+  \__mhchem_hp_s:nnn{20081216}{IEELPOJOT:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P305-0_tl}{{P305}{%
+  \__mhchem_hp_s:nnn{20081216}{IEKĻŪSTOT ACĪS:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P306-0_tl}{{P306}{%
+  \__mhchem_hp_s:nnn{20081216}{SASKARĒ AR APĢĒRBU:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P307-0_tl}{{P307}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{JA saskaras:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P308-0_tl}{{P308}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja saskaras vai saistīts ar:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P309-0_tl}{{P309}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{JA saskaras vai ja jums ir slikta pašsajūta:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P310-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{20150601}{Nekavējoties sazinieties ar SAINDĒŠANĀS INFORMĀCIJAS CENTRU/\hskip\z@skip{}ārstu/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Nekavējoties sazinieties ar SAINDĒŠANĀS CENTRU vai ārstu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P310.0-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P310.1-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P310.2-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P310-1_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P311-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Sazinieties ar SAINDĒŠANĀS INFORMĀCIJAS CENTRU/\hskip\z@skip{}ārstu/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Sazinieties ar SAINDĒŠANĀS CENTRU vai ārstu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P311.0-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P311.1-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P311.2-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P311-1_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P312-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{20180301}{Sazinieties ar SAINDĒŠANĀS INFORMĀCIJAS CENTRU/\hskip\z@skip{}ārstu/\hskip\z@skip{}\noexpand\textellipsis{}, ja jums ir slikta pašsajūta.}{%
+  \__mhchem_hp_s:nnn{20150601}{Sazinieties ar SAINDĒŠANĀS INFORMĀCIJAS CENTRU/\hskip\z@skip{}ārstu/\hskip\z@skip{}.., ja jums ir slikta pašsajūta.}{%
+  \__mhchem_hp_s:nnn{20081216}{Sazinieties ar SAINDĒŠANĀS CENTRU vai ārstu, ja jums ir slikta pašsajūta.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P312.0-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P312.1-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P312.2-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P312-1_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P313-0_tl}{{P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Lūdziet palīdzību mediķiem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P314-0_tl}{{P314}{%
+  \__mhchem_hp_s:nnn{20081216}{Lūdziet palīdzību mediķiem, ja jums ir slikta pašsajūta.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P315-0_tl}{{P315}{%
+  \__mhchem_hp_s:nnn{20081216}{Nekavējoties lūdziet palīdzību mediķiem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P320-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{20081216}{Steidzami nepieciešama īpaša medicīniskā palīdzība (skat. \noexpand\textellipsis{} uz šīs etiķetes).}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P320.0-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P320-1_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P320.nolabel-1_tl}{{P320.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P321-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{20081216}{Īpaša medicīniskā palīdzība (skat. \noexpand\textellipsis{} uz šīs etiķetes).}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P321.0-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P321-1_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P321.nolabel-1_tl}{{P321.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P322-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Īpaši pasākumi (skat. \noexpand\textellipsis{} uz šīs etiķetes).}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P322.0-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P322-1_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P322.nolabel-1_tl}{{P322.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P330-0_tl}{{P330}{%
+  \__mhchem_hp_s:nnn{20081216}{Izskalot muti.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P331-0_tl}{{P331}{%
+  \__mhchem_hp_s:nnn{20081216}{NEIZRAISĪT vemšanu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P332-0_tl}{{P332}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja rodas ādas iekaisums:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P333-0_tl}{{P333}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja rodas ādas iekaisums vai izsitumi:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P334-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{20180301}{Iegremdēt vēsā ūdenī [vai ietīt mitros apsējos].}{%
+  \__mhchem_hp_s:nnn{20081216}{Iegremdēt vēsā ūdenī/\hskip\z@skip{}ietīt mitros apsējos.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P334.0-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P334.1-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P334.2-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P335-0_tl}{{P335}{%
+  \__mhchem_hp_s:nnn{20081216}{Noberzt no ādas nepiestiprinātās daļiņas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P336-0_tl}{{P336}{%
+  \__mhchem_hp_s:nnn{20081216}{Atkausēt sasalušās daļas ar remdenu ūdeni. Skarto zonu neberzt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P337-0_tl}{{P337}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja acu iekaisums nepāriet:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P338-0_tl}{{P338}{%
+  \__mhchem_hp_s:nnn{20081216}{Izņemiet kontaktlēcas, ja tās ir ievietotas un to ir viegli izdarīt. Turpiniet skalot.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P340-0_tl}{{P340}{%
+  \__mhchem_hp_s:nnn{20150601}{Nogādāt cietušo svaigā gaisā un nodrošināt netraucētu elpošanu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Izvest cietušo svaigā gaisā un turēt miera stāvoklī, lai būtu ērti elpot.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P341-0_tl}{{P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja elpošana ir apgrūtināta, izvest cietušo svaigā gaisā un turēt miera stāvoklī, lai būtu ērti elpot.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P342-0_tl}{{P342}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja rodas elpošanas traucējumu simptomi:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P350-0_tl}{{P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Maigi izskalot ar lielu daudzumu ziepēm un ūdeni.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P351-0_tl}{{P351}{%
+  \__mhchem_hp_s:nnn{20081216}{Uzmanīgi skalot ar ūdeni vairākas minūtes.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P352-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{20150601}{Nomazgāt ar lielu ūdens/\hskip\z@skip{}.. daudzumu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Mazgāt ar lielu daudzmu ziepēm un ūdeni.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P352.0-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P352.1-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P352-1_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P353-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{20180301}{Noskalot ādu ar ūdeni [vai iet dušā].}{%
+  \__mhchem_hp_s:nnn{20081216}{Noskalot ādu ar ūdeni/\hskip\z@skip{}dušā.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P353.0-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P353.1-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P353.2-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P360-0_tl}{{P360}{%
+  \__mhchem_hp_s:nnn{20081216}{Nekavējoties noskalot piesārņoto apģērbu un skarto ādu ar lielu daudzumu ūdens pirms apģērba novilkšanas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P361-0_tl}{{P361}{%
+  \__mhchem_hp_s:nnn{20150601}{Novilkt nekavējoties visu piesārņoto apģērbu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Noņemt/\hskip\z@skip{}Novilkt nekavējoties visu piesārņoto apģērbu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P362-0_tl}{{P362}{%
+  \__mhchem_hp_s:nnn{20150601}{Novilkt piesārņoto apģērbu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Novilkt piesārņoto apģērbu un pirms atkārtotas lietošanas izmazgāt.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P363-0_tl}{{P363}{%
+  \__mhchem_hp_s:nnn{20081216}{Pirms atkārtotas lietošanas piesārņoto apģērbu izmazgāt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P364-0_tl}{{P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Un pirms atkārtotas lietošanas izmazgāt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370-0_tl}{{P370}{%
+  \__mhchem_hp_s:nnn{20081216}{Ugunsgrēka gadījumā:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P371-0_tl}{{P371}{%
+  \__mhchem_hp_s:nnn{20081216}{Ugunsgrēka un lielu apjomu gadījumā:}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P372-0_tl}{{P372}{%
+  \__mhchem_hp_s:nnn{20180301}{Eksplozijas risks.}{%
+  \__mhchem_hp_s:nnn{20081216}{Eksplozijas risks ugunsgrēka gadījumā:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P373-0_tl}{{P373}{%
+  \__mhchem_hp_s:nnn{20081216}{NECENSTIES dzēst ugunsgrēku, ja uguns piekļūst sprādzienbīstamām vielām.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P374-0_tl}{{P374}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Dzēst ugunsgrēku, ņemot vērā parastos drošības nosacījumus un no saprātīga attāluma.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P375-0_tl}{{P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Dzēst ugunsgrēku no attāluma eksplozijas riska dēļ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P376-0_tl}{{P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Apstādināt noplūdi, ja to var izdarīt drošā veidā.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P377-0_tl}{{P377}{%
+  \__mhchem_hp_s:nnn{20081216}{Degšanas gāzes noplūde: Nedzēst, ja vien noplūdi var apstādināt drošā veidā.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P378-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{20150601}{Dzēšanai izmantojiet \noexpand\textellipsis{}.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nodzēšanai izmantot\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P378.0-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P378-1_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P380-0_tl}{{P380}{%
+  \__mhchem_hp_s:nnn{20081216}{Evakuēt zonu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P381-0_tl}{{P381}{%
+  \__mhchem_hp_s:nnn{20180301}{Noplūdes gadījumā novērst visus uzliesmošanas avotus.}{%
+  \__mhchem_hp_s:nnn{20081216}{Novērst visus uzliesmošanas avotus, ja to var izdarīt droši.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P390-0_tl}{{P390}{%
+  \__mhchem_hp_s:nnn{20081216}{Uzsūkt izšļakstījumus, lai novērstu materiālus zaudējumus.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P391-0_tl}{{P391}{%
+  \__mhchem_hp_s:nnn{20081216}{Savākt izšļakstīto šķidrumu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P310-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{20150601}{NORĪŠANAS GADĪJUMĀ: Nekavējoties sazinieties ar SAINDĒŠANĀS INFORMĀCIJAS CENTRU/\hskip\z@skip{}ārstu/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{NORĪŠANAS GADĪJUMĀ: Nekavējoties sazināties ar SAINDĒŠANĀS CENTRU vai ārstu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P310.0-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P310.1-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P310.2-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P310-1_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P312-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{20180301}{NORĪŠANAS GADĪJUMĀ: Sazinieties ar SAINDĒŠANĀS INFORMĀCIJAS CENTRU/\hskip\z@skip{} ārstu/\hskip\z@skip{}\noexpand\textellipsis{}, ja jums ir slikta pašsajūta.}{%
+  \__mhchem_hp_s:nnn{20150601}{NORĪŠANAS GADĪJUMĀ: Sazinieties ar SAINDĒŠANĀS INFORMĀCIJAS CENTRU/\hskip\z@skip{}ārstu/\hskip\z@skip{}.., ja jums ir slikta pašsajūta.}{%
+  \__mhchem_hp_s:nnn{20081216}{NORĪŠANAS GADĪJUMĀ: sazināties ar SAINDĒŠANĀS CENTRU vai ārstu, ja jums ir slikta pašsajūta.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P312.0-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P312.1-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P312.2-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P312-1_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P301+P330+P331-0_tl}{{P301\,+\,\hskip\z@skip{}P330\,+\,\hskip\z@skip{}P331}{%
+  \__mhchem_hp_s:nnn{20180301}{NORĪŠANAS GADĪJUMĀ: Izskalot muti. NEIZRAISĪT vemšanu.}{%
+  \__mhchem_hp_s:nnn{20081216}{NORĪŠANAS GADĪJUMĀ: izskalot muti. NEIZRAISĪT vemšanu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{SASKARĒ AR ĀDU: Iegremdēt vēsā ūdenī vai ietīt mitros apsējos.}{%
+  \__mhchem_hp_s:nnn{20081216}{SASKARĒ AR ĀDU: iegremdēt vēsā ūdenī/\hskip\z@skip{}ietīt mitros apsējos.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P335+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{SASKARĒ AR ĀDU: Noslaucīt brīvās daļiņas no ādas. Iegremdēt vēsā ūdenī [vai ietīt mitros apsējos].}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P335+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P335+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P335+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P350-0_tl}{{P302\,+\,\hskip\z@skip{}P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{SASKARĒ AR ĀDU: maigi nomazgāt ar lielu ziepju un ūdens daudzumu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P352-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{20150601}{SASKARĒ AR ĀDU: nomazgāt ar lielu ūdens/\hskip\z@skip{}.. daudzumu.}{%
+  \__mhchem_hp_s:nnn{20081216}{SASKARĒ AR ĀDU: nomazgāt ar lielu ziepju un ūdens daudzumu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P352.0-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P352.1-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P302+P352-1_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P303+P361+P353-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{20180301}{SASKARĒ AR ĀDU (vai matiem): Nekavējoties novilkt visu piesārņoto apģērbu. Noskalot ādu ar ūdeni [vai iet dušā].}{%
+  \__mhchem_hp_s:nnn{20150601}{SASKARĒ AR ĀDU (vai matiem): nekavējoties novilkt visu piesārņoto apģērbu. Noskalot ādu ar ūdeni/\hskip\z@skip{}dušā.}{%
+  \__mhchem_hp_s:nnn{20081216}{SASKARĒ AR ĀDU (vai matiem): noģērbt visu piesārņoto apģērbu. Noskalot ādu ar ūdeni/\hskip\z@skip{}dušā.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P303+P361+P353.0-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P303+P361+P353.1-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P303+P361+P353.2-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P304+P340-0_tl}{{P304\,+\,\hskip\z@skip{}P340}{%
+  \__mhchem_hp_s:nnn{20150601}{IEELPOŠANAS GADĪJUMĀ: nogādāt cietušo svaigā gaisā un nodrošināt netraucētu elpošanu.}{%
+  \__mhchem_hp_s:nnn{20081216}{IEELPOŠANAS GADĪJUMĀ: izvest cietušo svaigā gaisā un turēt miera stāvoklī, lai būtu ērti elpot.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P304+P341-0_tl}{{P304\,+\,\hskip\z@skip{}P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{IEELPOŠANAS GADĪJUMĀ: ja elpošana ir apgrūtināta, izvest cietušo svaigā gaisā un turēt miera stāvoklī, lai būtu ērti elpot.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P305+P351+P338-0_tl}{{P305\,+\,\hskip\z@skip{}P351\,+\,\hskip\z@skip{}P338}{%
+  \__mhchem_hp_s:nnn{20180301}{SASKARĒ AR ACĪM: Uzmanīgi izskalot ar ūdeni vairākas minūtes. Izņemt kontaktlēcas, ja tās ir ievietotas un ja to var vienkārši izdarīt. Turpināt skalot.}{%
+  \__mhchem_hp_s:nnn{20081216}{SASKARĒ AR ACĪM: uzmanīgi izskalot ar ūdeni vairākas minūtes. Izņemt kontaktlēcas, ja tās ir ievietotas un ja to ir viegli izdarīt. Turpināt skalot.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P306+P360-0_tl}{{P306\,+\,\hskip\z@skip{}P360}{%
+  \__mhchem_hp_s:nnn{20081216}{SASKARĒ AR APĢĒRBU: nekavējoties izskalot piesārņoto apģērbu un ādu ar lielu daudzumu ūdeni, pirms apģērba novilkšanas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P307+P311-0_tl}{{P307\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja ir saskarē: Sazināties ar SAINDĒŠANĀS CENTRU vai ārstu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P308+P311-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{JA saskaras vai saistīts ar: sazinieties ar SAINDĒŠANĀS INFORMĀCIJAS CENTRU/\hskip\z@skip{}ārstu/\hskip\z@skip{}\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P308+P311.0-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P308+P311.1-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P308+P311.2-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P308+P311-1_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P308+P313-0_tl}{{P308\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja nokļūst saskarē vai saistīts ar to: lūdziet mediķu palīdzību.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P309+P311-0_tl}{{P309\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja nokļūst saskarē vai jums ir slikta pašsajūta: sazinieties ar SAINDĒŠANĀS CENTRU vai ārstu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P332+P313-0_tl}{{P332\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja rodas ādas iekaisums: lūdziet mediķu palīdzību.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P333+P313-0_tl}{{P333\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja rodas ādas iekaisums vai izsitumi: lūdziet mediķu palīdzību.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P335+P334-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Noberziet brīvās daļiņas no ādas. Iegremdējiet vēsā ūdenī/\hskip\z@skip{}ietiniet mitros apsējos.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P335+P334.0-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P335+P334.1-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P335+P334.2-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P336+P315-0_tl}{{P336\,+\,\hskip\z@skip{}P315}{%
+  \__mhchem_hp_s:nnn{20180301}{Atkausēt sasalušās daļas ar remdenu ūdeni. Skarto zonu neberzt. Nekavējoties lūgt palīdzību mediķiem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P337+P313-0_tl}{{P337\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja acu iekaisums nepāriet: lūdziet mediķu palīdzību.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P342+P311-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Ja rodas elpas trūkuma simptomi: sazinieties ar SAINDĒŠANĀS INFORMĀCIJAS CENTRU/\hskip\z@skip{}ārstu/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Ja rodas elpas trūkuma simptomi: sazinieties ar SAINDĒŠANĀS CENTRU vai ārstu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P342+P311.0-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P342+P311.1-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P342+P311.2-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P342+P311-1_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P361+P364-0_tl}{{P361\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Nekavējoties novilkt visu piesārņoto apģērbu un pirms atkārtotas lietošanas izmazgāt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P362+P364-0_tl}{{P362\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Novilkt piesārņoto apģērbu un pirms atkārtotas lietošanas izmazgāt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P372+P380+P373-0_tl}{{P370\,+\,\hskip\z@skip{}P372\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P373}{%
+  \__mhchem_hp_s:nnn{20180301}{Ugunsgrēka gadījumā: Eksplozijas risks. Evakuēt zonu. NECENSTIES dzēst ugunsgrēku, ja uguns piekļūst sprādzienbīstamām vielām.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P376-0_tl}{{P370\,+\,\hskip\z@skip{}P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Ugunsgrēka gadījumā: apturiet noplūdi, ja to darīt ir droši.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{20081216}{Ugunsgrēka gadījumā: dzēšanai izmantojiet \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P380-0_tl}{{P370\,+\,\hskip\z@skip{}P380}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Ugunsgrēka gadījumā: evakuēt zonu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P380+P375-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Ugunsgrēka gadījumā: evakuēt zonu. Dzēst uguni no attāluma eksplozijas riska dēļ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P380+P375+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P380+P375+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P380+P375+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P371+P380+P375-0_tl}{{P371\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Ugunsgrēka vai liela apjoma gadījumā: evakuēt zonu. Dzēst uguni no attāluma eksplozijas riska dēļ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P401-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{20180301}{Glabāt saskaņā ar \noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P401.0-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P401-1_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P402-0_tl}{{P402}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt sausā vietā.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P403-0_tl}{{P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt labi vēdināmā vietā.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P404-0_tl}{{P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt slēgtā tvertnē.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P405-0_tl}{{P405}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt slēgtā veidā.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P406-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{20180301}{Glabāt korozijizturīgā/\hskip\z@skip{}\noexpand\textellipsis{} tvertnē ar iekšējo pretkorozijas izolāciju.}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt tvertnē, kas aizsargā pret koroziju/\hskip\z@skip{}\noexpand\textellipsis{} tvertnes ar iekšējo pretkorozijas izolāciju.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P406.0-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P406.1-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P406-1_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P407-0_tl}{{P407}{%
+  \__mhchem_hp_s:nnn{20180301}{Saglabāt gaisa spraugu starp krāvumiem vai paletēm.}{%
+  \__mhchem_hp_s:nnn{20081216}{Saglabāt gaisa spraugu starp krāvumiem/\hskip\z@skip{}paletēm.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P410-0_tl}{{P410}{%
+  \__mhchem_hp_s:nnn{20081216}{Aizsargāt no saules gaismas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P411-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{20101201}{Uzglabāt temperatūrā, kas nepārsniedz \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uzglabāt temperatūrā, kas nepārsniedz \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P411.0-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P411.1-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P411.2-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P412-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Nepakļaut temperatūrai, kas pārsniedz 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nepakļaut temperatūrai, kas pārsniedz 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P412.0-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P412.1-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P412.2-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P413-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{20101201}{Lielus apjomus, kas pārsniedz \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{}\,lbs, uzglabāt temperatūrā, kas nepārsniedz \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Lielus apjomus, kas pārsniedz \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{}\,lbs, uzglabāt temperatūrā, kas nepārsniedz \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P413.0-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P413.1-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P413.2-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P420-0_tl}{{P420}{%
+  \__mhchem_hp_s:nnn{20180301}{Glabāt atsevišķi.}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt atsevišķi no citiem materiāliem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P422-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Saturu uzglabāt zem\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P422.0-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P422-1_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P402+P404-0_tl}{{P402\,+\,\hskip\z@skip{}P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt sausā vietā. Glabāt aizvērtā tvertnē.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P403+P233-0_tl}{{P403\,+\,\hskip\z@skip{}P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt labi vēdināmās telpās. Tvertni turēt cieši noslēgtu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P403+P235-0_tl}{{P403\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt labi vēdināmās telpās. Turēt vēsumā.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P410+P403-0_tl}{{P410\,+\,\hskip\z@skip{}P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Aizsargāt no saules gaismas. Glabāt labi vēdināmās telpās.}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P410+P412-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Aizsargāt no saules gaismas. Nepakļaut temperatūrai, kas pārsniedz 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Aizsargāt no saules gaismas. Nepakļaut temperatūrai, kas pārsniedz 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P410+P412.0-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P410+P412.1-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P410+P412.2-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P411+P235-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20101201}{Glabāt temperatūrā, kas nepārsniedz \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Turēt vēsumā.}{%
+  \__mhchem_hp_s:nnn{20081216}{Glabāt temperatūrā, kas nepārsniedz \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Turēt vēsumā.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P411+P235.0-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P411+P235.1-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P411+P235.2-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P501-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{20081216}{Atbrīvoties no satura/\hskip\z@skip{}tvertnes\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P501.0-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P501.0-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P501.1-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P501.2-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P502-0_tl}{{P502}{%
+  \__mhchem_hp_s:nnn{20180301}{Informācija par rekuperāciju vai pārstrādi saņemama pie ražotāja vai piegādātāja.}{%
+  \__mhchem_hp_s:nnn{20110419}{Informācija par rekuperāciju/\hskip\z@skip{}pārstrādi saņemama pie ražotāja/\hskip\z@skip{}piegādātāja}{}}}}%
+\tl_gset:cn{g__mhchem_hp_lv_P370+P380+P375[+P378]-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375[\,+\,\hskip\z@skip{}P378]}{%
+  \__mhchem_hp_s:nnn{20180301}{Ugunsgrēka gadījumā: Evakuēt zonu. Dzēst uguni no attāluma eksplozijas riska dēļ. [Dzēšanai lietot \noexpand\textellipsis{}].}{}}}%
+%
+\group_end:
+\ExplSyntaxOff

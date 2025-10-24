@@ -1,0 +1,30 @@
+name filemod
+category Package
+revision 64967
+shortdesc Provide file modification times, and compare them
+longdesc The package provides macros to read and compare the
+longdesc modification dates of files. The files may be .tex files,
+longdesc images or other files (as long as they can be found by LaTeX).
+longdesc It uses the \pdffilemoddate primitive of pdfLaTeX to find the
+longdesc file modification date as PDF date string, parses the string
+longdesc and returns the value to the user. The package will also work
+longdesc for DVI output with recent versions of the LaTeX compiler which
+longdesc uses pdfLaTeX in DVI mode. The functionality is provided by
+longdesc purely expandable macros or by faster but non-expandable ones.
+containersize 3564
+containerchecksum e346e795df32a3b0cec0232da9c2b190bede65d905035a758b949c9cf01219e0880ec2ce2e83201f8dd9dcc77a98b29df2b463edf8c44cb1c220a7efe7c9f24a
+doccontainersize 277228
+doccontainerchecksum 3e8c5a26b5c2fc8a6f713f006d091c0be719bde7bbe237e49d2496032289d67624fbad1319db421a0471a60aa8c11c97bbc60127053904725e53e75a2ae6fd7a
+runfiles size=8
+ texmf-dist/tex/generic/filemod/filemod-expmin.tex
+ texmf-dist/tex/generic/filemod/filemod.tex
+ texmf-dist/tex/latex/filemod/filemod-expmin.sty
+ texmf-dist/tex/latex/filemod/filemod.sty
+catalogue-also stampinclude
+catalogue-contact-bugs https://github.com/MartinScharrer/filemod/issues
+catalogue-contact-home https://github.com/MartinScharrer/filemod
+catalogue-contact-repository https://github.com/MartinScharrer/filemod.git
+catalogue-ctan /macros/latex/contrib/filemod
+catalogue-license lppl1.3
+catalogue-topics doc-tool
+catalogue-version 1.2

@@ -1,0 +1,24 @@
+name cite
+category Package
+revision 36428
+shortdesc Improved citation handling in LaTeX
+longdesc The package supports compressed, sorted lists of numerical
+longdesc citations, and also deals with various punctuation and other
+longdesc issues of representation, including comprehensive management of
+longdesc break points. The package is compatible with both hyperref and
+longdesc backref. The package is (unsurprisingly) part of the cite
+longdesc bundle of the author's citation-related packages.
+containersize 20120
+containerchecksum 39196b799273a2da29591b1b59c0a504f0e0971a6fb12a21bed5ac45d94eb017f1e7c64691fcd46f5c151d867c1ffac706f050fe2e08bf3c58aec8867fa185d3
+doccontainersize 221780
+doccontainerchecksum f9ccc0e1975064ec792c6138907cd3dc8080ff2fd02a2925d1a1334cebbb2289797b234b46d92be0ba45d460c31359b5c143f20e28cd1aa1827489d04b88d300
+runfiles size=18
+ texmf-dist/tex/latex/cite/chapterbib.sty
+ texmf-dist/tex/latex/cite/cite.sty
+ texmf-dist/tex/latex/cite/drftcite.sty
+ texmf-dist/tex/latex/cite/overcite.sty
+catalogue-also natbib
+catalogue-ctan /macros/latex/contrib/cite
+catalogue-license other-free
+catalogue-topics cite-supp
+catalogue-version 5.5

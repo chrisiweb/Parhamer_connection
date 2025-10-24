@@ -1,0 +1,21 @@
+name totpages
+category Package
+revision 15878
+shortdesc Count pages in a document, and report last page number
+longdesc The package counts the actual pages in the document (as opposed
+longdesc to reporting the number of the last page, as does lastpage).
+longdesc The counter itself may be shipped out to the DVI file. The
+longdesc package uses the everyshi package for its task.
+containersize 3032
+containerchecksum 8dbfcf7728690d6c2a20f661daf62e80c00d3f08fd00aee7a07cbddd31f6adf8f38e32623b2963748367ea08dd3c95919ab576b22d70214a2f5f4f07c40374f1
+doccontainersize 177300
+doccontainerchecksum 58cb9d30644402a68462e0b00b6175ec4a002135eae0bb16ad2cb5b919d1dd6b93583074a0723e1c55946e7d94dab506b8527a67d7d7b39be20608207bae5626
+srccontainersize 9836
+srccontainerchecksum 2ac7e8e8f7b79721fdbc6cfcf9d5d81d80b64f60a535435ec13335e1b6059c01001003ab87d9ab8fff4323575a0fbaf6e8a3569670eeb5411be495d9fd712a1a
+runfiles size=2
+ texmf-dist/tex/latex/totpages/totpages.sty
+catalogue-also count1to
+catalogue-ctan /macros/latex/contrib/totpages
+catalogue-license lppl
+catalogue-topics label-ref typesetting
+catalogue-version 2.00

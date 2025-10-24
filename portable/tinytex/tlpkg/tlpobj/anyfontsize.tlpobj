@@ -1,0 +1,21 @@
+name anyfontsize
+category Package
+revision 17050
+shortdesc Select any font size in LaTeX
+longdesc The package allows the to user select any font size (via e.g.
+longdesc \fontsize{...}{...}\selectfont), even those sizes that are not
+longdesc listed in the .fd file. If such a size is requested, LaTeX will
+longdesc search for and select the nearest listed size; anyfontsize will
+longdesc then scale the font to the size actually requested. Similar
+longdesc functionality is available for the CM family, for the EC
+longdesc family, or for either computer modern encoding; the present
+longdesc package generalises the facility.
+containersize 2112
+containerchecksum 31d1c235d011998043663bc1f5729bd40c5b90996627038be612115daef2b3526c9e616b16c251d6b653d5bad82beee62a7dcfc3b8c10feec0850729afb294ea
+doccontainersize 183472
+doccontainerchecksum 9003fdbf712448de70c858eba74f7de79e0cb83e8f9fe72d9c1b71869161d5a63099473c4f9ec670b28b356ceccd9b56110a1724dcde3062ae209a678f5b0e16
+runfiles size=1
+ texmf-dist/tex/latex/anyfontsize/anyfontsize.sty
+catalogue-ctan /macros/latex/contrib/anyfontsize
+catalogue-license lppl
+catalogue-topics font-use

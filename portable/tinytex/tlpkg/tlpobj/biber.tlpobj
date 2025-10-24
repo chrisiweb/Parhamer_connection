@@ -1,0 +1,28 @@
+name biber
+category Package
+revision 75738
+shortdesc A BibTeX replacement for users of BibLaTeX
+longdesc Biber is a BibTeX replacement for users of BibLaTeX. Biber
+longdesc supports full UTF-8, can (re)-encode input and output, supports
+longdesc highly configurable sorting, dynamic bibliography sets and many
+longdesc other features. The CTAN distribution offers a compressed tar
+longdesc archive of the sources, etc., together with "binary"
+longdesc distributions for a variety of platforms. Note: on SourceForge
+longdesc biber is formally named "biblatex-biber", to distinguish it
+longdesc from an earlier (now apparently moribund) project called
+longdesc "biber".
+depend biber.ARCH
+containersize 736
+containerchecksum 49c744b9b9d1953a3530584a19f11fe152ae2a87ea2bd12647670ca7478ad0bc24025b2a0d14ff8be67330a1ce7bd7292aad4c4e22be993b2d71609e7061e4f5
+doccontainersize 268548
+doccontainerchecksum f17bc0356b1d39377eca1c0482cc027de5db80a314e6ad212809aef6c469e1f97a167b10d084d6aa3701fd501953116493c299efe041b8d9e42751c2adeb72ff
+srccontainersize 988388
+srccontainerchecksum 3093a042920d83b70d0ed8ce63b0296eec6cfdfb0ea6695cf5cf45679657349967a6b8acafdeac2d2696c90d0fcdecb42541fffba0cc3d8dedab3f49d1a92e7f
+catalogue-also bibtex crosstex biblatex
+catalogue-contact-bugs https://github.com/plk/biber/issues
+catalogue-contact-home http://biblatex-biber.sourceforge.net/
+catalogue-contact-repository https://github.com/plk/biber
+catalogue-ctan /biblio/biber/base
+catalogue-license artistic2
+catalogue-topics biblio
+catalogue-version 2.21

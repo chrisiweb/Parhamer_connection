@@ -1,0 +1,534 @@
+\ProvidesFile{polish.lbx}
+[\abx@lbxid]
+
+\DeclareRedundantLanguages{polish}{polish}
+
+\DeclareBibliographyExtras{%
+  \protected\def\bibrangedash{\kern0sp\discretionary{--}{--}{--}\penalty10000\hskip0sp\relax}% \protected\def\bibrangedash{\textendash\penalty\hyphenpenalty}%
+  \let\finalandcomma=\empty%
+  \let\finalandsemicolon=\empty%
+  \protected\def\mkbibordinal#1{\stripzeros{#1}}%
+  \protected\def\mkbibmascord{\mkbibordinal}%
+  \protected\def\mkbibfemord{\mkbibordinal}%
+  \protected\def\mkbibneutord{\mkbibordinal}%
+  \protected\def\mkbibdatelong#1#2#3{%
+    \iffieldundef{#3}
+      {}
+      {\mkbibordinal{\thefield{#3}}%
+       \iffieldundef{#2}{}{\nobreakspace}}%
+    \iffieldundef{#2}
+      {}
+      {\iffieldundef{#3}
+         {\mkbibmonth{\thefield{#2}}}
+         {\lbx@pl@mkbibmonth{\thefield{#2}}}%
+       \iffieldundef{#1}{}{\space}}%
+    \iffieldbibstring{#1}
+      {\bibstring{\thefield{#1}}}
+      {\dateeraprintpre{#1}\stripzeros{\thefield{#1}}}}%
+  \protected\def\mkbibdateshort#1#2#3{%
+    \iffieldundef{#3}
+      {}
+      {\stripzeros{\thefield{#3}}\adddot
+       \iffieldundef{#2}{}{}}% \iffieldundef{#2}{}{\thinspace}}
+    \iffieldundef{#2}
+      {}
+      {\mkmonthzeros{\thefield{#2}}%
+       \iffieldundef{#1}
+         {}
+         {\iffieldundef{#3}{/}{\adddot}}}%  {\iffieldundef{#3}{/}{\adddot\thinspace}}}%
+    \iffieldbibstring{#1}
+      {\bibstring{\thefield{#1}}}
+      {\dateeraprintpre{#1}\mkyearzeros{\thefield{#1}}}}%
+  \savecommand\mkbibordedition
+  \savecommand\mkbibordseries
+  \def\mkbibordedition{\mkbibneutord}%
+  \def\mkbibordseries{\mkbibfemord}%
+  \expandafter\protected\expandafter\def\csname mkbibtime24h\endcsname#1#2#3#4{%
+      \iffieldundef{#1}
+        {}
+        {\mktimezeros{\thefield{#1}}%
+         \iffieldundef{#2}{}{\bibtimesep}}%
+      \iffieldundef{#2}
+        {}
+        {\mktimezeros{\thefield{#2}}%
+         \iffieldundef{#3}{}{\bibtimesep}}%
+      \iffieldundef{#3}
+        {}
+        {\mktimezeros{\thefield{#3}}}%
+      \iffieldundef{#4}{}
+        {\bibtimezonesep
+         \mkbibtimezone{\thefield{#4}}}}%
+  \expandafter\protected\expandafter\def\csname mkbibtime12h\endcsname#1#2#3#4{%
+      \stripzeros{\mktimehh{\thefield{#1}}}\bibtimesep
+      \forcezerosmdt{\thefield{#2}}%
+      \iffieldundef{#3}{}
+        {\bibtimesep
+         \forcezerosmdt{\thefield{#3}}}%
+       \space
+       \ifnumless{\thefield{#1}}{12}
+         {\bibstring{am}}
+         {\bibstring{pm}}%
+      \iffieldundef{#4}{}
+       {\space\bibtimezonesep
+        \parentext{\mkbibtimezone{\thefield{#4}}}}}%
+  \protected\def\mkbibyeardivisiondateshort#1#2{%
+    \mkbibyeardivision{\thefield{#2}}%
+    \iffieldundef{#1}{}{\space}%
+    \dateeraprintpre{#1}\mkyearzeros{\thefield{#1}}}%
+  \protected\def\mkbibyeardivisiondatelong#1#2{%
+    \mkbibyeardivision{\thefield{#2}}%
+    \iffieldundef{#1}{}{\space}%
+    \dateeraprintpre{#1}\mkyearzeros{\thefield{#1}}}%
+}
+
+\UndeclareBibliographyExtras{%
+  \restorecommand\mkbibordedition
+  \restorecommand\mkbibordseries
+}
+
+\NewBibliographyString{% Month name variants used after day
+  datejanuary,
+  datefebruary,
+  datemarch,
+  dateapril,
+  datemay,
+  datejune,
+  datejuly,
+  dateaugust,
+  dateseptember,
+  dateoctober,
+  datenovember,
+  datedecember%
+}
+
+\DeclareBibliographyStrings{%
+  bibliography     = {{Bibliografia}{Bibliografia}},
+  references       = {{Bibliografia}{Bibliografia}},
+  shorthands       = {{Wykaz skr\'{o}t\'{o}w}{Skr\'{o}ty}},
+  editor           = {{redakcja}{red\adddot}},
+  editors          = {{redakcja}{red\adddot}},
+  compiler         = {{opracowanie}{oprac\adddot}},
+  compilers        = {{opracowanie}{oprac\adddot}},
+  redactor         = {{redaktor}{red\adddot}},
+  redactors        = {{redaktorzy}{red\adddot}},
+  reviser          = {{korekta}{kor\adddot}},
+  revisers         = {{korekta}{kor\adddot}},
+  founder          = {{za\l o\.{z}yciel}{za\l \adddot}},
+  founders         = {{za\l o\.{z}yciele}{za\l \adddot}},
+  continuator      = {{nast\k{e}pca}{nast\adddot}},
+  continuators     = {{nast\k{e}pcy}{nast\adddot}},
+  collaborator     = {{wsp\'{o}\l praca}{wsp\'{o}\l pr\adddot}},
+  collaborators    = {{wsp\'{o}\l praca}{wsp\'{o}\l pr\adddot}},
+  translator       = {{t\l umacz}{t\l um\adddot}},
+  translators      = {{t\l umacze}{t\l um\adddot}},
+  commentator      = {{komentator}{kom\adddot}},
+  commentators     = {{komentatorzy}{kom\adddot}},
+  annotator        = {{obja\'{s}nienia}{obj\adddot}},
+  annotators       = {{obja\'{s}nienia}{obj\adddot}},
+  commentary       = {{komentarz}{kom\adddot}},
+  annotations      = {{obja\'{s}nienia}{obj\adddot}},
+  introduction     = {{wst\k{e}p}{wst\k{e}p}},
+  foreword         = {{przedmowa}{przedm\adddot}},
+  afterword        = {{pos\l owie}{pos\l \adddot}},
+  editortr         = {{redakcja i~t\l umaczenie}{red\adddot, t\l um\adddot}},
+  editorstr        = {{redakcja i~t\l umaczenie}{red\adddot, t\l um\adddot}},
+  editorco         = {{redakcja i~komentarz}{red\adddot, kom\adddot}},
+  editorsco        = {{redakcja i~komentarz}{red\adddot, kom\adddot}},
+  editoran         = {{redakcja i~obja\'{s}nienia}{red\adddot, obj\adddot}},
+  editorsan        = {{redakcja i~obja\'{s}nienia}{red\adddot, obj\adddot}},
+  editorin         = {{redakcja i~wst\k{e}p}{red\adddot, wst\k{e}p}},
+  editorsin        = {{redakcja i~wst\k{e}p}{red\adddot, wst\k{e}p}},
+  editorfo         = {{redakcja i~przedmowa}{red\adddot, przedm\adddot}},
+  editorsfo        = {{redakcja i~przedmowa}{red\adddot, przedm\adddot}},
+  editoraf         = {{redakcja i~pos\l owie}{red\adddot, pos\l \adddot}},
+  editorsaf        = {{redakcja i~pos\l owie}{red\adddot, pos\l \adddot}},
+  editortrco       = {{redakcja, t\l umaczenie i~komentarz}{red\adddot, t\l um\adddot, kom\adddot}},
+  editorstrco      = {{redakcja, t\l umaczenie i~komentarz}{red\adddot, t\l um\adddot, kom\adddot}},
+  editortran       = {{redakcja, t\l umaczenie i~obja\'{s}nienia}{red\adddot, t\l um\adddot, obj\adddot}},
+  editorstran      = {{redakcja, t\l umaczenie i~obja\'{s}nienia}{red\adddot, t\l um\adddot, obj\adddot}},
+  editortrin       = {{redakcja, t\l umaczenie i~wst\k{e}p}{red\adddot, t\l um\adddot, wst\k{e}p}},
+  editorstrin      = {{redakcja, t\l umaczenie i~wst\k{e}p}{red\adddot, t\l um\adddot, wst\k{e}p}},
+  editortrfo       = {{redakcja, t\l umaczenie i~przedmowa}{red\adddot, t\l um\adddot, przedm\adddot}},
+  editorstrfo      = {{redakcja, t\l umaczenie i~przedmowa}{red\adddot, t\l um\adddot, przedm\adddot}},
+  editortraf       = {{redakcja, t\l umaczenie i~pos\l owie}{red\adddot, t\l um\adddot, pos\l \adddot}},
+  editorstraf      = {{redakcja, t\l umaczenie i~pos\l owie}{red\adddot, t\l um\adddot, pos\l \adddot}},
+  editorcoin       = {{redakcja, komentarz i~wst\k{e}p}{red\adddot, kom\adddot, wst\k{e}p}},
+  editorscoin      = {{redakcja, komentarz i~wst\k{e}p}{red\adddot, kom\adddot, wst\k{e}p}},
+  editorcofo       = {{redakcja, komentarz i~przedmowa}{red\adddot, kom\adddot, przedm\adddot}},
+  editorscofo      = {{redakcja, komentarz i~przedmowa}{red\adddot, kom\adddot, przedm\adddot}},
+  editorcoaf       = {{redakcja, komentarz i~pos\l owie}{red\adddot, kom\adddot, pos\l \adddot}},
+  editorscoaf      = {{redakcja, komentarz i~pos\l owie}{red\adddot, kom\adddot, pos\l \adddot}},
+  editoranin       = {{redakcja, obja\'{s}nienia i~wst\k{e}p}{red\adddot, obj\adddot, wst\k{e}p}},
+  editorsanin      = {{redakcja, obja\'{s}nienia i~wst\k{e}p}{red\adddot, obj\adddot, wst\k{e}p}},
+  editoranfo       = {{redakcja, obja\'{s}nienia i~przedmowa}{red\adddot, obj\adddot, przedm\adddot}},
+  editorsanfo      = {{redakcja, obja\'{s}nienia i~przedmowa}{red\adddot, obj\adddot, przedm\adddot}},
+  editoranaf       = {{redakcja, obja\'{s}nienia i~pos\l owie}{red\adddot, obj\adddot, pos\l \adddot}},
+  editorsanaf      = {{redakcja, obja\'{s}nienia i~pos\l owie}{red\adddot, obj\adddot, pos\l \adddot}},
+  editortrcoin     = {{redakcja, t\l umaczenie, komentarz i~wst\k{e}p}{red\adddot, t\l um\adddot, kom\adddot, wst\k{e}p}},
+  editorstrcoin    = {{redakcja, t\l umaczenie, komentarz i~wst\k{e}p}{red\adddot, t\l um\adddot, kom\adddot, wst\k{e}p}},
+  editortrcofo     = {{redakcja, t\l umaczenie, komentarz i~przedmowa}{red\adddot, t\l um\adddot, kom\adddot, przedm\adddot}},
+  editorstrcofo    = {{redakcja, t\l umaczenie, komentarz i~przedmowa}{red\adddot, t\l um\adddot, kom\adddot, przedm\adddot}},
+  editortrcoaf     = {{redakcja, t\l umaczenie, komentarz i~pos\l owie}{red\adddot, t\l um\adddot, kom\adddot, pos\l \adddot}},
+  editorstrcoaf    = {{redakcja, t\l umaczenie, komentarz i~pos\l owie}{red\adddot, t\l um\adddot, kom\adddot, pos\l \adddot}},
+  editortranin     = {{redakcja, t\l umaczenie, obja\'{s}nienia i~wst\k{e}p}{red\adddot, t\l um\adddot, obj\adddot, wst\k{e}p}},
+  editorstranin    = {{redakcja, t\l umaczenie, obja\'{s}nienia i~wst\k{e}p}{red\adddot, t\l um\adddot, obj\adddot, wst\k{e}p}},
+  editortranfo     = {{redakcja, t\l umaczenie, obja\'{s}nienia i~przedmowa}{red\adddot, t\l um\adddot, obj\adddot, przedm\adddot}},
+  editorstranfo    = {{redakcja, t\l umaczenie, obja\'{s}nienia i~przedmowa}{red\adddot, t\l um\adddot, obj\adddot, przedm\adddot}},
+  editortranaf     = {{redakcja, t\l umaczenie, obja\'{s}nienia i~pos\l owie}{red\adddot, t\l um\adddot, obj\adddot, pos\l \adddot}},
+  editorstranaf    = {{redakcja, t\l umaczenie, obja\'{s}nienia i~pos\l owie}{red\adddot, t\l um\adddot, obj\adddot, pos\l \adddot}},
+  translatorco     = {{t\l umaczenie i~komentarz}{t\l um\adddot, kom\adddot}},
+  translatorsco    = {{t\l umaczenie i~komentarz}{t\l um\adddot, kom\adddot}},
+  translatoran     = {{t\l umaczenie i~obja\'{s}nienia}{t\l um\adddot, obj\adddot}},
+  translatorsan    = {{t\l umaczenie i~obja\'{s}nienia}{t\l um\adddot, obj\adddot}},
+  translatorin     = {{t\l umaczenie i~wst\k{e}p}{t\l um\adddot, wst\k{e}p}},
+  translatorsin    = {{t\l umaczenie i~wst\k{e}p}{t\l um\adddot, wst\k{e}p}},
+  translatorfo     = {{t\l umaczenie i~przedmowa}{t\l um\adddot, przedm\adddot}},
+  translatorsfo    = {{t\l umaczenie i~przedmowa}{t\l um\adddot, przedm\adddot}},
+  translatoraf     = {{t\l umaczenie i~pos\l owie}{t\l um\adddot, pos\l \adddot}},
+  translatorsaf    = {{t\l umaczenie i~pos\l owie}{t\l um\adddot, pos\l \adddot}},
+  translatorcoin   = {{t\l umaczenie, obja\'{s}nienia i~wst\k{e}p}{t\l um\adddot, obj\adddot, wst\k{e}p}},
+  translatorscoin  = {{t\l umaczenie, obja\'{s}nienia i~wst\k{e}p}{t\l um\adddot, obj\adddot, wst\k{e}p}},
+  translatorcofo   = {{t\l umaczenie, obja\'{s}nienia i~przedmowa}{t\l um\adddot, obj\adddot, przedm\adddot}},
+  translatorscofo  = {{t\l umaczenie, obja\'{s}nienia i~przedmowa}{t\l um\adddot, obj\adddot, przedm\adddot}},
+  translatorcoaf   = {{t\l umaczenie, obja\'{s}nienia i~pos\l owie}{t\l um\adddot, obj\adddot, pos\l \adddot}},
+  translatorscoaf  = {{t\l umaczenie, obja\'{s}nienia i~pos\l owie}{t\l um\adddot, obj\adddot, pos\l \adddot}},
+  translatoranin   = {{t\l umaczenie, obja\'{s}nienia i~wst\k{e}p}{t\l um\adddot, obj\adddot, wst\k{e}p}},
+  translatorsanin  = {{t\l umaczenie, obja\'{s}nienia i~wst\k{e}p}{t\l um\adddot, obj\adddot, wst\k{e}p}},
+  translatoranfo   = {{t\l umaczenie, komentarz i~wst\k{e}p}{t\l um\adddot, kom\adddot, wst\k{e}p}},
+  translatorsanfo  = {{t\l umaczenie, komentarz i~przedmowa}{t\l um\adddot, kom\adddot, przedm\adddot}},
+  translatoranaf   = {{t\l umaczenie, komentarz i~pos\l owie}{t\l um\adddot, kom\adddot, pos\l \adddot}},
+  translatorsanaf  = {{t\l umaczenie, komentarz i~pos\l owie}{t\l um\adddot, kom\adddot, pos\l \adddot}},
+  organizer        = {{organizator}{org\adddot}},
+  organizers       = {{organizatorzy}{org\adddot}},
+  byorganizer      = {{organizacja}{org\adddot}},
+  byauthor         = {{autor}{aut\adddot}},
+  byeditor         = {{opracowanie}{oprac\adddot}},
+  bycompiler       = {{u\l o\.{z}y\l }{u\l \adddot}},
+  byredactor       = {{redakcja}{red\adddot}},
+  byreviser        = {{poprawione}{popr\adddot}},
+  byreviewer       = {{recenzja}{rec\adddot}},
+  byfounder        = {{za\l o\.{z}one}{za\l \adddot}},
+  bycontinuator    = {{kontynuacja}{kont\adddot}},
+  bycollaborator   = {{wsp\'{o}\l praca}{wsp\adddot}},
+  bytranslator     = {{t\l umaczenie \lbx@lfromlang}{t\l um\adddotspace \lbx@sfromlang}},
+  bycommentator    = {{komentarz}{kom\adddot}},
+  byannotator      = {{obja\'{s}nienia}{obj\adddot}},
+  withcommentator  = {{komentarz}{kom\adddot}},
+  withannotator    = {{obja\'{s}nienia}{obj\adddot}},
+  withintroduction = {{wst\k{e}p}{wst\k{e}p}},
+  withforeword     = {{przedmowa}{przedm\adddot}},
+  withafterword    = {{pos\l owie}{pos\l \adddot}},
+  byeditortr       = {{t\l umaczenie \lbx@lfromlang, redakcja}{t\l um\adddotspace \lbx@sfromlang, red\adddot}},
+  byeditorco       = {{redakcja i~komentarz}{red\adddot, kom\adddot}},
+  byeditoran       = {{redakcja i~obja\'{s}nienia}{red\adddot, obj\adddot}},
+  byeditorin       = {{redakcja, wst\k{e}p}{red\adddot, wst\k{e}p}},
+  byeditorfo       = {{redakcja, przedmowa}{red\adddot, przedm\adddot}},
+  byeditoraf       = {{redakcja, pos\l owie}{red\adddot, pos\l \adddot}},
+  byeditortrco     = {{redakcja, t\l umaczenie \lbx@lfromlang, komentarz}{red\adddot, t\l um\adddotspace \lbx@sfromlang, kom\adddot}},
+  byeditortran     = {{redakcja, t\l umaczenie \lbx@lfromlang, obja\'{s}nienia}{red\adddot, t\l um\adddotspace \lbx@sfromlang, obj\adddot}},
+  byeditortrin     = {{redakcja, t\l umaczenie \lbx@lfromlang, wst\k{e}p}{red\adddot, t\l um\adddotspace \lbx@sfromlang, wst\k{e}p}},
+  byeditortrfo     = {{redakcja, t\l umaczenie \lbx@lfromlang, przedmowa}{red\adddot, t\l um\adddotspace \lbx@sfromlang, przedm\adddot}},
+  byeditortraf     = {{redakcja, t\l umaczenie \lbx@lfromlang, pos\l owie}{red\adddot, t\l um\adddotspace \lbx@sfromlang, pos\l \adddot}},
+  byeditorcoin     = {{redakcja, komentarz i~wst\k{e}p}{red\adddot, kom\adddot, wst\k{e}p}},
+  byeditorcofo     = {{redakcja, komentarz i~przedmowa}{red\adddot, kom\adddot, przedm\adddot}},
+  byeditorcoaf     = {{redakcja, komentarz i~pos\l owie}{red\adddot, kom\adddot, pos\l \adddot}},
+  byeditoranin     = {{redakcja, obja\'{s}nienia i~wst\k{e}p}{red\adddot, obj\adddot, wst\k{e}p}},
+  byeditoranfo     = {{redakcja, obja\'{s}nienia i~przedmowa}{red\adddot, obj\adddot, przedm\adddot}},
+  byeditoranaf     = {{redakcja, obja\'{s}nienia i~pos\l owie}{red\adddot, obj\adddot, pos\l \adddot}},
+  byeditortrcoin   = {{redakcja, t\l umaczenie \lbx@lfromlang, komentarz i~wst\k{e}p}%
+                      {red\adddot, t\l um\adddotspace \lbx@sfromlang, kom\adddot, wst\k{e}p}},
+  byeditortrcofo   = {{redakcja, t\l umaczenie \lbx@lfromlang, komentarz i~przedmowa}%
+                      {red\adddot, t\l um\adddotspace \lbx@sfromlang, kom\adddot, przedm\adddot}},
+  byeditortrcoaf   = {{redakcja, t\l umaczenie \lbx@lfromlang, komentarz i~pos\l owie}%
+                      {red\adddot, t\l um\adddotspace \lbx@sfromlang, kom\adddot, pos\l \adddot}},
+  byeditortranin   = {{redakcja, t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~wst\k{e}p}%
+                      {red\adddot, t\l um\adddotspace \lbx@sfromlang, obj\adddot, wst\k{e}p}},
+  byeditortranfo   = {{redakcja, t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~przedmowa}%
+                      {red\adddot, t\l um\adddotspace \lbx@sfromlang, obj\adddot, przedm\adddot}},
+  byeditortranaf   = {{redakcja, t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~pos\l owie}%
+                      {red\adddot, t\l um\adddotspace \lbx@sfromlang, obj\adddot, pos\l \adddot}},
+  bytranslatorco   = {{t\l umaczenie \lbx@lfromlang\ i~komentarz}%
+                      {t\l um\adddotspace \lbx@sfromlang, kom\adddot}},
+  bytranslatoran   = {{t\l umaczenie \lbx@lfromlang\ i~obja\'{s}nienia}%
+                      {t\l um\adddotspace \lbx@sfromlang, obj\adddot}},
+  bytranslatorin   = {{t\l umaczenie \lbx@lfromlang\ i~wst\k{e}p}%
+                      {t\l um\adddotspace \lbx@sfromlang, wst\k{e}p}},
+  bytranslatorfo   = {{t\l umaczenie \lbx@lfromlang\ i~przedmowa}%
+                      {t\l um\adddotspace \lbx@sfromlang, przedm\adddot}},
+  bytranslatoraf   = {{t\l umaczenie \lbx@lfromlang\ i~pos\l owie}%
+                      {t\l um\adddotspace \lbx@sfromlang, pos\l \adddot}},
+  bytranslatorcoin = {{t\l umaczenie \lbx@lfromlang, komentarz i~wst\k{e}p}%
+                      {t\l um\adddotspace \lbx@sfromlang, kom\adddot, wst\k{e}p}},
+  bytranslatorcofo = {{t\l umaczenie \lbx@lfromlang, komentarz i~przedmowa}%
+                      {t\l um\adddotspace \lbx@sfromlang, kom\adddot, przedm\adddot}},
+  bytranslatorcoaf = {{t\l umaczenie \lbx@lfromlang, komentarz i~pos\l owie}%
+                      {t\l um\adddotspace \lbx@sfromlang, kom\adddot, pos\l \adddot}},
+  bytranslatoranin = {{t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~wst\k{e}p}%
+                      {t\l um\adddotspace \lbx@sfromlang, obj\adddot, wst\k{e}p}},
+  bytranslatoranfo = {{t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~przedmowa}%
+                      {t\l um\adddotspace \lbx@sfromlang, obj\adddot, przedm\adddot}},
+  bytranslatoranaf = {{t\l umaczenie \lbx@lfromlang, obja\'{s}nienia i~pos\l owie}%
+                      {t\l um\adddotspace \lbx@sfromlang, obj\adddot, pos\l \adddot}},
+  and              = {{i}{i}},
+  andothers        = {{i~inni}{i~in\adddot}},
+  andmore          = {{i~inni}{i~in\adddot}},
+  volume           = {{tom}{t\adddot}},
+  volumes          = {{tomy}{t\adddot}},
+  involumes        = {{w\addcolon}{w\addcolon}},
+  jourvol          = {{tom}{t\adddot}},
+  jourser          = {{seria}{seria}},
+  book             = {{ksi\k{e}ga}{ks\adddot}},
+  part             = {{cz\k{e}\'{s}\'{c}}{cz\adddot}},
+  issue            = {{wydanie}{wyd\adddot}},
+  newseries        = {{nowa seria}{nowa seria}},
+  oldseries        = {{stara seria}{stara seria}},
+  edition          = {{wydanie}{wyd\adddot}},
+  reprint          = {{przedruk}{przedr\adddot}},
+  reprintof        = {{przedruk z\addcolon}{przedr\adddotspace z\addcolon}},
+  reprintas        = {{przedruk jako}{przedr\adddotspace jako}},
+  reprintfrom      = {{przedruk z\addcolon}{przedr\adddotspace z\addcolon}},
+  translationof    = {{t\l umaczenie z\addcolon}{t\l um\adddotspace z\addcolon}},
+  translationas    = {{t\l umaczenie jako}{t\l um\adddotspace jako}},
+  translationfrom  = {{t\l umaczenie z\addcolon}{t\l um\adddotspace z\addcolon}},
+  reviewof         = {{recenzja z\addcolon}{rec\adddotspace z\addcolon}},
+  origpubas        = {{pierwodruk\addcolon}{pierwodr\addcolon}},
+  origpubin        = {{pierwodruk w\addcolon}{pierwodr\adddotspace w\addcolon}},
+  astitle          = {{jako}{jako}},
+  bypublisher      = {{przez}{przez}},
+  page             = {{strona}{s\adddot}},
+  pages            = {{strony}{s\adddot}},
+  column           = {{kolumna}{kol\adddot}},
+  columns          = {{kolumny}{kol\adddot}},
+  line             = {{wers}{w\adddot}},
+  lines            = {{wersy}{w\adddot}},
+  nodate           = {{bez daty}{b\adddot d\adddot}},
+  verse            = {{werset}{wer\adddot}},
+  verses           = {{wersety}{wer\adddotspace wer\adddot}},
+  section          = {{paragraf}{par\adddot}},
+  sections         = {{paragrafy}{par\adddotspace par\adddot}},
+  paragraph        = {{akapit}{akap\adddot}},
+  paragraphs       = {{akapity}{akap\adddot}},
+  pagetotal        = {{stron}{s\adddot}},
+  pagetotals       = {{stron}{s\adddot}},
+  columntotal      = {{kolumna}{kol\adddot}},
+  columntotals     = {{kolumny}{kol\adddot}},
+  linetotal        = {{wers}{wer\adddot}},
+  linetotals       = {{wersy}{wer\adddot}},
+  versetotal       = {{werset}{wers\adddot}},
+  versetotals      = {{wersety}{wer\adddot}},
+  sectiontotal     = {{paragraf}{par\adddot}},
+  sectiontotals    = {{paragrafy}{par\adddot}},
+  paragraphtotal   = {{akapit}{akap\adddot}},
+  paragraphtotals  = {{akapit}{akap\adddot}},
+  in               = {{w\addcolon}{w\addcolon}},
+  inseries         = {{w}{w}},
+  ofseries         = {{z}{z}},
+  number           = {{numer}{nr}},
+  chapter          = {{rozdzia\l }{rozdz\adddot}},
+  bathesis         = {{praca licencjacka}{praca licencjacka}},
+  mathesis         = {{praca magisterska}{praca magisterska}},
+  phdthesis        = {{rozprawa doktorska}{rozprawa doktorska}},
+  candthesis       = {{praca kandydacka}{praca kandydacka}},
+  resreport        = {{sprawozdanie naukowe}{sprawozdanie naukowe}},
+  techreport       = {{sprawozdanie techniczne}{sprawozdanie techniczne}},
+  software         = {{oprogramowanie}{oprogr\adddot}},
+  datacd           = {{CD-ROM}{CD-ROM}},
+  audiocd          = {{audio CD}{audio CD}},
+  version          = {{wersja}{wersja}},
+  url              = {{URL}{URL}},
+  urlfrom          = {{dost\k{e}pne z}{dost\adddotspace z}},
+  urlseen          = {{dost\k{e}p}{dost\k{e}p}},
+  inpreparation    = {{w~przygotowaniu}{w~przyg\adddot}},
+  submitted        = {{z\l o\.{z}one}{z\l o\.{z}\adddot}},
+  forthcoming      = {{w~przygotowaniu}{w~przyg\adddot}},
+  inpress          = {{w~druku}{w~dr\adddot}},
+  prepublished     = {{wst\k{e}pnie opublikowane}{wst\k{e}pnie opubl\adddot}},
+  citedas          = {{dalej jako}{dalej jako}},
+  thiscite         = {{tutaj}{tut\adddot}},
+  seenote          = {{patrz przypis}{patrz przyp\adddot}},
+  quotedin         = {{cytowane w}{cyt\adddotspace w}},
+  idem             = {{ten\.{z}e}{ten\.{z}e}},
+  idemsm           = {{ten\.{z}e}{ten\.{z}e}},
+  idemsf           = {{ta\.{z}}{ta\.{z}}},
+  idemsn           = {{to\.{z}}{to\.{z}}},
+  idempm           = {{ci\.{z}}{ci\.{z}}},
+  idempf           = {{te\.{z}}{te\.{z}}},
+  idempn           = {{te\.{z}}{te\.{z}}},
+  idempp           = {{tych\.{z}e}{tych\.{z}e}},
+  ibidem           = {{tam\.{z}e}{tam\.{z}e}},
+  opcit            = {{dzie\l o cytowane}{dz\adddotspace cyt\adddot}},
+  loccit           = {{miejsce cytowane}{miejsce cyt\adddot}},
+  confer           = {{por\'{o}wnaj}{por\adddot}},
+  sequens          = {{i~nast\k{e}pna}{i~nast\adddot}},
+  sequentes        = {{i~nast\k{e}pne}{i~nast\adddot}},
+  passim           = {{passim}{passim}},
+  see              = {{zobacz}{zob\adddot}},
+  seealso          = {{zobacz te\.{z}}{zob\adddotspace te\.{z}}},
+  backrefpage      = {{cytowane na stronie}{cyt\adddotspace na s\adddot}},
+  backrefpages     = {{cytowane na stronach}{cyt\adddotspace na ss\adddot}},
+  january          = {{stycze\'{n}}{stycze\'{n}}},
+  february         = {{luty}{luty}},
+  march            = {{marzec}{marzec}},
+  april            = {{kwiecie\'{n}}{kwiecie\'{n}}},
+  may              = {{maj}{maj}},
+  june             = {{czerwiec}{czerwiec}},
+  july             = {{lipiec}{lipiec}},
+  august           = {{sierpie\'{n}}{sierpie\'{n}}},
+  september        = {{wrzesie\'{n}}{wrzesie\'{n}}},
+  october          = {{pa\'{z}dziernik}{pa\'{z}dziernik}},
+  november         = {{listopad}{listopad}},
+  december         = {{grudzie\'{n}}{grudzie\'{n}}},
+  datejanuary      = {{stycznia}{stycznia}},
+  datefebruary     = {{lutego}{lutego}},
+  datemarch        = {{marca}{marca}},
+  dateapril        = {{kwietnia}{kwietnia}},
+  datemay          = {{maja}{maja}},
+  datejune         = {{czerwca}{czerwca}},
+  datejuly         = {{lipca}{lipca}},
+  dateaugust       = {{sierpnia}{sierpnia}},
+  dateseptember    = {{wrze\'{s}nia}{wrze\'{s}nia}},
+  dateoctober      = {{pa\'{z}dziernika}{pa\'{z}dziernika}},
+  datenovember     = {{listopada}{listopada}},
+  datedecember     = {{grudnia}{grudnia}},
+  langamerican     = {{angielski ameryka\'{n}ski}{ang\adddotspace amer\adddot}},
+  langbasque       = {{baskijski}{bask\adddot}},
+  langbrazilian    = {{brazylijski portugalski}{braz\adddotspace portug\adddot}},
+  langbulgarian    = {{bu\l garski}{bu\l g\adddot}},
+  langcatalan      = {{katalo\'{n}ski}{katal\adddot}},
+  langcroatian     = {{chorwacki}{chorw\adddot}},
+  langczech        = {{czeski}{czes\adddot}},
+  langdanish       = {{du\'{n}ski}{du\'{n}\adddot}},
+  langdutch        = {{holenderski}{holend\adddot}},
+  langenglish      = {{angielski}{ang\adddot}},
+  langestonian     = {{esto\'{n}ski}{est\adddot}},
+  langfinnish      = {{fi\'{n}ski}{fi\'{n}\adddot}},
+  langfrench       = {{francuski}{franc\adddot}},
+  langgalician     = {{galicyjski}{galic\adddot}},
+  langgerman       = {{niemiecki}{niem\adddot}},
+  langgreek        = {{grecki}{gr\adddot}},
+  langhungarian    = {{w\k{e}gierski}{w\k{e}g\adddot}},
+  langitalian      = {{w\l oski}{w\l \adddot}},
+  langjapanese     = {{japo\'{n}ski}{jap\adddot}},
+  langlatin        = {{\l acina}{\l ac\adddot}},
+  langlatvian      = {{\l otewski}{\l ot\adddot}},
+  langlithuanian   = {{litewski}{lit\adddot}},
+  langmarathi      = {{marathi}{mar\adddot}},
+  langnorwegian    = {{norweski}{norw\adddot}},
+  langpolish       = {{polski}{pol\adddot}},
+  langportuguese   = {{portugalski}{portug\adddot}},
+  langromanian     = {{rumu\'{n}ski}{rum\adddot}},
+  langrussian      = {{rosyjski}{ros\adddot}},
+  langserbian      = {{serbski}{serb\adddot}},
+  langslovak       = {{s\l owacki}{s\l c\adddot}},
+  langslovene      = {{s\l owe\'{n}ski}{s\l ow\adddot}},
+  langspanish      = {{hiszpa\'{n}ski}{hiszp\adddot}},
+  langswedish      = {{szwedzki}{szw\adddot}},
+  langturkish      = {{turecki}{tur\adddot}},
+  langukrainian    = {{ukrai\'{n}ski}{ukr\adddot}},
+  fromamerican     = {{z~angielskiego ameryka\'{n}skiego}{z~ang\adddotspace amer\adddot}},
+  frombasque       = {{z~baskijskiego}{z~bask\adddot}},
+  frombrazilian    = {{z~brazylijskiego portugalskiego}{z~braz\adddotspace portug\adddot}},
+  frombulgarian    = {{z~bu\l garskiego}{z~bu\l g\adddot}},
+  fromcatalan      = {{z~katalo\'{n}skiego}{z~katal\adddot}},
+  fromcroatian     = {{z~chorwackiego}{z~chorw\adddot}},
+  fromczech        = {{z~czeskiego}{z~czes\adddot}},
+  fromdanish       = {{z~du\'{n}skiego}{z~du\'{n}\adddot}},
+  fromdutch        = {{z~holenderskiego}{z~holend\adddot}},
+  fromenglish      = {{z~angielskiego}{z~ang\adddot}},
+  fromestonian     = {{z~esto\'{n}skiego}{z~est\adddot}},
+  fromfinnish      = {{z~fi\'{n}skiego}{z~fi\'{n}\adddot}},
+  fromfrench       = {{z~francuskiego}{z~franc\adddot}},
+  fromgalician     = {{z~galicyjskiego}{z~galic\adddot}},
+  fromgerman       = {{z~niemieckiego}{z~niem\adddot}},
+  fromgreek        = {{z~greckiego}{z~gr\adddot}},
+  fromhungarian    = {{z~w\k{e}gierskiego}{z~w\k{e}g\adddot}},
+  fromitalian      = {{z~w\l oskiego}{z~w\l \adddot}},
+  fromjapanese     = {{z~japo\'{n}skiego}{z~jap\adddot}},
+  fromlatin        = {{z~\l aciny}{z~\l ac\adddot}},
+  fromlatvian      = {{z~\l otewskiego}{z~\l ot\adddot}},
+  fromlithuanian   = {{z~litewskiego}{z~lit\adddot}},
+  frommarathi      = {{z~marathi}{z~mar\adddot}},
+  fromnorwegian    = {{z~norweskiego}{z~norw\adddot}},
+  frompolish       = {{z~polskiego}{z~pol\adddot}},
+  fromportuguese   = {{z~portugalskiego}{z~portug\adddot}},
+  fromromanian     = {{z~rumu\'{n}skiego}{z~rum\adddot}},
+  fromrussian      = {{z~rosyjskiego}{z~ros\adddot}},
+  fromserbian      = {{z~serbskiego}{z~serb\adddot}},
+  fromslovak       = {{ze s\l owackiego}{ze s\l ow\adddot}},
+  fromslovene      = {{ze s\l owe\'{n}skiego}{ze s\l owe\'{n}\adddot}},
+  fromspanish      = {{z~hiszpa\'{n}skiego}{z~hiszp\adddot}},
+  fromswedish      = {{ze szwedzkiego}{ze szw\adddot}},
+  fromturkish      = {{z~tureckiego}{z~tur\adddot}},
+  fromukrainian    = {{z~ukrai\'{n}skiego}{z~ukr\adddot}},
+  countryde        = {{Niemcy}{DE}},
+  countryeu        = {{Unia Europejska}{EU}},
+  countryep        = {{Parlament Europejski}{PE}},
+  countryfr        = {{Francja}{FR}},
+  countryuk        = {{Wielka Brytania}{GB}},
+  countryus        = {{Stany Zjednoczone Ameryki P\'{o}\l nocnej}{USA}},
+  patent           = {{patent}{pat\adddot}},
+  patentde         = {{patent Niemiec}{pat\adddotspace Niemiec}},
+  patenteu         = {{patent Europy}{pat\adddotspace Europy}},
+  patentfr         = {{patent Francji}{pat\adddotspace Francji}},
+  patentuk         = {{patent Wielkiej Brytanii}{pat\adddotspace Wielkiej Brytanii}},
+  patentus         = {{patent Stan\'{o}w Zjednoczonych}{pat\adddotspace USA}},
+  patreq           = {{wniosek o~patent}{wniosek o~pat\adddot}},
+  patreqde         = {{wniosek o~patent Niemiec}{wniosek o~pat\adddotspace Niemiec}},
+  patreqeu         = {{wniosek o~patent Europy}{wniosek o~pat\adddotspace Europy}},
+  patreqfr         = {{wniosek o~patent Francji}{wniosek o~pat\adddotspace Francji}},
+  patrequk         = {{wniosek o~patent Wielkiej Brytanii}{wniosek o~pat\adddotspace Wielkiej Brytanii}},
+  patrequs         = {{wniosek o~patent Stan\'{o}w Zjednoczonych}{wniosek o~pat\adddotspace USA}},
+  file             = {{plik}{plik}},
+  library          = {{biblioteka}{bibl\adddot}},
+  abstract         = {{streszczenie}{streszcz\adddot}},
+  annotation       = {{obja\'{s}nienia}{obj\adddot}},
+  commonera        = {{n\adddot e\adddot}{n\adddot e\adddot}},
+  beforecommonera  = {{p\adddot n\adddot e\adddot}{p\adddot n\adddot e\adddot}},
+  annodomini       = {{Anno Domini}{A\adddot D\adddot}},
+  beforechrist     = {{przed Chrystusem}{przed Chr\adddot}},
+  circa            = {{oko\l o}{ok\adddot}},
+  spring           = {{wiosna}{wiosna}},
+  summer           = {{lato}{lato}},
+  autumn           = {{jesie\'{n}}{jesie\'{n}}},
+  winter           = {{zima}{zima}},
+% springN          = {{}{}},% FIXME: missing
+% summerN          = {{}{}},% FIXME: missing
+% autumnN          = {{}{}},% FIXME: missing
+% winterN          = {{}{}},% FIXME: missing
+% springS          = {{}{}},% FIXME: missing
+% summerS          = {{}{}},% FIXME: missing
+% autumnS          = {{}{}},% FIXME: missing
+% winterS          = {{}{}},% FIXME: missing
+% Q1               = {{}{}},% FIXME: missing
+% Q2               = {{}{}},% FIXME: missing
+% Q3               = {{}{}},% FIXME: missing
+% Q4               = {{}{}},% FIXME: missing
+% QD1              = {{}{}},% FIXME: missing
+% QD2              = {{}{}},% FIXME: missing
+% QD3              = {{}{}},% FIXME: missing
+% S1               = {{}{}},% FIXME: missing
+% S2               = {{}{}},% FIXME: missing
+  am               = {{przed po\l udniem}{przed po\l udniem}},
+  pm               = {{po po\l udniu}{po po\l udniu}},
+}
+
+\protected\gdef\lbx@pl@mkbibmonth#1{%
+  \ifcase0#1\relax
+    #1\BibliographyWarning{Month out of range}%
+  \or\abx@bibmonth{datejanuary}%
+  \or\abx@bibmonth{datefebruary}%
+  \or\abx@bibmonth{datemarch}%
+  \or\abx@bibmonth{dateapril}%
+  \or\abx@bibmonth{datemay}%
+  \or\abx@bibmonth{datejune}%
+  \or\abx@bibmonth{datejuly}%
+  \or\abx@bibmonth{dateaugust}%
+  \or\abx@bibmonth{dateseptember}%
+  \or\abx@bibmonth{dateoctober}%
+  \or\abx@bibmonth{datenovember}%
+  \or\abx@bibmonth{datedecember}%
+  \else
+    #1\BibliographyWarning{Month out of range}%
+  \fi}%
+
+\endinput

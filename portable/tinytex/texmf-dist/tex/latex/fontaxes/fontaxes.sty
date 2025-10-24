@@ -1,0 +1,80 @@
+%%
+%% This is file `fontaxes.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% fontaxes.dtx  (with options: `package')
+%% 
+%% Copyright (c) 2007 by Andreas Buehmann
+%% Copyright (c) 2025 by Michael Ummels <michael@ummels.de>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Michael Ummels.
+%% 
+%% This work consists of the files fontaxes.dtx, fontaxes.ins and
+%% the derived file fontaxes.sty.
+%% 
+\NeedsTeXFormat{LaTeX2e}[2018-04-01]
+\DeclareRelease{v1}{2011-09-20}{fontaxes-v1.sty}
+\DeclareCurrentRelease{v2}{2025-04-21}
+\ProvidesExplPackage{fontaxes}{2025-05-24}{2.0.1}{Font selection axes (deprecated)}
+\msg_new:nnn { fontaxes } { unsupported-axis }
+  { Axis~`#1`~not~supported~for~command~\fa@naming@exception~\msg_line_context: }
+\msg_new:nnn { fontaxes } { unsupported-alignment }
+  { Value~`#1'~not~supported~as~figure~alignment~\msg_line_context: }
+\file_if_exist:nTF { figureversions.sty }
+  {
+    \RequirePackage { figureversions }
+    \cs_generate_variant:Nn
+      \__figureversions_new_figurestyle_proportional:nn { V }
+    \cs_generate_variant:Nn
+      \__figureversions_new_figurestyle_tabular:nn { V }
+    \cs_new_eq:NN \fontprimaryshape \fontshape
+    \cs_new_eq:NN \fontsecondaryshape \fontshape
+    \cs_new_protected:Npn \fa@naming@exception #1#2#3
+      {
+        \str_if_eq:nnTF {#1} {figures}
+          {
+            \str_set:Ne \l_tmpa_str { \tl_head:n { #2 } }
+            \str_set:Ne \l_tmpb_str { \tl_item:nn { #2 } { 2 } }
+            \str_if_eq:VnTF \l_tmpb_str { proportional }
+              {
+                \__figureversions_new_figurestyle_proportional:Vn
+                  \l_tmpa_str { #3 }
+              }
+              {
+                \str_if_eq:VnTF \l_tmpb_str { tabular }
+                {
+                  \__figureversions_new_figurestyle_tabular:Vn
+                    \l_tmpa_str { #3 }
+                }
+                {
+                  \msg_warning:nnV { fontaxes } { unsupported-alignment }
+                    \l_tmpb_str
+                }
+              }
+          }
+          { \msg_warning:nnn { fontaxes } { unsupported-axis } { #1 } }
+      }
+  }
+  {
+    \ExplSyntaxOff
+    \InputIfFileExists{fontaxes-v1.sty}{}{
+      \PackageError{fontaxes}{Failed~to~find~file~`fontaxes-v1.sty'}%
+        {Your~installation~seems~broken.~Try~reinstalling~the~package.}
+    }
+    \ExplSyntaxOn
+  }
+%% 
+%%
+%% End of file `fontaxes.sty'.

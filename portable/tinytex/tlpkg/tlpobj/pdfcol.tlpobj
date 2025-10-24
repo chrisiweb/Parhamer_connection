@@ -1,0 +1,23 @@
+name pdfcol
+category Package
+revision 64469
+shortdesc Macros for maintaining colour stacks under pdfTeX
+longdesc Since version 1.40 pdfTeX supports colour stacks. The driver
+longdesc file pdftex.def for package color defines and uses a main
+longdesc colour stack since version v0.04b. This package is intended for
+longdesc package writers. It defines macros for setting and maintaining
+longdesc new colour stacks.
+containersize 2780
+containerchecksum c9d9350a68513b9c7fd1d99138cf93aad74b76ebac4e5a55de483501bc5a6ac42a366e60e15a6d7e81149355dd6ea87b968bb070e05f04848e4a167422f645c1
+doccontainersize 317332
+doccontainerchecksum d2b5b5e1681092d024e0e0d47d3252e915cd3456b9bd27e1d2b871688ff2d805b385d864088e8a9ec665d7a0b495811b3ba6e8237363448d378072ac0c12072d
+srccontainersize 6448
+srccontainerchecksum fed939659d5d9223e184f3a47a681b298bd6d076ab807eb164082d273da35a16126bd4b0b3c647c0a40d23abfa2974bd566aaaaa4f5d7864022e2c769870be3d
+runfiles size=2
+ texmf-dist/tex/latex/pdfcol/pdfcol.sty
+catalogue-contact-bugs https://github.com/ho-tex/pdfcol/issues
+catalogue-contact-repository https://github.com/ho-tex/pdfcol
+catalogue-ctan /macros/latex/contrib/pdfcol
+catalogue-license lppl1.3c
+catalogue-topics colour
+catalogue-version 1.7

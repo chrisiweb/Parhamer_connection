@@ -1,0 +1,25 @@
+name vmargin
+category Package
+revision 15878
+shortdesc Set various page dimensions
+longdesc Provides a macro to set various margins as well as dimensions
+longdesc for header/footer and page dimensions. Most common paper sizes,
+longdesc paper orientation, disabling of headers and footers, and two
+longdesc sided printing are supported. The vmargin package does not rely
+longdesc on other packages and was designed with speed and size in mind.
+longdesc Its user interface might not be very fancy, but it's fast,
+longdesc small, and gets the job done. If you are looking for something
+longdesc more elaborate try the geometry package.
+containersize 2852
+containerchecksum dc0cdd4696a44bb6bd189dcf73c69f1b2c8790b9936b1c6f35013d9342a97d36a4bfd8eab82f3e2e97f1cc952459cd9a1909915348b25f01df446c5ffc452e71
+doccontainersize 155348
+doccontainerchecksum ca8ebc274efacbe192b73c9551294bfae60b0cf7ebaac8425cf1b88e10ecda7f3230c336883afc438349f1ea47d66d369b52bb415c482803fb742b16cb483348
+srccontainersize 10616
+srccontainerchecksum 0ad7482be9aef59f55b1a489327c03e9d9560f10c984a0f244aa836ef12086dca2d834c033a36bc95233d6de9b801ac483d2dbf472f33e9478c5182d06a86cb6
+runfiles size=2
+ texmf-dist/tex/latex/vmargin/vmargin.sty
+catalogue-also geometry typearea
+catalogue-ctan /macros/latex/contrib/vmargin
+catalogue-license lppl
+catalogue-topics geometry
+catalogue-version 2.5

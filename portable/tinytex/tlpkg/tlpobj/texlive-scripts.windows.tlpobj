@@ -1,0 +1,23 @@
+name texlive-scripts.windows
+category TLCore
+revision 74918
+shortdesc windows files of texlive-scripts
+containersize 60580
+containerchecksum ebd0402735a0eed001b4bb609a7a135521d53ef2326ba07659215bcd2088de2bf047c75f7daf9db5b29680d843b4b796e313973c5f8a028b2c7870777399bef8
+binfiles arch=windows size=55
+ bin/windows/fmtutil-sys.exe
+ bin/windows/fmtutil-user.exe
+ bin/windows/fmtutil.exe
+ bin/windows/mktexfmt.exe
+ bin/windows/mktexmf.exe
+ bin/windows/mktexpk.exe
+ bin/windows/mktextfm.exe
+ bin/windows/rungs.exe
+ bin/windows/texhash.exe
+ bin/windows/updmap-sys.exe
+ bin/windows/updmap-user.exe
+ bin/windows/updmap.exe
+ install-tl-windows.bat
+ tl-tray-menu.exe
+ tlpkg/installer/tl-cmd.bat
+ tlpkg/installer/tl-tray-menu.ini

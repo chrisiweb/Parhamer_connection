@@ -1,0 +1,8 @@
+name hyperxmp.windows
+category Package
+revision 65891
+shortdesc windows files of hyperxmp
+containersize 2320
+containerchecksum b3cbe1f68906ffd7fab810b138ec473d76f42c4f1efe74bcd84791bda4ae2ebf8764dc9c431d87ac61e3ea966815d2c98646d7e796c90c06d8eb96e3fed9b4c5
+binfiles arch=windows size=2
+ bin/windows/hyperxmp-add-bytecount.exe

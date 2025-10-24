@@ -1,0 +1,75 @@
+% ======================================================================
+% preface-en.tex
+% Copyright (c) Markus Kohm, 2008-2022
+%
+% This file is part of the LaTeX2e KOMA-Script bundle.
+%
+% This work may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, version 1.3c of the license.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2005/12/01 or later and of this work.
+%
+% This work has the LPPL maintenance status "author-maintained".
+%
+% The Current Maintainer and author of this work is Markus Kohm.
+%
+% This work consists of all files listed in MANIFEST.md.
+% ======================================================================
+
+\KOMAProvidesFile{preface-en.tex}
+                 [$Date: 2025-08-19 15:21:00 +0200 (Di, 19. Aug 2025) $
+                  preface to dedicated version]
+\translator{Markus Kohm\and DeepL}
+
+\addchap{Preface to \KOMAScript~3.46}
+
+While working on \KOMAScript{} 3.46, I received the bad news that Axel
+Sommerfeldt intends to discontinue maintenance of the \Package{caption}
+package and will therefore no longer accept suggestions for changes and
+improvements. This is relevant for \KOMAScript{} insofar as, after some
+improvements to \Macro{caption} processing, it became apparent that
+\Package{caption} also needs some minor changes to maintain and improve
+compatibility with \KOMAScript{}. Under no circumstances should improvements
+to \Macro{caption} processing within \KOMAScript{} have a negative impact on
+the compatibility of the \Package{caption} package. The consequence is that
+the \Package{caption} package itself no longer ensures compatibility, but
+rather \KOMAScript{} reacts to the loading of \Package{caption} in order to
+then establish compatibility itself.
+
+As in many other cases, this naturally means more work for me in terms of both
+development and testing. Together with the countless changes that have
+recently become necessary due to the rapid development of \LaTeX{} itself,
+this unfortunately means that some urgent work on \KOMAScript{} is constantly
+being put on hold. Several other projects, which are ultimately becoming
+increasingly important for the continued existence of \KOMAScript{}, could not
+be worked on again. Unfortunately, this also includes tagging support.
+
+Nevertheless, this version of \KOMAScript{} has succeeded in further advancing
+the urgently needed revision of the distribution of tasks between classes and
+packages. A few other problems have also been addressed, but these may lead to
+changed page breaks in two-column documents with chapter headings. See the
+website »\href{https://sourceforge.net/p/koma-script/wiki-en/Releases/}
+{Important notes and changes}« and, in particular,
+»\href{https://sourceforge.net/p/koma-script/wiki-en/Release%203.46/}
+{Known issues and important changes in \KOMAScript{} 3.46}«.
+
+My thanks go mainly to my wife. She cushions all my unpleasant experiences on
+the Internet. She has also put up with me for more than 30~years when I am
+once again unresponsive because I am completely immersed in \KOMAScript{} or
+some \LaTeX{} problems. The fact that I can afford to invest such an insane
+amount of time in a project like this is also thanks to my wife alone.
+
+\bigskip\noindent
+Markus Kohm, Neckarhausen in August 2025.
+
+\endinput
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "scrguide-en.tex"
+%%% coding: utf-8
+%%% ispell-local-dictionary: "en_GB"
+%%% eval: (flyspell-mode 1)
+%%% End: 

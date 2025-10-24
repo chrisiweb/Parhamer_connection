@@ -1,0 +1,28 @@
+name floatrow
+category Package
+revision 15878
+shortdesc Modifying the layout of floats
+longdesc The floatrow package provides many ways to customize layouts of
+longdesc floating environments and has code to cooperate with the
+longdesc caption 3.x package. The package offers mechanisms to put
+longdesc floats side by side, and to put the caption beside its float.
+longdesc The floatrow settings could be expanded to the floats created
+longdesc by packages rotating, wrapfig, subfig (in the case of rows of
+longdesc subfloats), and longtable.
+containersize 16088
+containerchecksum c650b5c856bd625ad192901f3c056171f790c549748d5de5675f14cedca5cf32931ece537ce2280c0e4895895a8eff0cf140c3408dffc2b081ebc8c62d2ae1e3
+doccontainersize 1216512
+doccontainerchecksum b721ebbf59ca3744f1834c130da1a859cd4a98e9f5f977f5d35eef77b420deee303c109439fa70f89757cb9f57114bc74c5d527cafacc1daf2125b975621b525
+srccontainersize 92488
+srccontainerchecksum 033c5c65c9676054e209c64dd065f86631c9765b1582e4042e72bfd247a49602dd97ba4dcd5afa1fe2f7e3d252e4b6ef2ff1a2b00eec3156937fc214d7cf0c3f
+runfiles size=22
+ texmf-dist/tex/latex/floatrow/floatpagestyle.sty
+ texmf-dist/tex/latex/floatrow/floatrow.sty
+ texmf-dist/tex/latex/floatrow/fr-fancy.sty
+ texmf-dist/tex/latex/floatrow/fr-longtable.sty
+ texmf-dist/tex/latex/floatrow/fr-subfig.sty
+ texmf-dist/tex/latex/floatrow/listpen.sty
+catalogue-ctan /macros/latex/contrib/floatrow
+catalogue-license lppl
+catalogue-topics float
+catalogue-version 0.3b

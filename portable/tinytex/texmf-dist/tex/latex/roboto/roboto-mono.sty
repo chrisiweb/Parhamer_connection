@@ -1,0 +1,142 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{roboto-mono}
+    [2022/09/10 (Bob Tennent)  Supports RobotoMono fonts for all LaTeX engines.]
+
+\RequirePackage{ifxetex,ifluatex,xkeyval,textcomp}
+
+\newif\ifrobotomono@otf 
+\ifxetex
+  \robotomono@otftrue
+\else\ifluatex
+  \robotomono@otftrue
+\else  % [pdf]LaTeX
+  \robotomono@otffalse
+\fi\fi
+
+
+\newcommand*{\RobotoMono@scale}{1}
+\DeclareOptionX{scaled}{\renewcommand*{\RobotoMono@scale}{#1}}
+\DeclareOptionX{scale}{\renewcommand*{\RobotoMono@scale}{#1}}
+
+\newif\ifrobotomono@light \robotomono@lightfalse
+\newif\ifrobotomono@thin \robotomono@thinfalse
+\newif\ifrobotomono@medium \robotomono@mediumfalse
+\newif\ifrobotomono@black \robotomono@blackfalse
+
+\DeclareOptionX{type1}{\robotomono@otffalse}
+\DeclareOptionX{medium}{\robotomono@mediumtrue\robotomono@blackfalse}
+\DeclareOptionX{bold}{\robotomono@blackfalse\robotomono@mediumfalse}
+\DeclareOptionX{black}{\robotomono@blacktrue\robotomono@mediumfalse}
+\DeclareOptionX{thin}{\robotomono@thintrue\robotomono@lightfalse}
+\DeclareOptionX{light}{\robotomono@lighttrue\robotomono@thinfalse}
+\DeclareOptionX{regular}{\robotomono@lightfalse\robotomono@thinfalse}
+
+\ExecuteOptionsX{bold,regular}
+\ProcessOptionsX\relax
+
+\ifrobotomono@otf
+  \def\robotomono@boldstyle{Bold}
+  \ifrobotomono@medium\def\robotomono@boldstyle{Medium}\fi
+  \ifrobotomono@black\def\robotomono@boldstyle{Black}\fi
+  \def\robotomono@regstyle{Regular}
+  \ifrobotomono@light\def\robotomono@regstyle{Light}\fi
+  \ifrobotomono@thin\def\robotomono@regstyle{Thin}\fi
+
+\else % type1
+
+  \def\bfseries@tt{b}
+  \ifrobotomono@medium\def\bfseries@tt{sb}\fi
+  \ifrobotomono@black\def\bfseries@tt{eb}\fi
+  \def\mdseries@tt{m}
+  \ifrobotomono@thin\def\mdseries@tt{el}\fi
+  \ifrobotomono@light\def\mdseries@tt{l}\fi
+
+\fi
+
+\ifrobotomono@otf
+  \RequirePackage{fontspec}
+\else
+  \RequirePackage{fontenc,fontaxes,mweights}
+\fi
+
+\ifrobotomono@otf
+  \def\robotomono@regular{Regular}
+  \defaultfontfeatures{
+        HyphenChar=None,
+        Scale     = \RobotoMono@scale ,
+        Extension = .otf }
+    \setmonofont
+        [ 
+          UprightFont    = *-\robotomono@regstyle ,
+          ItalicFont     = *-\ifx\robotomono@regstyle\robotomono@regular Italic\else\robotomono@regstyle Italic\fi ,
+          BoldFont       = *-\robotomono@boldstyle ,
+          BoldItalicFont = *-\robotomono@boldstyle Italic ,
+        ]
+        {RobotoMono}
+  % grab current family in case of subsequent change:
+  \let\robotomonofamily\ttdefault  
+  \newfontfamily\robotomono
+        [ 
+          UprightFont    = *-\robotomono@regstyle ,
+          ItalicFont     = *-\ifx\robotomono@regstyle\robotomono@regular Italic\else\robotomono@regstyle Italic\fi ,
+          BoldFont       = *-\robotomono@boldstyle ,
+          BoldItalicFont = *-\robotomono@boldstyle Italic ,
+        ]
+        {RobotoMono}
+    \newfontfamily\robotomonoregular
+          [ 
+            UprightFont    = *-Regular ,
+            ItalicFont     = *-Italic,
+          ]
+          {RobotoMono}
+    \newfontfamily\robotomonomedium
+          [ 
+            UprightFont    = *-Medium ,
+            ItalicFont     = *-MediumItalic,
+          ]
+          {RobotoMono}
+    \newfontfamily\robotomonothin
+          [ 
+            UprightFont    = *-Thin ,
+            ItalicFont     = *-ThinItalic,
+          ]
+          {RobotoMono}
+    \newfontfamily\robotomonolight
+          [ 
+            UprightFont    = *-Light ,
+            ItalicFont     = *-LightItalic,
+          ]
+          {RobotoMono}
+    \newfontfamily\robotomonobold
+          [ 
+            UprightFont    = *-Bold ,
+            ItalicFont     = *-BoldItalic,
+          ]
+          {RobotoMono}
+
+\else % type1
+
+  \def\robotomonofamily{RobotoMono-TLF}
+  \newcommand*\robotomono{\fontfamily{\robotomonofamily}\selectfont}
+  \def\ttdefault{\robotomonofamily}
+  \def\robotomonoregular{\fontfamily{\ttdefault}\fontseries{m}\selectfont}
+  \def\robotomonomedium{\fontfamily{\ttdefault}\fontseries{sb}\selectfont}
+  \def\robotomonothin{\fontfamily{\ttdefault}\fontseries{el}\selectfont}
+  \def\robotomonoklight{\fontfamily{\ttdefault}\fontseries{l}\selectfont}
+  \def\robotomonobold{\fontfamily{\ttdefault}\fontseries{b}\selectfont}
+\fi
+
+\DeclareTextFontCommand{\robotomonoRegular}{\robotomonoregular}
+\DeclareTextFontCommand{\robotomonoMedium}{\robotomonomedium}
+\DeclareTextFontCommand{\robotomonoThin}{\robotomonothin}
+\DeclareTextFontCommand{\robotomonoLight}{\robotomonolight}
+\DeclareTextFontCommand{\robotomonoBold}{\robotomonobold}
+
+\def\robotomonolgr{\fontencoding{LGR}\fontfamily{RobotoMono-TLF}\selectfont} % RobotoMono-TLF even for otf
+
+\ifrobotomono@otf
+  % turn off defaults in case other fonts are selected:
+  \defaultfontfeatures{}
+\fi
+
+\endinput

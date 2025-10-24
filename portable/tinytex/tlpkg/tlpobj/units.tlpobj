@@ -1,0 +1,21 @@
+name units
+category Package
+revision 42428
+shortdesc Typeset units
+longdesc The package is provided as a bundle with the nicefrac package
+longdesc for typing fractions. Units uses nicefrac in typesetting
+longdesc physical units in a standard-looking sort of way.
+containersize 2004
+containerchecksum a1c3266bd95d8668d67e7dc451258f7a3a0362e4435ab70a574be5f7ac44bb5fbb7b30ded852602c73f227f57e8f7bf61af148070b9eae6103a982f726869a2f
+doccontainersize 207040
+doccontainerchecksum e8a1d929e9817539a5fef6cd89c8d4daf60cc0495fc7698e4708eefbf60fd36daf88ee5cb668e9f1d53978d53253bb52ef6b3e6d1a313708022e5218c99e89d2
+srccontainersize 7256
+srccontainerchecksum a6aff8a5917b48ce17a62de74bf327e0bc2b4a8cfc8a77fde67cfa710d8715b0d8dda54837b3f895cd769649444691df5fafd9e486bb37f4e9af110584f676da
+runfiles size=2
+ texmf-dist/tex/latex/units/nicefrac.sty
+ texmf-dist/tex/latex/units/units.sty
+catalogue-also siunitx
+catalogue-ctan /macros/latex/contrib/units
+catalogue-license gpl
+catalogue-topics units scientific-docs
+catalogue-version 0.9b

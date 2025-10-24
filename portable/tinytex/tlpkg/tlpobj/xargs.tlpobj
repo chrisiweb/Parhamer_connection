@@ -1,0 +1,20 @@
+name xargs
+category Package
+revision 15878
+shortdesc Define commands with many optional arguments
+longdesc The package provides extended versions of \newcommand and
+longdesc related LaTeX commands, which allow easy and robust definition
+longdesc of macros with many optional arguments, using a clear and
+longdesc simple xkeyval-style syntax.
+containersize 3372
+containerchecksum 43b9cc5246123ef3c424614415e04db9e7a578eef348c3d580626918a4c31ac99714cf501dd54d305ed6ab9ad7e0533bf5b39250c43ad682032dd676a12173d2
+doccontainersize 181868
+doccontainerchecksum 387a051eb8581b51d2042bcfae2ff9af99659d664c328c6b30b3789c75fb73687c32e2037df7a345335966671a3e3267ff4b9e0eead0e5b759bd305850ef22b6
+srccontainersize 17444
+srccontainerchecksum e4717f476260648eb66fefeeb125606c16d302bbad32c55730a0102da355d0c828b106b25391f69bb34627f56cd7659dc185bbcd36ba7f5a8f0b77a0786a7957
+runfiles size=4
+ texmf-dist/tex/latex/xargs/xargs.sty
+catalogue-ctan /macros/latex/contrib/xargs
+catalogue-license lppl
+catalogue-topics latex3 macro-supp
+catalogue-version 1.1

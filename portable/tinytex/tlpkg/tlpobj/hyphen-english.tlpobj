@@ -1,0 +1,25 @@
+name hyphen-english
+category TLCore
+revision 73410
+shortdesc English hyphenation patterns.
+longdesc Additional hyphenation patterns for American and British
+longdesc English in ASCII encoding. The American English patterns
+longdesc (usenglishmax) greatly extend the standard patterns from Knuth
+longdesc to find many additional hyphenation points. British English
+longdesc hyphenation is completely different from US English, so has its
+longdesc own set of patterns.
+depend hyph-utf8
+depend hyphen-base
+execute AddHyphen 	name=ukenglish synonyms=british,UKenglish 	lefthyphenmin=2 	righthyphenmin=3 	file=loadhyph-en-gb.tex 	file_patterns=hyph-en-gb.pat.txt 	file_exceptions=hyph-en-gb.hyp.txt
+execute AddHyphen 	name=usenglishmax 	lefthyphenmin=2 	righthyphenmin=3 	file=loadhyph-en-us.tex 	file_patterns=hyph-en-us.pat.txt 	file_exceptions=hyph-en-us.hyp.txt
+containersize 41380
+containerchecksum 45ef57447251eca794998f373651ca85429f347396185b3d9b8d0467062dd77b1f2dd94090b9e393f52e5cf503ea7cf344bf61785072b4740d99a77fab4b1f0e
+runfiles size=50
+ texmf-dist/tex/generic/hyph-utf8/loadhyph/loadhyph-en-gb.tex
+ texmf-dist/tex/generic/hyph-utf8/loadhyph/loadhyph-en-us.tex
+ texmf-dist/tex/generic/hyph-utf8/patterns/tex/hyph-en-gb.tex
+ texmf-dist/tex/generic/hyph-utf8/patterns/tex/hyph-en-us.tex
+ texmf-dist/tex/generic/hyph-utf8/patterns/txt/hyph-en-gb.hyp.txt
+ texmf-dist/tex/generic/hyph-utf8/patterns/txt/hyph-en-gb.pat.txt
+ texmf-dist/tex/generic/hyph-utf8/patterns/txt/hyph-en-us.hyp.txt
+ texmf-dist/tex/generic/hyph-utf8/patterns/txt/hyph-en-us.pat.txt

@@ -1,0 +1,63 @@
+name texlive-scripts
+category TLCore
+revision 76620
+shortdesc TeX Live infrastructure programs
+longdesc Includes install-tl, tl-portable, rungs, etc.; not needed for
+longdesc tlmgr to run but still ours. Not included in tlcritical.
+depend texlive-scripts.ARCH
+depend texlive.infra
+execute addMap mathpple.map
+postaction shortcut type=menu name="TeX Live command-line"   cmd=TEXDIR/tlpkg/installer/tl-cmd.bat
+containersize 115028
+containerchecksum ee318f7e6cdbc8b9036b74644fdbf6c670c40b13fb9ecc2a8bb3742127d49280ccd5ac0db02428546313c752b822c47a9be1600687a9b6870b7f186b48375274
+doccontainersize 454564
+doccontainerchecksum a2f63ca4f5d5df0488b103e82d62f7bd387a2305d4de88dd330c520f01fc4cbb31caa3cb6505a971da16071387077746918509ecacd2a2d3ad03efc4f5fd32e2
+runfiles size=164
+ install-tl
+ texmf-dist/dvips/tetex/config.builtin35
+ texmf-dist/dvips/tetex/config.dfaxhigh
+ texmf-dist/dvips/tetex/config.dfaxlo
+ texmf-dist/dvips/tetex/config.download35
+ texmf-dist/dvips/tetex/config.gsftopk
+ texmf-dist/dvips/tetex/config.maxmem
+ texmf-dist/dvips/tetex/config.outline
+ texmf-dist/dvips/tetex/config.pdf
+ texmf-dist/dvips/tetex/config.pk
+ texmf-dist/dvips/tetex/config.www
+ texmf-dist/fonts/enc/dvips/tetex/09fbbfac.enc
+ texmf-dist/fonts/enc/dvips/tetex/0ef0afca.enc
+ texmf-dist/fonts/enc/dvips/tetex/10037936.enc
+ texmf-dist/fonts/enc/dvips/tetex/1b6d048e.enc
+ texmf-dist/fonts/enc/dvips/tetex/71414f53.enc
+ texmf-dist/fonts/enc/dvips/tetex/74afc74c.enc
+ texmf-dist/fonts/enc/dvips/tetex/aae443f0.enc
+ texmf-dist/fonts/enc/dvips/tetex/b6a4d7c7.enc
+ texmf-dist/fonts/enc/dvips/tetex/bbad153f.enc
+ texmf-dist/fonts/enc/dvips/tetex/d9b29452.enc
+ texmf-dist/fonts/enc/dvips/tetex/f7b6d320.enc
+ texmf-dist/fonts/enc/dvips/tetex/mtex.enc
+ texmf-dist/fonts/map/dvips/tetex/Makefile
+ texmf-dist/fonts/map/dvips/tetex/README
+ texmf-dist/fonts/map/dvips/tetex/base14flags.ltx
+ texmf-dist/fonts/map/dvips/tetex/base14flags.tex
+ texmf-dist/fonts/map/dvips/tetex/dvipdfm35.map
+ texmf-dist/fonts/map/dvips/tetex/dvips35.map
+ texmf-dist/fonts/map/dvips/tetex/mathpple.map
+ texmf-dist/fonts/map/dvips/tetex/pdftex35.map
+ texmf-dist/fonts/map/dvips/tetex/ps2pk35.map
+ texmf-dist/scripts/texlive/fmtutil-sys.sh
+ texmf-dist/scripts/texlive/fmtutil-user.sh
+ texmf-dist/scripts/texlive/fmtutil.pl
+ texmf-dist/scripts/texlive/mktexlsr.pl
+ texmf-dist/scripts/texlive/mktexmf
+ texmf-dist/scripts/texlive/mktexpk
+ texmf-dist/scripts/texlive/mktextfm
+ texmf-dist/scripts/texlive/rungs.lua
+ texmf-dist/scripts/texlive/updmap-sys.sh
+ texmf-dist/scripts/texlive/updmap-user.sh
+ texmf-dist/scripts/texlive/updmap.pl
+ texmf-dist/web2c/updmap.cfg
+ tlpkg/installer/ctan-mirrors.pl
+ tlpkg/installer/install-menu-extl.pl
+ tlpkg/installer/install-menu-text.pl
+ tlpkg/installer/install-tl-gui.tcl

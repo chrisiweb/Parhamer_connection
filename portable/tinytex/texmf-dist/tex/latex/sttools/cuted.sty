@@ -1,0 +1,791 @@
+%%
+%% This is file `cuted.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% cuted.dtx  (with options: `package')
+%% 
+%% Copyright (C) 1997-2025 by Sigitas Tolu\v{s}is <sigitas@vtex.lt>
+%% UAB VTeX, Mokslininkų 2A, LT-08412 Vilnius, Lithuania
+%% --------------------------------------------------------------------------
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% PURPOSE:   Insert some onecolumn material in full-width on double-column page.
+%%
+\NeedsTeXFormat{LaTeX2e}[2025/06/01]
+\ProvidesPackage{cuted}
+    [2025/10/13 v2.7 Mixing onecolumn and twocolumn modes (ST)]
+
+\newif\if@right@column@spread \@right@column@spreadtrue
+\newif\if@right@column@shrink \@right@column@shrinktrue
+\newif\if@left@column@spread \@left@column@spreadtrue
+\newif\if@left@column@shrink \@left@column@shrinktrue
+\newif\ifcuted@@debug \cuted@@debugfalse
+
+\DeclareOption{spread}{%
+    \global\@left@column@spreadtrue
+    \global\@right@column@spreadtrue
+    }
+\DeclareOption{nospread}{%
+    \global\@left@column@spreadfalse
+    \global\@right@column@spreadfalse
+    }
+\DeclareOption{lspread}{\global\@left@column@spreadtrue}
+\DeclareOption{nolspread}{\global\@left@column@spreadfalse}
+\DeclareOption{rspread}{\global\@right@column@spreadtrue}
+\DeclareOption{norspread}{\global\@right@column@spreadfalse}
+
+\DeclareOption{shrink}{%
+    \global\@left@column@shrinktrue
+    \global\@right@column@shrinktrue
+    }
+\DeclareOption{noshrink}{%
+    \global\@left@column@shrinkfalse
+    \global\@right@column@shrinkfalse
+    }
+\DeclareOption{lshrink}{\global\@left@column@shrinktrue}
+\DeclareOption{nolshrink}{\global\@left@column@shrinkfalse}
+\DeclareOption{rshrink}{\global\@right@column@shrinktrue}
+\DeclareOption{norshrink}{\global\@right@column@shrinkfalse}
+
+\DeclareOption{debug}{\global\cuted@@debugtrue}
+\DeclareOption{nodebug}{\global\cutted@@debugfalse}
+
+\ProcessOptions
+
+\newif\if@lastviper \@lastviperfalse
+\newtoks\At@ViperColsBreak \At@ViperColsBreak{}
+\newtoks\preCutedStrip \preCutedStrip{}
+\newtoks\postCutedStrip \postCutedStrip{}
+\newbox\cuted@@tempbox@a
+\newbox\cuted@@tempbox@c
+\newbox\cuted@@tempbox@var
+\@ifundefined{hold@viper}
+    {\newbox\hold@viper}{}
+\@ifundefined{@viper}
+    {\newbox\@viper}{}
+\newbox\cuted@@varbox@a
+\newbox\cuted@@varbox@c
+\newdimen\cuted@@tempdim@spread
+\newdimen\cuted@@tempdim@a
+\newdimen\cuted@@tempdim@b
+\newdimen\ht@hold@viper
+\newdimen\ht@viper
+\newdimen\var@@pagediscards@ht \var@@pagediscards@ht=\z@
+\@ifundefined{stripsep}
+    {\newskip\stripsep \stripsep 15\p@ plus 2\p@ minus 2\p@}{}
+\newcount\viper@penalty
+\mathchardef\@Mv=10005
+\def\cuted@@column@badness{101}
+\def\cuted@@page@rule{\z@}
+\savingvdiscards=\@ne
+
+\def\cuted@@wlog@debug#1{\ifcuted@@debug \wlog{#1}\fi}
+
+\def\set@split@topskip@to#1{%
+    \splittopskip=#1\relax
+    \vfuzz=\maxdimen
+    \vbadness=\maxdimen
+    }
+
+\def\oldcolsbreak#1{\global\At@ViperColsBreak{#1}}
+
+\def\on@stripcols@break{%
+    %% adds original vertical page break skip
+    %%
+    \ifdim\strip@page@discards=\z@
+    \else
+        \vskip\strip@page@discards
+    \fi
+    }
+\def\set@makecol@colht{%
+    \@ifundefined{viper@page@total}{}{%
+        \if@firstcolumn
+            \edef\cur@colht{\viper@page@total}%
+        \else
+            \global\let\viper@page@total\relax
+        \fi
+        }%
+    }
+\gdef\cuted@makecol{%
+    \UseHook {build/column/before}%
+    \ifvoid\footins
+        \setbox\@outputbox \box\@cclv
+        \@outputbox@removebskip
+    \else
+        \setbox\@outputbox \vbox {%
+            \boxmaxdepth \@maxdepth
+            \unvbox \@cclv
+            \vskip \skip\footins
+            \color@begingroup
+                \normalcolor
+                \footnoterule
+                \unvbox \footins
+            \color@endgroup
+            }%
+    \fi
+    \let\@elt\relax
+    \xdef\@freelist{\@freelist\@midlist}%
+    \global \let \@midlist \@empty
+    \UseSocket {build/column/outputbox}%
+    \ifvbox\@kludgeins
+        \@make@specialcolbox
+    \else
+        \let\cur@colht\@colht \set@makecol@colht
+        \setbox\@outputbox \vbox to\cur@colht{%
+            \@texttop
+            \@outputbox@depth \dp\@outputbox
+            \unvbox \@outputbox
+            \vskip -\@outputbox@depth
+            \@textbottom
+            }%
+    \fi
+    \global \maxdepth \@maxdepth
+    \UseHook {build/column/after}%
+    }
+\@ifundefined{normal@makecol}
+    {\let\@makecol\cuted@makecol}
+    {\let\normal@makecol\cuted@makecol}
+
+\def\@outputdblcol{%
+    \if@firstcolumn
+        \global\@firstcolumnfalse
+        \global\setbox\@leftcolumn\copy\@outputbox
+    \else
+        \global\@firstcolumntrue
+        \@ifundefined{viper@page@total}{}{%
+            \setbox\@outputbox\vbox{%
+                \unvbox\@outputbox
+                \vskip-\viper@page@total
+                }%
+            \global\let\viper@page@total\relax
+            }%
+        \setbox\@outputbox\vbox{%
+            \hb@xt@\textwidth{%
+                \hb@xt@\columnwidth{\box\@leftcolumn \hss}%
+                \hfil
+                {\normalcolor\vrule \@width\columnseprule}%
+                \hfil
+                \hb@xt@\columnwidth{\box\@outputbox \hss}%
+                }%
+            }%
+        \ifvoid\hold@viper
+        \else
+              \setbox\@outputbox\vbox to\textheight{%
+                  \box\hold@viper
+                  \ifvoid\@viper
+                       \box\@outputbox
+                  \fi
+                  \vss
+                  }%
+        \fi
+        \@combinedblfloats
+        \@outputpage
+        \begingroup
+            \@dblfloatplacement
+            \@startdblcolumn
+            \@whilesw\if@fcolmade \fi
+                {\@outputpage \@startdblcolumn}%
+            \ifvoid\@viper
+            \else
+                \global\setbox\@viper\vbox{%
+                    \vskip-\stripsep
+                    \unvbox\@viper
+                    }%
+                \@viperoutput
+            \fi
+        \endgroup
+    \fi
+    }
+\newdimen\strip@page@discards \strip@page@discards=\z@
+\def\strip{%
+    \ifinner
+        \@parmoderr
+        \viper@penalty\z@
+    \else
+        \viper@penalty=-\@Mv
+    \fi
+    \bgroup
+        \expandafter\setbox\expandafter\z@\expandafter\vbox\expandafter{\pagediscards}%
+        \global\strip@page@discards=\dimexpr\ht\z@+\dp\z@\relax
+    \egroup
+    \global\setbox\@viper\vbox\bgroup
+        \hsize\textwidth
+        \@parboxrestore
+        \col@number=\@ne
+        \vrule height\topskip width\z@ depth\z@
+    }
+\def\endstrip{%
+    \egroup
+    \ifnum\viper@penalty<-\@Mii
+        \penalty-\@Miv
+        \ifvmode
+            \@tempdima\prevdepth
+            \vbox{}%
+            \prevdepth\@tempdima
+            \penalty-\@Mv\relax
+        \else
+            \par
+            \penalty-\@Mv
+            \quitvmode
+        \fi
+    \fi
+    }
+\gdef\@viperoutput{%
+    \global\setbox\@holdpg\vbox{%
+        \unvbox\@holdpg
+        \unvbox\@cclv
+        \setbox\@tempboxa\lastbox
+        \unskip
+        }%
+    \@pagedp=\dp\@holdpg
+    \@pageht=\ht\@holdpg
+    \ifvoid\@viper
+    \else
+        \advance\@pageht by\@pagedp
+        \ifvoid\footins
+        \else
+            \advance\@pageht by\ht\footins
+            \advance\@pageht by\skip\footins
+            \advance\@pageht by\dp\footins
+        \fi
+        \ifvbox\@kludgeins
+            \ifdim\wd\@kludgeins=\z@
+                \advance\@pageht by\ht\@kludgeins
+            \fi
+        \fi
+        \@reinserts
+        \@addviper
+    \fi
+    }
+\def \@doclearpage {%
+     \ifvoid\footins
+       \ifvbox\@kludgeins
+         {\setbox \@tempboxa \box \@kludgeins}%
+       \fi
+       \setbox\@tempboxa\vsplit\@cclv to\z@ \unvbox\@tempboxa
+       \setbox\@tempboxa\box\@cclv
+       \xdef\@deferlist{\@toplist\@botlist\@deferlist}%
+       \global \let \@toplist \@empty
+       \global \let \@botlist \@empty
+       \global \@colroom \@colht
+       \ifx \@currlist\@empty
+       \else
+          \@latex@error{Float(s) lost}\@ehb
+          \global \let \@currlist \@empty
+       \fi
+       \@makefcolumn\@deferlist
+       \@whilesw\if@fcolmade \fi{\@opcol\@makefcolumn\@deferlist}%
+       \if@twocolumn
+         \if@firstcolumn
+           \xdef\@deferlist{\@dbltoplist\@deferlist}%
+           \global \let \@dbltoplist \@empty
+           \global \@colht \textheight
+           \begingroup
+              \@dblfloatplacement
+              \@makefcolumn\@deferlist
+              \if@fcolmade
+                 \@whilesw\if@fcolmade \fi{\@outputpage
+                                           \@makefcolumn\@deferlist}%
+              \else
+                 \ifvoid\hold@viper
+                 \else
+                    \setbox\@cclv\vbox{\box\hold@viper\box\@cclv\vfil}%
+                    \@makecol\@opcol
+                    \clearpage
+                 \fi
+              \fi
+           \endgroup
+         \else
+           \vbox{}\clearpage
+         \fi
+       \fi
+       \ifx\@deferlist\@empty \else\clearpage \fi
+     \else
+       \setbox\@cclv\vbox{\box\@cclv\vfil}%
+       \@makecol\@opcol
+       \clearpage
+     \fi
+}%
+\gdef\@specialoutput{%
+    \ifnum\outputpenalty>-\@Mii
+        \@doclearpage
+    \else
+        \ifnum\outputpenalty<-\@Miii
+            \ifnum\outputpenalty<-\@MM \deadcycles \z@ \fi
+            \ifnum\outputpenalty=-\@Mv
+                \@viperoutput
+                \ifnum\outputpenalty<\z@
+                    \if@nobreak
+                    \else
+                        \addpenalty \interlinepenalty
+                    \fi
+                \fi
+            \else
+                \global\setbox\@holdpg\vbox{\unvbox\@cclv}%
+            \fi
+        \else
+            \global\setbox\@holdpg\vbox{%
+                \unvbox\@holdpg
+                \unvbox\@cclv
+                \setbox\@tempboxa\lastbox
+                \unskip
+                }%
+            \@pagedp=\dp\@holdpg
+            \@pageht=\ht\@holdpg
+            \unvbox\@holdpg
+            \@next\@currbox\@currlist{%
+                \ifnum\count\@currbox>\z@
+                    \advance \@pageht \@pagedp
+                    \ifvoid\footins
+                    \else
+                        \advance\@pageht by\ht\footins
+                        \advance\@pageht by\skip\footins
+                        \advance\@pageht by\dp\footins
+                    \fi
+                    \ifvbox\@kludgeins
+                        \ifdim\wd\@kludgeins=\z@
+                            \advance\@pageht by\ht\@kludgeins
+                        \fi
+                    \fi
+                    \@reinserts
+                    \@addtocurcol
+                \else
+                    \@reinserts
+                    \@addmarginpar
+                \fi
+                }\@latexbug
+            \ifnum\outputpenalty<\z@
+                \if@nobreak
+                \else
+                    \addpenalty \interlinepenalty
+                \fi
+            \fi
+        \fi
+   \fi
+  }
+\def\@addviper{%
+    \@insertfalse
+    \def\var@@thecol@num{2}%
+    \if@firstcolumn
+        \def\var@@thecol@num{1}%
+        \@reqcolroom=.5\@pageht
+        \ht@viper=\@reqcolroom
+        \advance\@reqcolroom by\ht\@viper
+        \advance\@reqcolroom by\stripsep
+    \else
+        \@reqcolroom=\@colht
+        \advance\@reqcolroom by\@pageht
+        \ht@viper.5\@reqcolroom
+        \@reqcolroom=\ht@viper
+        \advance\@reqcolroom by\ht\@viper
+        \advance\@reqcolroom by\stripsep
+        \global\setbox\@holdpg\vbox{%
+            \setbox\cuted@@tempbox@a\vbox{%
+                \aftergroup\unvbox
+                \unvcopy\@leftcolumn
+                \unskip\unkern\unpenalty
+                \setbox\@tempboxa\lastbox
+                \ifdim\dimexpr\ht\@tempboxa+\wd\@tempboxa+\dp\@tempboxa>\z@
+                    %% keeps lastbox
+                    \aftergroup\@leftcolumn
+                \else
+                    %% removes lastbox
+                    \aftergroup\cuted@@tempbox@a
+                \fi
+                }%
+            \unskip\unkern\unpenalty
+            \on@stripcols@break
+            \the\At@ViperColsBreak
+            \setbox\@tempboxa\vbox{\null\unvbox\@holdpg}%
+            \set@split@topskip@to\z@
+            \setbox\z@\vsplit\@tempboxa to\p@ \unvbox\@tempboxa %% removes topskip
+            }%
+        \global\At@ViperColsBreak{}%
+        \ht@viper=.5\ht\@holdpg
+        \ifdim\ht@viper>\@colht
+            \ht@viper=\@colht
+        \fi
+    \fi
+    %%
+    %% calculations for breaking
+    %%
+    \ifvoid\hold@viper
+        \ht@hold@viper=\z@
+    \else
+        \ht@hold@viper=\ht\hold@viper
+    \fi
+    \cuted@@tempdim@b\ht@viper
+    \set@split@topskip@to\topskip
+    \loop
+        \xdef\saved@tempdimb{\the\cuted@@tempdim@b}%
+        \setbox\cuted@@varbox@a\copy\@holdpg
+        \setbox\cuted@@tempbox@a\vsplit\cuted@@varbox@a to\cuted@@tempdim@b
+        %% set leftcolumn boxes
+        \setbox\cuted@@tempbox@c\vbox{\unvbox\cuted@@tempbox@a}%
+        \setbox\cuted@@tempbox@a\vbox to\cuted@@tempdim@b{\unvcopy\cuted@@tempbox@c}%
+        \xdef\var@@leftcolumn@badness{\the\badness}%
+        %% set rightcolumn boxes
+        \setbox\cuted@@varbox@c\vbox{\unvbox\cuted@@varbox@a}%
+        \setbox\cuted@@varbox@a\vbox to\cuted@@tempdim@b{\unvcopy\cuted@@varbox@c}%
+        \xdef\var@@rightcolumn@badness{\the\badness}%
+        %% analyzing split goodness
+        \cuted@@tempdim@spread=\ht\cuted@@tempbox@c
+        \advance\cuted@@tempdim@spread by\dp\cuted@@tempbox@c
+        \advance\cuted@@tempdim@spread by-\ht\cuted@@varbox@c
+        \advance\cuted@@tempdim@spread by-\dp\cuted@@varbox@c
+        \cuted@@wlog@debug{CUTED [-----]%
+              ^^JLeft: \the\ht\cuted@@tempbox@c
+              +\the\dp\cuted@@tempbox@c\space/\var@@leftcolumn@badness
+              ^^JRight: \the\ht\cuted@@varbox@c
+              +\the\dp\cuted@@varbox@c\space/\var@@rightcolumn@badness
+              ^^JSplit: \the\cuted@@tempdim@b
+              ^^JExtra height: \the\cuted@@tempdim@spread
+             }%
+        \ifnum\var@@leftcolumn@badness<\cuted@@column@badness
+            \ifnum\var@@rightcolumn@badness<\cuted@@column@badness
+                \cuted@@tempdim@spread=\z@
+            \fi
+        \fi
+        \ifdim\cuted@@tempdim@spread<\z@
+            \if@left@column@spread
+                \if@right@column@shrink
+                    \ifdim\dimexpr\cuted@@tempdim@spread+\pageshrink>\z@
+                        \cuted@@tempdim@a=\dimexpr\ht\cuted@@tempbox@c-0.5\cuted@@tempdim@spread\relax
+                    \else
+                        \cuted@@tempdim@a=-\dimexpr\cuted@@tempdim@spread+.5\pageshrink\relax
+                    \fi
+                    \setbox\cuted@@varbox@a\vbox to\cuted@@tempdim@a{\unvcopy\cuted@@tempbox@c}%
+                    \ifnum\badness<\cuted@@column@badness
+                        \cuted@@tempdim@b=\cuted@@tempdim@a
+                        \cuted@@tempdim@spread=\z@
+                    \fi
+                    \cuted@@wlog@debug{CUTED [leftcolumn badness]: \number\badness\space on \the\cuted@@tempdim@a}%
+                    \setbox\cuted@@varbox@a\vbox to\cuted@@tempdim@a{\unvcopy\cuted@@varbox@c}%
+                    \cuted@@wlog@debug{CUTED [rightcolumn badness]: \number\badness\space on \the\cuted@@tempdim@a}%
+                \else
+                    \setbox\cuted@@varbox@a\vbox to\ht\cuted@@varbox@c{%
+                        \unvcopy\cuted@@tempbox@c
+                        }%
+                    \ifnum\badness<\cuted@@column@badness
+                        \@tempdimb=\ht\cuted@@varbox@c
+                        \cuted@@tempdim@spread=\z@
+                    \fi
+                    \cuted@@wlog@debug{CUTED [leftcolumn badness]: \number\badness on \the\ht\cuted@@varbox@c}%
+                    \setbox\cuted@@varbox@a\vbox to\ht\cuted@@varbox@c{%
+                        \unvcopy\cuted@@varbox@c
+                        }%
+                    \cuted@@wlog@debug{CUTED [rightcolumn badness]: \number\badness on \the\ht\cuted@@varbox@c}%
+                \fi
+            \else
+                \if@right@column@shrink
+                    \ifdim\dimexpr\cuted@@tempdim@spread+\pageshrink<\z@
+                    \else
+                        \cuted@@tempdim@b=\ht\cuted@@tempbox@c
+                        \cuted@@tempdim@spread=\z@
+                    \fi
+                \fi
+            \fi
+        \else
+            \ifdim\cuted@@tempdim@spread>\z@
+                \ifdim\dimexpr\@tempdimb+\p@\relax>\@colht
+                    \cuted@@tempdim@b=\@colht
+                    \cuted@@tempdim@spread=\z@
+                \fi
+            \fi
+        \fi
+    \ifdim\cuted@@tempdim@spread<\z@
+        \advance\cuted@@tempdim@b 1\p@
+    \repeat
+    \wlog{CUTED [- LAST -]%
+          ^^JExtra skip:\the\cuted@@tempdim@spread
+          ^^JLeft:\the\ht\cuted@@tempbox@c/\the\dp\cuted@@tempbox@c
+          ^^JRight:\the\ht\cuted@@varbox@c/\the\dp\cuted@@varbox@c
+          ^^JSplit: \saved@tempdimb
+          ^^JOutput:\the\cuted@@tempdim@b
+          ^^JPageshrink: \the\pageshrink
+          ^^JPagestretch: \the\pagestretch
+          ^^J@colht:\the\@colht
+          }%
+    %%
+    %% final construction of the cuted page above strip
+    %%
+    \setbox\cuted@@tempbox@c\vsplit\@holdpg to\saved@tempdimb
+    \setbox\cuted@@tempbox@a\vbox to\cuted@@tempdim@b{%
+        \cuted@@tempdim@a=\dimexpr
+            \cuted@@tempdim@b-\ht\cuted@@tempbox@c
+            \relax
+        \cuted@@tempdim@spread=\dp\cuted@@tempbox@c
+        \unvbox\cuted@@tempbox@c
+        \ifdim\cuted@@tempdim@spread>\dp\strutbox
+        \else
+            \vskip-\cuted@@tempdim@spread
+        \fi
+        \prevdepth\z@
+        \hrule\@height\cuted@@page@rule width\textwidth
+        \vskip-\cuted@@page@rule
+        \ifdim\cuted@@tempdim@a>\z@
+            \if@left@column@spread
+            \else
+                \vss
+            \fi
+        \else
+            \ifdim\cuted@@tempdim@a<\z@
+                \if@left@column@shrink
+                \else
+                    \vss
+                \fi
+            \fi
+        \fi
+        }%
+    \wlog{CUTED [output]: \the\cuted@@tempdim@b
+          ^^JCUTED [leftcolumn badness]: \number\badness
+         }%
+    \setbox\cuted@@varbox@a\vbox to\cuted@@tempdim@b{%
+        \cuted@@tempdim@a=\dimexpr
+            \cuted@@tempdim@b-\ht\@holdpg
+            \relax
+        \unvbox\@holdpg
+        \ifdim\cuted@@tempdim@a>\z@
+            \if@right@column@spread
+            \else
+                \vss
+            \fi
+        \else
+            \ifdim\cuted@@tempdim@a<\z@
+                \if@right@column@shrink
+                \else
+                    \vss
+                \fi
+            \fi
+        \fi
+        }%
+    \wlog{CUTED [rightcolumn badness]: \number\badness}%
+    \setbox\cuted@@tempbox@var\vbox{%
+        \hb@xt@\textwidth{%
+            \hb@xt@\columnwidth{%
+                \vbox to\ht@viper{\box\cuted@@tempbox@a\vss}%
+                \hss
+                }%
+            \hfil
+            {\normalcolor\vrule \@width\columnseprule}%
+            \hfil
+            \hb@xt@\columnwidth{%
+                \vbox to\ht@viper{\box\cuted@@varbox@a\vss}%
+                \hss
+                }%
+            }%
+        }%
+    %%
+    %% finalize cuted page
+    %%
+    \csname hold@viper@hook\endcsname
+    \ifvoid\hold@viper
+        \global\setbox\hold@viper\vbox{%
+            \unvbox\cuted@@tempbox@var
+            \penalty\interlinepenalty
+            \vskip\stripsep
+            \the\preCutedStrip
+            \ifnum\outputpenalty<-\@Mii
+                \vskip -\parskip
+            \fi
+            \outputpenalty\z@
+            }%
+    \else
+        \global\setbox\hold@viper\vbox{%
+             \unvbox\hold@viper
+             \unvbox\cuted@@tempbox@var
+             \penalty\interlinepenalty
+             \vskip\stripsep
+             \the\preCutedStrip
+             \ifnum\outputpenalty<-\@Mii
+                 \vskip -\parskip
+             \fi
+             \outputpenalty\z@
+             }%
+    \fi
+    \ifdim\@colht>\@reqcolroom
+        \csname end@viper@hook\endcsname
+        \global\setbox\hold@viper\vbox{%
+             \unvbox\hold@viper
+             \box\@viper
+             \penalty\interlinepenalty
+             \the\postCutedStrip
+             \vskip\stripsep
+             \ifnum\outputpenalty<-\@Mii
+                 \vskip -\parskip
+             \fi
+             \outputpenalty\z@
+             }%
+        \@inserttrue
+        \global\@firstcolumntrue
+        \advance\ht@hold@viper by-\ht\hold@viper
+        \global\advance\@colht by\ht@hold@viper
+        \ifdim\@colht<2.5\baselineskip
+            \@latex@warning@no@line {Optional argument of \noexpand\twocolumn
+                                     too tall on page \thepage (\var@@thecol@num column)}%
+            \@emptycol
+            \if@firstcolumn
+            \else
+                \@emptycol
+            \fi
+            \global\@lastvipertrue
+        \else
+            \global\vsize\@colht
+            \global\@colroom\@colht
+            \check@floats\cuted@@tempdim@a
+            \ifdim\cuted@@tempdim@a>\z@
+                \global\advance\@colroom by-\cuted@@tempdim@a
+            \fi
+            \ifdim\@colroom<\z@
+                \global\@colroom1\p@
+                \ifdim\cuted@@tempdim@a>\@colht
+                    \@latex@warning@no@line{TOP and/or BOT FLOAT's
+                        to large on \thepage (\var@@thecol@num column)}%
+                \fi
+                \@emptycol
+                \if@firstcolumn
+                \else
+                    \@emptycol
+                \fi
+                \global\@lastvipertrue
+            \fi
+        \fi
+    \fi
+    \if@insert
+    \else
+        \advance\ht@hold@viper by-\ht\hold@viper
+        \global\advance\@colht by\ht@hold@viper
+        \global\setbox\hold@viper\vbox{%
+            \unvbox\hold@viper
+            \set@split@topskip@to{\z@ plus2\p@}%
+            \setbox\@tempboxa\vsplit\@viper to\@colht
+            \csname split@viper@hook\endcsname
+            \box\@tempboxa
+            \vss
+            }%
+        \vbox{}%
+        \global\@firstcolumnfalse
+        \newpage
+    \fi
+    }
+\def\switchonecolumn{%
+    \bgroup
+        \stripsep\z@\begin{strip}\end{strip}%
+    \egroup
+    \global\@colht\textheight
+    \global\vsize\@colht
+    \global\@colroom \@colht
+    \global\columnwidth\textwidth
+    \global\hsize\columnwidth
+    \global\linewidth\columnwidth
+    \global\@twocolumnfalse
+    \col@number \@ne
+    \@floatplacement
+    \unvbox\hold@viper
+    }
+\def\switchtwocolumn{%
+    \ifdim \dimexpr\@colht-\pagetotal\relax<2.5\baselineskip
+        \clearpage
+    \else
+        \par
+    \fi
+    \global\columnwidth\textwidth
+    \global\advance\columnwidth-\columnsep
+    \global\divide\columnwidth\tw@
+    \global\hsize\columnwidth
+    \global\linewidth\columnwidth
+    \global\@twocolumntrue
+    \global\@firstcolumntrue
+    \col@number \tw@
+    \xdef\viper@page@total{\the\@colht}%
+    \global\advance\@colht-\pagetotal
+    \global\advance\@colht-\stripsep
+    }
+\def\check@floats#1{%
+    \begingroup
+        \global#1\z@
+        \def\@elt##1{%
+            \setbox\@tempboxa\vbox{\unvcopy ##1\vskip\floatsep}%
+            }%
+        \ifx\@toplist\@empty
+        \else
+            \setbox\@tempboxa \vbox{}%
+            \@toplist
+            \setbox\@tempboxa\vbox{%
+                \unvbox\@tempboxa
+                \vskip -\floatsep
+                \topfigrule
+                \vskip \textfloatsep
+                }%
+            \global\advance#1 by\ht\@tempboxa
+        \fi
+        \ifx\@botlist\@empty
+        \else
+            \setbox\@tempboxa\vbox{%
+                \vskip \textfloatsep
+                \botfigrule
+                }%
+            \@botlist
+            \global\advance#1 by-\floatsep
+            \global\advance#1 by\ht\@tempboxa
+        \fi
+    \endgroup
+    }
+\output{%
+    \let\par\@@par
+    \ifnum\outputpenalty<-\@M
+        \@specialoutput
+    \else
+        \@makecol
+        \@opcol
+        \@startcolumn
+        \@whilesw\if@fcolmade\fi
+            {\@opcol \@startcolumn}%
+    \fi
+    \ifnum\outputpenalty>-\@Miv
+        \ifdim\@colroom<1.5\baselineskip
+            \ifdim\@colroom<\textheight
+                \@latex@warning@no@line{%
+                    Text page \thepage\space contains only floats%
+                    }%
+                \if@lastviper
+                \else
+                    \@emptycol
+                \fi
+                \if@twocolumn
+                    \if@firstcolumn
+                    \else
+                        \@emptycol
+                    \fi
+                \fi
+                \global\@lastviperfalse
+            \else
+                \global\vsize\@colroom
+            \fi
+        \else
+            \global\vsize\@colroom
+        \fi
+    \else
+        \ifnum\outputpenalty<-\@Mv
+            \global\vsize\maxdimen
+        \else
+            \global\vsize\@colroom
+        \fi
+    \fi
+    }
+\ifcuted@@debug
+    \xdef\cuted@@page@rule{.4\p@}
+\else
+    \xdef\cuted@@page@rule{\z@}
+\fi
+\endinput
+%%
+%% End of file `cuted.sty'.

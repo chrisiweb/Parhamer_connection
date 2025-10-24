@@ -1,0 +1,1224 @@
+%%
+%% This is file `fc-french.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% fmtcount.dtx  (with options: `fc-french.def')
+%% 
+%%  fmtcount.dtx
+%%  Copyright 2025 Nicola Talbot (inactive), Vincent Belaïche and Erik Nijenhuis
+%% 
+%%  This work may be distributed and/or modified under the
+%%  conditions of the LaTeX Project Public License, either version 1.3
+%%  of this license or (at your option) any later version.
+%%  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%%  and version 1.3 or later is part of all distributions of LaTeX
+%%  version 2005/12/01 or later.
+%% 
+%%  This work has the LPPL maintenance status `maintained'.
+%% 
+%%  The Current Maintainer of this work is Nicola Talbot (inactive), Vincent Belaïche and Erik Nijenhuis.
+%% 
+%%  This work consists of the files fmtcount.dtx and fmtcount.ins and the derived files fc-american.def, fc-brazilian.def, fc-british.def, fc-dutch.def, fc-english.def, fc-francais.def, fc-french.def, fc-frenchb.def, fc-german.def, fc-germanb.def, fc-italian.def, fc-ngerman.def, fc-ngermanb.def, fc-portuges.def, fc-portuguese.def, fc-spanish.def, fc-UKenglish.def, fc-USenglish.def, fcnumparser.sty, fcprefix.sty, fmtcount.sty.
+%% 
+\ProvidesFCLanguage{french}[2017/06/15]%
+\ifcsundef{fc@gl@let}{\global\let\fc@gl@let\let}{\PackageError{fmtcount}{Command already defined}{Command
+\protect\fc@gl@let\space already defined.}}
+\ifcsundef{fc@gl@def}{\global\let\fc@gl@def\def}{\PackageError{fmtcount}{Command already defined}{Command
+\protect\fc@gl@def\space already defined.}}
+\gdef\fc@french@set@plural#1#2#3#4#5#6{%
+  \ifthenelse{\equal{#2}{reformed}}{%
+    \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{#3}%
+  }{%
+    \ifthenelse{\equal{#2}{traditional}}{%
+      \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{#4}%
+    }{%
+      \ifthenelse{\equal{#2}{reformed o}}{%
+        \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{#5}%
+      }{%
+        \ifthenelse{\equal{#2}{traditional o}}{%
+          \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{#6}%
+        }{%
+          \ifthenelse{\equal{#2}{always}}{%
+            \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{0}%
+          }{%
+            \ifthenelse{\equal{#2}{never}}{%
+              \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{1}%
+            }{%
+              \ifthenelse{\equal{#2}{multiple}}{%
+                \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{2}%
+              }{%
+                \ifthenelse{\equal{#2}{multiple g-last}}{%
+                  \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{3}%
+                }{%
+                  \ifthenelse{\equal{#2}{multiple l-last}}{%
+                    \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{4}%
+                  }{%
+                    \ifthenelse{\equal{#2}{multiple lng-last}}{%
+                      \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{5}%
+                    }{%
+                      \ifthenelse{\equal{#2}{multiple ng-last}}{%
+                        \expandafter\fc@gl@def\csname fc@frenchoptions@#1@plural\endcsname{6}%
+                      }{%
+                        \PackageError{fmtcount}{Unexpected argument}{%
+                          `#2' was unexpected: french option `#1 plural' expects `reformed', `traditional',
+                          `reformed o', `traditional o', `always', `never', `multiple', `multiple g-last',
+                          `multiple l-last', `multiple lng-last', or `multiple ng-last'.%
+                        }}}}}}}}}}}}}%
+\def\@tempa#1#2#3{%
+  \define@key{fcfrench}{#1 plural}[reformed]{%
+    \fc@french@set@plural{#1}{##1}{#2}{#2}{#3}{#3}%
+  }%
+  \expandafter\@tempb\csname KV@fcfrench@#1 plural\endcsname
+}%
+\def\@tempb#1{%
+  \global\let#1#1
+}%
+\@tempa{vingt}{4}{5}
+\@tempa{cent}{4}{5}
+\@tempa{mil}{0}{0}
+\@tempa{n-illion}{2}{6}
+\@tempa{n-illiard}{2}{6}
+\define@key{fcfrench}{all plural}[reformed]{%
+  \csname KV@fcfrench@vingt plural\endcsname{#1}%
+  \csname KV@fcfrench@cent plural\endcsname{#1}%
+  \csname KV@fcfrench@mil plural\endcsname{#1}%
+  \csname KV@fcfrench@n-illion plural\endcsname{#1}%
+  \csname KV@fcfrench@n-illiard plural\endcsname{#1}%
+}%
+\expandafter\@tempb\csname KV@fcfrench@all plural\endcsname
+\define@key{fcfrench}{dash or space}[reformed]{%
+  \ifthenelse{\equal{#1}{traditional}}{%
+    \let\fc@frenchoptions@supermillion@dos\space%
+    \let\fc@frenchoptions@submillion@dos\space
+  }{%
+    \ifthenelse{\equal{#1}{reformed}\or\equal{#1}{1990}}{%
+      \let\fc@frenchoptions@supermillion@dos\space
+      \def\fc@frenchoptions@submillion@dos{-}%
+    }{%
+      \ifthenelse{\equal{#1}{always}}{%
+        \def\fc@frenchoptions@supermillion@dos{-}%
+        \def\fc@frenchoptions@submillion@dos{-}%
+      }{%
+        \PackageError{fmtcount}{Unexpected argument}{%
+          French option `dash or space' expects `always', `reformed' or `traditional'
+        }
+      }%
+    }%
+  }%
+}%
+\define@key{fcfrench}{scale}[recursive]{%
+  \ifthenelse{\equal{#1}{long}}{%
+      \let\fc@poweroften\fc@@pot@longscalefrench
+  }{%
+    \ifthenelse{\equal{#1}{recursive}}{%
+      \let\fc@poweroften\fc@@pot@recursivefrench
+    }{%
+      \ifthenelse{\equal{#1}{short}}{%
+        \let\fc@poweroften\fc@@pot@shortscalefrench
+      }{%
+        \PackageError{fmtcount}{Unexpected argument}{%
+          French option `scale' expects `long', `recursive' or `short'
+        }
+      }%
+    }%
+  }%
+}%
+\define@key{fcfrench}{n-illiard upto}[infinity]{%
+  \ifthenelse{\equal{#1}{infinity}}{%
+      \def\fc@longscale@nilliard@upto{0}%
+  }{%
+    \ifthenelse{\equal{#1}{infty}}{%
+      \def\fc@longscale@nilliard@upto{0}%
+    }{%
+      \if Q\ifnum9<1#1Q\fi\else
+      \PackageError{fmtcount}{Unexpected argument}{%
+        French option `milliard threshold' expects `infinity', or equivalently `infty', or a non negative
+        integer.}%
+      \fi
+      \def\fc@longscale@nilliard@upto{#1}%
+    }}%
+}%
+\def\@tempa#1{%
+  \define@key{fcfrench}{#1}[]{%
+    \PackageError{fmtcount}{Unexpected argument}{French option with key `#1' does not take
+      any value}}%
+  \csgdef{KV@fcfrench@#1@default}{%
+    \fc@gl@def\fmtcount@french{#1}}%
+}%
+\@tempa{france}\@tempa{swiss}\@tempa{belgian}%
+\gdef\fmtcount@french{france}%
+\define@key{fcfrench}{dialect}[france]{%
+  \ifthenelse{\equal{#1}{france}
+    \or\equal{#1}{swiss}
+    \or\equal{#1}{belgian}}{%
+    \def\fmtcount@french{#1}}{%
+    \PackageError{fmtcount}{Invalid value `#1' to french option dialect key}
+    {Option `french' can only take the values `france',
+      `belgian' or `swiss'}}}%
+\expandafter\@tempb\csname KV@fcfrench@dialect\endcsname
+\define@key{fcfrench}{mil plural mark}[le]{%
+  \def\fc@frenchoptions@mil@plural@mark{#1}}
+\expandafter\@tempb\csname KV@fcfrench@mil plural mark\endcsname
+\gdef\fc@UpperCaseFirstLetter#1#2\@nil{%
+  \uppercase{#1}#2}
+\gdef\fc@CaseIden#1\@nil{%
+  #1%
+}%
+\gdef\fc@UpperCaseAll#1\@nil{%
+  \uppercase{#1}%
+}%
+\global\let\fc@wcase\fc@CaseIden
+\global\let\fc@gcase\fc@CaseIden
+\gdef\fc@apply@gcase{%
+  \protected@edef\@tempa{\@tempa}%
+  \protected@edef\@tempa{\expandafter\fc@gcase\@tempa\@nil}%
+}
+\newcommand*{\@ordinalMfrench}[2]{%
+\iffmtord@abbrv
+  \ifnum#1=1 %
+    \edef#2{\number#1\relax\noexpand\fmtord{er}}%
+  \else
+    \edef#2{\number#1\relax\noexpand\fmtord{e}}%
+  \fi
+\else
+  \PackageWarning{fmtcount}{Non abbreviated ordinal finals (`eme) are
+    considered incorrect in French.}%
+  \ifnum#1=1 %
+    \edef#2{\number#1\relax\noexpand\fmtord{er}}%
+  \else
+    \protected@edef#2{\number#1\relax\noexpand\fmtord{\protect\`eme}}%
+  \fi
+\fi}
+\global\let\@ordinalMfrench\@ordinalMfrench
+\newcommand*{\@ordinalFfrench}[2]{%
+\iffmtord@abbrv
+  \ifnum#1=1 %
+     \edef#2{\number#1\relax\noexpand\fmtord{re}}%
+  \else
+     \edef#2{\number#1\relax\noexpand\fmtord{e}}%
+  \fi
+\else
+  \PackageWarning{fmtcount}{Non abbreviated ordinal finals (`eme) are
+    considered incorrect in French.}%
+  \ifnum#1=1 %
+     \protected@edef#2{\number#1\relax\noexpand\fmtord{\protect\`ere}}%
+  \else
+     \protected@edef#2{\number#1\relax\noexpand\fmtord{\protect\`eme}}%
+  \fi
+\fi}
+\global\let\@ordinalFfrench\@ordinalFfrench
+\global\let\@ordinalNfrench\@ordinalMfrench
+\newcommand*{\@@unitstringfrench}[1]{%
+\noexpand\fc@wcase
+\ifcase#1 %
+z\'ero%
+\or un%
+\or deux%
+\or trois%
+\or quatre%
+\or cinq%
+\or six%
+\or sept%
+\or huit%
+\or neuf%
+\fi
+\noexpand\@nil
+}%
+\global\let\@@unitstringfrench\@@unitstringfrench
+\newcommand*{\@@tenstringfrench}[1]{%
+\noexpand\fc@wcase
+\ifcase#1 %
+\or dix%
+\or vingt%
+\or trente%
+\or quarante%
+\or cinquante%
+\or soixante%
+\or septante%
+\or huitante%
+\or nonante%
+\or cent%
+\fi
+\noexpand\@nil
+}%
+\global\let\@@tenstringfrench\@@tenstringfrench
+\newcommand*{\@@teenstringfrench}[1]{%
+\noexpand\fc@wcase
+\ifcase#1 %
+    dix%
+\or onze%
+\or douze%
+\or treize%
+\or quatorze%
+\or quinze%
+\or seize%
+\or dix\noexpand\@nil-\noexpand\fc@wcase sept%
+\or dix\noexpand\@nil-\noexpand\fc@wcase huit%
+\or dix\noexpand\@nil-\noexpand\fc@wcase neuf%
+\fi
+\noexpand\@nil
+}%
+\global\let\@@teenstringfrench\@@teenstringfrench
+\newcommand*{\@@seventiesfrench}[1]{%
+\@tenstring{6}%
+\ifnum#1=1 %
+\fc@frenchoptions@submillion@dos\@andname\fc@frenchoptions@submillion@dos
+\else
+-%
+\fi
+\@teenstring{#1}%
+}%
+\global\let\@@seventiesfrench\@@seventiesfrench
+\newcommand*\@@eightiesfrench[1]{%
+\fc@wcase quatre\@nil-\noexpand\fc@wcase vingt%
+\ifnum#1>0 %
+  \ifnum\fc@frenchoptions@vingt@plural=0 % vingt plural=always
+  s%
+  \fi
+  \noexpand\@nil
+  -\@unitstring{#1}%
+\else
+  \ifcase\fc@frenchoptions@vingt@plural\space
+    s% 0: always
+  \or
+    % 1: never
+  \or
+    s% 2: multiple
+  \or
+    % 3: multiple g-last
+    \ifnum\count0=\count6\ifnum\count9=0 s\fi\fi
+  \or
+    % 4: multiple l-last
+    \ifnum\count9=1 %
+    \else
+      s%
+    \fi
+  \or
+    % 5: multiple lng-last
+    \ifnum\count9=1 %
+    \else
+      \ifnum\count0>0 %
+        s%
+      \fi
+    \fi
+  \or
+    % or 6: multiple ng-last
+    \ifnum\count0>0 %
+      s%
+    \fi
+  \fi
+  \noexpand\@nil
+\fi
+}%
+\global\let\@@eightiesfrench\@@eightiesfrench
+\newcommand*{\@@ninetiesfrench}[1]{%
+\fc@wcase quatre\@nil-\noexpand\fc@wcase vingt%
+\ifnum\fc@frenchoptions@vingt@plural=0 % vingt plural=always
+  s%
+\fi
+\noexpand\@nil
+-\@teenstring{#1}%
+}%
+\global\let\@@ninetiesfrench\@@ninetiesfrench
+\newcommand*{\@@seventiesfrenchswiss}[1]{%
+\@tenstring{7}%
+\ifnum#1=1\ \@andname\ \fi
+\ifnum#1>1-\fi
+\ifnum#1>0 \@unitstring{#1}\fi
+}%
+\global\let\@@seventiesfrenchswiss\@@seventiesfrenchswiss
+\newcommand*{\@@eightiesfrenchswiss}[1]{%
+\@tenstring{8}%
+\ifnum#1=1\ \@andname\ \fi
+\ifnum#1>1-\fi
+\ifnum#1>0 \@unitstring{#1}\fi
+}%
+\global\let\@@eightiesfrenchswiss\@@eightiesfrenchswiss
+\newcommand*{\@@ninetiesfrenchswiss}[1]{%
+\@tenstring{9}%
+\ifnum#1=1\ \@andname\ \fi
+\ifnum#1>1-\fi
+\ifnum#1>0 \@unitstring{#1}\fi
+}%
+\global\let\@@ninetiesfrenchswiss\@@ninetiesfrenchswiss
+\newcommand*\fc@french@common{%
+  \let\fc@wcase\fc@CaseIden
+  \let\@unitstring=\@@unitstringfrench
+  \let\@teenstring=\@@teenstringfrench
+  \let\@tenstring=\@@tenstringfrench
+  \def\@hundred{cent}%
+  \def\@andname{et}%
+}%
+\global\let\fc@french@common\fc@french@common
+\newcommand*{\@numberstringMfrenchswiss}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrenchswiss
+\let\@nineties=\@@ninetiesfrenchswiss
+\let\fc@nbrstr@preamble\@empty
+\let\fc@nbrstr@postamble\@empty
+\@@numberstringfrench{#1}{#2}}
+\global\let\@numberstringMfrenchswiss\@numberstringMfrenchswiss
+\newcommand*{\@numberstringMfrenchfrance}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\let\fc@nbrstr@preamble\@empty
+\let\fc@nbrstr@postamble\@empty
+\@@numberstringfrench{#1}{#2}}
+\global\let\@numberstringMfrenchfrance\@numberstringMfrenchfrance
+\newcommand*{\@numberstringMfrenchbelgian}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\let\fc@nbrstr@preamble\@empty
+\let\fc@nbrstr@postamble\@empty
+\@@numberstringfrench{#1}{#2}}
+\global\let\@numberstringMfrenchbelgian\@numberstringMfrenchbelgian
+\let\@numberstringMfrench=\@numberstringMfrenchfrance
+\newcommand*{\@numberstringFfrenchswiss}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrenchswiss
+\let\@nineties=\@@ninetiesfrenchswiss
+\let\fc@nbrstr@preamble\fc@@nbrstr@Fpreamble
+\let\fc@nbrstr@postamble\@empty
+\@@numberstringfrench{#1}{#2}}
+\global\let\@numberstringFfrenchswiss\@numberstringFfrenchswiss
+\newcommand*{\@numberstringFfrenchfrance}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\let\fc@nbrstr@preamble\fc@@nbrstr@Fpreamble
+\let\fc@nbrstr@postamble\@empty
+\@@numberstringfrench{#1}{#2}}
+\global\let\@numberstringFfrenchfrance\@numberstringFfrenchfrance
+\newcommand*{\@numberstringFfrenchbelgian}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\let\fc@nbrstr@preamble\fc@@nbrstr@Fpreamble
+\let\fc@nbrstr@postamble\@empty
+\@@numberstringfrench{#1}{#2}}
+\global\let\@numberstringFfrenchbelgian\@numberstringFfrenchbelgian
+\global\let\@numberstringFfrench=\@numberstringFfrenchfrance
+\global\let\@ordinalstringNfrench\@ordinalstringMfrench
+\newcommand*{\@NumberstringMfrenchswiss}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrenchswiss
+\let\@nineties=\@@ninetiesfrenchswiss
+\let\fc@nbrstr@preamble\@empty
+\let\fc@nbrstr@postamble\fc@apply@gcase
+\@@numberstringfrench{#1}{#2}}
+\global\let\@NumberstringMfrenchswiss\@NumberstringMfrenchswiss
+\newcommand*{\@NumberstringMfrenchfrance}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\let\fc@nbrstr@preamble\@empty
+\let\fc@nbrstr@postamble\fc@apply@gcase
+\@@numberstringfrench{#1}{#2}}
+\global\let\@NumberstringMfrenchfrance\@NumberstringMfrenchfrance
+\newcommand*{\@NumberstringMfrenchbelgian}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\let\fc@nbrstr@preamble\@empty
+\let\fc@nbrstr@postamble\fc@apply@gcase
+\@@numberstringfrench{#1}{#2}}
+\global\let\@NumberstringMfrenchbelgian\@NumberstringMfrenchbelgian
+\global\let\@NumberstringMfrench=\@NumberstringMfrenchfrance
+\newcommand*{\@NumberstringFfrenchswiss}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrenchswiss
+\let\@nineties=\@@ninetiesfrenchswiss
+\let\fc@nbrstr@preamble\fc@@nbrstr@Fpreamble
+\let\fc@nbrstr@postamble\fc@apply@gcase
+\@@numberstringfrench{#1}{#2}}
+\global\let\@NumberstringFfrenchswiss\@NumberstringFfrenchswiss
+\newcommand*{\@NumberstringFfrenchfrance}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\let\fc@nbrstr@preamble\fc@@nbrstr@Fpreamble
+\let\fc@nbrstr@postamble\fc@apply@gcase
+\@@numberstringfrench{#1}{#2}}
+\global\let\@NumberstringFfrenchfrance\@NumberstringFfrenchfrance
+\newcommand*{\@NumberstringFfrenchbelgian}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\let\fc@nbrstr@preamble\fc@@nbrstr@Fpreamble
+\let\fc@nbrstr@postamble\fc@apply@gcase
+\@@numberstringfrench{#1}{#2}}
+\global\let\@NumberstringFfrenchbelgian\@NumberstringFfrenchbelgian
+\global\let\@NumberstringFfrench=\@NumberstringFfrenchfrance
+\global\let\@NumberstringNfrench\@NumberstringMfrench
+\newcommand*{\@ordinalstringMfrenchswiss}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\fc@first\fc@@firstfrench
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrenchswiss
+\let\@nineties=\@@ninetiesfrenchswiss
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@ordinalstringMfrenchswiss\@ordinalstringMfrenchswiss
+\newcommand*\fc@@firstfrench{premier}
+\global\let\fc@@firstfrench\fc@@firstfrench
+\newcommand*\fc@@firstFfrench{premi\protect\`ere}
+\global\let\fc@@firstFfrench\fc@@firstFfrench
+\newcommand*{\@ordinalstringMfrenchfrance}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\fc@first=\fc@@firstfrench
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\@@ordinalstringfrench{#1}{#2}}
+\global\let\@ordinalstringMfrenchfrance\@ordinalstringMfrenchfrance
+\newcommand*{\@ordinalstringMfrenchbelgian}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\fc@first=\fc@@firstfrench
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@ordinalstringMfrenchbelgian\@ordinalstringMfrenchbelgian
+\global\let\@ordinalstringMfrench=\@ordinalstringMfrenchfrance
+\newcommand*{\@ordinalstringFfrenchswiss}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\fc@first\fc@@firstFfrench
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrenchswiss
+\let\@nineties=\@@ninetiesfrenchswiss
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@ordinalstringFfrenchswiss\@ordinalstringFfrenchswiss
+\newcommand*{\@ordinalstringFfrenchfrance}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\fc@first=\fc@@firstFfrench
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@ordinalstringFfrenchfrance\@ordinalstringFfrenchfrance
+\newcommand*{\@ordinalstringFfrenchbelgian}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@CaseIden
+\let\fc@first=\fc@@firstFfrench
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@ordinalstringFfrenchbelgian\@ordinalstringFfrenchbelgian
+\global\let\@ordinalstringFfrench=\@ordinalstringFfrenchfrance
+\global\let\@ordinalstringNfrench\@ordinalstringMfrench
+\newcommand*{\@OrdinalstringMfrenchswiss}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\fc@first=\fc@@firstfrench
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrenchswiss
+\let\@nineties=\@@ninetiesfrenchswiss
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@OrdinalstringMfrenchswiss\@OrdinalstringMfrenchswiss
+\newcommand*{\@OrdinalstringMfrenchfrance}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\fc@first\fc@@firstfrench
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@OrdinalstringMfrenchfrance\@OrdinalstringMfrenchfrance
+\newcommand*{\@OrdinalstringMfrenchbelgian}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\fc@first\fc@@firstfrench
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@OrdinalstringMfrenchbelgian\@OrdinalstringMfrenchbelgian
+\global\let\@OrdinalstringMfrench=\@OrdinalstringMfrenchfrance
+\newcommand*{\@OrdinalstringFfrenchswiss}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\fc@first\fc@@firstfrench
+\let\@seventies=\@@seventiesfrenchswiss
+\let\@eighties=\@@eightiesfrenchswiss
+\let\@nineties=\@@ninetiesfrenchswiss
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@OrdinalstringFfrenchswiss\@OrdinalstringFfrenchswiss
+\newcommand*{\@OrdinalstringFfrenchfrance}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\fc@first\fc@@firstFfrench
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@OrdinalstringFfrenchfrance\@OrdinalstringFfrenchfrance
+\newcommand*{\@OrdinalstringFfrenchbelgian}[2]{%
+\fc@french@common
+\let\fc@gcase\fc@UpperCaseFirstLetter
+\let\fc@first\fc@@firstFfrench
+\let\@seventies=\@@seventiesfrench
+\let\@eighties=\@@eightiesfrench
+\let\@nineties=\@@ninetiesfrench
+\@@ordinalstringfrench{#1}{#2}%
+}%
+\global\let\@OrdinalstringFfrenchbelgian\@OrdinalstringFfrenchbelgian
+\global\let\@OrdinalstringFfrench=\@OrdinalstringFfrenchfrance
+\global\let\@OrdinalstringNfrench\@OrdinalstringMfrench
+\ifcsundef{fc@@do@plural@mark}{}%
+{\PackageError{fmtcount}{Duplicate definition}{Redefinition of macro
+    `fc@@do@plural@mark'}}
+\def\fc@@do@plural@mark#1{%
+  \ifcase\count10 %
+    #1% 0=always
+   \or% 1=never
+   \or% 2=multiple
+     \ifnum\count1>1 %
+       #1%
+     \fi
+  \or% 3= multiple g-last
+     \ifnum\count1>1 %
+       \ifnum\count0=\count6 %
+         #1%
+       \fi
+     \fi
+  \or% 4= multiple l-last
+     \ifnum\count1>1 %
+       \ifnum\count9=1 %
+       \else
+         #1%
+       \fi
+     \fi
+  \or% 5= multiple lng-last
+     \ifnum\count1>1 %
+       \ifnum\count9=1 %
+       \else
+         \if\count0>\count6 %
+           #1%
+         \fi
+       \fi
+     \fi
+  \or% 6= multiple ng-last
+     \ifnum\count1>1 %
+       \ifnum\count0>\count6 %
+         #1%
+       \fi
+     \fi
+  \fi
+}%
+\global\let\fc@@do@plural@mark\fc@@do@plural@mark
+\ifcsundef{fc@@nbrstr@Fpreamble}{}{%
+  \PackageError{fmtcount}{Duplicate definition}{Redefinition of macro
+    `fc@@nbrstr@Fpreamble'}}
+\def\fc@@nbrstr@Fpreamble{%
+  \fc@read@unit{\count1}{0}%
+  \ifnum\count1=1 %
+      \let\fc@wcase@save\fc@wcase
+      \def\fc@wcase{\noexpand\fc@wcase}%
+      \def\@nil{\noexpand\@nil}%
+     \let\fc@nbrstr@postamble\fc@@nbrstr@Fpostamble
+  \fi
+}%
+\global\let\fc@@nbrstr@Fpreamble\fc@@nbrstr@Fpreamble
+\def\fc@@nbrstr@Fpostamble{%
+  \let\fc@wcase\fc@wcase@save
+  \expandafter\fc@get@last@word\expandafter{\@tempa}\@tempb\@tempc
+  \def\@tempd{un}%
+  \ifx\@tempc\@tempd
+    \let\@tempc\@tempa
+    \edef\@tempa{\@tempb\fc@wcase une\@nil}%
+  \fi
+}%
+\global\let\fc@@nbrstr@Fpostamble\fc@@nbrstr@Fpostamble
+\ifcsundef{fc@@pot@longscalefrench}{}{%
+  \PackageError{fmtcount}{Duplicate definition}{Redefinition of macro
+    `fc@@pot@longscalefrench'}}
+\def\fc@@pot@longscalefrench#1#2#3{%
+  {%
+    \edef\@tempb{\number#1}%
+    \count1=\@tempb
+    \count2\count0 %
+    \divide\count2 by 6 %
+    \count3\count2 %
+    \multiply\count3 by 6 %
+    \count3-\count3 %
+    \advance\count3 by \count0 %
+    \ifnum\count0>0 %
+      \ifnum\count1>0 %
+        \edef\@temph{%
+          \ifnum\count2=0 % weight=3
+            1%
+          \else
+            \ifnum\count3>2 %
+              \ifnum\fc@longscale@nilliard@upto=0 %
+                2%
+              \else
+                \ifnum\count2>\fc@longscale@nilliard@upto
+                  1%
+                \else
+                  2%
+                \fi
+              \fi
+            \else
+              2%
+            \fi
+          \fi
+        }%
+        \ifnum\@temph=1 %
+          \count10=\fc@frenchoptions@mil@plural\space
+          \edef\@tempe{%
+            \noexpand\fc@wcase
+             mil%
+             \fc@@do@plural@mark\fc@frenchoptions@mil@plural@mark
+            \noexpand\@nil
+          }%
+        \else
+          % weight >= 6
+          \expandafter\fc@@latin@cardinal@pefix\expandafter{\the\count2}\@tempg
+          % now form the xxx-illion(s) or xxx-illiard(s) word
+          \ifnum\count3>2 %
+             \toks10{illiard}%
+             \count10=\csname fc@frenchoptions@n-illiard@plural\endcsname\space
+          \else
+             \toks10{illion}%
+             \count10=\csname fc@frenchoptions@n-illion@plural\endcsname\space
+          \fi
+          \edef\@tempe{%
+            \noexpand\fc@wcase
+            \@tempg
+            \the\toks10 %
+            \fc@@do@plural@mark s%
+            \noexpand\@nil
+          }%
+        \fi
+      \else
+         \let\@tempe\@empty
+         \def\@temph{0}%
+      \fi
+    \else
+      \let\@tempe\@empty
+      \def\@temph{0}%
+    \fi
+    \expandafter\toks\expandafter1\expandafter{\@tempe}%
+    \toks0{#2}%
+    \edef\@tempa{\the\toks0 \@temph \def\noexpand#3{\the\toks1}}%
+    \expandafter
+  }\@tempa
+}%
+\global\let\fc@@pot@longscalefrench\fc@@pot@longscalefrench
+\ifcsundef{fc@@pot@shortscalefrench}{}{%
+  \PackageError{fmtcount}{Duplicate definition}{Redefinition of macro
+    `fc@@pot@shortscalefrench'}}
+\def\fc@@pot@shortscalefrench#1#2#3{%
+  {%
+    \edef\@tempb{\number#1}%
+    \count1=\@tempb
+    \count2\count0 %
+    \divide\count2 by 3 %
+    \advance\count2 by -1 %
+    \ifnum\count0>0 % If weight>=3, i.e we do have to append thousand or n-illion(s)/n-illiard(s)
+      \ifnum\count1>0 % we have at least one thousand/n-illion/n-illiard
+         \ifnum\count2=0 %
+           \def\@temph{1}%
+           \count1=\fc@frenchoptions@mil@plural\space
+           \edef\@tempe{%
+             mil%
+             \fc@@do@plural@mark\fc@frenchoptions@mil@plural@mark
+           }%
+         \else
+           \def\@temph{2}%
+           % weight >= 6
+           \expandafter\fc@@latin@cardinal@pefix\expandafter{\the\count2}\@tempg
+           \count10=\csname fc@frenchoptions@n-illion@plural\endcsname\space
+           \edef\@tempe{%
+             \noexpand\fc@wcase
+             \@tempg
+             illion%
+             \fc@@do@plural@mark s%
+             \noexpand\@nil
+           }%
+         \fi
+      \else
+        \def\@temph{0}%
+        \let\@tempe\@empty
+      \fi
+    \else
+      \def\@temph{0}%
+      \let\@tempe\@empty
+    \fi
+    \expandafter\toks\expandafter1\expandafter{\@tempe}%
+    \toks0{#2}%
+    \edef\@tempa{\the\toks0 \@temph \def\noexpand#3{\the\toks1}}%
+    \expandafter
+  }\@tempa
+}%
+\global\let\fc@@pot@shortscalefrench\fc@@pot@shortscalefrench
+\ifcsundef{fc@@pot@recursivefrench}{}{%
+  \PackageError{fmtcount}{Duplicate definition}{Redefinition of macro
+    `fc@@pot@recursivefrench'}}
+\def\fc@@pot@recursivefrench#1#2#3{%
+  {%
+    \edef\@tempb{\number#1}%
+    \let\@tempa\@@tempa
+    \count1=\@tempb\space
+    \ifnum\count1>0 %
+      \count2\count0 %
+      \divide\count2 by 9 %
+      \advance\count2 by -1 %
+      \let\@tempe\@empty
+      \edef\@tempf{\fc@frenchoptions@supermillion@dos
+        de\fc@frenchoptions@supermillion@dos\fc@wcase milliards\@nil}%
+      \count11\count0 %
+      \ifnum\count2>0 %
+        \count3\count2 %
+        \count3-\count3 %
+        \multiply\count3 by 9 %
+        \advance\count11 by \count3 %
+        \loop
+           % (\count2, \count3) <- (\count2 div 2, \count2 mod 2)
+           \count3\count2 %
+           \divide\count3 by 2 %
+           \multiply\count3 by 2 %
+           \count3-\count3 %
+           \advance\count3 by \count2 %
+           \divide\count2 by 2 %
+           \ifnum\count3=1 %
+             \let\@tempg\@tempe
+             \edef\@tempe{\@tempg\@tempf}%
+           \fi
+           \let\@tempg\@tempf
+           \edef\@tempf{\@tempg\@tempg}%
+           \ifnum\count2>0 %
+        \repeat
+      \fi
+      \divide\count11 by 3 %
+      \ifcase\count11 % 0 .. 5
+        % 0 => d milliard(s) (de milliards)*
+        \def\@temph{2}%
+        \count10=\csname fc@frenchoptions@n-illiard@plural\endcsname\space
+      \or  % 1 => d mille milliard(s) (de milliards)*
+        \def\@temph{1}%
+        \count10=\fc@frenchoptions@mil@plural\space
+      \or % 2 => d million(s) (de milliards)*
+        \def\@temph{2}%
+        \count10=\csname fc@frenchoptions@n-illion@plural\endcsname\space
+      \or % 3 => d milliard(s) (de milliards)*
+        \def\@temph{2}%
+        \count10=\csname fc@frenchoptions@n-illiard@plural\endcsname\space
+      \or % 4 => d mille milliards (de milliards)*
+        \def\@temph{1}%
+        \count10=\fc@frenchoptions@mil@plural\space
+      \else % 5 => d million(s) (de milliards)*
+        \def\@temph{2}%
+        \count10=\csname fc@frenchoptions@n-illion@plural\endcsname\space
+      \fi
+      \let\@tempg\@tempe
+      \edef\@tempf{%
+        \ifcase\count11 % 0 .. 5
+        \or
+          mil\fc@@do@plural@mark \fc@frenchoptions@mil@plural@mark
+        \or
+          million\fc@@do@plural@mark s%
+        \or
+          milliard\fc@@do@plural@mark s%
+        \or
+          mil\fc@@do@plural@mark\fc@frenchoptions@mil@plural@mark
+          \noexpand\@nil\fc@frenchoptions@supermillion@dos
+          \noexpand\fc@wcase milliards% 4
+        \or
+          million\fc@@do@plural@mark s%
+          \noexpand\@nil\fc@frenchoptions@supermillion@dos
+          de\fc@frenchoptions@supermillion@dos\noexpand\fc@wcase  milliards% 5
+        \fi
+      }%
+      \edef\@tempe{%
+        \ifx\@tempf\@empty\else
+         \expandafter\fc@wcase\@tempf\@nil
+        \fi
+        \@tempg
+      }%
+    \else
+       \def\@temph{0}%
+       \let\@tempe\@empty
+    \fi
+    \expandafter\toks\expandafter1\expandafter{\@tempe}%
+    \toks0{#2}%
+    \edef\@tempa{\the\toks0 \@temph \def\noexpand#3{\the\toks1}}%
+    \expandafter
+  }\@tempa
+}%
+\global\let\fc@@pot@recursivefrench\fc@@pot@recursivefrench
+\ifcsundef{fc@muladdfrench}{}{%
+  \PackageError{fmtcount}{Duplicate definition}{Redefinition of macro
+    `fc@muladdfrench'}}
+\def\fc@muladdfrench#1#2#3{%
+  {%
+    \edef\@@tempc{#1}%
+    \edef\@@tempd{#2}%
+    \edef\@tempf{#3}%
+    \let\@tempc\@@tempc
+    \let\@tempd\@@tempd
+    \ifnum\@tempc=1 %
+      \ifnum\count9=1 %
+        \let\@tempd\@empty
+      \fi
+    \fi
+    \edef\@tempg{%
+      \@tempd
+      \ifx\@tempd\@empty\else
+        \ifx\@tempf\@empty\else
+           \ifcase\count9 %
+           \or
+             \fc@frenchoptions@submillion@dos
+           \or
+              \fc@frenchoptions@supermillion@dos
+           \fi
+         \fi
+       \fi
+     \@tempf
+   }%
+   \edef\@temph{%
+     \@tempa
+     \ifx\@tempa\@empty\else
+       \ifx\@tempg\@empty\else
+         \ifcase\count8 %
+         \or
+           \fc@frenchoptions@submillion@dos
+         \or
+           \fc@frenchoptions@supermillion@dos
+         \fi
+       \fi
+     \fi
+     \@tempg
+   }%
+    \def\@tempb##1{\def\@tempa{\def\@tempa{##1}}}%
+    \expandafter\@tempb\expandafter{\@temph}%
+    \expandafter
+  }\@tempa
+}%
+\global\let\fc@muladdfrench\fc@muladdfrench
+\ifcsundef{fc@lthundredstringfrench}{}{%
+  \PackageError{fmtcount}{Duplicate definition}{Redefinition of macro
+    `fc@lthundredstringfrench'}}
+\def\fc@lthundredstringfrench#1{%
+  {%
+    \let\@tempc#1%
+    \fc@read@unit{\count1}{\count0}%
+    \count3\count0 %
+    \advance\count3 1 %
+    \fc@read@unit{\count2}{\count3}%
+    \edef\@tempa{%
+      \@tempc
+      \ifnum\count2>1 %
+        % 20 .. 99
+        \ifnum\count2>6 %
+          % 70 .. 99
+          \ifnum\count2<8 %
+             % 70 .. 79
+             \@seventies{\count1}%
+          \else
+            % 80..99
+            \ifnum\count2<9 %
+              % 80 .. 89
+              \@eighties{\count1}%
+            \else
+              % 90 .. 99
+              \@nineties{\count1}%
+            \fi
+          \fi
+        \else
+          % 20..69
+          \@tenstring{\count2}%
+          \ifnum\count1>0 %
+             % x1 .. x0
+             \ifnum\count1=1 %
+               % x1
+               \fc@frenchoptions@submillion@dos\@andname\fc@frenchoptions@submillion@dos
+             \else
+               % x2 .. x9
+               -%
+             \fi
+             \@unitstring{\count1}%
+          \fi
+        \fi
+      \else
+        % 0 .. 19
+        \ifnum\count2=0 % when tens = 0
+          % 0 .. 9
+          \ifnum\count1=0 % when units = 0
+            % \count3=1 when #1 = 0, i.e. only for the unit of the top level number
+            \ifnum\count3=1 %
+              \ifnum\fc@max@weight=0 %
+                \@unitstring{0}%
+              \fi
+            \fi
+          \else
+            % 1 .. 9
+            \@unitstring{\count1}%
+          \fi
+        \else
+          % 10 .. 19
+          \@teenstring{\count1}%
+        \fi
+      \fi
+    }%
+    \def\@tempb##1{\def\@tempa{\def#1{##1}}}%
+    \expandafter\@tempb\expandafter{\@tempa}%
+    \expandafter
+  }\@tempa
+}%
+\global\let\fc@lthundredstringfrench\fc@lthundredstringfrench
+\ifcsundef{fc@ltthousandstringfrench}{}{%
+  \PackageError{fmtcount}{Duplicate definition}{Redefinition of macro
+    `fc@ltthousandstringfrench'}}
+\def\fc@ltthousandstringfrench#1{%
+  {%
+    \count4\count0 %
+    \advance\count4 by 2 %
+    \fc@read@unit{\count2 }{\count4 }%
+    \advance\count4 by -1 %
+    \count3\count4 %
+    \advance\count3 by -1 %
+    \fc@check@nonzeros{\count3 }{\count4 }\@tempa
+    \edef\@temps{%
+      \ifcase\fc@frenchoptions@cent@plural\space
+      % 0 => always
+      s%
+      \or
+      % 1 => never
+      \or
+      % 2 => multiple
+      \ifnum\count2>1s\fi
+      \or
+      % 3 => multiple g-last
+        \ifnum\count2>1 \ifnum\@tempa=0 \ifnum\count0=\count6s\fi\fi\fi
+      \or
+      % 4 => multiple l-last
+        \ifnum\count2>1 \ifnum\@tempa=0 \ifnum\count9=0s\else\ifnum\count9=2s\fi\fi\fi\fi
+      \fi
+    }%
+    % compute spacing after cent(s?) into \@tempb
+    \expandafter\let\expandafter\@tempb
+       \ifnum\@tempa>0 \fc@frenchoptions@submillion@dos\else\@empty\fi
+    % now place into \@tempa the hundreds
+    \edef\@tempa{%
+       \ifnum\count2=0 %
+       \else
+         \ifnum\count2=1 %
+           \expandafter\fc@wcase\@hundred\@nil
+         \else
+           \@unitstring{\count2}\fc@frenchoptions@submillion@dos
+           \noexpand\fc@wcase\@hundred\@temps\noexpand\@nil
+         \fi
+         \@tempb
+       \fi
+    }%
+    % now append to \@tempa the ten and unit
+    \fc@lthundredstringfrench\@tempa
+    \def\@tempb##1{\def\@tempa{\def#1{##1}}}%
+    \expandafter\@tempb\expandafter{\@tempa}%
+    \expandafter
+  }\@tempa
+}%
+\global\let\fc@ltthousandstringfrench\fc@ltthousandstringfrench
+\ifcsundef{@@numberstringfrench}{}{%
+  \PackageError{fmtcount}{Duplicate definition}{Redefinition of macro `@@numberstringfrench'}}
+\def\@@numberstringfrench#1#2{%
+  {%
+    \edef\@tempa{#1}%
+    \expandafter\fc@number@parser\expandafter{\@tempa}%
+    \ifnum\fc@min@weight<0 %
+       \PackageError{fmtcount}{Out of range}%
+          {This macro does not work with fractional numbers}%
+    \fi
+    \edef\@tempa{\ifcase\fc@sign@case\space\or\fc@wcase plus\@nil\or\fc@wcase moins\@nil\fi}%
+    \fc@nbrstr@preamble
+    \fc@@nbrstrfrench@inner
+    \fc@nbrstr@postamble
+    \def\@tempb##1{\def\@tempa{\def#2{##1}}}%
+    \expandafter\@tempb\expandafter{\@tempa}%
+    \expandafter
+  }\@tempa
+}%
+\global\let\@@numberstringfrench\@@numberstringfrench
+\def\fc@@nbrstrfrench@inner{%
+    \count0=\fc@max@weight
+    \divide\count0 by 3 %
+    \multiply\count0 by 3 %
+    \fc@intpart@find@last{\count5 }%
+    \count6\count5 %
+    \divide\count6 3 %
+    \multiply\count6 3 %
+    \count8=0 %
+    \loop
+       \count1\count0 %
+       \advance\count1 by 2 %
+       \fc@check@nonzeros{\count0 }{\count1 }\@tempt
+       \fc@poweroften\@tempt{\count9 }\@tempb
+       \fc@ltthousandstringfrench\@tempd
+       \fc@muladdfrench\@tempt\@tempd\@tempb
+       \count8\count9 %
+       \advance\count0 by -3 %
+       \ifnum\count6>\count0 \else
+    \repeat
+}%
+\global\let\fc@@nbrstrfrench@inner\fc@@nbrstrfrench@inner
+\ifcsundef{@@ordinalstringfrench}{}{%
+  \PackageError{fmtcount}{Duplicate definition}{Redefinition of macro
+    `@@ordinalstringfrench'}}
+\def\@@ordinalstringfrench#1#2{%
+  {%
+    \edef\@tempa{#1}%
+    \expandafter\fc@number@parser\expandafter{\@tempa}%
+    \ifnum\fc@min@weight<0 %
+       \PackageError{fmtcount}{Out of range}%
+          {This macro does not work with fractional numbers}%
+    \fi
+    \ifnum\fc@sign@case>0 %
+       \PackageError{fmtcount}{Out of range}%
+          {This macro does with negative or explicitly marked as positive numbers}%
+    \fi
+    \ifnum\fc@max@weight=0 %
+      \ifnum\csname fc@digit@0\endcsname=1 %
+        \count0=1 %
+      \else
+        \count0=0 %
+      \fi
+    \else
+      \count0=0 %
+    \fi
+    \ifnum\count0=1 %
+        \expandafter\@firstoftwo
+    \else
+        \expandafter\@secondoftwo
+    \fi
+        {%
+      \protected@edef\@tempa{\expandafter\fc@wcase\fc@first\@nil}%
+        }%
+        {%
+      \def\@tempa##1{%
+        \expandafter\edef\csname fc@frenchoptions@##1@plural\endcsname{%
+          \ifcase\csname fc@frenchoptions@##1@plural\endcsname\space
+          0% 0: always => always
+          \or
+          1% 1: never => never
+          \or
+          6% 2: multiple => multiple  ng-last
+          \or
+          1% 3: multiple g-last => never
+          \or
+          5% 4: multiple l-last => multiple lng-last
+          \or
+          5% 5: multiple lng-last => multiple lng-last
+          \or
+          6% 6: multiple ng-last => multiple ng-last
+          \fi
+        }%
+      }%
+      \@tempa{vingt}%
+      \@tempa{cent}%
+      \@tempa{mil}%
+      \@tempa{n-illion}%
+      \@tempa{n-illiard}%
+      \let\fc@wcase@save\fc@wcase
+      \def\fc@wcase{\noexpand\fc@wcase}%
+      \def\@nil{\noexpand\@nil}%
+      \let\@tempa\@empty
+      \fc@@nbrstrfrench@inner
+     \let\fc@wcase\fc@wcase@save
+      \expandafter\fc@get@last@word\expandafter{\@tempa}\@tempb\@tempc
+      \expandafter\fc@get@last@letter\expandafter{\@tempc}\@tempd\@tempe
+      \def\@tempf{e}%
+      \ifx\@tempe\@tempf
+        \protected@edef\@tempa{\@tempb\expandafter\fc@wcase\@tempd i\protect\`eme\@nil}%
+      \else
+        \def\@tempf{q}%
+        \ifx\@tempe\@tempf
+          \protected@edef\@tempa{\@tempb\expandafter\fc@wcase\@tempd qui\protect\`eme\@nil}%
+        \else
+          \def\@tempf{f}%
+          \ifx\@tempe\@tempf
+            \protected@edef\@tempa{\@tempb\expandafter\fc@wcase\@tempd vi\protect\`eme\@nil}%
+          \else
+            \protected@edef\@tempa{\@tempb\expandafter\fc@wcase\@tempc i\protect\`eme\@nil}%
+          \fi
+        \fi
+      \fi
+  }%
+    \fc@apply@gcase
+    \def\@tempb##1{\def\@tempa{\def#2{##1}}}%
+    \expandafter\@tempb\expandafter{\@tempa}%
+    \expandafter
+  }\@tempa
+}%
+\global\let\@@ordinalstringfrench\@@ordinalstringfrench
+\newcommand*\fc@frenchoptions@setdefaults{%
+  \csname KV@fcfrench@all plural\endcsname{reformed}%
+  \fc@gl@def\fc@frenchoptions@submillion@dos{-}%
+  \fc@gl@let\fc@frenchoptions@supermillion@dos\space
+  \fc@gl@let\fc@u@in@duo\@empty% Could be `u'
+  % \fc@gl@let\fc@poweroften\fc@@pot@longscalefrench
+  \fc@gl@let\fc@poweroften\fc@@pot@recursivefrench
+  \fc@gl@def\fc@longscale@nilliard@upto{0}% infinity
+  \fc@gl@def\fc@frenchoptions@mil@plural@mark{le}%
+}%
+\global\let\fc@frenchoptions@setdefaults\fc@frenchoptions@setdefaults
+{%
+  \let\fc@gl@def\gdef
+  \def\fc@gl@let{\global\let}%
+  \fc@frenchoptions@setdefaults
+}%
+\gdef\@ordinalstringMfrench{\csuse{@ordinalstringMfrench\fmtcount@french}}%
+\gdef\@ordinalstringFfrench{\csuse{@ordinalstringFfrench\fmtcount@french}}%
+\gdef\@OrdinalstringMfrench{\csuse{@OrdinalstringMfrench\fmtcount@french}}%
+\gdef\@OrdinalstringFfrench{\csuse{@OrdinalstringFfrench\fmtcount@french}}%
+\gdef\@numberstringMfrench{\csuse{@numberstringMfrench\fmtcount@french}}%
+\gdef\@numberstringFfrench{\csuse{@numberstringFfrench\fmtcount@french}}%
+\gdef\@NumberstringMfrench{\csuse{@NumberstringMfrench\fmtcount@french}}%
+\gdef\@NumberstringFfrench{\csuse{@NumberstringFfrench\fmtcount@french}}%
+\endinput
+%%
+%% End of file `fc-french.def'.

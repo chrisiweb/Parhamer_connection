@@ -1,0 +1,48 @@
+name eurosym
+category Package
+revision 17265
+shortdesc Metafont and macros for Euro sign
+longdesc The European currency symbol for the Euro implemented in
+longdesc Metafont, using the official European Commission dimensions,
+longdesc and providing several shapes (normal, slanted, bold, outline).
+longdesc The package also includes a LaTeX package which defines the
+longdesc macro, pre-compiled tfm files, and documentation.
+execute addMixedMap eurosym.map
+containersize 139880
+containerchecksum 9624b0a91a8491d4178051e8e8264e506725ace0eb1b4e4ee9f3cf38cf7868d392f0f4fae92947c74182a6cdf7d4cfb46319a269e4e3aac686ecf4a4cd2f7b3d
+doccontainersize 277732
+doccontainerchecksum db226757ec82087da3e67fe69b5e9c2429e3cc2addb126bc528dda8bc421a4e9da2a367e64f119eb109e8898409a4e50177b81f9035ed1e0672bb902836bb61f
+runfiles size=72
+ texmf-dist/fonts/map/dvips/eurosym/eurosym.map
+ texmf-dist/fonts/source/public/eurosym/fey.mf
+ texmf-dist/fonts/source/public/eurosym/feybl10.mf
+ texmf-dist/fonts/source/public/eurosym/feybo10.mf
+ texmf-dist/fonts/source/public/eurosym/feybr10.mf
+ texmf-dist/fonts/source/public/eurosym/feyml10.mf
+ texmf-dist/fonts/source/public/eurosym/feymo10.mf
+ texmf-dist/fonts/source/public/eurosym/feymr10.mf
+ texmf-dist/fonts/tfm/public/eurosym/feybl10.tfm
+ texmf-dist/fonts/tfm/public/eurosym/feybo10.tfm
+ texmf-dist/fonts/tfm/public/eurosym/feybr10.tfm
+ texmf-dist/fonts/tfm/public/eurosym/feyml10.tfm
+ texmf-dist/fonts/tfm/public/eurosym/feymo10.tfm
+ texmf-dist/fonts/tfm/public/eurosym/feymr10.tfm
+ texmf-dist/fonts/type1/public/eurosym/feybl10.pfb
+ texmf-dist/fonts/type1/public/eurosym/feybo10.pfb
+ texmf-dist/fonts/type1/public/eurosym/feybr10.pfb
+ texmf-dist/fonts/type1/public/eurosym/feyml10.pfb
+ texmf-dist/fonts/type1/public/eurosym/feymo10.pfb
+ texmf-dist/fonts/type1/public/eurosym/feymr10.pfb
+ texmf-dist/fonts/type1/public/eurosym/geybl10.pfb
+ texmf-dist/fonts/type1/public/eurosym/geybo10.pfb
+ texmf-dist/fonts/type1/public/eurosym/geybr10.pfb
+ texmf-dist/fonts/type1/public/eurosym/geyml10.pfb
+ texmf-dist/fonts/type1/public/eurosym/geymo10.pfb
+ texmf-dist/fonts/type1/public/eurosym/geymr10.pfb
+ texmf-dist/tex/latex/eurosym/eurosym.sty
+catalogue-also europs marvosym
+catalogue-contact-home http://www.theiling.de/eurosym.html
+catalogue-ctan /fonts/eurosym
+catalogue-license other-free
+catalogue-topics font font-specialist font-mf
+catalogue-version 1.4-subrfix

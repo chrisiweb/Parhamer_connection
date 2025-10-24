@@ -1,0 +1,54 @@
+name mhchem
+category Package
+revision 69639
+shortdesc Typeset chemical formulae/equations and H and P statements
+longdesc The bundle provides three packages: The mhchem package provides
+longdesc commands for typesetting chemical molecular formulae and
+longdesc equations. The hpstatement package provides commands for the
+longdesc official hazard statements and precautionary statements (H and
+longdesc P statements) that are used to label chemicals. The rsphrase
+longdesc package provides commands for the official Risk and Safety (R
+longdesc and S) Phrases that are used to label chemicals. The package
+longdesc requires the expl3 bundle.
+depend amsmath
+depend chemgreek
+depend graphics
+depend l3kernel
+depend l3packages
+depend tools
+containersize 185132
+containerchecksum 5b85541e565ad80891ba56375bb3c2d6720c7e0acc9e96d611626eace4daafeb078fe08fe4e6db4875823bf570f8af1dd4b319d38b41fc4c3ae9696772e7996a
+doccontainersize 427988
+doccontainerchecksum 487a5d90782d1c0814c7110388e5277e70dff9adc82048f8b5c33ffbf8c82e9df73293b4ab78bc83c2ef23674e341a2fb15f6b3268d1fdff1aa57d4d3813ea1e
+runfiles size=577
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-bg.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-cs.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-da.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-de.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-el.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-en.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-es.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-et.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-fi.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-fr.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-ga.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-hr.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-hu.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-it.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-lt.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-lv.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-mt.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-nl.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-pl.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-pt.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-ro.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-sk.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-sl.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.inc/hpstatement-sv.inc.sty
+ texmf-dist/tex/latex/mhchem/hpstatement.sty
+ texmf-dist/tex/latex/mhchem/mhchem.sty
+ texmf-dist/tex/latex/mhchem/rsphrase.sty
+catalogue-also r-und-s
+catalogue-ctan /macros/latex/contrib/mhchem
+catalogue-license lppl1.3c
+catalogue-topics safety-notice chemistry

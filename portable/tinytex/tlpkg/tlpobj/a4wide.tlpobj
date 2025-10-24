@@ -1,0 +1,18 @@
+name a4wide
+category Package
+revision 20943
+shortdesc "Wide" a4 layout
+longdesc This package increases the width of the typeset area of an a4
+longdesc page. This sort of operation is capable of producing
+longdesc typographically poor results; the operation itself is better
+longdesc provided by the geometry package. The package uses the a4
+longdesc package.
+containersize 1012
+containerchecksum e0f1f95bf660760683d6c5a917d75e537a0347837eb4388eded8194c6ca5371b2ad9be9829fcaaff1e24b7d8baefd287db6add752c19a57a6cf0737017e311e3
+doccontainersize 134740
+doccontainerchecksum bf059462ec7e28ba782d5842d090c93f4e911bdf44eb3d4f184a7324b454105295460a52414ffcb9fc71dceeba902b1d78ba208d0998f71727ad41299eb1138f
+runfiles size=1
+ texmf-dist/tex/latex/a4wide/a4wide.sty
+catalogue-ctan /macros/latex/contrib/a4wide
+catalogue-license lppl1
+catalogue-topics geometry

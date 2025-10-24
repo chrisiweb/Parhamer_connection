@@ -1,0 +1,62 @@
+\ProvidesFile{ts1ntxsupsalt.fd}[2023/09/17 v1.0]
+\expandafter\ifx\csname ntx@scaled\endcsname\relax
+  \global\let\ntx@scaled\@empty%
+\fi
+
+\DeclareFontFamily{TS1}{ntxsupsalt}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{m}{n}{	%medium
+     <-> \ntx@scaled ntxsupsalt-Regular-ts1%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{m}{it}{	%italic
+     <-> \ntx@scaled ntxsups-Italic-ts1%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{b}{n}{	%bold 
+     <-> \ntx@scaled ntxsups-Bold-ts1%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{b}{it}{   	%bold italic
+     <-> \ntx@scaled ntxsups-BoldItalic-ts1%%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{m}{sl}{	%medium
+     <-> ssub * ntxsupsalt/m/it%%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{b}{sl}{	%medium
+     <-> \ntx@scaled ntxsups-BoldItalic-ts1%
+}{}
+
+\DeclareFontShape{TS1}{ntxsupsalt}{m}{sc}{	%cap & small cap
+     <-> ssub * ntxsupsalt/m/n%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{m}{scit}{	%italic
+     <-> ssub * ntxsupsalt/m/it%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{m}{ui}{   	%unslanted italic
+     <-> ssub * ntxsupsalt/m/n%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{bx}{sc}{	%bold extended cap & small cap
+     <-> ssub * ntxsupsalt/b/n%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{bx}{sl}{	%bold extended slanted
+     <-> ssub * ntxsupsalt/b/sl%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{bx}{it}{	%bold extended italic
+     <-> ssub * ntxsupsalt/b/it%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{bx}{scit}{	%bold extended italic
+     <-> ssub * ntxsupsalt/b/it%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{bx}{ui}{  	%bold extended unslanted italic
+     <-> ssub * ntxsupsalt/b/n%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{bx}{n}{	%bold extended
+     <-> ssub * ntxsupsalt/b/n%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{b}{sc}{	%bold cap & small cap
+     <-> ssub * ntxsupsalt/b/n%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{b}{ui}{   	%bold unslanted italic
+     <-> ssub * ntxsupsalt/b/n%
+}{}
+\DeclareFontShape{TS1}{ntxsupsalt}{b}{scit}{   	%bold italic
+     <-> ssub * ntxsupsalt/b/it%
+}{}
+\endinput

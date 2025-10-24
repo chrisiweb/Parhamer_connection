@@ -1,0 +1,19 @@
+name picinpar
+category Package
+revision 65097
+shortdesc Insert pictures into paragraphs
+longdesc A legacy package for creating 'windows' in paragraphs, for
+longdesc inserting graphics, etc. (including "dropped capitals"). Users
+longdesc should note that Pieter van Oostrum (in a published review of
+longdesc packages of this sort) does not recommend this package; Picins
+longdesc is recommended instead.
+containersize 5380
+containerchecksum 114b1e715384513f87f2a6772a6176ade44ac7053a8eb19410fb92862e721865dcc9350f08d77874296ae6402eb8d8da4b4b26ff4a96d035666814a3d3e21682
+doccontainersize 395152
+doccontainerchecksum 3b972c49a8c2ba7de3e21c065faef96125b2b275b25f7e8a35c72e28f27156414a558e290ed4b84d6ba49921a0c858867a0a7cfd5db87a501b3ac1a0ee6594a9
+runfiles size=5
+ texmf-dist/tex/latex/picinpar/picinpar.sty
+catalogue-ctan /macros/latex209/contrib/picinpar
+catalogue-license gpl
+catalogue-topics text-flow
+catalogue-version 1.3

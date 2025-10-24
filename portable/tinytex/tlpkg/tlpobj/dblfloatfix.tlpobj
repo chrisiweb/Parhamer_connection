@@ -1,0 +1,18 @@
+name dblfloatfix
+category Package
+revision 28983
+shortdesc Fixes for twocolumn floats
+longdesc The package solves two problems: floats in a twocolumn document
+longdesc come out in the right order and allowed float positions are now
+longdesc [tbp]. The package actually merges facilities from fixltx2e and
+longdesc stfloats.
+containersize 2664
+containerchecksum 05931528012077b92702926856b1e0d1aa6472188f9b1fbff74e5534a41a3260e53b82bcdd0684ff045aafaf4b427dab6d8e06fc7a5d11cb42a545949bc6bfc8
+doccontainersize 219612
+doccontainerchecksum 5790850d01d9f3734cb89146c23077bc852d84242352718ee655f1410ee84b77366bef133d8df49fd46ad976aa007fe2c4039a08035122f93e719c5f0f7563f7
+runfiles size=2
+ texmf-dist/tex/latex/dblfloatfix/dblfloatfix.sty
+catalogue-ctan /macros/latex/contrib/dblfloatfix
+catalogue-license lppl1.3
+catalogue-topics float
+catalogue-version 1.0a

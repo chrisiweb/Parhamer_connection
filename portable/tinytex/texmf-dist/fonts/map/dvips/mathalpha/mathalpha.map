@@ -1,0 +1,6 @@
+% mathalpha.map is meant for fonts used in mathalpha.sty
+% but which have no dedicated package.
+
+mathalpha-ncmbb-regular ncmbb-regular <mathalpha-ncmbb-regular.pfb
+mathalpha-ncmbb-book ncmbb-book <mathalpha-ncmbb-book.pfb 
+mathalpha-ncmbb-bold ncmbb-bold <mathalpha-ncmbb-bold.pfb

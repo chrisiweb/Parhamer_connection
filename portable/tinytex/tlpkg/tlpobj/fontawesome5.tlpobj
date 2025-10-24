@@ -1,0 +1,57 @@
+name fontawesome5
+category Package
+revision 63207
+shortdesc Font Awesome 5 with LaTeX support
+longdesc This package provides LaTeX support for the included "Font
+longdesc Awesome 5 Free" icon set. These icons were designed by Fort
+longdesc Awesome and released under the SIL OFL 1.1 license. The
+longdesc commercial "Pro" version is also supported, if it is installed
+longdesc and XeLaTeX or LuaLaTeX is used.
+execute addMap fontawesome5.map
+containersize 866312
+containerchecksum d7f6a40797b2968c31b28f1bf273af9d27b7a87e7c2953748f354db2e760b027feb5a8fd52c8f367649fba24cd629d71c1b1368b8864d42eb84269e0b22b59d4
+doccontainersize 746624
+doccontainerchecksum 1727133ca0e1713c356a647e08a7e22af50ad6a67e66c54f3d9e9a0601bd4a693c365cda625b37be83cb4ece42aba8312488f4ba5e885cc44f68f7930dfd7add
+runfiles size=331
+ texmf-dist/fonts/enc/dvips/fontawesome5/fa5brands0.enc
+ texmf-dist/fonts/enc/dvips/fontawesome5/fa5brands1.enc
+ texmf-dist/fonts/enc/dvips/fontawesome5/fa5free0.enc
+ texmf-dist/fonts/enc/dvips/fontawesome5/fa5free1.enc
+ texmf-dist/fonts/enc/dvips/fontawesome5/fa5free2.enc
+ texmf-dist/fonts/enc/dvips/fontawesome5/fa5free3.enc
+ texmf-dist/fonts/map/dvips/fontawesome5/fontawesome5.map
+ texmf-dist/fonts/opentype/public/fontawesome5/FontAwesome5Brands-Regular-400.otf
+ texmf-dist/fonts/opentype/public/fontawesome5/FontAwesome5Free-Regular-400.otf
+ texmf-dist/fonts/opentype/public/fontawesome5/FontAwesome5Free-Solid-900.otf
+ texmf-dist/fonts/tfm/public/fontawesome5/fa5brands0.tfm
+ texmf-dist/fonts/tfm/public/fontawesome5/fa5brands1.tfm
+ texmf-dist/fonts/tfm/public/fontawesome5/fa5free0regular.tfm
+ texmf-dist/fonts/tfm/public/fontawesome5/fa5free0solid.tfm
+ texmf-dist/fonts/tfm/public/fontawesome5/fa5free1regular.tfm
+ texmf-dist/fonts/tfm/public/fontawesome5/fa5free1solid.tfm
+ texmf-dist/fonts/tfm/public/fontawesome5/fa5free2regular.tfm
+ texmf-dist/fonts/tfm/public/fontawesome5/fa5free2solid.tfm
+ texmf-dist/fonts/tfm/public/fontawesome5/fa5free3regular.tfm
+ texmf-dist/fonts/tfm/public/fontawesome5/fa5free3solid.tfm
+ texmf-dist/fonts/type1/public/fontawesome5/FontAwesome5Brands-Regular.pfb
+ texmf-dist/fonts/type1/public/fontawesome5/FontAwesome5Free-Regular.pfb
+ texmf-dist/fonts/type1/public/fontawesome5/FontAwesome5Free-Solid.pfb
+ texmf-dist/tex/latex/fontawesome5/fontawesome5-generic-helper.sty
+ texmf-dist/tex/latex/fontawesome5/fontawesome5-mapping.def
+ texmf-dist/tex/latex/fontawesome5/fontawesome5-utex-helper.sty
+ texmf-dist/tex/latex/fontawesome5/fontawesome5.lua
+ texmf-dist/tex/latex/fontawesome5/fontawesome5.sty
+ texmf-dist/tex/latex/fontawesome5/tufontawesomebrands.fd
+ texmf-dist/tex/latex/fontawesome5/tufontawesomefree.fd
+ texmf-dist/tex/latex/fontawesome5/tufontawesomepro.fd
+ texmf-dist/tex/latex/fontawesome5/ufontawesomebrands0.fd
+ texmf-dist/tex/latex/fontawesome5/ufontawesomebrands1.fd
+ texmf-dist/tex/latex/fontawesome5/ufontawesomefree0.fd
+ texmf-dist/tex/latex/fontawesome5/ufontawesomefree1.fd
+ texmf-dist/tex/latex/fontawesome5/ufontawesomefree2.fd
+ texmf-dist/tex/latex/fontawesome5/ufontawesomefree3.fd
+catalogue-also fontawesome
+catalogue-ctan /fonts/fontawesome5
+catalogue-license ofl lppl1.3c
+catalogue-topics font font-supp-symbol font-symbol font-otf font-type1
+catalogue-version 5.15.4

@@ -1,0 +1,1019 @@
+%% hpstatement-bg.inc.sty
+%% 2024-01-29
+%% Copyright 2019-2024 Martin Hensel
+%
+%% This file is part of the mhchem bundle for LaTeX
+%
+%% For the content of the phrases:
+% This work is licensed under the Creative Commons Attribution 4.0 International licence
+% (https://creativecommons.org/licenses/by/4.0/). This means that you can re-use the content
+% provided you acknowledge the source and indicate any changes you have made.
+% The data is not necessarily comprehensive, complete, accurate or up to date.
+% The acknowledgement is not needed when using statements of the data set for labelling products, of course, as this is the intended usage.
+% (c) European Union, https://eur-lex.europa.eu, 1998-2023, CC BY 4.0
+% (c) hpstatements contributors, https://github.com/mhchem/hpstatements/contributors, 2019-2024, CC BY 4.0
+%
+%
+\ExplSyntaxOn
+\group_begin:
+\char_set_catcode_space:n {`\ }% allow spaces
+\char_set_catcode_letter:n {`\@}%
+%
+\tl_gset:cn{g__mhchem_hp_bg_H200-0_tl}{{H200}{%
+  \__mhchem_hp_s:nnn{20081216}{Нестабилен експлозив.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H201-0_tl}{{H201}{%
+  \__mhchem_hp_s:nnn{20081216}{Експлозив; опасност от масова експлозия.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H202-0_tl}{{H202}{%
+  \__mhchem_hp_s:nnn{20081216}{Експлозив; сериозна опасност от разпръскване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H203-0_tl}{{H203}{%
+  \__mhchem_hp_s:nnn{20081216}{Експлозив; опасност от пожар, взрив или разпръскване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H204-0_tl}{{H204}{%
+  \__mhchem_hp_s:nnn{20081216}{Опасност от пожар или разпръскване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H205-0_tl}{{H205}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да предизвика масова експлозия при пожар.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H206-0_tl}{{H206}{%
+  \__mhchem_hp_s:nnn{20201017}{Опасност от пожар или разпръскване; повишен риск от експлозия при понижено съдържание на десенсибилизиращ агент.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H207-0_tl}{{H207}{%
+  \__mhchem_hp_s:nnn{20201017}{Опасност от пожар или разпръскване; повишен риск от експлозия при понижено съдържание на десенсибилизиращ агент.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H208-0_tl}{{H208}{%
+  \__mhchem_hp_s:nnn{20201017}{Опасност от пожар; повишен риск от експлозия при понижено съдържание на десенсибилизиращ агент.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H220-0_tl}{{H220}{%
+  \__mhchem_hp_s:nnn{20081216}{Изключително запалим газ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H221-0_tl}{{H221}{%
+  \__mhchem_hp_s:nnn{20081216}{Запалим газ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H222-0_tl}{{H222}{%
+  \__mhchem_hp_s:nnn{20081216}{Изключително запалим аерозол.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H223-0_tl}{{H223}{%
+  \__mhchem_hp_s:nnn{20081216}{Запалим аерозол.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H224-0_tl}{{H224}{%
+  \__mhchem_hp_s:nnn{20081216}{Изключително запалими течност и пари.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H225-0_tl}{{H225}{%
+  \__mhchem_hp_s:nnn{20081216}{Силно запалими течност и пари.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H226-0_tl}{{H226}{%
+  \__mhchem_hp_s:nnn{20081216}{Запалими течност и пари.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H228-0_tl}{{H228}{%
+  \__mhchem_hp_s:nnn{20081216}{Запалимо твърдо вещество.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H229-0_tl}{{H229}{%
+  \__mhchem_hp_s:nnn{20150601}{Съд под налягане: може да експлодира при нагряване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H230-0_tl}{{H230}{%
+  \__mhchem_hp_s:nnn{20150601}{Може да реагира експлозивно дори при отсъствие на въздух.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H231-0_tl}{{H231}{%
+  \__mhchem_hp_s:nnn{20150601}{Може да реагира експлозивно дори при отсъствие на въздух при повишено налягане и/\hskip\z@skip{}или температура.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H232-0_tl}{{H232}{%
+  \__mhchem_hp_s:nnn{20201017}{Може да се запали спонтанно при контакт с въздух.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H240-0_tl}{{H240}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да предизвика експлозия при нагряване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H241-0_tl}{{H241}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да предизвика пожар или експлозия при нагряване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H242-0_tl}{{H242}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да предизвика пожар при нагряване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H250-0_tl}{{H250}{%
+  \__mhchem_hp_s:nnn{20081216}{Самозапалва се при контакт с въздух.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H251-0_tl}{{H251}{%
+  \__mhchem_hp_s:nnn{20081216}{Самонагряващо се: може да се запали.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H252-0_tl}{{H252}{%
+  \__mhchem_hp_s:nnn{20081216}{Самонагряващо се в големи количества; може да се запали.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H260-0_tl}{{H260}{%
+  \__mhchem_hp_s:nnn{20081216}{При контакт с вода отделя запалими газове, които могат да се самозапалят.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H261-0_tl}{{H261}{%
+  \__mhchem_hp_s:nnn{20081216}{При контакт с вода отделя запалими газове.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H270-0_tl}{{H270}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да предивзика или усили пожар; окислител.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H271-0_tl}{{H271}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да предизвика пожар или експлозия; силен окислител.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H272-0_tl}{{H272}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да усили пожара; окислител.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H280-0_tl}{{H280}{%
+  \__mhchem_hp_s:nnn{20081216}{Съдържа газ под налягане; може да експлодира при нагряване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H281-0_tl}{{H281}{%
+  \__mhchem_hp_s:nnn{20081216}{Съдържа охладен газ; може да причини криогенни изгаряния или наранявания.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H290-0_tl}{{H290}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да бъде корозивно за металите.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H300-0_tl}{{H300}{%
+  \__mhchem_hp_s:nnn{20081216}{Смъртоносeн при поглъщане.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H301-0_tl}{{H301}{%
+  \__mhchem_hp_s:nnn{20081216}{Токсичен при поглъщане.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H302-0_tl}{{H302}{%
+  \__mhchem_hp_s:nnn{20081216}{Вреден при поглъщане.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H304-0_tl}{{H304}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да бъде смъртоносен при поглъщане и навлизане в дихателните пътища.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H310-0_tl}{{H310}{%
+  \__mhchem_hp_s:nnn{20081216}{Смъртоносeн при контакт с кожата.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H311-0_tl}{{H311}{%
+  \__mhchem_hp_s:nnn{20081216}{Токсичен при контакт с кожата.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H312-0_tl}{{H312}{%
+  \__mhchem_hp_s:nnn{20081216}{Вреден при контакт с кожата.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H314-0_tl}{{H314}{%
+  \__mhchem_hp_s:nnn{20081216}{Причинява тежки изгаряния на кожата и сериозно увреждане на очите.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H315-0_tl}{{H315}{%
+  \__mhchem_hp_s:nnn{20081216}{Предизвиква дразнене на кожата.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H317-0_tl}{{H317}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да причини алергична кожна реакция.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H318-0_tl}{{H318}{%
+  \__mhchem_hp_s:nnn{20081216}{Предизвиква сериозно увреждане на очите.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H319-0_tl}{{H319}{%
+  \__mhchem_hp_s:nnn{20081216}{Предизвиква сериозно дразнене на очите.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H330-0_tl}{{H330}{%
+  \__mhchem_hp_s:nnn{20081216}{Смъртоносен при вдишване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H331-0_tl}{{H331}{%
+  \__mhchem_hp_s:nnn{20081216}{Токсичен при вдишване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H332-0_tl}{{H332}{%
+  \__mhchem_hp_s:nnn{20081216}{Вреден при вдишване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H334-0_tl}{{H334}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да причини алергични или астматични симптоми или затруднения в дишането при вдишване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H335-0_tl}{{H335}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да предизвика дразнене на дихателните пътища.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H336-0_tl}{{H336}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да предизвика сънливост или световъртеж.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H340-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да причини генетични дефекти \noexpand\textless{} да се посочи пътят на експозицията, ако е доказано убедително, че няма друг път на експозиция, който води до същата опасност \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H340.0-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H340-1empty_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H340-1_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H341-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{20081216}{Предполага се, че причинява генетични дефекти \noexpand\textless{} да се посочи пътят на експозицията, ако е доказано убедително, че няма друг път на експозиция, който води до същата опасност \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H341.0-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H341-1empty_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H341-1_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H350-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да причини рак \noexpand\textless{} да се посочи пътят на експозицията, ако е доказано убедително, че няма друг път на експозиция, който води до същата опасност \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H350.0-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H350-1empty_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H350-1_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H350i-0_tl}{{H350i}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да причини рак при инхалация/\hskip\z@skip{}вдишване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H351-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{20081216}{Предполага се, че причинява рак \noexpand\textless{} да се посочи пътят на експозицията, ако е доказано убедително, че няма друг път на експозиция, който води до същата опасност \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H351.0-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H351-1empty_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H351-1_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H360-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да увреди оплодителната способност или плода \noexpand\textless{} да се посочи конкретното въздействие, ако е известно \noexpand\textgreater{} \noexpand\textless{} да се посочи пътят на експозицията, ако е доказано убедително, че няма друг път на експозиция, който води до същата опасност \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H360.0-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H360-1empty_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H360-1_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H360F-0_tl}{{H360F}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да увреди оплодителната способност.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H360D-0_tl}{{H360D}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да увреди плода.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H360FD-0_tl}{{H360FD}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да увреди оплодителната способност. Може да увреди плода.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H360Fd-0_tl}{{H360Fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да увреди оплодителната способност. Предполага се, че уврежда плода.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H360Df-0_tl}{{H360Df}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да увреди плода. Предполага се, че уврежда оплодителната способност.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H361-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{20081216}{Предполага се, че уврежда оплодителната способност или плода \noexpand\textless{} да се посочи конкретното въздействие, ако е известно \noexpand\textgreater{} \noexpand\textless{} да се посочи пътят на експозицията, ако е доказано убедително, че няма друг път на експозиция, който води до същата опасност \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H361.0-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H361-1empty_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H361-1_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H361f-0_tl}{{H361f}{%
+  \__mhchem_hp_s:nnn{20081216}{Предполага се, че уврежда оплодителната способност.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H361d-0_tl}{{H361d}{%
+  \__mhchem_hp_s:nnn{20081216}{Предполага се, че уврежда плода.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H361fd-0_tl}{{H361fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Предполага се, че уврежда оплодителната способност. Предполага се, че уврежда плода.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H362-0_tl}{{H362}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да бъде вреден за кърмачета.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H370-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{20081216}{Причинява увреждане на органите \noexpand\textless{} или да се посочат всички засегнати органи, ако са известни\noexpand\textgreater{} \noexpand\textless{} да се посочи пътят на експозицията, ако е доказано убедително, че няма друг път на експозиция, който води до същата опасност \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H370.0-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H370.1-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H370.1-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H370-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H370-2_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H371-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да причини увреждане на органите \noexpand\textless{} или да се посочат всички засегнати органи, ако са известни\noexpand\textgreater{} \noexpand\textless{} да се посочи пътят на експозицията, ако е доказано убедително, че няма друг път на експозиция, който води до същата опасност \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H371.0-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H371.1-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H371.1-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H371-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H371-2_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H372-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{20081216}{Причинява увреждане на органите \noexpand\textless{} или да се посочат всички засегнати органи, ако са известни \noexpand\textgreater{} посредством продължителна или повтаряща се експозиция \noexpand\textless{} да се посочи пътят на експозицията, ако е доказано убедително, че няма друг път на експозиция, който води до същата опасност \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H372.0-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H372.1-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H372.1-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H372-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H372-2_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H373-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да причини увреждане на органите \noexpand\textless{} или да се посочат всички засегнати органи, ако са известни \noexpand\textgreater{} при продължителна или повтаряща се експозиция \noexpand\textless{} да се посочи пътят на експозицията, ако е доказано убедително, че няма друг път на експозиция, който води до същата опасност \noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H373.0-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H373.1-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H373.1-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H373-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H373-2_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H300+H310-0_tl}{{H300\,+\,\hskip\z@skip{}H310}{%
+  \__mhchem_hp_s:nnn{20110419}{Смъртоносен при поглъщане или при контакт с кожата}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H300+H310+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Смъртоносен при поглъщане, при контакт с кожата или при вдишване}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H300+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Смъртоносен при поглъщане или при вдишване}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H301+H311-0_tl}{{H301\,+\,\hskip\z@skip{}H311}{%
+  \__mhchem_hp_s:nnn{20110419}{Токсичен при поглъщане или при контакт с кожата}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H301+H311+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Токсичен при поглъщане, при контакт с кожата или при вдишване}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H301+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Токсичен при поглъщане или при вдишване}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H302+H312-0_tl}{{H302\,+\,\hskip\z@skip{}H312}{%
+  \__mhchem_hp_s:nnn{20110419}{Вреден при поглъщане или при контакт с кожата}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H302+H312+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Вреден при поглъщане, при контакт с кожата или при вдишване}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H302+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Вреден при поглъщане или при вдишване}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H310+H330-0_tl}{{H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Смъртоносен при контакт с кожата или при вдишване}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H311+H331-0_tl}{{H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Токсичен при контакт с кожата или при вдишване}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H312+H332-0_tl}{{H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Вреден при контакт с кожата или при вдишване}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H400-0_tl}{{H400}{%
+  \__mhchem_hp_s:nnn{20081216}{Силно токсичен за водните организми.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H410-0_tl}{{H410}{%
+  \__mhchem_hp_s:nnn{20081216}{Силно токсичен за водните организми, с дълготраен ефект.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H411-0_tl}{{H411}{%
+  \__mhchem_hp_s:nnn{20081216}{Токсичен за водните организми, с дълготраен ефект.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H412-0_tl}{{H412}{%
+  \__mhchem_hp_s:nnn{20081216}{Вреден за водните организми, с дълготраен ефект.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H413-0_tl}{{H413}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да причини дълготраен вреден ефект за водните организми.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_H420-0_tl}{{H420}{%
+  \__mhchem_hp_s:nnn{20110419}{Вреди на общественото здраве и на околната среда, като разрушава озона във високите слоеве на атмосферата}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH001-0_tl}{{EUH001}{%
+  \__mhchem_hp_s:nnn{20201017}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Експлозивен в сухо състояние.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH006-0_tl}{{EUH006}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Експлозивен при или без контакт с въздуха.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH014-0_tl}{{EUH014}{%
+  \__mhchem_hp_s:nnn{20081216}{Реагира бурно с вода.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH018-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{20081216}{При употреба може да се образува запалима/\hskip\z@skip{}експлозивна паровъздушнa смес.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH018.0-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH018.1-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH018.2-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH019-0_tl}{{EUH019}{%
+  \__mhchem_hp_s:nnn{20081216}{Може да образува експлозивни пероксиди.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH029-0_tl}{{EUH029}{%
+  \__mhchem_hp_s:nnn{20081216}{При контакт с вода се отделя токсичен газ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH031-0_tl}{{EUH031}{%
+  \__mhchem_hp_s:nnn{20081216}{При контакт с киселини се отделя токсичен газ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH032-0_tl}{{EUH032}{%
+  \__mhchem_hp_s:nnn{20081216}{При контакт с киселини се отделя силно токсичен газ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH044-0_tl}{{EUH044}{%
+  \__mhchem_hp_s:nnn{20081216}{Риск от експлозия при нагряване в затворено пространство.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH059-0_tl}{{EUH059}{%
+  \__mhchem_hp_s:nnn{20110419}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Опасно за озоновия слой.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH066-0_tl}{{EUH066}{%
+  \__mhchem_hp_s:nnn{20081216}{Повтарящата се експозиция може да предизвика изсушаване или напукване на кожата.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH070-0_tl}{{EUH070}{%
+  \__mhchem_hp_s:nnn{20081216}{Токсично при контакт с очите.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH071-0_tl}{{EUH071}{%
+  \__mhchem_hp_s:nnn{20081216}{Корозивен за дихателните пътища.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH201-0_tl}{{EUH201}{%
+  \__mhchem_hp_s:nnn{20081216}{Съдържа олово. Да не се използва върху повърхност, която евентуално може да се дъвче или смуче от деца.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH201A-0_tl}{{EUH201A}{%
+  \__mhchem_hp_s:nnn{20081216}{Внимание! Съдържа олово.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH202-0_tl}{{EUH202}{%
+  \__mhchem_hp_s:nnn{20081216}{Цианокрилат. Опасно. Залепва кожата и очите за секунди. Да се съхранява извън обсега на деца.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH203-0_tl}{{EUH203}{%
+  \__mhchem_hp_s:nnn{20081216}{Съдържа хром (VI). Може да причини алергична реакция.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH204-0_tl}{{EUH204}{%
+  \__mhchem_hp_s:nnn{20081216}{Съдържа изоцианати. Може да причини алергична реакция.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH205-0_tl}{{EUH205}{%
+  \__mhchem_hp_s:nnn{20081216}{Съдържа епоксидни съставки. Може да причини алергична реакция.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH206-0_tl}{{EUH206}{%
+  \__mhchem_hp_s:nnn{20081216}{Внимание! Да не се използва заедно с други продукти. Може да отдели опасни газове (хлор).}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH207-0_tl}{{EUH207}{%
+  \__mhchem_hp_s:nnn{20081216}{Внимание! Съдържа кадмий. При употреба се образуват опасни пари. Вижте информацията, предоставена от производителя. Спазвайте инструкциите за безопасност.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH208-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{20081216}{Съдържа \noexpand\textless{} наименование на сенсибилизиращото вещество\noexpand\textgreater{}. Може да предизвика алергична реакция.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH208.0-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH208-1_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH209-0_tl}{{EUH209}{%
+  \__mhchem_hp_s:nnn{20081216}{При употреба може да стане силно запалимо.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH209A-0_tl}{{EUH209A}{%
+  \__mhchem_hp_s:nnn{20081216}{При употреба може да стане запалимо.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH210-0_tl}{{EUH210}{%
+  \__mhchem_hp_s:nnn{20081216}{Информационен лист за безопасност ще бъде представен при поискване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH211-0_tl}{{EUH211}{%
+  \__mhchem_hp_s:nnn{20211001}{Внимание! При пулверизация могат да се образуват опасни респирабилни капки. Не вдишвайте пулверизираната струя или мъгла.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH212-0_tl}{{EUH212}{%
+  \__mhchem_hp_s:nnn{20211001}{Внимание! При употреба може да се образува опасен респирабилен прах. Не вдишвайте праха.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH380-0_tl}{{EUH380}{%
+  \__mhchem_hp_s:nnn{20230420}{Може да причини нарушение на функциите на ендокринната система при хора}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH381-0_tl}{{EUH381}{%
+  \__mhchem_hp_s:nnn{20230420}{Вероятно причинява нарушение на функциите на ендокринната система при хора}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH401-0_tl}{{EUH401}{%
+  \__mhchem_hp_s:nnn{20081216}{За да се избегнат рискове за човешкото здраве и околната среда, спазвайте инструкциите за употреба.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH430-0_tl}{{EUH430}{%
+  \__mhchem_hp_s:nnn{20230420}{Може да причини нарушение на функциите на ендокринната система в околната среда}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH431-0_tl}{{EUH431}{%
+  \__mhchem_hp_s:nnn{20230420}{Вероятно причинява нарушение на функциите на ендокринната система в околната среда}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH440-0_tl}{{EUH440}{%
+  \__mhchem_hp_s:nnn{20230420}{Натрупва се в околната среда и в живите организми, включително в човешкия организъм}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH441-0_tl}{{EUH441}{%
+  \__mhchem_hp_s:nnn{20230420}{Натрупва се в значителни количества в околната среда и в живите организми, включително в човешкия организъм}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH450-0_tl}{{EUH450}{%
+  \__mhchem_hp_s:nnn{20230420}{Може да причини дълготрайно и дифузно замърсяване на водните ресурси}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_EUH451-0_tl}{{EUH451}{%
+  \__mhchem_hp_s:nnn{20230420}{Може да причини особено дълготрайно и дифузно замърсяване на водните ресурси}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P101-0_tl}{{P101}{%
+  \__mhchem_hp_s:nnn{20081216}{При необходимост от медицинска помощ, носете опаковката или етикета на продукта.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P102-0_tl}{{P102}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява извън обсега на деца.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P103-0_tl}{{P103}{%
+  \__mhchem_hp_s:nnn{20081216}{Преди употреба прочетете етикета.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P201-0_tl}{{P201}{%
+  \__mhchem_hp_s:nnn{20081216}{Преди употреба се снабдете със специални инструкции.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P202-0_tl}{{P202}{%
+  \__mhchem_hp_s:nnn{20081216}{Не използвайте преди да сте прочели и разбрали всички предпазни мерки за безопасност.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P210-0_tl}{{P210}{%
+  \__mhchem_hp_s:nnn{20150601}{Да се пази от топлина, нагорещени повърхности, искри, открит пламък, и други източници на запалване. Тютюнопушенето забранено.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се пази от топлина/\hskip\z@skip{}искри/\hskip\z@skip{}открит пламък/\hskip\z@skip{}нагорещени повърхности. -- Тютюнопушенето забранено.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P211-0_tl}{{P211}{%
+  \__mhchem_hp_s:nnn{20081216}{Да не се пръска към открит пламък или друг източник на запалване.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P212-0_tl}{{P212}{%
+  \__mhchem_hp_s:nnn{20201017}{Да се избягва нагряване в затворено пространство или понижаване на съдържанието на десенсибилизиращия агент.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P220-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{20180301}{Да се държи далеч от облекло и други горими материали.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се държи/\hskip\z@skip{}съхранява далеч от облекло/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}горими материали}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P220.0-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P220.1.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P220.1.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P220.1-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P220.2.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P220.2.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P220.2-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P221-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Вземете всички предпазни мерки за избягване на смесването с горими материали\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P221.0-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P221.1-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P221-1_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P222-0_tl}{{P222}{%
+  \__mhchem_hp_s:nnn{20081216}{Не допускайте конктакт с въздух.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P223-0_tl}{{P223}{%
+  \__mhchem_hp_s:nnn{20150601}{Не допускайте контакт с вода.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се избягва всякакъв възможен контакт с вода поради бурна реакция и възможно внезапно запалване.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P230-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се държи навлажнен с\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P230.0-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P230-1_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P231-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{20180301}{Да се използва и съхранява съдържанието под инертен газ/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се използва под инертен газ.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P231.0-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P231.1-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P231-1_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P232-0_tl}{{P232}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се пази от влага.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P233-0_tl}{{P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Съдът да се съхранява плътно затворен.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P234-0_tl}{{P234}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява само в оригиналната опаковка.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P235-0_tl}{{P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се държи на хладно.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P240-0_tl}{{P240}{%
+  \__mhchem_hp_s:nnn{20180301}{Заземяване и еквипотенциална връзка на съда и приемателното устройство.}{%
+  \__mhchem_hp_s:nnn{20081216}{Заземяване/\hskip\z@skip{}еквипотенциална връзка на съда и приемателното устройство.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P241-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{20180301}{Използвайте [електрическо/\hskip\z@skip{}вентилационно/\hskip\z@skip{}осветително/\hskip\z@skip{}\noexpand\textellipsis{}] оборудване, обезопасено срещу експлозия.}{%
+  \__mhchem_hp_s:nnn{20081216}{Използвайте електрическо/\hskip\z@skip{}проветряващо/\hskip\z@skip{}осветително/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}оборудване, обезопасено срещу експлозия}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P241.0-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P241.1-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P241.2-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P241.3-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P241-1_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P242-0_tl}{{P242}{%
+  \__mhchem_hp_s:nnn{20180301}{Използвайте инструменти, които не предизвикват искри.}{%
+  \__mhchem_hp_s:nnn{20081216}{Използвайте само инструменти, които не предизвикват искри.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P243-0_tl}{{P243}{%
+  \__mhchem_hp_s:nnn{20180301}{Предприемете действия за предотвратяване на освобождаването на статично електричество.}{%
+  \__mhchem_hp_s:nnn{20081216}{Вземете предпазни мерки срещу освобождаване на статично електричество.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P244-0_tl}{{P244}{%
+  \__mhchem_hp_s:nnn{20150601}{Поддържайте вентилите и фитингите чисти от масло и смазка.}{%
+  \__mhchem_hp_s:nnn{20081216}{Почиствайте редуциращите вентили от смазка и масло}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P250-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{20180301}{Да не се подлага на стържене/\hskip\z@skip{}удар/\hskip\z@skip{}триене\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Да не се подлага на стържене/\hskip\z@skip{}удар/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}триене}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P250.0-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P250.1-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P250.2-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P250.3-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P250-1_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P251-0_tl}{{P251}{%
+  \__mhchem_hp_s:nnn{20150601}{Да не се пробива и изгаря дори след употреба.}{%
+  \__mhchem_hp_s:nnn{20081216}{Съд под налягане: да не се пробива и изгаря дори след употреба.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P260-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{20081216}{Не вдишвайте прах/\hskip\z@skip{}пушек/\hskip\z@skip{}газ/\hskip\z@skip{}дим/\hskip\z@skip{}изпарения/\hskip\z@skip{}аерозоли}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P260.0-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P260.1-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P260.2-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P260.3-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P260.4-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P260.5-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P260.6-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P261-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{20081216}{Избягвайте вдишване на прах/\hskip\z@skip{}пушек/\hskip\z@skip{}газ/\hskip\z@skip{}дим/\hskip\z@skip{}изпарения/\hskip\z@skip{}аерозоли}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P261.0-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P261.1-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P261.2-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P261.3-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P261.4-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P261.5-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P261.6-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P262-0_tl}{{P262}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се избягва контакт с очите, кожата или облеклото.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P263-0_tl}{{P263}{%
+  \__mhchem_hp_s:nnn{20180301}{Да се избягва контакт по време на бременност и при кърмене.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се избягва контакт по време на бременност/\hskip\z@skip{}при кърмене.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P264-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се измие\noexpand\textellipsis{} старателно след употреба.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P264.0-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P264-1_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P270-0_tl}{{P270}{%
+  \__mhchem_hp_s:nnn{20081216}{Да не се яде, пие или пуши при употреба на продукта.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P271-0_tl}{{P271}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се използва само на открито или на добре проветривомясто.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P272-0_tl}{{P272}{%
+  \__mhchem_hp_s:nnn{20081216}{Да не се изнася замърсено работно облекло извън работното помещение.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P273-0_tl}{{P273}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се избягва изпускане в околната среда.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P280-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{20081216}{Използвайте предпазни ръкавици/\hskip\z@skip{}предпазно облекло/\hskip\z@skip{}предпазни очила/\hskip\z@skip{}предпазна маска за лице.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P280.0-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P280.1-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P280.2-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P280.3-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P280.4-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P281-0_tl}{{P281}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Използвайте предписаните лични предпазни средства.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P282-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{20180301}{Носете предпазващи от студ ръкавици, както и маска за лице или защитни очила.}{%
+  \__mhchem_hp_s:nnn{20081216}{Носете предпазващи от студ ръкавици/\hskip\z@skip{}маска за лице/\hskip\z@skip{}защитни очила.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P282.0-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P282.1-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P282.2-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P282.3-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P283-0_tl}{{P283}{%
+  \__mhchem_hp_s:nnn{20180301}{Носете огнеупорно или огнезащитно облекло.}{%
+  \__mhchem_hp_s:nnn{20081216}{Носете огнеупорно/\hskip\z@skip{}огнезащитно облекло.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P284-0_tl}{{P284}{%
+  \__mhchem_hp_s:nnn{20150601}{[При недостатъчна вентилация] носете средства за защита на дихателните пътища.}{%
+  \__mhchem_hp_s:nnn{20081216}{Носете респираторни предпазни средства.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P285-0_tl}{{P285}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{В случай на лоша вентилация носете респираторни предпазни средства.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P231+P232-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{20180301}{Да се използва и съхранява съдържанието под инертен газ/\hskip\z@skip{}\noexpand\textellipsis{} Да се пази от влага.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се използва под инертен газ. Да се пази от влага.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P231+P232.0-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P231+P232.1-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P231+P232-1_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P235+P410-0_tl}{{P235\,+\,\hskip\z@skip{}P410}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се държи на хладно. Да се пази от пряка слънчева светлина.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301-0_tl}{{P301}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ ПОГЛЪЩАНЕ:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302-0_tl}{{P302}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ КОНТАКТ С КОЖАТА:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P303-0_tl}{{P303}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ КОНТАКТ С КОЖАТА (или косата):}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P304-0_tl}{{P304}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ ВДИШВАНЕ:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P305-0_tl}{{P305}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ КОНТАКТ С ОЧИТЕ:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P306-0_tl}{{P306}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ ПОПАДАНЕ ВЪРХУ ОБЛЕКЛОТО:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P307-0_tl}{{P307}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ експозиция:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P308-0_tl}{{P308}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ явна или предполагаема експозиция:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P309-0_tl}{{P309}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ експозиция или при неразположение:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P310-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{20150601}{Незабавно се обадете в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ/\hskip\z@skip{}на лекар/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Незабавно се обадете в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ или на лекар.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P310.0-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P310.1-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P310.2-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P310-1_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P311-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Обадете се в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ/\hskip\z@skip{}на лекар/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Обадете се в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ или на лекар.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P311.0-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P311.1-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P311.2-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P311-1_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P312-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{20180301}{При неразположение се обадете в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ/\hskip\z@skip{}на лекар/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20150601}{При неразположение се обадете в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ/\hskip\z@skip{}на лекар/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}.}{%
+  \__mhchem_hp_s:nnn{20081216}{При неразположение се обадете в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ или на лекар.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P312.0-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P312.1-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P312.2-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P312-1_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P313-0_tl}{{P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Потърсете медицински съвет/\hskip\z@skip{}помощ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P314-0_tl}{{P314}{%
+  \__mhchem_hp_s:nnn{20081216}{При неразположение потърсете медицински съвет/\hskip\z@skip{}помощ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P315-0_tl}{{P315}{%
+  \__mhchem_hp_s:nnn{20081216}{Незабавно потърсете медицински съвет/\hskip\z@skip{}помощ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P320-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{20081216}{Спешна нужда от специализирано лечение (вж\noexpand\textellipsis{} на този етикет).}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P320.0-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P320-1_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P320.nolabel-1_tl}{{P320.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P321-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{20081216}{Специализирано лечение (вж\noexpand\textellipsis{} на този етикет).}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P321.0-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P321-1_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P321.nolabel-1_tl}{{P321.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P322-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Специални мерки (вж\noexpand\textellipsis{} на този етикет).}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P322.0-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P322-1_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P322.nolabel-1_tl}{{P322.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P330-0_tl}{{P330}{%
+  \__mhchem_hp_s:nnn{20081216}{Изплакнете устата.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P331-0_tl}{{P331}{%
+  \__mhchem_hp_s:nnn{20081216}{НЕ предизвиквайте повръщане.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P332-0_tl}{{P332}{%
+  \__mhchem_hp_s:nnn{20081216}{При поява на кожно дразнене:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P333-0_tl}{{P333}{%
+  \__mhchem_hp_s:nnn{20081216}{При поява на кожно дразнене или обрив на кожата:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P334-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{20180301}{Потопете в хладка вода [или сложете мокри компреси].}{%
+  \__mhchem_hp_s:nnn{20081216}{Потопете в хладка вода/\hskip\z@skip{}сложете мокри компреси.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P334.0-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P334.1-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P334.2-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P335-0_tl}{{P335}{%
+  \__mhchem_hp_s:nnn{20081216}{Отстранете от кожата посипаните частици.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P336-0_tl}{{P336}{%
+  \__mhchem_hp_s:nnn{20081216}{Размразете замръзналите части в хладка вода. Не разтривайте засегнатото място.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P337-0_tl}{{P337}{%
+  \__mhchem_hp_s:nnn{20081216}{При продължително дразнене на очите:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P338-0_tl}{{P338}{%
+  \__mhchem_hp_s:nnn{20081216}{Свалете контактните лещи, ако има такива и доколкото това е възможно. Продължете с изплакването.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P340-0_tl}{{P340}{%
+  \__mhchem_hp_s:nnn{20150601}{Изведете лицето на чист въздух и го поставете в позиция, улесняваща дишането.}{%
+  \__mhchem_hp_s:nnn{20081216}{Изведете пострадалия на чист въздух и го поставете в позиция, улесняваща дишането.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P341-0_tl}{{P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{При затруднено дишане изведете пострадалия на чист въздух и го поставете в позиция, улесняваща дишането.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P342-0_tl}{{P342}{%
+  \__mhchem_hp_s:nnn{20081216}{При симптоми на затруднено дишане:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P350-0_tl}{{P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Измийте внимателно и обилно със сапун и вода.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P351-0_tl}{{P351}{%
+  \__mhchem_hp_s:nnn{20081216}{Промивайте внимателно с вода в продължение на няколко минути.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P352-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{20150601}{Измийте обилно с вода/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Измийте обилно със сапун и вода.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P352.0-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P352.1-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P352-1_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P353-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{20180301}{Облейте кожата с вода [или вземете душ].}{%
+  \__mhchem_hp_s:nnn{20081216}{Облейте кожата с вода/\hskip\z@skip{}вземете душ.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P353.0-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P353.1-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P353.2-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P360-0_tl}{{P360}{%
+  \__mhchem_hp_s:nnn{20081216}{Незабавно облейте замърсеното облекло и кожата обилно с вода, преди да свалите дрехите.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P361-0_tl}{{P361}{%
+  \__mhchem_hp_s:nnn{20081216}{Незабавно свалете цялото замърсено облекло.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P362-0_tl}{{P362}{%
+  \__mhchem_hp_s:nnn{20150601}{Свалете замърсеното облекло.}{%
+  \__mhchem_hp_s:nnn{20081216}{Свалете замърсеното облекло и го изперете преди повторна употреба.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P363-0_tl}{{P363}{%
+  \__mhchem_hp_s:nnn{20081216}{Изперете замърсеното облекло преди повторна употреба.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P364-0_tl}{{P364}{%
+  \__mhchem_hp_s:nnn{20150601}{И го изперете преди повторна употреба.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370-0_tl}{{P370}{%
+  \__mhchem_hp_s:nnn{20081216}{При пожар:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P371-0_tl}{{P371}{%
+  \__mhchem_hp_s:nnn{20081216}{При голям пожар и значителни количества:}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P372-0_tl}{{P372}{%
+  \__mhchem_hp_s:nnn{20180301}{Опасност от експлозия.}{%
+  \__mhchem_hp_s:nnn{20081216}{Опасност от експлозия при пожар.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P373-0_tl}{{P373}{%
+  \__mhchem_hp_s:nnn{20081216}{НЕ се опитвайте да гасите пожара, ако огънят наближи експлозиви.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P374-0_tl}{{P374}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Гасете пожара с обичайните предпазни мерки от разумно разстояние.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P375-0_tl}{{P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Гасете пожара от разстояние поради опасност от експлозия.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P376-0_tl}{{P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Спрете теча, ако е безопасно.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P377-0_tl}{{P377}{%
+  \__mhchem_hp_s:nnn{20081216}{Пожар от изтекъл газ: Не гасете освен при възможност за безопасно отстраняване на теча.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P378-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{20150601}{Използвайте\noexpand\textellipsis{}, за да загасите.}{%
+  \__mhchem_hp_s:nnn{20081216}{Използвайте \noexpand\textellipsis{} за гасене.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P378.0-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P378-1_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P380-0_tl}{{P380}{%
+  \__mhchem_hp_s:nnn{20081216}{Евакуирайте зоната.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P381-0_tl}{{P381}{%
+  \__mhchem_hp_s:nnn{20180301}{В случай на изтичане премахнете всички източници на запалване.}{%
+  \__mhchem_hp_s:nnn{20081216}{Премахнете всички източници на запалване, ако е безопасно.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P390-0_tl}{{P390}{%
+  \__mhchem_hp_s:nnn{20081216}{Попийте разлятото, за да се предотвратят материални вреди.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P391-0_tl}{{P391}{%
+  \__mhchem_hp_s:nnn{20081216}{Съберете разлятото.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P310-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{20150601}{ПРИ ПОГЛЪЩАНЕ: Незабавно се обадете в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ/\hskip\z@skip{}на лекар/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ ПОГЛЪЩАНЕ: Незабавно се обадете в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ или на лекар.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P310.0-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P310.1-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P310.2-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P310-1_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P312-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{20180301}{ПРИ ПОГЛЪЩАНЕ: при неразположение се обадете в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ/\hskip\z@skip{}на лекар/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20150601}{ПРИ ПОГЛЪЩАНЕ: При неразположение се обадете в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ/\hskip\z@skip{}на лекар/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ ПОГЛЪЩАНЕ: Незабавно се обадете в ЦЕНТЪР ПО ТОСКИКОЛОГИЯ или на лекар при неразположение.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P312.0-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P312.1-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P312.2-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P312-1_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P301+P330+P331-0_tl}{{P301\,+\,\hskip\z@skip{}P330\,+\,\hskip\z@skip{}P331}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ ПОГЛЪЩАНЕ: изплакнете устата. НЕ предизвиквайте повръщане.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{ПРИ КОНТАКТ С КОЖАТА: потопете в хладка вода или сложете мокри компреси.}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ КОНТАКТ С КОЖАТА: Потопете в студена вода/\hskip\z@skip{}сложете мокри компреси.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P335+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{ПРИ КОНТАКТ С КОЖАТА: отстранете от кожата посипаните частици. Потопете в хладка вода [или сложете мокри компреси].}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P335+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P335+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P335+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P350-0_tl}{{P302\,+\,\hskip\z@skip{}P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ КОНТАКТ С КОЖАТА: Измийте внимателно и обилно със сапун и вода.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P352-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{20150601}{ПРИ КОНТАКТ С КОЖАТА: Измийте обилно с вода/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ КОНТАКТ С КОЖАТА: Измийте обилно със сапун и вода.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P352.0-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P352.1-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P302+P352-1_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P303+P361+P353-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{20180301}{ПРИ КОНТАКТ С КОЖАТА (или косата): незабавно свалете цялото замърсено облекло. Облейте кожата с вода [или вземете душ].}{%
+  \__mhchem_hp_s:nnn{20150601}{ПРИ КОНТАКТ С КОЖАТА (или косата): Незабавно свалете цялото замърсено облекло. Облейте кожата с вода/\hskip\z@skip{}вземете душ.}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ КОНТАКТ С КОЖАТА (или косата): Незабавно свалете цялото замърсено облекло. Облейте кожата с вода/\hskip\z@skip{}вземете душ}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P303+P361+P353.0-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P303+P361+P353.1-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P303+P361+P353.2-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P304+P340-0_tl}{{P304\,+\,\hskip\z@skip{}P340}{%
+  \__mhchem_hp_s:nnn{20150601}{ПРИ ВДИШВАНЕ: Изведете лицето на чист въздух и го поставете в позиция, улесняваща дишането.}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ ВДИШВАНЕ: Изведете пострадалия на чист въздух и го поставете в позиция, улесняваща дишането.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P304+P341-0_tl}{{P304\,+\,\hskip\z@skip{}P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ ВДИШВАНЕ: При затруднено дишане изведете пострадалия на чист въздух и го поставете в позиция, улесняваща дишането.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P305+P351+P338-0_tl}{{P305\,+\,\hskip\z@skip{}P351\,+\,\hskip\z@skip{}P338}{%
+  \__mhchem_hp_s:nnn{20180301}{ПРИ КОНТАКТ С ОЧИТЕ: промивайте внимателно с вода в продължение на няколко минути. Свалете контактните лещи, ако има такива и доколкото това е възможно. Продължете с изплакването.}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ КОНТАКТ С ОЧИТЕ: Промивайте внимателно с вода в продължение на няколко минути. Свалете контактните лещи, ако има такива и доколкото това е възможно. Продължавайте да промивате.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P306+P360-0_tl}{{P306\,+\,\hskip\z@skip{}P360}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ ПОПАДАНЕ ВЪРХУ ОБЛЕКЛОТО: незабавно облейте замърсеното облекло и кожата обилно с вода, преди да свалите дрехите.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P307+P311-0_tl}{{P307\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ експозиция: Обадете се в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ или на лекар.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P308+P311-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{ПРИ явна или предполагаема експозиция: Обадете се в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ/\hskip\z@skip{}на лекар/\hskip\z@skip{}\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P308+P311.0-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P308+P311.1-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P308+P311.2-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P308+P311-1_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P308+P313-0_tl}{{P308\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ явна или предполагаема експозиция: Потърсете медицински съвет/\hskip\z@skip{}помощ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P309+P311-0_tl}{{P309\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{ПРИ експозиция или неразположение: Обадете се в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ или на лекар.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P332+P313-0_tl}{{P332\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{При поява на кожно дразнене: Потърсете медицински съвет/\hskip\z@skip{}помощ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P333+P313-0_tl}{{P333\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{При поява на кожно дразнене или обрив на кожата: Потърсете медицински съвет/\hskip\z@skip{}помощ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P335+P334-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Отстранете посипаните частици от кожата. Потопете в хладка вода/\hskip\z@skip{}сложете мокри компреси.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P335+P334.0-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P335+P334.1-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P335+P334.2-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P336+P315-0_tl}{{P336\,+\,\hskip\z@skip{}P315}{%
+  \__mhchem_hp_s:nnn{20180301}{Размразете замръзналите части в хладка вода. Не разтривайте засегнатото място. Незабавно потърсете медицински съвет/\hskip\z@skip{}помощ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P337+P313-0_tl}{{P337\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{При продължително дразнене на очите: Потърсете медицински съвет/\hskip\z@skip{}помощ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P342+P311-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{При симптоми на затруднено дишане: Обадете се в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ/\hskip\z@skip{}на лекар/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{При симптоми на затруднено дишане: Обадете се в ЦЕНТЪР ПО ТОКСИКОЛОГИЯ или на лекар.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P342+P311.0-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P342+P311.1-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P342+P311.2-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P342+P311-1_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P361+P364-0_tl}{{P361\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Незабавно свалете цялото замърсено облекло и го изперете преди повторна употреба.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P362+P364-0_tl}{{P362\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Свалете замърсеното облекло и го изперете преди повторна употреба.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P372+P380+P373-0_tl}{{P370\,+\,\hskip\z@skip{}P372\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P373}{%
+  \__mhchem_hp_s:nnn{20180301}{При пожар: опасност от експлозия. Евакуирайте зоната. НЕ се опитвайте да гасите пожара, ако огънят наближи експлозиви.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P376-0_tl}{{P370\,+\,\hskip\z@skip{}P376}{%
+  \__mhchem_hp_s:nnn{20081216}{При пожар: Спрете теча, ако е безопасно.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{20150601}{При пожар: Използвайте\noexpand\textellipsis{}, за да загасите.}{%
+  \__mhchem_hp_s:nnn{20081216}{При пожар: Използвайте \noexpand\textellipsis{} за гасене.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P380-0_tl}{{P370\,+\,\hskip\z@skip{}P380}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{При пожар: Евакуирайте зоната.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P380+P375-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{При пожар: Евакуирайте зоната. Гасете пожара от разстояние поради опасност от експлозия.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P380+P375+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P380+P375+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P380+P375+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P371+P380+P375-0_tl}{{P371\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{При голям пожар и значителни количества: Евакуирайте зоната. Гасете пожара от разстояние поради опасност от експлозия.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P401-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{20180301}{Да се съхранява съгласно\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P401.0-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P401-1_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P402-0_tl}{{P402}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява на сухо място.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P403-0_tl}{{P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява на добре проветриво място.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P404-0_tl}{{P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява в затворен съд.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P405-0_tl}{{P405}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява под ключ.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P406-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява в устойчив на разяждане съд/\hskip\z@skip{}\noexpand\textellipsis{} съд с устойчива вътрешна облицовка.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P406.0-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P406.1-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P406-1_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P407-0_tl}{{P407}{%
+  \__mhchem_hp_s:nnn{20180301}{Да се остави въздушно пространство между купчините или палетите.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се остави въздушно пространство между купчините/\hskip\z@skip{}палетите.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P410-0_tl}{{P410}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се пази от пряка слънчева светлина.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P411-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{20101201}{Да се съхранява при температури, не по-високи от \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява при температури, не по-високи от \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P411.0-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P411.1-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P411.2-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P412-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Да не се излага на температури, по-високи от 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да не се излага на температури, по-високи от 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P412.0-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P412.1-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P412.2-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P413-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{20101201}{При насипни количества, по-големи от \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{} фунта, да се съхранява при температури, не по-високи от \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{При насипни количества, по-големи от \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{} фунта, да се съхранява при температури, не по-високи от \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P413.0-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P413.1-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P413.2-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P420-0_tl}{{P420}{%
+  \__mhchem_hp_s:nnn{20180301}{Да се съхранява отделно.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява на разстояние от други материали.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P422-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Съдържанието да се съхранява при\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P422.0-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P422-1_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P402+P404-0_tl}{{P402\,+\,\hskip\z@skip{}P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява на сухо място. Да се съхранява в затворен съд.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P403+P233-0_tl}{{P403\,+\,\hskip\z@skip{}P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява на добре проветриво място. Съдът да се съхранява плътно затворен.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P403+P235-0_tl}{{P403\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява на добре проветриво място. Да се съхранява на хладно.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P410+P403-0_tl}{{P410\,+\,\hskip\z@skip{}P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се пази от пряка слънчева светлина. Да се съхранява на добре проветриво място.}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P410+P412-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Да се пази от пряка слънчева светлина. Да не се излага на температури, по-високи от 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се пази от пряка слънчева светлина. Да не се излага на температури, по-високи от 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P410+P412.0-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P410+P412.1-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P410+P412.2-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P411+P235-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20101201}{Да се съхранява при температури, не по-високи от \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Да се държи на хладно.}{%
+  \__mhchem_hp_s:nnn{20081216}{Да се съхранява при температури, не по-високи от \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Да се държи на хладно.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P411+P235.0-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P411+P235.1-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P411+P235.2-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P501-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{20081216}{Съдържанието/\hskip\z@skip{}съдът да се изхвърли в \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P501.0-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P501.0-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P501.1-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P501.2-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P502-0_tl}{{P502}{%
+  \__mhchem_hp_s:nnn{20180301}{Обърнете се към производителя или доставчика за информация относно оползотворяването или рециклирането.}{%
+  \__mhchem_hp_s:nnn{20110419}{Обърнете се към производителя/\hskip\z@skip{}доставчика за информация относно възстановяването/\hskip\z@skip{}рециклирането}{}}}}%
+\tl_gset:cn{g__mhchem_hp_bg_P370+P380+P375[+P378]-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375[\,+\,\hskip\z@skip{}P378]}{%
+  \__mhchem_hp_s:nnn{20180301}{При пожар: евакуирайте зоната. Гасете пожара от разстояние поради опасност от експлозия. [Използвайте\noexpand\textellipsis{}, за да загасите].}{}}}%
+%
+\group_end:
+\ExplSyntaxOff

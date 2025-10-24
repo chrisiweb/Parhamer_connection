@@ -1,0 +1,40 @@
+name rsfs
+category Package
+revision 15878
+shortdesc Ralph Smith's Formal Script font
+longdesc The fonts provide uppercase 'formal' script letters for use as
+longdesc symbols in scientific and mathematical typesetting (in contrast
+longdesc to the informal script fonts such as that used for the
+longdesc 'calligraphic' symbols in the TeX maths symbol font). The fonts
+longdesc are provided as Metafont source, and as derived Adobe Type 1
+longdesc format. LaTeX support, for using these fonts in mathematics, is
+longdesc available via one of the packages calrsfs and mathrsfs.
+execute addMixedMap rsfs.map
+containersize 56092
+containerchecksum f5d52f49ead227b058841bb88571ae0d6fb40b95dd652536887acf13c0a5dc5b61e3813faaef2effc26539125c2776e113937a1612e7bc7146e7d5517b02aeb6
+doccontainersize 2280
+doccontainerchecksum 2d23715b38d90c686d7edae77f2a774041d3b679035e0399b7b6089f9b17db3ea4c6c3cdd655bb6e5f3a3cae782e30984c1fe89f5f263a0cd86b441c5376848a
+runfiles size=35
+ texmf-dist/fonts/afm/public/rsfs/rsfs10.afm
+ texmf-dist/fonts/afm/public/rsfs/rsfs5.afm
+ texmf-dist/fonts/afm/public/rsfs/rsfs7.afm
+ texmf-dist/fonts/map/dvips/rsfs/rsfs.map
+ texmf-dist/fonts/source/public/rsfs/rsfs10.mf
+ texmf-dist/fonts/source/public/rsfs/rsfs5.mf
+ texmf-dist/fonts/source/public/rsfs/rsfs7.mf
+ texmf-dist/fonts/source/public/rsfs/script.mf
+ texmf-dist/fonts/source/public/rsfs/scriptu.mf
+ texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm
+ texmf-dist/fonts/tfm/public/rsfs/rsfs5.tfm
+ texmf-dist/fonts/tfm/public/rsfs/rsfs7.tfm
+ texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb
+ texmf-dist/fonts/type1/public/rsfs/rsfs10.pfm
+ texmf-dist/fonts/type1/public/rsfs/rsfs5.pfb
+ texmf-dist/fonts/type1/public/rsfs/rsfs5.pfm
+ texmf-dist/fonts/type1/public/rsfs/rsfs7.pfb
+ texmf-dist/fonts/type1/public/rsfs/rsfs7.pfm
+ texmf-dist/tex/plain/rsfs/scrload.tex
+catalogue-also rsfso
+catalogue-ctan /fonts/rsfs
+catalogue-license other-free
+catalogue-topics font font-calligraphic font-mf font-type1

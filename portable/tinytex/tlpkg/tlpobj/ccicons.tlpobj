@@ -1,0 +1,26 @@
+name ccicons
+category Package
+revision 54512
+shortdesc LaTeX support for Creative Commons icons
+longdesc The package provides the means to typeset Creative Commons
+longdesc icons, in documents licensed under CC licences. A font (in
+longdesc Adobe Type 1 format) and LaTeX support macros are provided.
+execute addMap ccicons.map
+containersize 15564
+containerchecksum 4e755538440c87c2bc1f8d57d41ce78ddaeae9a0e3c1c85aeed172c2a25e952963b26245cd1ddc3222285c883ed4574ac4228d17f1263db31cc330bdb1f345a4
+doccontainersize 89352
+doccontainerchecksum 0e4216adcbe01d8feb95d31e2df143ad739f66c2239196f9f5c58638a87d320949256baee32703663d6116bd13b4af607dd38d16d4ccae218af55f5402308c03
+srccontainersize 8828
+srccontainerchecksum af84fa01272028018fbcb4fa9e04971b9580b1e6fd63f0e07419a088005b75e852a122a5ee0416afb7391ff165ae39549f8931a157aae1ea272d97be05132e8d
+runfiles size=10
+ texmf-dist/fonts/enc/dvips/ccicons/ccicons-u.enc
+ texmf-dist/fonts/map/dvips/ccicons/ccicons.map
+ texmf-dist/fonts/opentype/public/ccicons/ccicons.otf
+ texmf-dist/fonts/tfm/public/ccicons/ccicons.tfm
+ texmf-dist/fonts/type1/public/ccicons/ccicons.pfb
+ texmf-dist/tex/latex/ccicons/ccicons.sty
+catalogue-contact-home https://github.com/ummels/ccicons
+catalogue-ctan /fonts/ccicons
+catalogue-license lppl1.3c ofl
+catalogue-topics font font-symbol font-type1
+catalogue-version 1.6

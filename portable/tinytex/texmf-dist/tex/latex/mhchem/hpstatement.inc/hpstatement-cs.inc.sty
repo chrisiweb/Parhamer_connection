@@ -1,0 +1,1052 @@
+%% hpstatement-cs.inc.sty
+%% 2024-01-29
+%% Copyright 2019-2024 Martin Hensel
+%
+%% This file is part of the mhchem bundle for LaTeX
+%
+%% For the content of the phrases:
+% This work is licensed under the Creative Commons Attribution 4.0 International licence
+% (https://creativecommons.org/licenses/by/4.0/). This means that you can re-use the content
+% provided you acknowledge the source and indicate any changes you have made.
+% The data is not necessarily comprehensive, complete, accurate or up to date.
+% The acknowledgement is not needed when using statements of the data set for labelling products, of course, as this is the intended usage.
+% (c) European Union, https://eur-lex.europa.eu, 1998-2023, CC BY 4.0
+% (c) hpstatements contributors, https://github.com/mhchem/hpstatements/contributors, 2019-2024, CC BY 4.0
+%
+%
+\ExplSyntaxOn
+\group_begin:
+\char_set_catcode_space:n {`\ }% allow spaces
+\char_set_catcode_letter:n {`\@}%
+%
+\tl_gset:cn{g__mhchem_hp_cs_H200-0_tl}{{H200}{%
+  \__mhchem_hp_s:nnn{20081216}{Nestabilní výbušnina.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H201-0_tl}{{H201}{%
+  \__mhchem_hp_s:nnn{20081216}{Výbušnina; nebezpečí masivního výbuchu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H202-0_tl}{{H202}{%
+  \__mhchem_hp_s:nnn{20081216}{Výbušnina; vážn\'e nebezpečí zasažení částicemi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H203-0_tl}{{H203}{%
+  \__mhchem_hp_s:nnn{20081216}{Výbušnina; nebezpečí požáru, tlakov\'e vlny nebo zasažení částicemi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H204-0_tl}{{H204}{%
+  \__mhchem_hp_s:nnn{20081216}{Nebezpečí požáru nebo zasažení částicemi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H205-0_tl}{{H205}{%
+  \__mhchem_hp_s:nnn{20081216}{Při požáru může způsobit masivní výbuch.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H206-0_tl}{{H206}{%
+  \__mhchem_hp_s:nnn{20201017}{Nebezpečí požáru, tlakov\'e vlny nebo zasažení částicemi; zvýšen\'e nebezpečí výbuchu, sníží-li se objem znecitlivujícího prostředku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H207-0_tl}{{H207}{%
+  \__mhchem_hp_s:nnn{20201017}{Nebezpečí požáru nebo zasažení částicemi; zvýšen\'e nebezpečí výbuchu, sníží-li se objem znecitlivujícího prostředku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H208-0_tl}{{H208}{%
+  \__mhchem_hp_s:nnn{20201017}{Nebezpečí požáru; zvýšen\'e nebezpečí výbuchu, sníží-li se objem znecitlivujícího prostředku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H220-0_tl}{{H220}{%
+  \__mhchem_hp_s:nnn{20081216}{Extr\'emně hořlavý plyn.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H221-0_tl}{{H221}{%
+  \__mhchem_hp_s:nnn{20081216}{Hořlavý plyn.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H222-0_tl}{{H222}{%
+  \__mhchem_hp_s:nnn{20081216}{Extr\'emně hořlavý aerosol.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H223-0_tl}{{H223}{%
+  \__mhchem_hp_s:nnn{20081216}{Hořlavý aerosol.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H224-0_tl}{{H224}{%
+  \__mhchem_hp_s:nnn{20081216}{Extr\'emně hořlavá kapalina a páry.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H225-0_tl}{{H225}{%
+  \__mhchem_hp_s:nnn{20081216}{Vysoce hořlavá kapalina a páry.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H226-0_tl}{{H226}{%
+  \__mhchem_hp_s:nnn{20081216}{Hořlavá kapalina a páry.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H228-0_tl}{{H228}{%
+  \__mhchem_hp_s:nnn{20081216}{Hořlavá tuhá látka.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H229-0_tl}{{H229}{%
+  \__mhchem_hp_s:nnn{20150601}{Nádoba je pod tlakem: při zahřívání se může roztrhnout.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H230-0_tl}{{H230}{%
+  \__mhchem_hp_s:nnn{20150601}{Může reagovat výbušně i bez přítomnosti vzduchu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H231-0_tl}{{H231}{%
+  \__mhchem_hp_s:nnn{20150601}{Při zvýšen\'em tlaku a/\hskip\z@skip{}nebo teplotě může reagovat výbušně i bez přítomnosti vzduchu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H232-0_tl}{{H232}{%
+  \__mhchem_hp_s:nnn{20201017}{Při styku se vzduchem se může samovolně vznítit.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H240-0_tl}{{H240}{%
+  \__mhchem_hp_s:nnn{20081216}{Zahřívání může způsobit výbuch.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H241-0_tl}{{H241}{%
+  \__mhchem_hp_s:nnn{20081216}{Zahřívání může způsobit požár nebo výbuch.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H242-0_tl}{{H242}{%
+  \__mhchem_hp_s:nnn{20081216}{Zahřívání může způsobit požár.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H250-0_tl}{{H250}{%
+  \__mhchem_hp_s:nnn{20081216}{Při styku se vzduchem se samovolně vznítí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H251-0_tl}{{H251}{%
+  \__mhchem_hp_s:nnn{20081216}{Samovolně se zahřívá: může se vznítit.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H252-0_tl}{{H252}{%
+  \__mhchem_hp_s:nnn{20081216}{Ve velk\'em množství se samovolně zahřívá; může se vznítit.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H260-0_tl}{{H260}{%
+  \__mhchem_hp_s:nnn{20081216}{Při styku s vodou uvolňuje hořlav\'e plyny, kter\'e se mohou samovolně vznítit.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H261-0_tl}{{H261}{%
+  \__mhchem_hp_s:nnn{20081216}{Při styku s vodou uvolňuje hořlav\'e plyny.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H270-0_tl}{{H270}{%
+  \__mhchem_hp_s:nnn{20081216}{Může způsobit nebo zesílit požár; oxidant.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H271-0_tl}{{H271}{%
+  \__mhchem_hp_s:nnn{20081216}{Může způsobit požár nebo výbuch; silný oxidant.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H272-0_tl}{{H272}{%
+  \__mhchem_hp_s:nnn{20081216}{Může zesílit požár; oxidant.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H280-0_tl}{{H280}{%
+  \__mhchem_hp_s:nnn{20081216}{Obsahuje plyn pod tlakem; při zahřívání může vybuchnout.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H281-0_tl}{{H281}{%
+  \__mhchem_hp_s:nnn{20081216}{Obsahuje zchlazený plyn; může způsobit omrzliny nebo poškození chladem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H290-0_tl}{{H290}{%
+  \__mhchem_hp_s:nnn{20081216}{Může být korozivní pro kovy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H300-0_tl}{{H300}{%
+  \__mhchem_hp_s:nnn{20081216}{Při požití může způsobit smrt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H301-0_tl}{{H301}{%
+  \__mhchem_hp_s:nnn{20081216}{Toxický při požití.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H302-0_tl}{{H302}{%
+  \__mhchem_hp_s:nnn{20081216}{Zdraví škodlivý při požití.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H304-0_tl}{{H304}{%
+  \__mhchem_hp_s:nnn{20081216}{Při požití a vniknutí do dýchacích cest může způsobit smrt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H310-0_tl}{{H310}{%
+  \__mhchem_hp_s:nnn{20101201}{Při styku s kůží může způsobit smrt.}{%
+  \__mhchem_hp_s:nnn{20081216}{Při styku s kůží může způsobit smrt.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H311-0_tl}{{H311}{%
+  \__mhchem_hp_s:nnn{20101201}{Toxický při styku s kůží.}{%
+  \__mhchem_hp_s:nnn{20081216}{Toxický při styku s kůží.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H312-0_tl}{{H312}{%
+  \__mhchem_hp_s:nnn{20101201}{Zdraví škodlivý při styku s kůží.}{%
+  \__mhchem_hp_s:nnn{20081216}{Zdraví škodlivý při styku s kůží.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H314-0_tl}{{H314}{%
+  \__mhchem_hp_s:nnn{20180301}{Způsobuje těžk\'e poleptání kůže a poškození očí.}{%
+  \__mhchem_hp_s:nnn{20101201}{Způsobuje těžk\'e poleptání kůže a poškození očí.}{%
+  \__mhchem_hp_s:nnn{20081216}{Způsobuje těžk\'e poleptání kůže a poškození očí.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H315-0_tl}{{H315}{%
+  \__mhchem_hp_s:nnn{20081216}{Dráždí kůži.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H317-0_tl}{{H317}{%
+  \__mhchem_hp_s:nnn{20081216}{Může vyvolat alergickou kožní reakci.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H318-0_tl}{{H318}{%
+  \__mhchem_hp_s:nnn{20081216}{Způsobuje vážn\'e poškození očí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H319-0_tl}{{H319}{%
+  \__mhchem_hp_s:nnn{20081216}{Způsobuje vážn\'e podráždění očí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H330-0_tl}{{H330}{%
+  \__mhchem_hp_s:nnn{20081216}{Při vdechování může způsobit smrt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H331-0_tl}{{H331}{%
+  \__mhchem_hp_s:nnn{20081216}{Toxický při vdechování.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H332-0_tl}{{H332}{%
+  \__mhchem_hp_s:nnn{20081216}{Zdraví škodlivý při vdechování.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H334-0_tl}{{H334}{%
+  \__mhchem_hp_s:nnn{20081216}{Při vdechování může vyvolat příznaky alergie nebo astmatu nebo dýchací potíže.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H335-0_tl}{{H335}{%
+  \__mhchem_hp_s:nnn{20081216}{Může způsobit podráždění dýchacích cest.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H336-0_tl}{{H336}{%
+  \__mhchem_hp_s:nnn{20081216}{Může způsobit ospalost nebo závratě.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H340-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{20081216}{Může vyvolat genetick\'e poškození \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H340.0-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H340-1empty_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H340-1_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H341-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{20081216}{Podezření na genetick\'e poškození \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H341.0-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H341-1empty_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H341-1_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H350-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{20081216}{Může vyvolat rakovinu \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H350.0-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H350-1empty_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H350-1_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H350i-0_tl}{{H350i}{%
+  \__mhchem_hp_s:nnn{20081216}{Může vyvolat rakovinu při vdechování.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H351-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{20081216}{Podezření na vyvolání rakoviny \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H351.0-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H351-1empty_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H351-1_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H360-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{20081216}{Může poškodit reprodukční schopnost nebo plod v těle matky \noexpand\textless{}uveďte specifický účinek, je-li znám\noexpand\textgreater{} \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H360.0-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H360-1empty_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H360-1_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H360F-0_tl}{{H360F}{%
+  \__mhchem_hp_s:nnn{20081216}{Může poškodit reprodukční schopnost.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H360D-0_tl}{{H360D}{%
+  \__mhchem_hp_s:nnn{20101201}{Může poškodit plod v těle matky.}{%
+  \__mhchem_hp_s:nnn{20081216}{Může poškodit plod v těle matky.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H360FD-0_tl}{{H360FD}{%
+  \__mhchem_hp_s:nnn{20101201}{Může poškodit reprodukční schopnost. Může poškodit plod v těle matky.}{%
+  \__mhchem_hp_s:nnn{20081216}{Může poškodit reprodukční schopnost. Může poškodit plod v těle matky.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H360Fd-0_tl}{{H360Fd}{%
+  \__mhchem_hp_s:nnn{20101201}{Může poškodit reprodukční schopnost. Podezření na poškození plodu v těle matky.}{%
+  \__mhchem_hp_s:nnn{20081216}{Může poškodit reprodukční schopnost. Podezření na poškození plodu v těle matky.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H360Df-0_tl}{{H360Df}{%
+  \__mhchem_hp_s:nnn{20101201}{Může poškodit plod v těle matky. Podezření na poškození reprodukční schopnosti.}{%
+  \__mhchem_hp_s:nnn{20081216}{Může poškodit plod v těle matky. Podezření na poškození reprodukční schopnosti.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H361-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{20101201}{Podezření na poškození reprodukční schopnosti nebo plodu v těle matky \noexpand\textless{}uveďte specifický účinek, je-li znám\noexpand\textgreater{} \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{%
+  \__mhchem_hp_s:nnn{20081216}{Podezření na poškození reprodukční schopnosti nebo plodu v těle matky \noexpand\textless{}uveďte specifický účinek, je-li znám\noexpand\textgreater{} \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H361.0-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H361-1empty_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H361-1_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H361f-0_tl}{{H361f}{%
+  \__mhchem_hp_s:nnn{20081216}{Podezření na poškození reprodukční schopnosti.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H361d-0_tl}{{H361d}{%
+  \__mhchem_hp_s:nnn{20101201}{Podezření na poškození plodu v těle matky.}{%
+  \__mhchem_hp_s:nnn{20081216}{Podezření na poškození plodu v těle matky.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H361fd-0_tl}{{H361fd}{%
+  \__mhchem_hp_s:nnn{20101201}{Podezření na poškození reprodukční schopnosti. Podezření na poškození plodu v těle matky.}{%
+  \__mhchem_hp_s:nnn{20081216}{Podezření na poškození reprodukční schopnosti. Podezření na poškození plodu v těle matky.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H362-0_tl}{{H362}{%
+  \__mhchem_hp_s:nnn{20081216}{Může poškodit kojence prostřednictvím mateřsk\'eho ml\'eka.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H370-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{20081216}{Způsobuje poškození orgánů \noexpand\textless{}nebo uv\'est všechny postižen\'e orgány, jsou-li známy\noexpand\textgreater{} \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H370.0-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H370.1-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H370.1-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H370-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H370-2_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H371-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{20081216}{Může způsobit poškození orgánů \noexpand\textless{}nebo uv\'est všechny postižen\'e orgány, jsou-li známy\noexpand\textgreater{} \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H371.0-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H371.1-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H371.1-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H371-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H371-2_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H372-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{20081216}{Způsobuje poškození orgánů \noexpand\textless{}nebo uv\'est všechny postižen\'e orgány, jsou-li známy\noexpand\textgreater{} při prodloužen\'e nebo opakovan\'e expozici \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H372.0-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H372.1-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H372.1-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H372-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H372-2_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H373-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{20081216}{Může způsobit poškození orgánů \noexpand\textless{}nebo uv\'est všechny postižen\'e orgány, jsou-li známy\noexpand\textgreater{} při prodloužen\'e nebo opakovan\'e expozici \noexpand\textless{}uveďte cestu expozice, je-li přesvědčivě prokázáno, že ostatní cesty expozice nejsou nebezpečn\'e\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H373.0-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H373.1-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H373.1-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H373-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H373-2_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H300+H310-0_tl}{{H300\,+\,\hskip\z@skip{}H310}{%
+  \__mhchem_hp_s:nnn{20110419}{Při požití nebo při styku s kůží může způsobit smrt}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H300+H310+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Při požití, při styku s kůží nebo při vdechování může způsobit smrt}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H300+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Při požití nebo při vdechování může způsobit smrt}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H301+H311-0_tl}{{H301\,+\,\hskip\z@skip{}H311}{%
+  \__mhchem_hp_s:nnn{20110419}{Toxický při požití a při styku s kůží}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H301+H311+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Toxický při požití, při styku s kůží a při vdechování}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H301+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Toxický při požití a při vdechování}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H302+H312-0_tl}{{H302\,+\,\hskip\z@skip{}H312}{%
+  \__mhchem_hp_s:nnn{20110419}{Zdraví škodlivý při požití a při styku s kůží}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H302+H312+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Zdraví škodlivý při požití, při styku s kůží a při vdechování}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H302+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Zdraví škodlivý při požití a při vdechování}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H310+H330-0_tl}{{H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Při styku s kůží nebo při vdechování může způsobit smrt}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H311+H331-0_tl}{{H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Toxický při styku s kůží a při vdechování}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H312+H332-0_tl}{{H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Zdraví škodlivý při styku s kůží a při vdechování}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H400-0_tl}{{H400}{%
+  \__mhchem_hp_s:nnn{20081216}{Vysoce toxický pro vodní organismy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H410-0_tl}{{H410}{%
+  \__mhchem_hp_s:nnn{20081216}{Vysoce toxický pro vodní organismy, s dlouhodobými účinky.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H411-0_tl}{{H411}{%
+  \__mhchem_hp_s:nnn{20081216}{Toxický pro vodní organismy, s dlouhodobými účinky.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H412-0_tl}{{H412}{%
+  \__mhchem_hp_s:nnn{20081216}{Škodlivý pro vodní organismy, s dlouhodobými účinky.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H413-0_tl}{{H413}{%
+  \__mhchem_hp_s:nnn{20081216}{Může vyvolat dlouhodob\'e škodliv\'e účinky pro vodní organismy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_H420-0_tl}{{H420}{%
+  \__mhchem_hp_s:nnn{20110419}{Poškozuje veřejn\'e zdraví a životní prostředí tím, že ničí ozon ve svrchních vrstvách atmosf\'ery}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH001-0_tl}{{EUH001}{%
+  \__mhchem_hp_s:nnn{20201017}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Výbušný v such\'em stavu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH006-0_tl}{{EUH006}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Výbušný za přístupu i bez přístupu vzduchu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH014-0_tl}{{EUH014}{%
+  \__mhchem_hp_s:nnn{20081216}{Prudce reaguje s vodou.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH018-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{20081216}{Při používání může vytvářet hořlav\'e nebo výbušn\'e směsi par se vzduchem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH018.0-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH018.1-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH018.2-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH019-0_tl}{{EUH019}{%
+  \__mhchem_hp_s:nnn{20081216}{Může vytvářet výbušn\'e peroxidy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH029-0_tl}{{EUH029}{%
+  \__mhchem_hp_s:nnn{20081216}{Uvolňuje toxický plyn při styku s vodou.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH031-0_tl}{{EUH031}{%
+  \__mhchem_hp_s:nnn{20081216}{Uvolňuje toxický plyn při styku s kyselinami.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH032-0_tl}{{EUH032}{%
+  \__mhchem_hp_s:nnn{20081216}{Uvolňuje vysoce toxický plyn při styku s kyselinami.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH044-0_tl}{{EUH044}{%
+  \__mhchem_hp_s:nnn{20081216}{Nebezpečí výbuchu při zahřátí v uzavřen\'em obalu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH059-0_tl}{{EUH059}{%
+  \__mhchem_hp_s:nnn{20110419}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Nebezpečný pro ozonovou vrstvu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH066-0_tl}{{EUH066}{%
+  \__mhchem_hp_s:nnn{20081216}{Opakovaná expozice může způsobit vysušení nebo popraskání kůže.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH070-0_tl}{{EUH070}{%
+  \__mhchem_hp_s:nnn{20081216}{Toxický při styku s očima.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH071-0_tl}{{EUH071}{%
+  \__mhchem_hp_s:nnn{20081216}{Způsobuje poleptání dýchacích cest.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH201-0_tl}{{EUH201}{%
+  \__mhchem_hp_s:nnn{20081216}{Obsahuje olovo. Nemá se používat na povrchy, kter\'e mohou okusovat nebo olizovat děti.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH201A-0_tl}{{EUH201A}{%
+  \__mhchem_hp_s:nnn{20081216}{Pozor! Obsahuje olovo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH202-0_tl}{{EUH202}{%
+  \__mhchem_hp_s:nnn{20081216}{Kyanoakrylát. Nebezpečí. Okamžitě slepuje kůži a oči. Uchovávejte mimo dosah dětí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH203-0_tl}{{EUH203}{%
+  \__mhchem_hp_s:nnn{20081216}{Obsahuje chrom (VI). Může vyvolat alergickou reakci.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH204-0_tl}{{EUH204}{%
+  \__mhchem_hp_s:nnn{20081216}{Obsahuje isokyanáty. Může vyvolat alergickou reakci.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH205-0_tl}{{EUH205}{%
+  \__mhchem_hp_s:nnn{20081216}{Obsahuje epoxidov\'e složky. Může vyvolat alergickou reakci.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH206-0_tl}{{EUH206}{%
+  \__mhchem_hp_s:nnn{20081216}{Pozor! Nepoužívejte společně s jinými výrobky. Může uvolňovat nebezpečn\'e plyny (chlor).}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH207-0_tl}{{EUH207}{%
+  \__mhchem_hp_s:nnn{20081216}{Pozor! Obsahuje kadmium. Při používání vznikají nebezpečn\'e výpary. Viz informace dodan\'e výrobcem. Dodržujte bezpečnostní pokyny.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH208-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{20081216}{Obsahuje \noexpand\textless{}název senzibilizující látky\noexpand\textgreater{}. Může vyvolat alergickou reakci.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH208.0-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH208-1_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH209-0_tl}{{EUH209}{%
+  \__mhchem_hp_s:nnn{20081216}{Při používání se může stát vysoce hořlavým.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH209A-0_tl}{{EUH209A}{%
+  \__mhchem_hp_s:nnn{20081216}{Při používání se může stát hořlavým.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH210-0_tl}{{EUH210}{%
+  \__mhchem_hp_s:nnn{20101201}{Na vyžádání je k°dispozici bezpečnostní list.}{%
+  \__mhchem_hp_s:nnn{20081216}{Na vyžádání je k°dispozici bezpečnostní list.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH211-0_tl}{{EUH211}{%
+  \__mhchem_hp_s:nnn{20211001}{Pozor! Při postřiku se mohou vytvářet nebezpečn\'e respirabilní kapičky. Nevdechujte aerosoly nebo mlhu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH212-0_tl}{{EUH212}{%
+  \__mhchem_hp_s:nnn{20211001}{Pozor! Při použití se může vytvářet nebezpečný respirabilní prach. Nevdechujte prach.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH380-0_tl}{{EUH380}{%
+  \__mhchem_hp_s:nnn{20230420}{Může způsobit narušení činnosti endokrinního syst\'emu u lidí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH381-0_tl}{{EUH381}{%
+  \__mhchem_hp_s:nnn{20230420}{Podezření, že vyvolává narušení činnosti endokrinního syst\'emu u lidí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH401-0_tl}{{EUH401}{%
+  \__mhchem_hp_s:nnn{20081216}{Dodržujte pokyny pro používání, abyste se vyvarovali rizik pro lidsk\'e zdraví a životní prostředí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH430-0_tl}{{EUH430}{%
+  \__mhchem_hp_s:nnn{20230420}{Může způsobit narušení činnosti endokrinního syst\'emu v životním prostředí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH431-0_tl}{{EUH431}{%
+  \__mhchem_hp_s:nnn{20230420}{Podezření, že vyvolává narušení činnosti endokrinního syst\'emu v životním prostředí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH440-0_tl}{{EUH440}{%
+  \__mhchem_hp_s:nnn{20230420}{Hromadí se v životním prostředí a živých organismech včetně člověka}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH441-0_tl}{{EUH441}{%
+  \__mhchem_hp_s:nnn{20230420}{Silně se hromadí v životním prostředí a živých organismech včetně člověka}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH450-0_tl}{{EUH450}{%
+  \__mhchem_hp_s:nnn{20230420}{Může způsobit dlouhodob\'e a difúzní znečištění vodních zdrojů}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_EUH451-0_tl}{{EUH451}{%
+  \__mhchem_hp_s:nnn{20230420}{Může způsobit velmi dlouhodob\'e a difúzní znečištění vodních zdrojů}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P101-0_tl}{{P101}{%
+  \__mhchem_hp_s:nnn{20081216}{Je-li nutná l\'ekařská pomoc, mějte po ruce obal nebo štítek výrobku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P102-0_tl}{{P102}{%
+  \__mhchem_hp_s:nnn{20081216}{Uchovávejte mimo dosah dětí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P103-0_tl}{{P103}{%
+  \__mhchem_hp_s:nnn{20081216}{Před použitím si přečtěte údaje na štítku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P201-0_tl}{{P201}{%
+  \__mhchem_hp_s:nnn{20081216}{Před použitím si obstarejte speciální instrukce.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P202-0_tl}{{P202}{%
+  \__mhchem_hp_s:nnn{20081216}{Nepoužívejte, dokud jste si nepřečetli všechny bezpečnostní pokyny a neporozuměli jim.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P210-0_tl}{{P210}{%
+  \__mhchem_hp_s:nnn{20150601}{Chraňte před teplem, horkými povrchy, jiskrami, otevřeným ohněm a jinými zdroji zapálení. Zákaz kouření.}{%
+  \__mhchem_hp_s:nnn{20081216}{Chraňte před teplem/\hskip\z@skip{}jiskrami/\hskip\z@skip{}otevřeným plamenem/\hskip\z@skip{}horkými povrchy. -- Zákaz kouření.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P211-0_tl}{{P211}{%
+  \__mhchem_hp_s:nnn{20081216}{Nestříkejte do otevřen\'eho ohně nebo jiných zdrojů zapálení.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P212-0_tl}{{P212}{%
+  \__mhchem_hp_s:nnn{20201017}{Zamezte zahřívání v uzavřen\'em obalu nebo snížení objemu znecitlivujícího prostředku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P220-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{20180301}{Uchovávejte odděleně od oděvů a jiných hořlavých materiálů.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uchovávejte/\hskip\z@skip{}skladujte odděleně od oděvů/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}hořlavých materiálů.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P220.0-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P220.1.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P220.1.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P220.1-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P220.2.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P220.2.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P220.2-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P221-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Proveďte preventivní opatření proti smíchání s hořlavými materiály\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P221.0-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P221.1-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P221-1_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P222-0_tl}{{P222}{%
+  \__mhchem_hp_s:nnn{20081216}{Zabraňte styku se vzduchem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P223-0_tl}{{P223}{%
+  \__mhchem_hp_s:nnn{20150601}{Zabraňte styku s vodou.}{%
+  \__mhchem_hp_s:nnn{20101201}{Chraňte před možným stykem s vodou kvůli prudk\'e reakci a možn\'emu náhl\'emu vzplanutí.}{%
+  \__mhchem_hp_s:nnn{20081216}{Chraňte před možným stykem s vodou kvůli prudk\'e reakci a možn\'emu náhl\'emu vzplanutí.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P230-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{20081216}{Uchovávejte ve zvlhčen\'em stavu\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P230.0-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P230-1_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P231-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{20180301}{Manipulace a skladování pod inertním plynem /\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Manipulace pod inertním plynem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P231.0-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P231.1-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P231-1_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P232-0_tl}{{P232}{%
+  \__mhchem_hp_s:nnn{20081216}{Chraňte před vlhkem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P233-0_tl}{{P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Uchovávejte obal těsně uzavřený.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P234-0_tl}{{P234}{%
+  \__mhchem_hp_s:nnn{20180301}{Uchovávejte pouze v původním balení.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uchovávejte pouze v původním obalu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P235-0_tl}{{P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Uchovávejte v chladu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P240-0_tl}{{P240}{%
+  \__mhchem_hp_s:nnn{20180301}{Uzemněte a upevněte obal a odběrov\'e zařízení.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uzemněte obal a odběrov\'e zařízení.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P241-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{20180301}{Používejte [elektrick\'e/\hskip\z@skip{}ventilační/\hskip\z@skip{}osvětlovací/\hskip\z@skip{}\noexpand\textellipsis{}] zařízení do výbušn\'eho prostředí.}{%
+  \__mhchem_hp_s:nnn{20081216}{Používejte elektrick\'e/\hskip\z@skip{}ventilační/\hskip\z@skip{}osvětlovací/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}zařízení do výbušn\'eho prostředí.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P241.0-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P241.1-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P241.2-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P241.3-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P241-1_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P242-0_tl}{{P242}{%
+  \__mhchem_hp_s:nnn{20180301}{Používejte nářadí z nejiskřícího kovu.}{%
+  \__mhchem_hp_s:nnn{20101201}{Používejte pouze nářadí z nejiskřícího kovu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Používejte pouze nářadí z nejiskřícího kovu.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P243-0_tl}{{P243}{%
+  \__mhchem_hp_s:nnn{20180301}{Proveďte opatření proti výbojům statick\'e elektřiny.}{%
+  \__mhchem_hp_s:nnn{20081216}{Proveďte preventivní opatření proti výbojům statick\'e elektřiny.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P244-0_tl}{{P244}{%
+  \__mhchem_hp_s:nnn{20150601}{Udržujte ventily i příslušenství čist\'e -- bez olejů a maziv.}{%
+  \__mhchem_hp_s:nnn{20081216}{Udržujte redukční ventily bez maziva a oleje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P250-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{20180301}{Nevystavujte obrušování/\hskip\z@skip{}nárazům/\hskip\z@skip{}tření/\hskip\z@skip{}\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{Nevystavujte obrušování/\hskip\z@skip{}nárazům/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}tření.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P250.0-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P250.1-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P250.2-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P250.3-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P250-1_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P251-0_tl}{{P251}{%
+  \__mhchem_hp_s:nnn{20150601}{Nepropichujte nebo nespalujte ani po použití.}{%
+  \__mhchem_hp_s:nnn{20081216}{Tlakový obal: nepropichujte nebo nespalujte ani po použití.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P260-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{20081216}{Nevdechujte prach/\hskip\z@skip{}dým/\hskip\z@skip{}plyn/\hskip\z@skip{}mlhu/\hskip\z@skip{}páry/\hskip\z@skip{}aerosoly.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P260.0-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P260.1-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P260.2-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P260.3-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P260.4-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P260.5-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P260.6-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P261-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{20081216}{Zamezte vdechování prachu/\hskip\z@skip{}dýmu/\hskip\z@skip{}plynu/\hskip\z@skip{}mlhy/\hskip\z@skip{}par/\hskip\z@skip{}aerosolů.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P261.0-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P261.1-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P261.2-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P261.3-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P261.4-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P261.5-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P261.6-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P262-0_tl}{{P262}{%
+  \__mhchem_hp_s:nnn{20101201}{Zabraňte styku s očima, kůží nebo oděvem.}{%
+  \__mhchem_hp_s:nnn{20081216}{Zabraňte styku s očima, kůží nebo oděvem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P263-0_tl}{{P263}{%
+  \__mhchem_hp_s:nnn{20180301}{Zabraňte styku během těhotenství a kojení.}{%
+  \__mhchem_hp_s:nnn{20081216}{Zabraňte styku během těhotenství/\hskip\z@skip{}kojení.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P264-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{20081216}{Po manipulaci důkladně omyjte \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P264.0-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P264-1_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P270-0_tl}{{P270}{%
+  \__mhchem_hp_s:nnn{20081216}{Při používání tohoto výrobku nejezte, nepijte ani nekuřte.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P271-0_tl}{{P271}{%
+  \__mhchem_hp_s:nnn{20081216}{Používejte pouze venku nebo v dobře větraných prostorách.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P272-0_tl}{{P272}{%
+  \__mhchem_hp_s:nnn{20081216}{Kontaminovaný pracovní oděv neodnášejte z pracoviště.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P273-0_tl}{{P273}{%
+  \__mhchem_hp_s:nnn{20081216}{Zabraňte uvolnění do životního prostředí.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P280-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{20081216}{Používejte ochrann\'e rukavice/\hskip\z@skip{}ochranný oděv/\hskip\z@skip{}ochrann\'e brýle/\hskip\z@skip{}obličejový štít.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P280.0-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P280.1-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P280.2-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P280.3-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P280.4-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P281-0_tl}{{P281}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Používejte požadovan\'e osobní ochrann\'e prostředky.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P282-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{20180301}{Používejte ochrann\'e rukavice proti chladu a buď obličejový štít, nebo ochrann\'e brýle.}{%
+  \__mhchem_hp_s:nnn{20081216}{Používejte ochrann\'e rukavice proti chladu/\hskip\z@skip{}obličejový štít/\hskip\z@skip{}ochrann\'e brýle.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P282.0-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P282.1-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P282.2-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P282.3-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P283-0_tl}{{P283}{%
+  \__mhchem_hp_s:nnn{20180301}{Používejte ohnivzdorný oděv nebo oděv zpomalující hoření.}{%
+  \__mhchem_hp_s:nnn{20081216}{Používejte ohnivzdorný/\hskip\z@skip{}nehořlavý oděv.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P284-0_tl}{{P284}{%
+  \__mhchem_hp_s:nnn{20150601}{[V případě nedostatečn\'eho větrání] používejte vybavení pro ochranu dýchacích cest.}{%
+  \__mhchem_hp_s:nnn{20081216}{Používejte vybavení pro ochranu dýchacích cest.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P285-0_tl}{{P285}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{V případě nedostatečn\'eho větrání používejte vybavení pro ochranu dýchacích cest.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P231+P232-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{20180301}{Manipulace a skladování pod inertním plynem /\hskip\z@skip{}\noexpand\textellipsis{}. Chraňte před vlhkem.}{%
+  \__mhchem_hp_s:nnn{20081216}{Manipulace pod inertním plynem. Chraňte před vlhkem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P231+P232.0-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P231+P232.1-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P231+P232-1_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P235+P410-0_tl}{{P235\,+\,\hskip\z@skip{}P410}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Uchovávejte v chladu. Chraňte před slunečním zářením.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301-0_tl}{{P301}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI POŽITÍ:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302-0_tl}{{P302}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI STYKU S KŮŽÍ:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P303-0_tl}{{P303}{%
+  \__mhchem_hp_s:nnn{20101201}{PŘI STYKU S KŮŽÍ (nebo s vlasy):}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI STYKU S KŮŽÍ (nebo s vlasy):}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P304-0_tl}{{P304}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI VDECHNUTÍ:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P305-0_tl}{{P305}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI ZASAŽENÍ OČÍ:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P306-0_tl}{{P306}{%
+  \__mhchem_hp_s:nnn{20101201}{PŘI STYKU S ODĚVEM:}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI STYKU S ODĚVEM:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P307-0_tl}{{P307}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI expozici:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P308-0_tl}{{P308}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI expozici nebo podezření na ni:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P309-0_tl}{{P309}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI expozici nebo necítíte-li se dobře:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P310-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{20150601}{Okamžitě volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO/\hskip\z@skip{}l\'ekaře/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Okamžitě volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO nebo l\'ekaře.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P310.0-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P310.1-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P310.2-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P310-1_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P311-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO/\hskip\z@skip{}l\'ekaře/\hskip\z@skip{}\noexpand\textellipsis{}.}{%
+  \__mhchem_hp_s:nnn{20081216}{Volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO nebo l\'ekaře.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P311.0-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P311.1-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P311.2-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P311-1_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P312-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{20180301}{Necítíte-li se dobře, volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO /\hskip\z@skip{} l\'ekaře /\hskip\z@skip{}\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20150601}{Necítíte-li se dobře, volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO/\hskip\z@skip{}l\'ekaře/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Necítíte-li se dobře, volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO nebo l\'ekaře.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P312.0-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P312.1-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P312.2-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P312-1_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P313-0_tl}{{P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Vyhledejte l\'ekařskou pomoc/\hskip\z@skip{}ošetření.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P314-0_tl}{{P314}{%
+  \__mhchem_hp_s:nnn{20081216}{Necítíte-li se dobře, vyhledejte l\'ekařskou pomoc/\hskip\z@skip{}ošetření.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P315-0_tl}{{P315}{%
+  \__mhchem_hp_s:nnn{20081216}{Okamžitě vyhledejte l\'ekařskou pomoc/\hskip\z@skip{}ošetření.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P320-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{20081216}{Je nutn\'e odborn\'e ošetření (viz \noexpand\textellipsis{} na tomto štítku).}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P320.0-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P320-1_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P320.nolabel-1_tl}{{P320.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P321-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{20081216}{Odborn\'e ošetření (viz \noexpand\textellipsis{} na tomto štítku).}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P321.0-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P321-1_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P321.nolabel-1_tl}{{P321.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P322-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Specifick\'e opatření (viz \noexpand\textellipsis{} na tomto štítku).}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P322.0-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P322-1_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P322.nolabel-1_tl}{{P322.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P330-0_tl}{{P330}{%
+  \__mhchem_hp_s:nnn{20081216}{Vypláchněte ústa.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P331-0_tl}{{P331}{%
+  \__mhchem_hp_s:nnn{20081216}{NEVYVOLÁVEJTE zvracení.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P332-0_tl}{{P332}{%
+  \__mhchem_hp_s:nnn{20081216}{Při podráždění kůže:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P333-0_tl}{{P333}{%
+  \__mhchem_hp_s:nnn{20081216}{Při podráždění kůže nebo vyrážce:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P334-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{20180301}{Ponořte do studen\'e vody [nebo zabalte do vlhk\'eho obvazu].}{%
+  \__mhchem_hp_s:nnn{20081216}{Ponořte do studen\'e vody/\hskip\z@skip{}zabalte do vlhk\'eho obvazu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P334.0-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P334.1-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P334.2-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P335-0_tl}{{P335}{%
+  \__mhchem_hp_s:nnn{20081216}{Voln\'e částice odstraňte z kůže.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P336-0_tl}{{P336}{%
+  \__mhchem_hp_s:nnn{20081216}{Omrzlá místa ošetřete vlažnou vodou. Postižen\'e místo netřete.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P337-0_tl}{{P337}{%
+  \__mhchem_hp_s:nnn{20081216}{Přetrvává-li podráždění očí:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P338-0_tl}{{P338}{%
+  \__mhchem_hp_s:nnn{20081216}{Vyjměte kontaktní čočky, jsou-li nasazeny a pokud je lze vyjmout snadno. Pokračujte ve vyplachování.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P340-0_tl}{{P340}{%
+  \__mhchem_hp_s:nnn{20150601}{Přeneste osobu na čerstvý vzduch a ponechte ji v poloze usnadňující dýchání.}{%
+  \__mhchem_hp_s:nnn{20101201}{Přeneste postižen\'eho na čerstvý vzduch a ponechte jej v klidu v poloze usnadňující dýchání.}{%
+  \__mhchem_hp_s:nnn{20081216}{Přeneste postižen\'eho na čerstvý vzduch a ponechte jej v klidu v poloze usnadňující dýchání.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P341-0_tl}{{P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20101201}{Při obtížn\'em dýchání přeneste postižen\'eho na čerstvý vzduch a ponechte jej v klidu v poloze usnadňující dýchání.}{%
+  \__mhchem_hp_s:nnn{20081216}{Při obtížn\'em dýchání přeneste postižen\'eho na čerstvý vzduch a ponechte jej v klidu v poloze usnadňující dýchání.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P342-0_tl}{{P342}{%
+  \__mhchem_hp_s:nnn{20081216}{Při dýchacích potížích:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P350-0_tl}{{P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Jemně omyjte velkým množstvím vody a mýdla.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P351-0_tl}{{P351}{%
+  \__mhchem_hp_s:nnn{20081216}{Několik minut opatrně oplachujte vodou.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P352-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{20150601}{Omyjte velkým množstvím vody/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Omyjte velkým množstvím vody a mýdla.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P352.0-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P352.1-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P352-1_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P353-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{20180301}{Opláchněte kůži vodou [nebo osprchujte].}{%
+  \__mhchem_hp_s:nnn{20081216}{Opláchněte kůži vodou/\hskip\z@skip{}osprchujte.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P353.0-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P353.1-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P353.2-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P360-0_tl}{{P360}{%
+  \__mhchem_hp_s:nnn{20081216}{Kontaminovaný oděv a kůži okamžitě omyjte velkým množstvím vody a potom oděv odložte.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P361-0_tl}{{P361}{%
+  \__mhchem_hp_s:nnn{20081216}{Vešker\'e kontaminovan\'e části oděvu okamžitě svl\'ekněte.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P362-0_tl}{{P362}{%
+  \__mhchem_hp_s:nnn{20150601}{Kontaminovaný oděv svl\'ekněte.}{%
+  \__mhchem_hp_s:nnn{20081216}{Kontaminovaný oděv svl\'ekněte a před opětovným použitím ho vyperte.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P363-0_tl}{{P363}{%
+  \__mhchem_hp_s:nnn{20081216}{Kontaminovaný oděv před opětovným použitím vyperte.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P364-0_tl}{{P364}{%
+  \__mhchem_hp_s:nnn{20150601}{A před opětovným použitím vyperte.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370-0_tl}{{P370}{%
+  \__mhchem_hp_s:nnn{20081216}{V případě požáru:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P371-0_tl}{{P371}{%
+  \__mhchem_hp_s:nnn{20081216}{V případě velk\'eho požáru a velk\'eho množství:}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P372-0_tl}{{P372}{%
+  \__mhchem_hp_s:nnn{20180301}{Nebezpečí výbuchu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nebezpečí výbuchu v případě požáru.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P373-0_tl}{{P373}{%
+  \__mhchem_hp_s:nnn{20101201}{Požár NEHASTE, dostane-li se k výbušninám.}{%
+  \__mhchem_hp_s:nnn{20081216}{Požár NEHASTE, dostane-li se k výbušninám.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P374-0_tl}{{P374}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Haste z přiměřen\'e vzdálenosti a dodržujte běžná opatření.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P375-0_tl}{{P375}{%
+  \__mhchem_hp_s:nnn{20101201}{Kvůli nebezpečí výbuchu haste z dostatečn\'e vzdálenosti.}{%
+  \__mhchem_hp_s:nnn{20081216}{Kvůli nebezpečí výbuchu haste z dostatečn\'e vzdálenosti.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P376-0_tl}{{P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Zastavte únik, můžete-li tak učinit bez rizika.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P377-0_tl}{{P377}{%
+  \__mhchem_hp_s:nnn{20081216}{Požár unikajícího plynu: Nehaste, nelze-li únik bezpečně zastavit.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P378-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{20150601}{K uhašení použijte\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{K hašení použijte \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P378.0-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P378-1_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P380-0_tl}{{P380}{%
+  \__mhchem_hp_s:nnn{20081216}{Vykliďte _roctor.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P381-0_tl}{{P381}{%
+  \__mhchem_hp_s:nnn{20180301}{V případě úniku odstraňte všechny zdroje zapálení.}{%
+  \__mhchem_hp_s:nnn{20081216}{Odstraňte všechny zdroje zapálení, můžete-li tak učinit bez rizika.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P390-0_tl}{{P390}{%
+  \__mhchem_hp_s:nnn{20081216}{Uniklý produkt absorbujte, aby se zabránilo materiálním škodám.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P391-0_tl}{{P391}{%
+  \__mhchem_hp_s:nnn{20081216}{Uniklý produkt seberte.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P310-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{20150601}{PŘI POŽITÍ: Okamžitě volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO/\hskip\z@skip{}l\'ekaře/\hskip\z@skip{}\noexpand\textellipsis{}.}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI POŽITÍ: Okamžitě volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO nebo l\'ekaře.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P310.0-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P310.1-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P310.2-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P310-1_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P312-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{20180301}{PŘI POŽITÍ: Necítíte-li se dobře, volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO /\hskip\z@skip{} l\'ekaře /\hskip\z@skip{} \noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20150601}{PŘI POŽITÍ: Necítíte-li se dobře, volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO/\hskip\z@skip{}l\'ekaře/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI POŽITÍ: Necítíte-li s dobře, volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO nebo l\'ekaře.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P312.0-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P312.1-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P312.2-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P312-1_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P301+P330+P331-0_tl}{{P301\,+\,\hskip\z@skip{}P330\,+\,\hskip\z@skip{}P331}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI POŽITÍ: Vypláchněte ústa. NEVYVOLÁVEJTE zvracení.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{PŘI STYKU S KŮŽÍ: Ponořte do studen\'e vody nebo zabalte do vlhk\'eho obvazu.}{%
+  \__mhchem_hp_s:nnn{20101201}{PŘI STYKU S KŮŽÍ: Ponořte do studen\'e vody/\hskip\z@skip{}zabalte do vlhk\'eho obvazu.}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI STYKU S KŮŽÍ: Ponořte do studen\'e vody/\hskip\z@skip{}zabalte do vlhk\'eho obvazu.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P335+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{PŘI STYKU S KŮŽÍ: Voln\'e částečky odstraňte z kůže. Ponořte do studen\'e vody [nebo zabalte do vlhk\'eho obvazu].}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P335+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P335+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P335+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P350-0_tl}{{P302\,+\,\hskip\z@skip{}P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20101201}{PŘI STYKU S KŮŽÍ: Jemně omyjte velkým množstvím vody a mýdla.}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI STYKU S KŮŽÍ: Jemně omyjte velkým množstvím vody a mýdla.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P352-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{20150601}{PŘI STYKU S KŮŽÍ: Omyjte velkým množstvím vody/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20101201}{PŘI STYKU S KŮŽÍ: Omyjte velkým množstvím vody a mýdla.}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI STYKU S KŮŽÍ: Omyjte velkým množstvím vody a mýdla.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P352.0-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P352.1-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P302+P352-1_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P303+P361+P353-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{20180301}{PŘI STYKU S KŮŽÍ (nebo s vlasy): Vešker\'e kontaminovan\'e části oděvu okamžitě svl\'ekněte. Opláchněte kůži vodou [nebo osprchujte].}{%
+  \__mhchem_hp_s:nnn{20101201}{PŘI STYKU S KŮŽÍ (nebo s vlasy): Vešker\'e kontaminovan\'e části oděvu okamžitě svl\'ekněte. Opláchněte kůži vodou/\hskip\z@skip{}osprchujte.}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI STYKU S KŮŽÍ (nebo s vlasy): Vešker\'e kontaminovan\'e části oděvu okamžitě svl\'ekněte. Opláchněte kůži vodou/\hskip\z@skip{}osprchujte.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P303+P361+P353.0-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P303+P361+P353.1-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P303+P361+P353.2-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P304+P340-0_tl}{{P304\,+\,\hskip\z@skip{}P340}{%
+  \__mhchem_hp_s:nnn{20150601}{PŘI VDECHNUTÍ: Přeneste osobu na čerstvý vzduch a ponechte ji v poloze usnadňující dýchání.}{%
+  \__mhchem_hp_s:nnn{20101201}{PŘI VDECHNUTÍ: Přeneste postižen\'eho na čerstvý vzduch a ponechte jej v klidu v poloze usnadňující dýchání.}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI VDECHNUTÍ: Přeneste postižen\'eho na čerstvý vzduch a ponechte jej v klidu v poloze usnadňující dýchání.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P304+P341-0_tl}{{P304\,+\,\hskip\z@skip{}P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20101201}{PŘI VDECHNUTÍ: Při obtížn\'em dýchání přeneste postižen\'eho na čerstvý vzduch a ponechte jej v klidu v poloze usnadňující dýchání.}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI VDECHNUTÍ: Při obtížn\'em dýchání přeneste postižen\'eho na čerstvý vzduch a ponechte jej v klidu v poloze usnadňující dýchání.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P305+P351+P338-0_tl}{{P305\,+\,\hskip\z@skip{}P351\,+\,\hskip\z@skip{}P338}{%
+  \__mhchem_hp_s:nnn{20180301}{PŘI ZASAŽENÍ OČÍ: Několik minut opatrně vyplachujte vodou. Vyjměte kontaktní čočky, jsou-li nasazeny a pokud je lze vyjmout snadno. Pokračujte ve vyplachování.}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI ZASAŽENÍ OČÍ: Několik minut opatrně vyplachujte vodou. Vyjměte kontaktní čočky, jsou-li nasazeny a pokud je lze vyjmout snadno. Pokračujte ve vyplachování.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P306+P360-0_tl}{{P306\,+\,\hskip\z@skip{}P360}{%
+  \__mhchem_hp_s:nnn{20101201}{PŘI STYKU S ODĚVEM: Kontaminovaný oděv a kůži oklamžitě omyjte velkým množstvím vody a potom oděv odložte.}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI STYKU S ODĚVEM: Kontaminovaný oděv a kůži oklamžitě omyjte velkým množstvím vody a potom oděv odložte.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P307+P311-0_tl}{{P307\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI expozici: Volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO nebo l\'ekaře.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P308+P311-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{PŘI expozici nebo podezření na ni: Volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO/\hskip\z@skip{}l\'ekaře/\hskip\z@skip{}\noexpand\textellipsis{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P308+P311.0-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P308+P311.1-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P308+P311.2-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P308+P311-1_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P308+P313-0_tl}{{P308\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI expozici nebo podezření na ni: Vyhledejte l\'ekařskou pomoc/\hskip\z@skip{}ošetření.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P309+P311-0_tl}{{P309\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{PŘI expozici nebo necítíte-li se dobře: Volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO nebo l\'ekaře.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P332+P313-0_tl}{{P332\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Při podráždění kůže: Vyhledejte l\'ekařskou pomoc/\hskip\z@skip{}ošetření.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P333+P313-0_tl}{{P333\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Při podráždění kůže nebo vyrážce: Vyhledejte l\'ekařskou pomoc/\hskip\z@skip{}ošetření.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P335+P334-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Voln\'e částice odstraňte z kůže. Ponořte do studen\'e vody/\hskip\z@skip{}zabalte do vlhk\'eho obvazu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P335+P334.0-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P335+P334.1-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P335+P334.2-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P336+P315-0_tl}{{P336\,+\,\hskip\z@skip{}P315}{%
+  \__mhchem_hp_s:nnn{20180301}{Omrzlá místa ošetřete vlažnou vodou. Postižen\'e místo netřete. Okamžitě vyhledejte l\'ekařskou pomoc/\hskip\z@skip{}ošetření.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P337+P313-0_tl}{{P337\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Přetrvává-li podráždění očí: Vyhledejte l\'ekařskou pomoc/\hskip\z@skip{}ošetření.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P342+P311-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Při dýchacích potížích: Volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO/\hskip\z@skip{}l\'ekaře/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Při dýchacích potížích: Volejte TOXIKOLOGICK\'E INFORMAČNÍ STŘEDISKO nebo l\'ekaře.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P342+P311.0-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P342+P311.1-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P342+P311.2-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P342+P311-1_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P361+P364-0_tl}{{P361\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Vešker\'e kontaminovan\'e části oděvu okamžitě svl\'ekněte a před opětovným použitím vyperte.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P362+P364-0_tl}{{P362\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Kontaminovaný oděv svl\'ekněte a před opětovným použitím vyperte.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P372+P380+P373-0_tl}{{P370\,+\,\hskip\z@skip{}P372\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P373}{%
+  \__mhchem_hp_s:nnn{20180301}{V případě požáru: Nebezpečí výbuchu. Vykliďte prostor. Požár NEHASTE, dostane-li se k výbušninám.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P376-0_tl}{{P370\,+\,\hskip\z@skip{}P376}{%
+  \__mhchem_hp_s:nnn{20081216}{V případě požáru: Zastavte únik, můžete-li tak učinit bez rizika.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{20150601}{V případě požáru: K uhašení použijte\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{V případě požáru: K hašení použijte \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P380-0_tl}{{P370\,+\,\hskip\z@skip{}P380}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{V případě požáru: Vykliďte prostor.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P380+P375-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20101201}{V případě požáru: Vykliďte prostor. Kvůli nebezpečí výbuchu haste z dostatečn\'e vzdálenosti.}{%
+  \__mhchem_hp_s:nnn{20081216}{V případě požáru: Vykliďte prostor. Kvůli nebezpečí výbuchu haste z dostatečn\'e vzdálenosti.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P380+P375+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P380+P375+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P380+P375+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P371+P380+P375-0_tl}{{P371\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20101201}{V případě velk\'eho požáru a velk\'eho množství: Vykliďte prostor. Kvůli nebezpečí výbuchu haste z dostatečn\'e vzdálenosti.}{%
+  \__mhchem_hp_s:nnn{20081216}{V případě velk\'eho požáru a velk\'eho množství: Vykliďte prostor. Kvůli nebezpečí výbuchu haste z dostatečn\'e vzdálenosti.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P401-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{20180301}{Skladujte v souladu s \noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P401.0-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P401-1_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P402-0_tl}{{P402}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte na such\'em místě.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P403-0_tl}{{P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte na dobře větran\'em místě.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P404-0_tl}{{P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte v uzavřen\'em obalu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P405-0_tl}{{P405}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte uzamčen\'e.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P406-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{20180301}{Skladujte v obalu odoln\'em proti korozi/\hskip\z@skip{}\noexpand\textellipsis{} s odolnou vnitřní vrstvou.}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte v obalu odoln\'em proti korozi/\hskip\z@skip{}\noexpand\textellipsis{} obalu s odolnou vnitřní vrstvou.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P406.0-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P406.1-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P406-1_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P407-0_tl}{{P407}{%
+  \__mhchem_hp_s:nnn{20180301}{Mezi stohy nebo paletami ponechte vzduchovou mezeru.}{%
+  \__mhchem_hp_s:nnn{20081216}{Mezi stohy/\hskip\z@skip{}paletami ponechte vzduchovou mezeru.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P410-0_tl}{{P410}{%
+  \__mhchem_hp_s:nnn{20081216}{Chraňte před slunečním zářením.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P411-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{20101201}{Skladujte při teplotě nepřesahující \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte při teplotě nepřesahující \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P411.0-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P411.1-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P411.2-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P412-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Nevystavujte teplotě přesahující 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nevystavujte teplotě přesahující 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P412.0-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P412.1-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P412.2-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P413-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{20101201}{Množství větší než \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{} liber skladujte při teplotě nepřesahující \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Množství větší než \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{} liber skladujte při teplotě nepřesahující \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P413.0-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P413.1-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P413.2-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P420-0_tl}{{P420}{%
+  \__mhchem_hp_s:nnn{20180301}{Skladujte odděleně.}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte odděleně od ostatních materiálů.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P422-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte pod \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P422.0-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P422-1_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P402+P404-0_tl}{{P402\,+\,\hskip\z@skip{}P404}{%
+  \__mhchem_hp_s:nnn{20101201}{Skladujte na such\'em místě. Skladujte v uzavřen\'em obalu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte na such\'em místě. Skladujte v uzavřen\'em obalu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P403+P233-0_tl}{{P403\,+\,\hskip\z@skip{}P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte na dobře větran\'em místě. Uchovávejte obal těsně uzavřený.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P403+P235-0_tl}{{P403\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte na dobře větran\'em místě. Uchovávejte v chladu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P410+P403-0_tl}{{P410\,+\,\hskip\z@skip{}P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Chraňte před slunečním zářením. Skladujte na dobře větran\'em místě.}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P410+P412-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Chraňte před slunečním zářením. Nevystavujte teplotě přesahující 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Chraňte před slunečním zářením. Nevystavujte teplotě přesahující 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P410+P412.0-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P410+P412.1-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P410+P412.2-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P411+P235-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20101201}{Skladujte při teplotě nepřesahující \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Uchovávejte v chladu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Skladujte při teplotě nepřesahující \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Uchovávejte v chladu.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P411+P235.0-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P411+P235.1-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P411+P235.2-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P501-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{20081216}{Odstraňte obsah/\hskip\z@skip{}obal \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P501.0-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P501.0-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P501.1-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P501.2-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P502-0_tl}{{P502}{%
+  \__mhchem_hp_s:nnn{20180301}{Informujte se u výrobce nebo dodavatele o regeneraci nebo recyklaci.}{%
+  \__mhchem_hp_s:nnn{20110419}{Informujte se u výrobce nebo dodavatele o regeneraci nebo recyklaci}{}}}}%
+\tl_gset:cn{g__mhchem_hp_cs_P370+P380+P375[+P378]-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375[\,+\,\hskip\z@skip{}P378]}{%
+  \__mhchem_hp_s:nnn{20180301}{V případě požáru: Vykliďte prostor. Kvůli nebezpečí výbuchu haste z dostatečn\'e vzdálenosti. [K uhašení použijte \noexpand\textellipsis{}].}{}}}%
+%
+\group_end:
+\ExplSyntaxOff

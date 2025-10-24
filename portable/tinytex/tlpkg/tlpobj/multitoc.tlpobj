@@ -1,0 +1,23 @@
+name multitoc
+category Package
+revision 71520
+shortdesc Set table of contents in multiple columns
+longdesc The package automatically sets the table of contents, list of
+longdesc figures and list of tables in two or more columns (the number
+longdesc of columns may be configured). The package uses the multicol
+longdesc package.
+containersize 1512
+containerchecksum 261e265bdd4528092168be95ad071bb379c4b8d5f98dfd7a277ffb87f0e6e30f68e0ba97cc9860e6efebfc0ed4a4a68602845f1e008b5405263a3449cc9e163a
+doccontainersize 276500
+doccontainerchecksum 63fcd924150e77dab725df52f492b7b76eb7b0c94fe47a2ad2ea0a626cb0c7e4b87f81334ea7337c64d2b7c63a89f04b07ef04e7961cf7a92837126a1c376fb3
+srccontainersize 5780
+srccontainerchecksum f95825c853d669087ca3eda798e9177f0892e5dd138e30e256660e754b4719c1f817318ac425f98f87cd2faac0ce128f11bd09f2266e7ffe8dfa401980765cac
+runfiles size=1
+ texmf-dist/tex/latex/multitoc/multitoc.sty
+catalogue-also tocbasic
+catalogue-contact-bugs https://gitlab.com/TeXhackse/multitoc/-/issues
+catalogue-contact-repository https://gitlab.com/TeXhackse/multitoc/
+catalogue-ctan /macros/latex/contrib/multitoc
+catalogue-license lppl
+catalogue-topics toc-etc
+catalogue-version 2.02

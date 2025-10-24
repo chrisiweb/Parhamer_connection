@@ -1,0 +1,25 @@
+name ltxkeys
+category Package
+revision 28332
+shortdesc A robust key parser for LaTeX
+longdesc The package provides facilities for creating and managing keys
+longdesc in the sense of the keyval and xkeyval packages, but it is
+longdesc intended to be more robust and faster. Its robustness comes
+longdesc from its ability to preserve braces in key values throughout
+longdesc parsing. The need to preserve braces in key values arises often
+longdesc in parsing keys (for example, in the xwatermark package). The
+longdesc package is faster than xkeyval package because (among other
+longdesc things) it avoids character-wise parsing of key values (called
+longdesc "selective sanitization" by the xkeyval package). The package
+longdesc also provides functions for defining and managing keys.
+containersize 25344
+containerchecksum f99008a8d6d18697d095721dfd741ed2dc48f6edad09b15d39ce2c37f05e6f9c9d613a4ca7ba7fce8755f9dc5659e21f7e7961a7e38dbe17b7114c2337103d8f
+doccontainersize 722900
+doccontainerchecksum ab28eae4955de3e5a23be1d718fd1e23384ec0e4a8c4b86348bd83ff501ec2e51a3981c60babd478bca0c115ba524367f77f3cabd3f733b82a9fe4cc5fc06878
+runfiles size=34
+ texmf-dist/tex/latex/ltxkeys/ltxkeys.sty
+catalogue-also xkeyval
+catalogue-ctan /macros/latex/contrib/ltxkeys
+catalogue-license lppl
+catalogue-topics keyval
+catalogue-version 0.0.3c

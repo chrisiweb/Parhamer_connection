@@ -1,0 +1,25 @@
+name everysel
+category Package
+revision 57489
+shortdesc Provides hooks into \selectfont
+longdesc The package provided hooks whose arguments are executed just
+longdesc after LaTeX has loaded a new font by means of \selectfont. It
+longdesc has become obsolete with LaTeX versions 2021/01/05 or newer,
+longdesc since LaTeX now provides its own hooks to fulfill this task.
+longdesc For newer versions of LaTeX everysel only provides macros using
+longdesc LaTeX's hook management due to compatibility reasons. See
+longdesc lthooks-doc.pdf for instructions how to use lthooks instead of
+longdesc everysel.
+containersize 2380
+containerchecksum 79b83d48e3e6eedcf1673a30c28fc06eb2ed8e3bd292d6cf914faf5ce2929795e6dd11baae3a207c796abb67ced2a2442af11c2618fd7d565696f8bfd121a0a2
+doccontainersize 442272
+doccontainerchecksum 5efdce418de6d29481a8a8a9bb89fa561e865f5628dd67ce88fd648f54a40c6a90c625700d053d741b650c568eb6b63da81b68bebf89bb618a398a223a5b08a1
+srccontainersize 5580
+srccontainerchecksum c288dd88a266e87bad6880e36a681e29f5f52f02b5f7b86133daae2972932572f0e529945acc6a0f00b844909da8f77cf3a524bece531667437a5ffa0dc2a684
+runfiles size=3
+ texmf-dist/tex/latex/everysel/everysel-2011-10-28.sty
+ texmf-dist/tex/latex/everysel/everysel.sty
+catalogue-ctan /macros/latex/contrib/everysel
+catalogue-license lppl1.3c
+catalogue-topics defer-stuff obsolete
+catalogue-version 2.1

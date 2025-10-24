@@ -1,0 +1,73 @@
+name datetime
+category Package
+revision 36650
+shortdesc Change format of \today with commands for current time
+longdesc Provides various different formats for the text created by the
+longdesc command \today, and also provides commands for displaying the
+longdesc current time (or any given time), in 12-hour, 24-hour or text
+longdesc format. The package overrides babel's date format, having its
+longdesc own library of date formats in different languages. The package
+longdesc requires the fmtcount package. This package is now obsolete and
+longdesc has been replaced by datetime2.
+containersize 13604
+containerchecksum 3d033ee164d52f7085bffdc12f2062be7e94a644d9ed731b4d1b97a3a46838dabadcf6687063e165c65fc938a51a4adf8078339b720a305175d6cd6a3b889f07
+doccontainersize 427368
+doccontainerchecksum 510449d17b09d9207b76e732b5d426121888cf653f29bb3be8872b74a243596ac339f09d11a14a4a3007f8818171aab28727cd1713ee35c8908d2d168a57d9b0
+srccontainersize 29100
+srccontainerchecksum 3e03ba12952ad5dafa701c7ddd5d79097890d13d3510d420cc399b30b1c60c2b6f72bc5caa2a6d2f53ec50430d13582c5c6fb549dcb3566f827af0d4abeaa011
+runfiles size=66
+ texmf-dist/tex/latex/datetime/datetime-defaults.sty
+ texmf-dist/tex/latex/datetime/datetime.sty
+ texmf-dist/tex/latex/datetime/dt-UKenglish.def
+ texmf-dist/tex/latex/datetime/dt-USenglish.def
+ texmf-dist/tex/latex/datetime/dt-american.def
+ texmf-dist/tex/latex/datetime/dt-australian.def
+ texmf-dist/tex/latex/datetime/dt-austrian.def
+ texmf-dist/tex/latex/datetime/dt-bahasa.def
+ texmf-dist/tex/latex/datetime/dt-basque.def
+ texmf-dist/tex/latex/datetime/dt-breton.def
+ texmf-dist/tex/latex/datetime/dt-british.def
+ texmf-dist/tex/latex/datetime/dt-bulgarian.def
+ texmf-dist/tex/latex/datetime/dt-canadian.def
+ texmf-dist/tex/latex/datetime/dt-catalan.def
+ texmf-dist/tex/latex/datetime/dt-croatian.def
+ texmf-dist/tex/latex/datetime/dt-czech.def
+ texmf-dist/tex/latex/datetime/dt-danish.def
+ texmf-dist/tex/latex/datetime/dt-dutch.def
+ texmf-dist/tex/latex/datetime/dt-esperanto.def
+ texmf-dist/tex/latex/datetime/dt-estonian.def
+ texmf-dist/tex/latex/datetime/dt-finnish.def
+ texmf-dist/tex/latex/datetime/dt-french.def
+ texmf-dist/tex/latex/datetime/dt-galician.def
+ texmf-dist/tex/latex/datetime/dt-german.def
+ texmf-dist/tex/latex/datetime/dt-greek.def
+ texmf-dist/tex/latex/datetime/dt-hebrew.def
+ texmf-dist/tex/latex/datetime/dt-icelandic.def
+ texmf-dist/tex/latex/datetime/dt-irish.def
+ texmf-dist/tex/latex/datetime/dt-italian.def
+ texmf-dist/tex/latex/datetime/dt-latin.def
+ texmf-dist/tex/latex/datetime/dt-lsorbian.def
+ texmf-dist/tex/latex/datetime/dt-magyar.def
+ texmf-dist/tex/latex/datetime/dt-naustrian.def
+ texmf-dist/tex/latex/datetime/dt-newzealand.def
+ texmf-dist/tex/latex/datetime/dt-ngerman.def
+ texmf-dist/tex/latex/datetime/dt-norsk.def
+ texmf-dist/tex/latex/datetime/dt-polish.def
+ texmf-dist/tex/latex/datetime/dt-portuges.def
+ texmf-dist/tex/latex/datetime/dt-romanian.def
+ texmf-dist/tex/latex/datetime/dt-russian.def
+ texmf-dist/tex/latex/datetime/dt-samin.def
+ texmf-dist/tex/latex/datetime/dt-scottish.def
+ texmf-dist/tex/latex/datetime/dt-serbian.def
+ texmf-dist/tex/latex/datetime/dt-slovak.def
+ texmf-dist/tex/latex/datetime/dt-slovene.def
+ texmf-dist/tex/latex/datetime/dt-spanish.def
+ texmf-dist/tex/latex/datetime/dt-swedish.def
+ texmf-dist/tex/latex/datetime/dt-turkish.def
+ texmf-dist/tex/latex/datetime/dt-ukraineb.def
+ texmf-dist/tex/latex/datetime/dt-usorbian.def
+ texmf-dist/tex/latex/datetime/dt-welsh.def
+catalogue-ctan /obsolete/macros/latex/contrib/datetime
+catalogue-license lppl1.3
+catalogue-topics date-time multilingual obsolete
+catalogue-version 2.60

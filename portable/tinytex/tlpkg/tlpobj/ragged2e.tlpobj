@@ -1,0 +1,24 @@
+name ragged2e
+category Package
+revision 67441
+shortdesc Alternative versions of "ragged"-type commands
+longdesc The package defines new commands \Centering, \RaggedLeft, and
+longdesc \RaggedRight and new environments Center, FlushLeft, and
+longdesc FlushRight, which set ragged text and are easily configurable
+longdesc to allow hyphenation (the corresponding commands in LaTeX, all
+longdesc of whose names are lower-case, prevent hyphenation altogether).
+containersize 3048
+containerchecksum 363d952daecbd0c4d57e7d2aa5bd28e32bd04efd1b26f5ab65c4874fc65948fb4258eb430560bb8d294406cf314778047b0027a45c21cf99f77119519878e368
+doccontainersize 727552
+doccontainerchecksum be65fa8afee57fb8044ad9ec3ae1ee05ebaf0d8b40388f9876de7c25f6bc6b3a78221b393442e1c3bfe69450eb3c98b276b569540ea8a154a5297560f8a972c4
+srccontainersize 12024
+srccontainerchecksum 56482d060b48c8433214b352efc1b2d6499aeb97a689fffd7e2ae5175f92033714aeb61250f79eb847ed3dc63db8e873ae8efab2aa8dd6d8824902a4c00517e2
+runfiles size=3
+ texmf-dist/tex/latex/ragged2e/ragged2e.sty
+catalogue-also everysel
+catalogue-contact-bugs https://gitlab.com/TeXhackse/ragged2e/-/issues
+catalogue-contact-repository https://gitlab.com/TeXhackse/ragged2e
+catalogue-ctan /macros/latex/contrib/ragged2e
+catalogue-license lppl1.3c
+catalogue-topics layout parshape
+catalogue-version 3.6
