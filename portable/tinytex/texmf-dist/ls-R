@@ -18943,6 +18943,7 @@ subfigure
 symbol
 tabto-ltx
 tabu
+tasks
 tcolorbox
 tex-gyre
 tex-ini-files
@@ -21640,6 +21641,10 @@ tabto.sty
 
 ./tex/latex/tabu:
 tabu.sty
+
+./tex/latex/tasks:
+tasks.cfg
+tasks.sty
 
 ./tex/latex/tcolorbox:
 blueshade.png
