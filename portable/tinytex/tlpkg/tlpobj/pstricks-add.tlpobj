@@ -1,0 +1,25 @@
+name pstricks-add
+category Package
+revision 66887
+shortdesc A collection of add-ons and bugfixes for PSTricks
+longdesc Collects together examples that have been posted to the
+longdesc PSTricks mailing list, together with many additional features
+longdesc for the basic pstricks, pst-plot and pst-node, including:
+longdesc bugfixes; new options for the pspicture environment; arrows;
+longdesc braces as node connection/linestyle; extended axes for plots
+longdesc (e.g., logarithm axes); polar plots; plotting tangent lines of
+longdesc curves or functions; solving and printing differential
+longdesc equations; box plots; matrix plots; and pie charts. The package
+longdesc makes use of PostScript routines provided by pst-math.
+containersize 21972
+containerchecksum 073ce9b5f97c4432d87f51a3b239c758e2840ec894847c334dcd206433e6c0a45575ed2214c00bd013f9ddc0945a696a8eb45b2efc62d8425d1c9607da658850
+doccontainersize 10668848
+doccontainerchecksum 552fcc2f0d448bd1d7f643a5c9f2521f72fd61a653363eab3bf6f31bae306a9c6694ca8d64ad5a5997adea9b92978aa366ece8bd7966c9d129942f8f487b99f3
+runfiles size=26
+ texmf-dist/dvips/pstricks-add/pstricks-add.pro
+ texmf-dist/tex/generic/pstricks-add/pstricks-add.tex
+ texmf-dist/tex/latex/pstricks-add/pstricks-add.sty
+catalogue-ctan /graphics/pstricks/contrib/pstricks-add
+catalogue-license lppl
+catalogue-topics graphics-in-tex pstricks
+catalogue-version 3.94

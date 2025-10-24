@@ -869,20 +869,23 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         else:
             drive = ""
 
-        if os.path.isfile(os.path.join(path_compiler, "latex.exe")):
-            latex = os.path.join(path_compiler, "latex.exe")
-        else:
-            latex = "latex"
+        # if os.path.isfile(os.path.join(path_compiler, "latex.exe")):
+        #     latex = os.path.join(path_compiler, "latex.exe")
+        # else:
+        #     latex = "latex"
 
-        if os.path.isfile(os.path.join(path_compiler, "dvips.exe")):
-            dvips = os.path.join(path_compiler, "dvips.exe")
-        else:
-            dvips = "dvips"
+        latex = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
+        dvips = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
+        ps2pdf = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'ghostscript', 'lib', 'ps2pdf.bat')
+        # if os.path.isfile(os.path.join(path_compiler, "dvips.exe")):
+        #     dvips = os.path.join(path_compiler, "dvips.exe")
+        # else:
+        #     dvips = "dvips"
 
-        if os.path.isfile(os.path.join(path_compiler, "ps2pdf.exe")):
-            ps2pdf = os.path.join(path_compiler, "ps2pdf.exe")
-        else:
-            ps2pdf = "ps2pdf"
+        # if os.path.isfile(os.path.join(path_compiler, "ps2pdf.exe")):
+        #     ps2pdf = os.path.join(path_compiler, "ps2pdf.exe")
+        # else:
+        #     ps2pdf = "ps2pdf"
 
         if is_empty(drive):
             terminal_command = f'cd "{folder_name}" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {dvips} "{file_name}.dvi" & {ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'

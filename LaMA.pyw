@@ -12,7 +12,6 @@ import sys
 # else:
 #     reload_ddb = False
 reload_ddb = False
-
 show_popup = False
 
 

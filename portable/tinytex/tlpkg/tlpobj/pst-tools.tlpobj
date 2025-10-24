@@ -1,0 +1,18 @@
+name pst-tools
+category Package
+revision 60621
+shortdesc PSTricks support functions
+longdesc The package provides helper functions for other PSTricks
+longdesc related packages.
+containersize 6564
+containerchecksum 591dbff503faef5316eda8364a422d8810524775e6c6b59569d24928c8702c54463e4433a3c28953d2f36c873aa6a6e52c71dd9cdcce5bb0c362ab2231f5a165
+doccontainersize 106384
+doccontainerchecksum f61816b6be166d85ae238cf5651e2e1960a5303b3bd3c643e4fdbcc779b5e59f49ffbe53bd6e2830b2bc28289baad3b089eb01ccbd7bee4eb9805728cda4309c
+runfiles size=7
+ texmf-dist/dvips/pst-tools/pst-tools.pro
+ texmf-dist/tex/generic/pst-tools/pst-tools.tex
+ texmf-dist/tex/latex/pst-tools/pst-tools.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-tools
+catalogue-license lppl
+catalogue-topics graphics pstricks
+catalogue-version 0.12

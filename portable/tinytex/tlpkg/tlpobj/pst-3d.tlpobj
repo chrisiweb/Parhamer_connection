@@ -1,0 +1,21 @@
+name pst-3d
+category Package
+revision 17257
+shortdesc A PSTricks package for tilting and other pseudo-3D tricks
+longdesc The package provides basic macros that use PSTricks for
+longdesc shadows, tilting and three dimensional representations of text
+longdesc or graphical objects.
+containersize 3460
+containerchecksum dfd8a2b79d308cf4ae3bdcd438b967446f8601509fd4afb3f090d946df0cc2d66e9b7071ce33e51ad4cd53b7e62dbc02d861d46a302bfe2c901d1d8c82ab0649
+doccontainersize 100796
+doccontainerchecksum e8355b936fbc1685edf205e88f2793ab298aac4e4c06de10dddbe1587b5401ba8cc4d2a01dbad3ad56da5eddb27bd6049a41e6da8c139727d36fcc94d93ac554
+srccontainersize 948
+srccontainerchecksum fc50cff8bb86571d3827a03f3c64cb62a9fdab25e2595ccf9465e4ad39539ebc0a55da92519ef203da65da3a44e01ee28b39ef27a5af24d26463b215f96be313
+runfiles size=5
+ texmf-dist/dvips/pst-3d/pst-3d.pro
+ texmf-dist/tex/generic/pst-3d/pst-3d.tex
+ texmf-dist/tex/latex/pst-3d/pst-3d.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-3d
+catalogue-license lppl
+catalogue-topics graphics-3d pstricks
+catalogue-version 1.10

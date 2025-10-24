@@ -1,0 +1,17 @@
+name simplekv
+category Package
+revision 75515
+shortdesc A simple key/value system for TeX and LaTeX
+longdesc The package provides a simple key/value system for TeX and
+longdesc LaTeX.
+containersize 3888
+containerchecksum 14f8e0beb91aa97e941a313bef26fdadae72f6006263bf736e6183d02bc358c3b7528791e278ec644b627330a0b0fefd0c3499b34009d9c4cc6bf508e602786f
+doccontainersize 103476
+doccontainerchecksum f7857c39418a380bef8483ee424c7b07acde0a172752f830e2b96b19f72eb5215c05cd60d011d2a73ccf4609bae595d78c17fead6b26bb65023b7af619db1c45
+runfiles size=5
+ texmf-dist/tex/generic/simplekv/simplekv.sty
+ texmf-dist/tex/generic/simplekv/simplekv.tex
+catalogue-ctan /macros/generic/simplekv
+catalogue-license lppl1.3c
+catalogue-topics keyval
+catalogue-version 0.32

@@ -2373,6 +2373,37 @@ catalogue-license lppl1.3c
 catalogue-topics french multilingual-addon
 catalogue-version 4.0e
 
+name babel-german
+category Package
+revision 73094
+shortdesc Babel support for documents written in German
+longdesc This bundle is an extension to the babel package for
+longdesc multilingual typesetting. It provides all the necessary macros,
+longdesc definitions and settings to typeset German documents. The
+longdesc bundle includes support for the traditional and reformed German
+longdesc orthography as well as for the Austrian and Swiss varieties of
+longdesc German.
+containersize 4280
+containerchecksum 18329e0a256943a7c1efe5cb070fc46c097c177acf5784bb77663f0cf59a930ddc64dff212d07b4951c07cb18282288c01d87668e0b599c22893840542a79301
+doccontainersize 571388
+doccontainerchecksum b220bcc5068919f01c7d1c1d6e8ca08c27ccaae1ddfd3e8e17212b057e7b54a88964e9a439bb9d982129d3dded6ceb94c76b2b8c3679192ee0a75fdbcd107425
+srccontainersize 16112
+srccontainerchecksum 08fd8e81e6668ba702946a51c9e74a732c92e814a493c61ab274239fc9758c892dbff89eb86a53c7a09cbc92e1dda6f22bde94c8ddb01c93ba6cb54594d7fb4e
+runfiles size=12
+ texmf-dist/tex/generic/babel-german/austrian.ldf
+ texmf-dist/tex/generic/babel-german/german.ldf
+ texmf-dist/tex/generic/babel-german/germanb.ldf
+ texmf-dist/tex/generic/babel-german/naustrian.ldf
+ texmf-dist/tex/generic/babel-german/ngerman.ldf
+ texmf-dist/tex/generic/babel-german/ngermanb.ldf
+ texmf-dist/tex/generic/babel-german/nswissgerman.ldf
+ texmf-dist/tex/generic/babel-german/swissgerman.ldf
+catalogue-contact-repository https://github.com/jspitz/babel-german
+catalogue-ctan /macros/latex/contrib/babel-contrib/german
+catalogue-license lppl1.3
+catalogue-topics german multilingual-addon
+catalogue-version 2.15
+
 name bbm-macros
 category Package
 revision 17224
@@ -2947,6 +2978,24 @@ catalogue-license lppl
 catalogue-topics hyper
 catalogue-version 1.40
 
+name cancel
+category Package
+revision 32508
+shortdesc Place lines through maths formulae
+longdesc A package to draw diagonal lines ("cancelling" a term) and
+longdesc arrows with limits (cancelling a term "to a value") through
+longdesc parts of maths formulae.
+containersize 2904
+containerchecksum ac6e6b642dde29e32e45d7a0e967370c1f7a6ce604075cd43c57b1ee002e75adbe4fbc81de30e8d252cd58f2ac091503595a433c5de898deb3bfbdbb6f2d2e62
+doccontainersize 261244
+doccontainerchecksum 5af252a521c1976166db248c4c19d4fcadd32ec9801e0cd42b73e0a3a0adc461b88d765b90dec1af859474fc64bc00cbc8be44450cb4da6b43944c8fc46ba670
+runfiles size=2
+ texmf-dist/tex/latex/cancel/cancel.sty
+catalogue-ctan /macros/latex/contrib/cancel
+catalogue-license pd
+catalogue-topics maths
+catalogue-version 2.2
+
 name caption
 category Package
 revision 68425
@@ -3204,6 +3253,24 @@ catalogue-contact-repository https://github.com/cgnieder/chemgreek/
 catalogue-ctan /macros/latex/contrib/chemgreek
 catalogue-license lppl1.3
 catalogue-topics chemistry
+catalogue-version 1.1a
+
+name chngcntr
+category Package
+revision 47577
+shortdesc Change the resetting of counters
+longdesc Defines commands \counterwithin (which sets up a counter to be
+longdesc reset when another is incremented) and \counterwithout (which
+longdesc unsets such a relationship).
+containersize 2048
+containerchecksum 0fc94f91911c623578912ed43526d18f85a003f797e94ef5610aab8477154078efae7000256892cc3d3103843ac8065c27d56a10c6f57c16d9ff13693930b0b0
+doccontainersize 234200
+doccontainerchecksum 3b63e4676232c05516bb12c189873e4af39b8b34df2690c897c4733203c9f19a30759850979c47b05e5fea0bd1c277a5c1ea0624709cda6a3a4ab0196231afb9
+runfiles size=2
+ texmf-dist/tex/latex/chngcntr/chngcntr.sty
+catalogue-ctan /macros/latex/contrib/chngcntr
+catalogue-license lppl
+catalogue-topics macro-supp counter-mgmt
 catalogue-version 1.1a
 
 name cite
@@ -6641,6 +6708,25 @@ catalogue-ctan /macros/latex/contrib/forarray
 catalogue-license lppl
 catalogue-topics macro-supp
 catalogue-version 1.01
+
+name forloop
+category Package
+revision 67017
+shortdesc Iteration in LaTeX
+longdesc The package provides a command \forloop for doing iteration in
+longdesc LaTeX macro programming.
+containersize 1252
+containerchecksum e4cf4d9fdf01b753b40d4fb2c5edac94756ccf60a7e0b1bf0da8b5b0c433eff5669858fcc35096967f9a53e6a365880e6677956ebb86764cd68ba3093fa4be91
+doccontainersize 70488
+doccontainerchecksum 7315a8e90a83bbb73cb82525fec32c750d97f62fadcf1cd1faa816aeb2c54b5183c8fe659a19f213764979d495d7774df7aab7c950fa9886c6911e526712f0ff
+srccontainersize 2628
+srccontainerchecksum fe9aa2c7836a17debbfc392b44bcccb09de5b978224b2ec81e17daa07eef3eaf508206f1d54cc9dc7897122ceffb9d1b8d5957c26f2b4bcaed4ee93ebe3436df
+runfiles size=1
+ texmf-dist/tex/latex/forloop/forloop.sty
+catalogue-ctan /macros/latex/contrib/forloop
+catalogue-license lgpl
+catalogue-topics macro-iterate macro-supp
+catalogue-version 3.0
 
 name fp
 category Package
@@ -13367,6 +13453,29 @@ catalogue-license lppl
 catalogue-topics verbatim
 catalogue-version 2.3a
 
+name multido
+category Package
+revision 18302
+shortdesc A loop facility for Generic TeX
+longdesc The package provides the \multido command, which was originally
+longdesc designed for use with PSTricks. Fixed-point arithmetic is used
+longdesc when working on the loop variable, so that the package is
+longdesc equally applicable in graphics applications like PSTricks as it
+longdesc is with the more common integer loops.
+containersize 3684
+containerchecksum 5c861bddcb8b2bdb654dc4438621834a68b2bca102799317c9a220f9bc9bc4c9d70775375302a85736f8706bb7fbfc1a4c24fae2f850237e8f54ad521b1cef83
+doccontainersize 106732
+doccontainerchecksum 8cef36438fbe57c54f625b178331f7a6ca19854abcddb475283fc0cb4a362764c443de05989245e962dba9e2e4f17734533502fbd4b2ef4fc8e8c36b96bc68ab
+srccontainersize 976
+srccontainerchecksum 3f3f6f5813ab1da542ebc9c4837da72339804866875bf225292d8a36ebf54b33f12d3e84de9d0b5027d3e8889e10180649a19e25c7ec6bb532296e9e204e25e5
+runfiles size=4
+ texmf-dist/tex/generic/multido/multido.tex
+ texmf-dist/tex/latex/multido/multido.sty
+catalogue-ctan /macros/generic/multido
+catalogue-license lppl
+catalogue-topics macro-supp
+catalogue-version 1.42
+
 name multirow
 category Package
 revision 72833
@@ -15961,6 +16070,202 @@ catalogue-license lppl1.3c gpl2 fdl
 catalogue-topics graphics pgf-tikz graphics-in-tex
 catalogue-version 3.1.11a
 
+name pgf-pie
+category Package
+revision 63603
+shortdesc Draw pie charts, using PGF
+longdesc The package provides the means to draw pie (and variant)
+longdesc charts, using PGF/TikZ.
+depend carlisle
+depend latex
+depend pgf
+containersize 3744
+containerchecksum 3e5cdb5def0918ab1c3d38d35bb85f07711144d1fcaf0f3af8b2c5e0eacd9af6c3b92bc6e1f45438e40d7f5838770b91ab513970cdd9a3f7dad2918eefb875f6
+doccontainersize 222616
+doccontainerchecksum ac151cb61ea4fc440ffeeea9b987f6dd648b53596934900f41437f787bedcabe2ca8dd53c37828aab816e9334d0d26573f81000333e50d0761d70c586a5d87e3
+runfiles size=5
+ texmf-dist/tex/latex/pgf-pie/pgf-pie.sty
+ texmf-dist/tex/latex/pgf-pie/tikzlibrarypie.code.tex
+catalogue-contact-bugs https://github.com/pgf-tikz/pgf-pie/issues
+catalogue-contact-repository https://github.com/pgf-tikz/pgf-pie
+catalogue-contact-support https://tug.org/mailman/listinfo/pgf-tikz
+catalogue-ctan /graphics/pgf/contrib/pgf-pie
+catalogue-license gpl2 lppl1.3c
+catalogue-topics genchart pgf-tikz
+catalogue-version 0.7
+
+name pgfplots
+category Package
+revision 76111
+shortdesc Create normal/logarithmic plots in two and three dimensions
+longdesc PGFPlots draws high-quality function plots in normal or
+longdesc logarithmic scaling with a user-friendly interface directly in
+longdesc TeX. The user supplies axis labels, legend entries and the plot
+longdesc coordinates for one or more plots and PGFPlots applies axis
+longdesc scaling, computes any logarithms and axis ticks and draws the
+longdesc plots, supporting line plots, scatter plots, piecewise constant
+longdesc plots, bar plots, area plots, mesh-- and surface plots and some
+longdesc more. Pgfplots is based on PGF/TikZ (PGF); it runs equally for
+longdesc LaTeX/TeX/ConTeXt.
+depend pgf
+containersize 531060
+containerchecksum 485d04ab94f2f947ec42d43e4907fc8ad91997139e26f3fe2eaf2084b9471d56027dfe3dc92c2ce22035b57f06c757e96e5233b749ba54e6c9c1a6a36a2c5f8f
+doccontainersize 12997776
+doccontainerchecksum e943279f7d434b5dd5977548194de9a46863411ea723cd112b49cea7251fe083d5103bd8b35a9f89856ecd9d337111c36e4847c7bb5eb15fc802d3746aa3a189
+srccontainersize 488208
+srccontainerchecksum 844b56498b500386947f81ac7fb2e86e0f485f2bd93f2c5ed3d5a9ceb2b9a763f0040292129f0c631f7bc88edd73287b79a15b3aac2f006efe431cb8aeed76aa
+runfiles size=913
+ texmf-dist/scripts/pgfplots/matlab2pgfplots.m
+ texmf-dist/scripts/pgfplots/matlab2pgfplots.sh
+ texmf-dist/scripts/pgfplots/pgf2pdf.sh
+ texmf-dist/scripts/pgfplots/pgfplots.py
+ texmf-dist/tex/context/third/pgfplots/t-pgfplots.tex
+ texmf-dist/tex/context/third/pgfplots/t-pgfplotstable.tex
+ texmf-dist/tex/generic/pgfplots/libs/pgflibrarypgfplots.colorbrewer.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/pgflibrarypgfplots.colortol.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/pgflibrarypgfplots.surfshading.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/pgfplotslibrary.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarycolorbrewer.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarycolortol.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.colormaps.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.contourlua.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.dateplot.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.decorations.softclip.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.external.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.fillbetween.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.groupplots.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.patchplots.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.polar.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.smithchart.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.statistics.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.ternary.code.tex
+ texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.units.code.tex
+ texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsarray.code.tex
+ texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsdeque.code.tex
+ texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsliststructure.code.tex
+ texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsliststructureext.code.tex
+ texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsmatrix.code.tex
+ texmf-dist/tex/generic/pgfplots/lua/pgfplots.lua
+ texmf-dist/tex/generic/pgfplots/lua/pgfplots/binary.lua
+ texmf-dist/tex/generic/pgfplots/lua/pgfplots/colormap.lua
+ texmf-dist/tex/generic/pgfplots/lua/pgfplots/meshplothandler.lua
+ texmf-dist/tex/generic/pgfplots/lua/pgfplots/pgfplotstexio.lua
+ texmf-dist/tex/generic/pgfplots/lua/pgfplots/pgfplotsutil.lua
+ texmf-dist/tex/generic/pgfplots/lua/pgfplots/plothandler.lua
+ texmf-dist/tex/generic/pgfplots/lua/pgfplots/statistics.lua
+ texmf-dist/tex/generic/pgfplots/lua/pgfplots/streamer.lua
+ texmf-dist/tex/generic/pgfplots/lua/pgfplotsoldpgfsupp/luamath/functions.lua
+ texmf-dist/tex/generic/pgfplots/lua/pgfplotsoldpgfsupp/luamath/parser.lua
+ texmf-dist/tex/generic/pgfplots/lua/prepcontour.lua
+ texmf-dist/tex/generic/pgfplots/lua/prepcontour_cli.lua
+ texmf-dist/tex/generic/pgfplots/numtable/pgfplotstable.code.tex
+ texmf-dist/tex/generic/pgfplots/numtable/pgfplotstable.coltype.code.tex
+ texmf-dist/tex/generic/pgfplots/numtable/pgfplotstableshared.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_leq.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_loader.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_misc.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfcoreexternal.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfcoreimage.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfcorelayers.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfcorescopes.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfkeys.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfkeysfiltered.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgflibraryfpu.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgflibraryintersections.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgflibraryluamath.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgflibraryplothandlers.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfmanual.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfmanual.pdflinks.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfmanual.prettyprinter.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfmathfloat.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfutil-common-lists.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_tikzexternal.sty
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_tikzexternalshared.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_tikzlibraryexternal.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_trig_format.code.tex
+ texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfsys-luatexpatch.def
+ texmf-dist/tex/generic/pgfplots/oldpgfplotscompatib/tikzlibrarydateplot.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfcontrib/pgflibraryfillbetween.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfcontrib/tikzlibrarydecorations.softclip.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfcontrib/tikzlibraryfillbetween.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplots.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplots.errorbars.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplots.markers.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplots.paths.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplots.revision.tex
+ texmf-dist/tex/generic/pgfplots/pgfplots.scaling.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplotscoordprocessing.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplotscore.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplotsmeshplothandler.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplotsmeshplotimage.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplotsplothandlers.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplotsstackedplots.code.tex
+ texmf-dist/tex/generic/pgfplots/pgfplotsticks.code.tex
+ texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surfshading.pgfsys-dvipdfmx.def
+ texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surfshading.pgfsys-dvips.def
+ texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surfshading.pgfsys-luatex.def
+ texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surfshading.pgfsys-luatexpatch.def
+ texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surfshading.pgfsys-pdftex.def
+ texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surfshading.pgfsys-xetex.def
+ texmf-dist/tex/generic/pgfplots/sys/pgfplotssysgeneric.code.tex
+ texmf-dist/tex/generic/pgfplots/test/pgfplots.assert.code.tex
+ texmf-dist/tex/generic/pgfplots/test/pgfplots.assert.sty
+ texmf-dist/tex/generic/pgfplots/util/pgfplotsbinary.code.tex
+ texmf-dist/tex/generic/pgfplots/util/pgfplotsbinary.data.code.tex
+ texmf-dist/tex/generic/pgfplots/util/pgfplotscolor.code.tex
+ texmf-dist/tex/generic/pgfplots/util/pgfplotscolormap.code.tex
+ texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.code.tex
+ texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.verb.code.tex
+ texmf-dist/tex/latex/pgfplots/bugtracker.sty
+ texmf-dist/tex/latex/pgfplots/libs/tikzlibrarypgfplots.clickable.code.tex
+ texmf-dist/tex/latex/pgfplots/libs/tikzlibrarypgfplotsclickable.code.tex
+ texmf-dist/tex/latex/pgfplots/pgfplots.sty
+ texmf-dist/tex/latex/pgfplots/pgfplotstable.sty
+ texmf-dist/tex/latex/pgfplots/pgfregressiontest.sty
+ texmf-dist/tex/plain/pgfplots/pgfplots.tex
+ texmf-dist/tex/plain/pgfplots/pgfplotstable.tex
+catalogue-also pst-plot pgfplotstable
+catalogue-contact-bugs https://github.com/pgf-tikz/pgfplots/issues
+catalogue-contact-home http://pgfplots.sourceforge.net/
+catalogue-contact-repository https://github.com/pgf-tikz/pgfplots
+catalogue-contact-support https://tug.org/mailman/listinfo/pgf-tikz
+catalogue-ctan /graphics/pgf/contrib/pgfplots
+catalogue-license gpl3+
+catalogue-topics graphics graphics-plot pgf-tikz
+catalogue-version 1.18.2
+
+name phaistos
+category Package
+revision 18651
+shortdesc Disk of Phaistos font
+longdesc A font that contains all the symbols of the famous Disc of
+longdesc Phaistos, together with a LaTeX package. The disc was 'printed'
+longdesc by stamping the wet clay with some sort of punches, probably
+longdesc around 1700 BCE. The font is available in Adobe Type 1 and
+longdesc OpenType formats (the latter using the Unicode positions for
+longdesc the symbols). There are those who believe that this Cretan
+longdesc script was used to 'write' Greek (it is known, for example,
+longdesc that the rather later Cretan Linear B script was used to write
+longdesc Greek), but arguments for other languages have been presented.
+execute addMap phaistos.map
+containersize 183368
+containerchecksum d5cb8a051e1e80629385bff368896c47bdfccfcf38a24a723ddc5f9056a59c57703986799253812c9a4651f4e16dc55cee0876ddd0552900f978dab0381c9aac
+doccontainersize 174564
+doccontainerchecksum 96eb22628467289f72aaa0d4983e494c75b3a2315d8b9d2921f8ab29d93fffae4f459ef852529dfa4ff48a65e25d652662c54d84db54e0118b1c021bbe39eafa
+srccontainersize 3368
+srccontainerchecksum 5ba2b04fe4e3aef136de2dc40568ecb81f437561ee8e6c320927bb816819889666f57ad07c3b8bf6eb7f6eb84b69147f9233449a26529b61712d158abf889f91
+runfiles size=54
+ texmf-dist/fonts/afm/public/phaistos/phaistos.afm
+ texmf-dist/fonts/map/dvips/phaistos/phaistos.map
+ texmf-dist/fonts/opentype/public/phaistos/Phaistos.otf
+ texmf-dist/fonts/tfm/public/phaistos/phaistos.tfm
+ texmf-dist/fonts/type1/public/phaistos/phaistos.pfb
+ texmf-dist/tex/latex/phaistos/phaistos.sty
+catalogue-ctan /fonts/archaic/phaistos
+catalogue-license lppl
+catalogue-topics font font-archaic font-type1 font-otf
+catalogue-version 1.0
+
 name picinpar
 category Package
 revision 65097
@@ -16612,6 +16917,281 @@ catalogue-ctan /macros/latex/required/psnfss
 catalogue-license lppl
 catalogue-topics font-supp font-use
 catalogue-version 9.3
+
+name pst-3d
+category Package
+revision 17257
+shortdesc A PSTricks package for tilting and other pseudo-3D tricks
+longdesc The package provides basic macros that use PSTricks for
+longdesc shadows, tilting and three dimensional representations of text
+longdesc or graphical objects.
+containersize 3460
+containerchecksum dfd8a2b79d308cf4ae3bdcd438b967446f8601509fd4afb3f090d946df0cc2d66e9b7071ce33e51ad4cd53b7e62dbc02d861d46a302bfe2c901d1d8c82ab0649
+doccontainersize 100796
+doccontainerchecksum e8355b936fbc1685edf205e88f2793ab298aac4e4c06de10dddbe1587b5401ba8cc4d2a01dbad3ad56da5eddb27bd6049a41e6da8c139727d36fcc94d93ac554
+srccontainersize 948
+srccontainerchecksum fc50cff8bb86571d3827a03f3c64cb62a9fdab25e2595ccf9465e4ad39539ebc0a55da92519ef203da65da3a44e01ee28b39ef27a5af24d26463b215f96be313
+runfiles size=5
+ texmf-dist/dvips/pst-3d/pst-3d.pro
+ texmf-dist/tex/generic/pst-3d/pst-3d.tex
+ texmf-dist/tex/latex/pst-3d/pst-3d.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-3d
+catalogue-license lppl
+catalogue-topics graphics-3d pstricks
+catalogue-version 1.10
+
+name pst-arrow
+category Package
+revision 61069
+shortdesc Special arrows for PSTricks
+longdesc This package has all the code from the package pstricks-add
+longdesc which was related to arrows, like multiple arrows and so on.
+containersize 3356
+containerchecksum 3e928de0ec8f1c9dd80143e35e3dcc9d51ff106fa12193798f5d2a77f49b3049f042273102b3dfd1460de68814ab32a3aa4eeb14daad846d729e7f6ddcdaa5fc
+doccontainersize 138288
+doccontainerchecksum 19878f237410d2db75096be382efef2ab1c5d169b4bf48b393956bf13a697d2c96b0da528c1044ee9b36ca8231ba4ad2b478bee24402033ebbcdf2778e4128a4
+runfiles size=4
+ texmf-dist/tex/generic/pst-arrow/pst-arrow.tex
+ texmf-dist/tex/latex/pst-arrow/pst-arrow.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-arrow
+catalogue-license lppl
+catalogue-topics pstricks
+catalogue-version 0.05
+
+name pst-calculate
+category Package
+revision 49817
+shortdesc Support for floating point operations at LaTeX level
+longdesc This package provides an interface to the LaTeX3 floating point
+longdesc unit (part of expl3), mainly used for PSTricks related packages
+longdesc to allow math expressions at LaTeX level. siunitx is used for
+longdesc formatting the calculated number. The package also depends on
+longdesc xkeyval and xparse.
+containersize 1284
+containerchecksum b40a89c1e0152459e9dde468379b1a848955d40b9d9e05223544347d6057affac092a503e6307904e485a81de781eb9455abd948bef7f343359d44abf37f93ea
+doccontainersize 33152
+doccontainerchecksum d6e936e7bc53ae3296812b1d33ecf6ae890599cbb9fa6afac719d8ebcca4516772ff6c18f27e8d825ab959d430cbfe8876b2bb97e480bf6464690b28cedfc2bb
+runfiles size=1
+ texmf-dist/tex/latex/pst-calculate/pst-calculate.sty
+catalogue-ctan /macros/latex/contrib/pst-calculate
+catalogue-license lppl1.3
+catalogue-topics calculation
+catalogue-version 0.02
+
+name pst-coil
+category Package
+revision 75878
+shortdesc A PSTricks package for coils, etc.
+longdesc Pst-coil is a PSTricks based package for coils and zigzags and
+longdesc for coil and zigzag node connections.
+containersize 4456
+containerchecksum 6909d022269986e1c6b17b06de9d6dae42074a5f6ccc1da9617553305975d3b3ab79ee70491e95f224514730a30ae8a65e2955da3b4b2fad5d51e3dcffea5f8e
+doccontainersize 3702000
+doccontainerchecksum 28448330f17c274df993fad0c24c5e0a9f62e476a3fd1f6ff1be7156c00537be78465f55a4c634b2deba30b6980cfee3d760957a67b401b4827bb802b96ee919
+runfiles size=6
+ texmf-dist/dvips/pst-coil/pst-coil.pro
+ texmf-dist/tex/generic/pst-coil/pst-coil.tex
+ texmf-dist/tex/latex/pst-coil/pst-coil.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-coil
+catalogue-license lppl
+catalogue-topics graphics-use pstricks physics
+catalogue-version 1.08
+
+name pst-math
+category Package
+revision 67535
+shortdesc Enhancement of PostScript math operators to use with PSTricks
+longdesc PostScript lacks a lot of basic operators such as tan, acos,
+longdesc asin, cosh, sinh, tanh, acosh, asinh, atanh, exp (with e base).
+longdesc Also (oddly) cos and sin use arguments in degrees. Pst-math
+longdesc provides all those operators in a header file pst-math.pro with
+longdesc wrappers pst-math.sty and pst-math.tex. In addition, sinc,
+longdesc gauss, gammaln and bessel are implemented (only partially for
+longdesc the latter). The package is designed essentially to work with
+longdesc pst-plot but can be used in whatever PS code (such as PSTricks
+longdesc SpecialCoor "!", which is useful for placing labels). The
+longdesc package also provides a routine SIMPSON for numerical
+longdesc integration and a solver of linear equation systems.
+containersize 5208
+containerchecksum 12bd81bed4fc5de91cd4db49cb97a9911848c347a9a9325cb61637368bda4e0f35f9c5c348bd385d46907b61aa06682ae1a9d70616d4c5c81659550064d4cc0c
+doccontainersize 226768
+doccontainerchecksum 1b07b3086fa3e1d12f255632ceddf5b30c219472763cc43c0649b669a6014bb76e3a0fe7c182d0ea24c54fee8d2efe8399867321992e20f7f418d28198661bd2
+runfiles size=5
+ texmf-dist/dvips/pst-math/pst-math.pro
+ texmf-dist/tex/generic/pst-math/pst-math.tex
+ texmf-dist/tex/latex/pst-math/pst-math.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-math
+catalogue-license lppl
+catalogue-topics maths calculation pstricks
+catalogue-version 0.67
+
+name pst-node
+category Package
+revision 71773
+shortdesc Nodes and node connections in PSTricks
+longdesc The package enables the user to connect information, and to
+longdesc place labels, without knowing (in advance) the actual positions
+longdesc of the items to be connected, or where the connecting line
+longdesc should go. The macros are useful for making graphs and trees,
+longdesc mathematical diagrams, linguistic syntax diagrams, and so on.
+longdesc The package contents were previously distributed as a part of
+longdesc the pstricks base distribution; the package serves as an
+longdesc extension to PSTricks.
+containersize 25348
+containerchecksum a994b81b4b863bcd60df2c0a061e31a060530f55650421904406cd3717ac15d195e0003486a9d087d333c5467793b6a25dc2e23e41cd46be37cab6e79ef5a66d
+doccontainersize 709828
+doccontainerchecksum 0fc13af7073a64f033a89fd2cc8ecb3609e2a8f9680c23da6ba0352fe4cc3d90ca6ed0cc2f48a2461ab3f6afecead9c00bec2c05b58dbda667370ce142b1f41b
+runfiles size=29
+ texmf-dist/dvips/pst-node/pst-node.pro
+ texmf-dist/dvips/pst-node/pst-node97.pro
+ texmf-dist/tex/generic/pst-node/pst-node.tex
+ texmf-dist/tex/generic/pst-node/pst-node97.tex
+ texmf-dist/tex/latex/pst-node/pst-node.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-node
+catalogue-license lppl
+catalogue-topics graphics-in-tex linguistic
+catalogue-version 1.45
+
+name pst-plot
+category Package
+revision 65346
+shortdesc Plot data using PSTricks
+longdesc The package provides plotting of data (typically from external
+longdesc files), using PSTricks. Plots may be configured using a wide
+longdesc variety of parameters.
+containersize 22724
+containerchecksum a273a0999f14697ffec4165c8f6013821f9a3439bb7822963e79d4b362a89334090af54d591f7cbff1f59d0e15e9b18dbc3ed9d711ba90162913098dcec67684
+doccontainersize 1346672
+doccontainerchecksum 870ef12eaebc4078ac0906cdfc225991714a55dd674cf7b757ab7b7925728ab771bc63612c61e26a997d900f8c03ec4d439d767b0a83fa54b8a65517399fbd7e
+runfiles size=32
+ texmf-dist/tex/generic/pst-plot/pst-plot.tex
+ texmf-dist/tex/generic/pst-plot/pst-plot97.tex
+ texmf-dist/tex/latex/pst-plot/pst-plot.sty
+catalogue-also pgfplots
+catalogue-contact-home https://www.tug.org/PSTricks/
+catalogue-contact-repository https://archiv.dante.de/~herbert/TeXnik/
+catalogue-contact-support https://tug.org/mailman/listinfo/pstricks
+catalogue-ctan /graphics/pstricks/contrib/pst-plot
+catalogue-license lppl
+catalogue-topics data-import data-disp pstricks
+catalogue-version 1.94
+
+name pst-tools
+category Package
+revision 60621
+shortdesc PSTricks support functions
+longdesc The package provides helper functions for other PSTricks
+longdesc related packages.
+containersize 6564
+containerchecksum 591dbff503faef5316eda8364a422d8810524775e6c6b59569d24928c8702c54463e4433a3c28953d2f36c873aa6a6e52c71dd9cdcce5bb0c362ab2231f5a165
+doccontainersize 106384
+doccontainerchecksum f61816b6be166d85ae238cf5651e2e1960a5303b3bd3c643e4fdbcc779b5e59f49ffbe53bd6e2830b2bc28289baad3b089eb01ccbd7bee4eb9805728cda4309c
+runfiles size=7
+ texmf-dist/dvips/pst-tools/pst-tools.pro
+ texmf-dist/tex/generic/pst-tools/pst-tools.tex
+ texmf-dist/tex/latex/pst-tools/pst-tools.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-tools
+catalogue-license lppl
+catalogue-topics graphics pstricks
+catalogue-version 0.12
+
+name pstricks
+category Package
+revision 75486
+catalogue pstricks-base
+shortdesc PostScript macros for TeX
+longdesc PSTricks offers an extensive collection of macros for
+longdesc generating PostScript that is usable with most TeX macro
+longdesc formats, including Plain TeX, LaTeX, AMS-TeX, and AMS-LaTeX.
+longdesc Included are macros for colour, graphics, pie charts, rotation,
+longdesc trees and overlays. It has many special features, including a
+longdesc wide variety of graphics (picture drawing) macros, with a
+longdesc flexible interface and with colour support. There are macros
+longdesc for colouring or shading the cells of tables. The package
+longdesc pstricks-add contains bug-fixes and additions for PSTricks
+longdesc (among other things). PSTricks ordinarily uses PostScript
+longdesc \special commands, which are not supported by pdf(La)TeX. This
+longdesc limitation may be overcome by using either the pst-pdf or the
+longdesc pdftricks package, to generate a PDF inclusion from a PSTricks
+longdesc diagram. PSTricks macros can also generate PDF output when the
+longdesc document is processed XeTeX, without the need for other
+longdesc supporting packages.
+containersize 89056
+containerchecksum d696d834d3eefe072a6534cadb2ccf29bb3a598a640bdfaf86ea36f1a274758468d64becb7b07481e447fe25b451866bd01248b4efc84ccbe4bd68240fd6a4aa
+doccontainersize 11186720
+doccontainerchecksum bf2307222797e5568a0b2731e16b8914acd504e42d898c2890a3e9a1322372a9771634bf091088bd7db947e8690e621158044566e0886c6b697f07f0c62ee224
+runfiles size=133
+ texmf-dist/dvips/pstricks/pst-algparser.pro
+ texmf-dist/dvips/pstricks/pst-dots.pro
+ texmf-dist/dvips/pstricks/pst-dots97.pro
+ texmf-dist/dvips/pstricks/pstricks.pro
+ texmf-dist/dvips/pstricks/pstricks97.pro
+ texmf-dist/tex/generic/pstricks/config/README.cfg
+ texmf-dist/tex/generic/pstricks/config/distiller.cfg
+ texmf-dist/tex/generic/pstricks/config/dvips.cfg
+ texmf-dist/tex/generic/pstricks/config/dvipsone.cfg
+ texmf-dist/tex/generic/pstricks/config/gastex.cfg
+ texmf-dist/tex/generic/pstricks/config/textures.cfg
+ texmf-dist/tex/generic/pstricks/config/vtex.cfg
+ texmf-dist/tex/generic/pstricks/config/xdvipdfmx.cfg
+ texmf-dist/tex/generic/pstricks/pst-code-arc.tex
+ texmf-dist/tex/generic/pstricks/pst-code-box.tex
+ texmf-dist/tex/generic/pstricks/pst-code-circle_ellipse.tex
+ texmf-dist/tex/generic/pstricks/pst-code-grid.tex
+ texmf-dist/tex/generic/pstricks/pst-code-pspicture.tex
+ texmf-dist/tex/generic/pstricks/pst-code-put.tex
+ texmf-dist/tex/generic/pstricks/pst-code-ref_rot.tex
+ texmf-dist/tex/generic/pstricks/pst-fp.tex
+ texmf-dist/tex/generic/pstricks/pst-key.tex
+ texmf-dist/tex/generic/pstricks/pstricks-arrows.tex
+ texmf-dist/tex/generic/pstricks/pstricks-color.tex
+ texmf-dist/tex/generic/pstricks/pstricks-dots.tex
+ texmf-dist/tex/generic/pstricks/pstricks-tex.def
+ texmf-dist/tex/generic/pstricks/pstricks-xetex.def
+ texmf-dist/tex/generic/pstricks/pstricks.con
+ texmf-dist/tex/generic/pstricks/pstricks.tex
+ texmf-dist/tex/generic/pstricks/pstricks97.tex
+ texmf-dist/tex/latex/pstricks/pst-all.sty
+ texmf-dist/tex/latex/pstricks/pst-doc.cls
+ texmf-dist/tex/latex/pstricks/pst-key.sty
+ texmf-dist/tex/latex/pstricks/pstcol.sty
+ texmf-dist/tex/latex/pstricks/pstricks-pdf.sty
+ texmf-dist/tex/latex/pstricks/pstricks.sty
+catalogue-alias pstricks
+catalogue-also pstricks-add
+catalogue-contact-home https://tug.org/PSTricks/main.cgi/
+catalogue-contact-repository https://archiv.dante.de/~herbert/TeXnik/
+catalogue-contact-support https://tug.org/mailman/listinfo/pstricks
+catalogue-ctan /graphics/pstricks/base
+catalogue-license lppl1.3
+catalogue-topics graphics-in-tex colour pstricks dvips-special xetex
+catalogue-version 3.22
+
+name pstricks-add
+category Package
+revision 66887
+shortdesc A collection of add-ons and bugfixes for PSTricks
+longdesc Collects together examples that have been posted to the
+longdesc PSTricks mailing list, together with many additional features
+longdesc for the basic pstricks, pst-plot and pst-node, including:
+longdesc bugfixes; new options for the pspicture environment; arrows;
+longdesc braces as node connection/linestyle; extended axes for plots
+longdesc (e.g., logarithm axes); polar plots; plotting tangent lines of
+longdesc curves or functions; solving and printing differential
+longdesc equations; box plots; matrix plots; and pie charts. The package
+longdesc makes use of PostScript routines provided by pst-math.
+containersize 21972
+containerchecksum 073ce9b5f97c4432d87f51a3b239c758e2840ec894847c334dcd206433e6c0a45575ed2214c00bd013f9ddc0945a696a8eb45b2efc62d8425d1c9607da658850
+doccontainersize 10668848
+doccontainerchecksum 552fcc2f0d448bd1d7f643a5c9f2521f72fd61a653363eab3bf6f31bae306a9c6694ca8d64ad5a5997adea9b92978aa366ece8bd7966c9d129942f8f487b99f3
+runfiles size=26
+ texmf-dist/dvips/pstricks-add/pstricks-add.pro
+ texmf-dist/tex/generic/pstricks-add/pstricks-add.tex
+ texmf-dist/tex/latex/pstricks-add/pstricks-add.sty
+catalogue-ctan /graphics/pstricks/contrib/pstricks-add
+catalogue-license lppl
+catalogue-topics graphics-in-tex pstricks
+catalogue-version 3.94
 
 name ragged2e
 category Package
@@ -21795,6 +22375,24 @@ catalogue-license lppl1.3
 catalogue-topics marginal
 catalogue-version 1.20
 
+name simplekv
+category Package
+revision 75515
+shortdesc A simple key/value system for TeX and LaTeX
+longdesc The package provides a simple key/value system for TeX and
+longdesc LaTeX.
+containersize 3888
+containerchecksum 14f8e0beb91aa97e941a313bef26fdadae72f6006263bf736e6183d02bc358c3b7528791e278ec644b627330a0b0fefd0c3499b34009d9c4cc6bf508e602786f
+doccontainersize 103476
+doccontainerchecksum f7857c39418a380bef8483ee424c7b07acde0a172752f830e2b96b19f72eb5215c05cd60d011d2a73ccf4609bae595d78c17fead6b26bb65023b7af619db1c45
+runfiles size=5
+ texmf-dist/tex/generic/simplekv/simplekv.sty
+ texmf-dist/tex/generic/simplekv/simplekv.tex
+catalogue-ctan /macros/generic/simplekv
+catalogue-license lppl1.3c
+catalogue-topics keyval
+catalogue-version 0.32
+
 name siunitx
 category Package
 revision 75734
@@ -21864,6 +22462,25 @@ catalogue-license lppl1.3
 catalogue-topics underline letterspace
 catalogue-version 3.1
 
+name spreadtab
+category Package
+revision 74630
+shortdesc Spreadsheet features for LaTeX tabular environments
+longdesc The package allows the user to construct tables in a manner
+longdesc similar to a spreadsheet. The cells of a table have row and
+longdesc column indices and these can be used in formulas to generate
+longdesc values in other cells.
+containersize 23064
+containerchecksum 95fb388527dcf34b29c0f01e83a6d0a908f9521449a0072f0c986af3f143f6715b8dd86ae42081173b1c858739f05112006005aece65b031f58c2c9f796f9bb0
+doccontainersize 432416
+doccontainerchecksum 41e4a043098a0aeba7aeb4ff1521793852d2d0ae09db4a5bb71540bd38acc8723dfea464c5d0425d25b7df6ba83e3c29a60244ef3fbabd5f171f8dd3d47b65ac
+runfiles size=26
+ texmf-dist/tex/latex/spreadtab/spreadtab.sty
+catalogue-ctan /macros/latex/contrib/spreadtab
+catalogue-license lppl1.3c
+catalogue-topics table
+catalogue-version 0.61
+
 name srcltx
 category Package
 revision 15878
@@ -21886,6 +22503,28 @@ catalogue-ctan /macros/latex/contrib/srcltx
 catalogue-license pd
 catalogue-topics debug-supp
 catalogue-version 1.6
+
+name srdp-mathematik
+category Package
+revision 75162
+shortdesc Typeset Austrian SRDP in mathematics
+longdesc This package provides basic commands for the defined formats of
+longdesc the Austrian sRDP (Standardisierte Reife- und Diplomprufung) in
+longdesc mathematics. Furthermore, it includes ways to implement answers
+longdesc in the tex file which can optionally be displayed in the pdf
+longdesc file, and it offers a way to vary the answers in order to
+longdesc create different groups (e. g. for tests) easily.
+containersize 30940
+containerchecksum 92daca9c5d2e57b3a34b161353483b6b2e0f349746d5b7ad519170d1f3ff927473a547432dedb3c696bd0adcebcf295c658b6e54a415b56fd9ffc2e2f19c665d
+doccontainersize 147368
+doccontainerchecksum 7b800dc6c9cac13aa4b720554958d708a4d45a492156431c1d547cdb02e9536c96d1d69ccb96fe285ce238f819abbfc48cc1f514cfacbf975b114cfca7ad3737
+runfiles size=48
+ texmf-dist/tex/latex/srdp-mathematik/srdp-mathematik.sty
+ texmf-dist/tex/latex/srdp-mathematik/srdp-tables.sty
+catalogue-ctan /macros/latex/contrib/srdp-mathematik
+catalogue-license lppl1.3c
+catalogue-topics exam maths std-conform
+catalogue-version 1.13.3
 
 name standalone
 category Package
@@ -27672,6 +28311,31 @@ catalogue-license lppl
 catalogue-topics layout-page
 catalogue-version 1.10
 
+name wasysym
+category Package
+revision 54080
+shortdesc LaTeX support for the wasy fonts
+longdesc The wasy (Waldi Symbol) font by Roland Waldi provides many
+longdesc glyphs like male and female symbols and astronomical symbols,
+longdesc as well as the complete lasy font set and other odds and ends.
+longdesc This package implements an easy to use interface for these
+longdesc symbols.
+containersize 3660
+containerchecksum 408f9c2b70d7860f7d8f7ee7f93af1351442b92aad9c8d8e4a501414058d8347e6da2408df3d5b6fe217597861eda5eda499771a7e973da03597f24b76250da0
+doccontainersize 163244
+doccontainerchecksum ffa36c6f1446c0dcdf1e1dd8b47946eb84d666714d94eac28c857170c9aa414b612486fcf107ae462c50ecafd6ff20c90c776abb5774db64a32aa07be8c58b2f
+srccontainersize 9048
+srccontainerchecksum 12dbdd1e868c3382e7ccb5a507b7f72c20e3df3105e272c00b8b6294f10c1099d3c6c7b1a2db5bc96b866e246807604b615d8278357d0214539a8f959de14667
+runfiles size=5
+ texmf-dist/tex/latex/wasysym/uwasy.fd
+ texmf-dist/tex/latex/wasysym/uwasyvar.fd
+ texmf-dist/tex/latex/wasysym/wasysym.sty
+catalogue-also wasy wasy-type1
+catalogue-ctan /macros/latex/contrib/wasysym
+catalogue-license lppl1.3c
+catalogue-topics font-supp
+catalogue-version 2.4
+
 name wrapfig
 category Package
 revision 61719
@@ -28312,6 +28976,28 @@ catalogue-also tex-gyre
 catalogue-ctan /fonts/urw/base35
 catalogue-license gpl
 catalogue-topics font font-type1 font-collection
+
+name ziffer
+category Package
+revision 32279
+shortdesc Conversion of punctuation in maths mode
+longdesc The package modifies the behaviour of characters in maths mode
+longdesc so that: '.' is used as a one-thousand separator (as is common
+longdesc in Germany) ',' is used as a decimal separator (as is common in
+longdesc Germany) '--' is represented with spacing as appropriate to
+longdesc such constructs as '1.000,--'. These conversions may be
+longdesc switched on and off.
+containersize 1924
+containerchecksum 3d29074642d8a4c63046347a36f47548557de92a64ab4d6b7d1cad87f97a9e25a09fe84cf699a3bf2129c4de00dd3ef3593f85056e8f38a9a2d1ca27c549cf96
+doccontainersize 652
+doccontainerchecksum 8eb75b54a6711ba0d0ad30343f253eabf88b3752de3112b13b96e4182119ef5f789916c413a5ca35ba7bf6619eb25bf64e7717844e4b9a49d33781d91f5b14af
+runfiles size=1
+ texmf-dist/tex/latex/ziffer/ziffer.sty
+catalogue-also icomma
+catalogue-ctan /macros/latex/contrib/ziffer
+catalogue-license lppl
+catalogue-topics numbers
+catalogue-version 2.1
 
 name zref
 category Package

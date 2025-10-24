@@ -1,32 +1,29 @@
 % ls-R -- filename database for kpathsea; do not change this line.
 
 ./:
-.:
-xdvi
 fonts
-temp.4964.729466
 ls-R
-web2c
+luatex-cache
 tex
-
-./xdvi:
+web2c
+xdvi
 
 ./fonts:
 cache
 conf
+map
 pk
 tfm
-map
 
 ./fonts/cache:
-d031bbba323fd9e5b47e0ee5a0353f11-x64.cache-9
 235bb00028ac7016c5aa04d2116826bf-x64.cache-9
-readme.txt
-4fd295241a6881223fe7e0c9b2813998-x64.cache-9
-CACHEDIR.TAG
-82aaee221f55735e2241dab55c4a2b3e-x64.cache-9
-528ebc87373b2083c59ac721f8b5c074-x64.cache-9
 394180e6a61b09b0c73305e0a6fc2dca-x64.cache-9
+4fd295241a6881223fe7e0c9b2813998-x64.cache-9
+528ebc87373b2083c59ac721f8b5c074-x64.cache-9
+82aaee221f55735e2241dab55c4a2b3e-x64.cache-9
+CACHEDIR.TAG
+d031bbba323fd9e5b47e0ee5a0353f11-x64.cache-9
+readme.txt
 
 ./fonts/conf:
 conf.d
@@ -36,20 +33,27 @@ fonts.dtd
 ./fonts/conf/conf.d:
 51-local.conf
 
-./fonts/pk:
-
-./fonts/tfm:
-
 ./fonts/map:
 dvipdfmx
-pdftex
 dvips
+pdftex
 
 ./fonts/map/dvipdfmx:
 updmap
 
 ./fonts/map/dvipdfmx/updmap:
 kanjix.map
+
+./fonts/map/dvips:
+updmap
+
+./fonts/map/dvips/updmap:
+builtin35.map
+download35.map
+ps2pk.map
+psfonts.map
+psfonts_pk.map
+psfonts_t1.map
 
 ./fonts/map/pdftex:
 updmap
@@ -59,107 +63,114 @@ pdftex.map
 pdftex_dl14.map
 pdftex_ndl14.map
 
-./fonts/map/dvips:
-updmap
+./fonts/pk:
+ljfour
 
-./fonts/map/dvips/updmap:
-ps2pk.map
-psfonts_pk.map
-download35.map
-builtin35.map
-psfonts.map
-psfonts_t1.map
+./fonts/pk/ljfour:
+jknappen
 
-./temp.4964.729466:
-luahbtex.fmt
-dviluatex.log
-luahbtex.log
-pdfetex.log
-dviluatex.fmt
-luatex.log
-pdftex.fmt
-xetex.log
-etex.log
-xetex.fmt
-etex.fmt
-pdftex.log
-luatex.fmt
-pdfetex.fmt
+./fonts/pk/ljfour/jknappen:
+ec
 
-./web2c:
-updmap.log
-luahbtex
-xetex
-tlmgr-commands.log
-luatex
-tlmgr.log
-metafont
-pdftex
-tex
+./fonts/pk/ljfour/jknappen/ec:
 
-./web2c/luahbtex:
-luahbtex.fmt
-lualatex.log
-luahbtex.log
-lualatex.fmt
+./fonts/tfm:
 
-./web2c/xetex:
-xetex.fmt
-xelatex.log
-xetex.log
-xelatex.fmt
+./luatex-cache:
+generic
 
-./web2c/luatex:
-dviluatex.fmt
-dvilualatex.log
-luatex.log
-dviluatex.log
-dvilualatex.fmt
-luatex.fmt
+./luatex-cache/generic:
+fonts
+names
 
-./web2c/metafont:
-mf.base
-mf.log
+./luatex-cache/generic/fonts:
+otl
 
-./web2c/pdftex:
-latex.fmt
-pdftex.log
-etex.fmt
-pdflatex.fmt
-pdfetex.fmt
-pdflatex.log
-etex.log
-pdftex.fmt
-latex.log
-pdfetex.log
+./luatex-cache/generic/fonts/otl:
 
-./web2c/tex:
-tex.log
-tex.fmt
+./luatex-cache/generic/names:
 
 ./tex:
-generic
 context
-
-./tex/generic:
-config
-
-./tex/generic/config:
-language.dat.lua
-language.def
-language.dat
+generic
 
 ./tex/context:
 config
 
 ./tex/context/config:
 
+./tex/generic:
+config
 
-./fonts/pk/ljfour/jknappen/ec:
-tctt1000.600pk
+./tex/generic/config:
+language.dat
+language.dat.lua
+language.def
 
-./fonts/pk/ljfour/jknappen/ec:
-ectt1000.600pk
+./web2c:
+luahbtex
+luatex
+metafont
+pdftex
+tex
+tlmgr-commands.log
+tlmgr.log
+xetex
 
-./fonts/pk/ljfour/jknappen/ec:
-ecrm1000.600pk
+./web2c/luahbtex:
+luahbtex.fmt
+lualatex.fmt
+
+./web2c/luatex:
+dvilualatex.fmt
+dviluatex.fmt
+luatex.fmt
+
+./web2c/metafont:
+mf.base
+
+./web2c/pdftex:
+etex.fmt
+latex.fmt
+pdfetex.fmt
+pdflatex.fmt
+pdftex.fmt
+
+./web2c/tex:
+tex.fmt
+
+./web2c/xetex:
+xelatex.fmt
+xetex.fmt
+
+./xdvi:
+
+./fonts/map/dvips/updmap:
+builtin35.map
+
+./fonts/map/dvips/updmap:
+download35.map
+
+./fonts/map/dvips/updmap:
+psfonts_pk.map
+
+./fonts/map/dvips/updmap:
+psfonts_t1.map
+
+./fonts/map/dvips/updmap:
+ps2pk.map
+
+./fonts/map/dvips/updmap:
+psfonts.map
+
+./fonts/map/pdftex/updmap:
+pdftex_dl14.map
+
+./fonts/map/pdftex/updmap:
+pdftex_ndl14.map
+
+./fonts/map/pdftex/updmap:
+pdftex.map
+
+./fonts/map/dvipdfmx/updmap:
+kanjix.map
