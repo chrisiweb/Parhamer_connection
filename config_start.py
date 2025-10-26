@@ -60,43 +60,43 @@ if sys.platform.startswith("win"):
 
 elif sys.platform.startswith("darwin"):
 # else:
-    path_programm=os.path.dirname(sys.argv[0])
-    if path_programm == "":
-        path_programm = "."
+    # path_programm=os.path.dirname(sys.argv[0])
+    # if path_programm == "":
+    #     path_programm = "."
     
-    path_programm = os.path.join(path_programm, "LaMA_programdata")
+    path_programm = os.path.join(Path.home(), "Library", "LaMA")
     # path_programm = os.path.join(Path.home(), "Library", "LaMA","LaMA_programdata")
     if not os.path.isdir(path_programm):
-        os.mkdir(path_programm)
+        os.makedirs(path_programm)
 
     path_localappdata_lama = path_programm
 
 
-    path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
+    path_lama_developer_credentials = os.path.join(path_programm,"credentials")
     if not os.path.isdir(path_lama_developer_credentials):
-        os.makedirs(path_lama_developer_credentials)
+        os.mkdir(path_lama_developer_credentials)
         
     lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
 
     lama_settings_file = os.path.join(
-                Path.home(), "Library", "LaMA", "lama_settings"
+                path_programm, "lama_settings"
             )
 
     lama_titlepage_save = os.path.join(
-                Path.home(), "Library", "LaMA", "lama_titlepage_save"
+                path_programm, "lama_titlepage_save"
             )
     lama_individual_titlepage  = os.path.join(
-                Path.home(), "Library", "LaMA", "lama_individual_titlepage"
+                path_programm, "lama_individual_titlepage"
             )
     cria_titlepage_save  = os.path.join(
-                Path.home(), "Library", "LaMA", "cria_titlepage_save"
+                path_programm, "cria_titlepage_save"
             )
     cria_individual_titlepage  = os.path.join(
-                Path.home(), "Library", "LaMA", "cria_individual_titlepage"
+                path_programm, "cria_individual_titlepage"
             )
 
     lama_notenschluessel_file = os.path.join(
-                Path.home(), "Library", "LaMA", "lama_notenschluessel.json"
+                path_programm, "lama_notenschluessel.json"
             )
 
     path_standard_pdf_reader = ""
