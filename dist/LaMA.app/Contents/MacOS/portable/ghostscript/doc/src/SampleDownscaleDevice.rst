@@ -1,0 +1,1 @@
+../../../../../Resources/portable/ghostscript/doc/src/SampleDownscaleDevice.rst

@@ -843,20 +843,21 @@ def extract_error_from_output(latex_output):
 
 def build_pdf_file(ui, folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
-        print(os.path.dirname(sys.argv[0]))
         lama_path = os.path.dirname(sys.argv[0])
         if lama_path == "":
             lama_path = "."
         latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin', 'universal-darwin', 'latex')
         dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin', 'universal-darwin', 'dvips')
         ps2pdf = os.path.join(lama_path, 'portable', 'ghostscript', 'lib', 'ps2pdf')
+        gs = os.path.join(lama_path, 'portable', 'ghostscript', 'lib', 'gs')
+        
         if "Teildokument" in file_name:
-            terminal_command = f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'      
+            terminal_command = f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'      
         else:
-            terminal_command = f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
+            terminal_command = f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'
          
         process = subprocess.Popen(
-            f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"',
+            f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"',
             stdout=subprocess.PIPE,
             shell=True,
         )
@@ -950,6 +951,7 @@ def open_pdf_file(folder_name, file_name):
         if is_empty(path_pdf_reader) == False:
             if os.path.exists(path_pdf_reader)== False:
                 warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+            
             
             subprocess.run(
                 ["open","-a","{}".format(path_pdf_reader), "{0}.pdf".format(file_path)]
