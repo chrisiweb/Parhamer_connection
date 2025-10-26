@@ -629,15 +629,15 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             | QtCore.Qt.WindowCloseButtonHint,
         )
 
-        if not shutil.which('latex'):
-            link = "https://mylama.github.io/lama/downloads.html"
-            critical_window("""<h4>Die PDF-Datei konnte nicht erstellt werden, da keine LaTeX-Distribution auf dem Computer gefunden wurde.</h4>
+#         if not shutil.which('latex'):
+#             link = "https://mylama.github.io/lama/downloads.html"
+#             critical_window("""<h4>Die PDF-Datei konnte nicht erstellt werden, da keine LaTeX-Distribution auf dem Computer gefunden wurde.</h4>
 
-Bitte öffnen Sie <a href='{0}'>lama.schule/downloads</a> und folgen Sie allen Schritten des Installationsguides.<br><br>
+# Bitte öffnen Sie <a href='{0}'>lama.schule/downloads</a> und folgen Sie allen Schritten des Installationsguides.<br><br>
 
-Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com""".format(link),
-            titel="Keine LaTeX-Distribution gefunden")
-            return
+# Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com""".format(link),
+#             titel="Keine LaTeX-Distribution gefunden")
+#             return
 
 
         self.ui_erstellen = Ui_Dialog_erstellen()
