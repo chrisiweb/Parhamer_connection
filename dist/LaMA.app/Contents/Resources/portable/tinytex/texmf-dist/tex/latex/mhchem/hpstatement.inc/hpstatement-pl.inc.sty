@@ -1,0 +1,1024 @@
+%% hpstatement-pl.inc.sty
+%% 2024-01-29
+%% Copyright 2019-2024 Martin Hensel
+%
+%% This file is part of the mhchem bundle for LaTeX
+%
+%% For the content of the phrases:
+% This work is licensed under the Creative Commons Attribution 4.0 International licence
+% (https://creativecommons.org/licenses/by/4.0/). This means that you can re-use the content
+% provided you acknowledge the source and indicate any changes you have made.
+% The data is not necessarily comprehensive, complete, accurate or up to date.
+% The acknowledgement is not needed when using statements of the data set for labelling products, of course, as this is the intended usage.
+% (c) European Union, https://eur-lex.europa.eu, 1998-2023, CC BY 4.0
+% (c) hpstatements contributors, https://github.com/mhchem/hpstatements/contributors, 2019-2024, CC BY 4.0
+%
+%
+\ExplSyntaxOn
+\group_begin:
+\char_set_catcode_space:n {`\ }% allow spaces
+\char_set_catcode_letter:n {`\@}%
+%
+\tl_gset:cn{g__mhchem_hp_pl_H200-0_tl}{{H200}{%
+  \__mhchem_hp_s:nnn{20081216}{Materiały wybuchowe niestabilne.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H201-0_tl}{{H201}{%
+  \__mhchem_hp_s:nnn{20081216}{Materiał wybuchowy; zagrożenie wybuchem masowym.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H202-0_tl}{{H202}{%
+  \__mhchem_hp_s:nnn{20081216}{Materiał wybuchowy, poważne zagrożenie rozrzutem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H203-0_tl}{{H203}{%
+  \__mhchem_hp_s:nnn{20081216}{Materiał wybuchowy; zagrożenie pożarem, wybuchem lub rozrzutem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H204-0_tl}{{H204}{%
+  \__mhchem_hp_s:nnn{20081216}{Zagrożenie pożarem lub rozrzutem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H205-0_tl}{{H205}{%
+  \__mhchem_hp_s:nnn{20081216}{Może wybuchać masowo w przypadku pożaru.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H206-0_tl}{{H206}{%
+  \__mhchem_hp_s:nnn{20201017}{Zagrożenie pożarem, wybuchem lub rozrzutem; zwiększone ryzyko wybuchu jeśli zawartość środka odczulającego została zmniejszona.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H207-0_tl}{{H207}{%
+  \__mhchem_hp_s:nnn{20201017}{Zagrożenie pożarem lub rozrzutem; zwiększone ryzyko wybuchu jeśli zawartość środka odczulającego została zmniejszona.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H208-0_tl}{{H208}{%
+  \__mhchem_hp_s:nnn{20201017}{Zagrożenie pożarem; zwiększone ryzyko wybuchu jeśli zawartość środka odczulającego została zmniejszona.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H220-0_tl}{{H220}{%
+  \__mhchem_hp_s:nnn{20081216}{Skrajnie łatwopalny gaz.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H221-0_tl}{{H221}{%
+  \__mhchem_hp_s:nnn{20081216}{Gaz łatwopalny.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H222-0_tl}{{H222}{%
+  \__mhchem_hp_s:nnn{20081216}{Skrajnie łatwopalny aerozol.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H223-0_tl}{{H223}{%
+  \__mhchem_hp_s:nnn{20150601}{Łatwopalny aerozol.}{%
+  \__mhchem_hp_s:nnn{20081216}{Aerozol łatwopalny.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H224-0_tl}{{H224}{%
+  \__mhchem_hp_s:nnn{20081216}{Skrajnie łatwopalna ciecz i pary.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H225-0_tl}{{H225}{%
+  \__mhchem_hp_s:nnn{20081216}{Wysoce łatwopalna ciecz i pary.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H226-0_tl}{{H226}{%
+  \__mhchem_hp_s:nnn{20081216}{Łatwopalna ciecz i pary.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H228-0_tl}{{H228}{%
+  \__mhchem_hp_s:nnn{20081216}{Substancja stała łatwopalna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H229-0_tl}{{H229}{%
+  \__mhchem_hp_s:nnn{20150601}{Pojemnik pod ciśnieniem: Ogrzanie grozi wybuchem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H230-0_tl}{{H230}{%
+  \__mhchem_hp_s:nnn{20150601}{Może reagować wybuchowo nawet bez dostępu powietrza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H231-0_tl}{{H231}{%
+  \__mhchem_hp_s:nnn{20150601}{Może reagować wybuchowo nawet bez dostępu powietrza pod zwiększonym ciśnieniem i/\hskip\z@skip{}lub po ogrzaniu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H232-0_tl}{{H232}{%
+  \__mhchem_hp_s:nnn{20201017}{Może ulegać samozapaleniu w przypadku wystawienia na działanie powietrza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H240-0_tl}{{H240}{%
+  \__mhchem_hp_s:nnn{20081216}{Ogrzanie grozi wybuchem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H241-0_tl}{{H241}{%
+  \__mhchem_hp_s:nnn{20081216}{Ogrzanie może spowodować pożar lub wybuch.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H242-0_tl}{{H242}{%
+  \__mhchem_hp_s:nnn{20081216}{Ogrzanie może spowodować pożar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H250-0_tl}{{H250}{%
+  \__mhchem_hp_s:nnn{20081216}{Zapala się samorzutnie w przypadku wystawienia na działanie powietrza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H251-0_tl}{{H251}{%
+  \__mhchem_hp_s:nnn{20081216}{Substancja samonagrzewająca się: może się zapalić.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H252-0_tl}{{H252}{%
+  \__mhchem_hp_s:nnn{20081216}{Substancja samonagrzewająca się w dużych ilościach; może się zapalić.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H260-0_tl}{{H260}{%
+  \__mhchem_hp_s:nnn{20081216}{W kontakcie z wodą uwalniają łatwopalne gazy, które mogą ulegać samozapaleniu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H261-0_tl}{{H261}{%
+  \__mhchem_hp_s:nnn{20081216}{W kontakcie z wodą uwalnia łatwopalne gazy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H270-0_tl}{{H270}{%
+  \__mhchem_hp_s:nnn{20081216}{Może spowodować lub intensyfikować pożar; utleniacz.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H271-0_tl}{{H271}{%
+  \__mhchem_hp_s:nnn{20081216}{Może spowodować pożar lub wybuch; silny utleniacz.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H272-0_tl}{{H272}{%
+  \__mhchem_hp_s:nnn{20081216}{Może intensyfikować pożar; utleniacz.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H280-0_tl}{{H280}{%
+  \__mhchem_hp_s:nnn{20081216}{Zawiera gaz pod ciśnieniem; ogrzanie grozi wybuchem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H281-0_tl}{{H281}{%
+  \__mhchem_hp_s:nnn{20081216}{Zawiera schłodzony gaz; może spowodować oparzenia kriogeniczne lub obrażenia.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H290-0_tl}{{H290}{%
+  \__mhchem_hp_s:nnn{20081216}{Może powodować korozję metali.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H300-0_tl}{{H300}{%
+  \__mhchem_hp_s:nnn{20081216}{Połknięcie grozi śmiercią.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H301-0_tl}{{H301}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa toksycznie po połknięciu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H302-0_tl}{{H302}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa szkodliwie po połknięciu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H304-0_tl}{{H304}{%
+  \__mhchem_hp_s:nnn{20081216}{Połknięcie i dostanie się przez drogi oddechowe może grozić śmiercią.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H310-0_tl}{{H310}{%
+  \__mhchem_hp_s:nnn{20081216}{Grozi śmiercią w kontacie ze skórą.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H311-0_tl}{{H311}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa toksycznie w kontakcie ze skórą.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H312-0_tl}{{H312}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa szkodliwie w kontakcie ze skórą.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H314-0_tl}{{H314}{%
+  \__mhchem_hp_s:nnn{20180301}{Powoduje poważne oparzenia skóry oraz uszkodzenia oczu .}{%
+  \__mhchem_hp_s:nnn{20081216}{Powoduje poważne oparzenia skóry oraz uszkodzenia oczu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H315-0_tl}{{H315}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa drażniąco na skórę.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H317-0_tl}{{H317}{%
+  \__mhchem_hp_s:nnn{20081216}{Może powodować reakcję alergiczną skóry.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H318-0_tl}{{H318}{%
+  \__mhchem_hp_s:nnn{20081216}{Powoduje poważne uszkodzenie oczu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H319-0_tl}{{H319}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa drażniąco na oczy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H330-0_tl}{{H330}{%
+  \__mhchem_hp_s:nnn{20081216}{Wdychanie grozi śmiercią.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H331-0_tl}{{H331}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa toksycznie w następstwie wdychania.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H332-0_tl}{{H332}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa szkodliwie w następstwie wdychania.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H334-0_tl}{{H334}{%
+  \__mhchem_hp_s:nnn{20081216}{Może powodować objawy alergii lub astmy lub trudności w oddychaniu w następstwie wdychania.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H335-0_tl}{{H335}{%
+  \__mhchem_hp_s:nnn{20081216}{Może powodować podrażnienie dróg oddechowych.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H336-0_tl}{{H336}{%
+  \__mhchem_hp_s:nnn{20081216}{Może wywoływać uczucie senności lub zawroty głowy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H340-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{20081216}{Może powodować wady genetyczne \noexpand\textless{}podać drogę narażenia, jeżeli definitywnie udowodniono, że inna droga narażenia nie powoduje zagrożenia\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H340.0-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H340-1empty_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H340-1_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H341-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{20081216}{Podejrzewa się, że powoduje wady genetyczne \noexpand\textless{}podać drogę narażenia, jeżeli definitywnie udowodniono, że inna droga narażenia nie powoduje zagrożenia\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H341.0-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H341-1empty_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H341-1_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H350-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{20081216}{Może powodować raka \noexpand\textless{}podać drogę narażenia, jeżeli definitywnie udowodniono, że inna droga narażenia nie powoduje zagrożenia\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H350.0-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H350-1empty_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H350-1_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H350i-0_tl}{{H350i}{%
+  \__mhchem_hp_s:nnn{20081216}{Wdychanie może spowodować raka.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H351-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{20081216}{Podejrzewa się, że powoduje raka \noexpand\textless{}podać drogę narażenia, jeżeli definitywnie udowodniono, że inna droga narażenia nie powoduje zagrożenia\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H351.0-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H351-1empty_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H351-1_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H360-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{20081216}{Może działać szkodliwie na płodność lub na dziecko w łonie matki \noexpand\textless{}podać szczególny skutek, jeżeli jest znany\noexpand\textgreater{} \noexpand\textless{}podać drogę narażenia, jeżeli definitywnie udowodniono, że inne drogi narażenia nie stwarzają zagrożenia\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H360.0-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H360-1empty_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H360-1_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H360F-0_tl}{{H360F}{%
+  \__mhchem_hp_s:nnn{20081216}{Może działać szkodliwie na płodność.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H360D-0_tl}{{H360D}{%
+  \__mhchem_hp_s:nnn{20081216}{Może działać szkodliwie na dziecko w łonie matki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H360FD-0_tl}{{H360FD}{%
+  \__mhchem_hp_s:nnn{20081216}{Może działać szkodliwie na płodność. Może działać szkodliwie na dziecko w łonie matki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H360Fd-0_tl}{{H360Fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Może działać szkodliwie na płodność. Podejrzewa się, że działa szkodliwie na dziecko w łonie matki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H360Df-0_tl}{{H360Df}{%
+  \__mhchem_hp_s:nnn{20081216}{Może działać szkodliwie na dziecko w łonie matki. Podejrzewa się, że działa szkodliwie na płodność.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H361-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{20081216}{Podejrzewa się, że działa szkodliwie na płodność lub na dziecko w łonie matki \noexpand\textless{}podać szczególny skutek, jeżeli jest znany\noexpand\textgreater{} \noexpand\textless{}podać drogę narażenia, jeżeli definitywnie udowodniono, że inne drogi narażenia nie stwarzają zagrożenia\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H361.0-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H361-1empty_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H361-1_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H361f-0_tl}{{H361f}{%
+  \__mhchem_hp_s:nnn{20081216}{Podejrzewa się, że działa szkodliwie na płodność.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H361d-0_tl}{{H361d}{%
+  \__mhchem_hp_s:nnn{20081216}{Podejrzewa się, że działa szkodliwie na dziecko w łonie matki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H361fd-0_tl}{{H361fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Podejrzewa się, że działa szkodliwie na płodność. Podejrzewa się, że działa szkodliwie na dziecko w łonie matki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H362-0_tl}{{H362}{%
+  \__mhchem_hp_s:nnn{20081216}{Może działać szkodliwie na dzieci karmione piersią.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H370-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{20081216}{Powoduje uszkodzenie narządów \noexpand\textless{}podać szczególny skutek, jeśli jest znany\noexpand\textgreater{} \noexpand\textless{}podać drogę narażenia, jeżeli udowodniono, że inne drogi narażenia nie stwarzają zagrożenia\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H370.0-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H370.1-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H370.1-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H370-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H370-2_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H371-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{20081216}{Może powodować uszkodzenie narządów \noexpand\textless{}podać wszystkie znane narządy, których to dotyczy\noexpand\textgreater{} \noexpand\textless{}podać drogę narażenia, jeżeli udowodniono, że inne drogi narażenia nie stwarzają zagrożenia\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H371.0-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H371.1-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H371.1-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H371-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H371-2_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H372-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{20081216}{Powoduje uszkodzenie narządów \noexpand\textless{}podać wszystkie znane narządy, których to dotyczy \noexpand\textgreater{} poprzez długotrwałe lub powtarzane narażenie \noexpand\textless{}podać drogę narażenia, jeżeli udowodniono, że inne drogi narażenia nie stwarzają zagrożenia\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H372.0-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H372.1-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H372.1-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H372-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H372-2_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H373-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{20081216}{Może powodować uszkodzenie narządów \noexpand\textless{}podać wszystkie znane narządy, których to dotyczy \noexpand\textgreater{} poprzez długotrwałe lub narażenie powtarzane \noexpand\textless{}podać drogę narażenia, jeśli udowodniono, że inne drogi narażenia nie stwarzają zagrożenia\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H373.0-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H373.1-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H373.1-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H373-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H373-2_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H300+H310-0_tl}{{H300\,+\,\hskip\z@skip{}H310}{%
+  \__mhchem_hp_s:nnn{20110419}{Grozi śmiercią po połknięciu lub w kontakcie ze skórą}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H300+H310+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Grozi śmiercią po połknięciu, w kontakcie ze skórą lub w następstwie wdychania}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H300+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Grozi śmiercią po połknięciu lub w następstwie wdychania}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H301+H311-0_tl}{{H301\,+\,\hskip\z@skip{}H311}{%
+  \__mhchem_hp_s:nnn{20110419}{Działa toksycznie po połknięciu lub w kontakcie ze skórą}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H301+H311+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Działa toksycznie po połknięciu, w kontakcie ze skórą lub w następstwie wdychania}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H301+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Działa toksycznie po połknięciu lub w następstwie wdychania}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H302+H312-0_tl}{{H302\,+\,\hskip\z@skip{}H312}{%
+  \__mhchem_hp_s:nnn{20110419}{Działa szkodliwie po połknięciu lub w kontakcie ze skórą}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H302+H312+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Działa szkodliwie po połknięciu, w kontakcie ze skórą lub w następstwie wdychania}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H302+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Działa szkodliwie po połknięciu lub w następstwie wdychania}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H310+H330-0_tl}{{H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Grozi śmiercią w kontakcie ze skórą lub w następstwie wdychania}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H311+H331-0_tl}{{H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Działa toksycznie w kontakcie ze skórą lub w następstwie wdychania}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H312+H332-0_tl}{{H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Działa szkodliwie w kontakcie ze skórą lub w następstwie wdychania}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H400-0_tl}{{H400}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa bardzo toksycznie na organizmy wodne.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H410-0_tl}{{H410}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa bardzo toksycznie na organizmy wodne, powodując długotrwałe skutki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H411-0_tl}{{H411}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa toksycznie na organizmy wodne, powodując długotrwałe skutki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H412-0_tl}{{H412}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa szkodliwie na organizmy wodne, powodując długotrwałe skutki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H413-0_tl}{{H413}{%
+  \__mhchem_hp_s:nnn{20081216}{Może powodować długotrwałe szkodliwe skutki dla organizmów wodnych.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_H420-0_tl}{{H420}{%
+  \__mhchem_hp_s:nnn{20110419}{Szkodliwe dla zdrowia publicznego i środowiska w związku z niszczącym oddziaływaniem na ozon w górnej warstwie atmosfery}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH001-0_tl}{{EUH001}{%
+  \__mhchem_hp_s:nnn{20201017}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Produkt wybuchowy w stanie suchym.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH006-0_tl}{{EUH006}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Produkt wybuchowy z dostępem lub bez dostępu powietrza.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH014-0_tl}{{EUH014}{%
+  \__mhchem_hp_s:nnn{20081216}{Reaguje gwałtownie z wodą.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH018-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{20081216}{Podczas stosowania mogą powstawać łatwopalne lub wybuchowe mieszaniny par z powietrzem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH018.0-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH018.1-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH018.2-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH019-0_tl}{{EUH019}{%
+  \__mhchem_hp_s:nnn{20081216}{Może tworzyć wybuchowe nadtlenki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH029-0_tl}{{EUH029}{%
+  \__mhchem_hp_s:nnn{20081216}{W kontakcie z wodą uwalnia toksyczne gazy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH031-0_tl}{{EUH031}{%
+  \__mhchem_hp_s:nnn{20081216}{W kontakcie z kwasami uwalnia toksyczne gazy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH032-0_tl}{{EUH032}{%
+  \__mhchem_hp_s:nnn{20081216}{W kontakcie z kwasami uwalnia bardzo toksyczne gazy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH044-0_tl}{{EUH044}{%
+  \__mhchem_hp_s:nnn{20081216}{Zagrożenie wybuchem po ogrzaniu w zamkniętym pojemniku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH059-0_tl}{{EUH059}{%
+  \__mhchem_hp_s:nnn{20110419}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Stwarza zagrożenie dla warstwy ozonowej.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH066-0_tl}{{EUH066}{%
+  \__mhchem_hp_s:nnn{20081216}{Powtarzające się narażenie może powodować wysuszanie lub pękanie skóry.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH070-0_tl}{{EUH070}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa toksycznie w kontakcie z oczami.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH071-0_tl}{{EUH071}{%
+  \__mhchem_hp_s:nnn{20081216}{Działa żrąco na drogi oddechowe.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH201-0_tl}{{EUH201}{%
+  \__mhchem_hp_s:nnn{20081216}{Zawiera ołów. Nie należy stosować na powierzchniach, które mogą być gryzione lub ssane przez dzieci.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH201A-0_tl}{{EUH201A}{%
+  \__mhchem_hp_s:nnn{20081216}{Uwaga! Zawiera ołów.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH202-0_tl}{{EUH202}{%
+  \__mhchem_hp_s:nnn{20081216}{Cyjanoakrylany. Niebezpieczeństwo. Skleja skórę i powieki w ciągu kilku sekund. Chronić przed dziećmi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH203-0_tl}{{EUH203}{%
+  \__mhchem_hp_s:nnn{20081216}{Zawiera chrom (VI). Może powodować wystąpienie reakcji alergicznej.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH204-0_tl}{{EUH204}{%
+  \__mhchem_hp_s:nnn{20081216}{Zawiera izocyjaniany. Może powodować wystąpienie reakcji alergicznej.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH205-0_tl}{{EUH205}{%
+  \__mhchem_hp_s:nnn{20081216}{Zawiera składniki epoksydowe. Może powodować wystąpienie reakcji alergicznej.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH206-0_tl}{{EUH206}{%
+  \__mhchem_hp_s:nnn{20081216}{Uwaga! Nie stosować razem z innymi produktami. Może wydzielać niebezpieczne gazy (chlor).}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH207-0_tl}{{EUH207}{%
+  \__mhchem_hp_s:nnn{20081216}{Uwaga! Zawiera kadm. Podczas stosowania wydziela niebezpieczne pary. Zapoznaj się z informacją dostarczoną przez producenta. Przestrzegaj instrukcji bezpiecznego stosowania.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH208-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{20081216}{Zawiera \noexpand\textless{}nazwa substancji uczulającej\noexpand\textgreater{}. Może powodować wystąpienie reakcji alergicznej.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH208.0-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH208-1_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH209-0_tl}{{EUH209}{%
+  \__mhchem_hp_s:nnn{20081216}{Podczas stosowania może przekształcić się w substancję wysoce łatwopalną.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH209A-0_tl}{{EUH209A}{%
+  \__mhchem_hp_s:nnn{20081216}{Podczas stosowania może przekształcić się w substancję łatwopalną.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH210-0_tl}{{EUH210}{%
+  \__mhchem_hp_s:nnn{20081216}{Karta charakterystyki dostępna na żądanie.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH211-0_tl}{{EUH211}{%
+  \__mhchem_hp_s:nnn{20211001}{Uwaga! W przypadku rozpylania mogą się tworzyć niebezpieczne respirabilne kropelki. Nie wdychać rozpylonej cieczy lub mgły.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH212-0_tl}{{EUH212}{%
+  \__mhchem_hp_s:nnn{20211001}{Uwaga! W przypadku stosowania może się tworzyć niebezpieczny pył respirabilny. Nie wdychać pyłu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH380-0_tl}{{EUH380}{%
+  \__mhchem_hp_s:nnn{20230420}{Może powodować zaburzenia funkcjonowania układu hormonalnego u ludzi}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH381-0_tl}{{EUH381}{%
+  \__mhchem_hp_s:nnn{20230420}{Podejrzewa się, że powoduje zaburzenia funkcjonowania układu hormonalnego u ludzi}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH401-0_tl}{{EUH401}{%
+  \__mhchem_hp_s:nnn{20081216}{W celu uniknięcia zagrożeń dla zdrowia ludzi i środowiska, należy postępować zgodnie z instrukcją użycia.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH430-0_tl}{{EUH430}{%
+  \__mhchem_hp_s:nnn{20230420}{Może powodować zaburzenia funkcjonowania układu hormonalnego w środowisku}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH431-0_tl}{{EUH431}{%
+  \__mhchem_hp_s:nnn{20230420}{Podejrzewa się, że powoduje zaburzenia funkcjonowania układu hormonalnego w środowisku}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH440-0_tl}{{EUH440}{%
+  \__mhchem_hp_s:nnn{20230420}{Akumuluje się w środowisku i organizmach żywych, w tym u ludzi}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH441-0_tl}{{EUH441}{%
+  \__mhchem_hp_s:nnn{20230420}{W znacznym stopniu akumuluje się w środowisku i organizmach żywych, w tym u ludzi}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH450-0_tl}{{EUH450}{%
+  \__mhchem_hp_s:nnn{20230420}{Może powodować długotrwałe i rozproszone zanieczyszczenie zasobów wodnych}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_EUH451-0_tl}{{EUH451}{%
+  \__mhchem_hp_s:nnn{20230420}{Może powodować bardzo długotrwałe i rozproszone zanieczyszczenie zasobów wodnych}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P101-0_tl}{{P101}{%
+  \__mhchem_hp_s:nnn{20081216}{W razie konieczności zasięgnięcia porady lekarza należy pokazać pojemnik lub etykietę.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P102-0_tl}{{P102}{%
+  \__mhchem_hp_s:nnn{20081216}{Chronić przed dziećmi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P103-0_tl}{{P103}{%
+  \__mhchem_hp_s:nnn{20081216}{Przed użyciem przeczytać etykietę.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P201-0_tl}{{P201}{%
+  \__mhchem_hp_s:nnn{20081216}{Przed użyciem zapoznać się ze specjalnymi środkami ostrożności.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P202-0_tl}{{P202}{%
+  \__mhchem_hp_s:nnn{20081216}{Nie używać przed zapoznaniem się i zrozumieniem wszystkich środków bezpieczeństwa.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P210-0_tl}{{P210}{%
+  \__mhchem_hp_s:nnn{20150601}{Przechowywać z dala od źródeł ciepła, gorących powierzchni, źródeł iskrzenia, otwartego ognia i innych źródeł zapłonu. Nie palić.}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać z dala od źródeł ciepła/\hskip\z@skip{}iskrzenia/\hskip\z@skip{}otwartego ognia/\hskip\z@skip{}gorących powierzchni. Palenie wzbronione.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P211-0_tl}{{P211}{%
+  \__mhchem_hp_s:nnn{20081216}{Nie rozpylać nad otwartym ogniem lub innym źródłem zapłonu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P212-0_tl}{{P212}{%
+  \__mhchem_hp_s:nnn{20201017}{Unikać ogrzewania pod zamknięciem lub w sytuacji zmniejszonej zawartości środka odczulającego.”}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P220-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{20180301}{Trzymać z dala od odzieży i innych materiałów zapalnych.}{%
+  \__mhchem_hp_s:nnn{20081216}{Trzymać/\hskip\z@skip{}przechowywać z dala od odzieży/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}materiałów zapalnych.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P220.0-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P220.1.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P220.1.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P220.1-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P220.2.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P220.2.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P220.2-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P221-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Zastosować wszelkie środki ostrożności w celu uniknięcia mieszania z innymi materiałami zapalnymi \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P221.0-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P221.1-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P221-1_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P222-0_tl}{{P222}{%
+  \__mhchem_hp_s:nnn{20081216}{Nie dopuszczać do kontaktu z powietrzem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P223-0_tl}{{P223}{%
+  \__mhchem_hp_s:nnn{20150601}{Nie dopuszczać do kontaktu z wodą.}{%
+  \__mhchem_hp_s:nnn{20081216}{Chronić przed wszelkim kontaktem z wodą z powodu gwałtownej reakcji i możliwości wystąpienia błyskawicznego pożaru.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P230-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać produkt zwilżony\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P230.0-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P230-1_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P231-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{20180301}{Używać i przechowywać zawartość w atmosferze obojętnego gazu /\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Używać w atmosferze obojętnego gazu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P231.0-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P231.1-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P231-1_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P232-0_tl}{{P232}{%
+  \__mhchem_hp_s:nnn{20081216}{Chronić przed wilgocią.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P233-0_tl}{{P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać pojemnik szczelnie zamknięty.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P234-0_tl}{{P234}{%
+  \__mhchem_hp_s:nnn{20180301}{Przechowywać wyłącznie w oryginalnym opakowaniu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać wyłącznie w oryginalnym pojemniku.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P235-0_tl}{{P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w chłodnym miejscu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P240-0_tl}{{P240}{%
+  \__mhchem_hp_s:nnn{20180301}{Uziemić i połączyć pojemnik i sprzęt odbiorczy.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uziemić/\hskip\z@skip{}połączyć pojemnik i sprzęt odbiorczy.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P241-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{20180301}{Używać [elektrycznego/\hskip\z@skip{}wentylującego/\hskip\z@skip{}oświetleniowego/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}] przeciwwybuchowego sprzętu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Używać elektrycznego/\hskip\z@skip{}wentylującego/\hskip\z@skip{}oświetleniowego/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}. przeciwwybuchowego sprzętu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P241.0-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P241.1-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P241.2-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P241.3-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P241-1_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P242-0_tl}{{P242}{%
+  \__mhchem_hp_s:nnn{20180301}{Używać nieiskrzących narzędzi.}{%
+  \__mhchem_hp_s:nnn{20081216}{Używać wyłącznie nieiskrzących narzędzi.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P243-0_tl}{{P243}{%
+  \__mhchem_hp_s:nnn{20180301}{Podjąć działania zapobiegające wyładowaniom elektrostatycznym.}{%
+  \__mhchem_hp_s:nnn{20081216}{Przedsięwziąć środki ostrożności zapobiegające statycznemu rozładowaniu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P244-0_tl}{{P244}{%
+  \__mhchem_hp_s:nnn{20150601}{Chronić zawory i przyłącza przed olejem i tłuszczem.}{%
+  \__mhchem_hp_s:nnn{20081216}{Chronić zawory redukcyjne przed tłuszczem i olejem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P250-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{20180301}{Nie poddawać szlifowaniu/\hskip\z@skip{}wstrząsom/\hskip\z@skip{}tarciu/\hskip\z@skip{}\noexpand\textellipsis{}.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nie poddawać szlifowaniu/\hskip\z@skip{}wstrząsom/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}tarciu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P250.0-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P250.1-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P250.2-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P250.3-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P250-1_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P251-0_tl}{{P251}{%
+  \__mhchem_hp_s:nnn{20150601}{Nie przekłuwać ani nie spalać, nawet po zużyciu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Pojemnik pod ciśnieniem. Nie przekłuwać ani nie spalać, nawet po zużyciu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P260-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{20081216}{Nie wdychać pyłu/\hskip\z@skip{}dymu/\hskip\z@skip{}gazu/\hskip\z@skip{}mgły/\hskip\z@skip{}par/\hskip\z@skip{}rozpylonej cieczy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P260.0-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P260.1-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P260.2-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P260.3-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P260.4-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P260.5-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P260.6-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P261-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{20081216}{Unikać wdychania pyłu/\hskip\z@skip{}dymu/\hskip\z@skip{}gazu/\hskip\z@skip{}mgły/\hskip\z@skip{}par/\hskip\z@skip{}rozpylonej cieczy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P261.0-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P261.1-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P261.2-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P261.3-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P261.4-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P261.5-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P261.6-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P262-0_tl}{{P262}{%
+  \__mhchem_hp_s:nnn{20081216}{Nie wprowadzać do oczu, na skórę lub na odzież.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P263-0_tl}{{P263}{%
+  \__mhchem_hp_s:nnn{20180301}{Unikać kontaktu w czasie ciąży i podczas karmienia piersią.}{%
+  \__mhchem_hp_s:nnn{20081216}{Unikać kontaktu w czasie ciąży/\hskip\z@skip{}karmienia piersią.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P264-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{20081216}{Dokładnie umyć \noexpand\textellipsis{} po użyciu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P264.0-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P264-1_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P270-0_tl}{{P270}{%
+  \__mhchem_hp_s:nnn{20081216}{Nie jeść, nie pić i nie palić podczas używania produktu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P271-0_tl}{{P271}{%
+  \__mhchem_hp_s:nnn{20081216}{Stosować wyłącznie na zewnątrz lub w dobrze wentylowanym pomieszczeniu}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P272-0_tl}{{P272}{%
+  \__mhchem_hp_s:nnn{20081216}{Zanieczyszczonej odzieży ochronnej nie wynosić poza miejsce pracy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P273-0_tl}{{P273}{%
+  \__mhchem_hp_s:nnn{20081216}{Unikać uwolnienia do środowiska.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P280-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{20081216}{Stosować rękawice ochronne/\hskip\z@skip{}odzież ochronną/\hskip\z@skip{}ochronę oczu/\hskip\z@skip{}ochronę twarzy.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P280.0-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P280.1-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P280.2-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P280.3-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P280.4-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P281-0_tl}{{P281}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Stosować wymagane środki ochrony indywidualnej.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P282-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{20180301}{Nosić rękawice izolujące od zimna oraz albo maski na twarz albo ochronę oczu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nosić rękawice izolujące od zimna/\hskip\z@skip{}maski na twarz/\hskip\z@skip{}ochronę oczu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P282.0-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P282.1-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P282.2-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P282.3-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P283-0_tl}{{P283}{%
+  \__mhchem_hp_s:nnn{20180301}{Nosić odzież ognioodporną lub opóźniającą zapalenie.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nosić odzież ognioodporną/\hskip\z@skip{}płomienioodporną/\hskip\z@skip{}opóźniającą zapalenie.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P284-0_tl}{{P284}{%
+  \__mhchem_hp_s:nnn{20150601}{[W przypadku nieodpowiedniej wentylacji] stosować indywidualne środki ochrony dróg oddechowych.}{%
+  \__mhchem_hp_s:nnn{20081216}{Stosować indywidualne środki ochrony dróg oddechowych.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P285-0_tl}{{P285}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku niedostatecznej wentylacji stosować indywidualne środki ochrony dróg oddechowych.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P231+P232-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{20180301}{Używać i przechowywać zawartość w atmosferze obojętnego gazu /\hskip\z@skip{}\noexpand\textellipsis{}. Chronić przed wilgocią.}{%
+  \__mhchem_hp_s:nnn{20081216}{Używać w atmosferze obojętnego gazu Chronić przed wilgocią.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P231+P232.0-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P231+P232.1-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P231+P232-1_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P235+P410-0_tl}{{P235\,+\,\hskip\z@skip{}P410}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w chłodnym miejscu. Chronić przed światłem słonecznym.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301-0_tl}{{P301}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU POŁKNIĘCIA:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302-0_tl}{{P302}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU KONTAKTU ZE SKÓRĄ:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P303-0_tl}{{P303}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU KONTAKTU ZE SKÓRĄ (lub z włosami):}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P304-0_tl}{{P304}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU DOSTANIA SIĘ DO DRÓG ODDECHOWYCH:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P305-0_tl}{{P305}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU DOSTANIA SIĘ DO OCZU:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P306-0_tl}{{P306}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU KONTAKTU Z ODZIEŻĄ:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P307-0_tl}{{P307}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU narażenia:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P308-0_tl}{{P308}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU narażenia lub styczności:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P309-0_tl}{{P309}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU narażenia lub złego samopoczucia:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P310-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{20150601}{Natychmiast skontaktować się z OŚRODKIEM ZATRUĆ/\hskip\z@skip{}lekarzem/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Natychmiast skontaktować się z OŚRODKIEM ZATRUĆ lub lekarzem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P310.0-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P310.1-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P310.2-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P310-1_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P311-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Skontaktować się z OŚRODKIEM ZATRUĆ/\hskip\z@skip{}lekarzem/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Skontaktować się z OŚRODKIEM ZATRUĆ lub lekarzem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P311.0-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P311.1-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P311.2-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P311-1_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P312-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{20180301}{W przypadku złego samopoczucia skontaktować się z OŚRODKIEM ZATRUĆ/\hskip\z@skip{} lekarzem/\hskip\z@skip{}\noexpand\textellipsis{}.}{%
+  \__mhchem_hp_s:nnn{20150601}{W przypadku złego samopoczucia skontaktować się z OŚRODKIEM ZATRUĆ/\hskip\z@skip{}lekarzem/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku złego samopoczucia skontaktować się z OŚRODKIEM ZATRUĆ lub z lekarzem.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P312.0-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P312.1-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P312.2-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P312-1_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P313-0_tl}{{P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Zasięgnąć porady/\hskip\z@skip{}zgłosić się pod opiekę lekarza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P314-0_tl}{{P314}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku złego samopoczucia zasięgnąć porady/\hskip\z@skip{}zgłosić się pod opiekę lekarza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P315-0_tl}{{P315}{%
+  \__mhchem_hp_s:nnn{20081216}{Natychmiast zasięgnąć porady/\hskip\z@skip{}zgłosić się pod opiekę lekarza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P320-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{20081216}{Pilnie zastosować określone leczenie (patrz \noexpand\textellipsis{} na etykiecie).}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P320.0-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P320-1_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P320.nolabel-1_tl}{{P320.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P321-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{20081216}{Zastosować określone leczenie (patrz \noexpand\textellipsis{} na etykiecie).}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P321.0-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P321-1_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P321.nolabel-1_tl}{{P321.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P322-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Środki szczególne (patrz \noexpand\textellipsis{} na etykiecie).}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P322.0-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P322-1_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P322.nolabel-1_tl}{{P322.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P330-0_tl}{{P330}{%
+  \__mhchem_hp_s:nnn{20081216}{Wypłukać usta.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P331-0_tl}{{P331}{%
+  \__mhchem_hp_s:nnn{20081216}{NIE wywoływać wymiotów.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P332-0_tl}{{P332}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku wystąpienia podrażnienia skóry:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P333-0_tl}{{P333}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku wystąpienia podrażnienia skóry lub wysypki:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P334-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{20180301}{Zanurzyć w zimnej wodzie [lub owinąć mokrym bandażem].}{%
+  \__mhchem_hp_s:nnn{20081216}{Zanurzyć w zimnej wodzie/\hskip\z@skip{}owinąć mokrym bandażem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P334.0-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P334.1-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P334.2-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P335-0_tl}{{P335}{%
+  \__mhchem_hp_s:nnn{20081216}{Nie związaną pozostałość strzepnąć ze skóry.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P336-0_tl}{{P336}{%
+  \__mhchem_hp_s:nnn{20081216}{Rozmrozić oszronione obszary letnią wodą. Nie trzeć oszronionego obszaru.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P337-0_tl}{{P337}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku utrzymywania się działania drażniącego na oczy:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P338-0_tl}{{P338}{%
+  \__mhchem_hp_s:nnn{20081216}{Wyjąć soczewki kontaktowe, jeżeli są i można je łatwo usunąć. Nadal płukać.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P340-0_tl}{{P340}{%
+  \__mhchem_hp_s:nnn{20150601}{Wyprowadzić lub wynieść poszkodowanego na świeże powietrze i zapewnić mu warunki do swobodnego oddychania.}{%
+  \__mhchem_hp_s:nnn{20081216}{Wyprowadzić lub wynieść poszkodowanego na świeże powietrze i zapewnić warunki do odpoczynku w pozycji umożliwiającej swobodne oddychanie.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P341-0_tl}{{P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku trudności z oddychaniem, wyprowadzić lub wynieść poszkodowanego na świeże powietrze i zapewnić warunki do odpoczynku w pozycji umożliwiającej swobodne oddychanie.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P342-0_tl}{{P342}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku wystąpienia objawów ze strony układu oddechowego:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P350-0_tl}{{P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Delikatnie umyć dużą ilością wody z mydłem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P351-0_tl}{{P351}{%
+  \__mhchem_hp_s:nnn{20081216}{Ostrożnie płukać wodą przez kilka minut.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P352-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{20150601}{Umyć dużą ilością wody/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Umyć dużą ilością wody z mydłem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P352.0-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P352.1-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P352-1_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P353-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{20180301}{Spłukać skórę pod strumieniem wody [lub prysznicem].}{%
+  \__mhchem_hp_s:nnn{20081216}{Spłukać skórę pod strumieniem wody/\hskip\z@skip{}prysznicem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P353.0-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P353.1-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P353.2-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P360-0_tl}{{P360}{%
+  \__mhchem_hp_s:nnn{20081216}{Natychmiast spłukać zanieczyszczoną odzież i skórę dużą ilością wody przed zdjęciem odzieży.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P361-0_tl}{{P361}{%
+  \__mhchem_hp_s:nnn{20150601}{Natychmiast zdjąć całą zanieczyszczoną odzież.}{%
+  \__mhchem_hp_s:nnn{20081216}{Natychmiast usunąć/\hskip\z@skip{}zdjąć całą zanieczyszczoną odzież.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P362-0_tl}{{P362}{%
+  \__mhchem_hp_s:nnn{20150601}{Zdjąć zanieczyszczoną odzież.}{%
+  \__mhchem_hp_s:nnn{20101201}{Zanieczyszczoną odzież zdjąć i wyprać przed ponownym użyciem.}{%
+  \__mhchem_hp_s:nnn{20081216}{Zanieczyszczoną odzież zdjąć i wyprać przed ponownym użyciem.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P363-0_tl}{{P363}{%
+  \__mhchem_hp_s:nnn{20081216}{Wyprać zanieczyszczoną odzież przed ponownym użyciem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P364-0_tl}{{P364}{%
+  \__mhchem_hp_s:nnn{20150601}{I wyprać przed ponownym użyciem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370-0_tl}{{P370}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku pożaru:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P371-0_tl}{{P371}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku poważnego pożaru i dużych ilości:}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P372-0_tl}{{P372}{%
+  \__mhchem_hp_s:nnn{20180301}{Zagrożenie wybuchem.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ryzyko wybuchu w razie pożaru.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P373-0_tl}{{P373}{%
+  \__mhchem_hp_s:nnn{20081216}{NIE gasić pożaru, jeżeli ogień dosięgnie materiały wybuchowe}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P374-0_tl}{{P374}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Gasić pożar z rozsądnej odległości z zachowaniem zwykłych środków ostrożności.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P375-0_tl}{{P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Z powodu ryzyka wybuchu gasić pożar z odległości.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P376-0_tl}{{P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Jeżeli jest to bezpieczne zahamować wyciek.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P377-0_tl}{{P377}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku płonięcia wyciekającego gazu: Nie gasić, jeżeli nie można bezpiecznie zahamować wycieku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P378-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{20150601}{Użyć\noexpand\textellipsis{} do gaszenia.}{%
+  \__mhchem_hp_s:nnn{20081216}{Użyć \noexpand\textellipsis{} do gaszenia.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P378.0-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P378-1_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P380-0_tl}{{P380}{%
+  \__mhchem_hp_s:nnn{20081216}{Ewakuować teren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P381-0_tl}{{P381}{%
+  \__mhchem_hp_s:nnn{20180301}{W przypadku wycieku wyeliminować wszystkie źródła zapłonu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Wyeliminować wszystkie źródła zapłonu, jeżeli jest to bezpieczne.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P390-0_tl}{{P390}{%
+  \__mhchem_hp_s:nnn{20081216}{Usunąć wyciek, aby zapobiec szkodom materialnym.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P391-0_tl}{{P391}{%
+  \__mhchem_hp_s:nnn{20081216}{Zebrać wyciek.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P310-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{20150601}{W PRZYPADKU POŁKNIĘCIA: Natychmiast skontaktować się z OŚRODKIEM ZATRUĆ/\hskip\z@skip{}lekarzem/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU POŁKNIĘCIA: Natychmiast skontaktować się z OŚRODKIEM ZATRUĆ lub z lekarzem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P310.0-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P310.1-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P310.2-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P310-1_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P312-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{20180301}{W PRZYPADKU POŁKNIĘCIA: W przypadku złego samopoczucia skontaktować się z OŚRODKIEM ZATRUĆ/\hskip\z@skip{} lekarzem/\hskip\z@skip{}\noexpand\textellipsis{}.}{%
+  \__mhchem_hp_s:nnn{20150601}{W PRZYPADKU POŁKNIĘCIA: W przypadku złego samopoczucia skontaktować się z OŚRODKIEM ZATRUĆ/\hskip\z@skip{}lekarzem/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU POŁKNIĘCIA: W przypadku złego samopoczucia skontaktować się z OŚRODKIEM ZATRUĆ lub z lekarzem.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P312.0-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P312.1-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P312.2-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P312-1_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P301+P330+P331-0_tl}{{P301\,+\,\hskip\z@skip{}P330\,+\,\hskip\z@skip{}P331}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU POŁKNIĘCIA: wypłukać usta. NIE wywoływać wymiotów.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{W PRZYPADKU KONTAKTU ZE SKÓRĄ: Zanurzyć w zimnej wodzie lub owinąć mokrym bandażem.}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU KONTAKTU ZE SKÓRĄ: Zanurzyć w zimnej wodzie/\hskip\z@skip{}owinąć mokrym bandażem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P335+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{W PRZYPADKU KONTAKTU ZE SKÓRĄ: Niezwiązaną pozostałość strzepnąć ze skóry. Zanurzyć w zimnej wodzie [lub owinąć mokrym bandażem].}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P335+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P335+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P335+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P350-0_tl}{{P302\,+\,\hskip\z@skip{}P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU DOSTANIA SIĘ NA SKÓRĘ: Delikatnie umyć dużą iloścą wody z mydłem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P352-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{20150601}{W PRZYPADKU KONTAKTU ZE SKÓRĄ: Umyć dużą ilością wody/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU KONTAKTU ZE SKÓRĄ: Umyć dużą ilością wody z mydłem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P352.0-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P352.1-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P302+P352-1_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P303+P361+P353-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{20180301}{W PRZYPADKU KONTAKTU ZE SKÓRĄ (lub z włosami): Natychmiast zdjąć całą zanieczyszczoną odzież. Spłukać skórę pod strumieniem wody [lub prysznicem].}{%
+  \__mhchem_hp_s:nnn{20150601}{W PRZYPADKU KONTATKU ZE SKÓRĄ (lub z włosami): Natychmiast zdjąć całą zanieczyszczoną odzież. Spłukać skórę pod strumieniem wody/\hskip\z@skip{}prysznicem.}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU KONTATKU ZE SKÓRĄ (lub z włosami): Natychmiast usunąć/\hskip\z@skip{}zdjąć całą zanieczyszczoną odzież. Spłukać skórę pod strumieniem wody/\hskip\z@skip{}prysznicem.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P303+P361+P353.0-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P303+P361+P353.1-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P303+P361+P353.2-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P304+P340-0_tl}{{P304\,+\,\hskip\z@skip{}P340}{%
+  \__mhchem_hp_s:nnn{20150601}{W PRZYPADKU DOSTANIA SIĘ DO DRÓG ODDECHOWYCH: wyprowadzić lub wynieść poszkodowanego na świeże powietrze i zapewnić mu warunki do swobodnego oddychania.}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU DOSTANIA SIĘ DO DRÓG ODDECHOWYCH: wyprowadzić lub wynieść poszkodowanego na świeże powietrze i zapewnić warunki do odpoczynku w pozycji umożliwiającej swobodne oddychanie.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P304+P341-0_tl}{{P304\,+\,\hskip\z@skip{}P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU DOSTANIA SIĘ DO DRÓG ODDECHOWYCH: W przypadku trudności z oddychaniem, wyprowadzić lub wynieść poszkodowanego na świeże powietrze i zapewnić warunki do odpoczynku w pozycji umożliwiającej swobodne oddychanie.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P305+P351+P338-0_tl}{{P305\,+\,\hskip\z@skip{}P351\,+\,\hskip\z@skip{}P338}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU DOSTANIA SIĘ DO OCZU: Ostrożnie płukać wodą przez kilka minut. Wyjąć soczewki kontaktowe, jeżeli są i można je łatwo usunąć. Nadal płukać.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P306+P360-0_tl}{{P306\,+\,\hskip\z@skip{}P360}{%
+  \__mhchem_hp_s:nnn{20081216}{W PRZYPADKU KONTAKTU Z ODZIEŻĄ: natychmiast spłukać zanieczyszczoną odzież i skórę dużą ilością wody przed zdjęciem odzieży.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P307+P311-0_tl}{{P307\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku narażenia: Skontaktować się z OŚRODKIEM ZATRUĆ lub z lekarzem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P308+P311-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{W przypadku narażenia lub styczności: Skontaktować się z OŚRODKIEM ZATRUĆ/\hskip\z@skip{}lekarzem/\hskip\z@skip{}\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P308+P311.0-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P308+P311.1-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P308+P311.2-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P308+P311-1_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P308+P313-0_tl}{{P308\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku narażenia lub styczności: Zasięgnąć porady/\hskip\z@skip{}zgłosić się pod opiekę lekarza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P309+P311-0_tl}{{P309\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku narażenia lub złego samopoczucia: Skontaktować się z OŚRODKIEM ZATRUĆ lub z lekarzem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P332+P313-0_tl}{{P332\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku wystąpienia podrażnienia skóry: Zasięgnąć porady/\hskip\z@skip{}zgłosić się pod opiekę lekarza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P333+P313-0_tl}{{P333\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku wystąpienia podrażnienia skóry lub wysypki: Zasięgnąć porady/\hskip\z@skip{}zgłosić się pod opiekę lekarza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P335+P334-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Nie związaną pozostałość strzepnąć ze skóry. Zanurzyć w zimnej wodzie/\hskip\z@skip{}owinąć mokrym bandażem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P335+P334.0-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P335+P334.1-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P335+P334.2-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P336+P315-0_tl}{{P336\,+\,\hskip\z@skip{}P315}{%
+  \__mhchem_hp_s:nnn{20180301}{Rozmrozić oszronione obszary letnią wodą. Nie trzeć oszronionego obszaru. Natychmiast zasięgnąć porady/\hskip\z@skip{}zgłosić się pod opiekę lekarza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P337+P313-0_tl}{{P337\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku utrzymywania się działania drażniącego na oczy: Zasięgnąć porady/\hskip\z@skip{}zgłosić się pod opiekę lekarza.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P342+P311-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{W przypadku wystąpienia objawów ze strony układu oddechowego: Skontaktować się z OŚRODKIEM ZATRUĆ/\hskip\z@skip{}lekarzem/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku wystąpienia objawów ze strony układu oddechowego: Skontaktować się z OŚRODKIEM ZATRUĆ lub z lekarzem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P342+P311.0-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P342+P311.1-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P342+P311.2-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P342+P311-1_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P361+P364-0_tl}{{P361\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Natychmiast zdjąć całą zanieczyszczoną odzież i wyprać przed ponownym użyciem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P362+P364-0_tl}{{P362\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Zanieczyszczoną odzież zdjąć i wyprać przed ponownym użyciem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P372+P380+P373-0_tl}{{P370\,+\,\hskip\z@skip{}P372\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P373}{%
+  \__mhchem_hp_s:nnn{20180301}{W przypadku pożaru: Zagrożenie wybuchem. Ewakuować teren. NIE gasić pożaru, jeżeli ogień dosięgnie materiały wybuchowe.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P376-0_tl}{{P370\,+\,\hskip\z@skip{}P376}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku pożaru: Jeżeli jest to bezpieczne zahamować wyciek.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{20150601}{W przypadku pożaru: Użyć\noexpand\textellipsis{} do gaszenia.}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku pożaru: Użyć \noexpand\textellipsis{} do gaszenia.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P380-0_tl}{{P370\,+\,\hskip\z@skip{}P380}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku pożaru: Ewakuować teren.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P380+P375-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku pożaru: Ewakuować teren. Z powodu ryzyka wybuchu gasić pożar z odległości.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P380+P375+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P380+P375+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P380+P375+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P371+P380+P375-0_tl}{{P371\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{W przypadku poważnego pożaru i dużych ilości: Ewakuować teren. Z powodu ryzyka wybuchu gasić pożar z odległości.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P401-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{20180301}{Przechowywać zgodnie z \noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P401.0-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P401-1_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P402-0_tl}{{P402}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w suchym miejscu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P403-0_tl}{{P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w dobrze wentylowanym miejscu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P404-0_tl}{{P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w zamkniętym pojemniku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P405-0_tl}{{P405}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać pod zamknięciem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P406-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{20180301}{Przechowywać w pojemniku odpornym na korozję /\hskip\z@skip{}\noexpand\textellipsis{} o odpornej powłoce wewnętrznej.}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w pojemniku odpornym na korozję /\hskip\z@skip{} \noexpand\textellipsis{} o odpornej powłoce wewnętrznej.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P406.0-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P406.1-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P406-1_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P407-0_tl}{{P407}{%
+  \__mhchem_hp_s:nnn{20180301}{Zachować szczelinę powietrzną pomiędzy stosami lub paletami.}{%
+  \__mhchem_hp_s:nnn{20081216}{Zachować szczelinę powietrzną pomiędzy stosami/\hskip\z@skip{}paletami.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P410-0_tl}{{P410}{%
+  \__mhchem_hp_s:nnn{20081216}{Chronić przed światłem słonecznym.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P411-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{20101201}{Przechowywać w temperaturze nieprzekraczającej \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w temperaturze nieprzekraczającej \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P411.0-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P411.1-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P411.2-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P412-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Nie wystawiać na działanie temperatury przekraczającej 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nie wystawiać na działanie temperatury przekraczającej 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P412.0-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P412.1-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P412.2-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P413-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{20101201}{Przechowywać luzem masy przekraczające \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{} funtów w temperaturze nieprzekraczającej \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać luzem masy przekraczające \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{} funtów w temperaturze nieprzekraczającej \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P413.0-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P413.1-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P413.2-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P420-0_tl}{{P420}{%
+  \__mhchem_hp_s:nnn{20180301}{Przechowywać oddzielnie.}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać z dala od innych materiałów.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P422-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Zawartość przechowywać w \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P422.0-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P422-1_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P402+P404-0_tl}{{P402\,+\,\hskip\z@skip{}P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w suchym miejscu. Przechowywać w zamkniętym pojemniku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P403+P233-0_tl}{{P403\,+\,\hskip\z@skip{}P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w dobrze wentylowanym miejscu. Przechowywać pojemnik szczelnie zamknięty.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P403+P235-0_tl}{{P403\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w dobrze wentylowanym miejscu. Przechowywać w chłodnym miejscu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P410+P403-0_tl}{{P410\,+\,\hskip\z@skip{}P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Chronić przed światłem słonecznym. Przechowywać w dobrze wentylowanym miejscu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P410+P412-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Chronić przed światłem słonecznym. Nie wystawiać na działanie temperatury przekraczającej 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Chronić przed światłem słonecznym. Nie wystawiać na działanie temperatury przekraczającej 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P410+P412.0-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P410+P412.1-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P410+P412.2-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P411+P235-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20101201}{Przechowywać w temperaturze nieprzekraczającej \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Przechowywać w chłodnym miejscu.}{%
+  \__mhchem_hp_s:nnn{20081216}{Przechowywać w temperaturze nieprzekraczającej \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Przechowywać w chłodnym miejscu.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P411+P235.0-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P411+P235.1-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P411+P235.2-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P501-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{20081216}{Zawartość/\hskip\z@skip{}pojemnik usuwać do \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P501.0-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P501.0-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P501.1-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P501.2-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P502-0_tl}{{P502}{%
+  \__mhchem_hp_s:nnn{20180301}{Przestrzegać wskazówek producenta lub dostawcy dotyczących odzysku lub wtórnego wykorzystania.}{%
+  \__mhchem_hp_s:nnn{20110419}{Przestrzegać wskazówek producenta lub dostawcy dotyczących odzysku lub wtórnego wykorzystania}{}}}}%
+\tl_gset:cn{g__mhchem_hp_pl_P370+P380+P375[+P378]-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375[\,+\,\hskip\z@skip{}P378]}{%
+  \__mhchem_hp_s:nnn{20180301}{W przypadku pożaru: Ewakuować teren. Z powodu ryzyka wybuchu gasić pożar z odległości. [Użyć \noexpand\textellipsis{} do gaszenia].}{}}}%
+%
+\group_end:
+\ExplSyntaxOff

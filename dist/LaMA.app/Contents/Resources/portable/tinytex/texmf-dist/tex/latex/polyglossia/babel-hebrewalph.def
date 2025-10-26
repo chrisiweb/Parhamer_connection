@@ -1,0 +1,82 @@
+\ProvidesFile{babel-hebrewalph.def}
+         [2023/06/01 %
+         Expandable definitions for Hebrew numerals]
+
+\newcommand*\hebrewnumeral[1]{%
+  \expandafter\@hebrew@numeral\expandafter{\the\numexpr#1}%
+}
+\newcommand*\Hebrewnumeral[1]{%
+  \expandafter\@Hebrew@numeral\expandafter{\the\numexpr#1}%
+}
+\newcommand*\Hebrewnumeralfinal[1]{%
+  \expandafter\@Hebrew@numeralfinal\expandafter{\the\numexpr#1}%
+}
+
+\newcommand*\hebrew@div@trancate[2]{%
+	\ifnum\numexpr #1 - #2*\numexpr #1/#2\relax<0
+	\the\numexpr #1/#2 -1\relax\else\the\numexpr #1/#2\relax\fi
+}
+ 
+\newcommand*\@hebrew@@numeral[2]{%
+  \ifnum#1<\z@\space\xpg@warning{Illegal value (#1) for Hebrew numeral}%
+  \else
+    \ifnum #1<1000
+		\gim@nomil{#1}{#2}%
+    \else
+		\hebrewnumeral{\hebrew@div@trancate{#1}{1000}}׳%
+        \expandafter\gim@nomil\expandafter{\the\numexpr #1 - 1000*\hebrew@div@trancate{#1}{1000}}{#2}%
+    \fi
+  \fi
+}
+
+\newcommand*\@hebrew@numeral[1]{\@hebrew@@numeral{#1}{0}}
+\newcommand*\@Hebrew@numeral[1]{\@hebrew@@numeral{#1}{1}}
+\newcommand*\@Hebrew@numeralfinal[1]{\@hebrew@@numeral{#1}{2}}
+
+\newcommand*\hebrew@alph@zero{}
+\newcommand*\gim@nomil[2]{%
+  \ifcase\hebrew@div@trancate{#1}{100}  % print nothing if no hundreds
+     \or ק\ifnum #2>0\ifnum #1=100 ׳\fi\fi
+     \or ר\ifnum #2>0\ifnum #1=200 ׳\fi\fi
+     \or ש\ifnum #2>0\ifnum #1=300 ׳\fi\fi
+     \or ת\ifnum #2>0\ifnum #1=400 ׳\fi\fi
+     \or ת\ifnum #2>0\ifnum #1=500 ״\fi\fi ק%
+     \or ת\ifnum #2>0\ifnum #1=600 ״\fi\fi ר%
+     \or ת\ifnum #2>0\ifnum #1=700 ״\fi\fi ש%
+     \or ת\ifnum #2>0\ifnum #1=800 ״\fi\fi ת%
+     \or תת\ifnum #2>0\ifnum #1=900 ״\fi\fi ק%
+  \fi
+  \ifnum \the\numexpr #1 - 100*\hebrew@div@trancate{#1}{100} = 16
+  \ifnum #2>0 ט״ז\else טז\fi% tet-zayin
+  \else\ifnum \the\numexpr #1 - 100*\hebrew@div@trancate{#1}{100} = 15
+  \ifnum #2>0  ט״ו\else טו\fi% tet-vav
+  \else
+  \ifcase\expandafter\hebrew@div@trancate\expandafter{\the\numexpr #1 - 100*\hebrew@div@trancate{#1}{100}}{10}  % print nothing if no tens
+      \or \ifnum \the\numexpr #1 - 10*\hebrew@div@trancate{#1}{10}>0 י\else\ifnum #2>0\ifnum #1=10 י׳\else ״י\fi\else י\fi\fi
+      \or \ifnum \the\numexpr #1 - 10*\hebrew@div@trancate{#1}{10}>0 כ\else\ifnum #2>0\ifnum #1>20 ״\fi\fi\if #22ך\else כ\fi\ifnum #2>0\ifnum #1=20 ׳\fi\fi\fi
+      \or \ifnum \the\numexpr #1 - 10*\hebrew@div@trancate{#1}{10}>0 ל\else\ifnum #2>0\ifnum #1=30 ל׳\else ״ל\fi\else ל\fi\fi
+      \or \ifnum \the\numexpr #1 - 10*\hebrew@div@trancate{#1}{10}>0 מ\else\ifnum #2>0\ifnum #1>40 ״\fi\fi\if #22ם\else מ\fi\ifnum #2>0\ifnum #1=40 ׳\fi\fi\fi
+      \or \ifnum \the\numexpr #1 - 10*\hebrew@div@trancate{#1}{10}>0 נ\else\ifnum #2>0\ifnum #1>50 ״\fi\fi\if #22ן\else נ\fi\ifnum #2>0\ifnum #1=50 ׳\fi\fi\fi
+      \or \ifnum \the\numexpr #1 - 10*\hebrew@div@trancate{#1}{10}>0 ס\else\ifnum #2>0\ifnum #1=60 ס׳\else ״ס\fi\else ס\fi\fi
+      \or \ifnum \the\numexpr #1 - 10*\hebrew@div@trancate{#1}{10}>0 ע\else\ifnum #2>0\ifnum #1=70 ע׳\else ״ע\fi\else ע\fi\fi
+      \or \ifnum \the\numexpr #1 - 10*\hebrew@div@trancate{#1}{10}>0 פ\else\ifnum #2>0\ifnum #1>80 ״\fi\fi\if #22ף\else פ\fi\ifnum #2>0\ifnum #1=80 ׳\fi\fi\fi
+      \or \ifnum \the\numexpr #1 - 10*\hebrew@div@trancate{#1}{10}>0 צ\else\ifnum #2>0\ifnum #1>90 ״\fi\fi\if #22ץ\else צ\fi\ifnum #2>0\ifnum #1=90 ׳\fi\fi\fi
+  \fi
+  \ifcase\the\numexpr #1 - 10*\hebrew@div@trancate{#1}{10}
+      \hebrew@alph@zero %  empty but can be defined if desired
+      \or \ifnum #2>0\ifnum #1=1 א׳\else ״א\fi\else א\fi
+      \or \ifnum #2>0\ifnum #1=2 ב׳\else ״ב\fi\else ב\fi
+      \or \ifnum #2>0\ifnum #1=3 ג׳\else ״ג\fi\else ג\fi
+      \or \ifnum #2>0\ifnum #1=4 ד׳\else ״ד\fi\else ד\fi
+      \or \ifnum #2>0\ifnum #1=5 ה׳\else ״ה\fi\else ה\fi
+      \or \ifnum #2>0\ifnum #1=6 ו׳\else ״ו\fi\else ו\fi
+      \or \ifnum #2>0\ifnum #1=7 ז׳\else ״ז\fi\else ז\fi
+      \or \ifnum #2>0\ifnum #1=8 ח׳\else ״ח\fi\else ח\fi
+      \or \ifnum #2>0\ifnum #1=9 ט׳\else ״ט\fi\else ט\fi
+  \fi\fi\fi
+}
+
+\newcommand*\Alphfinal[1]{\expandafter\@Alphfinal\csname c@#1\endcsname}
+\newcommand*\@Alphfinal[1]{\Hebrewnumeralfinal{#1}}
+
+\endinput

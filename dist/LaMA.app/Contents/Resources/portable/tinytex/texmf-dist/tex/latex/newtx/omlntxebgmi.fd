@@ -1,0 +1,34 @@
+%Filename: omlntxebgmi.fd
+%Created by: tex ebg-drv
+%Created using fontinst v1.933
+
+%THIS FILE SHOULD BE PUT IN A TEX INPUTS DIRECTORY
+
+\ProvidesFile{omlntxebgmi.fd}
+   [2024/03/06 Fontinst v1.933 font definitions for OML/ntxebgmi.]
+
+\expandafter\ifx\csname ntxmath@scaled\endcsname\relax
+  \let\ntxmath@scaled\@empty%
+\fi
+
+\@ifundefined{tx@ebgalthtrue}{%
+	\global\newif\iftx@alth}{}
+\xdef\tx@Alth{}
+\iftx@ebgalth\xdef\tx@Alth{-alth}\fi
+	
+\DeclareFontFamily{OML}{ntxebgmi}{\skewchar \font =127}
+
+\DeclareFontShape{OML}{ntxebgmi}{m}{it}{
+   <-> \ntxmath@scaled ntxebgmi\tx@Alth
+}{}
+
+\DeclareFontShape{OML}{ntxebgmi}{b}{it}{
+   <-> \ntxmath@scaled ntxebgbmi\tx@Alth
+}{}
+
+\DeclareFontShape{OML}{ntxebgmi}{m}{sl}{<->ssub * ntxebgmi/m/it}{}
+\DeclareFontShape{OML}{ntxebgmi}{bx}{it}{<->ssub * ntxebgmi/b/it}{}
+\DeclareFontShape{OML}{ntxebgmi}{b}{sl}{<->ssub * ntxebgmi/b/it}{}
+\DeclareFontShape{OML}{ntxebgmi}{bx}{sl}{<->ssub * ntxebgmi/b/sl}{}
+
+\endinput

@@ -1,0 +1,9 @@
+% Language definition file (part of polyglossia v2.8 -- 2025/09/22)
+%
+\ProvidesFile{gloss-cz.ldf}[polyglossia: module for cz (Czech)]
+
+% We provide this as a bcp47-compliant alias
+
+\InheritGlossFile{czech}
+
+\endinput

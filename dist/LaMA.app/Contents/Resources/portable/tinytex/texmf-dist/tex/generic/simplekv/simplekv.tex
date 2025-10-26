@@ -1,0 +1,352 @@
+% !TeX encoding = UTF-8
+% Ce fichier contient le code commenté de l'extension "simplekv"
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                    %
+\def\skvname                  {simplekv}                             %
+\def\skvver                     {0.32}                               %
+%                                                                    %
+\def\skvdate                 {2025/06/15}                            %
+%                                                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% --------------------------------------------------------------------
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%
+% %     http://www.latex-project.org/lppl.txt
+%
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+% --------------------------------------------------------------------
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Christian Tellechea
+% email: unbonpetit@netc.fr
+%        Commentaires, suggestions et signalement de bugs bienvenus !
+%        Comments, bug reports and suggestions are welcome.
+% Copyright: Christian Tellechea 2017-2025
+% --------------------------------------------------------------------
+% L'extension simplekv est composée des 5 fichiers suivants :
+%   - code               : simplekv            (.tex et .sty)
+%   - manuel en français : simplekv-fr         (.tex et .pdf)
+%   - fichier lisezmoi   : README
+% --------------------------------------------------------------------
+
+%################ Préalable ###############
+\csname skvloadonce\endcsname
+\let\skvloadonce\endinput
+\ifdefined\skvfromSTY\else
+	\immediate\write -1 {%
+		Package: \skvname\space\skvdate\space v\skvver\space Simple keyval package (CT)%
+	}%
+\fi
+
+%############ Gestion catcodes ############
+\begingroup
+	\def\X#1{\catcode\number`#1=\number\catcode`#1\relax}
+	\expandafter\xdef\csname skv_restorecatcode\endcsname{\X\,\X\=\X\_}
+\endgroup
+\catcode`\_ = 11 \catcode`\, = 12 \catcode`\= = 12
+
+%############ Macros auxilaires ###########
+\chardef\skv_stop 0
+\long\def\skv_first#1#2{#1}
+\long\def\skv_second#1#2{#2}
+\long\def\skv_antefi#1\fi{\fi#1}
+\long\def\skv_gob#1{}
+\long\def\skv_exe#1{#1}
+\long\def\skv_add_to_macro#1#2{\expandafter\def\expandafter#1\expandafter{#1#2}}
+\long\def\skv_xadd_to_macro#1#2{\edef#1{\unexpanded\expandafter{#1}#2}}
+\expandafter\def\expandafter\skv_gobspace\space{}% pour garder la compatibilité
+\long\def\skv_earg#1#2{\expandafter\skv_earg_a\expandafter{#2}{#1}}
+\long\def\skv_eearg#1#2{\expandafter\expandafter\expandafter\skv_earg_a\expandafter\expandafter\expandafter{#2}{#1}}
+\long\def\skv_earg_a#1#2{#2{#1}}
+\long\def\skv_ifempty#1{\skv_ifempty_a#1\_nil\_nil\skv_second\skv_first\__nil}%
+\long\def\skv_ifempty_a#1#2\_nil#3#4#5\__nil{#4}
+\def\skv_stripsp#1{%
+	\long\def\skv_stripsp##1##2{\expanded{\skv_stripsp_a\_marksp##2\__nil\_marksp#1\_marksp\_nil{##1}}}%
+	\long\def\skv_stripsp_a##1\_marksp#1##2\_marksp##3\_nil{\skv_stripsp_b##3##1##2\__nil#1\__nil\_nil}%
+	\long\def\skv_stripsp_b##1#1\__nil##2\_nil{\skv_stripsp_c##1##2\_nil}%
+	\long\def\skv_stripsp_c##1##2\__nil##3\_nil##4{\unexpanded{##4{##2}}}%
+}
+\skv_stripsp{ }
+\def\skv_ifinstr#1#2{% la chaine #1 est-elle dans #2 ?
+	\def\skv_ifinstr_a##1#1##2\_nil{\ifcat\relax\detokenize{##2}\relax\expandafter\skv_second\else\expandafter\skv_first\fi}%
+	\skv_ifinstr_a#2#1\_nil
+}
+\def\skv_error#1{\errmessage{Package \skvname\space Error: #1.}}
+
+%########## Macros de définition ##########
+\def\setKVdefault[#1]#2{%
+	\let\skv_read_value\skv_read_value_default
+	\unless\ifcsname skv_default_[#1]\endcsname% jamais exécuté un \setKVdefault ?
+		\expandafter\def\csname skv_default_[#1]\endcsname{,}%
+		\expandafter\def\csname skv_list_of_default_keys_[#1]\endcsname{,}%
+	\fi
+	\skv_readKV_a{#1}#2,\skv_end,%
+}
+\def\setKV{%
+	\let\skv_find_code_or_nocode\skv_assign_value_nocode
+	\let\skv_read_value\skv_read_value_nodefault
+	\skv_readKV
+}
+\def\defKV{%
+	\let\skv_find_code_or_nocode\skv_assign_value_code
+	\let\skv_read_value\skv_read_value_nodefault
+	\skv_readKV
+}
+\long\def\skv_readKV[#1]#2{%
+	\skv_readKV_a{#1}#2,\skv_end,%
+}
+\long\def\skv_readKV_a#1#2,{% #1=nom trousseau, #2=clé/val
+	\skv_stripsp\skv_ifempty{#2}
+	{%
+		\skv_readKV_a{#1}% clé/val vide ignoré
+	}
+	{%
+		\skv_readKV_b\skv_read_key#2=true=\_nil{#1}\skv_read_key\skv_end\__nil% si #1=\skv_end ne rien faire sinon \skv_read_key#1=true=\_nil{#1}
+	}%
+}
+\long\def\skv_readKV_b#1\skv_read_key\skv_end#2\__nil{#1}
+\long\def\skv_read_key#1={% #1=clé courante
+	\skv_stripsp{\expandafter\skv_read_value\detokenize}{#1}\_nil{}%
+}
+\long\def\skv_read_value_nodefault#1\_nil#2=#3\_nil{% #1=clé courante #2=valeur précédée d'un "{}"
+	\expandafter\skv_stripsp\expandafter\skv_find_code_or_nocode\expandafter{\skv_gob#2}{#1}%
+}
+\long\def\skv_read_value_default#1\_nil#2=#3\_nil#4{% #1=clé courante #2=valeur précédée d'un "{}" #4=nom du trousseau
+	\skv_eearg{\skv_ifinstr{,#1,}}{\csname skv_list_of_default_keys_[#4]\endcsname}
+	{% si la clé a déjà une valeur par défaut -> la remplacer
+		\skv_earg{\expandafter\skv_replace_value\csname skv_default_[#4]\endcsname{#1}}{\skv_gob#2}%
+	}
+	{% clé sans valeur par défaut
+		\expandafter\skv_xadd_to_macro\csname skv_default_[#4]\endcsname{#1=\unexpanded\expandafter{\skv_gob#2},}%
+		\expandafter\skv_add_to_macro\csname skv_list_of_default_keys_[#4]\endcsname{#1,}%
+	}%
+	\expandafter\skv_stripsp\expandafter\skv_assign_value_nocode\expandafter{\skv_gob#2}{#1}{#4}%
+}
+\long\def\skv_assign_value_nocode#1#2#3{% #1=valeur #2=clé courante #3=nom trousseau
+	\expandafter\def\csname skv_[#3]_#2\endcsname{\skv_stop#1}% stocker la valeur
+	\ifcsname skvcode_[#3]_#2\endcsname
+		\skv_antefi\csname skvcode_[#3]_#2\endcsname{#1}%
+	\fi
+	\skv_readKV_a{#3}%
+}
+\long\def\skv_assign_value_code#1#2#3{% #1=valeur #2=clé courante #3=nom trouseeau
+	\expandafter\def\csname skvcode_[#3]_#2\endcsname##1{#1}%
+	\skv_readKV_a{#3}%
+}
+\def\skv_replace_value#1#2#3{% #1=macro où effectuer le remplacement, #2=clé, #3=raw val
+	\def\skv_replace_value_a##1,#2=##2,##3\_nil{\def#1{##1,#2=#3,##3}}%
+	\expandafter\skv_replace_value_a#1\_nil
+}
+\def\restoreKV[#1]{%
+	\ifcsname skv_default_[\detokenize{#1}]\endcsname\expandafter\skv_first\else\expandafter\skv_second\fi
+	{%
+		\skv_eearg\restoreKV_a{\csname skv_default_[\detokenize{#1}]\endcsname}[#1]% mange la virgule
+	}
+	{%
+		\skv_error{\string\setKVdefault[\detokenize{#1}] n'a pas été exécuté}%
+	}%
+}
+\def\restoreKV_a#1[#2]{%
+	\skv_earg{\setKV[#2]}{\skv_gob#1}%
+}
+\let\useKVdefault\restoreKV
+
+%############## Macro \useKV ##############
+\def\useKV[#1]#2{\romannumeral\skv_stripsp{\useKV_a[#1]\detokenize}{#2}\_nil}
+\def\useKV_a[#1]#2\_nil{%
+	\ifcsname skv_[#1]_#2\endcsname
+		\csname skv_[#1]_#2\expandafter\endcsname
+	\else
+		\expandafter\skv_stop
+		\skv_antefi
+		\skv_error{Clé "#2" non définie dans le groupe de clés "#1"}%
+	\fi
+}
+
+%############# Macros de test #############
+\def\ifboolKV[#1]#2{\romannumeral\skv_stripsp{\ifboolKV_a[#1]\detokenize}{#2}\_nil}
+\def\ifboolKV_a[#1]#2\_nil{%
+	\ifcsname skv_[#1]_#2\endcsname
+		\expandafter\expandafter\expandafter\ifboolKV_b\csname skv_[#1]_#2\expandafter\endcsname\expandafter\_nil
+	\else
+		\expandafter\skv_stop
+		\skv_antefi
+		\skv_error{Clé "#2" non définie dans le groupe de clés "#1"}%
+		\skv_second
+	\fi
+}
+\def\ifboolKV_b#1\_nil{%% Cette macro teste si #1, qui est une <valeur>, vaut "true" ou "false"
+	\expandafter\skv_ifargtrue\expandafter{\skv_gob#1}
+	{%
+		\expandafter\skv_stop
+		\skv_first
+	}
+	{%
+		\expandafter\skv_ifargfalse\expandafter{\skv_gob#1}
+		{%
+			\expandafter\skv_stop
+			\skv_second
+		}
+		{%
+			\skv_stop
+			\skv_error{La valeur "\detokenize\expandafter{\skv_gob#1}" n'est pas un booléen valide}%
+			\skv_second
+		}%
+	}%
+}
+
+\def\testboolKV#1{%% macro publique qui teste si #1 est <true> ou <false>, erreur sinon
+	\romannumeral\testboolKV_a#1\skv_stop\_nil{#1}%
+}
+\def\testboolKV_a#1\skv_stop#2\_nil#3{%
+	\skv_ifempty{#1}
+	{%
+		\expandafter\testboolKV_b\expandafter{\skv_gob#3}% #1 commence par \skv_stop
+	}
+	{%
+		\skv_stripsp\testboolKV_b{#3}%
+	}%
+}
+\def\testboolKV_b#1{%
+	\skv_ifempty{#1}
+	{%
+		\skv_stop
+		\skv_error{Une valeur vide n'est pas un booléen valide}
+		\skv_second
+	}
+	{%
+		\ifboolKV_b\skv_stop#1\_nil
+	}%
+}
+
+\def\skv_ifargtrue#1{\skv_ifargtrue_a#1true\_nil}
+\def\skv_ifargtrue_a#1true#2\_nil{%
+	\skv_ifempty{#1}
+	{%
+		\skv_ifargtrue_b#2\_nil
+	}
+	{%
+		\skv_second
+	}%
+}
+\def\skv_ifargtrue_b#1true#2\_nil{\skv_ifempty{#1#2}}
+\def\skv_ifargfalse#1{\skv_ifargfalse_a#1false\_nil}
+\def\skv_ifargfalse_a#1false#2\_nil{%
+	\skv_ifempty{#1}
+	{%
+		\skv_ifargfalse_b#2\_nil
+	}
+	{%
+		\skv_second
+	}%
+}
+\def\skv_ifargfalse_b#1false#2\_nil{\skv_ifempty{#1#2}}
+
+%########## Macros utilisateur ############
+\def\ifkeyKV[#1]#2{% teste si une clé est définie
+	\romannumeral\expandafter\expandafter\expandafter\skv_stop
+	\csname skv_\ifcsname skv_[#1]_\skv_stripsp\detokenize{#2}\endcsname first\else second\fi\endcsname
+}
+\def\ifemptyKV[#1]#2{% teste si une valeur est vide
+	\romannumeral
+	\ifkeyKV[#1]{#2}
+	{%
+		\expandafter\expandafter\expandafter\skv_stop
+		\csname skv_%
+			\ifcat\relax\detokenize\expandafter\expandafter\expandafter{\useKV[#1]{#2}}\relax
+				first\else second%
+			\fi
+		\endcsname
+	}
+	{%
+		\skv_stop
+		\skv_error{La clé "[\detokenize{#1}]{\skv_stripsp\detokenize{#2}}" n'est pas définie}%
+		\skv_second
+	}%
+}
+\def\showKV[#1]#2{%
+	\expandafter\showKV_a\expanded{[#1]{\skv_stripsp\detokenize{#2}}}%
+}
+\def\showKV_a[#1]#2{%
+	\immediate\write-1
+	{%
+		^^J%
+		Clé \space\detokenize{[#1]#2 -> }%
+		\ifcsname skv_[#1]_#2\endcsname\expandafter\skv_first\else\expandafter\skv_second\fi
+		{%
+			\detokenize\expandafter{\romannumeral\csname skv_[#1]_#2\endcsname}%
+			^^J%
+			Code \detokenize{[#1]#2 -> }%
+			\ifcsname skvcode_[#1]_#2\endcsname\expandafter\skv_first\else\expandafter\skv_second\fi
+			{%
+				\expandafter\expandafter\expandafter\skv_show\expandafter\meaning\csname skvcode_[#1]_#2\endcsname
+			}
+			{%
+				non défini%
+			}%
+		}
+		{%
+			non défini%
+		}%
+		^^J%
+	}%
+}
+\def\skv_show#1->{}
+\skv_restorecatcode
+\endinput
+
+Versions :
+---------------------------------------------------------------------
+0.1        08/08/2017
+    - Première version
+---------------------------------------------------------------------
+0.2        27/04/2020
+    - Un <code> peut être assigné à une <clé>
+    - Correction de bugs
+    - Optimisations
+---------------------------------------------------------------------
+0.2a       01/10/2022
+    - vieux bug corrigé : \useKV envoie désormais une erreur si une
+      clé n'est pas définie
+    - la valeur n'est dépouillée que d'une accolade (et non pas de 2
+      comme auparavant)
+    - quelques petits nettoyages, code en UTF8
+---------------------------------------------------------------------
+0.2b       30/10/2022
+    - messages d'erreur mieux formatés
+    - <clé> détokénisée dans \ifboolKV et \showKV pour être cohérent
+      avec \setKV et \useKV
+---------------------------------------------------------------------
+0.2c       02/10/2023
+    - bug corrigé : si un item <clé=val> est vide, il est ignoré
+    - quelques remaniements du code
+---------------------------------------------------------------------
+0.3        24/05/2025
+    - vieux bug re-corrigé : \useKV envoie désormais une erreur si
+      une clé n'est pas définie
+    - bugfix. \useKV nécessite 2 développements et non plus 3
+    - bugfix. L'imbrication est désormais possible : la valeur dans
+      un \defKV peut contenir un \setKV ou \setKVdefault :
+          \setKV[bar]{x=0,y=1}
+          \useKV[bar]{x}, \useKV[bar]{y}%-> 0, 1
+          \defKV[foo]{setbar=\setKV[bar]{#1}}
+          \setKV[foo]{setbar={x=a,y=b}}
+          \useKV[bar]{x}, \useKV[bar]{y}%-> a, b
+    - petites améliorations de l'efficacité du code
+---------------------------------------------------------------------
+0.31       01/06/2025
+    - bugfix : \setKVdefault[<trousseau>] peut être exécuté plusieurs
+      fois de suite, sans perdre les valeurs par défaut des clés qui
+      sont omises
+    - nom du trousseau détokénisé (plus sûr)
+    - macro \ifkeyKV
+    - macro \ifemptyKV
+---------------------------------------------------------------------
+0.32       15/06/2025
+    - regression/bugfix : le nom du trousseau n'est _pas_ détokénisé

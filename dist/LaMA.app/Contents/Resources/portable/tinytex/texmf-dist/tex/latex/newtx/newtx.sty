@@ -1,0 +1,834 @@
+\NeedsTeXFormat{LaTeX2e}
+
+%Package to simplify loading of newtxmath with a text font family such as newtxtext for all latex engines, or for newtxtext and an otf math package.
+\def\fileversion{1.755}
+\def\filedate{2025/01/06}
+\ProvidesPackage{newtx}[%
+\filedate\space v\fileversion (Michael Sharpe) latex and unicode latex support for newtxmath and a supported text font family, or for newtxtext and an otf math package]
+
+\message{`newtx'v\fileversion,\space\filedate\space Integrated\space loading\space of\space newtxmath\space and\space a\space text\space font
+\space for\space all\space latex\space engines\space (msharpe)}
+
+\RequirePackage{fontenc,fontaxes}
+\RequirePackage{ifthen,iftex,etoolbox,scalefnt}
+
+% \textfrac macro for type1 libertine and libertinus 
+\newcommand{\lbtntextfrac}[3][]{% like \lbtntextfrac[1]{7}{8}
+  \mbox{%
+    \ifthenelse{\not\equal{#1}{}}%Test for integer portion [optional #1]
+      {\textlf{#1}\kern.1em}{}%         
+    {\sustyle#2}% numerator
+    \StrRight{#2}{1}[\@digit@]%
+    % look for  1, 2, 3, 7, 8
+    \ifcase\@digit@% 0
+    \or%\kern.03em% 1
+    \or\kern.04em% 2
+    \or%\kern-.01em% 3
+    \or\kern.04em% 4
+    \or%\kern.01em% 5
+    \or%\kern.01em% 6
+    \or\kern-.06em% 7
+     \or\kern.04em% 8
+    %\or\kern-.02em% 9
+   \fi%
+%    \kern\ntx@foresolidus{\fontencoding{TS1}\selectfont\char"2F}%
+%    \kern\ntx@aftsolidus%
+    {\fontencoding{TS1}\selectfont\char"2F}%
+	\StrLeft{#3}{1}[\@digit@]%
+    % look for 1, 4, 7
+    \ifcase\@digit@% 0
+    \or%\kern -.02em% 1
+    \or% 2
+    \or% 3
+    \or\kern -.06em% 4
+    \or\kern -.02em% 5
+    \or\kern-.03em% 6
+    \or\kern .01em% 7
+   \or%\kern .01em% 8
+   \or\kern -.01em% 9
+    \fi%
+    {\destyle #3}%       denominator [#3]
+  }%mbox
+} % lbtntextfrac
+
+% options for newtxmath as etoolbox internal list allowing \ifinlist
+%\def\ntx@mathlstr{vecsep,amsthm,nosubscriptcorrection,subscriptcorrection,timesmathacc,varbb,vvarbb,nosymbolsc,noamssymbols,amssymbols,uprightscript,uprightGreek,slantedGreek,frenchmath,nonewtxmathopt,upint,smallerops,useBImacros,varg,varvw,noOT1}
+\forcsvlist{\listadd\ntx@mathlst}{vecsep,amsthm,nosubscriptcorrection,subscriptcorrection,
+timesmathacc,varbb,vvarbb,nosymbolsc,noamssymbols,amssymbols,uprightscript,uprightGreek,
+slantedGreek,frenchmath,nonewtxmathopt,upint,smallerops,useBImacros,varg,varvw,noOT1,
+propmathfigs,curlybraces,cochrho,cochf,alty,alth,liby,nochvw}
+%\show\ntx@mathlst
+
+% Note that subscriptcorrectionfile is not on the list---we process it in this sty file
+%\def\ntx@mathlst{}
+%\ifinlist{amsthm}{\ntx@mathlst}{%
+%\typeout{amsthm YES}}{ \typeout{amsthm NO}}
+
+%\endinput
+
+%\DeclareListParser*{\forcsvlist}{,}
+%\@for\ntx@opt:=\ntx@mathlstr\do{%
+%\listxadd{\ntx@mathlst}{\ntx@opt}}%
+%\show\ntx@opt
+%\show\ntx@mathlst
+\RequirePackage{xstring}% must load this after \@for
+% Needed for \StrLeft and \StrRight
+
+%Enginecheck
+%iftex's \iftutex is true for LuaTeX and XeTeX
+\newif\ifntx@otftext
+\iftutex\ntx@otftexttrue\fi 
+\def\ntx@Mopt{}
+\def\ntx@Topt{}
+
+%%%%%%%%%%%%%%%%%%
+ \RequirePackage{xkeyval}%
+%\traceon
+\DeclareOptionX*{% what to do with unknown options
+\xifinlist{\CurrentOption}{\ntx@mathlst}
+% true branch
+{\xdef\ntx@Mopt{\ntx@Mopt \CurrentOption,}
+\expandafter\PassOptionsToPackage\expandafter{\CurrentOption}{newtxmath}}
+{%  false branch
+\xdef\ntx@Topt{\ntx@Topt \CurrentOption,}\expandafter\PassOptionsToPackage\expandafter{\CurrentOption}{\ntx@TF}}
+}%
+%\traceoff
+%%%%StartOptions
+%\newif\ifntx@nofontspec 
+% must load fontspec if unicode engine
+\newif\ifntx@otfmath %\ntx@otfmathfalse % default is type1 math
+%\newdimen\ntx@dima
+%\def\tx@divide#1#2{\ntx@dima=\dimexpr 1pt * (\dimexpr #1pt\relax) / \dimexpr #2pt\relax\relax}
+%\tx@divide{300}{400}\showthe\ntx@dima
+
+\newcommand*{\ntxtext@RM}{1}
+\newcommand*{\ntxtext@SF}{1}
+\newcommand*{\ntxtext@TT}{.88}
+%\newcommand*{\ntxtext@llscale}{1}
+%\newcommand*{\ntxtext@ttscale}{.85}
+\newcommand*{\ntxtext@rm}{} % not understood by libertinus-otf
+\newcommand*{\ntxtext@sf}{}% not understood by libertinus-otf
+
+\newcommand*{\ntxtext@scale}{0}
+\newcommand*{\ntxmath@scale}{1} 
+%\traceon
+\DeclareOptionX{scaled}[1]{\renewcommand*{\ntxmath@scale}{#1}}
+\DeclareOptionX{scale}[1]{\renewcommand*{\ntxmath@scale}{#1}}
+\DeclareOptionX{textscale}[1]{\renewcommand*{\ntxtext@scale}{#1}}
+\DeclareOptionX{textscaled}[1]{\renewcommand*{\ntxtext@scale}{#1}}
+\DeclareOptionX{mathscale}[1]{\renewcommand*{\ntxmath@scale}{#1}}
+\DeclareOptionX{mathscaled}[1]{\renewcommand*{\ntxmath@scale}{#1}}
+\DeclareOptionX{ScaleBaseRM}[]{\renewcommand*{\ntxtext@RM}{#1}}
+\DeclareOptionX{ScaleBaseSF}[]{\renewcommand*{\ntxtext@SF}{#1}}
+\DeclareOptionX{ScaleBaseTT}[]{\renewcommand*{\ntxtext@TT}{#1}}
+\DeclareOptionX{llscale}[]{\renewcommand*{\ntxtext@llscale}{#1}}
+\DeclareOptionX{ttscale}[]{\renewcommand*{\ntxtext@ttscale}{#1}}
+\DeclareOptionX{rm}[true]{\renewcommand*{\ntxtext@rm}{#1}}
+\DeclareOptionX{sf}[true]{\renewcommand*{\ntxtext@sf}{#1}}
+\newif\iftx@helv \tx@helvtrue
+\newif\iftx@tt \tx@tttrue
+\DeclareOptionX{nohelv}[true]{%
+\@nameuse{if#1}\tx@helvfalse\fi}
+\DeclareOptionX{nott}[true]{%
+\@nameuse{if#1}\tx@ttfalse\fi}
+\def\tx@helvratio{.94}
+\DeclareOptionX{helvratio}[0.94]{%
+\def\tx@helvratio{#1}
+}
+
+\DeclareOptionX{type1}[true]{}% no effect now
+%{%\@nameuse{if#1}\ntx@otftextfalse\fi}
+
+\DeclareOptionX{type1text}[true]{} %no effect now
+%{% same as type1--use type1 for text
+%\@nameuse{if#1}\ntx@otftextfalse\fi}
+
+\DeclareOptionX{nofontspec}[true]{} % no effect
+%{\@nameuse{if#1}\ntx@nofontspectrue\fi}
+
+\DeclareOptionX{otfmath}[true]{%
+\@nameuse{if#1}\iftutex\ntx@otfmathtrue\fi\fi}
+
+%\DeclareOptionX{no-math}[true]{%
+%\@nameuse{if#1}\ntx@nomathtrue\fi}
+%\DeclareOptionX{no-otfmath}[true]{% forces use of newtxmath
+%\@nameuse{if#1}\ntx@nomathtrue\fi}
+
+\DeclareOptionX{subscriptcorrectionfile}{\def\tx@subs{#1}\tx@subsfiletrue}
+
+%\newif\ifntx@fourier
+\def\ntx@dfltTF{newtxtext} % the default text font package name
+\def\ntx@text{\let\ntx@TF=\ntx@dfltTF % the text font package name
+\def\ntx@MF{} % option name for flavor of newtxmath 
+\def\ntx@id{0} % identifier for font properties
+\def\ntx@sc{ntx@scale} % macro name for scale factor in font package 
+\def\ntx@minfam{minntx} %roman font, tabular lining fd, used in math
+}
+\ntx@text % set the default
+\DeclareOptionX{libertine}[true]{%
+	\@nameuse{if#1}\def\ntx@sc{LinuxLibertineT@scale}%
+	\def\ntx@TF{libertine}\def\ntx@MF{libertine}
+	\def\ntx@id{1}\def\ntx@minfam{MinLibertinus}\def\textlf##1{{\liningnums##1}}
+\def\nustyle{\sufigures}\def\destyle{}\fi}
+\DeclareOptionX{libertinus}[true]{%
+\@nameuse{if#1}\def\ntx@sc{LibertinusSerif@scale}%
+	\def\ntx@TF{libertinus}\def\ntx@MF{libertine}
+\def\ntx@id{10}\def\ntx@minfam{MinLibertinus}
+}
+\DeclareOptionX{etbb}[true]{%
+	\@nameuse{if#1}\def\ntx@TF{ETbb}\def\ntx@MF{libertine}
+	\def\ntx@id{2}\def\ntx@minfam{minlibertine}%
+	\def\ntx@sc{ETbb@scale}\fi}
+\DeclareOptionX{ebgaramond}[true]{\@nameuse{if#1}
+	\def\ntx@sc{EBGaramond@scale}\def\ntx@TF{ebgaramond}
+	\let\ntx@MF\ntx@TF\def\ntx@id{3}\def\ntx@minfam{minebgaramond}\fi}
+\DeclareOptionX{MinionPro}[true]{\@nameuse{if#1}
+	\def\ntx@sc{}\def\ntx@TF{MinionPro}\def\ntx@MF{minion}
+	\def\ntx@id{4}\def\ntx@minfam{mincochineal}\def\ntx@TF{MinionPro}\fi}
+\DeclareOptionX{minion}[true]{\@nameuse{if#1}
+	\def\ntx@sc{}\def\ntx@TF{MinionPro}\def\ntx@MF{minion}
+	\def\ntx@id{4}\def\ntx@minfam{mincochineal}\def\ntx@TF{MinionPro}\fi}
+\DeclareOptionX{cochineal}[true]{\@nameuse{if#1}
+	\def\ntx@sc{Cochineal@scale}\def\ntx@TF{cochineal}
+	\let\ntx@MF\ntx@TF\def\ntx@id{5}\def\ntx@minfam{mincochineal}\fi}
+\DeclareOptionX{garamondx}[true]{\@nameuse{if#1}
+	\def\ntx@sc{zgm@Scale}\def\ntx@TF{garamondx}
+	\let\ntx@MF\ntx@TF
+	\def\ntx@id{6}\def\ntx@minfam{minzgm}\fi}
+\DeclareOptionX{baskerville}[true]{\@nameuse{if#1}
+	\def\ntx@sc{BaskervilleF@scale}\def\ntx@TF{baskervillef}
+	\let\ntx@MF\ntx@TF\def\ntx@id{7}\def\ntx@minfam{minbaskervillef}\fi}
+\DeclareOptionX{Baskerville}[true]{\@nameuse{if#1}
+	\def\ntx@sc{BaskervilleF@scale}\def\ntx@TF{baskervillef}
+	\let\ntx@MF\ntx@TF\def\ntx@id{7}\def\ntx@minfam{minbaskervillef}\fi}
+\DeclareOptionX{baskervillef}[true]{\@nameuse{if#1}
+	\def\ntx@sc{BaskervilleF@scale}\def\ntx@TF{baskervillef}
+	\let\ntx@MF\ntx@TF\def\ntx@id{7}\def\ntx@minfam{minbaskervillef}\fi}
+\DeclareOptionX{BaskervilleF}[true]{\@nameuse{if#1}
+	\def\ntx@sc{BaskervilleF@scale}\def\ntx@TF{baskervillef}
+	\let\ntx@MF\ntx@TF\def\ntx@id{7}\def\ntx@minfam{minbaskervillef}\fi}
+\DeclareOptionX{baskervaldx}[true]{\@nameuse{if#1}
+	\def\ntx@sc{Baskervaldx@scale}\def\ntx@TF{Baskervaldx}
+	\let\ntx@MF\ntx@TF\def\ntx@id{8}\def\ntx@minfam{minbaskervaldx}\fi}
+\DeclareOptionX{Baskervaldx}[true]{\@nameuse{if#1}
+	\def\ntx@sc{Baskervaldx@scale}\def\ntx@TF{Baskervaldx}
+	\let\ntx@MF\ntx@TF\def\ntx@id{8}\def\ntx@minfam{minbaskervaldx}\fi}
+%\DeclareOptionX{utopia}[true]{%
+%	\@nameuse{if#1}\def\ntx@TF{utopia}\let\ntx@MF\ntx@TF\def\ntx@id{0}\def\ntx@minfam{}\fi}
+\DeclareOptionX{heuristica}[true]{\@nameuse{if#1}
+	\def\ntx@sc{Heuristica@scale}%
+	\def\ntx@TF{heuristica}\def\ntx@MF{utopia}
+	\def\ntx@id{9}\def\ntx@minfam{minheuristica}\fi}
+\DeclareOptionX{Heuristica}[true]{\@nameuse{if#1}
+	\def\ntx@sc{Heuristica@scale}%
+	\def\ntx@TF{heuristica}\def\ntx@MF{utopia}
+	\def\ntx@id{9}\def\ntx@minfam{minheuristica}\fi}
+\DeclareOptionX{erewhon}[true]{\@nameuse{if#1}
+	\def\ntx@sc{erewhon@scale}\def\ntx@TF{erewhon}\def\ntx@MF{utopia}
+	\def\ntx@id{11}\def\ntx@minfam{minerewhon}\fi}
+\DeclareOptionX{Erewhon}[true]{\@nameuse{if#1}
+	\def\ntx@sc{erewhon@scale}\def\ntx@TF{erewhon}\def\ntx@MF{utopia}
+	\def\ntx@id{11}\def\ntx@minfam{minerewhon}\fi}
+\DeclareOptionX{XCharter}[true]{\@nameuse{if#1}
+	\def\ntx@sc{XCharter@scale}\def\ntx@TF{XCharter}
+	\def\ntx@MF{xcharter}\def\ntx@id{12}\def\ntx@minfam{minxcharter}\fi}
+\DeclareOptionX{xcharter}[true]{\@nameuse{if#1}
+	\def\ntx@sc{XCharter@scale}\def\ntx@TF{XCharter}
+	\def\ntx@MF{xcharter}\def\ntx@id{12}\def\ntx@minfam{minxcharter}\fi}
+\DeclareOptionX{Stickstoo}[true]{\@nameuse{if#1}
+	\def\ntx@sc{SticksTooText@scale}%
+	\def\ntx@TF{stickstootext}\def\ntx@MF{stickstoo}
+	\def\ntx@id{13}\def\ntx@minfam{minstickstootext}\fi}
+\DeclareOptionX{stickstoo}[true]{\@nameuse{if#1}
+	\def\ntx@sc{SticksTooText@scale}%
+	\def\ntx@TF{stickstootext}\def\ntx@MF{stickstoo}
+	\def\ntx@id{13}\def\ntx@minfam{minstickstootext}\fi}
+\DeclareOptionX{stix2}[true]{\@nameuse{if#1}
+	\def\ntx@sc{SticksTooText@scale}%
+	\def\ntx@TF{stickstootext}\def\ntx@MF{stickstoo}
+	\def\ntx@id{13}\def\ntx@minfam{minstickstootext}\fi}
+\DeclareOptionX{scholax}[true]{\@nameuse{if#1}
+	\def\ntx@sc{TeXGyreScholaX@scale}%
+	\def\ntx@TF{scholax}\def\ntx@MF{nc}
+	\def\ntx@id{14}\def\ntx@minfam{minscholax}\fi}
+\DeclareOptionX{nc}[true]{\@nameuse{if#1}
+	\def\ntx@sc{TeXGyreScholaX@scale}%
+	\def\ntx@TF{scholax}\def\ntx@MF{nc}
+	\def\ntx@id{14}\def\ntx@minfam{minscholax}\fi}
+\DeclareOptionX{scholaxf}[true]{\@nameuse{if#1}
+	\def\ntx@sc{TeXGyreScholaX@scale}%
+	\def\ntx@TF{scholax}\def\ntx@MF{nc}
+	\def\ntx@id{14}\def\ntx@minfam{minscholax}\fi}
+\DeclareOptionX{ncf}[true]{\@nameuse{if#1}
+	\def\ntx@sc{TeXGyreScholaX@scale}%
+	\def\ntx@TF{scholax}\def\ntx@MF{nc}
+	\def\ntx@id{14}\def\ntx@minfam{minscholax}\fi}
+\DeclareOptionX{Gelasio}[true]{\@nameuse{if#1}
+	\def\ntx@sc{Gelasio@scale}\def\ntx@TF{gelasio}\def\ntx@MF{gelasio}
+	\def\ntx@id{16}\def\ntx@minfam{mingelasio}\fi}
+\DeclareOptionX{gelasio}[true]{\@nameuse{if#1}
+	\def\ntx@sc{Gelasio@scale}\def\ntx@TF{gelasio}\def\ntx@MF{gelasio}
+	\def\ntx@id{16}\def\ntx@minfam{mingelasio}\fi}
+% for stacked fractions
+\DeclareOptionX{sfracvcenter}{%
+\def\tx@sfrVC{#1}}
+\DeclareOptionX{sfracvspacing}{%
+\def\tx@sfrVS{#1}}
+\DeclareOptionX{sfracbarthick}{%
+\def\tx@sfrTH{#1}}
+\DeclareOptionX{sfracscaling}{%
+\def\tx@sfrSC{#1}}
+% \ntx@Topt contains all unknown options that are not math options. It contains no scale options. \ntx@Mopt lists all the math options.
+\ProcessOptionsX\relax
+
+\def\tx@mathtotextfactor{1}
+\ifcase\ntx@id % 0, newtxtext
+  \or\or % 1,2
+  \or \def\tx@mathtotextfactor{1.05} % 3, ebg
+  \or\or % 4,5
+  \or \def\tx@mathtotextfactor{.94} % 6, garx
+  \or\or % 7,8
+  \or \def\tx@mathtotextfactor{.94} % 9, heur
+  \or\or % 10, 11
+  \or \def\tx@mathtotextfactor{.935} % 12, xch
+  \or % 13
+  \or \def\tx@mathtotextfactor{.93} % 14, schx
+  \or \def\tx@mathtotextfactor{.93} % 15, schx/four
+  \or \def\tx@mathtotextfactor{.92} % 16, gel
+\fi
+
+\def\tx@divide#1#2{\ntx@dima=\dimexpr 1pt * (\dimexpr #1 pt\relax) / \dimexpr #2pt\relax\relax}
+%\show\ntx@Mopt
+%\show\ntx@Topt
+%\traceon
+% Check for conflict between nofontspec and others
+%\ifntx@nofontspec
+%  \iftutex
+%  	\ntx@otfmathfalse
+%	\ntx@otftextfalse
+%  \fi
+%\fi
+\newif\ifntx@iszero
+\@tempdima=\@ne\p@\@tempdima=\ntxtext@scale\@tempdima
+\expandafter\ifnum\number\@tempdima=0\relax\ntx@iszerotrue\fi
+
+\ifntx@iszero%
+  \@tempdima=\tx@mathtotextfactor\p@%
+  \@tempdima=\ntxmath@scale\@tempdima%
+  \edef\ntxtext@scale{\strip@pt\@tempdima}
+  %\show\ntxtext@scale
+\fi
+\def\ntxtext@scaled{s*[\ntxtext@scale]}
+  
+\ifntx@otfmath
+   \ifnum\ntx@id>0
+     \PackageWarning{newtx.sty}{Reverting to newtxtext: newtx with option {\tt otfmath} can not handle other text packages.}
+     \ntx@id=0
+     \ntx@text % revert to newtxtext
+   \fi
+\fi
+
+\ifnum\ntx@id=0
+    \ifthenelse{\not\equal{\sfdefault}{cmss}}%
+      {\tx@helvfalse}{}
+    \ifthenelse{\not\equal{\ttdefault}{cmtt}}%
+      {\tx@ttfalse}{}
+\fi
+\iftx@helv
+      \renewcommand*{\sfdefault}{qhv}
+      \@tempdima=\ntxtext@scale\p@
+      \@tempdima=\tx@helvratio\@tempdima%
+      \edef\qhv@scale{\strip@pt\@tempdima}
+\else
+      \PassOptionsToPackage{nohelv=true}{newtxtext}
+\fi
+
+\ifthenelse{\not\equal{\tx@helvratio}{.94}}%
+      {\PassOptionsToPackage{helvratio=\tx@helvratio}%
+      {newtxtext}}{}
+      
+\iftx@tt\renewcommand*{\ttdefault}{ntxtt}\fi
+\iftx@tt\else%
+      \PassOptionsToPackage{nott=true}{newtxtext}  
+\fi
+%\ifntx@badnof\PackageError{newtx.sty}{Incompatible options, nofontspec and otfmath}{Incompatible options, nofontspec and otfmath}\fi
+% Set the text scale macros appropriately
+%\show\ntx@TF
+\PassOptionsToPackage{scaled=\ntxmath@scale}{newtxmath}
+%\PassOptionsToPackage{scaled=\ntxtext@scale}{\ntx@TF}
+\edef\ntxmath@scaled{s*[\ntxmath@scale]}
+% For the min text fd files, need to use actual scale macro passed to fd?
+%\@namedef{\ntx@sc}{\ntxtext@scale}%
+
+%\newcommand{\PassMathScale}{%\ifntx@iszero\gdef\ntxtext@scale{\ntxmath@scale}
+%\gdef\ntxtext@scaled{s*[\ntxtext@scale]}\fi
+
+% The following block sents scale instructions to text package
+\ifnum\ntx@id=4 % MinionPro
+  \PassOptionsToPackage{scale=\ntxtext@scale}{\ntx@TF}
+\else
+  \ifnum\ntx@id=10 %libertinus
+    \@tempdima=\ntxtext@scale\p@
+	\@tempdimb=\ntxtext@RM\@tempdima
+		  \PassOptionsToPackage{ScaleRM=\strip@pt\@tempdimb}{\ntx@TF}
+	  	  \@tempdimb=\ntxtext@SF\@tempdima
+		  \PassOptionsToPackage{ScaleSF=\strip@pt\@tempdimb}{\ntx@TF}
+		  \@tempdimb=\ntxtext@TT\@tempdima
+		  \PassOptionsToPackage{ScaleTT=\strip@pt\@tempdimb}{\ntx@TF}
+  \else
+      \ifnum\ntx@id=1 %libertine
+      	  \@tempdima=\ntxtext@scale\p@
+		  \@tempdimb=\ntxtext@RM\@tempdima
+		  \PassOptionsToPackage{llscale=\strip@pt\@tempdimb}{\ntx@TF}
+	  	  \@tempdimb=\ntxtext@SF\@tempdima
+		  \PassOptionsToPackage{scale=\strip@pt\@tempdimb}{\ntx@TF}
+		  \@tempdimb=\ntxtext@TT\@tempdima
+		  \PassOptionsToPackage{ttscale=\strip@pt\@tempdimb}{\ntx@TF}
+
+      \else %
+          \ifnum\ntx@id=16 % gelasio
+              \PassOptionsToPackage{scale=\ntxtext@scale}{\ntx@TF}%
+ 		  \else
+		    \PassOptionsToPackage{scaled=\ntxtext@scale}{\ntx@TF}
+		  \fi
+	  \fi
+  \fi
+\fi
+%}
+%
+%\newcommand{\PassMatchingScale}[1]{%
+%  \ifntx@iszero%
+%    \@tempdima #1\p@ \@tempdima\ntxmath@scale\@tempdima		  	\xdef\ntxtext@scale{\strip@pt\@tempdima}
+%  \fi
+%  \xdef\ntxtext@scaled{s*[\ntxtext@scale]}
+%}
+%\fi
+
+%\PassMathScale
+%\traceon
+% Send parameters for stacked fractions
+\def\tx@sfrac{} % X for cases where parameters are given
+\ifcase\ntx@id % 0, newtxtext
+\def\tx@sfrac{X}
+%\PassMathScale
+% info for sfrac (stacked fractions) involving newtxtext
+\@ifundefined{tx@xht}{\def\tx@xht{450}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{406}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{270}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{0}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{331}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{106}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{54}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.9}}{} % scale defigures by this
+\or %1, libertine
+\def\tx@sfrac{X}
+% \PassOptionsToPackage{ttscaled=\ntxtext@scale,
+% llscaled=\ntxtext@scale}{\ntx@TF} % for tt and serifed in Libertine
+\@ifundefined{tx@xht}{\def\tx@xht{431}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{328}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{365}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{365}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{305}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{100}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{46}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.9}}{} % scale defigures by this 
+%\def\destyle{\sufigures} \def\nustyle{\sufigures}
+%\iflibertine@otf%
+%\providecommand{\textfrac}[3][]{{%
+%\mbox{%
+%    \ifthenelse{\not\equal{#1}{}}%Test for integer portion [optional #1]
+%      {\textlf{#1}\kern.02em}{}%         
+%{\addfontfeature{RawFeature=+frac}#2/#3}}%
+%}}
+\or % 2, etbb
+\def\tx@sfrac{X}
+\@ifundefined{tx@xht}{\def\tx@xht{431}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{357}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{295}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{0}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{331}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{106}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{64}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.8}}{} % scale defigures by this
+\or % 3, ebgaramond
+\def\tx@sfrac{X}
+\@ifundefined{tx@xht}{\def\tx@xht{431}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{341}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{443}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{-143}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{318}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{90}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{46}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.9}}{} % scale defigures by this 
+
+%\iflibertine@otf%
+%\providecommand{\textfrac}[3][]{{%
+%{{%
+% \mbox{%
+%    \ifthenelse{\not\equal{#1}{}}%Test for integer portion [optional #1]
+%      {\textlf{#1}\kern.02em}{}%         
+%{\addfontfeature{RawFeature=+frac}#2/#3}}%
+%}}}}
+\or % 4, MinionPro
+%\PassMathScale
+%\@ifundefined{tx@xht}{\def\tx@xht{437}}{} % lowercase letters
+%\@ifundefined{tx@deht}{\def\tx@deht{359}}{} % denominator figures ht
+%\@ifundefined{tx@nubase}{\def\tx@nubase{277}}{} % baseline of numerators
+%\@ifundefined{tx@debase}{\def\tx@debase{0}}{} % baseline of denoms
+%\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{317}}{}% vertical center of sfrac
+%\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{106}}{} % space above/below bar
+%\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{54}}{} % bar thickness
+%\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.9}}{} % scale defigures by this 
+\or % 5, cochineal
+\def\tx@sfrac{X}
+\@ifundefined{tx@xht}{\def\tx@xht{430}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{378}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{248}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{0}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{313}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{106}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{54}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.9}}{} % scale defigures by this amount
+\or % 6, garamondx
+%\PassMatchingScale{.94}
+\or % 7, BaskervilleF
+%\PassMathScale
+\or % 8, baskervaldx
+%\PassMathScale
+\or % 9, heuristica
+%\PassMatchingScale{.94}
+\or % 10, libertinus
+\def\tx@sfrac{X}
+\@ifundefined{tx@xht}{\def\tx@xht{431}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{324}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{364}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{-112}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{305}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{90}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{46}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.9}}{} % scale defigures by this 
+%\def\destyle{\sufigures} \def\nustyle{\sufigures}
+%\providecommand{\textfrac}[3][]{\textlf{#1}\kern.01em{\addfontfeature{RawFeature=+frac}#2/#3}}
+%\iflibertine@otf%
+%\providecommand{\textfrac}[3][]{{%
+%{{%
+% \mbox{%
+%    \ifthenelse{\not\equal{#1}{}}%Test for integer portion [optional #1]
+%      {\textlf{#1}\kern.02em}{}%         
+%{\addfontfeature{RawFeature=+frac}#2/#3}}%
+%}}}}
+\or % 11, erewhon
+\def\tx@sfrac{X}
+\@ifundefined{tx@xht}{\def\tx@xht{461}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{384}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{256}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{0}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{320}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{106}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{58}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.8}}{} % scale defigures by this 
+\or % 12, XCharter
+\def\tx@sfrac{X}
+\@ifundefined{tx@xht}{\def\tx@xht{481}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{382}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{295}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{0}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{341}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{106}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{54}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.8}}{} % scale defigures by this 
+\or % 13, stickstoo
+\def\tx@sfrac{X}
+\@ifundefined{tx@xht}{\def\tx@xht{473}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{411}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{252}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{0}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{320}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{106}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{56}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.75}}{} % scale defigures by this 
+\or % 14, scholax
+\def\tx@sfrac{X}
+\@ifundefined{tx@xht}{\def\tx@xht{466}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{423}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{289}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{-111}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{352}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{106}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{70}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.8}}{} % scale defigures by this 
+\or % 15, scholax/fourier
+\def\tx@sfrac{X}
+\@ifundefined{tx@xht}{\def\tx@xht{466}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{423}}{} % denominator figures ht
+\@ifundefined{tx@nubase}{\def\tx@nubase{289}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{-111}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{352}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{106}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{70}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.8}}{} % scale defigures by this
+\or % 16, gelasio
+\def\tx@sfrac{X}
+\@ifundefined{tx@xht}{\def\tx@xht{485}}{} % lowercase letters
+\@ifundefined{tx@deht}{\def\tx@deht{473}}{} % denominator figures 
+\@ifundefined{tx@nubase}{\def\tx@nubase{246}}{} % baseline of numerators
+\@ifundefined{tx@debase}{\def\tx@debase{0}}{} % baseline of denoms
+\@ifundefined{tx@sfrVC}{\def\tx@sfrVC{360}}{}% vertical center of sfrac
+\@ifundefined{tx@sfrVS}{\def\tx@sfrVS{106}}{} % space above/below bar
+\@ifundefined{tx@sfrTH}{\def\tx@sfrTH{70}}{} % bar thickness
+\@ifundefined{tx@sfrSC}{\def\tx@sfrSC{.75}}{} % scale defigures by this
+\fi
+\PassOptionsToPackage{\ntx@MF}{newtxmath}
+
+
+%\ifblank{\ntx@textopt}{}%
+%{\PassOptionsToPackage{\ntx@textopt}{\ntx@TF}}
+
+%\newdimen\tx@sixem\tx@sixem6pt % for checking if a number refers to ex
+\newdimen\tx@x \newdimen\tx@y 
+
+% convert numerical entry that may be multiple of ex  or em value
+%\def\tx@toex#1{\tx@x#1pt \ifdim\tx@x<\z@\tx@y=-\tx@x\else\tx@y=\tx@x\fi \ifdim\tx@y>\tx@sixem \tx@x=\dimexpr 1pt * (\dimexpr #1pt\relax) / \dimexpr \tx@xht pt\relax\relax\fi}
+%\def\tx@chkex#1{\@tx@chkex#1ex\@nil}
+%\def\@tx@chkex#1ex#2\@nil{\ifthenelse{\equal{#2}{}}{\tx@toex #1}{\tx@x=#1ex}} # defines dimen \tx@x
+\def\tx@toex#1{\tx@x=\dimexpr 1pt * (\dimexpr #1pt\relax) / \dimexpr \tx@xht pt\relax\relax}
+%\def\tx@divide#1#2{\ntx@dima=\dimexpr 1pt * (\dimexpr #1 pt\relax) / \dimexpr #2pt\relax\relax}
+
+% Code for stacked fractions---not available in cases 4,6,7,8,9
+\if X\tx@sfrac
+\newdimen\tx@tmpdima \newdimen\tx@tmpdimb  \newdimen\tx@tmpdimC
+\newdimen\tx@dimX \newdimen\tx@dimY \newdimen\tx@dimZ
+\newdimen\tx@numrbase \newdimen\tx@dnombase
+\newdimen\tx@bartop \newdimen\tx@barbot
+\newdimen\tx@bartopex \newdimen\tx@barbotex
+\setlength\tx@tmpdimb{\tx@sfrTH pt} % bar thickness
+\setlength\tx@tmpdima{\tx@deht pt} % de figure ht
+\setlength\tx@tmpdimC{\tx@sfrVC pt} % bar center height
+\tx@bartop=\tx@tmpdimC
+\advance\tx@bartop by .5\tx@tmpdimb % top of bar
+\tx@toex{\strip@pt\tx@bartop}\tx@bartopex=\tx@x % same, in ex units
+\tx@barbot=\tx@bartop
+\advance\tx@barbot by -\tx@tmpdimb % bottom of bar
+\tx@toex{\strip@pt\tx@barbot}\tx@barbotex=\tx@x % same, in ex units
+\tx@dimX=\tx@bartop
+\advance\tx@dimX by \tx@sfrVS pt % bottom of numr
+\tx@dimY=\tx@barbot
+\advance\tx@dimY by -\tx@sfrVS pt % top of dnom
+\advance\tx@dimY by -\tx@sfrSC\tx@tmpdima % baseline of dnom
+
+\tx@toex{\strip@pt\tx@dimX}\tx@numrbase=\tx@x % num baseline in ex units
+\tx@toex{\strip@pt\tx@dimY}\tx@dnombase=\tx@x % dnom baseline in ex units
+
+\newcommand*{\textsfrac}[3][]{% like \textsfrac[1]{23}{34}
+\mbox{%
+    \ifthenelse{\not\equal{#1}{}}%Test for integer portion [optional #1]
+      {\textlf{#1}\kern.04em}{}%         
+	{\hmode@bgroup%
+\ooalign{%
+%  \ifnum\ntx@id=16\relax
+	\setbox0=\hbox{\textsmde{#2}}% scaled down denom, baseline 0
+	\tx@dimZ=\strip@pt\tx@numrbase ex%
+	\hfil \raise \tx@dimZ \box0\hfil \crcr%
+	\tx@dimX=\strip@pt\tx@bartopex ex%
+	\tx@dimY=-\strip@pt\tx@barbotex ex%
+	\leaders\hrule height \tx@dimX depth \tx@dimY \hfill \crcr%
+	\setbox1=\hbox{\textsmde{#3}}%
+  \tx@dimZ=\strip@pt\tx@dnombase ex	
+  \hfil\raise \tx@dimZ \box1\hfil}%
+\egroup}}
+}
+\else
+\newcommand*{\textsfrac}[3][]{%
+\mbox{%
+    \ifthenelse{\not\equal{#1}{}}%Test for integer portion [optional #1]
+      {\textlf{#1}\kern.04em}{}%         
+#2/#3}}
+\fi
+
+
+% Document setup instructions
+\ifntx@otftext
+  \ifntx@otfmath %I
+  \typeout{I}
+    \usepackage[]{newtxtext} %may not load fontspec
+    %\RequirePackage{fontspec} % just in case
+    \usepackage{unicode-math} %loads amsmath
+  \else %II: type1 math, otftext
+  \typeout{II}
+    \renewcommand*{\rmdefault}{\ntx@minfam} % Roman and Bold text for math
+    \usepackage[]{newtxmath} % options will be as passed from newtx
+    \@ifpackageloaded{fontspec}{}{%
+      \usepackage[no-math]{fontspec}}
+    \ifnum\ntx@id=10\relax % libertinus
+      \usepackage[nomath]{\ntx@TF}
+    \else
+      \usepackage{\ntx@TF}
+    \fi %\ifnum
+  \fi %ifntx@otfmath
+  %\show\ntx@otftexttrue
+\else % not otftext
+  \typeout{IV}
+% IV, type1 tex and math
+    \renewcommand*{\rmdefault}{\ntx@minfam}% Roman and Bold for math
+     \usepackage{newtxmath} % options will be as passed from newtx
+    \usepackage{\ntx@TF} % should load tt and sans math before newtx
+\fi
+
+%\traceoff
+%%%%%%% End of preamble items
+\AtEndPreamble{%
+\providecommand{\textfrac}[3][]{{%
+\mbox{%
+    \ifthenelse{\not\equal{#1}{}}%Test for integer portion [optional #1]
+      {\textlf{#1}\kern.02em}{}%         
+\ifntx@otftext\addfontfeature{RawFeature=+frac}#2/#3
+\else\textnu{#2}{\normalfont\fontencoding{TS1}\selectfont\char"2F}%
+\textde{#3}\fi}
+}}}
+
+
+% Finally, add code to extend text packages after they load.
+% This will depend on the particular package and the state
+% of \ntx@otftext
+\ifcase\ntx@id % 0, newtxtext
+\or % 1, was libertine % switch to libertinus
+	\let\sustyle\sufigures
+	\let\nustyle\sufigures
+	\let\textnu\textsup
+	\let\textsu\textsup
+ 
+	\def\minlibfamily{MinLibertinusSerif-Inf}
+		\def\infigures{\@nomath\infigures\fontfamily{\minlibfamily}\selectfont}
+
+	\let\instyle\infigures
+	\let\destyle\infigures
+	\let\defigures\infigures
+	\DeclareTextFontCommand{\textinf}{\infigures}
+	\let\textde\textinf
+
+  \let\textfrac\lbtntextfrac
+\or % 2, etbb
+\or % 3, ebgaramond
+  \def\destyle{\infigures} \def\nustyle{\sufigures}
+  \def\textnu#1{{\sufigures#1}}
+  \def\textde#1{{\infigures#1}}
+  \ifntx@otftext
+    \def\pliningnums{\addfontfeature{RawFeature=-tnum;-onum;+pnum;+lnum}}
+  \else % type1
+    \DeclareTextFontCommand{\pliningnums}{\fontfamily{EBGaramond-LF}\selectfont}
+  \fi
+  \def\textlf#1{{\pliningnums#1}}
+\or % 4, MinionPro
+\or % 5, cochineal
+\or % 6, garamondx
+\or % 7, BaskervilleF
+\or % 8, baskervaldx
+\or % 9, heuristica
+\or % 10, libertinus
+\ifntx@otftext%
+ \def\textlf#1{{\addfontfeature{RawFeature=+lnum,RawFeature=+pnum}#1}}
+  \let\sustyle\sufigures
+  \let\nustyle\sufigures
+  \DeclareTextFontCommand{\textsup}{\sufigures}\def\destyle{\addfontfeature{RawFeature=+subs}}
+  \let\infstyle\destyle
+  \let\infigures\destyle
+  \DeclareTextFontCommand{\textinf}{\destyle}
+  \newcommand{\textfrac}[3][]{%
+	\mbox{%
+    \ifthenelse{\not\equal{#1}{}}%Test for integer portion [optional #1]
+      {\textlf{#1}\kern.1em}{}\Lfrac{#2/#3}}}
+
+\else % type1
+	\let\sustyle\sufigures
+	\let\nustyle\sufigures
+	\let\textnu\textsup
+	\let\textsu\textsup
+ 
+	\def\minlibfamily{MinLibertinusSerif-Inf}
+		\def\infigures{\@nomath\infigures\fontfamily{\minlibfamily}\selectfont}
+
+	\let\instyle\infigures
+	\let\destyle\infigures
+	\let\defigures\infigures
+	\DeclareTextFontCommand{\textinf}{\infigures}
+	\let\textde\textinf
+	\def\textlf#1{{\LibertinusSerifLF#1}}
+
+  \let\textfrac\lbtntextfrac
+\fi
+%      \fa@naming@exception{figures}{{inferior}{proportional}}{Inf}
+%      \fa@naming@exception{figures}{{inferior}{tabular}}{Inf}
+%      \def\infigures{\@nomath\infigures\fontfigurestyle{inferior}\selectfont}
+%      \DeclareTextFontCommand{\textinf}{\infigures}
+%      \let\destyle\infigures
+%      \let\textde\textinf
+	% \sufigures and \textsup from libertinus-type1.sty
+
+\or % 11, erewhon
+\or % 12, XCharter
+\or % 13, stickstoo
+\or % 14, scholax
+\or % 15, scholax/fourier
+\or % 16, gelasio
+\fi
+% galasio.sty does not offer macros for numerators, denominators or inferiors
+%\ifgelasio@otf
+%  \providecommand\nufigures{%
+%  \addfontfeatures{VerticalPosition=Numerator}}
+%  \providecommand\defigures{%
+%  \addfontfeatures{VerticalPosition=Denominator}}
+%  \providecommand\infigures{%
+%  \addfontfeatures{VerticalPosition=Inferior}}
+%  
+%  \DeclareTextFontCommand{\textnum}{\nufigures}
+%  \DeclareTextFontCommand{\textde}{\defigures}
+%  \DeclareTextFontCommand{\textinf}{\infigures}
+%  \@ifundefined{tx@sfrSC}{}{%
+%  \newcommand*{\textsmde}[1]{%
+%  \setbox0=\hbox{\scalebox\tx@sfrSC{\textde{#1}}}\box0}}
+%
+%\else % type1  --we define \text.. by lowering \textsu
+%  \newbox\tx@box
+%  \newcommand*{\textde}[1]{{\setbox0=\hbox{\textsu{#1}}\setbox1=\hbox{\raise -.763ex \box0}\dp1=0pt\ht1=.977ex\box1\relax}}
+% 
+%  \providecommand*\textnum[1]{\raisebox{.507ex}{\textde{#1}}}
+%  \let\textnu\textnum
+%%  \providecommand*\textde[1]{{\setbox0=\hbox{\textsu{#1}}%
+%%  \setbox1=\hbox{\lower.763ex\box0}\dp0=0pt\relax\box1\relax}}
+%  %\raisebox{-.763ex}{\textsu{#1}}}
+%   % the following will be used only by \textsfrac
+%  \@ifundefined{tx@sfrSC}{}{%
+%  \newcommand*{\textsmde}[1]{%
+%  \setbox0=\hbox{\scalebox\tx@sfrSC{\textde{#1}}}\box0}%
+%    }
+%\fi
+%\DeclareTextFontCommand{\textlf}{\liningnums}
+%\fi % end ifcase
+\ifthenelse{\equal{}{\tx@sfrac}\OR\ntx@id=16\OR\ntx@id=4}{}{%
+%case \textsfrac defined, not minion nor gelasio
+  \ifnum\tx@debase=0
+    \newcommand*{\textsmde}[1]{%
+    \setbox0=\hbox{\scalebox\tx@sfrSC{\textde{#1}}}\box0}
+  \else
+    \newdimen\tx@u \newdimen\tx@v
+    \tx@u=-\tx@debase pt
+    \tx@toex{\strip@pt\tx@u}\tx@y=\tx@x
+     \tx@v=\strip@pt\tx@y ex
+    \newcommand*{\textsmde}[1]{%
+    \setbox2=\hbox{\textde{#1}}%
+    \setbox1=\hbox{\raise \tx@v \box2}%
+    \setbox0=\hbox{\scalebox{\tx@sfrSC}{\box1}}\box0}
+  \fi %\ifnum\tx@debase=0
+}
+%\def\tx@mksmde{%
+%\ifnum\ntx@id=16\relax
+%\else % create \textsmsmde for other than minion and gelasio
+%% We move the small font to the text baseline and scale it by \tx@sfrSC, for use only in the \textsfrac macro.
+%\ifnum\ntx@id=4\relax
+%\else
+%\fi %\ifnum\ntx@id=4
+%\fi %\ifnum\ntx@id=16
+%}
+%\if X\tx@sfrac\tx@mksmde\fi
+
+\endinput

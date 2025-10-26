@@ -1,0 +1,9 @@
+% Language definition file (part of polyglossia v2.8 -- 2025/09/22)
+%
+\ProvidesFile{gloss-magyar.ldf}[polyglossia: module for Hungarian (Magyar)]
+
+% We only provide this gloss for babel compatibility.
+
+\InheritGlossFile{hungarian}
+
+\endinput

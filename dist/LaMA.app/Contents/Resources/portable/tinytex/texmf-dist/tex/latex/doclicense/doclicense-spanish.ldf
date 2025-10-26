@@ -1,0 +1,30 @@
+% SPDX-FileCopyrightText: 2015 Carlos <pepitogrillo148@hotmail.com>
+%
+% SPDX-License-Identifier: LPPL-1.3c
+%
+% This work consists of all files listed in manifest.txt.
+% For more details about the licensing, refer to the README.md file.
+
+\ProvidesFile{doclicense-spanish.ldf}
+
+\@namedef{doclicense@lang@thisDoc}{Esta obra está bajo una licencia}%
+\@namedef{doclicense@lang@word@license}{}%
+
+\@namedef{doclicense@lang@lic@CC@code}{es}%
+% Using: https://en.wikipedia.org/wiki/ISO_639-1
+
+\@namedef{doclicense@lang@lic@CC@zero@1.0}{CC0 1.0 Universal}%
+
+\@namedef{doclicense@lang@lic@CC@by@3.0}{Atribución 3.0 No portada}%
+\@namedef{doclicense@lang@lic@CC@by-sa@3.0}{Atribución-CompartirIgual 3.0 No portada}%
+\@namedef{doclicense@lang@lic@CC@by-nd@3.0}{Atribución-SinDerivadas 3.0 No portada}%
+\@namedef{doclicense@lang@lic@CC@by-nc@3.0}{Atribución-NoComercial 3.0 No portada}%
+\@namedef{doclicense@lang@lic@CC@by-nc-sa@3.0}{Atribución-NoComercial-CompartirIgual 3.0 No portada}%
+\@namedef{doclicense@lang@lic@CC@by-nc-nd@3.0}{Atribución-NoComercial-SinDerivadas 3.0 No portada}%
+
+\@namedef{doclicense@lang@lic@CC@by@4.0}{Atribución 4.0 Internacional}%
+\@namedef{doclicense@lang@lic@CC@by-sa@4.0}{Atribución-CompartirIgual 4.0 Internacional}%
+\@namedef{doclicense@lang@lic@CC@by-nd@4.0}{Atribución-SinDerivadas 4.0 Internacional}%
+\@namedef{doclicense@lang@lic@CC@by-nc@4.0}{Atribución-NoComercial 4.0 Internacional}%
+\@namedef{doclicense@lang@lic@CC@by-nc-sa@4.0}{Atribución-NoComercial-CompartirIgual 4.0 Internacional}%
+\@namedef{doclicense@lang@lic@CC@by-nc-nd@4.0}{Atribución-NoComercial-SinDerivadas 4.0 Internacional}%

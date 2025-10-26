@@ -1,0 +1,220 @@
+%%
+%% This is file `thm-listof.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% thm-listof.dtx  (with options: `listof')
+%% This is a generated file.
+%% 
+%% This file is part of the `thmtools' package.
+%% The `thmtools' package has the LPPL maintenance status: maintained.
+%% Current Maintainer is Yukai Chou, muzimuzhi@gmail.com
+%% 
+%% Copyright (C) 2008-2014 by Ulrich M. Schwarz
+%% Copyright (C) 2019      by Frank Mittelbach
+%% Copyright (C) 2020-     by Yukai Chou
+%% 
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, version 1.3c.
+%% This version is obtainable at
+%% http://www.latex-project.org/lppl/lppl-1-3c.txt
+%% 
+%% 
+\NeedsTeXFormat {LaTeX2e}
+\ProvidesPackage {thm-listof}[2023/05/04 v0.76]
+\let\@xa=\expandafter
+\let\@nx=\noexpand
+\RequirePackage{thm-patch,keyval,kvsetkeys}
+
+\def\thmtlo@oldchapter{0}%
+\newcommand\thmtlo@chaptervspacehack{}
+\ifcsname c@chapter\endcsname
+  \ifx\c@chapter\relax\else
+    \def\thmtlo@chaptervspacehack{%
+      \ifnum \value{chapter}=\thmtlo@oldchapter\relax\else
+        % new chapter, add vspace to loe.
+        \addtocontents{loe}{\protect\addvspace{10\p@}}%
+        \xdef\thmtlo@oldchapter{\arabic{chapter}}%
+      \fi
+    }%
+  \fi
+\fi
+
+\providecommand\listtheoremname{List of Theorems}
+\newcommand\listoftheorems[1][]{%
+  %% much hacking here to pick up the definition from the class
+  %% without oodles of conditionals.
+  \begingroup
+  \setlisttheoremstyle{#1}%
+  \let\listfigurename\listtheoremname
+  \def\contentsline##1{%
+    \csname thmt@contentsline@##1\endcsname{##1}%
+  }%
+  \@for\thmt@envname:=\thmt@allenvs\do{%
+    % CHECK: is \cs{l@\thmt@envname} repeatedly defined?
+    \thmtlo@newentry
+  }%
+  \let\thref@starttoc\@starttoc
+  \def\@starttoc##1{\thref@starttoc{loe}}%
+  % new hack: to allow multiple calls, we defer the opening of the
+  % loe file to AtEndDocument time. This is before the aux file is
+  % read back again, that is early enough.
+  % TODO: is it? crosscheck include/includeonly!
+  \@fileswfalse
+  \AtEndDocument{%
+    \if@filesw
+      \@ifundefined{tf@loe}{%
+        \expandafter\newwrite\csname tf@loe\endcsname
+        \immediate\openout \csname tf@loe\endcsname \jobname.loe\relax
+      }{}%
+    \fi
+  }%
+  %\expandafter
+  \listoffigures
+  \endgroup
+}
+
+\newcommand\setlisttheoremstyle[1]{%
+  \kvsetkeys{thmt-listof}{#1}%
+}
+\define@key{thmt-listof}{numwidth}{\def\thmt@listnumwidth{#1}}
+\define@key{thmt-listof}{ignore}[\thmt@allenvs]{\ignoretheorems{#1}}
+\define@key{thmt-listof}{onlynamed}[\thmt@allenvs]{\onlynamedtheorems{#1}}
+\define@key{thmt-listof}{show}[\thmt@allenvs]{\showtheorems{#1}}
+\define@key{thmt-listof}{ignoreall}[true]{\ignoretheorems{\thmt@allenvs}}
+\define@key{thmt-listof}{showall}[true]{\showtheorems{\thmt@allenvs}}
+\define@key{thmt-listof}{title}{\def\listtheoremname{#1}}
+\newif\ifthmt@listswap
+\def\thmt@TRUE{true}
+\def\thmt@FALSE{false}
+\define@key{thmt-listof}{swapnumber}[true]{%
+  \def\thmt@tmp{#1}%
+  \ifx\thmt@tmp\thmt@TRUE
+    \thmt@listswaptrue
+  \else\ifx\thmt@tmp\thmt@FALSE
+    \thmt@listswapfalse
+  \else
+    \PackageError{thmtools}{Unknown value `#1' to key swapnumber}{}%
+  \fi\fi
+}
+
+\ifdefined\@tocline
+  % for ams classes (amsart.cls, amsproc.cls, amsbook.cls) which
+  % don't use \@dottedtocline and don't provide \@dotsep
+  \def\thmtlo@newentry{%
+    \@xa\def\csname l@\thmt@envname\endcsname{% CHECK: why p@edef?
+      % similar to \l@figure defined in ams classes
+      \@tocline{0}{3pt plus2pt}{0pt}{\thmt@listnumwidth}{}%
+    }%
+  }
+  \providecommand*\thmt@listnumwidth{1.5pc}
+\else
+  \def\thmtlo@newentry{%
+    \@xa\def\csname l@\thmt@envname\endcsname{% CHECK: why p@edef?
+      \@dottedtocline{1}{1.5em}{\thmt@listnumwidth}%
+    }%
+  }
+  \providecommand*\thmt@listnumwidth{2.3em}
+\fi
+
+\providecommand\thmtformatoptarg[1]{ (#1)}
+
+\newcommand\thmt@mklistcmd{%
+  \thmtlo@newentry
+  \ifthmt@isstarred
+    \@xa\def\csname ll@\thmt@envname\endcsname{%
+      \protect\ifthmt@listswap
+      \protect\else
+        \protect\numberline{\protect\let\protect\autodot\protect\@empty}%
+      \protect\fi
+      \thmt@thmname
+      \ifx\@empty\thmt@shortoptarg\else\protect\thmtformatoptarg{\thmt@shortoptarg}\fi
+    }%
+  \else
+    \@xa\def\csname ll@\thmt@envname\endcsname{%
+      \protect\ifthmt@listswap
+        \thmt@thmname~\csname the\thmt@envname\endcsname
+      \protect\else
+        \protect\numberline{\csname the\thmt@envname\endcsname}%
+        \thmt@thmname
+      \protect\fi
+      \ifx\@empty\thmt@shortoptarg\else\protect\thmtformatoptarg{\thmt@shortoptarg}\fi
+    }%
+  \fi
+  \@xa\gdef\csname thmt@contentsline@\thmt@envname\endcsname{%
+    \thmt@contentslineShow% default:show
+  }%
+}
+\def\thmt@allenvs{\@gobble}
+\newcommand\thmt@recordenvname{%
+  \edef\thmt@allenvs{\thmt@allenvs,\thmt@envname}%
+}
+\g@addto@macro\thmt@newtheorem@predefinition{%
+  \thmt@mklistcmd
+  \thmt@recordenvname
+}
+
+\addtotheorempostheadhook{%
+  \thmtlo@chaptervspacehack
+  \addcontentsline{loe}{\thmt@envname}{%
+    \csname ll@\thmt@envname\endcsname
+  }%
+}
+
+\newcommand\showtheorems[1]{%
+  \@for\thmt@thm:=#1\do{%
+    \typeout{showing \thmt@thm}%
+    \@xa\let\csname thmt@contentsline@\thmt@thm\endcsname
+      =\thmt@contentslineShow
+  }%
+}
+
+\newcommand\ignoretheorems[1]{%
+  \@for\thmt@thm:=#1\do{%
+    \@xa\let\csname thmt@contentsline@\thmt@thm\endcsname
+      =\thmt@contentslineIgnore
+  }%
+}
+\newcommand\onlynamedtheorems[1]{%
+  \@for\thmt@thm:=#1\do{%
+    \global\@xa\let\csname thmt@contentsline@\thmt@thm\endcsname
+      =\thmt@contentslineIfNamed
+  }%
+}
+
+\AtBeginDocument{%
+\@ifpackageloaded{hyperref}{%
+  \let\thmt@hygobble\@gobble
+}{%
+  \let\thmt@hygobble\@empty
+}
+\let\thmt@contentsline\contentsline
+}
+
+\def\thmt@contentslineIgnore#1#2#3{%
+  \thmt@hygobble
+}
+\def\thmt@contentslineShow{%
+  \thmt@contentsline
+}
+
+\def\thmt@contentslineIfNamed#1#2#3{%
+  \thmt@ifhasoptname #2\thmtformatoptarg\@nil{%
+    \thmt@contentslineShow{#1}{#2}{#3}%
+  }{%
+    \thmt@contentslineIgnore{#1}{#2}{#3}%
+    %\thmt@contentsline{#1}{#2}{#3}%
+  }
+}
+
+\def\thmt@ifhasoptname #1\thmtformatoptarg#2\@nil{%
+  \ifx\@nil#2\@nil
+    \@xa\@secondoftwo
+  \else
+    \@xa\@firstoftwo
+  \fi
+}
+\endinput
+%%
+%% End of file `thm-listof.sty'.

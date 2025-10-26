@@ -1,0 +1,1019 @@
+%% hpstatement-sv.inc.sty
+%% 2024-01-29
+%% Copyright 2019-2024 Martin Hensel
+%
+%% This file is part of the mhchem bundle for LaTeX
+%
+%% For the content of the phrases:
+% This work is licensed under the Creative Commons Attribution 4.0 International licence
+% (https://creativecommons.org/licenses/by/4.0/). This means that you can re-use the content
+% provided you acknowledge the source and indicate any changes you have made.
+% The data is not necessarily comprehensive, complete, accurate or up to date.
+% The acknowledgement is not needed when using statements of the data set for labelling products, of course, as this is the intended usage.
+% (c) European Union, https://eur-lex.europa.eu, 1998-2023, CC BY 4.0
+% (c) hpstatements contributors, https://github.com/mhchem/hpstatements/contributors, 2019-2024, CC BY 4.0
+%
+%
+\ExplSyntaxOn
+\group_begin:
+\char_set_catcode_space:n {`\ }% allow spaces
+\char_set_catcode_letter:n {`\@}%
+%
+\tl_gset:cn{g__mhchem_hp_sv_H200-0_tl}{{H200}{%
+  \__mhchem_hp_s:nnn{20081216}{Instabilt explosivt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H201-0_tl}{{H201}{%
+  \__mhchem_hp_s:nnn{20081216}{Explosivt. Fara f\"or massexplosion.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H202-0_tl}{{H202}{%
+  \__mhchem_hp_s:nnn{20081216}{Explosivt. Allvarlig fara f\"or splitter och kaststycken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H203-0_tl}{{H203}{%
+  \__mhchem_hp_s:nnn{20081216}{Explosivt. Fara f\"or brand, tryckvåg eller splitter och kaststycken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H204-0_tl}{{H204}{%
+  \__mhchem_hp_s:nnn{20081216}{Fara f\"or brand eller splitter och kaststycken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H205-0_tl}{{H205}{%
+  \__mhchem_hp_s:nnn{20081216}{Fara f\"or massexplosion vid brand.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H206-0_tl}{{H206}{%
+  \__mhchem_hp_s:nnn{20201017}{Fara f\"or brand, tryckvåg eller splitter och kaststycken, \"okad explosionsrisk om det ok\"ansligg\"orande \"amnet minskas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H207-0_tl}{{H207}{%
+  \__mhchem_hp_s:nnn{20201017}{Fara f\"or brand eller splitter och kaststycken. \"okad explosionsrisk om det ok\"ansligg\"orande \"amnet minskas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H208-0_tl}{{H208}{%
+  \__mhchem_hp_s:nnn{20201017}{Fara f\"or brand, \"okad explosionsrisk om det ok\"ansligg\"orande \"amnet minskas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H220-0_tl}{{H220}{%
+  \__mhchem_hp_s:nnn{20081216}{Extremt brandfarlig gas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H221-0_tl}{{H221}{%
+  \__mhchem_hp_s:nnn{20081216}{Brandfarlig gas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H222-0_tl}{{H222}{%
+  \__mhchem_hp_s:nnn{20081216}{Extremt brandfarlig aerosol.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H223-0_tl}{{H223}{%
+  \__mhchem_hp_s:nnn{20081216}{Brandfarlig aerosol.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H224-0_tl}{{H224}{%
+  \__mhchem_hp_s:nnn{20081216}{Extremt brandfarlig v\"atska och ånga.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H225-0_tl}{{H225}{%
+  \__mhchem_hp_s:nnn{20081216}{Mycket brandfarlig v\"atska och ånga.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H226-0_tl}{{H226}{%
+  \__mhchem_hp_s:nnn{20081216}{Brandfarlig v\"atska och ånga.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H228-0_tl}{{H228}{%
+  \__mhchem_hp_s:nnn{20081216}{Brandfarligt fast \"amne.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H229-0_tl}{{H229}{%
+  \__mhchem_hp_s:nnn{20150601}{Tryckbehållare: Kan spr\"angas vid uppv\"armning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H230-0_tl}{{H230}{%
+  \__mhchem_hp_s:nnn{20150601}{Kan reagera explosivt \"aven i frånvaro av luft.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H231-0_tl}{{H231}{%
+  \__mhchem_hp_s:nnn{20150601}{Kan reagera explosivt \"aven i frånvaro av luft vid f\"orh\"ojt tryck och/\hskip\z@skip{}eller temperatur.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H232-0_tl}{{H232}{%
+  \__mhchem_hp_s:nnn{20201017}{Kan spontanant\"anda vid kontakt med luft.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H240-0_tl}{{H240}{%
+  \__mhchem_hp_s:nnn{20081216}{Explosivt vid uppv\"armning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H241-0_tl}{{H241}{%
+  \__mhchem_hp_s:nnn{20081216}{Brandfarligt eller explosivt vid uppv\"armning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H242-0_tl}{{H242}{%
+  \__mhchem_hp_s:nnn{20081216}{Brandfarligt vid uppv\"armning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H250-0_tl}{{H250}{%
+  \__mhchem_hp_s:nnn{20081216}{Spontanant\"ander vid kontakt med luft.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H251-0_tl}{{H251}{%
+  \__mhchem_hp_s:nnn{20081216}{Sj\"alvupphettande. Kan b\"orja brinna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H252-0_tl}{{H252}{%
+  \__mhchem_hp_s:nnn{20081216}{Sj\"alvupphettande i stora m\"angder. Kan b\"orja brinna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H260-0_tl}{{H260}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid kontakt med vatten utvecklas brandfarliga gaser som kan sj\"alvant\"anda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H261-0_tl}{{H261}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid kontakt med vatten utvecklas brandfarliga gaser.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H270-0_tl}{{H270}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan orsaka eller intensifiera brand. Oxiderande.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H271-0_tl}{{H271}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan orsaka brand eller explosion. Starkt oxiderande.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H272-0_tl}{{H272}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan intensifiera brand. Oxiderande.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H280-0_tl}{{H280}{%
+  \__mhchem_hp_s:nnn{20081216}{Innehåller gas under tryck. Kan explodera vid uppv\"armning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H281-0_tl}{{H281}{%
+  \__mhchem_hp_s:nnn{20081216}{Innehåller kyld gas. Kan orsaka svåra k\"oldskador.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H290-0_tl}{{H290}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan vara korrosivt f\"or metaller.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H300-0_tl}{{H300}{%
+  \__mhchem_hp_s:nnn{20081216}{D\"odligt vid f\"ort\"aring.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H301-0_tl}{{H301}{%
+  \__mhchem_hp_s:nnn{20081216}{Giftigt vid f\"ort\"aring.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H302-0_tl}{{H302}{%
+  \__mhchem_hp_s:nnn{20081216}{Skadligt vid f\"ort\"aring.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H304-0_tl}{{H304}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan vara d\"odligt vid f\"ort\"aring om det kommer ner i luftv\"agarna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H310-0_tl}{{H310}{%
+  \__mhchem_hp_s:nnn{20081216}{D\"odligt vid hudkontakt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H311-0_tl}{{H311}{%
+  \__mhchem_hp_s:nnn{20081216}{Giftigt vid hudkontakt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H312-0_tl}{{H312}{%
+  \__mhchem_hp_s:nnn{20081216}{Skadligt vid hudkontakt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H314-0_tl}{{H314}{%
+  \__mhchem_hp_s:nnn{20081216}{Orsakar allvarliga fr\"atskador på hud och \"ogon.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H315-0_tl}{{H315}{%
+  \__mhchem_hp_s:nnn{20081216}{Irriterar huden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H317-0_tl}{{H317}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan orsaka allergisk hudreaktion.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H318-0_tl}{{H318}{%
+  \__mhchem_hp_s:nnn{20081216}{Orsakar allvarliga \"ogonskador.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H319-0_tl}{{H319}{%
+  \__mhchem_hp_s:nnn{20081216}{Orsakar allvarlig \"ogonirritation.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H330-0_tl}{{H330}{%
+  \__mhchem_hp_s:nnn{20081216}{D\"odligt vid inandning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H331-0_tl}{{H331}{%
+  \__mhchem_hp_s:nnn{20081216}{Giftigt vid inandning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H332-0_tl}{{H332}{%
+  \__mhchem_hp_s:nnn{20081216}{Skadligt vid inandning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H334-0_tl}{{H334}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan orsaka allergi- eller astmasymtom eller andningssvårigheter vid inandning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H335-0_tl}{{H335}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan orsaka irritation i luftv\"agarna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H336-0_tl}{{H336}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan g\"ora att man blir dåsig eller omt\"ocknad.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H340-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan orsaka genetiska defekter \noexpand\textless{}ange exponeringsv\"ag om det \"ar definitivt bevisat att faran inte kan orsakas av några andra exponeringsv\"agar\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H340.0-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H340-1empty_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H340-1_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H341-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{20081216}{Misst\"anks kunna orsaka genetiska defekter \noexpand\textless{}ange exponeringsv\"ag om det \"ar definitivt bevisat att faran inte kan orsakas av några andra exponeringsv\"agar\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H341.0-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H341-1empty_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H341-1_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H350-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan orsaka cancer \noexpand\textless{}ange exponeringsv\"ag om det \"ar definitivt bevisat att faran inte kan orsakas av några andra exponeringsv\"agar\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H350.0-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H350-1empty_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H350-1_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H350i-0_tl}{{H350i}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan orsaka cancer vid inandning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H351-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{20081216}{Misst\"anks kunna orsaka cancer \noexpand\textless{}ange exponeringsv\"ag om det \"ar definitivt bevisat att faran inte kan orsakas av några andra exponeringsv\"agar\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H351.0-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H351-1empty_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H351-1_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H360-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan skada fertiliteten eller det of\"odda barnet \noexpand\textless{}ange specifik effekt om denna \"ar k\"and\noexpand\textgreater{} \noexpand\textless{}ange exponeringsv\"ag om det \"ar definitivt bevisat att faran inte kan orsakas av några andra exponeringsv\"agar\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H360.0-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H360-1empty_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H360-1_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H360F-0_tl}{{H360F}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan skada fertiliteten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H360D-0_tl}{{H360D}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan skada det of\"odda barnet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H360FD-0_tl}{{H360FD}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan skada fertiliteten. Kan skada det of\"odda barnet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H360Fd-0_tl}{{H360Fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan skada fertiliteten. Misst\"anks kunna skada det of\"odda barnet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H360Df-0_tl}{{H360Df}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan skada det of\"odda barnet. Misst\"anks kunna skada fertiliteten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H361-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{20081216}{Misst\"anks kunna skada fertiliteten eller det of\"odda barnet \noexpand\textless{}ange specifik effekt om denna \"ar k\"and\noexpand\textgreater{} \noexpand\textless{}ange exponeringsv\"ag om det \"ar definitivt bevisat att faran inte kan orsakas av några andra exponeringsv\"agar\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H361.0-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H361-1empty_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H361-1_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H361f-0_tl}{{H361f}{%
+  \__mhchem_hp_s:nnn{20081216}{Misst\"anks kunna skada fertiliteten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H361d-0_tl}{{H361d}{%
+  \__mhchem_hp_s:nnn{20081216}{Misst\"anks kunna skada det of\"odda barnet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H361fd-0_tl}{{H361fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Misst\"anks kunna skada fertiliteten. Misst\"anks kunna skada det of\"odda barnet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H362-0_tl}{{H362}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan skada sp\"adbarn som ammas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H370-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{20081216}{Orsakar organskador \noexpand\textless{}eller ange vilka organ som påverkas om detta \"ar k\"ant\noexpand\textgreater{} \noexpand\textless{}ange exponeringsv\"ag om det \"ar definitivt bevisat att faran inte kan orsakas av några andra exponeringsv\"agar\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H370.0-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H370.1-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H370.1-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H370-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H370-2_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H371-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan orsaka organskador \noexpand\textless{}eller ange vilka organ som påverkas om detta \"ar k\"ant\noexpand\textgreater{} \noexpand\textless{}ange exponeringsv\"ag om det \"ar definitivt bevisat att faran inte kan orsakas av några andra exponeringsv\"agar\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H371.0-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H371.1-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H371.1-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H371-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H371-2_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H372-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{20081216}{Orsakar organskador \noexpand\textless{}eller ange vilka organ som påverkas om detta \"ar k\"ant\noexpand\textgreater{} genom lång eller upprepad exponering \noexpand\textless{}ange exponeringsv\"ag om det \"ar definitivt bevisat att faran inte kan orsakas av några andra exponeringsv\"agar\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H372.0-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H372.1-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H372.1-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H372-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H372-2_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H373-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan orsaka organskador \noexpand\textless{}eller ange vilka organ som påverkas om detta \"ar k\"ant\noexpand\textgreater{} genom lång eller upprepad exponering \noexpand\textless{}ange exponeringsv\"ag om det \"ar definitivt bevisat att faran inte kan orsakas av några andra exponeringsv\"agar\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H373.0-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H373.1-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H373.1-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H373-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H373-2_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H300+H310-0_tl}{{H300\,+\,\hskip\z@skip{}H310}{%
+  \__mhchem_hp_s:nnn{20110419}{D\"odligt vid f\"ort\"aring eller vid hudkontakt}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H300+H310+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{D\"odligt vid f\"ort\"aring, hudkontakt eller inandning}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H300+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{D\"odligt vid f\"ort\"aring eller inandning}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H301+H311-0_tl}{{H301\,+\,\hskip\z@skip{}H311}{%
+  \__mhchem_hp_s:nnn{20110419}{Giftigt vid f\"ort\"aring eller hudkontakt}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H301+H311+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Giftigt vid f\"ort\"aring, hudkontakt eller inandning}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H301+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Giftigt vid f\"ort\"aring eller inandning}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H302+H312-0_tl}{{H302\,+\,\hskip\z@skip{}H312}{%
+  \__mhchem_hp_s:nnn{20110419}{Skadligt vid f\"ort\"aring eller hudkontakt}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H302+H312+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Skadligt vid f\"ort\"aring, hudkontakt eller inandning}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H302+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Skadligt vid f\"ort\"aring eller inandning}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H310+H330-0_tl}{{H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{D\"odligt vid hudkontakt eller inandning}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H311+H331-0_tl}{{H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Giftigt vid hudkontakt eller f\"ort\"aring}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H312+H332-0_tl}{{H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Skadligt vid hudkontakt eller inandning}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H400-0_tl}{{H400}{%
+  \__mhchem_hp_s:nnn{20081216}{Mycket giftigt f\"or vattenlevande organismer.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H410-0_tl}{{H410}{%
+  \__mhchem_hp_s:nnn{20081216}{Mycket giftigt f\"or vattenlevande organismer med långtidseffekter.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H411-0_tl}{{H411}{%
+  \__mhchem_hp_s:nnn{20081216}{Giftigt f\"or vattenlevande organismer med långtidseffekter.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H412-0_tl}{{H412}{%
+  \__mhchem_hp_s:nnn{20081216}{Skadliga långtidseffekter f\"or vattenlevande organismer.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H413-0_tl}{{H413}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan ge skadliga långtidseffekter på vattenlevande organismer.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_H420-0_tl}{{H420}{%
+  \__mhchem_hp_s:nnn{20110419}{Skadar folkh\"alsan och milj\"on genom f\"orst\"oring av ozonet i \"ovre delen av atmosf\"aren}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH001-0_tl}{{EUH001}{%
+  \__mhchem_hp_s:nnn{20201017}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Explosivt i torrt tillstånd.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH006-0_tl}{{EUH006}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Explosivt vid eller utan kontakt med luft.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH014-0_tl}{{EUH014}{%
+  \__mhchem_hp_s:nnn{20081216}{Reagerar h\"aftigt med vatten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH018-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid anv\"andning kan br\"annbara/\hskip\z@skip{}explosiva ång-luftblandningar bildas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH018.0-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH018.1-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH018.2-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH019-0_tl}{{EUH019}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan bilda explosiva peroxider.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH029-0_tl}{{EUH029}{%
+  \__mhchem_hp_s:nnn{20081216}{Utvecklar giftig gas vid kontakt med vatten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH031-0_tl}{{EUH031}{%
+  \__mhchem_hp_s:nnn{20081216}{Utvecklar giftig gas vid kontakt med syra.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH032-0_tl}{{EUH032}{%
+  \__mhchem_hp_s:nnn{20081216}{Utvecklar mycket giftig gas vid kontakt med syra.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH044-0_tl}{{EUH044}{%
+  \__mhchem_hp_s:nnn{20081216}{Explosionsrisk vid uppv\"armning i sluten behållare.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH059-0_tl}{{EUH059}{%
+  \__mhchem_hp_s:nnn{20110419}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Farligt f\"or ozonskiktet.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH066-0_tl}{{EUH066}{%
+  \__mhchem_hp_s:nnn{20081216}{Upprepad kontakt kan ge torr hud eller hudsprickor.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH070-0_tl}{{EUH070}{%
+  \__mhchem_hp_s:nnn{20081216}{Giftigt vid kontakt med \"ogonen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH071-0_tl}{{EUH071}{%
+  \__mhchem_hp_s:nnn{20081216}{Fr\"atande på luftv\"agarna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH201-0_tl}{{EUH201}{%
+  \__mhchem_hp_s:nnn{20081216}{Innehåller bly. B\"or inte anv\"andas på ytor d\"ar barn kan komma åt att tugga eller suga.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH201A-0_tl}{{EUH201A}{%
+  \__mhchem_hp_s:nnn{20081216}{Varning! Innehåller bly.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH202-0_tl}{{EUH202}{%
+  \__mhchem_hp_s:nnn{20081216}{Cyanoakrylat. Fara. F\"aster snabbt på hud och \"ogon. F\"orvaras oåtkomligt f\"or barn.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH203-0_tl}{{EUH203}{%
+  \__mhchem_hp_s:nnn{20081216}{Innehåller krom (VI). Kan orsaka en allergisk reaktion.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH204-0_tl}{{EUH204}{%
+  \__mhchem_hp_s:nnn{20081216}{Innehåller isocyanater. Kan orsaka en allergisk reaktion.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH205-0_tl}{{EUH205}{%
+  \__mhchem_hp_s:nnn{20081216}{Innehåller epoxif\"orening. Kan orsaka en allergisk reaktion.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH206-0_tl}{{EUH206}{%
+  \__mhchem_hp_s:nnn{20081216}{Varning! Får ej anv\"andas tillsammans med andra produkter. Kan avge farliga gaser (klor).}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH207-0_tl}{{EUH207}{%
+  \__mhchem_hp_s:nnn{20081216}{Varning! Innehåller kadmium. Farliga ångor bildas vid anv\"andning. Se information från tillverkaren. F\"olj skyddsanvisningarna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH208-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{20081216}{Innehåller \noexpand\textless{}namnet på det sensibiliserande \"amnet\noexpand\textgreater{}. Kan orsaka en allergisk reaktion.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH208.0-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH208-1_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH209-0_tl}{{EUH209}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan bli mycket brandfarligt vid anv\"andning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH209A-0_tl}{{EUH209A}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan bli brandfarligt vid anv\"andning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH210-0_tl}{{EUH210}{%
+  \__mhchem_hp_s:nnn{20081216}{S\"akerhetsdatablad finns att rekvirera.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH211-0_tl}{{EUH211}{%
+  \__mhchem_hp_s:nnn{20211001}{Varning! Farliga respirabla droppar kan bildas vid sprejning. Inandas inte sprej eller dimma.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH212-0_tl}{{EUH212}{%
+  \__mhchem_hp_s:nnn{20211001}{Varning! Farligt respirabelt damm kan bildas vid anv\"andning. Inandas inte damm.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH380-0_tl}{{EUH380}{%
+  \__mhchem_hp_s:nnn{20230420}{Kan orsaka hormonst\"orningar hos m\"anniskor}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH381-0_tl}{{EUH381}{%
+  \__mhchem_hp_s:nnn{20230420}{Misst\"anks orsaka hormonst\"orningar hos m\"anniskor}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH401-0_tl}{{EUH401}{%
+  \__mhchem_hp_s:nnn{20101201}{F\"or att undvika risker f\"or m\"anniskors h\"alsa och f\"or milj\"on, f\"olj bruksanvisningen.}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"or att undvika risker f\"or m\"anniskors h\"alsa och f\"or milj\"on, f\"olj bruksanvisningen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH430-0_tl}{{EUH430}{%
+  \__mhchem_hp_s:nnn{20230420}{Kan orsaka hormonst\"orningar i milj\"on}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH431-0_tl}{{EUH431}{%
+  \__mhchem_hp_s:nnn{20230420}{Misst\"anks orsaka hormonst\"orningar i milj\"on}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH440-0_tl}{{EUH440}{%
+  \__mhchem_hp_s:nnn{20230420}{Ackumuleras i milj\"on och i levande organismer, inbegripet m\"anniskor.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH441-0_tl}{{EUH441}{%
+  \__mhchem_hp_s:nnn{20230420}{Ackumuleras kraftigt i milj\"on och i levande organismer, inbegripet m\"anniskor.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH450-0_tl}{{EUH450}{%
+  \__mhchem_hp_s:nnn{20230420}{Långlivat \"amne som kan f\"ororena vattenk\"allor}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_EUH451-0_tl}{{EUH451}{%
+  \__mhchem_hp_s:nnn{20230420}{Mycket långlivat \"amne som kan f\"ororena vattenk\"allor}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P101-0_tl}{{P101}{%
+  \__mhchem_hp_s:nnn{20081216}{Ha f\"orpackningen eller etiketten till hands om du måste s\"oka l\"akarvård.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P102-0_tl}{{P102}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras oåtkomligt f\"or barn.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P103-0_tl}{{P103}{%
+  \__mhchem_hp_s:nnn{20081216}{L\"as etiketten f\"ore anv\"andning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P201-0_tl}{{P201}{%
+  \__mhchem_hp_s:nnn{20081216}{Inh\"amta s\"arskilda instruktioner f\"ore anv\"andning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P202-0_tl}{{P202}{%
+  \__mhchem_hp_s:nnn{20081216}{Anv\"and inte produkten innan du har l\"ast och f\"orstått s\"akerhetsanvisningarna}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P210-0_tl}{{P210}{%
+  \__mhchem_hp_s:nnn{20150601}{Får inte uts\"attas f\"or v\"arme, heta ytor, gnistor, \"oppen låga eller andra ant\"andningsk\"allor. R\"okning f\"orbjuden.}{%
+  \__mhchem_hp_s:nnn{20081216}{Får inte uts\"attas f\"or v\"arme/\hskip\z@skip{}gnistor/\hskip\z@skip{}\"oppen låga/\hskip\z@skip{}heta ytor. -- R\"okning f\"orbjuden.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P211-0_tl}{{P211}{%
+  \__mhchem_hp_s:nnn{20081216}{Spreja inte \"over \"oppen låga eller andra ant\"andningsk\"allor.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P212-0_tl}{{P212}{%
+  \__mhchem_hp_s:nnn{20201017}{Undvik uppv\"armning i sluten behållare eller reducering av det ok\"ansligg\"orande \"amnet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P220-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{20180301}{Hålls åtskilt från kl\"ader och andra br\"annbara material.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hålls/\hskip\z@skip{}f\"orvarad åtskilt från kl\"ader/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}br\"annbara material.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P220.0-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P220.1.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P220.1.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P220.1-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P220.2.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P220.2.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P220.2-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P221-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20170101}{Undvik att blanda med br\"annbara \"amnen\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Undvik att blanda med med br\"annbara \"amnen\noexpand\textellipsis{}}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P221.0-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P221.1-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P221-1_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P222-0_tl}{{P222}{%
+  \__mhchem_hp_s:nnn{20081216}{Undvik kontakt med luft.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P223-0_tl}{{P223}{%
+  \__mhchem_hp_s:nnn{20150601}{Undvik all kontakt med vatten.}{%
+  \__mhchem_hp_s:nnn{20081216}{Undvik all kontakt med vatten eftersom det kan framkalla en våldsam reaktion och explosionsartad brand.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P230-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{20081216}{Ska hållas fuktigt med\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P230.0-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P230-1_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P231-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{20180301}{Hantera och f\"orvara innehållet under inert gas/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Hanteras under inert gas.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P231.0-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P231.1-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P231-1_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P232-0_tl}{{P232}{%
+  \__mhchem_hp_s:nnn{20081216}{Skyddas från fukt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P233-0_tl}{{P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Behållaren ska vara v\"al tillsluten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P234-0_tl}{{P234}{%
+  \__mhchem_hp_s:nnn{20180301}{F\"orvaras endast i originalf\"orpackningen.}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras endast i originalbehållaren.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P235-0_tl}{{P235}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras svalt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P240-0_tl}{{P240}{%
+  \__mhchem_hp_s:nnn{20180301}{Jorda och potentialf\"orbind behållare och mottagarutrustning.}{%
+  \__mhchem_hp_s:nnn{20081216}{Jorda/\hskip\z@skip{}potentialf\"orbind behållare och mottagarutrustning.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P241-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{20180301}{Anv\"and explosionss\"aker [elektrisk/\hskip\z@skip{}ventilations-/\hskip\z@skip{}belysnings-/\hskip\z@skip{}\noexpand\textellipsis{}]utrustning.}{%
+  \__mhchem_hp_s:nnn{20081216}{Anv\"and explosionss\"aker elektrisk/\hskip\z@skip{}ventilations-/\hskip\z@skip{}belysnings-/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}utrustning.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P241.0-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P241.1-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P241.2-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P241.3-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P241-1_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P242-0_tl}{{P242}{%
+  \__mhchem_hp_s:nnn{20180301}{Anv\"and verktyg som inte ger upphov till gnistor.}{%
+  \__mhchem_hp_s:nnn{20081216}{Anv\"and endast verktyg som inte ger upphov till gnistor.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P243-0_tl}{{P243}{%
+  \__mhchem_hp_s:nnn{20081216}{Vidta åtg\"arder mot statisk elektricitet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P244-0_tl}{{P244}{%
+  \__mhchem_hp_s:nnn{20150601}{Håll ventiler och anslutningar fria från olja och fett.}{%
+  \__mhchem_hp_s:nnn{20081216}{Reducerventilerna ska hållas fria från fett och olja.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P250-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{20180301}{Får inte uts\"attas f\"or malning/\hskip\z@skip{}st\"otar/\hskip\z@skip{}friktion/\hskip\z@skip{}\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{Får inte uts\"attas f\"or gnidning/\hskip\z@skip{}st\"otar/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}friktion.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P250.0-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P250.1-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P250.2-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P250.3-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P250-1_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P251-0_tl}{{P251}{%
+  \__mhchem_hp_s:nnn{20150601}{Får inte punkteras eller br\"annas, g\"aller \"aven t\"omd behållare.}{%
+  \__mhchem_hp_s:nnn{20081216}{Tryckbehållare: Får inte punkteras eller br\"annas, g\"aller \"aven t\"omd behållare.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P260-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{20081216}{Inandas inte damm/\hskip\z@skip{}r\"ok/\hskip\z@skip{}gaser/\hskip\z@skip{}dimma/\hskip\z@skip{}ångor/\hskip\z@skip{}sprej.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P260.0-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P260.1-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P260.2-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P260.3-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P260.4-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P260.5-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P260.6-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P261-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{20081216}{Undvik att inandas damm/\hskip\z@skip{}r\"ok/\hskip\z@skip{}gaser/\hskip\z@skip{}dimma/\hskip\z@skip{}ångor/\hskip\z@skip{}sprej.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P261.0-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P261.1-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P261.2-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P261.3-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P261.4-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P261.5-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P261.6-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P262-0_tl}{{P262}{%
+  \__mhchem_hp_s:nnn{20081216}{Får inte komma i kontakt med \"ogonen, huden eller kl\"aderna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P263-0_tl}{{P263}{%
+  \__mhchem_hp_s:nnn{20180301}{Undvik kontakt under graviditet och amning.}{%
+  \__mhchem_hp_s:nnn{20081216}{Undvik kontakt under graviditet eller amning.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P264-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{20081216}{Tv\"atta \noexpand\textellipsis{} grundligt efter anv\"andning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P264.0-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P264-1_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P270-0_tl}{{P270}{%
+  \__mhchem_hp_s:nnn{20081216}{\"At inte, drick inte och r\"ok inte n\"ar du anv\"ander produkten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P271-0_tl}{{P271}{%
+  \__mhchem_hp_s:nnn{20081216}{Anv\"ands endast utomhus eller i v\"al ventilerade utrymmen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P272-0_tl}{{P272}{%
+  \__mhchem_hp_s:nnn{20081216}{Nedst\"ankta arbetskl\"ader får inte avl\"agsnas från arbetsplatsen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P273-0_tl}{{P273}{%
+  \__mhchem_hp_s:nnn{20081216}{Undvik utsl\"app till milj\"on.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P280-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{20081216}{Anv\"and skyddshandskar/\hskip\z@skip{}skyddskl\"ader/\hskip\z@skip{}\"ogonskydd/\hskip\z@skip{}ansiktsskydd.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P280.0-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P280.1-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P280.2-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P280.3-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P280.4-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P281-0_tl}{{P281}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Anv\"and f\"oreskriven personlig skyddsutrustning.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P282-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{20180301}{Anv\"and k\"oldisolerande handskar och antingen visir eller \"ogonskydd.}{%
+  \__mhchem_hp_s:nnn{20081216}{Anv\"and k\"oldisolerande handskar/\hskip\z@skip{}visir/\hskip\z@skip{}\"ogonskydd.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P282.0-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P282.1-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P282.2-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P282.3-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P283-0_tl}{{P283}{%
+  \__mhchem_hp_s:nnn{20180301}{Anv\"and brands\"akra eller flamh\"ammande kl\"ader.}{%
+  \__mhchem_hp_s:nnn{20081216}{Anv\"and brand-/\hskip\z@skip{}flams\"akra eller brand-/\hskip\z@skip{}flamh\"ammande kl\"ader.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P284-0_tl}{{P284}{%
+  \__mhchem_hp_s:nnn{20150601}{[Vid otillr\"acklig ventilation], anv\"and andningsskydd.}{%
+  \__mhchem_hp_s:nnn{20081216}{Anv\"and andningsskydd.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P285-0_tl}{{P285}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Anv\"and andningsskydd vid otillr\"acklig ventilation.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P231+P232-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{20180301}{Hantera och f\"orvara innehållet under inert gas/\hskip\z@skip{}\noexpand\textellipsis{}. Skyddas från fukt.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hanteras under inert gas. Skyddas från fukt.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P231+P232.0-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P231+P232.1-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P231+P232-1_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P235+P410-0_tl}{{P235\,+\,\hskip\z@skip{}P410}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras svalt. Skyddas från solljus.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301-0_tl}{{P301}{%
+  \__mhchem_hp_s:nnn{20081216}{VID F\"ORT\"ARING:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302-0_tl}{{P302}{%
+  \__mhchem_hp_s:nnn{20081216}{VID HUDKONTAKT:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P303-0_tl}{{P303}{%
+  \__mhchem_hp_s:nnn{20081216}{VID HUDKONTAKT (\"aven håret):}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P304-0_tl}{{P304}{%
+  \__mhchem_hp_s:nnn{20081216}{VID INANDNING:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P305-0_tl}{{P305}{%
+  \__mhchem_hp_s:nnn{20081216}{VID KONTAKT MED \"OGONEN:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P306-0_tl}{{P306}{%
+  \__mhchem_hp_s:nnn{20081216}{VID KONTAKT MED KL\"ADERNA:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P307-0_tl}{{P307}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Om du exponerats:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P308-0_tl}{{P308}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid exponering eller misstanke om exponering:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P309-0_tl}{{P309}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid exponering eller obehag:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P310-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{20150601}{Kontakta genast GIFTINFORMATIONSCENTRALEN/\hskip\z@skip{}l\"akare\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Kontakta genast GIFTINFORMATIONSCENTRAL eller l\"akare.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P310.0-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P310.1-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P310.2-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P310-1_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P311-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Kontakta GIFTINFORMATIONSCENTRALEN/\hskip\z@skip{}l\"akare/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Kontakta GIFTINFORMATIONSCENTRAL eller l\"akare.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P311.0-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P311.1-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P311.2-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P311-1_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P312-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{20180301}{Vid obehag, kontakta GIFTINFORMATIONSCENTRALEN/\hskip\z@skip{}l\"akare\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20150601}{Vid obehag, kontakta GIFTINFORMATIONSCENTRALEN/\hskip\z@skip{}l\"akare/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid obehag, kontakta GIFTINFORMATIONSCENTRAL eller l\"akare.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P312.0-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P312.1-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P312.2-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P312-1_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P313-0_tl}{{P313}{%
+  \__mhchem_hp_s:nnn{20081216}{S\"ok l\"akarhj\"alp.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P314-0_tl}{{P314}{%
+  \__mhchem_hp_s:nnn{20081216}{S\"ok l\"akarhj\"alp vid obehag.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P315-0_tl}{{P315}{%
+  \__mhchem_hp_s:nnn{20081216}{S\"ok omedelbart l\"akarhj\"alp.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P320-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{20081216}{S\"arskild behandling kr\"avs omedelbart (se \noexpand\textellipsis{} på etiketten).}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P320.0-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P320-1_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P320.nolabel-1_tl}{{P320.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P321-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{20081216}{S\"arskild behandling (se \noexpand\textellipsis{} på etiketten).}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P321.0-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P321-1_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P321.nolabel-1_tl}{{P321.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P322-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{S\"arskilda åtg\"arder (se \noexpand\textellipsis{} på etiketten).}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P322.0-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P322-1_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P322.nolabel-1_tl}{{P322.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P330-0_tl}{{P330}{%
+  \__mhchem_hp_s:nnn{20081216}{Sk\"olj munnen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P331-0_tl}{{P331}{%
+  \__mhchem_hp_s:nnn{20081216}{Framkalla INTE kr\"akning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P332-0_tl}{{P332}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid hudirritation:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P333-0_tl}{{P333}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid hudirritation eller utslag:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P334-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{20180301}{Sk\"olj under kallt vatten [eller anv\"and våta omslag].}{%
+  \__mhchem_hp_s:nnn{20081216}{Sk\"olj under kallt vatten/\hskip\z@skip{}anv\"and våta omslag.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P334.0-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P334.1-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P334.2-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P335-0_tl}{{P335}{%
+  \__mhchem_hp_s:nnn{20081216}{Borsta bort l\"osa partiklar från huden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P336-0_tl}{{P336}{%
+  \__mhchem_hp_s:nnn{20081216}{V\"arm det k\"oldskadade området med ljummet vatten. Gnid inte det skadade området.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P337-0_tl}{{P337}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid bestående \"ogonirritation:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P338-0_tl}{{P338}{%
+  \__mhchem_hp_s:nnn{20081216}{Ta ur eventuella kontaktlinser om det går l\"att. Forts\"att att sk\"olja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P340-0_tl}{{P340}{%
+  \__mhchem_hp_s:nnn{20150601}{Flytta personen till frisk luft och se till att andningen underl\"attas.}{%
+  \__mhchem_hp_s:nnn{20081216}{Flytta personen till frisk luft och se till att han eller hon vilar i en st\"allning som underl\"attar andningen}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P341-0_tl}{{P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid andningsbesv\"ar, flytta personen till frisk luft och se till att han eller hon vilar i en st\"allning som underl\"attar andningen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P342-0_tl}{{P342}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid besv\"ar i luftv\"agarna:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P350-0_tl}{{P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Tv\"atta f\"orsiktigt med mycket tvål och vatten.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P351-0_tl}{{P351}{%
+  \__mhchem_hp_s:nnn{20081216}{Sk\"olj f\"orsiktigt med vatten i flera minuter.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P352-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{20150601}{Tv\"atta med mycket vatten/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Tv\"atta med mycket tvål och vatten.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P352.0-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P352.1-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P352-1_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P353-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{20180301}{Sk\"olj huden med vatten [eller duscha].}{%
+  \__mhchem_hp_s:nnn{20081216}{Sk\"olj huden med vatten/\hskip\z@skip{}duscha.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P353.0-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P353.1-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P353.2-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P360-0_tl}{{P360}{%
+  \__mhchem_hp_s:nnn{20081216}{Sk\"olj genast nedst\"ankta kl\"ader och hud med mycket vatten innan du tar av dig kl\"aderna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P361-0_tl}{{P361}{%
+  \__mhchem_hp_s:nnn{20081216}{Ta omedelbart av alla nedst\"ankta kl\"ader.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P362-0_tl}{{P362}{%
+  \__mhchem_hp_s:nnn{20150601}{Ta av nedst\"ankta kl\"ader.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nedst\"ankta kl\"ader tas av och tv\"attas innan de anv\"ands igen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P363-0_tl}{{P363}{%
+  \__mhchem_hp_s:nnn{20081216}{Nedst\"ankta kl\"ader ska tv\"attas innan de anv\"ands igen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P364-0_tl}{{P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Och tv\"atta dem innan de anv\"ands igen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370-0_tl}{{P370}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid brand:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P371-0_tl}{{P371}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid st\"orre brand och stora m\"angder:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P372-0_tl}{{P372}{%
+  \__mhchem_hp_s:nnn{20180301}{Explosionsrisk.}{%
+  \__mhchem_hp_s:nnn{20081216}{Explosionsrisk vid brand.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P373-0_tl}{{P373}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"ors\"ok INTE bek\"ampa branden n\"ar den når explosiva varor.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P374-0_tl}{{P374}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Bek\"ampa branden på vanligt s\"att på beh\"origt avstånd.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P375-0_tl}{{P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Bek\"ampa branden på avstånd på grund av explosionsrisken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P376-0_tl}{{P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Stoppa l\"ackan om det kan g\"oras på ett s\"akert s\"att.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P377-0_tl}{{P377}{%
+  \__mhchem_hp_s:nnn{20081216}{L\"ackande gas som brinner: F\"ors\"ok inte sl\"acka branden om inte l\"ackan kan stoppas på ett s\"akert s\"att.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P378-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{20150601}{Sl\"ack med\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Sl\"ack branden med \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P378.0-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P378-1_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P380-0_tl}{{P380}{%
+  \__mhchem_hp_s:nnn{20081216}{Utrym området.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P381-0_tl}{{P381}{%
+  \__mhchem_hp_s:nnn{20180301}{Vid l\"ackage, avl\"agsna alla ant\"andningsk\"allor.}{%
+  \__mhchem_hp_s:nnn{20081216}{Avl\"agsna alla ant\"andningsk\"allor om det kan g\"oras på ett s\"akert s\"att.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P390-0_tl}{{P390}{%
+  \__mhchem_hp_s:nnn{20081216}{Sug upp spill f\"or att undvika materiella skador.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P391-0_tl}{{P391}{%
+  \__mhchem_hp_s:nnn{20081216}{Samla upp spill.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P310-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{20150601}{VID F\"ORT\"ARING: Kontakta genast GIFTINFORMATIONSCENTRALEN/\hskip\z@skip{}l\"akare/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{VID F\"ORT\"ARING: Kontakta genast GIFTINFORMATIONSCENTRAL eller l\"akare.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P310.0-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P310.1-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P310.2-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P310-1_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P312-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{20180301}{VID F\"ORT\"ARING: Vid obehag, kontakta GIFTINFORMATIONSCENTRALEN/\hskip\z@skip{}l\"akare\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20150601}{VID F\"ORT\"ARING: Vid obehag, kontakta GIFTINFORMATIONSCENTRALEN/\hskip\z@skip{}l\"akare/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{VID F\"ORT\"ARING: Kontakta GIFTINFORMATIONSCENTRAL eller l\"akare om du mår dåligt.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P312.0-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P312.1-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P312.2-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P312-1_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P301+P330+P331-0_tl}{{P301\,+\,\hskip\z@skip{}P330\,+\,\hskip\z@skip{}P331}{%
+  \__mhchem_hp_s:nnn{20081216}{VID F\"ORT\"ARING: Sk\"olj munnen. Framkalla INTE kr\"akning.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{VID HUDKONTAKT: Sk\"olj under kallt vatten eller anv\"and våta omslag.}{%
+  \__mhchem_hp_s:nnn{20081216}{VID HUDKONTAKT: Sk\"olj under kallt vatten/\hskip\z@skip{}anv\"and våta omslag.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P335+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{VID HUDKONTAKT: Borsta bort l\"osa partiklar från huden. Sk\"olj under kallt vatten [eller anv\"and våta omslag].}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P335+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P335+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P335+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P350-0_tl}{{P302\,+\,\hskip\z@skip{}P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{VID HUDKONTAKT: Tv\"atta f\"orsiktigt med mycket tvål och vatten.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P352-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{20150601}{VID HUDKONTAKT: Tv\"atta med mycket vatten/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{VID HUDKONTAKT: Tv\"atta med mycket tvål och vatten.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P352.0-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P352.1-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P302+P352-1_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P303+P361+P353-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{20180301}{VID HUDKONTAKT (\"aven håret): Ta omedelbart av alla nedst\"ankta kl\"ader. Sk\"olj huden med vatten [eller duscha].}{%
+  \__mhchem_hp_s:nnn{20081216}{VID HUDKONTAKT (\"aven håret): Ta omedelbart av alla nedst\"ankta kl\"ader. Sk\"olj huden med vatten/\hskip\z@skip{}duscha.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P303+P361+P353.0-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P303+P361+P353.1-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P303+P361+P353.2-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P304+P340-0_tl}{{P304\,+\,\hskip\z@skip{}P340}{%
+  \__mhchem_hp_s:nnn{20150601}{VID INANDNING: Flytta personen till frisk luft och se till att andningen underl\"attas.}{%
+  \__mhchem_hp_s:nnn{20081216}{VID INANDNING: Flytta personen till frisk luft och se till att han eller hon vilar i en st\"allning som underl\"attar andningen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P304+P341-0_tl}{{P304\,+\,\hskip\z@skip{}P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{VID INANDNING: Vid andningsbesv\"ar, flytta personen till frisk luft och se till att han eller hon vilar i en st\"allning som underl\"attar andningen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P305+P351+P338-0_tl}{{P305\,+\,\hskip\z@skip{}P351\,+\,\hskip\z@skip{}P338}{%
+  \__mhchem_hp_s:nnn{20081216}{VID KONTAKT MED \"OGONEN: Sk\"olj f\"orsiktigt med vatten i flera minuter. Ta ur eventuella kontaktlinser om det går l\"att. Forts\"att att sk\"olja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P306+P360-0_tl}{{P306\,+\,\hskip\z@skip{}P360}{%
+  \__mhchem_hp_s:nnn{20081216}{VID KONTAKT MED KL\"ADERNA: Sk\"olj omedelbart nedst\"ankta kl\"ader och hud med mycket vatten innan du tar av dig kl\"aderna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P307+P311-0_tl}{{P307\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Om du exponerats: Kontakta GIFTINFORMATIONSCENTRAL eller l\"akare.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P308+P311-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Vid exponering eller misstanke om exponering: Kontakta GIFTINFORMATIONSCENTRALEN/\hskip\z@skip{}l\"akare/\hskip\z@skip{}\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P308+P311.0-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P308+P311.1-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P308+P311.2-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P308+P311-1_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P308+P313-0_tl}{{P308\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid exponering eller misstanke om exponering S\"ok l\"akarhj\"alp.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P309+P311-0_tl}{{P309\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid exponering eller obehag: Kontakta GIFTINFORMATIONSCENTRAL eller l\"akare.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P332+P313-0_tl}{{P332\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid hudirritation: S\"ok l\"akarhj\"alp.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P333+P313-0_tl}{{P333\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid hudirritation eller utslag: S\"ok l\"akarhj\"alp.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P335+P334-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Borsta bort l\"osa partiklar från huden. Sk\"olj under kallt vatten/\hskip\z@skip{}anv\"and våta omslag.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P335+P334.0-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P335+P334.1-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P335+P334.2-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P336+P315-0_tl}{{P336\,+\,\hskip\z@skip{}P315}{%
+  \__mhchem_hp_s:nnn{20180301}{V\"arm det k\"oldskadade området med ljummet vatten. Gnid inte det skadade området. S\"ok omedelbart l\"akarhj\"alp.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P337+P313-0_tl}{{P337\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid bestående \"ogonirritation: S\"ok l\"akarhj\"alp.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P342+P311-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Vid besv\"ar i luftv\"agarna: Kontakta GIFTINFORMATIONSCENTRALEN/\hskip\z@skip{}l\"akare/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid besv\"ar i luftv\"agarna: Kontakta GIFTINFORMATIONSCENTRAL eller l\"akare.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P342+P311.0-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P342+P311.1-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P342+P311.2-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P342+P311-1_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P361+P364-0_tl}{{P361\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Ta omedelbart av alla nedst\"ankta kl\"ader och tv\"atta dem innan de anv\"ands igen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P362+P364-0_tl}{{P362\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Ta av nedst\"ankta kl\"ader och tv\"atta dem innan de anv\"ands igen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P372+P380+P373-0_tl}{{P370\,+\,\hskip\z@skip{}P372\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P373}{%
+  \__mhchem_hp_s:nnn{20180301}{Vid brand: Explosionsrisk. Utrym området. F\"ors\"ok INTE bek\"ampa branden n\"ar den når explosiva varor.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P376-0_tl}{{P370\,+\,\hskip\z@skip{}P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid brand: Stoppa l\"ackan om det kan g\"oras på ett s\"akert s\"att.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{20150601}{Vid brand: Sl\"ack med\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid brand: Sl\"ack branden med \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P380-0_tl}{{P370\,+\,\hskip\z@skip{}P380}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid brand: Utrym området.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P380+P375-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid brand: Utrym området. Bek\"ampa branden på avstånd på grund av explosionsrisken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P380+P375+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P380+P375+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P380+P375+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P371+P380+P375-0_tl}{{P371\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Vid st\"orre brand och stora m\"angder: Utrym området. Bek\"ampa branden på avstånd på grund av explosionsrisken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P401-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{20180301}{F\"orvaras enligt \noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P401.0-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P401-1_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P402-0_tl}{{P402}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras torrt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P403-0_tl}{{P403}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras på v\"al ventilerad plats.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P404-0_tl}{{P404}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras i sluten behållare.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P405-0_tl}{{P405}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras inlåst.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P406-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras i korrosionsbest\"andig/\hskip\z@skip{}\noexpand\textellipsis{} behållare med best\"andigt innerh\"olje.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P406.0-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P406.1-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P406-1_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P407-0_tl}{{P407}{%
+  \__mhchem_hp_s:nnn{20180301}{Se till att det finns luft mellan staplar eller pallar.}{%
+  \__mhchem_hp_s:nnn{20081216}{Se till att det finns luft mellan staplar/\hskip\z@skip{}pallar.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P410-0_tl}{{P410}{%
+  \__mhchem_hp_s:nnn{20081216}{Skyddas från solljus.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P411-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{20101201}{F\"orvaras vid h\"ogst \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras vid h\"ogst \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P411.0-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P411.1-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P411.2-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P412-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Får inte uts\"attas f\"or temperaturer \"over 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Får inte uts\"attas f\"or temperaturer \"over 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P412.0-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P412.1-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P412.2-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P413-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{20101201}{Bulkprodukter som v\"ager mer \"an \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{}\,lbs f\"orvaras vid h\"ogst \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Bulkprodukter som v\"ager mer \"an \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{}\,lbs f\"orvaras vid h\"ogst \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P413.0-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P413.1-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P413.2-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P420-0_tl}{{P420}{%
+  \__mhchem_hp_s:nnn{20180301}{F\"orvaras separat.}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras åtskilt från andra material.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P422-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvara innehållet i\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P422.0-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P422-1_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P402+P404-0_tl}{{P402\,+\,\hskip\z@skip{}P404}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras torrt. F\"orvaras i sluten behållare.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P403+P233-0_tl}{{P403\,+\,\hskip\z@skip{}P233}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras på v\"al ventilerad plats. F\"orpackningen ska f\"orvaras v\"al tillsluten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P403+P235-0_tl}{{P403\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras på v\"al ventilerad plats. F\"orvaras svalt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P410+P403-0_tl}{{P410\,+\,\hskip\z@skip{}P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Skyddas från solljus. F\"orvaras på v\"al ventilerad plats.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P410+P412-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Skyddas från solljus. Får inte uts\"attas f\"or temperaturer \"over 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Skyddas från solljus. Får inte uts\"attas f\"or temperaturer \"over 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P410+P412.0-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P410+P412.1-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P410+P412.2-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P411+P235-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20101201}{F\"orvaras vid h\"ogst \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. F\"orvaras svalt.}{%
+  \__mhchem_hp_s:nnn{20081216}{F\"orvaras vid h\"ogst \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. F\"orvaras svalt.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P411+P235.0-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P411+P235.1-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P411+P235.2-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P501-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{20081216}{Innehållet/\hskip\z@skip{}behållaren l\"amnas till\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P501.0-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P501.0-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P501.1-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P501.2-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P502-0_tl}{{P502}{%
+  \__mhchem_hp_s:nnn{20180301}{Rådfråga tillverkare eller leverant\"or om återvinning eller återanv\"andning.}{%
+  \__mhchem_hp_s:nnn{20110419}{Rådfråga tillverkare/\hskip\z@skip{}leverant\"or om återvinning/\hskip\z@skip{}återanv\"andning}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sv_P370+P380+P375[+P378]-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375[\,+\,\hskip\z@skip{}P378]}{%
+  \__mhchem_hp_s:nnn{20180301}{Vid brand: Utrym området. Bek\"ampa branden på avstånd på grund av explosionsrisken. [Sl\"ack med \noexpand\textellipsis{}].}{}}}%
+%
+\group_end:
+\ExplSyntaxOff
