@@ -1,0 +1,328 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{roboto-serif}
+    [2022/09/10 (Bob Tennent)  Supports RobotoSerif fonts for all LaTeX engines.]
+
+\RequirePackage{ifxetex,ifluatex,xkeyval,textcomp}
+
+\newif\ifrobotoserif@otf 
+\ifxetex
+  \robotoserif@otftrue
+\else\ifluatex
+  \robotoserif@otftrue
+\else  % [pdf]LaTeX
+  \robotoserif@otffalse
+\fi\fi
+
+\newif\ifrobotoserif@lining \robotoserif@liningfalse
+\newif\ifrobotoserif@tabular \robotoserif@tabularfalse
+\newif\ifrobotoserif@default \robotoserif@defaultfalse
+
+\newcommand*{\RobotoSerif@scale}{1}
+
+\newif\ifrobotoserif@light \robotoserif@lightfalse
+\newif\ifrobotoserif@thin \robotoserif@thinfalse
+\newif\ifrobotoserif@medium \robotoserif@mediumfalse
+\newif\ifrobotoserif@black \robotoserif@blackfalse
+\newif\ifrobotoserif@condensed \robotoserif@condensedfalse
+
+\DeclareOptionX{type1}{\robotoserif@otffalse}
+\DeclareOptionX{medium}{\robotoserif@mediumtrue\robotoserif@blackfalse}
+\DeclareOptionX{bold}{\robotoserif@blackfalse\robotoserif@mediumfalse}
+\DeclareOptionX{black}{\robotoserif@blacktrue\robotoserif@mediumfalse}
+\DeclareOptionX{thin}{\robotoserif@thintrue\robotoserif@lightfalse}
+\DeclareOptionX{light}{\robotoserif@lighttrue\robotoserif@thinfalse}
+\DeclareOptionX{regular}{\robotoserif@lightfalse\robotoserif@thinfalse}
+\DeclareOptionX{condensed}{\robotoserif@condensedtrue\robotoserif@slabfalse\robotoserif@thinfalse}
+\DeclareOptionX{lining}{\robotoserif@liningtrue}
+\DeclareOptionX{nf}{\robotoserif@liningtrue}
+\DeclareOptionX{lf}{\robotoserif@liningtrue}
+\DeclareOptionX{oldstyle}{\robotoserif@liningfalse}
+\DeclareOptionX{osf}{\robotoserif@liningfalse}
+\DeclareOptionX{tabular}{\robotoserif@tabulartrue}
+\DeclareOptionX{t}{\robotoserif@tabulartrue}
+\DeclareOptionX{proportional}{\robotoserif@tabularfalse}
+\DeclareOptionX{p}{\robotoserif@tabularfalse}
+
+
+\ExecuteOptionsX{bold,regular,lining,proportional}
+\ProcessOptionsX\relax
+
+\ifrobotoserif@otf
+  \def\robotoserif@boldstyle{Bold}
+  \ifrobotoserif@medium\def\robotoserif@boldstyle{Medium}\fi
+  \ifrobotoserif@black\def\robotoserif@boldstyle{Black}\fi
+  \def\robotoserif@regstyle{Regular}
+  \ifrobotoserif@light\def\robotoserif@regstyle{Light}\fi
+  \ifrobotoserif@thin\def\robotoserif@regstyle{Thin}\fi
+
+\else % type1
+
+  \ifrobotoserif@condensed
+    \def\bfseries@rm{bc}
+    \def\mdseries@rm{c}
+    \ifrobotoserif@medium\def\bfseries@rm{mediumcondensed}\fi
+    \ifrobotoserif@black\def\bfseries@bf{ubc}\fi
+    \ifrobotoserif@light\def\mdseries@rm{lc}\fi
+    \ifrobotoserif@thin\def\mdseries@rm{ulc}\fi
+   else
+    \def\mdseries@rm{m}
+    \def\bfseries@rm{b}
+    \ifrobotoserif@medium\def\bfseries@rm{medium}\fi
+    \ifrobotoserif@black\def\bfseries@rm{ub}\fi
+    \ifrobotoserif@thin\def\mdseries@rm{ul}\fi
+    \ifrobotoserif@light\def\mdseries@rm{l}\fi
+  \fi
+  \def\seriesdefault{\mdseries@rm}
+
+\fi
+
+\ifrobotoserif@otf
+  \ifrobotoserif@lining
+    \def\robotoserif@figurestyle{Lining}
+  \else
+    \def\robotoserif@figurestyle{OldStyle} 
+  \fi
+  \ifrobotoserif@tabular
+    \def\robotoserif@figurealign{Monospaced} 
+  \else
+    \def\robotoserif@figurealign{Proportional} 
+  \fi
+\else % type1
+  \ifrobotoserif@lining
+    \def\robotoserif@figurestyle{LF}
+  \else
+    \def\robotoserif@figurestyle{OsF}
+  \fi
+  \ifrobotoserif@tabular
+    \def\robotoserif@figurealign{T}
+  \else
+    \def\robotoserif@figurealign{}
+  \fi
+\fi
+
+
+\ifrobotoserif@otf
+  \RequirePackage{fontspec}
+\else
+  \RequirePackage{fontenc,fontaxes,mweights}
+\fi
+
+\ifrobotoserif@otf
+  \def\robotoserif@regular{Regular}
+  \defaultfontfeatures{
+        Ligatures = TeX ,
+        Extension = .otf }
+  \ifrobotoserif@condensed
+    \setmainfont
+        [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+          UprightFont    = *-\robotoserif@regstyle ,
+          ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+          BoldFont       = *-Bold ,
+          BoldItalicFont = *-BoldItalic ,
+        ]
+        {RobotoSerif_Condensed}
+  \else
+    \setmainfont
+        [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+          UprightFont    = *-\robotoserif@regstyle ,
+          ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+          BoldFont       = *-\robotoserif@boldstyle ,
+          BoldItalicFont = *-\robotoserif@boldstyle Italic ,
+        ]
+        {RobotoSerif}
+  \fi
+  % grab current family in case of subsequent change:
+  \let\robotoseriffamily\sfdefault  
+  \newfontfamily\robotoserif
+        [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+          UprightFont    = *-\robotoserif@regstyle ,
+          ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+          BoldFont       = *-\robotoserif@boldstyle ,
+          BoldItalicFont = *-\robotoserif@boldstyle Italic ,
+        ]
+        {RobotoSerif}
+  \newfontfamily\robotoserifcondensed
+        [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+          UprightFont    = *-\robotoserif@regstyle ,
+          ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+          BoldFont       = *-Bold ,
+          BoldItalicFont = *-BoldItalic ,
+        ]
+        {RobotoSerif_Condensed}
+  \newfontfamily\robotoserifboldcondensed
+        [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+          UprightFont    = *-Bold ,
+          ItalicFont     = *-BoldItalic,
+          BoldFont       = *-Bold ,
+          BoldItalicFont = *-BoldItalic ,
+        ]
+        {RobotoSerif_Condensed}
+  \ifrobotoserif@condensed
+    \newfontfamily\robotoserifregular
+          [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+            UprightFont    = *-Regular ,
+            ItalicFont     = *-Italic,
+          ]
+          {RobotoSerif_Condensed}
+    \newfontfamily\robotoseriflight
+          [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+            UprightFont    = *-Light ,
+            ItalicFont     = *-LightItalic,
+          ]
+          {RobotoSerif_Condensed}
+    \newfontfamily\robotoserifbold
+          [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+            UprightFont    = *-Bold ,
+            ItalicFont     = *-BoldItalic,
+          ]
+          {RobotoSerif_Condensed}
+    \newfontfamily\robotoserifosf
+          [ Numbers = {Proportional,OldStyle},
+            UprightFont    = *-\robotoserif@regstyle ,
+            ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+            BoldFont       = *-\robotoserif@boldstyle ,
+            BoldItalicFont = *-\robotoserif@boldstyle Italic ,
+          ]
+          {RobotoSerif_Condensed}
+    \newfontfamily\robotoseriflf
+          [ Numbers = {Proportional,Lining},
+            UprightFont    = *-\robotoserif@regstyle ,
+            ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+            BoldFont       = *-\robotoserif@boldstyle ,
+            BoldItalicFont = *-\robotoserif@boldstyle Italic ,
+          ]
+          {RobotoSerif_Condensed}
+    \newfontfamily\robotoseriftlf
+          [ Numbers = {Monospaced,Lining},
+            UprightFont    = *-\robotoserif@regstyle ,
+            ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+            BoldFont       = *-\robotoserif@boldstyle ,
+            BoldItalicFont = *-\robotoserif@boldstyle Italic ,
+          ]
+          {RobotoSerif_Condensed}
+    \newfontfamily\robotoseriftosf
+          [ Numbers = {Monospaced,OldStyle},
+            UprightFont    = *-\robotoserif@regstyle ,
+            ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+            BoldFont       = *-\robotoserif@boldstyle ,
+            BoldItalicFont = *-\robotoserif@boldstyle Italic ,
+          ]
+          {RobotoSerif_Condensed}
+  \else
+    \newfontfamily\robotoserifregular
+          [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+            UprightFont    = *-Regular ,
+            ItalicFont     = *-Italic,
+          ]
+          {RobotoSerif}
+    \newfontfamily\robotoserifmedium
+          [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+            UprightFont    = *-Medium ,
+            ItalicFont     = *-MediumItalic,
+          ]
+          {RobotoSerif}
+    \newfontfamily\robotoserifthin
+          [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+            UprightFont    = *-Thin ,
+            ItalicFont     = *-ThinItalic,
+          ]
+          {RobotoSerif}
+    \newfontfamily\robotoseriflight
+          [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+            UprightFont    = *-Light ,
+            ItalicFont     = *-LightItalic,
+          ]
+          {RobotoSerif}
+    \newfontfamily\robotoserifbold
+          [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+            UprightFont    = *-Bold ,
+            ItalicFont     = *-BoldItalic,
+          ]
+          {RobotoSerif}
+    \newfontfamily\robotoserifblack
+          [ Numbers = {\robotoserif@figurealign,\robotoserif@figurestyle},
+            UprightFont    = *-Black ,
+            ItalicFont     = *-BlackItalic,
+          ]
+          {RobotoSerif}
+    \newfontfamily\robotoserifosf
+          [ Numbers = {Proportional,OldStyle},
+            UprightFont    = *-\robotoserif@regstyle ,
+            ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+            BoldFont       = *-\robotoserif@boldstyle ,
+            BoldItalicFont = *-\robotoserif@boldstyle Italic ,
+          ]
+          {RobotoSerif}
+    \newfontfamily\robotoseriflf
+          [ Numbers = {Proportional,Lining},
+            UprightFont    = *-\robotoserif@regstyle ,
+            ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+            BoldFont       = *-\robotoserif@boldstyle ,
+            BoldItalicFont = *-\robotoserif@boldstyle Italic ,
+          ]
+          {RobotoSerif}
+    \newfontfamily\robotoseriftlf
+          [ Numbers = {Monospaced,Lining},
+            UprightFont    = *-\robotoserif@regstyle ,
+            ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+            BoldFont       = *-\robotoserif@boldstyle ,
+            BoldItalicFont = *-\robotoserif@boldstyle Italic ,
+          ]
+          {RobotoSerif}
+    \newfontfamily\robotoseriftosf
+          [ Numbers = {Monospaced,OldStyle},
+            UprightFont    = *-\robotoserif@regstyle ,
+            ItalicFont     = *-\ifx\robotoserif@regstyle\robotoserif@regular Italic\else\robotoserif@regstyle Italic\fi,
+            BoldFont       = *-\robotoserif@boldstyle ,
+            BoldItalicFont = *-\robotoserif@boldstyle Italic ,
+          ]
+          {RobotoSerif}
+  \fi
+
+
+\else % type1
+  \def\robotoseriffamily{RobotoSerif-\robotoserif@figurealign\robotoserif@figurestyle}
+  \newcommand*\robotoserif{\fontfamily{\robotoseriffamily}\selectfont}
+  \newcommand*\robotoserifcondensed{\fontseries{c}\selectfont}
+  \newcommand*\robotoserifboldcondensed{\fontseries{bc}\selectfont}
+  \def\rmdefault{\robotoseriffamily}
+  
+  \def\robotoserifregular{\fontfamily{\rmdefault}\fontseries{m}\selectfont}
+  \def\robotoserifmedium{\fontfamily{\rmdefault}\fontseries{sb}\selectfont}
+  \def\robotoserifthin{\fontfamily{\rmdefault}\fontseries{el}\selectfont}
+  \def\robotoseriflight{\fontfamily{\rmdefault}\fontseries{l}\selectfont}
+  \def\robotoserifbold{\fontfamily{\rmdefault}\fontseries{b}\selectfont}
+  \def\robotoserifblack{\fontfamily{\rmdefault}\fontseries{eb}\selectfont}
+
+  \ifrobotoserif@condensed
+    \def\robotoseriftlf{\fontfamily{RobotoSerif-TLF}\fontseries{c}\selectfont}
+    \def\robotoseriflf{\fontfamily{RobotoSerif-LF}\fontseries{c}\selectfont}
+    \def\robotoserifosf{\fontfamily{RobotoSerif-OsF}\fontseries{c}\selectfont}
+    \def\robotoserifTOsF{\fontfamily{RobotoSerif-TOsF}\fontseries{c}\selectfont}
+  \else
+    \def\robotoseriftlf{\fontfamily{RobotoSerif-TLF}\selectfont}
+    \def\robotoseriflf{\fontfamily{RobotoSerif-LF}\selectfont}
+    \def\robotoserifosf{\fontfamily{RobotoSerif-OsF}\selectfont}
+    \def\robotoseriftosf{\fontfamily{RobotoSerif-TOsF}\selectfont}
+  \fi
+
+
+\fi
+
+\DeclareTextFontCommand{\robotoserifRegular}{\robotoserifregular}
+\DeclareTextFontCommand{\robotoserifMedium}{\robotoserifmedium}
+\DeclareTextFontCommand{\robotoserifThin}{\robotoserifthin}
+\DeclareTextFontCommand{\robotoserifLight}{\robotoseriflight}
+\DeclareTextFontCommand{\robotoserifBold}{\robotoserifbold}
+\DeclareTextFontCommand{\robotoserifBlack}{\robotoserifblack}
+\DeclareTextFontCommand{\robotoserifTLF}{\robotoseriftlf}
+\DeclareTextFontCommand{\robotoserifLF}{\robotoseriflf}
+\DeclareTextFontCommand{\robotoserifOsF}{\robotoserifosf}
+\DeclareTextFontCommand{\robotoserifTOsF}{\robotoseriftosf}
+
+\ifrobotoserif@otf
+  % turn off defaults in case other fonts are selected:
+  \defaultfontfeatures{}
+\fi
+
+\endinput

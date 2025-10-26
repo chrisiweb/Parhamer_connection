@@ -1,0 +1,788 @@
+%%
+%% This is file `fc-spanish.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% fmtcount.dtx  (with options: `fc-spanish.def')
+%% 
+%%  fmtcount.dtx
+%%  Copyright 2025 Nicola Talbot (inactive), Vincent Belaïche and Erik Nijenhuis
+%% 
+%%  This work may be distributed and/or modified under the
+%%  conditions of the LaTeX Project Public License, either version 1.3
+%%  of this license or (at your option) any later version.
+%%  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%%  and version 1.3 or later is part of all distributions of LaTeX
+%%  version 2005/12/01 or later.
+%% 
+%%  This work has the LPPL maintenance status `maintained'.
+%% 
+%%  The Current Maintainer of this work is Nicola Talbot (inactive), Vincent Belaïche and Erik Nijenhuis.
+%% 
+%%  This work consists of the files fmtcount.dtx and fmtcount.ins and the derived files fc-american.def, fc-brazilian.def, fc-british.def, fc-dutch.def, fc-english.def, fc-francais.def, fc-french.def, fc-frenchb.def, fc-german.def, fc-germanb.def, fc-italian.def, fc-ngerman.def, fc-ngermanb.def, fc-portuges.def, fc-portuguese.def, fc-spanish.def, fc-UKenglish.def, fc-USenglish.def, fcnumparser.sty, fcprefix.sty, fmtcount.sty.
+%% 
+\ProvidesFCLanguage{spanish}[2016/01/12]%
+\newcommand*\@ordinalMspanish[2]{%
+  \edef#2{\number#1\relax\noexpand\fmtord{o}}%
+}%
+\global\let\@ordinalMspanish\@ordinalMspanish
+\newcommand{\@ordinalFspanish}[2]{%
+  \edef#2{\number#1\relax\noexpand\fmtord{a}}%
+}%
+\global\let\@ordinalFspanish\@ordinalFspanish
+\global\let\@ordinalNspanish\@ordinalMspanish
+\newcommand*\@@unitstringspanish[1]{%
+  \ifcase#1\relax
+    cero%
+    \or uno%
+    \or dos%
+    \or tres%
+    \or cuatro%
+    \or cinco%
+    \or seis%
+    \or siete%
+    \or ocho%
+    \or nueve%
+  \fi
+}%
+\global\let\@@unitstringspanish\@@unitstringspanish
+\newcommand*\@@unitstringFspanish[1]{%
+  \ifcase#1\relax
+    cera%
+    \or una%
+    \or dos%
+    \or tres%
+    \or cuatro%
+    \or cinco%
+    \or seis%
+    \or siete%
+    \or ocho%
+    \or nueve%
+  \fi
+}%
+\global\let\@@unitstringFspanish\@@unitstringFspanish
+\newcommand*\@@tenstringspanish[1]{%
+  \ifcase#1\relax
+    \or diez%
+    \or veinte%
+    \or treinta%
+    \or cuarenta%
+    \or cincuenta%
+    \or sesenta%
+    \or setenta%
+    \or ochenta%
+    \or noventa%
+    \or cien%
+  \fi
+}%
+\global\let\@@tenstringspanish\@@tenstringspanish
+\newcommand*\@@teenstringspanish[1]{%
+  \ifcase#1\relax
+    diez%
+    \or once%
+    \or doce%
+    \or trece%
+    \or catorce%
+    \or quince%
+    \or dieciséis%
+    \or diecisiete%
+    \or dieciocho%
+    \or diecinueve%
+  \fi
+}%
+\global\let\@@teenstringspanish\@@teenstringspanish
+\newcommand*\@@twentystringspanish[1]{%
+  \ifcase#1\relax
+    veinte%
+    \or veintiuno%
+    \or veintidós%
+    \or veintitrés%
+    \or veinticuatro%
+    \or veinticinco%
+    \or veintiséis%
+    \or veintisiete%
+    \or veintiocho%
+    \or veintinueve%
+  \fi
+}%
+\global\let\@@twentystringspanish\@@twentystringspanish
+\newcommand*\@@twentystringFspanish[1]{%
+  \ifcase#1\relax
+    veinte%
+    \or veintiuna%
+    \or veintidós%
+    \or veintitrés%
+    \or veinticuatro%
+    \or veinticinco%
+    \or veintiséis%
+    \or veintisiete%
+    \or veintiocho%
+    \or veintinueve%
+  \fi
+}%
+\global\let\@@twentystringFspanish\@@twentystringFspanish
+\newcommand*\@@hundredstringspanish[1]{%
+  \ifcase#1\relax
+    \or ciento%
+    \or doscientos%
+    \or trescientos%
+    \or cuatrocientos%
+    \or quinientos%
+    \or seiscientos%
+    \or setecientos%
+    \or ochocientos%
+    \or novecientos%
+  \fi
+}%
+\global\let\@@hundredstringspanish\@@hundredstringspanish
+\newcommand*\@@hundredstringFspanish[1]{%
+  \ifcase#1\relax
+    \or cienta%
+    \or doscientas%
+    \or trescientas%
+    \or cuatrocientas%
+    \or quinientas%
+    \or seiscientas%
+    \or setecientas%
+    \or ochocientas%
+    \or novecientas%
+  \fi
+}%
+\global\let\@@hundredstringFspanish\@@hundredstringFspanish
+\newcommand*\@@Unitstringspanish[1]{%
+  \ifcase#1\relax
+    Cero%
+    \or Uno%
+    \or Dos%
+    \or Tres%
+    \or Cuatro%
+    \or Cinco%
+    \or Seis%
+    \or Siete%
+    \or Ocho%
+    \or Nueve%
+  \fi
+}%
+\global\let\@@Unitstringspanish\@@Unitstringspanish
+\newcommand*\@@UnitstringFspanish[1]{%
+  \ifcase#1\relax
+    Cera%
+    \or Una%
+    \or Dos%
+    \or Tres%
+    \or Cuatro%
+    \or Cinco%
+    \or Seis%
+    \or Siete%
+    \or Ocho%
+    \or Nueve%
+  \fi
+}%
+\global\let\@@UnitstringFspanish\@@UnitstringFspanish
+\newcommand*\@@Tenstringspanish[1]{%
+  \ifcase#1\relax
+    \or Diez%
+    \or Veinte%
+    \or Treinta%
+    \or Cuarenta%
+    \or Cincuenta%
+    \or Sesenta%
+    \or Setenta%
+    \or Ochenta%
+    \or Noventa%
+    \or Cien%
+  \fi
+}%
+\global\let\@@Tenstringspanish\@@Tenstringspanish
+\newcommand*\@@Teenstringspanish[1]{%
+  \ifcase#1\relax
+    Diez%
+    \or Once%
+    \or Doce%
+    \or Trece%
+    \or Catorce%
+    \or Quince%
+    \or Dieciséis%
+    \or Diecisiete%
+    \or Dieciocho%
+    \or Diecinueve%
+  \fi
+}%
+\global\let\@@Teenstringspanish\@@Teenstringspanish
+\newcommand*\@@Twentystringspanish[1]{%
+  \ifcase#1\relax
+    Veinte%
+    \or Veintiuno%
+    \or Veintidós%
+    \or Veintitrés%
+    \or Veinticuatro%
+    \or Veinticinco%
+    \or Veintiséis%
+    \or Veintisiete%
+    \or Veintiocho%
+    \or Veintinueve%
+  \fi
+}%
+\global\let\@@Twentystringspanish\@@Twentystringspanish
+\newcommand*\@@TwentystringFspanish[1]{%
+  \ifcase#1\relax
+    Veinte%
+    \or Veintiuna%
+    \or Veintidós%
+    \or Veintitrés%
+    \or Veinticuatro%
+    \or Veinticinco%
+    \or Veintiséis%
+    \or Veintisiete%
+    \or Veintiocho%
+    \or Veintinueve%
+  \fi
+}%
+\global\let\@@TwentystringFspanish\@@TwentystringFspanish
+\newcommand*\@@Hundredstringspanish[1]{%
+  \ifcase#1\relax
+    \or Ciento%
+    \or Doscientos%
+    \or Trescientos%
+    \or Cuatrocientos%
+    \or Quinientos%
+    \or Seiscientos%
+    \or Setecientos%
+    \or Ochocientos%
+    \or Novecientos%
+  \fi
+}%
+\global\let\@@Hundredstringspanish\@@Hundredstringspanish
+\newcommand*\@@HundredstringFspanish[1]{%
+  \ifcase#1\relax
+    \or Cienta%
+    \or Doscientas%
+    \or Trescientas%
+    \or Cuatrocientas%
+    \or Quinientas%
+    \or Seiscientas%
+    \or Setecientas%
+    \or Ochocientas%
+    \or Novecientas%
+  \fi
+}%
+\global\let\@@HundredstringFspanish\@@HundredstringFspanish
+\newcommand*{\@numberstringMspanish}[2]{%
+  \let\@unitstring=\@@unitstringspanish
+  \let\@teenstring=\@@teenstringspanish
+  \let\@tenstring=\@@tenstringspanish
+  \let\@twentystring=\@@twentystringspanish
+  \let\@hundredstring=\@@hundredstringspanish
+  \def\@hundred{cien}\def\@thousand{mil}%
+  \def\@andname{y}%
+  \@@numberstringspanish{#1}{#2}%
+}%
+\global\let\@numberstringMspanish\@numberstringMspanish
+\newcommand*{\@numberstringFspanish}[2]{%
+  \let\@unitstring=\@@unitstringFspanish
+  \let\@teenstring=\@@teenstringspanish
+  \let\@tenstring=\@@tenstringspanish
+  \let\@twentystring=\@@twentystringFspanish
+  \let\@hundredstring=\@@hundredstringFspanish
+  \def\@hundred{cien}\def\@thousand{mil}%
+  \def\@andname{b}%
+  \@@numberstringspanish{#1}{#2}%
+}%
+\global\let\@numberstringFspanish\@numberstringFspanish
+\global\let\@numberstringNspanish\@numberstringMspanish
+\newcommand*{\@NumberstringMspanish}[2]{%
+  \let\@unitstring=\@@Unitstringspanish
+  \let\@teenstring=\@@Teenstringspanish
+  \let\@tenstring=\@@Tenstringspanish
+  \let\@twentystring=\@@Twentystringspanish
+  \let\@hundredstring=\@@Hundredstringspanish
+  \def\@andname{y}%
+  \def\@hundred{Cien}\def\@thousand{Mil}%
+  \@@numberstringspanish{#1}{#2}%
+}%
+\global\let\@NumberstringMspanish\@NumberstringMspanish
+\newcommand*{\@NumberstringFspanish}[2]{%
+  \let\@unitstring=\@@UnitstringFspanish
+  \let\@teenstring=\@@Teenstringspanish
+  \let\@tenstring=\@@Tenstringspanish
+  \let\@twentystring=\@@TwentystringFspanish
+  \let\@hundredstring=\@@HundredstringFspanish
+  \def\@andname{b}%
+  \def\@hundred{Cien}\def\@thousand{Mil}%
+  \@@numberstringspanish{#1}{#2}%
+}%
+\global\let\@NumberstringFspanish\@NumberstringFspanish
+\global\let\@NumberstringNspanish\@NumberstringMspanish
+\newcommand*{\@ordinalstringMspanish}[2]{%
+  \let\@unitthstring=\@@unitthstringspanish
+  \let\@unitstring=\@@unitstringspanish
+  \let\@teenthstring=\@@teenthstringspanish
+  \let\@tenthstring=\@@tenthstringspanish
+  \let\@hundredthstring=\@@hundredthstringspanish
+  \def\@thousandth{milésimo}%
+  \@@ordinalstringspanish{#1}{#2}%
+}%
+\global\let\@ordinalstringMspanish\@ordinalstringMspanish
+\newcommand*{\@ordinalstringFspanish}[2]{%
+  \let\@unitthstring=\@@unitthstringFspanish
+  \let\@unitstring=\@@unitstringFspanish
+  \let\@teenthstring=\@@teenthstringFspanish
+  \let\@tenthstring=\@@tenthstringFspanish
+  \let\@hundredthstring=\@@hundredthstringFspanish
+  \def\@thousandth{milésima}%
+  \@@ordinalstringspanish{#1}{#2}%
+}%
+\global\let\@ordinalstringFspanish\@ordinalstringFspanish
+\global\let\@ordinalstringNspanish\@ordinalstringMspanish
+\newcommand*{\@OrdinalstringMspanish}[2]{%
+  \let\@unitthstring=\@@Unitthstringspanish
+  \let\@unitstring=\@@Unitstringspanish
+  \let\@teenthstring=\@@Teenthstringspanish
+  \let\@tenthstring=\@@Tenthstringspanish
+  \let\@hundredthstring=\@@Hundredthstringspanish
+  \def\@thousandth{Milésimo}%
+  \@@ordinalstringspanish{#1}{#2}%
+}
+\global\let\@OrdinalstringMspanish\@OrdinalstringMspanish
+\newcommand*{\@OrdinalstringFspanish}[2]{%
+  \let\@unitthstring=\@@UnitthstringFspanish
+  \let\@unitstring=\@@UnitstringFspanish
+  \let\@teenthstring=\@@TeenthstringFspanish
+  \let\@tenthstring=\@@TenthstringFspanish
+  \let\@hundredthstring=\@@HundredthstringFspanish
+  \def\@thousandth{Milésima}%
+  \@@ordinalstringspanish{#1}{#2}%
+}%
+\global\let\@OrdinalstringFspanish\@OrdinalstringFspanish
+\global\let\@OrdinalstringNspanish\@OrdinalstringMspanish
+\newcommand*\@@unitthstringspanish[1]{%
+  \ifcase#1\relax
+    cero%
+    \or primero%
+    \or segundo%
+    \or tercero%
+    \or cuarto%
+    \or quinto%
+    \or sexto%
+    \or séptimo%
+    \or octavo%
+    \or noveno%
+  \fi
+}%
+\global\let\@@unitthstringspanish\@@unitthstringspanish
+\newcommand*\@@tenthstringspanish[1]{%
+  \ifcase#1\relax
+    \or décimo%
+    \or vigésimo%
+    \or trigésimo%
+    \or cuadragésimo%
+    \or quincuagésimo%
+    \or sexagésimo%
+    \or septuagésimo%
+    \or octogésimo%
+    \or nonagésimo%
+  \fi
+}%
+\global\let\@@tenthstringspanish\@@tenthstringspanish
+\newcommand*\@@teenthstringspanish[1]{%
+  \ifcase#1\relax
+    décimo%
+    \or undécimo%
+    \or duodécimo%
+    \or decimotercero%
+    \or decimocuarto%
+    \or decimoquinto%
+    \or decimosexto%
+    \or decimoséptimo%
+    \or decimoctavo%
+    \or decimonoveno%
+  \fi
+}%
+\global\let\@@teenthstringspanish\@@teenthstringspanish
+\newcommand*\@@hundredthstringspanish[1]{%
+  \ifcase#1\relax
+    \or centésimo%
+    \or ducentésimo%
+    \or tricentésimo%
+    \or cuadringentésimo%
+    \or quingentésimo%
+    \or sexcentésimo%
+    \or septingésimo%
+    \or octingentésimo%
+    \or noningentésimo%
+  \fi
+}%
+\global\let\@@hundredthstringspanish\@@hundredthstringspanish
+\newcommand*\@@unitthstringFspanish[1]{%
+  \ifcase#1\relax
+    cera%
+    \or primera%
+    \or segunda%
+    \or tercera%
+    \or cuarta%
+    \or quinta%
+    \or sexta%
+    \or séptima%
+    \or octava%
+    \or novena%
+  \fi
+}%
+\global\let\@@unitthstringFspanish\@@unitthstringFspanish
+\newcommand*\@@tenthstringFspanish[1]{%
+  \ifcase#1\relax
+    \or décima%
+    \or vigésima%
+    \or trigésima%
+    \or cuadragésima%
+    \or quincuagésima%
+    \or sexagésima%
+    \or septuagésima%
+    \or octogésima%
+    \or nonagésima%
+  \fi
+}%
+\global\let\@@tenthstringFspanish\@@tenthstringFspanish
+\newcommand*\@@teenthstringFspanish[1]{%
+  \ifcase#1\relax
+    décima%
+    \or undécima%
+    \or duodécima%
+    \or decimotercera%
+    \or decimocuarta%
+    \or decimoquinta%
+    \or decimosexta%
+    \or decimoséptima%
+    \or decimoctava%
+    \or decimonovena%
+  \fi
+}%
+\global\let\@@teenthstringFspanish\@@teenthstringFspanish
+\newcommand*\@@hundredthstringFspanish[1]{%
+  \ifcase#1\relax
+    \or centésima%
+    \or ducentésima%
+    \or tricentésima%
+    \or cuadringentésima%
+    \or quingentésima%
+    \or sexcentésima%
+    \or septingésima%
+    \or octingentésima%
+    \or noningentésima%
+  \fi
+}%
+\global\let\@@hundredthstringFspanish\@@hundredthstringFspanish
+\newcommand*\@@Unitthstringspanish[1]{%
+  \ifcase#1\relax
+    Cero%
+    \or Primero%
+    \or Segundo%
+    \or Tercero%
+    \or Cuarto%
+    \or Quinto%
+    \or Sexto%
+    \or Séptimo%
+    \or Octavo%
+    \or Noveno%
+  \fi
+}%
+\global\let\@@Unitthstringspanish\@@Unitthstringspanish
+\newcommand*\@@Tenthstringspanish[1]{%
+  \ifcase#1\relax
+    \or Décimo%
+    \or Vigésimo%
+    \or Trigésimo%
+    \or Cuadragésimo%
+    \or Quincuagésimo%
+    \or Sexagésimo%
+    \or Septuagésimo%
+    \or Octogésimo%
+    \or Nonagésimo%
+  \fi
+}%
+\global\let\@@Tenthstringspanish\@@Tenthstringspanish
+\newcommand*\@@Teenthstringspanish[1]{%
+  \ifcase#1\relax
+    Décimo%
+    \or Undécimo%
+    \or Duodécimo%
+    \or Decimotercero%
+    \or Decimocuarto%
+    \or Decimoquinto%
+    \or Decimosexto%
+    \or Decimoséptimo%
+    \or Decimoctavo%
+    \or Decimonoveno%
+  \fi
+}%
+\global\let\@@Teenthstringspanish\@@Teenthstringspanish
+\newcommand*\@@Hundredthstringspanish[1]{%
+  \ifcase#1\relax
+    \or Centésimo%
+    \or Ducentésimo%
+    \or Tricentésimo%
+    \or Cuadringentésimo%
+    \or Quingentésimo%
+    \or Sexcentésimo%
+    \or Septingésimo%
+    \or Octingentésimo%
+    \or Noningentésimo%
+  \fi
+}%
+\global\let\@@Hundredthstringspanish\@@Hundredthstringspanish
+\newcommand*\@@UnitthstringFspanish[1]{%
+  \ifcase#1\relax
+    Cera%
+    \or Primera%
+    \or Segunda%
+    \or Tercera%
+    \or Cuarta%
+    \or Quinta%
+    \or Sexta%
+    \or Séptima%
+    \or Octava%
+    \or Novena%
+  \fi
+}%
+\global\let\@@UnitthstringFspanish\@@UnitthstringFspanish
+\newcommand*\@@TenthstringFspanish[1]{%
+  \ifcase#1\relax
+    \or Décima%
+    \or Vigésima%
+    \or Trigésima%
+    \or Cuadragésima%
+    \or Quincuagésima%
+    \or Sexagésima%
+    \or Septuagésima%
+    \or Octogésima%
+    \or Nonagésima%
+  \fi
+}%
+\global\let\@@TenthstringFspanish\@@TenthstringFspanish
+\newcommand*\@@TeenthstringFspanish[1]{%
+  \ifcase#1\relax
+    Décima%
+    \or Undécima%
+    \or Duodécima%
+    \or Decimotercera%
+    \or Decimocuarta%
+    \or Decimoquinta%
+    \or Decimosexta%
+    \or Decimoséptima%
+    \or Decimoctava%
+    \or Decimonovena%
+  \fi
+}%
+\global\let\@@TeenthstringFspanish\@@TeenthstringFspanish
+\newcommand*\@@HundredthstringFspanish[1]{%
+  \ifcase#1\relax
+    \or Centésima%
+    \or Ducentésima%
+    \or Tricentésima%
+    \or Cuadringentésima%
+    \or Quingentésima%
+    \or Sexcentésima%
+    \or Septingésima%
+    \or Octingentésima%
+    \or Noningentésima%
+  \fi
+}%
+\global\let\@@HundredthstringFspanish\@@HundredthstringFspanish
+\newcommand*\@@numberstringspanish[2]{%
+\ifnum#1>99999
+\PackageError{fmtcount}{Out of range}%
+{This macro only works for values less than 100000}%
+\else
+\ifnum#1<0
+\PackageError{fmtcount}{Negative numbers not permitted}%
+{This macro does not work for negative numbers, however
+you can try typing "minus" first, and then pass the modulus of
+this number}%
+\fi
+\fi
+\def#2{}%
+\@strctr=#1\relax \divide\@strctr by 1000\relax
+\ifnum\@strctr>9
+  \divide\@strctr by 10
+  \ifnum\@strctr>1
+    \let\@@fc@numstr#2\relax
+    \edef#2{\@@fc@numstr\@tenstring{\@strctr}}%
+    \@strctr=#1 \divide\@strctr by 1000\relax
+    \@FCmodulo{\@strctr}{10}%
+    \ifnum\@strctr>0\relax
+       \let\@@fc@numstr#2\relax
+       \edef#2{\@@fc@numstr\ \@andname\ \@unitstring{\@strctr}}%
+    \fi
+  \else
+    \@strctr=#1\relax
+    \divide\@strctr by 1000\relax
+    \@FCmodulo{\@strctr}{10}%
+    \let\@@fc@numstr#2\relax
+    \edef#2{\@@fc@numstr\@teenstring{\@strctr}}%
+  \fi
+  \let\@@fc@numstr#2\relax
+  \edef#2{\@@fc@numstr\ \@thousand}%
+\else
+  \ifnum\@strctr>0\relax
+    \ifnum\@strctr>1\relax
+       \let\@@fc@numstr#2\relax
+       \edef#2{\@@fc@numstr\@unitstring{\@strctr}\ }%
+    \fi
+    \let\@@fc@numstr#2\relax
+    \edef#2{\@@fc@numstr\@thousand}%
+  \fi
+\fi
+\@strctr=#1\relax \@FCmodulo{\@strctr}{1000}%
+\divide\@strctr by 100\relax
+\ifnum\@strctr>0\relax
+  \ifnum#1>1000\relax
+    \let\@@fc@numstr#2\relax
+    \edef#2{\@@fc@numstr\ }%
+  \fi
+  \@tmpstrctr=#1\relax
+  \@FCmodulo{\@tmpstrctr}{1000}%
+  \ifnum\@tmpstrctr=100\relax
+    \let\@@fc@numstr#2\relax
+    \edef#2{\@@fc@numstr\@tenstring{10}}%
+  \else
+    \let\@@fc@numstr#2\relax
+    \edef#2{\@@fc@numstr\@hundredstring{\@strctr}}%
+  \fi
+\fi
+\@strctr=#1\relax \@FCmodulo{\@strctr}{100}%
+\ifnum#1>100\relax
+  \ifnum\@strctr>0\relax
+    \let\@@fc@numstr#2\relax
+    \edef#2{\@@fc@numstr\ }%
+  \fi
+\fi
+\ifnum\@strctr>29\relax
+  \divide\@strctr by 10\relax
+  \let\@@fc@numstr#2\relax
+  \edef#2{\@@fc@numstr\@tenstring{\@strctr}}%
+  \@strctr=#1\relax \@FCmodulo{\@strctr}{10}%
+  \ifnum\@strctr>0\relax
+    \let\@@fc@numstr#2\relax
+    \edef#2{\@@fc@numstr\ \@andname\ \@unitstring{\@strctr}}%
+  \fi
+\else
+  \ifnum\@strctr<10\relax
+    \ifnum\@strctr=0\relax
+      \ifnum#1<100\relax
+        \let\@@fc@numstr#2\relax
+        \edef#2{\@@fc@numstr\@unitstring{\@strctr}}%
+      \fi
+    \else
+      \let\@@fc@numstr#2\relax
+      \edef#2{\@@fc@numstr\@unitstring{\@strctr}}%
+    \fi
+  \else
+    \ifnum\@strctr>19\relax
+      \@FCmodulo{\@strctr}{10}%
+      \let\@@fc@numstr#2\relax
+      \edef#2{\@@fc@numstr\@twentystring{\@strctr}}%
+    \else
+      \@FCmodulo{\@strctr}{10}%
+      \let\@@fc@numstr#2\relax
+      \edef#2{\@@fc@numstr\@teenstring{\@strctr}}%
+    \fi
+  \fi
+\fi
+}%
+\global\let\@@numberstringspanish\@@numberstringspanish
+\newcommand*\@@ordinalstringspanish[2]{%
+\@strctr=#1\relax
+\ifnum#1>99999
+\PackageError{fmtcount}{Out of range}%
+{This macro only works for values less than 100000}%
+\else
+\ifnum#1<0
+\PackageError{fmtcount}{Negative numbers not permitted}%
+{This macro does not work for negative numbers, however
+you can try typing "minus" first, and then pass the modulus of
+this number}%
+\else
+\def#2{}%
+\ifnum\@strctr>999\relax
+  \divide\@strctr by 1000\relax
+  \ifnum\@strctr>1\relax
+    \ifnum\@strctr>9\relax
+      \@tmpstrctr=\@strctr
+      \ifnum\@strctr<20
+        \@FCmodulo{\@tmpstrctr}{10}%
+        \let\@@fc@ordstr#2\relax
+        \edef#2{\@@fc@ordstr\@teenthstring{\@tmpstrctr}}%
+      \else
+        \divide\@tmpstrctr by 10\relax
+        \let\@@fc@ordstr#2\relax
+        \edef#2{\@@fc@ordstr\@tenthstring{\@tmpstrctr}}%
+        \@tmpstrctr=\@strctr
+        \@FCmodulo{\@tmpstrctr}{10}%
+        \ifnum\@tmpstrctr>0\relax
+          \let\@@fc@ordstr#2\relax
+          \edef#2{\@@fc@ordstr\@unitthstring{\@tmpstrctr}}%
+        \fi
+      \fi
+    \else
+       \let\@@fc@ordstr#2\relax
+       \edef#2{\@@fc@ordstr\@unitstring{\@strctr}}%
+    \fi
+  \fi
+  \let\@@fc@ordstr#2\relax
+  \edef#2{\@@fc@ordstr\@thousandth}%
+\fi
+\@strctr=#1\relax
+\@FCmodulo{\@strctr}{1000}%
+\ifnum\@strctr>99\relax
+  \@tmpstrctr=\@strctr
+  \divide\@tmpstrctr by 100\relax
+  \ifnum#1>1000\relax
+    \let\@@fc@ordstr#2\relax
+    \edef#2{\@@fc@ordstr\ }%
+  \fi
+  \let\@@fc@ordstr#2\relax
+  \edef#2{\@@fc@ordstr\@hundredthstring{\@tmpstrctr}}%
+\fi
+\@FCmodulo{\@strctr}{100}%
+\ifnum#1>99\relax
+  \ifnum\@strctr>0\relax
+    \let\@@fc@ordstr#2\relax
+    \edef#2{\@@fc@ordstr\ }%
+  \fi
+\fi
+\ifnum\@strctr>19\relax
+  \@tmpstrctr=\@strctr
+  \divide\@tmpstrctr by 10\relax
+  \let\@@fc@ordstr#2\relax
+  \edef#2{\@@fc@ordstr\@tenthstring{\@tmpstrctr}}%
+  \@tmpstrctr=\@strctr
+  \@FCmodulo{\@tmpstrctr}{10}%
+  \ifnum\@tmpstrctr>0\relax
+    \let\@@fc@ordstr#2\relax
+    \edef#2{\@@fc@ordstr\ \@unitthstring{\@tmpstrctr}}%
+  \fi
+\else
+  \ifnum\@strctr>9\relax
+    \@FCmodulo{\@strctr}{10}%
+    \let\@@fc@ordstr#2\relax
+    \edef#2{\@@fc@ordstr\@teenthstring{\@strctr}}%
+  \else
+    \ifnum\@strctr=0\relax
+      \ifnum#1=0\relax
+        \let\@@fc@ordstr#2\relax
+        \edef#2{\@@fc@ordstr\@unitstring{0}}%
+      \fi
+    \else
+      \let\@@fc@ordstr#2\relax
+      \edef#2{\@@fc@ordstr\@unitthstring{\@strctr}}%
+    \fi
+  \fi
+\fi
+\fi
+\fi
+}%
+\global\let\@@ordinalstringspanish\@@ordinalstringspanish
+\endinput
+%%
+%% End of file `fc-spanish.def'.

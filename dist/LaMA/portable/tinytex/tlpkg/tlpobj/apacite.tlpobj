@@ -1,0 +1,40 @@
+name apacite
+category Package
+revision 54080
+shortdesc Citation style following the rules of the APA
+longdesc Apacite provides a BibTeX style and a LaTeX package which are
+longdesc designed to match the requirements of the American
+longdesc Psychological Association's style for citations. The package
+longdesc follows the 6th edition of the APA manual, and is designed to
+longdesc work with the apa6 class. A test document is provided. The
+longdesc package is compatible with chapterbib and (to some extent) with
+longdesc hyperref (for limits of compatibility, see the documentation).
+longdesc The package also includes a means of generating an author index
+longdesc for a document.
+containersize 42736
+containerchecksum 6f69733b58f0e791422269f48b56a52ad6b131afc4ab5c7c5ad1d9e0a5ec0d84ba48b8e43340f8e1a563a0c4b10aeb131f1999f836e89f311f067ded8464f91b
+doccontainersize 641176
+doccontainerchecksum ba7720239a221d343cc58d28a9611f731a6db21f1e7852b0cdfe0c4f0cd97d475efd83c863b14d197f2206cb2bb0d314266797376b548de250842aa008ff3732
+srccontainersize 162688
+srccontainerchecksum bfcd5139e68c54b6c35dc8afc46022ffb56101de5dac3e6ea24df372483c2ecc2e3d2d0a486ea284f2fb6b0aba4ca622080910821a27447239ec527db941a2f9
+runfiles size=189
+ texmf-dist/bibtex/bst/apacite/apacann.bst
+ texmf-dist/bibtex/bst/apacite/apacannx.bst
+ texmf-dist/bibtex/bst/apacite/apacite.bst
+ texmf-dist/bibtex/bst/apacite/apacitex.bst
+ texmf-dist/tex/latex/apacite/apacdoc.sty
+ texmf-dist/tex/latex/apacite/apacite.sty
+ texmf-dist/tex/latex/apacite/dutch.apc
+ texmf-dist/tex/latex/apacite/english.apc
+ texmf-dist/tex/latex/apacite/finnish.apc
+ texmf-dist/tex/latex/apacite/french.apc
+ texmf-dist/tex/latex/apacite/german.apc
+ texmf-dist/tex/latex/apacite/greek.apc
+ texmf-dist/tex/latex/apacite/ngerman.apc
+ texmf-dist/tex/latex/apacite/norsk.apc
+ texmf-dist/tex/latex/apacite/spanish.apc
+ texmf-dist/tex/latex/apacite/swedish.apc
+catalogue-ctan /biblio/bibtex/contrib/apacite
+catalogue-license lppl
+catalogue-topics psychology journalpub bibtex-sty bibtex-supp apa
+catalogue-version 6.03

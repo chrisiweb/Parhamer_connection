@@ -1,0 +1,29 @@
+name tikzfill
+category Package
+revision 67847
+shortdesc TikZ libraries for filling with images and patterns
+longdesc This is a collection of TikZ libraries which add further
+longdesc options to fill TikZ paths with images and patterns. The
+longdesc libraries comprise fillings with images from files and from
+longdesc TikZ pictures. Also, patterns of hexagons and of rhombi are
+longdesc provided.
+containersize 4652
+containerchecksum 4864d0859490cd07e123e1160a35fb7817c3ffcc1f409a8c61285823f655357473e0dc7ab92434b5b552cbfca3e88d9181e57cf944d2422467b466cbdcd743a0
+doccontainersize 626980
+doccontainerchecksum f08d351db50d0ac3d6362c223e30b97b9a734a8b19fc426d5592a17692380667172ee6793064b8c2787ee9e1eaa1a38b70a821f53a2e0dc26316ba81f0549aa2
+runfiles size=13
+ texmf-dist/tex/latex/tikzfill/tikzfill-common.sty
+ texmf-dist/tex/latex/tikzfill/tikzfill.hexagon.sty
+ texmf-dist/tex/latex/tikzfill/tikzfill.image.sty
+ texmf-dist/tex/latex/tikzfill/tikzfill.rhombus.sty
+ texmf-dist/tex/latex/tikzfill/tikzfill.sty
+ texmf-dist/tex/latex/tikzfill/tikzlibraryfill.hexagon.code.tex
+ texmf-dist/tex/latex/tikzfill/tikzlibraryfill.image.code.tex
+ texmf-dist/tex/latex/tikzfill/tikzlibraryfill.rhombus.code.tex
+catalogue-contact-bugs https://github.com/T-F-S/tikzfill/issues
+catalogue-contact-home https://github.com/T-F-S/tikzfill
+catalogue-contact-repository https://github.com/T-F-S/tikzfill.git
+catalogue-ctan /graphics/pgf/contrib/tikzfill
+catalogue-license lppl1.3
+catalogue-topics pgf-tikz expl3
+catalogue-version 1.0.1

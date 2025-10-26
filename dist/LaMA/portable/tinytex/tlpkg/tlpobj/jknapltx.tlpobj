@@ -1,0 +1,38 @@
+name jknapltx
+category Package
+revision 19440
+catalogue jknappen
+shortdesc Miscellaneous packages by Joerg Knappen
+longdesc Miscellaneous macros by Jorg Knappen, including: represent
+longdesc counters in greek; Maxwell's non-commutative division;
+longdesc latin1jk, latin2jk and latin3jk, which are their inputenc
+longdesc definition files that allow verbatim input in the respective
+longdesc ISO Latin codes; blackboard bold fonts in maths; use of RSFS
+longdesc fonts in maths; extra alignments for \parboxes; swap Roman and
+longdesc Sans fonts; transliterate semitic languages; patches to make
+longdesc (La)TeX formulae embeddable in SGML; use maths "minus" in text
+longdesc as appropriate; simple Young tableaux.
+containersize 9096
+containerchecksum 0369405034393ea8de2cd94497a97ba6c40264ec9142eefee09647fd4e51f83e169a99757a4b92c1c9d911637f137404fa54231de452bcd208ba3f9982984153
+doccontainersize 3252
+doccontainerchecksum cadb522c007963278990e75a011e22d2c6bd8429e55fe5ecba3c2f20b9ae13fda4eac304bc405440c1c1566b1458e0f3e77a6d4adc77117b20673204bf502131
+runfiles size=19
+ texmf-dist/tex/latex/jknapltx/greekctr.sty
+ texmf-dist/tex/latex/jknapltx/holtpolt.sty
+ texmf-dist/tex/latex/jknapltx/latin1jk.def
+ texmf-dist/tex/latex/jknapltx/latin2jk.def
+ texmf-dist/tex/latex/jknapltx/latin3jk.def
+ texmf-dist/tex/latex/jknapltx/mathbbol.sty
+ texmf-dist/tex/latex/jknapltx/mathrsfs.sty
+ texmf-dist/tex/latex/jknapltx/parboxx.sty
+ texmf-dist/tex/latex/jknapltx/sans.sty
+ texmf-dist/tex/latex/jknapltx/semtrans.sty
+ texmf-dist/tex/latex/jknapltx/sgmlcmpt.sty
+ texmf-dist/tex/latex/jknapltx/smartmn.sty
+ texmf-dist/tex/latex/jknapltx/tccompat.sty
+ texmf-dist/tex/latex/jknapltx/ursfs.fd
+ texmf-dist/tex/latex/jknapltx/ustmary.fd
+ texmf-dist/tex/latex/jknapltx/young.sty
+catalogue-ctan /macros/latex/contrib/jknappen
+catalogue-license gpl
+catalogue-topics collection

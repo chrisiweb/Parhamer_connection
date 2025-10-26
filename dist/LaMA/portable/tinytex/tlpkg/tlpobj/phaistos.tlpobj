@@ -1,0 +1,31 @@
+name phaistos
+category Package
+revision 18651
+shortdesc Disk of Phaistos font
+longdesc A font that contains all the symbols of the famous Disc of
+longdesc Phaistos, together with a LaTeX package. The disc was 'printed'
+longdesc by stamping the wet clay with some sort of punches, probably
+longdesc around 1700 BCE. The font is available in Adobe Type 1 and
+longdesc OpenType formats (the latter using the Unicode positions for
+longdesc the symbols). There are those who believe that this Cretan
+longdesc script was used to 'write' Greek (it is known, for example,
+longdesc that the rather later Cretan Linear B script was used to write
+longdesc Greek), but arguments for other languages have been presented.
+execute addMap phaistos.map
+containersize 183368
+containerchecksum d5cb8a051e1e80629385bff368896c47bdfccfcf38a24a723ddc5f9056a59c57703986799253812c9a4651f4e16dc55cee0876ddd0552900f978dab0381c9aac
+doccontainersize 174564
+doccontainerchecksum 96eb22628467289f72aaa0d4983e494c75b3a2315d8b9d2921f8ab29d93fffae4f459ef852529dfa4ff48a65e25d652662c54d84db54e0118b1c021bbe39eafa
+srccontainersize 3368
+srccontainerchecksum 5ba2b04fe4e3aef136de2dc40568ecb81f437561ee8e6c320927bb816819889666f57ad07c3b8bf6eb7f6eb84b69147f9233449a26529b61712d158abf889f91
+runfiles size=54
+ texmf-dist/fonts/afm/public/phaistos/phaistos.afm
+ texmf-dist/fonts/map/dvips/phaistos/phaistos.map
+ texmf-dist/fonts/opentype/public/phaistos/Phaistos.otf
+ texmf-dist/fonts/tfm/public/phaistos/phaistos.tfm
+ texmf-dist/fonts/type1/public/phaistos/phaistos.pfb
+ texmf-dist/tex/latex/phaistos/phaistos.sty
+catalogue-ctan /fonts/archaic/phaistos
+catalogue-license lppl
+catalogue-topics font font-archaic font-type1 font-otf
+catalogue-version 1.0

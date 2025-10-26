@@ -1,0 +1,13 @@
+name mfware.windows
+category TLCore
+revision 73796
+shortdesc windows files of mfware
+containersize 67796
+containerchecksum 6d04cd2fbe9d8cfa1e6531d05e396f25bbfab51ed1290abfaab57d2d07079580c3400d26c0a8f6ca473c52d6b0d491bb94d23d18f96680a3b24f802d8e8d0fc0
+binfiles arch=windows size=49
+ bin/windows/gftodvi.exe
+ bin/windows/gftopk.exe
+ bin/windows/gftype.exe
+ bin/windows/mft.exe
+ bin/windows/pktogf.exe
+ bin/windows/pktype.exe

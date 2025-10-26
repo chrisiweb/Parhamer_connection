@@ -1,0 +1,22 @@
+name hardwrap
+category Package
+revision 21396
+shortdesc Hard wrap text to a certain character length
+longdesc The package facilitates wrapping text to a specific character
+longdesc width, breaking lines by words rather than, as done by TeX, by
+longdesc characters. The primary use for these facilities is to aid the
+longdesc generation of messages sent to the log file or console output
+longdesc to display messages to the user. Package authors may also find
+longdesc this useful when writing out arbitary text to an external file.
+containersize 2732
+containerchecksum eeb0f1da2161dae80d292db7b3289a307d892b8967ecf16021b8ed73c5fe724d914dda356bb8fbb48786760698e0060b39349b51886e13289524ed9d45463106
+doccontainersize 120084
+doccontainerchecksum 6dbb83fc5d4b82d11bc8d97d0ded3bcfe583c2b21ec2a260000b6bfb0bdea9c10df834735ffdcddfa9785b7c86b53920a20146d020b0435b8dc04610f05b9b16
+srccontainersize 11108
+srccontainerchecksum 9a40a2a441e9f47b3d681dcd064fad48fe90999b34b57c85b7112e518c99d3b87a9bfc3867beb66e76499bb53ff3c14837f71f2d261ed4c78cad447f185d0ce5
+runfiles size=3
+ texmf-dist/tex/latex/hardwrap/hardwrap.sty
+catalogue-ctan /macros/latex/contrib/hardwrap
+catalogue-license lppl1.3
+catalogue-topics layout
+catalogue-version 0.2

@@ -1,0 +1,1022 @@
+%% hpstatement-et.inc.sty
+%% 2024-01-29
+%% Copyright 2019-2024 Martin Hensel
+%
+%% This file is part of the mhchem bundle for LaTeX
+%
+%% For the content of the phrases:
+% This work is licensed under the Creative Commons Attribution 4.0 International licence
+% (https://creativecommons.org/licenses/by/4.0/). This means that you can re-use the content
+% provided you acknowledge the source and indicate any changes you have made.
+% The data is not necessarily comprehensive, complete, accurate or up to date.
+% The acknowledgement is not needed when using statements of the data set for labelling products, of course, as this is the intended usage.
+% (c) European Union, https://eur-lex.europa.eu, 1998-2023, CC BY 4.0
+% (c) hpstatements contributors, https://github.com/mhchem/hpstatements/contributors, 2019-2024, CC BY 4.0
+%
+%
+\ExplSyntaxOn
+\group_begin:
+\char_set_catcode_space:n {`\ }% allow spaces
+\char_set_catcode_letter:n {`\@}%
+%
+\tl_gset:cn{g__mhchem_hp_et_H200-0_tl}{{H200}{%
+  \__mhchem_hp_s:nnn{20081216}{Ebap\"usiv lõhkeaine.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H201-0_tl}{{H201}{%
+  \__mhchem_hp_s:nnn{20081216}{Plahvatusohtlik; massiplahvatusoht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H202-0_tl}{{H202}{%
+  \__mhchem_hp_s:nnn{20081216}{Plahvatusohtlik; suur laialipaiskumisoht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H203-0_tl}{{H203}{%
+  \__mhchem_hp_s:nnn{20081216}{Plahvatusohtlik; s\"uttimis-, plahvatus- või laialipaiskumisoht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H204-0_tl}{{H204}{%
+  \__mhchem_hp_s:nnn{20081216}{S\"uttimis- või laialipaiskumisoht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H205-0_tl}{{H205}{%
+  \__mhchem_hp_s:nnn{20081216}{S\"uttimise korral massiplahvatusoht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H206-0_tl}{{H206}{%
+  \__mhchem_hp_s:nnn{20201017}{S\"uttimis-, plahvatus- või laialipaiskumisoht, desensibilisaatori v\"ahenemise korral suurenenud plahvatusoht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H207-0_tl}{{H207}{%
+  \__mhchem_hp_s:nnn{20201017}{S\"uttimis- või laialipaiskumisoht, desensibilisaatori v\"ahenemise korral suurenenud plahvatusoht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H208-0_tl}{{H208}{%
+  \__mhchem_hp_s:nnn{20201017}{S\"uttimisoht; desensibilisaatori v\"ahenemise korral suurenenud plahvatusoht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H220-0_tl}{{H220}{%
+  \__mhchem_hp_s:nnn{20081216}{Eriti tuleohtlik gaas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H221-0_tl}{{H221}{%
+  \__mhchem_hp_s:nnn{20081216}{Tuleohtlik gaas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H222-0_tl}{{H222}{%
+  \__mhchem_hp_s:nnn{20081216}{Eriti tuleohtlik aerosool.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H223-0_tl}{{H223}{%
+  \__mhchem_hp_s:nnn{20081216}{Tuleohtlik aerosool.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H224-0_tl}{{H224}{%
+  \__mhchem_hp_s:nnn{20081216}{Eriti tuleohtlik vedelik ja aur.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H225-0_tl}{{H225}{%
+  \__mhchem_hp_s:nnn{20081216}{V\"aga tuleohtlik vedelik ja aur.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H226-0_tl}{{H226}{%
+  \__mhchem_hp_s:nnn{20081216}{Tuleohtlik vedelik ja aur.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H228-0_tl}{{H228}{%
+  \__mhchem_hp_s:nnn{20081216}{Tuleohtlik tahke aine.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H229-0_tl}{{H229}{%
+  \__mhchem_hp_s:nnn{20150601}{Mahuti on rõhu all: kuumenemisel võib lõhkeda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H230-0_tl}{{H230}{%
+  \__mhchem_hp_s:nnn{20150601}{Võib reageerida plahvatuslikult isegi õhuga kokku puutumata.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H231-0_tl}{{H231}{%
+  \__mhchem_hp_s:nnn{20150601}{Võib reageerida plahvatuslikult isegi õhuga kokku puutumata kõrgenenud rõhul ja/\hskip\z@skip{}või temperatuuril.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H232-0_tl}{{H232}{%
+  \__mhchem_hp_s:nnn{20201017}{Kokkupuutel õhuga võib s\"uttida iseenesest.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H240-0_tl}{{H240}{%
+  \__mhchem_hp_s:nnn{20081216}{Kuumenemisel võib plahvatada.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H241-0_tl}{{H241}{%
+  \__mhchem_hp_s:nnn{20081216}{Kuumenemisel võib s\"uttida või plahvatada.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H242-0_tl}{{H242}{%
+  \__mhchem_hp_s:nnn{20081216}{Kuumenemisel võib s\"uttida.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H250-0_tl}{{H250}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuutel õhuga s\"uttib iseenesest.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H251-0_tl}{{H251}{%
+  \__mhchem_hp_s:nnn{20081216}{Isekuumenev, võib s\"uttida.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H252-0_tl}{{H252}{%
+  \__mhchem_hp_s:nnn{20081216}{Suurtes kogustes isekuumenev, võib s\"uttida.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H260-0_tl}{{H260}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuutel veega eraldab tuleohtlikke gaase, mis võivad iseenesest s\"uttida.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H261-0_tl}{{H261}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuutel veega eraldab tuleohtlikke gaase.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H270-0_tl}{{H270}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib põhjustada s\"uttimise või soodustada põlemist; oks\"udeerija.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H271-0_tl}{{H271}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib põhjustada s\"uttimise või plahvatuse; tugev oks\"udeerija.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H272-0_tl}{{H272}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib soodustada põlemist; oks\"udeerija.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H280-0_tl}{{H280}{%
+  \__mhchem_hp_s:nnn{20081216}{Sisaldab rõhu all olevat gaasi, kuumenemisel võib plahvatada.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H281-0_tl}{{H281}{%
+  \__mhchem_hp_s:nnn{20081216}{Sisaldab k\"ulmutatud gaasi; võib põhjustada k\"ulmapõletusi või -kahjustusi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H290-0_tl}{{H290}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib s\"o\"ovitada metalle.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H300-0_tl}{{H300}{%
+  \__mhchem_hp_s:nnn{20081216}{Allaneelamisel surmav.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H301-0_tl}{{H301}{%
+  \__mhchem_hp_s:nnn{20081216}{Allaneelamisel m\"urgine.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H302-0_tl}{{H302}{%
+  \__mhchem_hp_s:nnn{20081216}{Allaneelamisel kahjulik.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H304-0_tl}{{H304}{%
+  \__mhchem_hp_s:nnn{20081216}{Allaneelamisel või hingamisteedesse sattumisel võib olla surmav.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H310-0_tl}{{H310}{%
+  \__mhchem_hp_s:nnn{20081216}{Nahale sattumisel surmav.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H311-0_tl}{{H311}{%
+  \__mhchem_hp_s:nnn{20081216}{Nahale sattumisel m\"urgine.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H312-0_tl}{{H312}{%
+  \__mhchem_hp_s:nnn{20081216}{Nahale sattumisel kahjulik.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H314-0_tl}{{H314}{%
+  \__mhchem_hp_s:nnn{20081216}{Põhjustab rasket nahas\"o\"ovitust ja silmakahjustusi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H315-0_tl}{{H315}{%
+  \__mhchem_hp_s:nnn{20081216}{Põhjustab naha\"arritust.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H317-0_tl}{{H317}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib põhjustada allergilist nahareaktsiooni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H318-0_tl}{{H318}{%
+  \__mhchem_hp_s:nnn{20081216}{Põhjustab raskeid silmakahjustusi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H319-0_tl}{{H319}{%
+  \__mhchem_hp_s:nnn{20081216}{Põhjustab tugevat silmade \"arritust.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H330-0_tl}{{H330}{%
+  \__mhchem_hp_s:nnn{20081216}{Sissehingamisel surmav.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H331-0_tl}{{H331}{%
+  \__mhchem_hp_s:nnn{20081216}{Sissehingamisel m\"urgine.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H332-0_tl}{{H332}{%
+  \__mhchem_hp_s:nnn{20081216}{Sissehingamisel kahjulik.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H334-0_tl}{{H334}{%
+  \__mhchem_hp_s:nnn{20081216}{Sissehingamisel võib põhjustada allergia- või astma s\"umptomeid või hingamisraskusi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H335-0_tl}{{H335}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib põhjustada hingamisteede \"arritust.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H336-0_tl}{{H336}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib põhjustada unisust või peap\"o\"oritust.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H340-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib põhjustada geneetilisi defekte \noexpand\textless{}m\"arkida kokkupuuteviis, kui on veenvalt tõestatud, et muud kokkupuuteviisid ei ole ohtlikud\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H340.0-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H340-1empty_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H340-1_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H341-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{20081216}{Arvatavasti põhjustab geneetilisi defekte \noexpand\textless{}m\"arkida kokkupuuteviis, kui on veenvalt tõestatud, et muud kokkupuuteviisid ei ole ohtlikud\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H341.0-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H341-1empty_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H341-1_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H350-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib põhjustada v\"ahktõbe \noexpand\textless{}m\"arkida kokkupuuteviis, kui on veenvalt tõestatud, et muud kokkupuuteviisid ei ole ohtlikud\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H350.0-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H350-1empty_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H350-1_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H350i-0_tl}{{H350i}{%
+  \__mhchem_hp_s:nnn{20081216}{Sissehingamisel võib põhjustada v\"ahktõbe.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H351-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{20081216}{Arvatavasti põhjustab v\"ahktõbe \noexpand\textless{}m\"arkida kokkupuuteviis, kui on veenvalt tõestatud, et muud kokkupuuteviisid ei ole ohtlikud\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H351.0-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H351-1empty_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H351-1_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H360-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib kahjustada viljakust või loodet \noexpand\textless{}m\"arkida spetsiifiline toime, kui see on teada\noexpand\textgreater{} \noexpand\textless{}m\"arkida kokkupuuteviis, kui on veenvalt tõestatud, et muud kokkupuuteviisid ei ole ohtlikud\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H360.0-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H360-1empty_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H360-1_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H360F-0_tl}{{H360F}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib kahjustada viljakust.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H360D-0_tl}{{H360D}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib kahjustada loodet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H360FD-0_tl}{{H360FD}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib kahjustada viljakust. Võib kahjustada loodet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H360Fd-0_tl}{{H360Fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib kahjustada viljakust. Arvatavasti kahjustab loodet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H360Df-0_tl}{{H360Df}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib kahjustada loodet. Arvatavasti kahjustab viljakust.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H361-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{20081216}{Arvatavasti kahjustab viljakust või loodet \noexpand\textless{}m\"arkida spetsiifiline toime, kui see on teada\noexpand\textgreater{} \noexpand\textless{}m\"arkida kokkupuuteviis, kui on veenvalt tõestatud, et muud kokkupuuteviisid ei ole ohtlikud\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H361.0-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H361-1empty_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H361-1_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H361f-0_tl}{{H361f}{%
+  \__mhchem_hp_s:nnn{20081216}{Arvatavasti kahjustab viljakust.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H361d-0_tl}{{H361d}{%
+  \__mhchem_hp_s:nnn{20081216}{Arvatavasti kahjustab loodet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H361fd-0_tl}{{H361fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Arvatavasti kahjustab viljakust. Arvatavasti kahjustab loodet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H362-0_tl}{{H362}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib kahjustada rinnaga toidetavat last.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H370-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{20081216}{Kahjustab elundeid \noexpand\textless{}või m\"arkida kõik mõjutatud elundid, kui need on teada\noexpand\textgreater{} \noexpand\textless{}m\"arkida kokkupuuteviis, kui on veenvalt tõestatud, et muud kokkupuuteviisid ei ole ohtlikud\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H370.0-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H370.1-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H370.1-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H370-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H370-2_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H371-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib kahjustada elundeid \noexpand\textless{}või m\"arkida kõik mõjutatud elundid, kui need on teada\noexpand\textgreater{} \noexpand\textless{}m\"arkida kokkupuuteviis, kui on veenvalt tõestatud, et muud kokkupuuteviisid ei ole ohtlikud\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H371.0-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H371.1-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H371.1-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H371-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H371-2_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H372-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{20081216}{Kahjustab elundeid \noexpand\textless{}või m\"arkida kõik mõjutatud elundid, kui need on teada\noexpand\textgreater{} pikaajalisel või korduval kokkupuutel \noexpand\textless{}m\"arkida kokkupuuteviis, kui on veenvalt tõestatud, et muud kokkupuuteviisid ei ole ohtlikud\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H372.0-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H372.1-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H372.1-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H372-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H372-2_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H373-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib kahjustada elundeid \noexpand\textless{}või m\"arkida kõik mõjutatud elundid, kui need on teada\noexpand\textgreater{} pikaajalisel või korduval kokkupuutel \noexpand\textless{}m\"arkida kokkupuuteviis, kui on veenvalt tõestatud, et muud kokkupuuteviisid ei ole ohtlikud\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H373.0-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H373.1-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H373.1-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H373-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H373-2_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H300+H310-0_tl}{{H300\,+\,\hskip\z@skip{}H310}{%
+  \__mhchem_hp_s:nnn{20110419}{Allaneelamisel või nahale sattumisel surmav}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H300+H310+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Allaneelamisel, nahale sattumisel või sissehingamisel surmav}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H300+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Allaneelamisel või sissehingamisel surmav}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H301+H311-0_tl}{{H301\,+\,\hskip\z@skip{}H311}{%
+  \__mhchem_hp_s:nnn{20110419}{Allaneelamisel või nahale sattumisel m\"urgine}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H301+H311+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Allaneelamisel, nahale sattumisel või sissehingamisel m\"urgine}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H301+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Allaneelamisel või sissehingamisel m\"urgine}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H302+H312-0_tl}{{H302\,+\,\hskip\z@skip{}H312}{%
+  \__mhchem_hp_s:nnn{20110419}{Allaneelamisel või nahale sattumisel kahjulik}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H302+H312+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Allaneelamisel, nahale sattumisel või sissehingamisel kahjulik}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H302+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Allaneelamisel või sissehingamisel kahjulik}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H310+H330-0_tl}{{H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Nahale sattumisel või sissehingamisel surmav}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H311+H331-0_tl}{{H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Nahale sattumisel või sissehingamisel m\"urgine}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H312+H332-0_tl}{{H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Nahale sattumisel või sissehingamisel kahjulik}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H400-0_tl}{{H400}{%
+  \__mhchem_hp_s:nnn{20081216}{V\"aga m\"urgine veeorganismidele.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H410-0_tl}{{H410}{%
+  \__mhchem_hp_s:nnn{20081216}{V\"aga m\"urgine veeorganismidele, pikaajaline toime.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H411-0_tl}{{H411}{%
+  \__mhchem_hp_s:nnn{20081216}{M\"urgine veeorganismidele, pikaajaline toime.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H412-0_tl}{{H412}{%
+  \__mhchem_hp_s:nnn{20170101}{Kahjulik veeorganismidele, pikaajaline toime.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ohtlik veeorganismidele, pikaajaline toime.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_H413-0_tl}{{H413}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib avaldada veeorganismidele pikaajalist kahjulikku toimet.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_H420-0_tl}{{H420}{%
+  \__mhchem_hp_s:nnn{20110419}{Kahjustab rahvatervist ja keskkonda, h\"avitades kõrgatmosf\"a\"aris asuvat osoonikihti}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH001-0_tl}{{EUH001}{%
+  \__mhchem_hp_s:nnn{20201017}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Plahvatusohtlik kuivana.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH006-0_tl}{{EUH006}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Plahvatusohtlik õhuga kokkupuutel või kokkupuuteta.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH014-0_tl}{{EUH014}{%
+  \__mhchem_hp_s:nnn{20081216}{Reageerib \"agedalt veega.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH018-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{20081216}{Kasutamisel võib moodustuda tule-/\hskip\z@skip{}plahvatusohtlik auru-õhu segu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH018.0-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH018.1-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH018.2-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH019-0_tl}{{EUH019}{%
+  \__mhchem_hp_s:nnn{20081216}{Võib moodustada plahvatusohtlikke peroksiide.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH029-0_tl}{{EUH029}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuutel veega eraldub m\"urgine gaas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH031-0_tl}{{EUH031}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuutel hapetega eraldub m\"urgine gaas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH032-0_tl}{{EUH032}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuutel hapetega eraldub v\"aga m\"urgine gaas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH044-0_tl}{{EUH044}{%
+  \__mhchem_hp_s:nnn{20081216}{Plahvatusohtlik kuumutamisel kinnises mahutis.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH059-0_tl}{{EUH059}{%
+  \__mhchem_hp_s:nnn{20110419}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Ohtlik osoonikihile.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH066-0_tl}{{EUH066}{%
+  \__mhchem_hp_s:nnn{20081216}{Korduv kokkupuude võib põhjustada naha kuivust või lõhenemist.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH070-0_tl}{{EUH070}{%
+  \__mhchem_hp_s:nnn{20081216}{Silma sattumisel m\"urgine.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH071-0_tl}{{EUH071}{%
+  \__mhchem_hp_s:nnn{20081216}{S\"o\"ovitav hingamisteedele.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH201-0_tl}{{EUH201}{%
+  \__mhchem_hp_s:nnn{20081216}{Sisaldab pliid. Mitte kasutada pindadel, mida lapsed võivad n\"arida või imeda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH201A-0_tl}{{EUH201A}{%
+  \__mhchem_hp_s:nnn{20170101}{Hoiatus! Sisaldab pliid.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ettevaatust! Sisaldab pliid.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH202-0_tl}{{EUH202}{%
+  \__mhchem_hp_s:nnn{20081216}{Ts\"uanoakr\"ulaat. Ohtlik. Liimib naha ja silmad hetkega. Hoida lastele k\"attesaamatus kohas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH203-0_tl}{{EUH203}{%
+  \__mhchem_hp_s:nnn{20081216}{Sisaldab kroomi (VI). Võib esile kutsuda allergilise reaktsiooni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH204-0_tl}{{EUH204}{%
+  \__mhchem_hp_s:nnn{20081216}{Sisaldab isots\"uanaate. Võib esile kutsuda allergilise reaktsiooni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH205-0_tl}{{EUH205}{%
+  \__mhchem_hp_s:nnn{20081216}{Sisaldab epoks\"ukomponente. Võib esile kutsuda allergilise reaktsiooni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH206-0_tl}{{EUH206}{%
+  \__mhchem_hp_s:nnn{20170101}{Hoiatus! Mitte kasutada koos teiste toodetega. Segust võib eralduda ohtlikke gaase (kloori).}{%
+  \__mhchem_hp_s:nnn{20081216}{Ettevaatust! Mitte kasutada koos teiste toodetega. Segust võib eralduda ohtlikke gaase (kloori).}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH207-0_tl}{{EUH207}{%
+  \__mhchem_hp_s:nnn{20170101}{Hoiatus! Sisaldab kaadmiumi. Kasutamisel moodustuvad ohtlikud aurud. Vt tootja esitatud teavet. J\"argida ohutuseeskirju.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ettevaatust! Sisaldab kaadmiumi. Kasutamisel moodustuvad ohtlikud aurud. Vt tootja esitatud teavet. J\"argida ohutuseeskirju.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH208-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{20081216}{Sisaldab \noexpand\textless{}sensibiliseeriva aine nimetus\noexpand\textgreater{}. Võib esile kutsuda allergilise reaktsiooni.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH208.0-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH208-1_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH209-0_tl}{{EUH209}{%
+  \__mhchem_hp_s:nnn{20081216}{Kasutamisel võib muutuda v\"aga tuleohtlikuks.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH209A-0_tl}{{EUH209A}{%
+  \__mhchem_hp_s:nnn{20081216}{Kasutamisel võib muutuda tuleohtlikuks.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH210-0_tl}{{EUH210}{%
+  \__mhchem_hp_s:nnn{20081216}{Ohutuskaart nõudmisel k\"attesaadav.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH211-0_tl}{{EUH211}{%
+  \__mhchem_hp_s:nnn{20211001}{Hoiatus! Pihustamisel võivad tekkida ohtlikud sissehingatavad piisad. Pihustatud ainet või udu mitte sisse hingata.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH212-0_tl}{{EUH212}{%
+  \__mhchem_hp_s:nnn{20211001}{Hoiatus! Kasutamisel võib tekkida ohtlik sissehingatav tolm. Tolmu mitte sisse hingata.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH380-0_tl}{{EUH380}{%
+  \__mhchem_hp_s:nnn{20230420}{Võib põhjustada inimesel endokriinseid h\"aireid}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH381-0_tl}{{EUH381}{%
+  \__mhchem_hp_s:nnn{20230420}{Arvatavasti põhjustab inimesel endokriinseid h\"aireid}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH401-0_tl}{{EUH401}{%
+  \__mhchem_hp_s:nnn{20081216}{Inimeste tervise ja keskkonna ohustamise v\"altimiseks j\"argida kasutusjuhendit.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH430-0_tl}{{EUH430}{%
+  \__mhchem_hp_s:nnn{20230420}{võib põhjustada endokriinseid h\"aireid keskkonnas}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH431-0_tl}{{EUH431}{%
+  \__mhchem_hp_s:nnn{20230420}{Arvatavasti põhjustab endokriinseid h\"aireid keskkonnas}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH440-0_tl}{{EUH440}{%
+  \__mhchem_hp_s:nnn{20230420}{Akumuleerub keskkonnas ja elusorganismides, sealhulgas inimestes}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH441-0_tl}{{EUH441}{%
+  \__mhchem_hp_s:nnn{20230420}{Akumuleerub rohkelt keskkonnas ja elusorganismides, sealhulgas inimestes}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH450-0_tl}{{EUH450}{%
+  \__mhchem_hp_s:nnn{20230420}{Võib põhjustada veevarude pikaajalist ja hajusat saastumist}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_EUH451-0_tl}{{EUH451}{%
+  \__mhchem_hp_s:nnn{20230420}{Võib põhjustada veevarude v\"aga pikaajalist ja hajusat saastumist}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P101-0_tl}{{P101}{%
+  \__mhchem_hp_s:nnn{20081216}{Arsti poole p\"o\"ordudes võtta kaasa toote pakend või etikett.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P102-0_tl}{{P102}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida lastele k\"attesaamatus kohas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P103-0_tl}{{P103}{%
+  \__mhchem_hp_s:nnn{20081216}{Enne kasutamist tutvuda etiketil oleva infoga.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P201-0_tl}{{P201}{%
+  \__mhchem_hp_s:nnn{20081216}{Enne kasutamist tutvuda erijuhistega.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P202-0_tl}{{P202}{%
+  \__mhchem_hp_s:nnn{20081216}{Mitte k\"aidelda enne ohutusnõuetega tutvumist ja nendest arusaamist.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P210-0_tl}{{P210}{%
+  \__mhchem_hp_s:nnn{20150601}{Hoida eemal soojusallikast, kuumadest pindadest, s\"ademetest, leekidest ja muudest s\"u\"uteallikatest. Mitte suitsetada.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida eemal soojusallikast/\hskip\z@skip{}s\"ademetest/\hskip\z@skip{}leekidest/\hskip\z@skip{}kuumadest pindadest. -- Mitte suitsetada.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P211-0_tl}{{P211}{%
+  \__mhchem_hp_s:nnn{20081216}{Mitte pihustada leekidesse või muusse s\"u\"uteallikasse.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P212-0_tl}{{P212}{%
+  \__mhchem_hp_s:nnn{20201017}{V\"altida suletuna kuumutamist ja desensibilisaatori v\"ahenemist.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P220-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{20180301}{Hoida eemal rõivastest ja muust s\"uttivast materjalist.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida eemal rõivastest/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}s\"uttivast materjalist.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P220.0-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P220.1.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P220.1.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P220.1-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P220.2.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P220.2.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P220.2-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P221-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Rakendada ettevaatusabinõusid, et v\"altida segunemist põlevainetega\noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P221.0-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P221.1-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P221-1_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P222-0_tl}{{P222}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida õhuga kokkupuute eest.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P223-0_tl}{{P223}{%
+  \__mhchem_hp_s:nnn{20150601}{V\"altida kokkupuudet veega.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida igasuguse kokkupuute eest veega, vastasel juhul reageerib \"agedalt ja võib põhjustada hetkpõlemise.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P230-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{20081216}{Niisutada \noexpand\textellipsis{}-ga.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P230.0-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P230-1_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P231-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{20180301}{Sisu k\"aidelda ja hoida inertgaasis/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{K\"aidelda inertgaasis.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P231.0-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P231.1-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P231-1_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P232-0_tl}{{P232}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida niiskuse eest.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P233-0_tl}{{P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida pakend tihedalt suletuna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P234-0_tl}{{P234}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida \"uksnes originaalpakendis.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P235-0_tl}{{P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida jahedas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P240-0_tl}{{P240}{%
+  \__mhchem_hp_s:nnn{20180301}{Mahuti ja vastuvõtuseade maandada ja \"uhendada.}{%
+  \__mhchem_hp_s:nnn{20081216}{Mahuti ja vastuvõtuseade maandada/\hskip\z@skip{}\"uhendada.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P241-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{20180301}{Kasutada plahvatuskindlaid [elektri-/\hskip\z@skip{}ventilatsiooni-/\hskip\z@skip{}valgustus-/\hskip\z@skip{}\noexpand\textellipsis{}] seadmeid.}{%
+  \__mhchem_hp_s:nnn{20081216}{Kasutada plahvatuskindlaid elektri-/\hskip\z@skip{}ventilatsiooni-/\hskip\z@skip{}valgustus-/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}seadmeid.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P241.0-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P241.1-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P241.2-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P241.3-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P241-1_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P242-0_tl}{{P242}{%
+  \__mhchem_hp_s:nnn{20081216}{Mitte kasutada seadmeid, mis võivad tekitada s\"ademeid.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P243-0_tl}{{P243}{%
+  \__mhchem_hp_s:nnn{20180301}{Rakendada abinõusid staatilise elektri v\"altimiseks.}{%
+  \__mhchem_hp_s:nnn{20081216}{Rakendada ettevaatusabinõusid staatilise elektri vastu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P244-0_tl}{{P244}{%
+  \__mhchem_hp_s:nnn{20150601}{Hoida ventiilid ja liitmikud õlist ja rasvast puhtad.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida reduktsiooniklapid rasvast ja õlist puhtad.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P250-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{20180301}{Hoida kriimustamise/\hskip\z@skip{}põrutuse/\hskip\z@skip{}hõõrdumise/\hskip\z@skip{}\noexpand\textellipsis{} eest.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida kriimustamise/\hskip\z@skip{}põrutuse/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}hõõrdumise eest.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P250.0-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P250.1-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P250.2-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P250.3-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P250-1_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P251-0_tl}{{P251}{%
+  \__mhchem_hp_s:nnn{20150601}{Mitte purustada ega põletada isegi p\"arast kasutamist.}{%
+  \__mhchem_hp_s:nnn{20081216}{Mahuti on rõhu all: mitte purustada ega põletada isegi p\"arast kasutamist.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P260-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{20081216}{Tolmu/\hskip\z@skip{}suitsu/\hskip\z@skip{}gaasi/\hskip\z@skip{}udu/\hskip\z@skip{}auru/\hskip\z@skip{}pihustatud ainet mitte sisse hingata.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P260.0-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P260.1-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P260.2-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P260.3-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P260.4-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P260.5-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P260.6-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P261-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{20081216}{V\"altida tolmu/\hskip\z@skip{}suitsu/\hskip\z@skip{}gaasi/\hskip\z@skip{}udu/\hskip\z@skip{}auru/\hskip\z@skip{}pihustatud aine sissehingamist.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P261.0-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P261.1-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P261.2-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P261.3-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P261.4-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P261.5-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P261.6-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P262-0_tl}{{P262}{%
+  \__mhchem_hp_s:nnn{20081216}{V\"altida silma, nahale või rõivastele sattumist.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P263-0_tl}{{P263}{%
+  \__mhchem_hp_s:nnn{20180301}{V\"altida kokkupuudet raseduse ja imetamise ajal.}{%
+  \__mhchem_hp_s:nnn{20081216}{V\"altida kokkupuudet raseduse/\hskip\z@skip{}imetamise ajal.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P264-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{20081216}{P\"arast k\"aitlemist pesta hoolega \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P264.0-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P264-1_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P270-0_tl}{{P270}{%
+  \__mhchem_hp_s:nnn{20081216}{Toote k\"aitlemise ajal mitte s\"u\"ua, juua ega suitsetada.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P271-0_tl}{{P271}{%
+  \__mhchem_hp_s:nnn{20081216}{K\"aidelda \"uksnes v\"alitingimustes või h\"asti ventileeritavas kohas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P272-0_tl}{{P272}{%
+  \__mhchem_hp_s:nnn{20081216}{Saastunud t\"o\"orõivaid t\"o\"okohast mitte v\"alja viia.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P273-0_tl}{{P273}{%
+  \__mhchem_hp_s:nnn{20081216}{V\"altida sattumist keskkonda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P280-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{20081216}{Kanda kaitsekindaid/\hskip\z@skip{}kaitserõivastust/\hskip\z@skip{}kaitseprille/\hskip\z@skip{}kaitsemaski.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P280.0-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P280.1-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P280.2-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P280.3-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P280.4-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P281-0_tl}{{P281}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Kasutada vajalikke isikukaitsevahendeid.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P282-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{20180301}{Kanda k\"ulmakaitsekindaid ning kaitsemaski või kaitseprille.}{%
+  \__mhchem_hp_s:nnn{20081216}{Kanda k\"ulmakaitsekindaid/\hskip\z@skip{}kaitsemaski/\hskip\z@skip{}kaitseprille.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P282.0-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P282.1-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P282.2-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P282.3-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P283-0_tl}{{P283}{%
+  \__mhchem_hp_s:nnn{20180301}{Kanda tulekindlat või tule levikut aeglustavat rõivastust.}{%
+  \__mhchem_hp_s:nnn{20081216}{Kanda tule-/\hskip\z@skip{}leegikindlat/\hskip\z@skip{}tule levikut aeglustavat rõivastust.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P284-0_tl}{{P284}{%
+  \__mhchem_hp_s:nnn{20150601}{[Ebapiisava ventilatsiooni korral] kanda hingamisteede kaitsevahendit.}{%
+  \__mhchem_hp_s:nnn{20081216}{Kanda hingamisteede kaitsevahendeid.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P285-0_tl}{{P285}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Ebapiisava ventilatsiooni korral kanda hingamisteede kaitsevahendeid.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P231+P232-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{20180301}{Sisu k\"aidelda ja hoida inertgaasis/\hskip\z@skip{}\noexpand\textellipsis{}. Hoida niiskuse eest.}{%
+  \__mhchem_hp_s:nnn{20081216}{K\"aidelda inertgaasis. Hoida niiskuse eest.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P231+P232.0-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P231+P232.1-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P231+P232-1_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P235+P410-0_tl}{{P235\,+\,\hskip\z@skip{}P410}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida jahedas. Hoida p\"aikesevalguse eest.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301-0_tl}{{P301}{%
+  \__mhchem_hp_s:nnn{20081216}{ALLANEELAMISE KORRAL:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302-0_tl}{{P302}{%
+  \__mhchem_hp_s:nnn{20081216}{NAHALE SATTUMISE KORRAL:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P303-0_tl}{{P303}{%
+  \__mhchem_hp_s:nnn{20081216}{NAHALE (või juustele) SATTUMISE KORRAL:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P304-0_tl}{{P304}{%
+  \__mhchem_hp_s:nnn{20081216}{SISSEHINGAMISE KORRAL:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P305-0_tl}{{P305}{%
+  \__mhchem_hp_s:nnn{20081216}{SILMA SATTUMISE KORRAL:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P306-0_tl}{{P306}{%
+  \__mhchem_hp_s:nnn{20081216}{RÕIVASTELE SATTUMISE KORRAL:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P307-0_tl}{{P307}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuute korral:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P308-0_tl}{{P308}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuute või kokkupuutekahtluse korral:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P309-0_tl}{{P309}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuute või halva enesetunde korral:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P310-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{20150601}{Võtta viivitamata \"uhendust M\"URGISTUSTEABEKESKUSE/\hskip\z@skip{}arstiga\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Võtta viivitamata \"uhendust M\"URGISTUSTEABEKESKUSE või arstiga.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P310.0-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P310.1-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P310.2-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P310-1_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P311-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Võtta \"uhendust M\"URGISTUSTEABEKESKUSE/\hskip\z@skip{}arstiga\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Võtta \"uhendust M\"URGISTUSTEABEKESKUSE või arstiga.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P311.0-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P311.1-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P311.2-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P311-1_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P312-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{20180301}{Halva enesetunde korral võtta \"uhendust M\"URGISTUSTEABEKESKUSEGA/\hskip\z@skip{}arstiga/\hskip\z@skip{}\noexpand\textellipsis{}.}{%
+  \__mhchem_hp_s:nnn{20150601}{Halva enesetunde korral võtta \"uhendust M\"URGISTUSTEABEKESKUSE/\hskip\z@skip{}arstiga\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Halva enesetunde korral võtta \"uhendust M\"URGISTUSTEABEKESKUSE või arstiga.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P312.0-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P312.1-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P312.2-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P312-1_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P313-0_tl}{{P313}{%
+  \__mhchem_hp_s:nnn{20081216}{P\"o\"orduda arsti poole.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P314-0_tl}{{P314}{%
+  \__mhchem_hp_s:nnn{20081216}{Halva enesetunde korral p\"o\"orduda arsti poole.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P315-0_tl}{{P315}{%
+  \__mhchem_hp_s:nnn{20081216}{P\"o\"orduda viivitamata arsti poole.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P320-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{20081216}{Nõuab viivitamatut eriravi (vt \noexpand\textellipsis{} k\"aesoleval etiketil).}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P320.0-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P320-1_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P320.nolabel-1_tl}{{P320.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P321-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{20081216}{Nõuab eriravi (vt \noexpand\textellipsis{} k\"aesoleval etiketil).}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P321.0-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P321-1_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P321.nolabel-1_tl}{{P321.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P322-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Nõuab erimeetmeid (vt \noexpand\textellipsis{} k\"aesoleval etiketil).}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P322.0-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P322-1_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P322.nolabel-1_tl}{{P322.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P330-0_tl}{{P330}{%
+  \__mhchem_hp_s:nnn{20081216}{Loputada suud.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P331-0_tl}{{P331}{%
+  \__mhchem_hp_s:nnn{20081216}{MITTE kutsuda esile oksendamist.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P332-0_tl}{{P332}{%
+  \__mhchem_hp_s:nnn{20081216}{Naha\"arrituse korral:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P333-0_tl}{{P333}{%
+  \__mhchem_hp_s:nnn{20170101}{Naha\"arrituse või l\"o\"obe korral:}{%
+  \__mhchem_hp_s:nnn{20081216}{Naha\"arrituse või _obe korral:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P334-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{20180301}{Hoida jahedas vees [või panna peale niiske kompress].}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida jahedas vees/\hskip\z@skip{}panna peale niiske kompress.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P334.0-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P334.1-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P334.2-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P335-0_tl}{{P335}{%
+  \__mhchem_hp_s:nnn{20081216}{P\"uhkida lahtised osakesed nahalt maha.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P336-0_tl}{{P336}{%
+  \__mhchem_hp_s:nnn{20081216}{Sulatada k\"ulmunud piirkonnad leige veega. Kannatada saanud piirkonda mitte hõõruda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P337-0_tl}{{P337}{%
+  \__mhchem_hp_s:nnn{20081216}{Kui silmade \"arritus ei m\"o\"odu:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P338-0_tl}{{P338}{%
+  \__mhchem_hp_s:nnn{20081216}{Eemaldada kontaktl\"a\"atsed, kui neid kasutatakse ja kui neid on kerge eemaldada. Loputada veel kord.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P340-0_tl}{{P340}{%
+  \__mhchem_hp_s:nnn{20150601}{Toimetada isik v\"arske õhu k\"atte ja hoida asendis, mis võimaldab kergesti hingata.}{%
+  \__mhchem_hp_s:nnn{20081216}{Toimetada kannatanu v\"arske õhu k\"atte ja asetada mugavasse puhkeasendisse, mis võimaldab kergesti hingata.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P341-0_tl}{{P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Hingamisraskuste korral toimetada kannatanu v\"arske õhu k\"atte ja asetada mugavasse puhkeasendisse, mis võimaldab kergesti hingata.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P342-0_tl}{{P342}{%
+  \__mhchem_hp_s:nnn{20081216}{Hingamisteede probleemide ilmnemise korral:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P350-0_tl}{{P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Pesta õrnalt rohke vee ja seebiga.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P351-0_tl}{{P351}{%
+  \__mhchem_hp_s:nnn{20081216}{Loputada mitme minuti jooksul ettevaatlikult veega.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P352-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{20150601}{Pesta rohke veega/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Pesta rohke vee ja seebiga.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P352.0-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P352.1-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P352-1_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P353-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{20180301}{Loputada nahka veega [või loputada duši all].}{%
+  \__mhchem_hp_s:nnn{20081216}{Loputada nahka veega/\hskip\z@skip{}loputada duši all.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P353.0-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P353.1-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P353.2-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P360-0_tl}{{P360}{%
+  \__mhchem_hp_s:nnn{20081216}{Saastunud rõivad ja nahk loputada viivitamata rohke veega ning alles seej\"arel rõivad eemaldada.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P361-0_tl}{{P361}{%
+  \__mhchem_hp_s:nnn{20150601}{Võtta viivitamata seljast kõik saastunud rõivad.}{%
+  \__mhchem_hp_s:nnn{20081216}{Kõik saastunud rõivad viivitamata seljast võtta.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P362-0_tl}{{P362}{%
+  \__mhchem_hp_s:nnn{20150601}{Võtta saastunud rõivad seljast.}{%
+  \__mhchem_hp_s:nnn{20081216}{Võtta saastunud rõivad seljast ja pesta neid enne j\"argmist kasutamist.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P363-0_tl}{{P363}{%
+  \__mhchem_hp_s:nnn{20081216}{Saastunud rõivad enne j\"argmist kasutamist pesta.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P364-0_tl}{{P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Ja pesta enne korduskasutust.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370-0_tl}{{P370}{%
+  \__mhchem_hp_s:nnn{20081216}{Tulekahju korral:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P371-0_tl}{{P371}{%
+  \__mhchem_hp_s:nnn{20081216}{Suure tulekahju korral ning kui on tegemist suurte kogustega:}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P372-0_tl}{{P372}{%
+  \__mhchem_hp_s:nnn{20180301}{Plahvatusoht.}{%
+  \__mhchem_hp_s:nnn{20081216}{Tulekahju korral plahvatusoht.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P373-0_tl}{{P373}{%
+  \__mhchem_hp_s:nnn{20081216}{Kui tuli jõuab lõhkeaineteni, MITTE teha kustutust\"oid.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P374-0_tl}{{P374}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Kustutust\"oid teha tavaliste ettevaatusabinõudega ja mõistlikust kaugusest.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P375-0_tl}{{P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Plahvatusohu tõttu teha kustutust\"oid eemalt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P376-0_tl}{{P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Leke peatada, kui seda on võimalik teha ohutult.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P377-0_tl}{{P377}{%
+  \__mhchem_hp_s:nnn{20081216}{Lekkiva gaasi põlemise korral mitte kustutada, v\"alja arvatud juhul, kui leket on võimalik ohutult peatada.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P378-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{20150601}{Kustutamiseks kasutada\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Kustutamiseks kasutada \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P378.0-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P378-1_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P380-0_tl}{{P380}{%
+  \__mhchem_hp_s:nnn{20081216}{Ala evakueerida.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P381-0_tl}{{P381}{%
+  \__mhchem_hp_s:nnn{20180301}{Lekke korral eemaldada kõik s\"u\"uteallikad.}{%
+  \__mhchem_hp_s:nnn{20081216}{Eemaldada kõik s\"u\"uteallikad, kui seda on võimalik teha ohutult.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P390-0_tl}{{P390}{%
+  \__mhchem_hp_s:nnn{20081216}{Mahavoolanud toode absorbeerida, et see ei kahjustaks teisi materjale.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P391-0_tl}{{P391}{%
+  \__mhchem_hp_s:nnn{20081216}{Mahavoolanud toode kokku koguda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P310-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{20150601}{ALLANEELAMISE KORRAL: võtta viivitamata \"uhendust M\"URGISTUSTEABEKESKUSE/\hskip\z@skip{}arstiga\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{ALLANEELAMISE KORRAL: võtta viivitamata \"uhendust M\"URGISTUSTEABEKESKUSE või arstiga.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P310.0-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P310.1-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P310.2-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P310-1_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P312-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{20180301}{ALLANEELAMISE KORRAL: halva enesetunde korral võtta \"uhendust M\"URGISTUSTEABEKESKUSEGA/\hskip\z@skip{}arstiga/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}.}{%
+  \__mhchem_hp_s:nnn{20150601}{ALLANEELAMISE KORRAL: halva enesetunde korral võtta \"uhendust M\"URGISTUSTEABEKESKUSE/\hskip\z@skip{}arstiga\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{ALLANEELAMISE KORRAL: halva enesetunde korral võtta \"uhendust M\"URGISTUSTEABEKESKUSE või arstiga.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P312.0-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P312.1-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P312.2-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P312-1_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P301+P330+P331-0_tl}{{P301\,+\,\hskip\z@skip{}P330\,+\,\hskip\z@skip{}P331}{%
+  \__mhchem_hp_s:nnn{20081216}{ALLANEELAMISE KORRAL: loputada suud. MITTE kutsuda esile oksendamist.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{NAHALE SATTUMISE KORRAL: hoida jahedas vees või panna peale niiske kompress.}{%
+  \__mhchem_hp_s:nnn{20081216}{NAHALE SATTUMISE KORRAL: hoida jahedas vees/\hskip\z@skip{}panna peale niiske kompress.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P335+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{NAHALE SATTUMISE KORRAL: p\"uhkida lahtised osakesed nahalt maha. Hoida jahedas vees [või panna peale niiske kompress].}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P335+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P335+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P335+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P350-0_tl}{{P302\,+\,\hskip\z@skip{}P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{NAHALE SATTUMISE KORRAL: pesta õrnalt rohke vee ja seebiga.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P352-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{20150601}{NAHALE SATTUMISE KORRAL: pesta rohke veega/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{NAHALE SATTUMISE KORRAL: pesta rohke vee ja seebiga.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P352.0-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P352.1-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P302+P352-1_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P303+P361+P353-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{20180301}{NAHALE (või juustele) SATTUMISE KORRAL: kõik saastunud rõivad viivitamata seljast võtta. Loputada nahka veega [või loputada duši all].}{%
+  \__mhchem_hp_s:nnn{20081216}{NAHALE (või juustele) SATTUMISE KORRAL: võtta viivitamata kõik saastunud rõivad seljast. Loputada nahka veega/\hskip\z@skip{}loputada duši all.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P303+P361+P353.0-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P303+P361+P353.1-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P303+P361+P353.2-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P304+P340-0_tl}{{P304\,+\,\hskip\z@skip{}P340}{%
+  \__mhchem_hp_s:nnn{20150601}{SISSEHINGAMISE KORRAL: toimetada isik v\"arske õhu k\"atte ja hoida asendis, mis võimaldab kergesti hingata.}{%
+  \__mhchem_hp_s:nnn{20081216}{SISSEHINGAMISE KORRAL: toimetada kannatanu v\"arske õhu k\"atte ja asetada mugavasse puhkeasendisse, mis võimaldab kergesti hingata.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P304+P341-0_tl}{{P304\,+\,\hskip\z@skip{}P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{SISSEHINGAMISE KORRAL: hingamisraskuste korral toimetada kannatanu v\"arske õhu k\"atte ja asetada mugavasse puhkeasendisse, mis võimaldab kergesti hingata.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P305+P351+P338-0_tl}{{P305\,+\,\hskip\z@skip{}P351\,+\,\hskip\z@skip{}P338}{%
+  \__mhchem_hp_s:nnn{20081216}{SILMA SATTUMISE KORRAL: loputada mitme minuti jooksul ettevaatlikult veega. Eemaldada kontaktl\"a\"atsed, kui neid kasutatakse ja kui neid on kerge eemaldada. Loputada veel kord.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P306+P360-0_tl}{{P306\,+\,\hskip\z@skip{}P360}{%
+  \__mhchem_hp_s:nnn{20081216}{RÕIVASTELE SATTUMISE KORRAL: saastunud rõivad ja nahk loputada viivitamata rohke veega ning alles seej\"arel rõivad eemaldada.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P307+P311-0_tl}{{P307\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuute korral: võtta \"uhendust M\"URGISTUSTEABEKESKUSE või arstiga.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P308+P311-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Kokkupuute korral: võtta \"uhendust M\"URGISTUSTEABEKESKUSE/\hskip\z@skip{}arstiga\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P308+P311.0-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P308+P311.1-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P308+P311.2-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P308+P311-1_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P308+P313-0_tl}{{P308\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuute või kokkupuutekahtluse korral: p\"o\"orduda arsti poole.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P309+P311-0_tl}{{P309\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Kokkupuute või halva enesetunde korral: võtta \"uhendust M\"URGISTUSTEABEKESKUSE või arstiga.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P332+P313-0_tl}{{P332\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Naha\"arrituse korral: p\"o\"orduda arsti poole.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P333+P313-0_tl}{{P333\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Naha\"arrituse või _obe korral: p\"o\"orduda arsti poole.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P335+P334-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{P\"uhkida lahtised osakesed nahalt maha. Hoida jahedas vees /\hskip\z@skip{} panna peale niiske kompress.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P335+P334.0-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P335+P334.1-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P335+P334.2-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P336+P315-0_tl}{{P336\,+\,\hskip\z@skip{}P315}{%
+  \__mhchem_hp_s:nnn{20180301}{Sulatada k\"ulmunud piirkonnad leige veega. Kannatada saanud piirkonda mitte hõõruda. P\"o\"orduda viivitamata arsti poole.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P337+P313-0_tl}{{P337\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Kui silmade \"arritus ei m\"o\"odu: p\"o\"orduda arsti poole.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P342+P311-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Hingamisteede probleemide ilmnemise korral: võtta \"uhendust M\"URGISTUSTEABEKESKUSE/\hskip\z@skip{}arstiga\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Hingamisteede probleemide ilmnemise korral: võtta \"uhendust M\"URGISTUSTEABEKESKUSE või arstiga.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P342+P311.0-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P342+P311.1-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P342+P311.2-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P342+P311-1_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P361+P364-0_tl}{{P361\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Võtta viivitamata seljast kõik saastunud rõivad ja pesta enne korduskasutust.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P362+P364-0_tl}{{P362\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Võtta seljast saastunud rõivad ja pesta enne korduskasutust.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P372+P380+P373-0_tl}{{P370\,+\,\hskip\z@skip{}P372\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P373}{%
+  \__mhchem_hp_s:nnn{20180301}{Tulekahju korral: plahvatusoht. Ala evakueerida. Kui tuli jõuab lõhkeaineteni, MITTE teha kustutust\"oid.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P376-0_tl}{{P370\,+\,\hskip\z@skip{}P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Tulekahju korral: leke peatada, kui seda on võimalik teha ohutult.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{20150601}{Tulekahju korral: kasutada kustutamiseks\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Tulekahju korral: kasutada kustutamiseks \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P380-0_tl}{{P370\,+\,\hskip\z@skip{}P380}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Tulekahju korral: ala evakueerida.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P380+P375-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Tulekahju korral: ala evakueerida. Plahvatusohu tõttu teha kustutust\"oid eemalt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P380+P375+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P380+P375+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P380+P375+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P371+P380+P375-0_tl}{{P371\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Suure tulekahju korral ning kui on tegemist suurte kogustega: ala evakueerida. Plahvatusohu tõttu teha kustutust\"oid eemalt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P401-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{20180301}{Hoida kooskõlas \noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P401.0-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P401-1_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P402-0_tl}{{P402}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida kuivas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P403-0_tl}{{P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida h\"asti ventileeritavas kohas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P404-0_tl}{{P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida suletud mahutis.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P405-0_tl}{{P405}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida lukustatult.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P406-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida s\"o\"obekindlas/\hskip\z@skip{}\noexpand\textellipsis{}s\"o\"obekindla sisevooderdisega mahutis.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P406.0-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P406.1-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P406-1_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P407-0_tl}{{P407}{%
+  \__mhchem_hp_s:nnn{20180301}{J\"atta virnade või kaubaaluste vahele õhuvahe.}{%
+  \__mhchem_hp_s:nnn{20081216}{J\"atta virnade/\hskip\z@skip{}kaubaaluste vahele õhuvahe.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P410-0_tl}{{P410}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida p\"aikesevalguse eest.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P411-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{20101201}{Hoida temperatuuril mitte \"ule \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida temperatuuril mitte \"ule \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P411.0-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P411.1-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P411.2-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P412-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Mitte hoida temperatuuril \"ule 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Mitte hoida temperatuuril \"ule 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P412.0-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P412.1-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P412.2-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P413-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{20101201}{Kogust, mis on suurem kui \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{} naela, hoida temperatuuril mitte \"ule \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Kogust, mis on suurem kui \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{} naela, hoida temperatuuril mitte \"ule \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P413.0-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P413.1-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P413.2-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P420-0_tl}{{P420}{%
+  \__mhchem_hp_s:nnn{20180301}{Hoida eraldi.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida eemal teistest materjalidest.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P422-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida sisu \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P422.0-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P422-1_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P402+P404-0_tl}{{P402\,+\,\hskip\z@skip{}P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida kuivas. Hoida suletud mahutis.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P403+P233-0_tl}{{P403\,+\,\hskip\z@skip{}P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida h\"asti ventileeritavas kohas. Hoida mahuti tihedalt suletuna.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P403+P235-0_tl}{{P403\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida h\"asti ventileeritavas kohas. Hoida jahedas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P410+P403-0_tl}{{P410\,+\,\hskip\z@skip{}P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida p\"aikesevalguse eest. Hoida h\"asti ventileeritavas kohas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P410+P412-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Hoida p\"aikesevalguse eest. Mitte hoida temperatuuril \"ule 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida p\"aikesevalguse eest. Mitte hoida temperatuuril \"ule 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P410+P412.0-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P410+P412.1-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P410+P412.2-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P411+P235-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20101201}{Hoida temperatuuril mitte \"ule \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Hoida jahedas.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hoida temperatuuril mitte \"ule \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Hoida jahedas.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P411+P235.0-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P411+P235.1-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P411+P235.2-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P501-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{20081216}{Sisu/\hskip\z@skip{}mahuti kõrvaldada \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P501.0-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P501.0-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P501.1-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P501.2-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_et_P502-0_tl}{{P502}{%
+  \__mhchem_hp_s:nnn{20180301}{Hankida valmistajalt või tarnijalt teavet kemikaali taaskasutamise või ringlussevõtu kohta.}{%
+  \__mhchem_hp_s:nnn{20110419}{Hankida valmistajalt/\hskip\z@skip{}tarnijalt teavet kemikaali taaskasutamise/\hskip\z@skip{}ringlussevõtu kohta}{}}}}%
+\tl_gset:cn{g__mhchem_hp_et_P370+P380+P375[+P378]-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375[\,+\,\hskip\z@skip{}P378]}{%
+  \__mhchem_hp_s:nnn{20180301}{Tulekahju korral: ala evakueerida. Plahvatusohu tõttu teha kustutust\"oid eemalt. [Kustutamiseks kasutada \noexpand\textellipsis{}.].}{}}}%
+%
+\group_end:
+\ExplSyntaxOff

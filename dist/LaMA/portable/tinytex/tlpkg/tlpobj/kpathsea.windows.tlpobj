@@ -1,0 +1,15 @@
+name kpathsea.windows
+category TLCore
+revision 73796
+shortdesc windows files of kpathsea
+containersize 518932
+containerchecksum 5c934787042761a333ee8d148d81b141afa74e288ad0daf0e21db97aff9de4a13641aa4d701c634abcc6d06ad2ffbc9a5ad50954ce109a701f6e0d1daf10b17e
+binfiles arch=windows size=401
+ bin/windows/kpathsealibw64.dll
+ bin/windows/kpseaccess.exe
+ bin/windows/kpsereadlink.exe
+ bin/windows/kpsestat.exe
+ bin/windows/kpsewhich.exe
+ bin/windows/mktexupd.exe
+ bin/windows/msvcp140.dll
+ bin/windows/msvcr100.dll

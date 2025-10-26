@@ -1,0 +1,62 @@
+\ProvidesFile{t1ntxinfalt.fd}[2023/09/17 v1.0]
+\expandafter\ifx\csname ntx@scaled\endcsname\relax
+  \global\let\ntx@scaled\@empty%
+\fi
+
+\DeclareFontFamily{T1}{ntxinfalt}{}
+\DeclareFontShape{T1}{ntxinfalt}{m}{n}{	%medium
+     <-> \ntx@scaled ntxinfalt-Regular-t1%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{m}{it}{	%italic
+     <-> \ntx@scaled ntxinfalt-Italic-t1%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{b}{n}{	%bold 
+     <-> \ntx@scaled ntxinfalt-Bold-t1%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{b}{it}{   	%bold italic
+     <-> \ntx@scaled ntxinfalt-BoldItalic-t1%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{b}{sl}{   	%bold slanted
+     <-> ssub * ntxinfalt/b/it%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{m}{sl}{   	%slanted
+     <-> ssub * ntxinfalt/m/it%
+}{}
+
+\DeclareFontShape{T1}{ntxinfalt}{m}{sc}{	%cap & small cap
+     <-> ssub * ntxinfalt/m/n%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{m}{scit}{	%italic
+     <-> ssub * ntxinfalt/m/it%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{m}{ui}{   	%unslanted italic
+     <-> ssub * ntxinfalt/m/n%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{bx}{sc}{	%bold extended cap & small cap
+     <-> ssub * ntxinfalt/b/n%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{bx}{sl}{	%bold extended slanted
+     <-> ssub * ntxinfalt/b/sl%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{bx}{it}{	%bold extended italic
+     <-> ssub * ntxinfalt/b/it%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{bx}{scit}{	%bold extended italic
+     <-> ssub * ntxinfalt/b/it%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{bx}{ui}{  	%bold extended unslanted italic
+     <-> ssub * ntxinfalt/b/n%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{bx}{n}{	%bold extended
+     <-> ssub * ntxinfalt/b/n%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{b}{sc}{	%bold cap & small cap
+     <-> ssub * ntxinfalt/b/n%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{b}{ui}{   	%bold unslanted italic
+     <-> ssub * ntxinfalt/b/n%
+}{}
+\DeclareFontShape{T1}{ntxinfalt}{b}{scit}{   	%bold italic
+     <-> ssub * ntxinfalt/b/it%
+}{}
+\endinput

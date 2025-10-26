@@ -1,0 +1,62 @@
+\ProvidesFile{ly1ntxsupsalt.fd}[2023/09/17 v1.0]
+\expandafter\ifx\csname ntxsups@scaled\endcsname\relax
+  \global\let\ntxsups@scaled\@empty%
+\fi
+
+\DeclareFontFamily{LY1}{ntxsupsalt}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{m}{n}{	%medium
+     <-> \ntxsups@scaled ntxsupsalt-Regular-ly1%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{m}{it}{	%italic
+     <-> \ntxsups@scaled ntxsupsalt-Italic-ly1%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{b}{n}{	%bold 
+     <-> \ntxsups@scaled ntxsupsalt-Bold-ly1%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{b}{it}{   	%bold italic
+     <-> \ntxsups@scaled ntxsupsalt-BoldItalic-ly1%
+}{}
+
+\DeclareFontShape{LY1}{ntxsupsalt}{m}{sc}{	%cap & small cap
+     <-> ssub * ntxsupsalt/m/n%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{m}{sl}{	%slanted
+     <-> ssub * ntxsupsalt/m/it%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{m}{scit}{	%italic
+     <-> ssub * ntxsupsalt/m/it%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{m}{ui}{   	%unslanted italic
+     <-> ssub * ntxsupsalt/m/n%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{bx}{sc}{	%bold extended cap & small cap
+     <-> ssub * ntxsupsalt/b/n%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{bx}{sl}{	%bold extended slanted
+     <-> ssub * ntxsupsalt/b/it%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{bx}{it}{	%bold extended italic
+     <-> ssub * ntxsupsalt/b/it%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{bx}{scit}{	%bold extended italic
+     <-> ssub * ntxsupsalt/b/it%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{bx}{ui}{  	%bold extended unslanted italic
+     <-> ssub * ntxsupsalt/b/n%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{bx}{n}{	%bold extended
+     <-> ssub * ntxsupsalt/b/n%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{b}{sc}{	%bold cap & small cap
+     <-> ssub * ntxsupsalt/b/n%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{b}{sl}{	%bold slanted
+     <-> ssub * ntxsupsalt/b/it%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{b}{ui}{   	%bold unslanted italic
+     <-> ssub * ntxsupsalt/b/n%
+}{}
+\DeclareFontShape{LY1}{ntxsupsalt}{b}{scit}{   	%bold italic
+     <-> ssub * ntxsupsalt/b/it%
+}{}
+\endinput

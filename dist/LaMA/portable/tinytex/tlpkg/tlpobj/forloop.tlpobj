@@ -1,0 +1,18 @@
+name forloop
+category Package
+revision 67017
+shortdesc Iteration in LaTeX
+longdesc The package provides a command \forloop for doing iteration in
+longdesc LaTeX macro programming.
+containersize 1252
+containerchecksum e4cf4d9fdf01b753b40d4fb2c5edac94756ccf60a7e0b1bf0da8b5b0c433eff5669858fcc35096967f9a53e6a365880e6677956ebb86764cd68ba3093fa4be91
+doccontainersize 70488
+doccontainerchecksum 7315a8e90a83bbb73cb82525fec32c750d97f62fadcf1cd1faa816aeb2c54b5183c8fe659a19f213764979d495d7774df7aab7c950fa9886c6911e526712f0ff
+srccontainersize 2628
+srccontainerchecksum fe9aa2c7836a17debbfc392b44bcccb09de5b978224b2ec81e17daa07eef3eaf508206f1d54cc9dc7897122ceffb9d1b8d5957c26f2b4bcaed4ee93ebe3436df
+runfiles size=1
+ texmf-dist/tex/latex/forloop/forloop.sty
+catalogue-ctan /macros/latex/contrib/forloop
+catalogue-license lgpl
+catalogue-topics macro-iterate macro-supp
+catalogue-version 3.0

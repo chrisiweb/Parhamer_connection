@@ -1,0 +1,23 @@
+name texcount
+category Package
+revision 49013
+shortdesc Count words in a LaTeX document
+longdesc TeXcount is a Perl script that counts words in the text of
+longdesc LaTeX files. It has rules for handling most of the common
+longdesc macros, and can provide colour-coded output showing which parts
+longdesc of the text have been counted. The package script is available
+longdesc as a Web service via its home page.
+depend texcount.ARCH
+containersize 35908
+containerchecksum 82f51346d9474270af6374cc1619ca005206b1bd729ce1559b8b66e361b184a192c7fbe085216a3a64e656197756593f7d76e52437ac562fd33bf09504b0f58f
+doccontainersize 559548
+doccontainerchecksum 5141bdf4378cf87a19933945d6742427f4467dc73d92f4a470e34474232dbb2f60c4d8db065f812481520f1aa2f8a90d7e97dfc83f0f089d10386847f64f4d94
+runfiles size=34
+ texmf-dist/scripts/texcount/texcount.pl
+catalogue-also latexcount wordcount
+catalogue-contact-announce http://app.uio.no/ifi/texcount/news.php
+catalogue-contact-home http://app.uio.no/ifi/texcount/
+catalogue-ctan /support/texcount
+catalogue-license lppl
+catalogue-topics word-count
+catalogue-version 3.1.1

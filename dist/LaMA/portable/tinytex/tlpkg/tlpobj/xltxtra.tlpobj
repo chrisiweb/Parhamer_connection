@@ -1,0 +1,26 @@
+name xltxtra
+category Package
+revision 56594
+shortdesc "Extras" for LaTeX users of XeTeX
+longdesc This package was previously used to provide a number of
+longdesc features that were useful for typesetting documents with
+longdesc XeLaTeX. Many of those features have now been incorporated into
+longdesc the fontspec package and other packages, but the package
+longdesc persists for backwards compatibility. Nowadays, loading xltxtra
+longdesc will: load the fontspec, metalogo, and realscripts packages;
+longdesc redefine \showhyphens so it works correctly; and define two
+longdesc extra commands: \vfrac and \namedglyph.
+depend metalogo
+containersize 2516
+containerchecksum ff75c7b2f36f0e3cdc466dde35d83ccbb76c9c95f5d191a5498831247d1d418b69a8f0df8b263eae78e4a13694e628eba64c24e7480c7dbf56948cd5b1504a76
+doccontainersize 100928
+doccontainerchecksum 6fc84121dd3486f5f7744d757520e2b4d7baf83686e2630990be7e72ccb121e5b417779e4682e6e8a566b016a8995f80d7d4c6dfb3d6d2c9f70ed506bee99d64
+srccontainersize 6096
+srccontainerchecksum c177b99366479f6ed5ef935be07fbfc3425b48f2c3d274e175bbde9c63cbcc93ee4bca4c3c2886fdc2894b627332ff7edffa5b1083ad86dcced56bfb0d9fe03f
+runfiles size=2
+ texmf-dist/tex/xelatex/xltxtra/xltxtra.sty
+catalogue-contact-repository https://github.com/wspr/will2e/
+catalogue-ctan /macros/unicodetex/latex/xltxtra
+catalogue-license lppl1.3c
+catalogue-topics xetex
+catalogue-version 0.7

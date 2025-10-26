@@ -1,0 +1,10 @@
+name texlive-scripts-extra.windows
+category TLCore
+revision 73796
+shortdesc windows files of texlive-scripts-extra
+containersize 5080
+containerchecksum 1d4fe56353d8ff89255208e1f30c164f335fe85e5224a5b32e0481ca47c48cf0abe788df1902c1a5d3e83acd2e8ad26e29551b946c69d01d721b0aea8780ba56
+binfiles arch=windows size=6
+ bin/windows/e2pall.exe
+ bin/windows/mkocp.exe
+ bin/windows/mkofm.exe

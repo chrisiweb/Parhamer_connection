@@ -1,0 +1,1016 @@
+%% hpstatement-nl.inc.sty
+%% 2024-01-29
+%% Copyright 2019-2024 Martin Hensel
+%
+%% This file is part of the mhchem bundle for LaTeX
+%
+%% For the content of the phrases:
+% This work is licensed under the Creative Commons Attribution 4.0 International licence
+% (https://creativecommons.org/licenses/by/4.0/). This means that you can re-use the content
+% provided you acknowledge the source and indicate any changes you have made.
+% The data is not necessarily comprehensive, complete, accurate or up to date.
+% The acknowledgement is not needed when using statements of the data set for labelling products, of course, as this is the intended usage.
+% (c) European Union, https://eur-lex.europa.eu, 1998-2023, CC BY 4.0
+% (c) hpstatements contributors, https://github.com/mhchem/hpstatements/contributors, 2019-2024, CC BY 4.0
+%
+%
+\ExplSyntaxOn
+\group_begin:
+\char_set_catcode_space:n {`\ }% allow spaces
+\char_set_catcode_letter:n {`\@}%
+%
+\tl_gset:cn{g__mhchem_hp_nl_H200-0_tl}{{H200}{%
+  \__mhchem_hp_s:nnn{20081216}{Instabiele ontplofbare stof.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H201-0_tl}{{H201}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontplofbare stof; gevaar voor massa-explosie.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H202-0_tl}{{H202}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontplofbare stof, ernstig gevaar voor scherfwerking.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H203-0_tl}{{H203}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontplofbare stof; gevaar voor brand, luchtdrukwerking of scherfwerking.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H204-0_tl}{{H204}{%
+  \__mhchem_hp_s:nnn{20081216}{Gevaar voor brand of scherfwerking.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H205-0_tl}{{H205}{%
+  \__mhchem_hp_s:nnn{20081216}{Gevaar voor massa-explosie bij brand.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H206-0_tl}{{H206}{%
+  \__mhchem_hp_s:nnn{20201017}{Gevaar voor brand, luchtdrukwerking of scherfwerking; toegenomen ontploffingsgevaar als de ongevoeligheidsagens wordt verminderd.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H207-0_tl}{{H207}{%
+  \__mhchem_hp_s:nnn{20201017}{Gevaar voor brand of scherfwerking; toegenomen ontploffingsgevaar als de ongevoeligheidsagens wordt verminderd.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H208-0_tl}{{H208}{%
+  \__mhchem_hp_s:nnn{20201017}{Gevaar voor brand; toegenomen ontploffingsgevaar als de ongevoeligheidsagens wordt verminderd.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H220-0_tl}{{H220}{%
+  \__mhchem_hp_s:nnn{20081216}{Zeer licht ontvlambaar gas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H221-0_tl}{{H221}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontvlambaar gas.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H222-0_tl}{{H222}{%
+  \__mhchem_hp_s:nnn{20081216}{Zeer licht ontvlambare aerosol.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H223-0_tl}{{H223}{%
+  \__mhchem_hp_s:nnn{20150601}{Ontvlambaar aerosol.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontvlambare aerosol.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H224-0_tl}{{H224}{%
+  \__mhchem_hp_s:nnn{20081216}{Zeer licht ontvlambare vloeistof en damp.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H225-0_tl}{{H225}{%
+  \__mhchem_hp_s:nnn{20081216}{Licht ontvlambare vloeistof en damp.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H226-0_tl}{{H226}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontvlambare vloeistof en damp.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H228-0_tl}{{H228}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontvlambare vaste stof.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H229-0_tl}{{H229}{%
+  \__mhchem_hp_s:nnn{20150601}{Houder onder druk: kan open barsten bij verhitting.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H230-0_tl}{{H230}{%
+  \__mhchem_hp_s:nnn{20150601}{Kan explosief reageren zelfs in afwezigheid van lucht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H231-0_tl}{{H231}{%
+  \__mhchem_hp_s:nnn{20150601}{Kan explosief reageren zelfs in afwezigheid van lucht bij verhoogde druk en/\hskip\z@skip{}of temperatuur.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H232-0_tl}{{H232}{%
+  \__mhchem_hp_s:nnn{20201017}{Kan spontaan ontbranden bij blootstelling aan lucht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H240-0_tl}{{H240}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontploffingsgevaar bij verwarming.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H241-0_tl}{{H241}{%
+  \__mhchem_hp_s:nnn{20081216}{Brand- of ontploffingsgevaar bij verwarming.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H242-0_tl}{{H242}{%
+  \__mhchem_hp_s:nnn{20081216}{Brandgevaar bij verwarming.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H250-0_tl}{{H250}{%
+  \__mhchem_hp_s:nnn{20081216}{Vat spontaan vlam bij blootstelling aan lucht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H251-0_tl}{{H251}{%
+  \__mhchem_hp_s:nnn{20081216}{Vatbaar voor zelfverhitting: kan vlam vatten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H252-0_tl}{{H252}{%
+  \__mhchem_hp_s:nnn{20081216}{In grote hoeveelheden vatbaar voor zelfverhitting; kan vlam vatten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H260-0_tl}{{H260}{%
+  \__mhchem_hp_s:nnn{20081216}{In contact met water komen ontvlambare gassen vrij die spontaan kunnen ontbranden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H261-0_tl}{{H261}{%
+  \__mhchem_hp_s:nnn{20081216}{In contact met water komen ontvlambare gassen vrij.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H270-0_tl}{{H270}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan brand veroorzaken of bevorderen; oxiderend.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H271-0_tl}{{H271}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan brand of ontploffingen veroorzaken; sterk oxiderend.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H272-0_tl}{{H272}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan brand bevorderen; oxiderend.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H280-0_tl}{{H280}{%
+  \__mhchem_hp_s:nnn{20081216}{Bevat gas onder druk; kan ontploffen bij verwarming.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H281-0_tl}{{H281}{%
+  \__mhchem_hp_s:nnn{20081216}{Bevat sterk gekoeld gas; kan cryogene brandwonden of letsel veroorzaken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H290-0_tl}{{H290}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan bijtend zijn voor metalen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H300-0_tl}{{H300}{%
+  \__mhchem_hp_s:nnn{20081216}{Dodelijk bij inslikken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H301-0_tl}{{H301}{%
+  \__mhchem_hp_s:nnn{20081216}{Giftig bij inslikken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H302-0_tl}{{H302}{%
+  \__mhchem_hp_s:nnn{20081216}{Schadelijk bij inslikken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H304-0_tl}{{H304}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan dodelijk zijn als de stof bij inslikken in de luchtwegen terechtkomt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H310-0_tl}{{H310}{%
+  \__mhchem_hp_s:nnn{20081216}{Dodelijk bij contact met de huid.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H311-0_tl}{{H311}{%
+  \__mhchem_hp_s:nnn{20081216}{Giftig bij contact met de huid.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H312-0_tl}{{H312}{%
+  \__mhchem_hp_s:nnn{20081216}{Schadelijk bij contact met de huid.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H314-0_tl}{{H314}{%
+  \__mhchem_hp_s:nnn{20081216}{Veroorzaakt ernstige brandwonden en oogletsel.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H315-0_tl}{{H315}{%
+  \__mhchem_hp_s:nnn{20081216}{Veroorzaakt huidirritatie.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H317-0_tl}{{H317}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan een allergische huidreactie veroorzaken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H318-0_tl}{{H318}{%
+  \__mhchem_hp_s:nnn{20081216}{Veroorzaakt ernstig oogletsel.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H319-0_tl}{{H319}{%
+  \__mhchem_hp_s:nnn{20081216}{Veroorzaakt ernstige oogirritatie.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H330-0_tl}{{H330}{%
+  \__mhchem_hp_s:nnn{20081216}{Dodelijk bij inademing.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H331-0_tl}{{H331}{%
+  \__mhchem_hp_s:nnn{20081216}{Giftig bij inademing.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H332-0_tl}{{H332}{%
+  \__mhchem_hp_s:nnn{20081216}{Schadelijk bij inademing.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H334-0_tl}{{H334}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan bij inademing allergie- of astmasymptomen of ademhalingsmoeilijkheden veroorzaken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H335-0_tl}{{H335}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan irritatie van de luchtwegen veroorzaken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H336-0_tl}{{H336}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan slaperigheid of duizeligheid veroorzaken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H340-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan genetische schade veroorzaken \noexpand\textless{}blootstellingsroute vermelden indien afdoende bewezen is dat het gevaar bij andere blootstellingsroutes niet aanwezig is\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H340.0-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H340-1empty_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H340-1_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H341-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{20081216}{Verdacht van het veroorzaken van genetische schade \noexpand\textless{}blootstellingsroute vermelden indien afdoende bewezen is dat het gevaar bij andere blootstellingsroutes niet aanwezig is\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H341.0-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H341-1empty_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H341-1_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H350-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan kanker veroorzaken \noexpand\textless{}blootstellingsroute vermelden indien afdoende bewezen is dat het gevaar bij andere blootstellingsroutes niet aanwezig is\noexpand\textgreater{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H350.0-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H350-1empty_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H350-1_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H350i-0_tl}{{H350i}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan kanker veroorzaken bij inademing.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H351-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{20081216}{Verdacht van het veroorzaken van kanker \noexpand\textless{}blootstellingsroute vermelden indien afdoende bewezen is dat het gevaar bij andere blootstellingsroutes niet aanwezig is\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H351.0-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H351-1empty_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H351-1_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H360-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan de vruchtbaarheid of het ongeboren kind schaden \noexpand\textless{}specifiek effect vermelden indien bekend\noexpand\textgreater{} \noexpand\textless{}blootstellingsroute vermelden indien afdoende bewezen is dat het gevaar bij andere blootstellingsroutes niet aanwezig is\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H360.0-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H360-1empty_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H360-1_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H360F-0_tl}{{H360F}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan de vruchtbaarheid schaden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H360D-0_tl}{{H360D}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan het ongeboren kind schaden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H360FD-0_tl}{{H360FD}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan de vruchtbaarheid schaden. Kan het ongeboren kind schaden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H360Fd-0_tl}{{H360Fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan de vruchtbaarheid schaden. Wordt ervan verdacht het ongeboren kind te schaden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H360Df-0_tl}{{H360Df}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan het ongeboren kind schaden. Wordt ervan verdacht de vruchtbaarheid te schaden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H361-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan mogelijks de vruchtbaarheid of het ongeboren kind schaden \noexpand\textless{}specifiek effect vermelden indien bekend\noexpand\textgreater{} \noexpand\textless{}blootstellingsroute vermelden indien afdoende bewezen is dat het gevaar bij andere blootstellingsroutes niet aanwezig is\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H361.0-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H361-1empty_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H361-1_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H361f-0_tl}{{H361f}{%
+  \__mhchem_hp_s:nnn{20081216}{Wordt ervan verdacht de vruchtbaarheid te schaden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H361d-0_tl}{{H361d}{%
+  \__mhchem_hp_s:nnn{20081216}{Wordt ervan verdacht het ongeboren kind te schaden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H361fd-0_tl}{{H361fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Wordt ervan verdacht de vruchtbaarheid te schaden. Wordt ervan verdacht het ongeboren kind te schaden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H362-0_tl}{{H362}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan schadelijk zijn via borstvoeding.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H370-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{20081216}{Veroorzaakt schade aan organen \noexpand\textless{}of alle betrokken organen vermelden indien bekend\noexpand\textgreater{} \noexpand\textless{}blootstellingsroute vermelden indien afdoende bewezen is dat het gevaar bij andere blootstellingsroutes niet aanwezig is\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H370.0-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H370.1-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H370.1-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H370-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H370-2_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H371-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan schade aan organen \noexpand\textless{}of alle betrokken organen vermelden indien bekend\noexpand\textgreater{} veroorzaken \noexpand\textless{}blootstellingsroute vermelden indien afdoende bewezen is dat het gevaar bij andere blootstellingsroutes niet aanwezig is\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H371.0-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H371.1-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H371.1-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H371-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H371-2_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H372-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{20081216}{Veroorzaakt schade aan organen \noexpand\textless{}of alle betrokken organen vermelden indien bekend\noexpand\textgreater{} bij langdurige of herhaalde blootstelling \noexpand\textless{}blootstellingsroute vermelden indien afdoende bewezen is dat het gevaar bij andere blootstellingsroutes niet aanwezig is\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H372.0-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H372.1-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H372.1-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H372-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H372-2_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H373-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan schade aan organen \noexpand\textless{}of alle betrokken organen vermelden indien bekend\noexpand\textgreater{} veroorzaken bij langdurige of herhaalde blootstelling \noexpand\textless{}blootstellingsroute vermelden indien afdoende bewezen is dat het gevaar bij andere blootstellingsroutes niet aanwezig is\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H373.0-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H373.1-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H373.1-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H373-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H373-2_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H300+H310-0_tl}{{H300\,+\,\hskip\z@skip{}H310}{%
+  \__mhchem_hp_s:nnn{20110419}{Dodelijk bij inslikken en bij contact met de huid}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H300+H310+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Dodelijk bij inslikken, bij contact met de huid en bij inademing}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H300+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Dodelijk bij inslikken en bij inademing}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H301+H311-0_tl}{{H301\,+\,\hskip\z@skip{}H311}{%
+  \__mhchem_hp_s:nnn{20110419}{Giftig bij inslikken en bij contact met de huid}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H301+H311+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Giftig bij inslikken, bij contact met de huid en bij inademing}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H301+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Giftig bij inslikken en bij inademing}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H302+H312-0_tl}{{H302\,+\,\hskip\z@skip{}H312}{%
+  \__mhchem_hp_s:nnn{20110419}{Schadelijk bij inslikken en bij contact met de huid}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H302+H312+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Schadelijk bij inslikken, bij contact met de huid en bij inademing}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H302+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Schadelijk bij inslikken en bij inademing}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H310+H330-0_tl}{{H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Dodelijk bij contact met de huid en bij inademing}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H311+H331-0_tl}{{H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Giftig bij contact met de huid en bij inademing}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H312+H332-0_tl}{{H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Schadelijk bij contact met de huid en bij inademing}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H400-0_tl}{{H400}{%
+  \__mhchem_hp_s:nnn{20081216}{Zeer giftig voor in het water levende organismen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H410-0_tl}{{H410}{%
+  \__mhchem_hp_s:nnn{20081216}{Zeer giftig voor in het water levende organismen, met langdurige gevolgen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H411-0_tl}{{H411}{%
+  \__mhchem_hp_s:nnn{20081216}{Giftig voor in het water levende organismen, met langdurige gevolgen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H412-0_tl}{{H412}{%
+  \__mhchem_hp_s:nnn{20081216}{Schadelijk voor in het water levende organismen, met langdurige gevolgen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H413-0_tl}{{H413}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan langdurige schadelijke gevolgen voor in het water levende organismen hebben.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_H420-0_tl}{{H420}{%
+  \__mhchem_hp_s:nnn{20110419}{Schadelijk voor de volksgezondheid en het milieu door afbraak van ozon in de bovenste lagen van de atmosfeer}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH001-0_tl}{{EUH001}{%
+  \__mhchem_hp_s:nnn{20201017}{}{%
+  \__mhchem_hp_s:nnn{20081216}{In droge toestand ontplofbaar.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH006-0_tl}{{EUH006}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontplofbaar met en zonder lucht.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH014-0_tl}{{EUH014}{%
+  \__mhchem_hp_s:nnn{20081216}{Reageert heftig met water.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH018-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan bij gebruik een ontvlambaar/\hskip\z@skip{}ontplofbaar damp-luchtmengsel vormen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH018.0-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH018.1-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH018.2-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH019-0_tl}{{EUH019}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan ontplofbare peroxiden vormen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH029-0_tl}{{EUH029}{%
+  \__mhchem_hp_s:nnn{20081216}{Vormt giftig gas in contact met water.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH031-0_tl}{{EUH031}{%
+  \__mhchem_hp_s:nnn{20081216}{Vormt giftig gas in contact met zuren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH032-0_tl}{{EUH032}{%
+  \__mhchem_hp_s:nnn{20081216}{Vormt zeer giftig gas in contact met zuren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH044-0_tl}{{EUH044}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontploffingsgevaar bij verwarming in afgesloten toestand.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH059-0_tl}{{EUH059}{%
+  \__mhchem_hp_s:nnn{20110419}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Gevaarlijk voor de ozonlaag.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH066-0_tl}{{EUH066}{%
+  \__mhchem_hp_s:nnn{20081216}{Herhaalde blootstelling kan een droge of een gebarsten huid veroorzaken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH070-0_tl}{{EUH070}{%
+  \__mhchem_hp_s:nnn{20081216}{Giftig bij oogcontact.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH071-0_tl}{{EUH071}{%
+  \__mhchem_hp_s:nnn{20081216}{Bijtend voor de luchtwegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH201-0_tl}{{EUH201}{%
+  \__mhchem_hp_s:nnn{20081216}{Bevat lood. Mag niet worden gebruikt voor voorwerpen waarin kinderen kunnen bijten of waaraan kinderen kunnen zuigen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH201A-0_tl}{{EUH201A}{%
+  \__mhchem_hp_s:nnn{20081216}{Let op! Bevat lood.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH202-0_tl}{{EUH202}{%
+  \__mhchem_hp_s:nnn{20081216}{Cyanoacrylaat. Gevaarlijk. Kleeft binnen enkele seconden aan huid en oogleden. Buiten het bereik van kinderen houden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH203-0_tl}{{EUH203}{%
+  \__mhchem_hp_s:nnn{20081216}{Bevat zeswaardig chroom. Kan een allergische reactie veroorzaken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH204-0_tl}{{EUH204}{%
+  \__mhchem_hp_s:nnn{20081216}{Bevat isocyanaten. Kan een allergische reactie veroorzaken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH205-0_tl}{{EUH205}{%
+  \__mhchem_hp_s:nnn{20081216}{Bevat epoxyverbindingen. Kan een allergische reactie veroorzaken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH206-0_tl}{{EUH206}{%
+  \__mhchem_hp_s:nnn{20081216}{Let op! Niet in combinatie met andere producten gebruiken. Er kunnen gevaarlijke gassen (chloor) vrijkomen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH207-0_tl}{{EUH207}{%
+  \__mhchem_hp_s:nnn{20081216}{Let op! Bevat cadmium. Bij het gebruik ontwikkelen zich gevaarlijke dampen. Zie de aanwijzingen van de fabrikant. Neem de veiligheidsvoorschriften in acht.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH208-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{20081216}{Bevat \noexpand\textless{}naam van de sensibiliserende stof\noexpand\textgreater{}. Kan een allergische reactie veroorzaken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH208.0-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH208-1_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH209-0_tl}{{EUH209}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan bij gebruik licht ontvlambaar worden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH209A-0_tl}{{EUH209A}{%
+  \__mhchem_hp_s:nnn{20081216}{Kan bij gebruik ontvlambaar worden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH210-0_tl}{{EUH210}{%
+  \__mhchem_hp_s:nnn{20081216}{Veiligheidsinformatieblad op verzoek verkrijgbaar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH211-0_tl}{{EUH211}{%
+  \__mhchem_hp_s:nnn{20211001}{Let op! Bij verneveling kunnen gevaarlijke inhaleerbare druppels worden gevormd. Spuitnevel niet inademen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH212-0_tl}{{EUH212}{%
+  \__mhchem_hp_s:nnn{20211001}{Let op! Bij gebruik kunnen gevaarlijke inhaleerbare stofdeeltjes worden gevormd. Stof niet inademen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH380-0_tl}{{EUH380}{%
+  \__mhchem_hp_s:nnn{20230420}{Kan hormoonontregeling bij de mens veroorzaken}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH381-0_tl}{{EUH381}{%
+  \__mhchem_hp_s:nnn{20230420}{Wordt ervan verdacht hormoonontregeling bij de mens te veroorzaken}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH401-0_tl}{{EUH401}{%
+  \__mhchem_hp_s:nnn{20081216}{Volg de gebruiksaanwijzing om gevaar voor de menselijke gezondheid en het milieu te voorkomen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH430-0_tl}{{EUH430}{%
+  \__mhchem_hp_s:nnn{20230420}{Kan hormoonontregeling in het milieu veroorzaken}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH431-0_tl}{{EUH431}{%
+  \__mhchem_hp_s:nnn{20230420}{Wordt ervan verdacht hormoonontregeling in het milieu te veroorzaken}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH440-0_tl}{{EUH440}{%
+  \__mhchem_hp_s:nnn{20230420}{Accumulatie in het milieu en levende organismen, met inbegrip van mensen}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH441-0_tl}{{EUH441}{%
+  \__mhchem_hp_s:nnn{20230420}{Sterke accumulatie in het milieu en levende organismen, met inbegrip van mensen}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH450-0_tl}{{EUH450}{%
+  \__mhchem_hp_s:nnn{20230420}{Kan langdurige en diffuse verontreiniging van watervoorraden veroorzaken}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_EUH451-0_tl}{{EUH451}{%
+  \__mhchem_hp_s:nnn{20230420}{Kan zeer langdurige en diffuse verontreiniging van watervoorraden veroorzaken}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P101-0_tl}{{P101}{%
+  \__mhchem_hp_s:nnn{20101201}{Bij het inwinnen van medisch advies, de verpakking of het etiket ter beschikking houden.}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij het inwinnen van medisch advies, de verpakking of het etiket ter beschikking houden.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P102-0_tl}{{P102}{%
+  \__mhchem_hp_s:nnn{20081216}{Buiten het bereik van kinderen houden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P103-0_tl}{{P103}{%
+  \__mhchem_hp_s:nnn{20081216}{Alvorens te gebruiken, het etiket lezen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P201-0_tl}{{P201}{%
+  \__mhchem_hp_s:nnn{20081216}{Alvorens te gebruiken de speciale aanwijzingen raadplegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P202-0_tl}{{P202}{%
+  \__mhchem_hp_s:nnn{20081216}{Pas gebruiken nadat u alle veiligheidsvoorschriften gelezen en begrepen heeft}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P210-0_tl}{{P210}{%
+  \__mhchem_hp_s:nnn{20150601}{Verwijderd houden van warmte, hete oppervlakken, vonken, open vuur en andere ontstekingsbronnen. Niet roken.}{%
+  \__mhchem_hp_s:nnn{20081216}{Verwijderd houden van warmte/\hskip\z@skip{}vonken/\hskip\z@skip{}open vuur/\hskip\z@skip{}hete oppervlakken. -- Niet roken.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P211-0_tl}{{P211}{%
+  \__mhchem_hp_s:nnn{20081216}{Niet in een open vuur of op andere ontstekingsbronnen spuiten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P212-0_tl}{{P212}{%
+  \__mhchem_hp_s:nnn{20201017}{Vermijd verwarming onder opsluiting of vermindering van de ongevoeligheidsagens.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P220-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{20180301}{Verwijderd houden van kleding en andere brandbare materialen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Van kleding/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}brandbare stoffen verwijderd houden/\hskip\z@skip{}bewaren.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P220.0-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P220.1.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P220.1.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P220.1-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P220.2.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P220.2.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P220.2-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P221-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Vermenging met brandbare stoffen\noexpand\textellipsis{} absoluut vermijden.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P221.0-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P221.1-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P221-1_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P222-0_tl}{{P222}{%
+  \__mhchem_hp_s:nnn{20081216}{Contact met de lucht vermijden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P223-0_tl}{{P223}{%
+  \__mhchem_hp_s:nnn{20150601}{Contact met water vermijden.}{%
+  \__mhchem_hp_s:nnn{20081216}{Contact met water vermijden in verband met een heftige reactie en een mogelijke wolkbrand.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P230-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{20081216}{Vochtig houden met\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P230.0-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P230-1_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P231-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{20180301}{Inhoud onder inert gas/\hskip\z@skip{}\noexpand\textellipsis{} gebruiken en bewaren.}{%
+  \__mhchem_hp_s:nnn{20081216}{Onder inert gas werken.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P231.0-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P231.1-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P231-1_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P232-0_tl}{{P232}{%
+  \__mhchem_hp_s:nnn{20081216}{Tegen vocht beschermen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P233-0_tl}{{P233}{%
+  \__mhchem_hp_s:nnn{20081216}{In goed gesloten verpakking bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P234-0_tl}{{P234}{%
+  \__mhchem_hp_s:nnn{20081216}{Uitsluitend in de oorspronkelijke verpakking bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P235-0_tl}{{P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Koel bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P240-0_tl}{{P240}{%
+  \__mhchem_hp_s:nnn{20081216}{Opslag- en opvangreservoir aarden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P241-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{20180301}{Explosieveilige [elektrische/\hskip\z@skip{}ventilatie-/\hskip\z@skip{}verlichtings-/\hskip\z@skip{}\noexpand\textellipsis{}]apparatuur gebruiken.}{%
+  \__mhchem_hp_s:nnn{20081216}{Explosieveilige elektrische/\hskip\z@skip{}ventilatie-/\hskip\z@skip{}verlichtings-/\hskip\z@skip{}\noexpand\textellipsis{}apparatuur gebruiken.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P241.0-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P241.1-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P241.2-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P241.3-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P241-1_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P242-0_tl}{{P242}{%
+  \__mhchem_hp_s:nnn{20180301}{Vonkvrij gereedschap gebruiken.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uitsluitend vonkvrij gereedschap gebruiken.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P243-0_tl}{{P243}{%
+  \__mhchem_hp_s:nnn{20180301}{Maatregelen treffen om ontladingen van statische elektriciteit te voorkomen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Voorzorgsmaatregelen treffen tegen ontladingen van statische elektriciteit.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P244-0_tl}{{P244}{%
+  \__mhchem_hp_s:nnn{20150601}{Houd afsluiters en fittingen vrij van olie en vet.}{%
+  \__mhchem_hp_s:nnn{20081216}{Reduceerventielen vrij van olie en vet houden.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P250-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{20180301}{Malen/\hskip\z@skip{}schokken/\hskip\z@skip{}wrijving/\hskip\z@skip{}\noexpand\textellipsis{} vermijden.}{%
+  \__mhchem_hp_s:nnn{20081216}{Malen/\hskip\z@skip{}schokken/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}wrijving vermijden.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P250.0-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P250.1-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P250.2-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P250.3-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P250-1_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P251-0_tl}{{P251}{%
+  \__mhchem_hp_s:nnn{20150601}{Ook na gebruik niet doorboren of verbranden.}{%
+  \__mhchem_hp_s:nnn{20081216}{Houder onder druk: ook na gebruik niet doorboren of verbranden.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P260-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{20081216}{Stof/\hskip\z@skip{}rook/\hskip\z@skip{}gas/\hskip\z@skip{}nevel/\hskip\z@skip{}damp/\hskip\z@skip{}spuitnevel niet inademen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P260.0-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P260.1-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P260.2-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P260.3-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P260.4-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P260.5-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P260.6-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P261-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{20081216}{Inademing van stof/\hskip\z@skip{}rook/\hskip\z@skip{}gas/\hskip\z@skip{}nevel/\hskip\z@skip{}damp/\hskip\z@skip{}spuitnevel vermijden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P261.0-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P261.1-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P261.2-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P261.3-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P261.4-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P261.5-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P261.6-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P262-0_tl}{{P262}{%
+  \__mhchem_hp_s:nnn{20081216}{Contact met de ogen, de huid of de kleding vermijden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P263-0_tl}{{P263}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij zwangerschap of borstvoeding aanraking vermijden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P264-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{20081216}{Na het werken met dit product \noexpand\textellipsis{} grondig wassen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P264.0-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P264-1_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P270-0_tl}{{P270}{%
+  \__mhchem_hp_s:nnn{20081216}{Niet eten, drinken of roken tijdens het gebruik van dit product.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P271-0_tl}{{P271}{%
+  \__mhchem_hp_s:nnn{20081216}{Alleen buiten of in een goed geventileerde ruimte gebruiken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P272-0_tl}{{P272}{%
+  \__mhchem_hp_s:nnn{20081216}{Verontreinigde werkkleding mag de werkruimte niet verlaten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P273-0_tl}{{P273}{%
+  \__mhchem_hp_s:nnn{20081216}{Voorkom lozing in het milieu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P280-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{20081216}{Beschermende handschoenen/\hskip\z@skip{}beschermende kleding/\hskip\z@skip{}oogbescherming/\hskip\z@skip{}gelaatsbescherming dragen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P280.0-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P280.1-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P280.2-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P280.3-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P280.4-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P281-0_tl}{{P281}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{De nodige persoonlijke beschermingsuitrusting gebruiken.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P282-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{20180301}{Koude-isolerende handschoenen en hetzij gelaatsbescherming hetzij oogbescherming dragen.}{%
+  \__mhchem_hp_s:nnn{20170101}{Gelaatsbescherming/\hskip\z@skip{}oogbescherming/\hskip\z@skip{}koude-isolerende handschoenen dragen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Koude-isolerende handschoenen/\hskip\z@skip{}gelaatsbescherming/\hskip\z@skip{}oogbescherming dragen.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P282.0-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P282.1-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P282.2-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P282.3-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P283-0_tl}{{P283}{%
+  \__mhchem_hp_s:nnn{20180301}{Vuurbestendige of vlamvertragende kleding dragen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Vuur/\hskip\z@skip{}vlambestendige/\hskip\z@skip{}brandwerende kleding dragen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P284-0_tl}{{P284}{%
+  \__mhchem_hp_s:nnn{20150601}{[Bij ontoereikende ventilatie] adembescherming dragen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Adembescherming dragen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P285-0_tl}{{P285}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij ontoereikende ventilatie een geschikte adembescherming dragen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P231+P232-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{20180301}{Inhoud onder inert gas/\hskip\z@skip{}\noexpand\textellipsis{} gebruiken en bewaren. Tegen vocht beschermen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Onder inert gas werken. Tegen vocht beschermen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P231+P232.0-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P231+P232.1-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P231+P232-1_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P235+P410-0_tl}{{P235\,+\,\hskip\z@skip{}P410}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Koel bewaren. Tegen zonlicht beschermen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301-0_tl}{{P301}{%
+  \__mhchem_hp_s:nnn{20081216}{NA INSLIKKEN:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302-0_tl}{{P302}{%
+  \__mhchem_hp_s:nnn{20081216}{BIJ CONTACT MET DE HUID:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P303-0_tl}{{P303}{%
+  \__mhchem_hp_s:nnn{20081216}{BIJ CONTACT MET DE HUID (of het haar):}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P304-0_tl}{{P304}{%
+  \__mhchem_hp_s:nnn{20081216}{NA INADEMING:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P305-0_tl}{{P305}{%
+  \__mhchem_hp_s:nnn{20081216}{BIJ CONTACT MET DE OGEN:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P306-0_tl}{{P306}{%
+  \__mhchem_hp_s:nnn{20081216}{NA MORSEN OP KLEDING:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P307-0_tl}{{P307}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{NA blootstelling:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P308-0_tl}{{P308}{%
+  \__mhchem_hp_s:nnn{20081216}{NA (mogelijke) blootstelling:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P309-0_tl}{{P309}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{NA blootstelling of bij onwel voelen:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P310-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{20150601}{Onmiddellijk een ANTIGIFCENTRUM/\hskip\z@skip{}arts/\hskip\z@skip{}\noexpand\textellipsis{} raadplegen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Onmiddellijk een ANTIGIFCENTRUM of een arts raadplegen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P310.0-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P310.1-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P310.2-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P310-1_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P311-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Een ANTIGIFCENTRUM/\hskip\z@skip{}arts/\hskip\z@skip{}\noexpand\textellipsis{} raadplegen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Een ANTIGIFCENTRUM of een arts raadplegen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P311.0-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P311.1-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P311.2-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P311-1_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P312-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{20150601}{Bij onwel voelen een ANTIGIFCENTRUM/\hskip\z@skip{}arts/\hskip\z@skip{}\noexpand\textellipsis{} raadplegen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij onwel voelen een ANTIGIFCENTRUM of een arts raadplegen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P312.0-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P312.1-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P312.2-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P312-1_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P313-0_tl}{{P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Een arts raadplegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P314-0_tl}{{P314}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij onwel voelen een arts raadplegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P315-0_tl}{{P315}{%
+  \__mhchem_hp_s:nnn{20081216}{Onmiddellijk een arts raadplegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P320-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{20081216}{Specifieke behandeling dringend vereist (zie \noexpand\textellipsis{} op dit etiket).}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P320.0-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P320-1_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P320.nolabel-1_tl}{{P320.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P321-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{20081216}{Specifieke behandeling vereist (zie \noexpand\textellipsis{} op dit etiket).}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P321.0-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P321-1_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P321.nolabel-1_tl}{{P321.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P322-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Specifieke maatregelen (zie \noexpand\textellipsis{} op dit etiket).}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P322.0-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P322-1_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P322.nolabel-1_tl}{{P322.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P330-0_tl}{{P330}{%
+  \__mhchem_hp_s:nnn{20081216}{De mond spoelen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P331-0_tl}{{P331}{%
+  \__mhchem_hp_s:nnn{20081216}{GEEN braken opwekken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P332-0_tl}{{P332}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij huidirritatie:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P333-0_tl}{{P333}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij huidirritatie of uitslag:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P334-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{20180301}{In koud water onderdompelen [of nat verband aanbrengen].}{%
+  \__mhchem_hp_s:nnn{20081216}{In koud water onderdompelen/\hskip\z@skip{}nat verband aanbrengen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P334.0-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P334.1-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P334.2-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P335-0_tl}{{P335}{%
+  \__mhchem_hp_s:nnn{20081216}{Losse deeltjes van de huid afvegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P336-0_tl}{{P336}{%
+  \__mhchem_hp_s:nnn{20081216}{Bevroren lichaamsdelen met lauw water ontdooien. Niet wrijven op de betrokken plaatsen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P337-0_tl}{{P337}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij aanhoudende oogirritatie:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P338-0_tl}{{P338}{%
+  \__mhchem_hp_s:nnn{20081216}{Contactlenzen verwijderen, indien mogelijk. Blijven spoelen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P340-0_tl}{{P340}{%
+  \__mhchem_hp_s:nnn{20150601}{De persoon in de frisse lucht brengen en ervoor zorgen dat deze gemakkelijk kan ademen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Het slachtoffer in de frisse lucht brengen en laten rusten in een houding die het ademen vergemakkelijkt.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P341-0_tl}{{P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij ademhalingsmoeilijkheden het slachtoffer in de frisse lucht brengen en laten rusten in een houding die het ademen vergemakkelijkt.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P342-0_tl}{{P342}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij ademhalingssymptomen:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P350-0_tl}{{P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Voorzichtig wassen met veel water en zeep.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P351-0_tl}{{P351}{%
+  \__mhchem_hp_s:nnn{20081216}{Voorzichtig afspoelen met water gedurende een aantal minuten.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P352-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{20150601}{Met veel water/\hskip\z@skip{}\noexpand\textellipsis{} wassen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Met veel water en zeep wassen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P352.0-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P352.1-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P352-1_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P353-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{20180301}{Huid met water afspoelen [of afdouchen].}{%
+  \__mhchem_hp_s:nnn{20081216}{Huid met water afspoelen/\hskip\z@skip{}afdouchen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P353.0-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P353.1-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P353.2-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P360-0_tl}{{P360}{%
+  \__mhchem_hp_s:nnn{20081216}{Verontreinigde kleding en huid onmiddellijk met veel water afspoelen en pas daarna kleding uittrekken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P361-0_tl}{{P361}{%
+  \__mhchem_hp_s:nnn{20081216}{Verontreinigde kleding onmiddellijk uittrekken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P362-0_tl}{{P362}{%
+  \__mhchem_hp_s:nnn{20150601}{Verontreinigde kleding uittrekken.}{%
+  \__mhchem_hp_s:nnn{20081216}{Verontreinigde kleding uittrekken en wassen alvorens deze opnieuw te gebruiken.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P363-0_tl}{{P363}{%
+  \__mhchem_hp_s:nnn{20081216}{Verontreinigde kleding wassen alvorens deze opnieuw te gebruiken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P364-0_tl}{{P364}{%
+  \__mhchem_hp_s:nnn{20150601}{En wassen alvorens deze opnieuw te gebruiken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370-0_tl}{{P370}{%
+  \__mhchem_hp_s:nnn{20081216}{In geval van brand:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P371-0_tl}{{P371}{%
+  \__mhchem_hp_s:nnn{20081216}{In geval van grote brand en grote hoeveelheden:}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P372-0_tl}{{P372}{%
+  \__mhchem_hp_s:nnn{20180301}{Ontploffingsgevaar.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ontploffingsgevaar in geval van brand.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P373-0_tl}{{P373}{%
+  \__mhchem_hp_s:nnn{20081216}{NIET blussen wanneer het vuur de ontplofbare stoffen bereikt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P374-0_tl}{{P374}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Met normale voorzorgen vanaf een redelijke afstand blussen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P375-0_tl}{{P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Op afstand blussen omwille van ontploffingsgevaar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P376-0_tl}{{P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Het lek dichten als dat veilig gedaan kan worden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P377-0_tl}{{P377}{%
+  \__mhchem_hp_s:nnn{20081216}{Brand door lekkend gas: niet blussen, tenzij het lek veilig gedicht kan worden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P378-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{20081216}{Blussen met \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P378.0-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P378-1_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P380-0_tl}{{P380}{%
+  \__mhchem_hp_s:nnn{20081216}{Evacueren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P381-0_tl}{{P381}{%
+  \__mhchem_hp_s:nnn{20180301}{In geval van lekkage alle ontstekingsbronnen wegnemen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Alle ontstekingsbronnen wegnemen als dat veilig gedaan kan worden.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P390-0_tl}{{P390}{%
+  \__mhchem_hp_s:nnn{20081216}{Gelekte/\hskip\z@skip{}gemorste stof opnemen om materiële schade te vermijden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P391-0_tl}{{P391}{%
+  \__mhchem_hp_s:nnn{20081216}{Gelekte/\hskip\z@skip{}gemorste stof opruimen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P310-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{20150601}{NA INSLIKKEN: onmiddellijk een ANTIGIFCENTRUM/\hskip\z@skip{}arts/\hskip\z@skip{}\noexpand\textellipsis{} raadplegen.}{%
+  \__mhchem_hp_s:nnn{20081216}{NA INSLIKKEN: onmiddellijk een ANTIGIFCENTRUM of een arts raadplegen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P310.0-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P310.1-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P310.2-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P310-1_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P312-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{20150601}{NA INSLIKKEN: bij onwel voelen een ANTIGIFCENTRUM/\hskip\z@skip{}arts/\hskip\z@skip{}\noexpand\textellipsis{} raadplegen.}{%
+  \__mhchem_hp_s:nnn{20081216}{NA INSLIKKEN: bij onwel voelen een ANTIGIFCENTRUM of een arts raadplegen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P312.0-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P312.1-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P312.2-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P312-1_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P301+P330+P331-0_tl}{{P301\,+\,\hskip\z@skip{}P330\,+\,\hskip\z@skip{}P331}{%
+  \__mhchem_hp_s:nnn{20180301}{NA INSLIKKEN: de mond spoelen. GEEN braken opwekken.}{%
+  \__mhchem_hp_s:nnn{20081216}{NA INSLIKKEN: de mond spoelen -- GEEN braken opwekken.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{BIJ CONTACT MET DE HUID: in koud water onderdompelen of nat verband aanbrengen.}{%
+  \__mhchem_hp_s:nnn{20081216}{BIJ CONTACT MET DE HUID: in koud water onderdompelen/\hskip\z@skip{}nat verband aanbrengen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P335+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{BIJ CONTACT MET DE HUID: losse deeltjes van de huid afvegen. In koud water onderdompelen [of nat verband aanbrengen].}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P335+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P335+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P335+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P350-0_tl}{{P302\,+\,\hskip\z@skip{}P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{BIJ CONTACT MET DE HUID: voorzichtig wassen met veel water en zeep.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P352-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{20150601}{BIJ CONTACT MET DE HUID: met veel water/\hskip\z@skip{}\noexpand\textellipsis{} wassen.}{%
+  \__mhchem_hp_s:nnn{20081216}{BIJ CONTACT MET DE HUID: met veel water en zeep wassen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P352.0-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P352.1-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P302+P352-1_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P303+P361+P353-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{20180301}{BIJ CONTACT MET DE HUID (of het haar): verontreinigde kleding onmiddellijk uittrekken. Huid met water afspoelen [of afdouchen].}{%
+  \__mhchem_hp_s:nnn{20150601}{BIJ CONTACT MET DE HUID (of het haar): verontreinigde kleding onmiddellijk uittrekken. Huid met water afspoelen/\hskip\z@skip{}afdouchen.}{%
+  \__mhchem_hp_s:nnn{20081216}{BIJ CONTACT MET DE HUID (of het haar): verontreinigde kleding onmiddellijk uittrekken -- huid met water afspoelen/\hskip\z@skip{}afdouchen.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P303+P361+P353.0-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P303+P361+P353.1-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P303+P361+P353.2-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P304+P340-0_tl}{{P304\,+\,\hskip\z@skip{}P340}{%
+  \__mhchem_hp_s:nnn{20150601}{NA INADEMING: de persoon in de frisse lucht brengen en ervoor zorgen dat deze gemakkelijk kan ademen.}{%
+  \__mhchem_hp_s:nnn{20081216}{NA INADEMING: het slachtoffer in de frisse lucht brengen en laten rusten in een houding die het ademen vergemakkelijkt.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P304+P341-0_tl}{{P304\,+\,\hskip\z@skip{}P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{NA INADEMING: bij ademhalingsmoeilijkheden het slachtoffer in de frisse lucht brengen en laten rusten in een houding die het ademen vergemakkelijkt.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P305+P351+P338-0_tl}{{P305\,+\,\hskip\z@skip{}P351\,+\,\hskip\z@skip{}P338}{%
+  \__mhchem_hp_s:nnn{20081216}{BIJ CONTACT MET DE OGEN: voorzichtig afspoelen met water gedurende een aantal minuten; contactlenzen verwijderen, indien mogelijk; blijven spoelen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P306+P360-0_tl}{{P306\,+\,\hskip\z@skip{}P360}{%
+  \__mhchem_hp_s:nnn{20081216}{NA MORSEN OP KLEDING: verontreinigde kleding en huid onmiddellijk met veel water afspoelen en pas daarna kleding uittrekken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P307+P311-0_tl}{{P307\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{NA blootstelling: een ANTIGIFCENTRUM of een arts raadplegen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P308+P311-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{NA (mogelijke) blootstelling: Een ANTIGIFCENTRUM/\hskip\z@skip{}arts/\hskip\z@skip{}\noexpand\textellipsis{} raadplegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P308+P311.0-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P308+P311.1-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P308+P311.2-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P308+P311-1_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P308+P313-0_tl}{{P308\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{NA (mogelijke) blootstelling: een arts raadplegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P309+P311-0_tl}{{P309\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{NA blootstelling of bij onwel voelen: een ANTIGIFCENTRUM of een arts raadplegen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P332+P313-0_tl}{{P332\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij huidirritatie: een arts raadplegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P333+P313-0_tl}{{P333\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij huidirritatie of uitslag: een arts raadplegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P335+P334-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Losse deeltjes van de huid afvegen. In koud water onderdompelen/\hskip\z@skip{}nat verband aanbrengen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P335+P334.0-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P335+P334.1-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P335+P334.2-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P336+P315-0_tl}{{P336\,+\,\hskip\z@skip{}P315}{%
+  \__mhchem_hp_s:nnn{20180301}{Bevroren lichaamsdelen met lauw water ontdooien. Niet wrijven. Onmiddellijk een arts raadplegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P337+P313-0_tl}{{P337\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij aanhoudende oogirritatie: een arts raadplegen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P342+P311-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Bij ademhalingssymptomen: Een ANTIGIFCENTRUM/\hskip\z@skip{}arts/\hskip\z@skip{}\noexpand\textellipsis{} raadplegen.}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij ademhalingssymptomen: een ANTIGIFCENTRUM of een arts raadplegen.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P342+P311.0-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P342+P311.1-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P342+P311.2-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P342+P311-1_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P361+P364-0_tl}{{P361\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Verontreinigde kleding onmiddellijk uittrekken en wassen alvorens deze opnieuw te gebruiken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P362+P364-0_tl}{{P362\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Verontreinigde kleding uittrekken en wassen alvorens deze opnieuw te gebruiken.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P372+P380+P373-0_tl}{{P370\,+\,\hskip\z@skip{}P372\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P373}{%
+  \__mhchem_hp_s:nnn{20180301}{In geval van brand: ontploffingsgevaar. Evacueren. NIET blussen wanneer het vuur de ontplofbare stoffen bereikt.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P376-0_tl}{{P370\,+\,\hskip\z@skip{}P376}{%
+  \__mhchem_hp_s:nnn{20081216}{In geval van brand: het lek dichten als dat veilig gedaan kan worden.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{20081216}{In geval van brand: blussen met \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P380-0_tl}{{P370\,+\,\hskip\z@skip{}P380}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{In geval van brand: evacueren.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P380+P375-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{In geval van brand: evacueren. Op afstand blussen omwille van ontploffingsgevaar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P380+P375+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P380+P375+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P380+P375+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P371+P380+P375-0_tl}{{P371\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{In geval van grote brand en grote hoeveelheden: evacueren. Op afstand blussen omwille van ontploffingsgevaar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P401-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{20180301}{Overeenkomstig \noexpand\textellipsis{} bewaren.}{%
+  \__mhchem_hp_s:nnn{20081216}{\noexpand\textellipsis{} bewaren.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P401.0-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P401-1_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P402-0_tl}{{P402}{%
+  \__mhchem_hp_s:nnn{20081216}{Op een droge plaats bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P403-0_tl}{{P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Op een goed geventileerde plaats bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P404-0_tl}{{P404}{%
+  \__mhchem_hp_s:nnn{20081216}{In gesloten verpakking bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P405-0_tl}{{P405}{%
+  \__mhchem_hp_s:nnn{20081216}{Achter slot bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P406-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{20081216}{In corrosiebestendige/\hskip\z@skip{}\noexpand\textellipsis{} houder met corrosiebestendige binnenbekleding bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P406.0-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P406.1-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P406-1_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P407-0_tl}{{P407}{%
+  \__mhchem_hp_s:nnn{20180301}{Ruimte laten tussen stapels of pallets.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ruimte laten tussen stapels/\hskip\z@skip{}pallets.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P410-0_tl}{{P410}{%
+  \__mhchem_hp_s:nnn{20081216}{Tegen zonlicht beschermen.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P411-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{20101201}{Bij maximaal \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F bewaren.}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij maximaal \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F bewaren.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P411.0-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P411.1-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P411.2-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P412-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Niet blootstellen aan temperaturen boven 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Niet blootstellen aan temperaturen boven 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P412.0-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P412.1-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P412.2-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P413-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{20101201}{Bulkmateriaal, indien meer dan \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{}\,lbs, bij temperaturen van maximaal \noexpand\textellipsis{}\,\noexpand\textdegree{}C bewaren.}{%
+  \__mhchem_hp_s:nnn{20081216}{Bulkmateriaal, indien meer dan \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{}\,lbs, bij temperaturen van maximaal \noexpand\textellipsis{}\,\noexpand\textdegree{}C bewaren.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P413.0-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P413.1-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P413.2-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P420-0_tl}{{P420}{%
+  \__mhchem_hp_s:nnn{20180301}{Gescheiden bewaren.}{%
+  \__mhchem_hp_s:nnn{20081216}{Gescheiden van ander materiaal bewaren.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P422-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Onder \noexpand\textellipsis{} bewaren.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P422.0-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P422-1_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P402+P404-0_tl}{{P402\,+\,\hskip\z@skip{}P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Op een droge plaats bewaren. In gesloten verpakking bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P403+P233-0_tl}{{P403\,+\,\hskip\z@skip{}P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Op een goed geventileerde plaats bewaren. In goed gesloten verpakking bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P403+P235-0_tl}{{P403\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Op een goed geventileerde plaats bewaren. Koel bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P410+P403-0_tl}{{P410\,+\,\hskip\z@skip{}P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Tegen zonlicht beschermen. Op een goed geventileerde plaats bewaren.}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P410+P412-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Tegen zonlicht beschermen. Niet blootstellen aan temperaturen boven 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Tegen zonlicht beschermen. Niet blootstellen aan temperaturen boven 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P410+P412.0-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P410+P412.1-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P410+P412.2-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P411+P235-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20101201}{Bij maximaal \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F bewaren. Koel bewaren.}{%
+  \__mhchem_hp_s:nnn{20081216}{Bij maximaal \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F bewaren. Koel bewaren.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P411+P235.0-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P411+P235.1-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P411+P235.2-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P501-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{20081216}{Inhoud/\hskip\z@skip{}verpakking afvoeren naar \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P501.0-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P501.0-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P501.1-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P501.2-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P502-0_tl}{{P502}{%
+  \__mhchem_hp_s:nnn{20180301}{Raadpleeg fabrikant of leverancier voor informatie over terugwinning of recycling.}{%
+  \__mhchem_hp_s:nnn{20110419}{Raadpleeg fabrikant/\hskip\z@skip{}leverancier voor informatie over terugwinning/\hskip\z@skip{}recycling}{}}}}%
+\tl_gset:cn{g__mhchem_hp_nl_P370+P380+P375[+P378]-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375[\,+\,\hskip\z@skip{}P378]}{%
+  \__mhchem_hp_s:nnn{20180301}{In geval van brand: evacueren. Op afstand blussen in verband met ontploffingsgevaar. [Blussen met \noexpand\textellipsis{}].}{}}}%
+%
+\group_end:
+\ExplSyntaxOff

@@ -1,0 +1,147 @@
+%%
+%% This is file `floatpag.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% floatpag.dtx  (with options: `package')
+%% 
+%% Copyright (C) 1999-2012 by Vytas Statulevi\v{c}ius <vytas@vtex.lt>
+%% Copyright (C) 2021 by Sigitas Tolu\v{s}is <sigitas@vtex.lt>
+%% UAB VTeX, Mokslininkų 2A, LT-08412 Vilnius, Lithuania
+%% --------------------------------------------------------------------------
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% The macros, developed by Sigitas Tolu\v{s}is <sigitas@vtex.lt>,
+%% were used in this package.
+%%
+%% The Current Maintainer of this work is Sigitas Tolu\v{s}is.
+%%
+%% PURPOSE: provides commands to apply different pagestyles
+%%          to the full page floats.
+%%
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{floatpag}
+    [2021/10/04 v2.0 Different pagestyles on float pages]
+
+\def\floatpagestyle#1{\gdef\at@float@page{\thispagestyle{#1}}}
+\def\rotfloatpagestyle#1{\gdef\@r@f@pagestyle{#1}}
+\floatpagestyle{headings}
+\rotfloatpagestyle{plain}
+\def\thisfloatpagestyle#1{%
+  \global\@namedef{\number\@currbox @float}{\thispagestyle{#1}}\relax
+  }
+%% Modify |\x@float| - ordinary floats
+\def\@xfloat #1[#2]{%
+  \@nodocument
+  \def \@captype {#1}%
+   \def \@fps {#2}%
+   \@onelevel@sanitize \@fps
+   \def \reserved@b {!}%
+   \ifx \reserved@b \@fps
+     \@fpsadddefault
+   \else
+     \ifx \@fps \@empty
+       \@fpsadddefault
+     \fi
+   \fi
+   \ifhmode
+     \@bsphack
+     \@floatpenalty -\@Mii
+   \else
+     \@floatpenalty-\@Miii
+   \fi
+  \ifinner
+     \@parmoderr\@floatpenalty\z@
+  \else
+    \@next\@currbox\@freelist
+      {%
+       \@tempcnta \sixt@@n
+       \expandafter \@tfor \expandafter \reserved@a
+         \expandafter :\expandafter =\@fps
+         \do
+          {%
+           \if \reserved@a h%
+             \ifodd \@tempcnta
+             \else
+               \advance \@tempcnta \@ne
+             \fi
+           \else\if \reserved@a t%
+             \@setfpsbit \tw@
+           \else\if \reserved@a b%
+             \@setfpsbit 4%
+           \else\if \reserved@a p%
+             \@setfpsbit 8%
+           \else\if \reserved@a !%
+             \ifnum \@tempcnta>15
+               \advance\@tempcnta -\sixt@@n\relax
+             \fi
+           \else
+             \@latex@error{Unknown float option `\reserved@a'}%
+             {Option `\reserved@a' ignored and `p' used.}%
+             \@setfpsbit 8%
+           \fi\fi\fi\fi\fi
+           }%
+       \@tempcntb \csname ftype@\@captype \endcsname
+       \multiply \@tempcntb \@xxxii
+       \advance \@tempcnta \@tempcntb
+       \global \count\@currbox \@tempcnta
+       \global\@namedef{\number\@currbox @float}{\at@float@page}\relax
+       }%
+    \@fltovf
+  \fi
+  \global \setbox\@currbox
+    \color@vbox
+      \normalcolor
+      \vbox \bgroup
+        \hsize\columnwidth
+        \@parboxrestore
+        \@floatboxreset
+  }
+\def\floatpag@@xrotfloat#1[#2]{%
+  \@float{#1}[#2]%
+  \thisfloatpagestyle{\@r@f@pagestyle}%
+  \begin{lrbox}\rot@float@box
+  \begin{minipage}\textheight
+  }
+\def\floatpag@@rotxdblfloat#1[#2]{%
+  \@float{#1}[#2]%
+  \thisfloatpagestyle{\@r@f@pagestyle}%
+  \hsize\textwidth\linewidth\textwidth
+  \begin{lrbox}\rot@float@box
+  \begin{minipage}\textheight
+}
+\AtBeginDocument{%
+  \let\@xrotfloat\floatpag@@xrotfloat
+  \let\@rotxdblfloat\floatpag@@rotxdblfloat
+  }%
+%% "Hook" in the output procedure.
+\def\spec@float#1{%
+  \@nameuse{\number#1@float}%
+  \global\@namedef{\number#1@float}{}%
+  }
+\def\@vtryfc#1{%
+  \global\setbox\@outputbox\vbox{}%
+  \let\@elt\@wtryfc
+  \@flsucceed
+  \let\@elt\spec@float
+  \@flsucceed
+  \global\setbox\@outputbox \vbox to\@colht{%
+    \vskip \@fptop
+    \vskip -\@fpsep
+    \unvbox \@outputbox
+    \vskip \@fpbot
+    }%
+  \let\@elt\relax
+  \xdef#1{\@failedlist\@flfail}%
+  \xdef\@freelist{\@freelist\@flsucceed}%
+  }
+\endinput
+%%
+%% End of file `floatpag.sty'.

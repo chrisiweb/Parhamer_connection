@@ -1,0 +1,19 @@
+name vruler
+category Package
+revision 21598
+shortdesc Numbering text
+longdesc The package offers facilities for adding a columns of numbering
+longdesc to the general text so that the text can be properly
+longdesc referenced. The vertical ruler can be scaled and moved freely.
+longdesc The package may be used either with LaTeX or with plain TeX.
+containersize 6004
+containerchecksum 39582bec5217d65179b4293a18697cae20b35a0ec5416497691d16dbb919d78d4463ae15f2f05d308f45c65481f611a3f699cce9f5a3c311b84bde08fdd5f234
+doccontainersize 220752
+doccontainerchecksum dad09087e028977501fe143ae050c57938500b8aa98bddc1afefb298444d17c37cdc5b9db2e9d01df5e9f6a47679e0659b21a2844d268f8b324a24bbf22d9492
+runfiles size=5
+ texmf-dist/tex/latex/vruler/vruler.sty
+catalogue-also lineno numline
+catalogue-ctan /macros/latex/contrib/vruler
+catalogue-license lppl1
+catalogue-topics layout
+catalogue-version 2.3

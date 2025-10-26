@@ -1,0 +1,23 @@
+name expex
+category Package
+revision 44499
+shortdesc Linguistic examples and glosses, with reference capabilities
+longdesc The package provides macros for typesetting linguistic examples
+longdesc and glosses, with a refined mechanism for referencing examples
+longdesc and parts of examples. The package can be used with LaTeX using
+longdesc the .sty wrapper or with PlainTex.
+containersize 19332
+containerchecksum b447a885d65a000f0b79b4c9b050bc89bb32b71426a29261d282fad72428fcf64dc6c660d9142114094bba32040c8e723190e553260c3899a1c1923ebb9f765e
+doccontainersize 473776
+doccontainerchecksum b0dce6401ccdef7fbfebbcdef9d68f073058f935eabc95fa45619f4d4d85e6b53e15091d845593255c000c3e672dabadb1cef024b2b0c79765f4f6a231de86e6
+runfiles size=24
+ texmf-dist/tex/generic/expex/epltxchapno.sty
+ texmf-dist/tex/generic/expex/epltxfn.sty
+ texmf-dist/tex/generic/expex/eptexfn.tex
+ texmf-dist/tex/generic/expex/expex-demo.tex
+ texmf-dist/tex/generic/expex/expex.sty
+ texmf-dist/tex/generic/expex/expex.tex
+catalogue-ctan /macros/generic/expex
+catalogue-license lppl
+catalogue-topics linguistic
+catalogue-version 5.1b

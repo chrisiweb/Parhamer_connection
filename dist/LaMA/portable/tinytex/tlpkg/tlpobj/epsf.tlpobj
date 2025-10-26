@@ -1,0 +1,23 @@
+name epsf
+category Package
+revision 21461
+shortdesc Simple macros for EPS inclusion
+longdesc The original (and now obsolescent) graphics inclusion macros
+longdesc for use with dvips, still widely used by Plain TeX users (in
+longdesc particular). For LaTeX users, the package is nowadays (rather
+longdesc strongly) deprecated in favour of the more sophisticated
+longdesc standard LaTeX latex-graphics bundle of packages. (The
+longdesc latex-graphics bundle is also available to Plain TeX users, via
+longdesc its Plain TeX version.)
+containersize 7544
+containerchecksum 4c3698edc9ef386b08a2ed7c360d926be6ca5a8284e3e53e0dcf5f222eeb27d4d33b4547b42dd2e5544ab381397aafcd58899376d26a4d9d47beee00ad1e9bda
+doccontainersize 274016
+doccontainerchecksum 52be704eec6159e70d99ae2a4823c1da0790f41da9e6de130c84cc77e0d8d29aae145ccb9b416ddc5c9641100821f5099b5c597a350438652381be903e7681bb
+runfiles size=14
+ texmf-dist/tex/generic/epsf/epsf.sty
+ texmf-dist/tex/generic/epsf/epsf.tex
+catalogue-also epsfx
+catalogue-ctan /macros/generic/epsf
+catalogue-license pd
+catalogue-topics graphics-incl
+catalogue-version 2.7.4

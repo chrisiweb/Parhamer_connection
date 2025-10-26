@@ -1,0 +1,62 @@
+\ProvidesFile{ot1ntxnumr.fd}[2023/09/18 v1.0]
+\expandafter\ifx\csname ntx@scaled\endcsname\relax
+  \global\let\ntx@scaled\@empty%
+\fi
+
+\DeclareFontFamily{OT1}{ntxnumr}{}
+\DeclareFontShape{OT1}{ntxnumr}{m}{n}{	%medium
+     <-> \ntx@scaled ntxnumr-Regular-ot1%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{m}{it}{	%italic
+     <-> \ntx@scaled ntxnumr-Italic-ot1%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{b}{n}{	%bold 
+     <-> \ntx@scaled ntxnumr-Bold-ot1%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{b}{it}{   	%bold italic
+     <-> \ntx@scaled ntxnumr-BoldItalic-ot1%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{b}{sl}{   	%bold slanted
+     <-> ssub * ntxnumr/b/it%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{m}{sl}{   	%bslanted
+     <-> ssub * ntxnumr/m/it%
+}{}
+
+\DeclareFontShape{OT1}{ntxnumr}{m}{sc}{	%cap & small cap
+     <-> ssub * ntxnumr/m/n%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{m}{scit}{	%italic
+     <-> ssub * ntxnumr/m/it%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{m}{ui}{   	%unslanted italic
+     <-> ssub * ntxnumr/m/n%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{bx}{sc}{	%bold extended cap & small cap
+     <-> ssub * ntxnumr/b/n%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{bx}{sl}{	%bold extended slanted
+     <-> ssub * ntxnumr/b/sl%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{bx}{it}{	%bold extended italic
+     <-> ssub * ntxnumr/b/it%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{bx}{scit}{	%bold extended italic
+     <-> ssub * ntxnumr/b/it%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{bx}{ui}{  	%bold extended unslanted italic
+     <-> ssub * ntxnumr/b/n%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{bx}{n}{	%bold extended
+     <-> ssub * ntxnumr/b/n%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{b}{sc}{	%bold cap & small cap
+     <-> ssub * ntxnumr/b/n%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{b}{ui}{   	%bold unslanted italic
+     <-> ssub * ntxnumr/b/n%
+}{}
+\DeclareFontShape{OT1}{ntxnumr}{b}{scit}{   	%bold italic
+     <-> ssub * ntxnumr/b/it%
+}{}
+\endinput

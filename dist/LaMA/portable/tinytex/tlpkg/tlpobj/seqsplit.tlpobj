@@ -1,0 +1,24 @@
+name seqsplit
+category Package
+revision 15878
+shortdesc Split long sequences of characters in a neutral way
+longdesc When one needs to type long sequences of letters (such as in
+longdesc base-sequences in genes) or of numbers (such as calculations of
+longdesc transcendental numbers), there's no obvious break points to be
+longdesc found. The package provides a command \seqsplit, which makes
+longdesc its argument splittable anywhere, and then leaves the TeX
+longdesc paragraph-maker to do the splitting. While the package may
+longdesc obviously be used to typeset DNA sequences, the user may
+longdesc consider the dnaseq as a rather more powerful alternative.
+containersize 1296
+containerchecksum 02413d104e12aad40f093731e2d28d0354216d3d57e6f811609f398b8122bdbf906f78cef38f355562efb4e7df6dca314f8548d8d8c03a2a9404addc42f0e1f3
+doccontainersize 110396
+doccontainerchecksum 0c49425b619ac62da4eb2392c51cb7726d9bab008910a88ec36b866717c8ac341be0903e3014ed36a30ac701fafc453a0e319470f2f65eb6775d6ff52b9f07e9
+srccontainersize 5408
+srccontainerchecksum 7349cf842e7142c5c13e46d16acc35535cf34be8a4985f9a581a4338ca54beffbd80fe2820123652f3ffc868bcfe1c995200ab918c99b19d6c2ee339b61354e3
+runfiles size=1
+ texmf-dist/tex/latex/seqsplit/seqsplit.sty
+catalogue-ctan /macros/latex/contrib/seqsplit
+catalogue-license lppl
+catalogue-topics hyph-pseudo
+catalogue-version 0.1

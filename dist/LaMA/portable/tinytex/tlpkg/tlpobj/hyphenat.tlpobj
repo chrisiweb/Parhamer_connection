@@ -1,0 +1,21 @@
+name hyphenat
+category Package
+revision 15878
+shortdesc Disable/enable hypenation
+longdesc This package can disable all hyphenation or enable hyphenation
+longdesc of non-alphabetics or monospaced fonts. The package can also
+longdesc enable hyphenation within 'words' that contain non-alphabetic
+longdesc characters (e.g., that include underscores), and hyphenation of
+longdesc text typeset in monospaced (e.g., cmtt) fonts.
+containersize 1692
+containerchecksum 5af847cd55cc1b455b1928f6ba275054209ad5c9c2f81a7ae648d87eaa39353e842b2df4e91cf530909a46b4aa226228978d771b35e46b7e12f1a08a08faa181
+doccontainersize 151796
+doccontainerchecksum 57f8a5d71763cac73635fddba75eb59faaaed01d47bcbb7ecc96b80fa5a926bb0091d3cd3448c6f53ad82cd44c9244ee631fb5b56141351b578cd899509eb323
+srccontainersize 10404
+srccontainerchecksum 781337dbca0ecf6155221b768ace1fec364bd1ddf29e3df36b2da64b6137a09996423466c8241cc5107c3eba056b4bf5c54572af77e781fe8e1e7f02264d9577
+runfiles size=2
+ texmf-dist/tex/latex/hyphenat/hyphenat.sty
+catalogue-ctan /macros/latex/contrib/hyphenat
+catalogue-license lppl1.3
+catalogue-topics hyphenation
+catalogue-version 2.3c

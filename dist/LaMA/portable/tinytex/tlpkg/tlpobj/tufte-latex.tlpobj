@@ -1,0 +1,26 @@
+name tufte-latex
+category Package
+revision 37649
+shortdesc Document classes inspired by the work of Edward Tufte
+longdesc Provided are two classes inspired, respectively, by handouts
+longdesc and books created by Edward Tufte.
+depend changepage
+depend ifmtarg
+depend paralist
+depend placeins
+depend sauerj
+depend xifthen
+containersize 21568
+containerchecksum 6dd01a5a6faf37439ca9aab23534f99050b84bfac16df48545417ee03e72700344c25b2de3262e8e28406da705d50296473a815fa14b701c609b3715f01405d1
+doccontainersize 453460
+doccontainerchecksum 11ac57e79a05db644235b6db851473c75d1538a1261d7022a63d9ab0cc54486cc13b7cc95c44d16912952e46bc9264c1bfb831a728b51a03495d01f1963410d3
+runfiles size=27
+ texmf-dist/bibtex/bst/tufte-latex/tufte.bst
+ texmf-dist/tex/latex/tufte-latex/tufte-book.cls
+ texmf-dist/tex/latex/tufte-latex/tufte-common.def
+ texmf-dist/tex/latex/tufte-latex/tufte-handout.cls
+catalogue-contact-repository https://tufte-latex.github.io/tufte-latex/
+catalogue-ctan /macros/latex/contrib/tufte-latex
+catalogue-license apache2
+catalogue-topics book-pub class
+catalogue-version 3.5.2

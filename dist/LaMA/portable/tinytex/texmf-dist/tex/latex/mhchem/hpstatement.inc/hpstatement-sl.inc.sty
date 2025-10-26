@@ -1,0 +1,1025 @@
+%% hpstatement-sl.inc.sty
+%% 2024-01-29
+%% Copyright 2019-2024 Martin Hensel
+%
+%% This file is part of the mhchem bundle for LaTeX
+%
+%% For the content of the phrases:
+% This work is licensed under the Creative Commons Attribution 4.0 International licence
+% (https://creativecommons.org/licenses/by/4.0/). This means that you can re-use the content
+% provided you acknowledge the source and indicate any changes you have made.
+% The data is not necessarily comprehensive, complete, accurate or up to date.
+% The acknowledgement is not needed when using statements of the data set for labelling products, of course, as this is the intended usage.
+% (c) European Union, https://eur-lex.europa.eu, 1998-2023, CC BY 4.0
+% (c) hpstatements contributors, https://github.com/mhchem/hpstatements/contributors, 2019-2024, CC BY 4.0
+%
+%
+\ExplSyntaxOn
+\group_begin:
+\char_set_catcode_space:n {`\ }% allow spaces
+\char_set_catcode_letter:n {`\@}%
+%
+\tl_gset:cn{g__mhchem_hp_sl_H200-0_tl}{{H200}{%
+  \__mhchem_hp_s:nnn{20081216}{Nestabilni eksplozivi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H201-0_tl}{{H201}{%
+  \__mhchem_hp_s:nnn{20081216}{Eksplozivno; nevarnost eksplozije v masi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H202-0_tl}{{H202}{%
+  \__mhchem_hp_s:nnn{20081216}{Eksplozivno, velika nevarnost za nastanek drobcev.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H203-0_tl}{{H203}{%
+  \__mhchem_hp_s:nnn{20081216}{Eksplozivno; nevarnost za nastanek požara, udarnega vala ali drobcev.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H204-0_tl}{{H204}{%
+  \__mhchem_hp_s:nnn{20081216}{Nevarnost za nastanek požara ali drobcev.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H205-0_tl}{{H205}{%
+  \__mhchem_hp_s:nnn{20081216}{Pri požaru lahko eksplodira v masi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H206-0_tl}{{H206}{%
+  \__mhchem_hp_s:nnn{20201017}{Nevarnost za nastanek požara, udarnega vala ali drobcev; povečana nevarnost eksplozije, če se zmanjša vsebnost desenzibilizatorja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H207-0_tl}{{H207}{%
+  \__mhchem_hp_s:nnn{20201017}{Nevarnost za nastanek požara ali drobcev; povečana nevarnost eksplozije, če se zmanjša vsebnost desenzibilizatorja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H208-0_tl}{{H208}{%
+  \__mhchem_hp_s:nnn{20201017}{Nevarnost za nastanek požara; povečana nevarnost eksplozije, če se zmanjša vsebnost desenzibilizatorja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H220-0_tl}{{H220}{%
+  \__mhchem_hp_s:nnn{20081216}{Zelo lahko vnetljiv plin.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H221-0_tl}{{H221}{%
+  \__mhchem_hp_s:nnn{20081216}{Vnetljiv plin.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H222-0_tl}{{H222}{%
+  \__mhchem_hp_s:nnn{20081216}{Zelo lahko vnetljiv aerosol.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H223-0_tl}{{H223}{%
+  \__mhchem_hp_s:nnn{20081216}{Vnetljiv aerosol.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H224-0_tl}{{H224}{%
+  \__mhchem_hp_s:nnn{20081216}{Zelo lahko vnetljiva tekočina in hlapi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H225-0_tl}{{H225}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko vnetljiva tekočina in hlapi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H226-0_tl}{{H226}{%
+  \__mhchem_hp_s:nnn{20081216}{Vnetljiva tekočina in hlapi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H228-0_tl}{{H228}{%
+  \__mhchem_hp_s:nnn{20081216}{Vnetljiva trdna snov.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H229-0_tl}{{H229}{%
+  \__mhchem_hp_s:nnn{20150601}{Posoda je pod tlakom: lahko eksplodira pri segrevanju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H230-0_tl}{{H230}{%
+  \__mhchem_hp_s:nnn{20150601}{Lahko reagira eksplozivno tudi v odsotnosti zraka.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H231-0_tl}{{H231}{%
+  \__mhchem_hp_s:nnn{20150601}{Lahko reagira eksplozivno tudi v odsotnosti zraka pri povišanem tlaku in/\hskip\z@skip{}ali temperature.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H232-0_tl}{{H232}{%
+  \__mhchem_hp_s:nnn{20201017}{V stiku z zrakom lahko pride do samodejnega vžiga.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H240-0_tl}{{H240}{%
+  \__mhchem_hp_s:nnn{20081216}{Segrevanje lahko povzroči eksplozijo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H241-0_tl}{{H241}{%
+  \__mhchem_hp_s:nnn{20081216}{Segrevanje lahko povzroči požar ali eksplozijo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H242-0_tl}{{H242}{%
+  \__mhchem_hp_s:nnn{20081216}{Segrevanje lahko povzroči požar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H250-0_tl}{{H250}{%
+  \__mhchem_hp_s:nnn{20081216}{Samodejno se vžge na zraku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H251-0_tl}{{H251}{%
+  \__mhchem_hp_s:nnn{20081216}{Samosegrevanje: lahko povzroči požar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H252-0_tl}{{H252}{%
+  \__mhchem_hp_s:nnn{20081216}{Samosegrevanje v velikih količinah; lahko povzroči požar.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H260-0_tl}{{H260}{%
+  \__mhchem_hp_s:nnn{20081216}{V stiku z vodo se sproščajo vnetljivi plini, ki se lahko samodejno vžgejo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H261-0_tl}{{H261}{%
+  \__mhchem_hp_s:nnn{20081216}{V stiku z vodo se sproščajo vnetljivi plini.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H270-0_tl}{{H270}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko povzroči ali okrepi požar; oksidativna snov.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H271-0_tl}{{H271}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko povzroči požar ali eksplozijo; močna oksidativna snov.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H272-0_tl}{{H272}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko okrepi požar; oksidativna snov.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H280-0_tl}{{H280}{%
+  \__mhchem_hp_s:nnn{20081216}{Vsebuje plin pod tlakom; segrevanje lahko povzroči eksplozijo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H281-0_tl}{{H281}{%
+  \__mhchem_hp_s:nnn{20081216}{Vsebuje ohlajen utekočinjen plin; lahko povzroči ozebline ali poškodbe.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H290-0_tl}{{H290}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko je jedko za kovine.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H300-0_tl}{{H300}{%
+  \__mhchem_hp_s:nnn{20081216}{Smrtno pri zaužitju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H301-0_tl}{{H301}{%
+  \__mhchem_hp_s:nnn{20081216}{Strupeno pri zaužitju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H302-0_tl}{{H302}{%
+  \__mhchem_hp_s:nnn{20081216}{Zdravju škodljivo pri zaužitju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H304-0_tl}{{H304}{%
+  \__mhchem_hp_s:nnn{20081216}{Pri zaužitju in vstopu v dihalne poti je lahko smrtno.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H310-0_tl}{{H310}{%
+  \__mhchem_hp_s:nnn{20081216}{Smrtno v stiku s kožo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H311-0_tl}{{H311}{%
+  \__mhchem_hp_s:nnn{20081216}{Strupeno v stiku s kožo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H312-0_tl}{{H312}{%
+  \__mhchem_hp_s:nnn{20081216}{Zdravju škodljivo v stiku s kožo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H314-0_tl}{{H314}{%
+  \__mhchem_hp_s:nnn{20081216}{Povzroča hude opekline kože in poškodbe oči.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H315-0_tl}{{H315}{%
+  \__mhchem_hp_s:nnn{20081216}{Povzroča draženje kože.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H317-0_tl}{{H317}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko povzroči alergijski odziv kože.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H318-0_tl}{{H318}{%
+  \__mhchem_hp_s:nnn{20081216}{Povzroča hude poškodbe oči.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H319-0_tl}{{H319}{%
+  \__mhchem_hp_s:nnn{20081216}{Povzroča hudo draženje oči.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H330-0_tl}{{H330}{%
+  \__mhchem_hp_s:nnn{20081216}{Smrtno pri vdihavanju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H331-0_tl}{{H331}{%
+  \__mhchem_hp_s:nnn{20081216}{Strupeno pri vdihavanju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H332-0_tl}{{H332}{%
+  \__mhchem_hp_s:nnn{20081216}{Zdravju škodljivo pri vdihavanju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H334-0_tl}{{H334}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko povzroči simptome alergije ali astme ali težave z dihanjem pri vdihavanju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H335-0_tl}{{H335}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko povzroči draženje dihalnih poti.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H336-0_tl}{{H336}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko povzroči zaspanost ali omotico.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H340-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko povzroči genetske okvare \noexpand\textless{}navesti način izpostavljenosti, če je prepričljivo dokazano, da noben drug način izpostavljenosti ne povzroča takšne nevarnosti\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H340.0-0_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H340-1empty_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H340-1_tl}{{H340}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H341-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{20081216}{Sum povzročitve genetskih okvar \noexpand\textless{}navesti način izpostavljenosti, če je prepričljivo dokazano, da noben drug način izpostavljenosti ne povzroča takšne nevarnosti\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H341.0-0_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H341-1empty_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H341-1_tl}{{H341}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H350-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko povzroči raka \noexpand\textless{}navesti način izpostavljenosti, če je prepričljivo dokazano, da noben drug način izpostavljenosti ne povzroča takšne nevarnosti\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H350.0-0_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H350-1empty_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H350-1_tl}{{H350}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H350i-0_tl}{{H350i}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko povzroči raka pri vdihavanju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H351-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{20081216}{Sum povzročitve raka \noexpand\textless{}navesti način izpostavljenosti, če je prepričljivo dokazano, da noben drug način izpostavljenosti ne povzroča takšne nevarnosti\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H351.0-0_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H351-1empty_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H351-1_tl}{{H351}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H360-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko škoduje plodnosti ali nerojenemu otroku \noexpand\textless{}navesti posebni učinek, če je znan\noexpand\textgreater{} \noexpand\textless{}navesti način izpostavljenosti, če je prepričljivo dokazano, da noben drug način izpostavljenosti ne povzroča takšne nevarnosti\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H360.0-0_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H360-1empty_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H360-1_tl}{{H360}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H360F-0_tl}{{H360F}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko škoduje plodnosti.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H360D-0_tl}{{H360D}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko škoduje nerojenemu otroku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H360FD-0_tl}{{H360FD}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko škoduje plodnosti. Lahko škoduje nerojenemu otroku.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H360Fd-0_tl}{{H360Fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko škoduje plodnosti. Sum škodljivosti za nerojenega otroka.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H360Df-0_tl}{{H360Df}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko škoduje nerojenemu otroku. Sum škodljivosti za plodnost.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H361-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{20081216}{Sum škodljivosti za plodnost ali nerojenega otroka \noexpand\textless{}navesti posebni učinek, če je znan\noexpand\textgreater{} \noexpand\textless{}navesti način izpostavljenosti, če je prepričljivo dokazano, da noben drug način izpostavljenosti ne povzroča takšne nevarnosti\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H361.0-0_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H361-1empty_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H361-1_tl}{{H361}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H361f-0_tl}{{H361f}{%
+  \__mhchem_hp_s:nnn{20081216}{Sum škodljivosti za plodnost.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H361d-0_tl}{{H361d}{%
+  \__mhchem_hp_s:nnn{20081216}{Sum škodljivosti za nerojenega otroka.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H361fd-0_tl}{{H361fd}{%
+  \__mhchem_hp_s:nnn{20081216}{Sum škodljivosti za plodnost. Sum škodljivosti za nerojenega otroka.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H362-0_tl}{{H362}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko škoduje dojenim otrokom.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H370-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{20081216}{Škoduje organom \noexpand\textless{}ali navesti vse organe, na katere vpliva, če je znano\noexpand\textgreater{} \noexpand\textless{}navesti način izpostavljenosti, če je prepričljivo dokazano, da noben drug način izpostavljenosti ne povzroča takšne nevarnosti\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H370.0-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H370.1-0_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H370.1-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H370-1_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H370-2_tl}{{H370}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H371-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko škoduje organom \noexpand\textless{}ali navesti vse organe, na katere vpliva, če je znano\noexpand\textgreater{} \noexpand\textless{}navesti način izpostavljenosti, če je prepričljivo dokazano, da noben drug način izpostavljenosti ne povzroča takšne nevarnosti\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H371.0-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H371.1-0_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H371.1-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H371-1_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H371-2_tl}{{H371}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H372-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{20081216}{Škoduje organom \noexpand\textless{}ali navesti vse organe, na katere vpliva, če je znano\noexpand\textgreater{} pri dolgotrajni ali ponavljajoči se izpostavljenosti \noexpand\textless{}navesti način izpostavljenosti, če je prepričljivo dokazano, da noben drug način izpostavljenosti ne povzroča takšne nevarnosti\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H372.0-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H372.1-0_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H372.1-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H372-1_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H372-2_tl}{{H372}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H373-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko škoduje organom \noexpand\textless{}ali navesti vse organe, na katere vpliva, če je znano\noexpand\textgreater{} pri dolgotrajni ali ponavljajoči se izpostavljenosti \noexpand\textless{}navesti način izpostavljenosti, če je prepričljivo dokazano, da noben drug način izpostavljenosti ne povzroča takšne nevarnosti\noexpand\textgreater{}.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H373.0-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H373.1-0_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H373.1-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H373-1_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H373-2_tl}{{H373}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H300+H310-0_tl}{{H300\,+\,\hskip\z@skip{}H310}{%
+  \__mhchem_hp_s:nnn{20110419}{Smrtno pri zaužitju ali v stiku s kožo}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H300+H310+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Smrtno pri zaužitju, v stiku s kožo ali pri vdihavanju}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H300+H330-0_tl}{{H300\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20110419}{Smrtno pri zaužitju ali vdihavanju}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H301+H311-0_tl}{{H301\,+\,\hskip\z@skip{}H311}{%
+  \__mhchem_hp_s:nnn{20110419}{Strupeno pri zaužitju ali v stiku s kožo}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H301+H311+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Strupeno pri zaužitju, v stiku s kožo ali pri vdihavanju}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H301+H331-0_tl}{{H301\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20110419}{Strupeno pri zaužitju ali vdihavanju}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H302+H312-0_tl}{{H302\,+\,\hskip\z@skip{}H312}{%
+  \__mhchem_hp_s:nnn{20110419}{Zdravju škodljivo pri zaužitju ali v stiku s kožo}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H302+H312+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Zdravju škodljivo pri zaužitju, v stiku s kožo ali pri vdihavanju}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H302+H332-0_tl}{{H302\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Zdravju škodljivo pri zaužitju in vdihavanju}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H310+H330-0_tl}{{H310\,+\,\hskip\z@skip{}H330}{%
+  \__mhchem_hp_s:nnn{20150601}{Smrtno v stiku s kožo ali pri vdihavanju}{%
+  \__mhchem_hp_s:nnn{20110419}{Smrtno v stiku s kožo ali pri vdihavanju}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H311+H331-0_tl}{{H311\,+\,\hskip\z@skip{}H331}{%
+  \__mhchem_hp_s:nnn{20150601}{Strupeno v stiku s kožo ali pri vdihavanju}{%
+  \__mhchem_hp_s:nnn{20110419}{Strupeno v stiku s kožo ali pri vdihavanju}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H312+H332-0_tl}{{H312\,+\,\hskip\z@skip{}H332}{%
+  \__mhchem_hp_s:nnn{20110419}{Zdravju škodljivo v stiku s kožo in pri vdihavanju}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H400-0_tl}{{H400}{%
+  \__mhchem_hp_s:nnn{20081216}{Zelo strupeno za vodne organizme.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H410-0_tl}{{H410}{%
+  \__mhchem_hp_s:nnn{20081216}{Zelo strupeno za vodne organizme, z dolgotrajnimi učinki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H411-0_tl}{{H411}{%
+  \__mhchem_hp_s:nnn{20081216}{Strupeno za vodne organizme, z dolgotrajnimi učinki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H412-0_tl}{{H412}{%
+  \__mhchem_hp_s:nnn{20081216}{Škodljivo za vodne organizme, z dolgotrajnimi učinki.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H413-0_tl}{{H413}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko ima dolgotrajne škodljive učinke na vodne organizme.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_H420-0_tl}{{H420}{%
+  \__mhchem_hp_s:nnn{20110419}{Škodljivo za javno zdravje in okolje zaradi uničevanja ozona v zgornji atmosferi}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH001-0_tl}{{EUH001}{%
+  \__mhchem_hp_s:nnn{20201017}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Eksplozivno v suhem stanju.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH006-0_tl}{{EUH006}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Eksplozivno v stiku z zrakom ali brez stika z zrakom.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH014-0_tl}{{EUH014}{%
+  \__mhchem_hp_s:nnn{20081216}{Burno reagira z vodo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH018-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{20081216}{Pri uporabi lahko tvori vnetljivo/\hskip\z@skip{}eksplozivno zmes hlapi-zrak.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH018.0-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH018.1-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH018.2-0_tl}{{EUH018}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH019-0_tl}{{EUH019}{%
+  \__mhchem_hp_s:nnn{20081216}{Lahko tvori eksplozivne perokside.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH029-0_tl}{{EUH029}{%
+  \__mhchem_hp_s:nnn{20081216}{V stiku z vodo se sprošča strupen plin.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH031-0_tl}{{EUH031}{%
+  \__mhchem_hp_s:nnn{20081216}{V stiku s kislinami se sprošča strupen plin.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH032-0_tl}{{EUH032}{%
+  \__mhchem_hp_s:nnn{20081216}{V stiku s kislinami se sprošča zelo strupen plin.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH044-0_tl}{{EUH044}{%
+  \__mhchem_hp_s:nnn{20081216}{Nevarnost eksplozije ob segrevanju v zaprtem prostoru.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH059-0_tl}{{EUH059}{%
+  \__mhchem_hp_s:nnn{20110419}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Nevarno za ozonski plašč.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH066-0_tl}{{EUH066}{%
+  \__mhchem_hp_s:nnn{20081216}{Ponavljajoča izpostavljenost lahko povzroči nastanek suhe ali razpokane kože.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH070-0_tl}{{EUH070}{%
+  \__mhchem_hp_s:nnn{20081216}{Strupeno ob stiku z očmi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH071-0_tl}{{EUH071}{%
+  \__mhchem_hp_s:nnn{20081216}{Jedko za dihalne poti.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH201-0_tl}{{EUH201}{%
+  \__mhchem_hp_s:nnn{20081216}{Vsebuje svinec. Ne sme se nanašati na površine, ki bi jih lahko žvečili ali sesali otroci.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH201A-0_tl}{{EUH201A}{%
+  \__mhchem_hp_s:nnn{20081216}{Pozor! Vsebuje svinec.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH202-0_tl}{{EUH202}{%
+  \__mhchem_hp_s:nnn{20081216}{Cianoakrilat. Nevarno. Kožo in oči zlepi v nekaj sekundah. Hraniti zunaj dosega otrok.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH203-0_tl}{{EUH203}{%
+  \__mhchem_hp_s:nnn{20081216}{Vsebuje krom (VI). Lahko povzroči alergijski odziv.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH204-0_tl}{{EUH204}{%
+  \__mhchem_hp_s:nnn{20081216}{Vsebuje izocianate. Lahko povzroči alergijski odziv.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH205-0_tl}{{EUH205}{%
+  \__mhchem_hp_s:nnn{20081216}{Vsebuje epoksidne sestavine. Lahko povzroči alergijski odziv.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH206-0_tl}{{EUH206}{%
+  \__mhchem_hp_s:nnn{20081216}{Pozor! Ne uporabljajte skupaj z drugimi izdelki. Lahko se sproščajo nevarni plini (klor).}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH207-0_tl}{{EUH207}{%
+  \__mhchem_hp_s:nnn{20081216}{Pozor! Vsebuje kadmij. Med uporabo nastajajo nevarni dimi. Preberite informacije proizvajalca. Upoštevajte navodila za varno uporabo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH208-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{20081216}{Vsebuje \noexpand\textless{}ime snovi, ki povzroča preobčutljivost\noexpand\textgreater{}. Lahko povzroči alergijski odziv.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH208.0-0_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH208-1_tl}{{EUH208}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH209-0_tl}{{EUH209}{%
+  \__mhchem_hp_s:nnn{20081216}{Med uporabo utegne postati lahko vnetljivo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH209A-0_tl}{{EUH209A}{%
+  \__mhchem_hp_s:nnn{20081216}{Med uporabo utegne postati vnetljivo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH210-0_tl}{{EUH210}{%
+  \__mhchem_hp_s:nnn{20081216}{Varnosti list na voljo na zahtevo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH211-0_tl}{{EUH211}{%
+  \__mhchem_hp_s:nnn{20211001}{Pozor! Pri razprševanju lahko nastanejo nevarne vdihljive kapljice. Ne vdihavajte razpršila ali meglic.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH212-0_tl}{{EUH212}{%
+  \__mhchem_hp_s:nnn{20211001}{Pozor! Pri uporabi lahko nastane nevaren vdihljiv prah. Prahu ne vdihavajte.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH380-0_tl}{{EUH380}{%
+  \__mhchem_hp_s:nnn{20230420}{Lahko povzroči endokrine motnje pri ljudeh.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH381-0_tl}{{EUH381}{%
+  \__mhchem_hp_s:nnn{20230420}{Domnevno povzroča endokrine motnje pri ljudeh.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH401-0_tl}{{EUH401}{%
+  \__mhchem_hp_s:nnn{20081216}{Da bi se izognili tveganjem za ljudi in okolje, ravnajte v skladu z navodili za uporabo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH430-0_tl}{{EUH430}{%
+  \__mhchem_hp_s:nnn{20230420}{Lahko povzroči endokrine motnje v okolju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH431-0_tl}{{EUH431}{%
+  \__mhchem_hp_s:nnn{20230420}{Domnevno povzroča endokrine motnje v okolju.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH440-0_tl}{{EUH440}{%
+  \__mhchem_hp_s:nnn{20230420}{Se kopiči v okolju in živih organizmih, tudi v ljudeh.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH441-0_tl}{{EUH441}{%
+  \__mhchem_hp_s:nnn{20230420}{Se močno kopiči v okolju in živih organizmih, tudi v ljudeh.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH450-0_tl}{{EUH450}{%
+  \__mhchem_hp_s:nnn{20230420}{Lahko povzroči dolgotrajno in razpršeno kontaminacijo vodnih virov.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_EUH451-0_tl}{{EUH451}{%
+  \__mhchem_hp_s:nnn{20230420}{Lahko povzroči zelo dolgotrajno in razpršeno kontaminacijo vodnih virov.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P101-0_tl}{{P101}{%
+  \__mhchem_hp_s:nnn{20081216}{Če je potreben zdravniški nasvet, mora biti na voljo posoda ali etiketa proizvoda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P102-0_tl}{{P102}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti zunaj dosega otrok.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P103-0_tl}{{P103}{%
+  \__mhchem_hp_s:nnn{20081216}{Pred uporabo preberite etiketo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P201-0_tl}{{P201}{%
+  \__mhchem_hp_s:nnn{20081216}{Pred uporabo pridobiti posebna navodila.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P202-0_tl}{{P202}{%
+  \__mhchem_hp_s:nnn{20081216}{Ne uporabljajte, dokler se ne seznanite z vsemi varnostnimi ukrepi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P210-0_tl}{{P210}{%
+  \__mhchem_hp_s:nnn{20150601}{Hraniti ločeno od vročine, vročih površin, isker, odprtega ognja in drugih virov vžiga. Kajenje prepovedano.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti ločeno od vročine/\hskip\z@skip{}isker/\hskip\z@skip{}odprtega ognja/\hskip\z@skip{}vročih površin. -- Kajenje prepovedano.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P211-0_tl}{{P211}{%
+  \__mhchem_hp_s:nnn{20081216}{Ne pršiti proti odprtemu ognju ali drugemu viru vžiga.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P212-0_tl}{{P212}{%
+  \__mhchem_hp_s:nnn{20201017}{Izogibati se segrevanju v zaprtem prostoru ali zmanjšanju vsebnosti desenzibilizatorja.“.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P220-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{20180301}{Hraniti ločeno od oblačil in drugih vnetljivih materialov.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti ločeno od oblačil/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}vnetljivih materialov.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P220.0-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P220.1.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P220.1.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P220.1-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P220.2.1-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P220.2.2-0_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P220.2-1_tl}{{P220}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P221-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Preprečiti mešanje z vnetljivimi snovmi \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P221.0-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P221.1-0_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P221-1_tl}{{P221}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P222-0_tl}{{P222}{%
+  \__mhchem_hp_s:nnn{20081216}{Preprečiti stik z zrakom.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P223-0_tl}{{P223}{%
+  \__mhchem_hp_s:nnn{20150601}{Preprečiti stik z vodo.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti ločeno od možnega stika z vodo zaradi burne reakcije in možnega bliskovitega požara.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P230-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti prepojeno z \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P230.0-0_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P230-1_tl}{{P230}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P231-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{20180301}{Ravnati z vsebino in jo hraniti v inertnem plinu/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti v ustreznem inertnem plinu.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P231.0-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P231.1-0_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P231-1_tl}{{P231}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P232-0_tl}{{P232}{%
+  \__mhchem_hp_s:nnn{20081216}{Zaščititi pred vlago.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P233-0_tl}{{P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti v tesno zaprti posodi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P234-0_tl}{{P234}{%
+  \__mhchem_hp_s:nnn{20180301}{Hraniti samo v originalni embalaži.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti samo v originalni posodi.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P235-0_tl}{{P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti na hladnem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P240-0_tl}{{P240}{%
+  \__mhchem_hp_s:nnn{20180301}{Ozemljiti posodo in opremo za sprejem tekočine ter izenačiti potenciale.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ozemljiti posodo in opremo za sprejem tekočine.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P241-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{20180301}{Uporabiti [električno opremo/\hskip\z@skip{}prezračevalno opremo/\hskip\z@skip{} opremo za razsvetljavo/\hskip\z@skip{}\noexpand\textellipsis{}], odporno proti eksplozijam.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uporabiti električno/\hskip\z@skip{}prezračevalno opremo, opremo za razsvetljavo/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}, odporno proti eksplozijam.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P241.0-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P241.1-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P241.2-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P241.3-0_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P241-1_tl}{{P241}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P242-0_tl}{{P242}{%
+  \__mhchem_hp_s:nnn{20180301}{Uporabiti orodje, ki ne povzroča isker.}{%
+  \__mhchem_hp_s:nnn{20081216}{Uporabiti le orodje, ki ne povzroča isker.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P243-0_tl}{{P243}{%
+  \__mhchem_hp_s:nnn{20180301}{Ukrepati za preprečitev statičnega naelektrenja.}{%
+  \__mhchem_hp_s:nnn{20081216}{Preprečiti statično naelektrenje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P244-0_tl}{{P244}{%
+  \__mhchem_hp_s:nnn{20150601}{Preprečiti stik ventilov in opreme z oljem in mastjo.}{%
+  \__mhchem_hp_s:nnn{20081216}{Preprečiti stik reducirnih ventilov z mastjo in oljem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P250-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{20180301}{Ne izpostavljati drgnjenju/\hskip\z@skip{}udarcem/\hskip\z@skip{}trenju/\hskip\z@skip{}\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{Ne izpostavljati drgnjenju/\hskip\z@skip{}udarcem/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}trenju.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P250.0-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P250.1-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P250.2-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P250.3-0_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P250-1_tl}{{P250}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P251-0_tl}{{P251}{%
+  \__mhchem_hp_s:nnn{20150601}{Ne preluknjajte ali sežigajte je niti, ko je prazna.}{%
+  \__mhchem_hp_s:nnn{20081216}{Posoda je pod tlakom: ne preluknjajte ali sežigajte je niti, ko je prazna.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P260-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{20081216}{Ne vdihavati prahu/\hskip\z@skip{}dima/\hskip\z@skip{}plina/\hskip\z@skip{}meglice/\hskip\z@skip{}hlapov/\hskip\z@skip{}razpršila.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P260.0-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P260.1-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P260.2-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P260.3-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P260.4-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P260.5-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P260.6-0_tl}{{P260}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P261-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{20081216}{Ne vdihavati prahu/\hskip\z@skip{}dima/\hskip\z@skip{}plina/\hskip\z@skip{}meglice/\hskip\z@skip{}hlapov/\hskip\z@skip{}razpršila.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P261.0-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P261.1-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P261.2-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P261.3-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P261.4-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P261.5-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P261.6-0_tl}{{P261}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P262-0_tl}{{P262}{%
+  \__mhchem_hp_s:nnn{20081216}{Preprečiti stik z očmi, kožo ali oblačili.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P263-0_tl}{{P263}{%
+  \__mhchem_hp_s:nnn{20180301}{Preprečiti stik med nosečnostjo in dojenjem.}{%
+  \__mhchem_hp_s:nnn{20081216}{Preprečiti stik med nosečnostjo/\hskip\z@skip{}dojenjem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P264-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{20081216}{Po uporabi temeljito umiti \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P264.0-0_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P264-1_tl}{{P264}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P270-0_tl}{{P270}{%
+  \__mhchem_hp_s:nnn{20081216}{Ne jesti, piti ali kaditi med uporabo tega izdelka.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P271-0_tl}{{P271}{%
+  \__mhchem_hp_s:nnn{20081216}{Uporabljati le zunaj ali v dobro prezračevanem prostoru.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P272-0_tl}{{P272}{%
+  \__mhchem_hp_s:nnn{20081216}{Kontaminirana delovna oblačila niso dovoljena zunaj delovnega mesta.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P273-0_tl}{{P273}{%
+  \__mhchem_hp_s:nnn{20081216}{Preprečiti sproščanje v okolje.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P280-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{20081216}{Nositi zaščitne rokavice/\hskip\z@skip{}zaščitno obleko/\hskip\z@skip{}zaščito za oči/\hskip\z@skip{}zaščito za obraz.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P280.0-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P280.1-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P280.2-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P280.3-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P280.4-0_tl}{{P280}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P281-0_tl}{{P281}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Uporabiti predpisano osebno zaščitno opremo.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P282-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{20180301}{Nositi izolirne rokavice za zaščito pred mrazom in zaščito za obraz oziroma zaščito za oči.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nositi hladne izolirne rokavice/\hskip\z@skip{}zaščito za obraz/\hskip\z@skip{}zaščito za oči.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P282.0-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P282.1-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P282.2-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P282.3-0_tl}{{P282}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P283-0_tl}{{P283}{%
+  \__mhchem_hp_s:nnn{20180301}{Nositi negorljiva oblačila ali oblačila, odporna proti ognju.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nositi negorljiva oblačila in oblačila, odporna proti ognju.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P284-0_tl}{{P284}{%
+  \__mhchem_hp_s:nnn{20150601}{[Ob nezadostnem prezračevanju] nositi opremo za zaščito dihal.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nositi opremo za zaščito dihal.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P285-0_tl}{{P285}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Ob nezadostnem prezračevanju nositi opremo za zaščito dihal.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P231+P232-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{20180301}{Ravnati z vsebino in jo hraniti v ustreznem inertnem plinu/\hskip\z@skip{}\noexpand\textellipsis{}. Zaščititi pred vlago.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti v ustreznem inertnem plinu. Zaščititi pred vlago.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P231+P232.0-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P231+P232.1-0_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P231+P232-1_tl}{{P231\,+\,\hskip\z@skip{}P232}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P235+P410-0_tl}{{P235\,+\,\hskip\z@skip{}P410}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti na hladnem. Zaščititi pred sončno svetlobo.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301-0_tl}{{P301}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI ZAUŽITJU:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302-0_tl}{{P302}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI STIKU S KOŽO:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P303-0_tl}{{P303}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI STIKU S KOŽO (ali lasmi):}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P304-0_tl}{{P304}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI VDIHAVANJU:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P305-0_tl}{{P305}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI STIKU Z OČMI:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P306-0_tl}{{P306}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI STIKU Z OBLAČILI:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P307-0_tl}{{P307}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI izpostavljenosti:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P308-0_tl}{{P308}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI izpostavljenosti ali sumu izpostavljenosti:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P309-0_tl}{{P309}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI izpostavljenosti ali slabem počutju:}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P310-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{20150601}{Takoj pokličite CENTER ZA ZASTRUPITVE/\hskip\z@skip{}zdravnika/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Takoj pokličite CENTER ZA ZASTRUPITVE ali zdravnika.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P310.0-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P310.1-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P310.2-0_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P310-1_tl}{{P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P311-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Pokličite CENTER ZA ZASTRUPITVE/\hskip\z@skip{}zdravnika/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Pokličite CENTER ZA ZASTRUPITVE ali zdravnika.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P311.0-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P311.1-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P311.2-0_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P311-1_tl}{{P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P312-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{20180301}{Ob slabem počutju pokličite CENTER ZA ZASTRUPITVE/\hskip\z@skip{} zdravnika/\hskip\z@skip{}\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20150601}{Ob slabem počutju pokličite CENTER ZA ZASTRUPITVE/\hskip\z@skip{}zdravnika/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Ob slabem počutju pokličite CENTER ZA ZASTRUPITVE ali zdravnika.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P312.0-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P312.1-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P312.2-0_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P312-1_tl}{{P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P313-0_tl}{{P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Poiščite zdravniško pomoč/\hskip\z@skip{}oskrbo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P314-0_tl}{{P314}{%
+  \__mhchem_hp_s:nnn{20081216}{Ob slabem počutju poiščite zdravniško pomoč/\hskip\z@skip{}oskrbo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P315-0_tl}{{P315}{%
+  \__mhchem_hp_s:nnn{20081216}{Takoj poiščite zdravniško pomoč/\hskip\z@skip{}oskrbo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P320-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{20081216}{Posebno zdravljenje je nujno (glejte \noexpand\textellipsis{} na tej etiketi).}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P320.0-0_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P320-1_tl}{{P320}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P320.nolabel-1_tl}{{P320.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P321-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{20081216}{Posebno zdravljenje (glejte \noexpand\textellipsis{} na tej etiketi).}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P321.0-0_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P321-1_tl}{{P321}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P321.nolabel-1_tl}{{P321.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P322-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Posebni ukrepi (glejte \noexpand\textellipsis{} na tej etiketi).}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P322.0-0_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P322-1_tl}{{P322}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P322.nolabel-1_tl}{{P322.nolabel}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P330-0_tl}{{P330}{%
+  \__mhchem_hp_s:nnn{20081216}{Izprati usta.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P331-0_tl}{{P331}{%
+  \__mhchem_hp_s:nnn{20081216}{NE izzvati bruhanja.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P332-0_tl}{{P332}{%
+  \__mhchem_hp_s:nnn{20081216}{Če nastopi draženje kože:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P333-0_tl}{{P333}{%
+  \__mhchem_hp_s:nnn{20081216}{Če nastopi draženje kože ali se pojavi izpuščaj:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P334-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{20180301}{Potopiti v hladno vodo [ali zaviti v mokre povoje].}{%
+  \__mhchem_hp_s:nnn{20081216}{Potopiti v hladno vodo/\hskip\z@skip{}zaviti v mokre povoje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P334.0-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P334.1-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P334.2-0_tl}{{P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P335-0_tl}{{P335}{%
+  \__mhchem_hp_s:nnn{20081216}{S krtačo odstraniti razsute delce s kože.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P336-0_tl}{{P336}{%
+  \__mhchem_hp_s:nnn{20081216}{Zamrznjene dele odtaliti z mlačno vodo. Ne drgniti prizadetega mesta.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P337-0_tl}{{P337}{%
+  \__mhchem_hp_s:nnn{20081216}{Če draženje oči ne preneha:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P338-0_tl}{{P338}{%
+  \__mhchem_hp_s:nnn{20081216}{Odstranite kontaktne leče, če jih imate in če to lahko storite brez težav. Nadaljujte z izpiranjem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P340-0_tl}{{P340}{%
+  \__mhchem_hp_s:nnn{20150601}{Prenesti osebo na svež zrak in jo pustiti v udobnem položaju, ki olajša dihanje.}{%
+  \__mhchem_hp_s:nnn{20081216}{Prenesti žrtev na svež zrak in jo pustiti počivati v položaju, ki olajša dihanje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P341-0_tl}{{P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Pri oteženem dihanju prenesti žrtev na svež zrak in jo pustiti počivati v položaju, ki olajša dihanje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P342-0_tl}{{P342}{%
+  \__mhchem_hp_s:nnn{20081216}{Pri respiratornih simptomih:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P350-0_tl}{{P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Nežno umiti z veliko mila in vode.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P351-0_tl}{{P351}{%
+  \__mhchem_hp_s:nnn{20081216}{Previdno izpirati z vodo nekaj minut.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P352-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{20150601}{Umiti z veliko vode/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Umiti z veliko mila in vode.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P352.0-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P352.1-0_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P352-1_tl}{{P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P353-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{20180301}{Kožo izprati z vodo [ali prho].}{%
+  \__mhchem_hp_s:nnn{20081216}{Kožo izprati z vodo/\hskip\z@skip{}prho.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P353.0-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P353.1-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P353.2-0_tl}{{P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P360-0_tl}{{P360}{%
+  \__mhchem_hp_s:nnn{20081216}{Takoj izprati kontaminirana oblačila in kožo z veliko vode pred odstranitvijo oblačil.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P361-0_tl}{{P361}{%
+  \__mhchem_hp_s:nnn{20150601}{Takoj sleči vsa kontaminirana oblačila.}{%
+  \__mhchem_hp_s:nnn{20081216}{Takoj odstraniti/\hskip\z@skip{}sleči vsa kontaminirana oblačila.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P362-0_tl}{{P362}{%
+  \__mhchem_hp_s:nnn{20150601}{Sleči kontaminirana oblačila.}{%
+  \__mhchem_hp_s:nnn{20081216}{Sleči kontaminirana oblačila in jih oprati pred ponovno uporabo.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P363-0_tl}{{P363}{%
+  \__mhchem_hp_s:nnn{20081216}{Kontaminirana oblačila oprati pred ponovno uporabo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P364-0_tl}{{P364}{%
+  \__mhchem_hp_s:nnn{20150601}{In jih oprati pred ponovno uporabo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370-0_tl}{{P370}{%
+  \__mhchem_hp_s:nnn{20081216}{Ob požaru:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P371-0_tl}{{P371}{%
+  \__mhchem_hp_s:nnn{20081216}{Ob velikem požaru in velikih količinah:}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P372-0_tl}{{P372}{%
+  \__mhchem_hp_s:nnn{20180301}{Nevarnost eksplozije.}{%
+  \__mhchem_hp_s:nnn{20081216}{Nevarnost eksplozije ob požaru.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P373-0_tl}{{P373}{%
+  \__mhchem_hp_s:nnn{20081216}{NE gasiti, ko ogenj doseže eksploziv.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P374-0_tl}{{P374}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Gasiti z običajno previdnostjo in s primerne razdalje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P375-0_tl}{{P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Gasiti z večje razdalje zaradi nevarnosti eksplozije.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P376-0_tl}{{P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Zaustaviti puščanje, če je varno.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P377-0_tl}{{P377}{%
+  \__mhchem_hp_s:nnn{20081216}{Požar zaradi uhajanja plina: Ne gasiti, če puščanja ni mogoče varno zaustaviti.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P378-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{20150601}{Za gašenje se uporabi\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20101201}{Za gašenje uporabiti \noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Za gašenje uporabiti \noexpand\textellipsis{}}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P378.0-0_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P378-1_tl}{{P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P380-0_tl}{{P380}{%
+  \__mhchem_hp_s:nnn{20081216}{Izprazniti območje.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P381-0_tl}{{P381}{%
+  \__mhchem_hp_s:nnn{20180301}{V primeru uhajanja odstraniti vse vire vžiga.}{%
+  \__mhchem_hp_s:nnn{20081216}{Odstraniti vse vire vžiga, če je varno.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P390-0_tl}{{P390}{%
+  \__mhchem_hp_s:nnn{20081216}{Odpraviti razlitje, da se prepreči materialna škoda.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P391-0_tl}{{P391}{%
+  \__mhchem_hp_s:nnn{20081216}{Prestreči razlito tekočino.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P310-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{20150601}{PRI ZAUŽITJU: Takoj pokličite CENTER ZA ZASTRUPITVE/\hskip\z@skip{}zdravnika/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI ZAUŽITJU: takoj pokličite CENTER ZA ZASTRUPITVE ali zdravnika.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P310.0-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P310.1-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P310.2-0_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P310-1_tl}{{P301\,+\,\hskip\z@skip{}P310}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P312-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{20180301}{PRI ZAUŽITJU: Ob slabem počutju pokličite CENTER ZA ZASTRUPITVE/\hskip\z@skip{}zdravnika/\hskip\z@skip{}\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20150601}{PRI ZAUŽITJU: Ob slabem počutju pokličite CENTER ZA ZASTRUPITVE/\hskip\z@skip{}zdravnika/\hskip\z@skip{}\noexpand\textellipsis{}/\hskip\z@skip{}.}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI ZAUŽITJU: ob slabem počutju pokličite CENTER ZA ZASTRUPITVE ali zdravnika.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P312.0-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P312.1-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P312.2-0_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P312-1_tl}{{P301\,+\,\hskip\z@skip{}P312}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P301+P330+P331-0_tl}{{P301\,+\,\hskip\z@skip{}P330\,+\,\hskip\z@skip{}P331}{%
+  \__mhchem_hp_s:nnn{20180301}{PRI ZAUŽITJU: Izprati usta. Ne izzivati bruhanja.}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI ZAUŽITJU: izprati usta. NE izzvati bruhanja.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{PRI STIKU S KOŽO: Potopiti v hladno vodo ali zaviti v mokre povoje.}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI STIKU S KOŽO: potopiti v hladno vodo/\hskip\z@skip{}zaviti v mokre povoje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P335+P334-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{PRI STIKU S KOŽO: S krtačo odstraniti razsute delce s kože. Potopiti v hladno vodo [ali zaviti v mokre povoje].}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P335+P334.0-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P335+P334.1-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P335+P334.2-0_tl}{{P302\,+\,\hskip\z@skip{}P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P350-0_tl}{{P302\,+\,\hskip\z@skip{}P350}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI STIKU S KOŽO: nežno umiti z veliko mila in vode.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P352-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{20150601}{PRI STIKU S KOŽO: Umiti z veliko vode/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI STIKU S KOŽO: umiti z veliko mila in vode.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P352.0-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P352.1-0_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P302+P352-1_tl}{{P302\,+\,\hskip\z@skip{}P352}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P303+P361+P353-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{20180301}{PRI STIKU S KOŽO (ali lasmi): Takoj sleči vsa kontaminirana oblačila. Kožo izprati z vodo [ali prho].}{%
+  \__mhchem_hp_s:nnn{20150601}{PRI STIKU S KOŽO (ali lasmi): Takoj sleči vsa kontaminirana oblačila. Izprati kožo z vodo/\hskip\z@skip{}prho.}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI STIKU S KOŽO (ali lasmi): takoj odstraniti/\hskip\z@skip{}sleči vsa kontaminirana oblačila. Izprati kožo z vodo/\hskip\z@skip{}prho.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P303+P361+P353.0-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P303+P361+P353.1-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P303+P361+P353.2-0_tl}{{P303\,+\,\hskip\z@skip{}P361\,+\,\hskip\z@skip{}P353}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P304+P340-0_tl}{{P304\,+\,\hskip\z@skip{}P340}{%
+  \__mhchem_hp_s:nnn{20150601}{PRI VDIHAVANJU: Prenesti osebo na svež zrak in jo pustiti v udobnem položaju, ki olajša dihanje.}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI VDIHAVANJU: prenesti žrtev na svež zrak in jo pustiti počivati v položaju, ki olajša dihanje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P304+P341-0_tl}{{P304\,+\,\hskip\z@skip{}P341}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI VDIHAVANJU: prenesti žrtev pri oteženem dihanju na svež zrak in jo pustiti počivati v položaju, ki olajša dihanje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P305+P351+P338-0_tl}{{P305\,+\,\hskip\z@skip{}P351\,+\,\hskip\z@skip{}P338}{%
+  \__mhchem_hp_s:nnn{20180301}{PRI STIKU Z OČMI: Previdno izpirati z vodo nekaj minut. Odstranite kontaktne leče, če jih imate in če to lahko storite brez težav. Nadaljujte z izpiranjem.}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI STIKU Z OČMI: previdno izpirajte z vodo nekaj minut. Odstranite kontaktne leče, če jih imate in če to lahko storite brez težav. Nadaljujte z izpiranjem.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P306+P360-0_tl}{{P306\,+\,\hskip\z@skip{}P360}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI STIKU Z OBLAČILI: takoj izprati kontaminirana oblačila in kožo z veliko vode pred odstranitvijo oblačil.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P307+P311-0_tl}{{P307\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI izpostavljenosti: pokličite CENTER ZA ZASTRUPITVE ali zdravnika.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P308+P311-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Pri izpostavljenosti ali sumu izpostavljenosti: Pokličite CENTER ZA ZASTRUPITVE/\hskip\z@skip{}zdravnika/\hskip\z@skip{}\noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P308+P311.0-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P308+P311.1-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P308+P311.2-0_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P308+P311-1_tl}{{P308\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P308+P313-0_tl}{{P308\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI izpostavljenosti ali sumu izpostavljenosti: poiščite zdravniško pomoč/\hskip\z@skip{}oskrbo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P309+P311-0_tl}{{P309\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{}{%
+  \__mhchem_hp_s:nnn{20081216}{PRI izpostavljenosti ali slabem počutju: pokličite CENTER ZA ZASTRUPITVE ali zdravnika.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P332+P313-0_tl}{{P332\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Če nastopi draženje kože: poiščite zdravniško pomoč/\hskip\z@skip{}oskrbo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P333+P313-0_tl}{{P333\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Če nastopi draženje kože ali se pojavi izpuščaj: poiščite zdravniško pomoč/\hskip\z@skip{}oskrbo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P335+P334-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{S krtačo odstraniti razsute delce s kože. Potopiti v hladno vodo/\hskip\z@skip{}zaviti v mokre povoje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P335+P334.0-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P335+P334.1-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P335+P334.2-0_tl}{{P335\,+\,\hskip\z@skip{}P334}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P336+P315-0_tl}{{P336\,+\,\hskip\z@skip{}P315}{%
+  \__mhchem_hp_s:nnn{20180301}{Zamrznjene dele odtaliti z mlačno vodo. Ne drgniti prizadetega mesta. Takoj poiščite zdravniško pomoč/\hskip\z@skip{}oskrbo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P337+P313-0_tl}{{P337\,+\,\hskip\z@skip{}P313}{%
+  \__mhchem_hp_s:nnn{20081216}{Če draženje oči ne preneha: poiščite zdravniško pomoč/\hskip\z@skip{}oskrbo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P342+P311-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{20150601}{Pri respiratornih simptomih: Pokličite CENTER ZA ZASTRUPITVE/\hskip\z@skip{}zdravnika/\hskip\z@skip{}\noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Pri respiratornih simptomih: pokličite CENTER ZA ZASTRUPITVE ali zdravnika.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P342+P311.0-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P342+P311.1-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P342+P311.2-0_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P342+P311-1_tl}{{P342\,+\,\hskip\z@skip{}P311}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P361+P364-0_tl}{{P361\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Takoj sleči vsa kontaminirana oblačila in jih oprati pred ponovno uporabo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P362+P364-0_tl}{{P362\,+\,\hskip\z@skip{}P364}{%
+  \__mhchem_hp_s:nnn{20150601}{Sleči kontaminirana oblačila in jih oprati pred ponovno uporabo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P372+P380+P373-0_tl}{{P370\,+\,\hskip\z@skip{}P372\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P373}{%
+  \__mhchem_hp_s:nnn{20180301}{Ob požaru: Nevarnost eksplozije. Izprazniti območje. NE gasiti, ko ogenj doseže eksploziv.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P376-0_tl}{{P370\,+\,\hskip\z@skip{}P376}{%
+  \__mhchem_hp_s:nnn{20081216}{Ob požaru: zaustaviti puščanje, če je varno.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{20150601}{Ob požaru: Za gašenje se uporabi \noexpand\textellipsis{}}{%
+  \__mhchem_hp_s:nnn{20081216}{Ob požaru: za gašenje uporabiti \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P380-0_tl}{{P370\,+\,\hskip\z@skip{}P380}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Ob požaru: izprazniti območje.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P380+P375-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Ob požaru: izprazniti območje. Gasiti z večje razdalje zaradi nevarnosti eksplozije.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P380+P375+P378-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P380+P375+P378.0-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P380+P375+P378-1_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375\,+\,\hskip\z@skip{}P378}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P371+P380+P375-0_tl}{{P371\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375}{%
+  \__mhchem_hp_s:nnn{20081216}{Ob velikem požaru in velikih količinah: izprazniti območje. Gasiti z večje razdalje zaradi nevarnosti eksplozije.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P401-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{20180301}{Hraniti v skladu s/\hskip\z@skip{}z\noexpand\textellipsis{} .}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P401.0-0_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P401-1_tl}{{P401}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P402-0_tl}{{P402}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti na suhem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P403-0_tl}{{P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti na dobro prezračevanem mestu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P404-0_tl}{{P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti v zaprti posodi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P405-0_tl}{{P405}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti zaklenjeno.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P406-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti v posodi, odporni proti koroziji/\hskip\z@skip{}\noexpand\textellipsis{}, z odporno notranjo oblogo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P406.0-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P406.1-0_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P406-1_tl}{{P406}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P407-0_tl}{{P407}{%
+  \__mhchem_hp_s:nnn{20180301}{Ohraniti zračno režo med skladi ali paletami.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ohraniti zračno režo med skladi/\hskip\z@skip{}paletami.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P410-0_tl}{{P410}{%
+  \__mhchem_hp_s:nnn{20081216}{Zaščititi pred sončno svetlobo.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P411-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{20101201}{Hraniti pri temperaturi do \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti pri temperaturi do \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P411.0-0_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P411.1-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P411.2-1_tl}{{P411}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P412-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Ne izpostavljati temperaturam nad 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Ne izpostavljati temperaturam nad 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P412.0-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P412.1-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P412.2-0_tl}{{P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P413-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{20101201}{Razsute količine, večje od \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{}\,lbs, hraniti pri temperaturi do \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Razsute količine, večje od \noexpand\textellipsis{}\,kg/\hskip\z@skip{}\noexpand\textellipsis{}\,lbs, hraniti pri temperaturi do \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P413.0-0_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P413.1-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P413.2-2_tl}{{P413}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P420-0_tl}{{P420}{%
+  \__mhchem_hp_s:nnn{20180301}{Hraniti ločeno.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti ločeno od drugih materialov.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P422-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20081216}{Vsebino hraniti v \noexpand\textellipsis{}}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P422.0-0_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P422-1_tl}{{P422}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P402+P404-0_tl}{{P402\,+\,\hskip\z@skip{}P404}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti na suhem. Hraniti v zaprti posodi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P403+P233-0_tl}{{P403\,+\,\hskip\z@skip{}P233}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti na dobro prezračevanem mestu. Hraniti v tesno zaprti posodi.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P403+P235-0_tl}{{P403\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti na dobro prezračevanem mestu. Hraniti na hladnem.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P410+P403-0_tl}{{P410\,+\,\hskip\z@skip{}P403}{%
+  \__mhchem_hp_s:nnn{20081216}{Zaščititi pred sončno svetlobo. Hraniti na dobro prezračevanem mestu.}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P410+P412-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{20101201}{Zaščititi pred sončno svetlobo. Ne izpostavljati temperaturam nad 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{%
+  \__mhchem_hp_s:nnn{20081216}{Zaščititi pred sončno svetlobo. Ne izpostavljati temperaturam nad 50\,\noexpand\textdegree{}C/\hskip\z@skip{}122\,\noexpand\textdegree{}F.}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P410+P412.0-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P410+P412.1-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P410+P412.2-0_tl}{{P410\,+\,\hskip\z@skip{}P412}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P411+P235-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{20180301}{}{%
+  \__mhchem_hp_s:nnn{20101201}{Hraniti pri temperaturi do \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Hraniti na hladnem.}{%
+  \__mhchem_hp_s:nnn{20081216}{Hraniti pri temperaturi do \noexpand\textellipsis{}\,\noexpand\textdegree{}C/\hskip\z@skip{}\noexpand\textellipsis{}\,\noexpand\textdegree{}F. Hraniti na hladnem.}{}}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P411+P235.0-0_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P411+P235.1-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P411+P235.2-1_tl}{{P411\,+\,\hskip\z@skip{}P235}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P501-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{20081216}{Odstraniti vsebino/\hskip\z@skip{}posodo \noexpand\textellipsis{}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P501.0-0_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P501.0-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P501.1-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P501.2-1_tl}{{P501}{%
+  \__mhchem_hp_s:nnn{00000000}{\msg_error:nnn{hpstatement}{undefined-enhancement}}{}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P502-0_tl}{{P502}{%
+  \__mhchem_hp_s:nnn{20180301}{Za podatke glede predelave ali reciklaže se obrnite na proizvajalca ali dobavitelja.}{%
+  \__mhchem_hp_s:nnn{20110419}{Za podatke glede obnovitve/\hskip\z@skip{}reciklaže se obrnite na proizvajalca/\hskip\z@skip{}dobavitelja}{}}}}%
+\tl_gset:cn{g__mhchem_hp_sl_P370+P380+P375[+P378]-0_tl}{{P370\,+\,\hskip\z@skip{}P380\,+\,\hskip\z@skip{}P375[\,+\,\hskip\z@skip{}P378]}{%
+  \__mhchem_hp_s:nnn{20180301}{Ob požaru: Izprazniti območje. Gasiti z večje razdalje zaradi nevarnosti eksplozije. [Za gašenje uporabiti \noexpand\textellipsis{}].}{}}}%
+%
+\group_end:
+\ExplSyntaxOff

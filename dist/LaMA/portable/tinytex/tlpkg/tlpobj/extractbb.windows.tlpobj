@@ -1,0 +1,8 @@
+name extractbb.windows
+category Package
+revision 74434
+shortdesc windows files of extractbb
+containersize 2540
+containerchecksum d431046ef598f777ced1cc94bc88f04c7ae140f95497cf89965db996db5094675c556f67ea3ee288a2d77906a3556ce15b38df748da4f56047325bc183c7dc19
+binfiles arch=windows size=2
+ bin/windows/extractbb.exe

@@ -1,0 +1,22 @@
+name bbm-macros
+category Package
+revision 17224
+shortdesc LaTeX support for "blackboard-style" cm fonts
+longdesc Provides LaTeX support for Blackboard variants of Computer
+longdesc Modern fonts. Declares a font family bbm so you can in
+longdesc principle write running text in blackboard bold, and lots of
+longdesc math alphabets for using the fonts within maths.
+containersize 1708
+containerchecksum 06f59837d585c721da77f289119bd4b45a91e3d72543ed3e4de76f84a2916431a733baa379b83a3e299d166e27bc0350df6f053d1ec744c52dcd0297d416fdf1
+doccontainersize 301276
+doccontainerchecksum 20a29809dffe8090e5c067dd2df9dd5a5f7de6ec7abbc01eb14b5a500f37cd62b50914733edf7403af89a1db86ebe10b3d7262f519dc01dc35b29ba0c70c3478
+srccontainersize 3916
+srccontainerchecksum 11d1d83d558a7943e35e8146b7f44df6a553a513f8e0478e1a9c773d66d004a4110288f91896b283dc4153372bb638a444c53b9184745858976a7e6aac69b121
+runfiles size=4
+ texmf-dist/tex/latex/bbm-macros/bbm.sty
+ texmf-dist/tex/latex/bbm-macros/ubbm.fd
+ texmf-dist/tex/latex/bbm-macros/ubbmss.fd
+ texmf-dist/tex/latex/bbm-macros/ubbmtt.fd
+catalogue-ctan /macros/latex/contrib/bbm
+catalogue-license lppl
+catalogue-topics font-supp

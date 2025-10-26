@@ -1,0 +1,448 @@
+%%
+%% This is file `fc-german.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% fmtcount.dtx  (with options: `fc-german.def')
+%% 
+%%  fmtcount.dtx
+%%  Copyright 2025 Nicola Talbot (inactive), Vincent Belaïche and Erik Nijenhuis
+%% 
+%%  This work may be distributed and/or modified under the
+%%  conditions of the LaTeX Project Public License, either version 1.3
+%%  of this license or (at your option) any later version.
+%%  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%%  and version 1.3 or later is part of all distributions of LaTeX
+%%  version 2005/12/01 or later.
+%% 
+%%  This work has the LPPL maintenance status `maintained'.
+%% 
+%%  The Current Maintainer of this work is Nicola Talbot (inactive), Vincent Belaïche and Erik Nijenhuis.
+%% 
+%%  This work consists of the files fmtcount.dtx and fmtcount.ins and the derived files fc-american.def, fc-brazilian.def, fc-british.def, fc-dutch.def, fc-english.def, fc-francais.def, fc-french.def, fc-frenchb.def, fc-german.def, fc-germanb.def, fc-italian.def, fc-ngerman.def, fc-ngermanb.def, fc-portuges.def, fc-portuguese.def, fc-spanish.def, fc-UKenglish.def, fc-USenglish.def, fcnumparser.sty, fcprefix.sty, fmtcount.sty.
+%% 
+\ProvidesFCLanguage{german}[2018/06/17]%
+\newcommand{\@ordinalMgerman}[2]{%
+  \edef#2{\number#1\relax.}%
+}%
+\global\let\@ordinalMgerman\@ordinalMgerman
+\newcommand{\@ordinalFgerman}[2]{%
+  \edef#2{\number#1\relax.}%
+}%
+\global\let\@ordinalFgerman\@ordinalFgerman
+\newcommand{\@ordinalNgerman}[2]{%
+  \edef#2{\number#1\relax.}%
+}%
+\global\let\@ordinalNgerman\@ordinalNgerman
+\newcommand*\@@unitstringgerman[1]{%
+  \ifcase#1%
+    null%
+    \or ein%
+    \or zwei%
+    \or drei%
+    \or vier%
+    \or fünf%
+    \or sechs%
+    \or sieben%
+    \or acht%
+    \or neun%
+  \fi
+}%
+\global\let\@@unitstringgerman\@@unitstringgerman
+\newcommand*\@@tenstringgerman[1]{%
+  \ifcase#1%
+    \or zehn%
+    \or zwanzig%
+    \or dreißig%
+    \or vierzig%
+    \or fünfzig%
+    \or sechzig%
+    \or siebzig%
+    \or achtzig%
+    \or neunzig%
+    \or einhundert%
+  \fi
+}%
+\global\let\@@tenstringgerman\@@tenstringgerman
+\providecommand*{\einhundert}{einhundert}%
+\providecommand*{\eintausend}{eintausend}%
+\global\let\einhundert\einhundert
+\global\let\eintausend\eintausend
+\newcommand*\@@teenstringgerman[1]{%
+  \ifcase#1%
+    zehn%
+    \or elf%
+    \or zwölf%
+    \or dreizehn%
+    \or vierzehn%
+    \or fünfzehn%
+    \or sechzehn%
+    \or siebzehn%
+    \or achtzehn%
+    \or neunzehn%
+  \fi
+}%
+\global\let\@@teenstringgerman\@@teenstringgerman
+\newcommand*{\@numberstringMgerman}[2]{%
+  \let\@unitstring=\@@unitstringgerman
+  \let\@teenstring=\@@teenstringgerman
+  \let\@tenstring=\@@tenstringgerman
+  \@@numberstringgerman{#1}{#2}%
+}%
+\global\let\@numberstringMgerman\@numberstringMgerman
+\global\let\@numberstringFgerman=\@numberstringMgerman
+\global\let\@numberstringNgerman=\@numberstringMgerman
+\newcommand*{\@NumberstringMgerman}[2]{%
+  \@numberstringMgerman{#1}{\@@num@str}%
+  \edef#2{\noexpand\MakeUppercase\expandonce\@@num@str}%
+}%
+\global\let\@NumberstringMgerman\@NumberstringMgerman
+\global\let\@NumberstringFgerman=\@NumberstringMgerman
+\global\let\@NumberstringNgerman=\@NumberstringMgerman
+\newcommand*{\@ordinalstringMgerman}[2]{%
+  \let\@unitthstring=\@@unitthstringMgerman
+  \let\@teenthstring=\@@teenthstringMgerman
+  \let\@tenthstring=\@@tenthstringMgerman
+  \let\@unitstring=\@@unitstringgerman
+  \let\@teenstring=\@@teenstringgerman
+  \let\@tenstring=\@@tenstringgerman
+  \def\@thousandth{tausendster}%
+  \def\@hundredth{hundertster}%
+  \@@ordinalstringgerman{#1}{#2}%
+}%
+\global\let\@ordinalstringMgerman\@ordinalstringMgerman
+\newcommand*{\@ordinalstringFgerman}[2]{%
+  \let\@unitthstring=\@@unitthstringFgerman
+  \let\@teenthstring=\@@teenthstringFgerman
+  \let\@tenthstring=\@@tenthstringFgerman
+  \let\@unitstring=\@@unitstringgerman
+  \let\@teenstring=\@@teenstringgerman
+  \let\@tenstring=\@@tenstringgerman
+  \def\@thousandth{tausendste}%
+  \def\@hundredth{hundertste}%
+  \@@ordinalstringgerman{#1}{#2}%
+}%
+\global\let\@ordinalstringFgerman\@ordinalstringFgerman
+\newcommand*{\@ordinalstringNgerman}[2]{%
+  \let\@unitthstring=\@@unitthstringNgerman
+  \let\@teenthstring=\@@teenthstringNgerman
+  \let\@tenthstring=\@@tenthstringNgerman
+  \let\@unitstring=\@@unitstringgerman
+  \let\@teenstring=\@@teenstringgerman
+  \let\@tenstring=\@@tenstringgerman
+  \def\@thousandth{tausendstes}%
+  \def\@hundredth{hunderstes}%
+  \@@ordinalstringgerman{#1}{#2}%
+}%
+\global\let\@ordinalstringNgerman\@ordinalstringNgerman
+\newcommand*{\@OrdinalstringMgerman}[2]{%
+ \@ordinalstringMgerman{#1}{\@@num@str}%
+ \edef#2{\noexpand\MakeUppercase\expandonce\@@num@str}%
+}%
+\global\let\@OrdinalstringMgerman\@OrdinalstringMgerman
+\newcommand*{\@OrdinalstringFgerman}[2]{%
+ \@ordinalstringFgerman{#1}{\@@num@str}%
+ \edef#2{\noexpand\MakeUppercase\expandonce\@@num@str}%
+}%
+\global\let\@OrdinalstringFgerman\@OrdinalstringFgerman
+\newcommand*{\@OrdinalstringNgerman}[2]{%
+ \@ordinalstringNgerman{#1}{\@@num@str}%
+ \edef#2{\noexpand\MakeUppercase\expandonce\@@num@str}%
+}%
+\global\let\@OrdinalstringNgerman\@OrdinalstringNgerman
+\newcommand*\@@unitthstringMgerman[1]{%
+  \ifcase#1%
+    nullter%
+    \or erster%
+    \or zweiter%
+    \or dritter%
+    \or vierter%
+    \or fünfter%
+    \or sechster%
+    \or siebter%
+    \or achter%
+    \or neunter%
+  \fi
+}%
+\global\let\@@unitthstringMgerman\@@unitthstringMgerman
+\newcommand*\@@tenthstringMgerman[1]{%
+  \ifcase#1%
+    \or zehnter%
+    \or zwanzigster%
+    \or dreißigster%
+    \or vierzigster%
+    \or fünfzigster%
+    \or sechzigster%
+    \or siebzigster%
+    \or achtzigster%
+    \or neunzigster%
+  \fi
+}%
+\global\let\@@tenthstringMgerman\@@tenthstringMgerman
+\newcommand*\@@teenthstringMgerman[1]{%
+  \ifcase#1%
+    zehnter%
+    \or elfter%
+    \or zwölfter%
+    \or dreizehnter%
+    \or vierzehnter%
+    \or fünfzehnter%
+    \or sechzehnter%
+    \or siebzehnter%
+    \or achtzehnter%
+    \or neunzehnter%
+  \fi
+}%
+\global\let\@@teenthstringMgerman\@@teenthstringMgerman
+\newcommand*\@@unitthstringFgerman[1]{%
+  \ifcase#1%
+    nullte%
+    \or erste%
+    \or zweite%
+    \or dritte%
+    \or vierte%
+    \or fünfte%
+    \or sechste%
+    \or siebte%
+    \or achte%
+    \or neunte%
+  \fi
+}%
+\global\let\@@unitthstringFgerman\@@unitthstringFgerman
+\newcommand*\@@tenthstringFgerman[1]{%
+  \ifcase#1%
+    \or zehnte%
+    \or zwanzigste%
+    \or dreißigste%
+    \or vierzigste%
+    \or fünfzigste%
+    \or sechzigste%
+    \or siebzigste%
+    \or achtzigste%
+    \or neunzigste%
+  \fi
+}%
+\global\let\@@tenthstringFgerman\@@tenthstringFgerman
+\newcommand*\@@teenthstringFgerman[1]{%
+  \ifcase#1%
+    zehnte%
+    \or elfte%
+    \or zwölfte%
+    \or dreizehnte%
+    \or vierzehnte%
+    \or fünfzehnte%
+    \or sechzehnte%
+    \or siebzehnte%
+    \or achtzehnte%
+    \or neunzehnte%
+  \fi
+}%
+\global\let\@@teenthstringFgerman\@@teenthstringFgerman
+\newcommand*\@@unitthstringNgerman[1]{%
+  \ifcase#1%
+    nulltes%
+    \or erstes%
+    \or zweites%
+    \or drittes%
+    \or viertes%
+    \or fünftes%
+    \or sechstes%
+    \or siebtes%
+    \or achtes%
+    \or neuntes%
+  \fi
+}%
+\global\let\@@unitthstringNgerman\@@unitthstringNgerman
+\newcommand*\@@tenthstringNgerman[1]{%
+  \ifcase#1%
+    \or zehntes%
+    \or zwanzigstes%
+    \or dreißigstes%
+    \or vierzigstes%
+    \or fünfzigstes%
+    \or sechzigstes%
+    \or siebzigstes%
+    \or achtzigstes%
+    \or neunzigstes%
+  \fi
+}%
+\global\let\@@tenthstringNgerman\@@tenthstringNgerman
+\newcommand*\@@teenthstringNgerman[1]{%
+  \ifcase#1%
+    zehntes%
+    \or elftes%
+    \or zwölftes%
+    \or dreizehntes%
+    \or vierzehntes%
+    \or fünfzehntes%
+    \or sechzehntes%
+    \or siebzehntes%
+    \or achtzehntes%
+    \or neunzehntes%
+  \fi
+}%
+\global\let\@@teenthstringNgerman\@@teenthstringNgerman
+\newcommand*\@@numberunderhundredgerman[2]{%
+\ifnum#1<10\relax
+  \ifnum#1>0\relax
+    \eappto#2{\@unitstring{#1}}%
+  \fi
+\else
+  \@tmpstrctr=#1\relax
+  \@FCmodulo{\@tmpstrctr}{10}%
+  \ifnum#1<20\relax
+    \eappto#2{\@teenstring{\@tmpstrctr}}%
+  \else
+    \ifnum\@tmpstrctr=0\relax
+    \else
+      \eappto#2{\@unitstring{\@tmpstrctr}und}%
+    \fi
+    \@tmpstrctr=#1\relax
+    \divide\@tmpstrctr by 10\relax
+    \eappto#2{\@tenstring{\@tmpstrctr}}%
+  \fi
+\fi
+}%
+\global\let\@@numberunderhundredgerman\@@numberunderhundredgerman
+\newcommand*\@@numberstringgerman[2]{%
+\ifnum#1>99999\relax
+  \PackageError{fmtcount}{Out of range}%
+  {This macro only works for values less than 100000}%
+\else
+  \ifnum#1<0\relax
+    \PackageError{fmtcount}{Negative numbers not permitted}%
+    {This macro does not work for negative numbers, however
+    you can try typing "minus" first, and then pass the modulus of
+    this number}%
+  \fi
+\fi
+\def#2{}%
+\@strctr=#1\relax \divide\@strctr by 1000\relax
+\ifnum\@strctr>1\relax
+ \@@numberunderhundredgerman{\@strctr}{#2}%
+  \appto#2{tausend}%
+\else
+  \ifnum\@strctr=1\relax
+    \eappto#2{\eintausend}%
+  \fi
+\fi
+\@strctr=#1\relax
+\@FCmodulo{\@strctr}{1000}%
+\divide\@strctr by 100\relax
+\ifnum\@strctr>1\relax
+  \eappto#2{\@unitstring{\@strctr}hundert}%
+\else
+   \ifnum\@strctr=1\relax
+     \ifnum#1>1000\relax
+        \appto#2{einhundert}%
+     \else
+        \eappto#2{\einhundert}%
+      \fi
+   \fi
+\fi
+\@strctr=#1\relax
+\@FCmodulo{\@strctr}{100}%
+\ifnum#1=0\relax
+  \def#2{null}%
+\else
+  \ifnum\@strctr=1\relax
+    \appto#2{eins}%
+  \else
+    \@@numberunderhundredgerman{\@strctr}{#2}%
+  \fi
+\fi
+}%
+\global\let\@@numberstringgerman\@@numberstringgerman
+\newcommand*\@@numberunderhundredthgerman[2]{%
+\ifnum#1<10\relax
+ \eappto#2{\@unitthstring{#1}}%
+\else
+  \@tmpstrctr=#1\relax
+  \@FCmodulo{\@tmpstrctr}{10}%
+  \ifnum#1<20\relax
+    \eappto#2{\@teenthstring{\@tmpstrctr}}%
+  \else
+    \ifnum\@tmpstrctr=0\relax
+    \else
+      \eappto#2{\@unitstring{\@tmpstrctr}und}%
+    \fi
+    \@tmpstrctr=#1\relax
+    \divide\@tmpstrctr by 10\relax
+    \eappto#2{\@tenthstring{\@tmpstrctr}}%
+  \fi
+\fi
+}%
+\global\let\@@numberunderhundredthgerman\@@numberunderhundredthgerman
+\newcommand*\@@ordinalstringgerman[2]{%
+\@orgargctr=#1\relax
+\ifnum\@orgargctr>99999\relax
+  \PackageError{fmtcount}{Out of range}%
+  {This macro only works for values less than 100000}%
+\else
+  \ifnum\@orgargctr<0\relax
+    \PackageError{fmtcount}{Negative numbers not permitted}%
+    {This macro does not work for negative numbers, however
+    you can try typing "minus" first, and then pass the modulus of
+    this number}%
+  \fi
+\fi
+\def#2{}%
+\@strctr=\@orgargctr\divide\@strctr by 1000\relax
+\ifnum\@strctr>1\relax
+\@@numberunderhundredgerman{\@strctr}{#2}%
+  \@tmpstrctr=\@orgargctr\@FCmodulo{\@tmpstrctr}{1000}%
+  \ifnum\@tmpstrctr=0\relax
+    \eappto#2{\@thousandth}%
+  \else
+    \appto#2{tausend}%
+  \fi
+\else
+  \ifnum\@strctr=1\relax
+    \ifnum\@orgargctr=1000\relax
+      \eappto#2{\@thousandth}%
+    \else
+      \eappto#2{\eintausend}%
+    \fi
+  \fi
+\fi
+\@strctr=\@orgargctr
+\@FCmodulo{\@strctr}{1000}%
+\divide\@strctr by 100\relax
+\ifnum\@strctr>1\relax
+  \@tmpstrctr=\@orgargctr \@FCmodulo{\@tmpstrctr}{100}%
+  \ifnum\@tmpstrctr=0\relax
+     \ifnum\@strctr=1\relax
+       \eappto#2{\@hundredth}%
+     \else
+       \eappto#2{\@unitstring{\@strctr}\@hundredth}%
+     \fi
+  \else
+     \eappto#2{\@unitstring{\@strctr}hundert}%
+  \fi
+\else
+   \ifnum\@strctr=1\relax
+     \@tmpstrctr=\@orgargctr \@FCmodulo{\@tmpstrctr}{100}%
+     \ifnum\@tmpstrctr=0\relax
+        \eappto#2{\@hundredth}%
+     \else
+     \ifnum\@orgargctr>1000\relax
+        \appto#2{einhundert}%
+     \else
+        \eappto#2{\einhundert}%
+     \fi
+     \fi
+   \fi
+\fi
+\@strctr=\@orgargctr
+\@FCmodulo{\@strctr}{100}%
+\ifthenelse{\@strctr=0 \and \@orgargctr>0 }{}{%
+\@@numberunderhundredthgerman{\@strctr}{#2}%
+}%
+}%
+\global\let\@@ordinalstringgerman\@@ordinalstringgerman
+\FCloadlang{germanb}%
+\endinput
+%%
+%% End of file `fc-german.def'.

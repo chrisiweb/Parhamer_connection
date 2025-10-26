@@ -1,0 +1,36 @@
+name preview
+category Package
+revision 71662
+shortdesc Extract bits of a LaTeX source for output
+longdesc The package is a free-standing part of the preview-latex
+longdesc bundle. The package provides the support preview-latex needs,
+longdesc when it chooses the matter it will preview. The output may
+longdesc reasonably be expected to have other uses, as in html
+longdesc translators, etc.
+containersize 6864
+containerchecksum 4473785d21e7729fccc9b523b0d31572e2d437126ba585d8e74266af4a098a2b3f329331ccd188438edc573d540d31905a74fbbb723c472344e6e3e5c42ae1a9
+doccontainersize 337316
+doccontainerchecksum 32d0c74f7080e99e47222ad2996a643b51e8ef39d623935188bfd7c207878ec80beda80e8ebda86bec660be91b73c954a635661182dcbb9954c89f7edb186691
+srccontainersize 22724
+srccontainerchecksum 462e6f1c81801d76172671daf5992f95635d36956aa998447e30995d567e6078e786025763466e7455dedf3be55cc97536e2360419e103ec025e6d50e753c140
+runfiles size=14
+ texmf-dist/tex/latex/preview/prauctex.cfg
+ texmf-dist/tex/latex/preview/prauctex.def
+ texmf-dist/tex/latex/preview/prcounters.def
+ texmf-dist/tex/latex/preview/preview.sty
+ texmf-dist/tex/latex/preview/prfootnotes.def
+ texmf-dist/tex/latex/preview/prlyx.def
+ texmf-dist/tex/latex/preview/prshowbox.def
+ texmf-dist/tex/latex/preview/prshowlabels.def
+ texmf-dist/tex/latex/preview/prtightpage.def
+ texmf-dist/tex/latex/preview/prtracingall.def
+catalogue-contact-announce https://lists.gnu.org/mailman/listinfo/info-auctex
+catalogue-contact-bugs https://debbugs.gnu.org/cgi/pkgreport.cgi?package=auctex
+catalogue-contact-development https://lists.gnu.org/mailman/listinfo/auctex-devel
+catalogue-contact-home https://www.gnu.org/software/auctex/preview-latex.html
+catalogue-contact-repository https://git.savannah.gnu.org/gitweb/?p=auctex.git
+catalogue-contact-support https://lists.gnu.org/mailman/listinfo/auctex
+catalogue-ctan /macros/latex/contrib/preview
+catalogue-license gpl3
+catalogue-topics chunks
+catalogue-version 14.0.6

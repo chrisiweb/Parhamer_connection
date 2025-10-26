@@ -1,0 +1,124 @@
+%%
+%% This is file `prelim2e.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% prelim2e.dtx  (with options: `package')
+%% Copyright (C) 1995–2009 Martin Schröder, 2020; Marei Peischl (peiTeX)  <marei@peitex.de>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is
+%% Marei Peischl <marei@peitex.de>.
+%% 
+%% This work consists of the files prelim2e.dtx and prelim2e.ins
+%% and the derived file prelim2e.sty.
+%% 
+%% The development repository can be found at
+%%   https://github.com/texhackse/prelim2e
+%% Please use the issue tracker for feedback!
+%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesExplPackage{prelim2e}
+         {2020/11/24}{2.0}{prelim2e Package}
+
+\providecommand\IfFormatAtLeastTF{\@ifl@t@r\fmtversion}
+\IfFormatAtLeastTF{2020/10/01}{}{%
+  \PackageError{prelim2e}{
+    Format file is too old. Please update your LaTeX distribution.
+  }{
+    prelim2e of version 2.0 requires a format version of at least 2020/10/01
+  }%
+}
+
+\bool_new:N \g_prelim_draft_bool
+\bool_new:N \g_prelim_time_bool
+\bool_new:N \g_prelim_scrtime_bool
+\newcommand*{\PrelimWords}{}
+\DeclareOption{draft}{\bool_gset_true:N \g_prelim_draft_bool}
+\DeclareOption{final}{\bool_gset_false:N \g_prelim_draft_bool}
+\DeclareOption{danish}{%
+   \renewcommand{\PrelimWords}{Forel\o{}big~version}}
+\DeclareOption{english}{%
+   \renewcommand{\PrelimWords}{Preliminary~version}}
+\DeclareOption{french}{%
+   \renewcommand{\PrelimWords}{Version~pr\'eliminaire}}
+\DeclareOption{german}{%
+   \renewcommand{\PrelimWords}{Vorl\"aufige~Version}}
+\DeclareOption{italian}{%
+   \renewcommand{\PrelimWords}{Versione~preliminare}}
+\DeclareOption{norsk}{%
+  \renewcommand{\PrelimWords}{Forel\o{}pig~versjon}}
+\DeclareOption{time}{\@prelim@timetrue}
+\DeclareOption{scrtime}{
+\bool_gset_true:N \g_prelim_scrtime_bool
+\bool_gset_true:N \g_prelim_time_bool
+}
+\DeclareOption*{%
+   \bool_if:NT \g_prelim_scrtime_bool {
+      \PassOptionsToPackage{\CurrentOption}{scrtime}%
+}
+}
+\ExecuteOptions{draft,english}
+\ProcessOptions\relax
+\bool_if:NT \g_prelim_scrtime_bool {
+   \RequirePackage{scrtime}
+}
+\newcommand{\PrelimText}{
+  \textnormal{
+    \footnotesize
+    \PrelimTextStyle
+    \PrelimWords{}~--~\today~
+    \bool_if:NT \g_prelim_time_bool {
+      \ --~
+      \thistime~
+   }
+  }
+}
+\newcommand{\PrelimTextStyle}{}
+\tl_const:Nx \c__prelim_horigin_tl {
+  \tl_if_exist:NTF \c__shipout_horigin_tl {
+    \c__shipout_horigin_tl
+  } {
+    1in
+  }
+}
+
+\tl_const:Nx \c__prelim_vorigin_tl {
+  \tl_if_exist:NTF \c__shipout_vorigin_tl {
+    \c__shipout_vorigin_tl
+  } {
+    1in
+  }
+}
+
+\cs_new:Nn \__prelim_every_shipout: {
+\put(\c__shipout_horigin_tl,\dim_eval:n {
+    -\c__shipout_vorigin_tl-\l_shipout_box_ht_plus_dp_dim-\topskip
+  })
+  {
+    \vbox_to_ht:nn {0pt} {
+      \hbox_to_wd:nn {\l_shipout_box_wd_dim} {
+        \let\protect\relax
+        \hfill\PrelimText\hfill
+      }
+    }
+  }
+}
+\bool_if:NT \g_prelim_draft_bool {
+  \AddToHook{shipout/foreground}{\__prelim_every_shipout:}
+}
+\endinput
+%%
+%% End of file `prelim2e.sty'.

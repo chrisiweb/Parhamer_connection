@@ -1,0 +1,37 @@
+name standalone
+category Package
+revision 74247
+shortdesc Compile TeX pictures stand-alone or as part of a document
+longdesc A class and package is provided which allows TeX pictures or
+longdesc other TeX code to be compiled standalone or as part of a main
+longdesc document. Special support for pictures with beamer overlays is
+longdesc also provided. The package is used in the main document and
+longdesc skips extra preambles in sub-files. The class may be used to
+longdesc simplify the preamble in sub-files. By default the preview
+longdesc package is used to display the typeset code without margins.
+longdesc The behaviour in standalone mode may adjusted using a
+longdesc configuration file standalone.cfg to redefine the standalone
+longdesc environment.
+depend adjustbox
+depend currfile
+depend filemod
+depend gincltex
+depend xkeyval
+containersize 12452
+containerchecksum 008eb29578af704a0a31cb5817cf14ab39fafc2dbaa7c2a8631e1664ea6b6975f586b9c5327770a5c2ea8b777d11f480e959bd102263a2cb4bc6978485f685d4
+doccontainersize 282048
+doccontainerchecksum 46b3562069a7a934faab651dc1271240c926a85b66193935d930a78171db999424dd8cc9a87114f72f0a92deecf97230b527a3902640a5c5adf6ebaec42dd3d0
+srccontainersize 39764
+srccontainerchecksum d52ab20ab08c0b54471487ffd63f4a96c00ba9d86a8235b3b587734e727eef6e32698500a378253c3d3ae8897c7b749edd1e18f90735f0664310bd38f30fb8b2
+runfiles size=19
+ texmf-dist/tex/latex/standalone/standalone.cfg
+ texmf-dist/tex/latex/standalone/standalone.cls
+ texmf-dist/tex/latex/standalone/standalone.sty
+ texmf-dist/tex/latex/standalone/standalone.tex
+catalogue-also combine docmute includex newclude
+catalogue-contact-bugs https://github.com/MartinScharrer/standalone/issues
+catalogue-contact-repository https://github.com/MartinScharrer/standalone
+catalogue-ctan /macros/latex/contrib/standalone
+catalogue-license lppl1.3
+catalogue-topics subdocs class
+catalogue-version 1.5a

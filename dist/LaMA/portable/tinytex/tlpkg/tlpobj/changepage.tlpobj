@@ -1,0 +1,24 @@
+name changepage
+category Package
+revision 15878
+shortdesc Margin adjustment and detection of odd/even pages
+longdesc The package provides commands to change the page layout in the
+longdesc middle of a document, and to robustly check for typesetting on
+longdesc odd or even pages. Instructions for use are at the end of the
+longdesc file. The package is an extraction of code from the memoir
+longdesc class, whose user interface it shares. It is intended the this
+longdesc package will eventually replace the chngpage package, which is
+longdesc distributed with the package.
+containersize 2612
+containerchecksum 0ef1d3370affd4ffc2ef77031a8713b5c663263802d67142b10fa7fc025569b3914dbbaa5e71e2c643718940a0cb89194d79ec83a83b93fcf5d57e0bfbbdbb46
+doccontainersize 274712
+doccontainerchecksum e3894d3a475f132e2242a6402899e8b9b6045681ce1fdb05fc5b0570e4d6b8b6980c2b5f5953602690250826db0e7dc9bab2f235d39fa5bda0e1161fd781478f
+srccontainersize 5956
+srccontainerchecksum 45ba09248231ad1bf14dfa553b11172e610ae8f46948451437ce3a88521f84791ae149a83c1ff104dd0f00ea6a1a029e816ab7dbe1e38b9eb97902c4a9b9b312
+runfiles size=4
+ texmf-dist/tex/latex/changepage/changepage.sty
+ texmf-dist/tex/latex/changepage/chngpage.sty
+catalogue-ctan /macros/latex/contrib/changepage
+catalogue-license lppl1.3
+catalogue-topics geometry-adj
+catalogue-version 1.0c
