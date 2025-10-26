@@ -1,0 +1,25 @@
+name lipsum
+category Package
+revision 60561
+shortdesc Easy access to the Lorem Ipsum and other dummy texts
+longdesc This package gives you easy access to 150 paragraphs of the
+longdesc Lorem Ipsum dummy text provided by https://lipsum.com, plus a
+longdesc growing list of other dummy texts in different languages.
+containersize 125324
+containerchecksum 24697be378aa490bf71194c8622400c11e27d5c6549caf2362250017ac97b4443986a4ad5f8d2d96aa53cfd7bcf5cd7ada0e1ddbbbfd27135e2a23bbad21563a
+doccontainersize 757020
+doccontainerchecksum ce44b2d4acab295bdcb2d0edcefedea449c4dae7cc4c0d62ef73e36169b0858863003bec1575000bfb78b1ecd9e5413807a89bc464b5d173f05a43313c7a22de
+srccontainersize 17004
+srccontainerchecksum 5984bb97fbecbecb5aaf26f788a6879682f6ec39c87e01c834533a779384b20ad02f1825cf5c2339b288cc61ed716eb3a76e51c45ccf80849b4434132e0c4081
+runfiles size=88
+ texmf-dist/tex/latex/lipsum/cicero.ltd.tex
+ texmf-dist/tex/latex/lipsum/lipsum-cs.ltd.tex
+ texmf-dist/tex/latex/lipsum/lipsum.ltd.tex
+ texmf-dist/tex/latex/lipsum/lipsum.sty
+catalogue-also blindtext kantlipsum
+catalogue-contact-bugs https://github.com/PhelypeOleinik/lipsum/issues
+catalogue-contact-repository https://github.com/PhelypeOleinik/lipsum
+catalogue-ctan /macros/latex/contrib/lipsum
+catalogue-license lppl1.3
+catalogue-topics macro-supp dummy-gen multilingual expl3
+catalogue-version 2.7

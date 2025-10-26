@@ -1,0 +1,21 @@
+name floatflt
+category Package
+revision 25540
+shortdesc Wrap text around floats
+longdesc The package can float text around figures and tables which do
+longdesc not span the full width of a page; it improves upon floatfig,
+longdesc and allows tables/figures to be set left/right or alternating
+longdesc on even/odd pages.
+containersize 2828
+containerchecksum 1f7de96ac5e82cc4bbfab3fdb665a18d20413cceea097e1407dee2073109ee1b82d7d3ea82c80630d9aaf445f14a8497aee7e3824458dea8b40b270135052ef5
+doccontainersize 304824
+doccontainerchecksum 7ca1c6ed832bb3d697685cad5575e02b531c0469095468fd40eb3131d89b68dfa0fcb9c882965aa7a9cc9c60292f64bdbf6264d3d990bd697dc27b23a46fae47
+srccontainersize 18016
+srccontainerchecksum 6d243fd8c9a2fb7bbc242ececd19d94916de97fd3583095e8342d8e7c56decdcaceac8038eee9a774950d9261979150035e8c9175175ad7346b0eb1fbea6c5bb
+runfiles size=3
+ texmf-dist/tex/latex/floatflt/floatflt.sty
+catalogue-also wrapfig
+catalogue-ctan /macros/latex/contrib/floatflt
+catalogue-license lppl1.3
+catalogue-topics text-flow
+catalogue-version 1.31

@@ -1,0 +1,21 @@
+name pbox
+category Package
+revision 24807
+shortdesc A variable-width \parbox command
+longdesc Defines a command \pbox{<max width>}{<text>} which adjusts its
+longdesc width to that of the enclosed text, up to the maximum width
+longdesc given. The package also defines some associated length
+longdesc commands.
+containersize 1380
+containerchecksum cf2ea3781aac3d0b8619c46513bf9894c4b4efd8ba89eefe2e5fbe4e8f82fedd3b17f64467598080a577c65cc21713671c68763ff2600ce24fb6f6ddfae83a3e
+doccontainersize 235996
+doccontainerchecksum 1955a1cd5336a7d71483f49bbc8c65426485fd38447282262b58b4633398cda0753c5574455421b19d92d5c88c599f9c227b54a7c340a35daf233a4f48a1c276
+srccontainersize 5728
+srccontainerchecksum 67cf5bae9494a81b97738ca8ed5877c009d631cb8ac681915559bc4919f536c657fe4e3ade36b8e4a0ee3b614ca4a23bde8a9cae19f3a9aca12cb2e3926160b1
+runfiles size=1
+ texmf-dist/tex/latex/pbox/pbox.sty
+catalogue-also varwidth
+catalogue-ctan /macros/latex/contrib/pbox
+catalogue-license gpl2
+catalogue-topics boxing
+catalogue-version 1.2

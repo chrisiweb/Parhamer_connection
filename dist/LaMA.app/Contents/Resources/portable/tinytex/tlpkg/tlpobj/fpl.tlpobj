@@ -1,0 +1,46 @@
+name fpl
+category Package
+revision 54512
+shortdesc SC and OsF fonts for URW Palladio L
+longdesc The FPL Fonts provide a set of SC/OsF fonts for URW Palladio L
+longdesc which are compatible with respect to metrics with the Palatino
+longdesc SC/OsF fonts from Adobe. Note that it is not my aim to exactly
+longdesc reproduce the outlines of the original Adobe fonts. The SC and
+longdesc OsF in the FPL Fonts were designed with the glyphs from URW
+longdesc Palladio L as starting point. For some glyphs (e.g. 'o') I got
+longdesc the best result by scaling and boldening. For others (e.g. 'h')
+longdesc shifting selected portions of the character gave more
+longdesc satisfying results. All this was done using the free font
+longdesc editor FontForge. The kerning data in these fonts comes from
+longdesc Walter Schmidt's improved Palatino metrics. LaTeX use is
+longdesc enabled by the mathpazo package, which is part of the psnfss
+longdesc distribution.
+containersize 288416
+containerchecksum 9c8ca7ebe7124afec8ba3f4ba4fc27c0a54ab460e53afeab599dcc619f81e5f8ad744a3cd68df33cb6ce456d0db0fafe7ee04d585dbc3fc123e5758a1242cef7
+doccontainersize 7968
+doccontainerchecksum 7b951310a10295bb453eed81ae668f042262094971dcd48c83ab721220094b3a62b79b5090002cc8a7a1fa12b4e75157fd8ead7c4deed8fa1d3629cc6746e8d8
+srccontainersize 30652
+srccontainerchecksum 64da822f5b40bb6abfa33d19bec50d8e002452a710d0d6ba3c5e66097e9a33f6718524471fdc716ecb951fcb2ad82659288a08ef85b72229ba40297fc33f7727
+runfiles size=168
+ texmf-dist/fonts/afm/public/fpl/fplbij8a.afm
+ texmf-dist/fonts/afm/public/fpl/fplbj8a.afm
+ texmf-dist/fonts/afm/public/fpl/fplrc8a.afm
+ texmf-dist/fonts/afm/public/fpl/fplrij8a.afm
+ texmf-dist/fonts/afm/public/fpl/pplb9d-kern.afm
+ texmf-dist/fonts/afm/public/fpl/pplbi9d-kern.afm
+ texmf-dist/fonts/afm/public/fpl/pplrc9d-kern.afm
+ texmf-dist/fonts/afm/public/fpl/pplri9d-kern.afm
+ texmf-dist/fonts/type1/public/fpl/fplbij8a.pfb
+ texmf-dist/fonts/type1/public/fpl/fplbij8a.pfm
+ texmf-dist/fonts/type1/public/fpl/fplbj8a.pfb
+ texmf-dist/fonts/type1/public/fpl/fplbj8a.pfm
+ texmf-dist/fonts/type1/public/fpl/fplrc8a.pfb
+ texmf-dist/fonts/type1/public/fpl/fplrc8a.pfm
+ texmf-dist/fonts/type1/public/fpl/fplrij8a.pfb
+ texmf-dist/fonts/type1/public/fpl/fplrij8a.pfm
+catalogue-contact-bugs https://github.com/rstub/fpl/issues
+catalogue-contact-repository https://github.com/rstub/fpl
+catalogue-ctan /fonts/fpl
+catalogue-license gpl2 lppl
+catalogue-topics font font-type1 font-sfd font-serif font-body font-proportional
+catalogue-version 1.003

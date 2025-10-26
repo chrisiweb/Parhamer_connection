@@ -1,0 +1,21 @@
+name awesomebox
+category Package
+revision 57349
+shortdesc Draw admonition blocks in your documents, illustrated with FontAwesome icons
+longdesc Awesome Boxes is all about drawing admonition blocks around
+longdesc text to inform or alert readers about something particular. The
+longdesc specific aim of this package is to use FontAwesome icons to
+longdesc ease the illustration of these blocks. The package depends on
+longdesc fontawesome5, xcolor, array and xparse.
+containersize 2252
+containerchecksum 4984d58669576137746518b68988fd9837b5ef133eb8da948f67bb0d5f775ad961055871bb46084e420ef0564b6a4796ba81a093be93f667f959a45ffc0c6174
+doccontainersize 56416
+doccontainerchecksum eec717fa5bb5a0f0d15cfc39d2172f8818718f6c7037fe962a0e811c131cbc91d3f3167077ec413d565e6b0b782f5b3f77b38257caa6529a6f5db7da8e163c3d
+runfiles size=2
+ texmf-dist/tex/latex/awesomebox/awesomebox.sty
+catalogue-contact-home https://git.umaneti.net/latex-awesomebox/about/
+catalogue-contact-repository https://git.umaneti.net/latex-awesomebox/
+catalogue-ctan /graphics/awesomebox
+catalogue-license other-free
+catalogue-topics boxing
+catalogue-version 0.6

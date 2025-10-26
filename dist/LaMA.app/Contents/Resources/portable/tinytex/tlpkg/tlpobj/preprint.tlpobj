@@ -1,0 +1,26 @@
+name preprint
+category Package
+revision 30447
+shortdesc A bundle of packages provided "as is"
+longdesc The bundle comprises: authblk, which permits footnote style
+longdesc author/affiliation input in the \author command, balance, to
+longdesc balance the end of \twocolumn pages, figcaps, to send figure
+longdesc captions, etc., to end document, fullpage, to set narrow page
+longdesc margins and set a fixed page style, and sublabel, which permits
+longdesc counters to be subnumbered.
+containersize 7064
+containerchecksum 66ef40f1f9bc1ef3348923e781ad92dd0174b9c45e16c97662f30971a449dd74580391e1f23fed031a41995e65ff90a6785328de0372cea53e3ce946da469d60
+doccontainersize 634332
+doccontainerchecksum b5e5fa40832249c5a0faa24c26e8b3a2a73036ef007dd3a61adb6a7989926c80e018fba52a66078c3d7b39e76901cc041ebcb9985ff29b53ade2c057abaf1376
+srccontainersize 36616
+srccontainerchecksum a7fe23d21dfee4071285ac0ca77a0b8936e8c149b804e9fc19e42cb5fa5eeac23ef3ed59e0433a965ec6203a1b031d2a76975248e624a6452e8fe6ea016be1c9
+runfiles size=9
+ texmf-dist/tex/latex/preprint/authblk.sty
+ texmf-dist/tex/latex/preprint/balance.sty
+ texmf-dist/tex/latex/preprint/figcaps.sty
+ texmf-dist/tex/latex/preprint/fullpage.sty
+ texmf-dist/tex/latex/preprint/sublabel.sty
+catalogue-ctan /macros/latex/contrib/preprint
+catalogue-license collection
+catalogue-topics collection
+catalogue-version 2011

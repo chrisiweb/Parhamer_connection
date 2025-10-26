@@ -1,0 +1,44 @@
+name esvect
+category Package
+revision 32098
+shortdesc Vector arrows
+longdesc Write vectors using an arrow which differs from the Computer
+longdesc Modern one. You have the choice between several kinds of
+longdesc arrows. The package consists of the relevant Metafont code and
+longdesc a package to use it.
+execute addMap esvect.map
+containersize 66880
+containerchecksum 1a6940862940d8ca29bcb19c69817b84a7f71f7a8762d3a63829fb0e0e88eccd940f3e2973d8d05dbe9323aa1f80dc9045b531e3509239eab399f02a55e7988c
+doccontainersize 44300
+doccontainerchecksum 502d2cce629280d7c192ad11764c0c12e65f9f1318286d1acdc3e08c9d7d36b07fc3e5939c053aa57ad59ee91e73b4035c9bd1aafee3672ddeed4a64bf3cd7ad
+srccontainersize 6748
+srccontainerchecksum 658e98e4c97dfdfcb34b396ff644fda060a645d15760bd975ad1397ca73f4ed24331a77bfd914bfe6f8f218aec9ab3fcc0a2a48efc19a0c6adc1024943584a47
+runfiles size=58
+ texmf-dist/fonts/map/dvips/esvect/esvect.map
+ texmf-dist/fonts/source/public/esvect/mathvec.mf
+ texmf-dist/fonts/source/public/esvect/vecsym.mf
+ texmf-dist/fonts/source/public/esvect/vect10.mf
+ texmf-dist/fonts/source/public/esvect/vect5.mf
+ texmf-dist/fonts/source/public/esvect/vect6.mf
+ texmf-dist/fonts/source/public/esvect/vect7.mf
+ texmf-dist/fonts/source/public/esvect/vect8.mf
+ texmf-dist/fonts/source/public/esvect/vect9.mf
+ texmf-dist/fonts/source/public/esvect/vsymbol.mf
+ texmf-dist/fonts/tfm/public/esvect/vect10.tfm
+ texmf-dist/fonts/tfm/public/esvect/vect5.tfm
+ texmf-dist/fonts/tfm/public/esvect/vect6.tfm
+ texmf-dist/fonts/tfm/public/esvect/vect7.tfm
+ texmf-dist/fonts/tfm/public/esvect/vect8.tfm
+ texmf-dist/fonts/tfm/public/esvect/vect9.tfm
+ texmf-dist/fonts/type1/public/esvect/vect10.pfb
+ texmf-dist/fonts/type1/public/esvect/vect5.pfb
+ texmf-dist/fonts/type1/public/esvect/vect6.pfb
+ texmf-dist/fonts/type1/public/esvect/vect7.pfb
+ texmf-dist/fonts/type1/public/esvect/vect8.pfb
+ texmf-dist/fonts/type1/public/esvect/vect9.pfb
+ texmf-dist/tex/latex/esvect/esvect.sty
+ texmf-dist/tex/latex/esvect/uesvect.fd
+catalogue-ctan /macros/latex/contrib/esvect
+catalogue-license gpl
+catalogue-topics font font-symbol font-mf
+catalogue-version 1.3

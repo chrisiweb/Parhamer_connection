@@ -1,0 +1,17 @@
+name xwatermark
+category Package
+revision 61719
+shortdesc Graphics and text watermarks on selected pages
+longdesc The package extends the author's draftmark and the watermark
+longdesc packages. It is currently unmaintained and does not work with
+longdesc modern LaTeX releases.
+containersize 16544
+containerchecksum c8b7e89cb39ef5b3f01f24a89cbdce729ad2061a0b3a1ef504933ab7e116b4b67ba8f1a68db74d46839bfbb60cecad4fc459fdd5d913716ad6542d8952ffd926
+doccontainersize 582912
+doccontainerchecksum a812651c587a76e086076bc8c810dc218431b40aad223644001f42d098962a401246781e0f83789afb3407fd93a0379755f82e30d815c14b4bc72499a9d8d26e
+runfiles size=19
+ texmf-dist/tex/latex/xwatermark/xwatermark.sty
+catalogue-ctan /macros/latex/contrib/xwatermark
+catalogue-license lppl1.3
+catalogue-topics background
+catalogue-version 1.5.2d

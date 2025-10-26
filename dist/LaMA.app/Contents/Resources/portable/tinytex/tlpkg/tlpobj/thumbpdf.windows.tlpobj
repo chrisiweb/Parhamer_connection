@@ -1,0 +1,8 @@
+name thumbpdf.windows
+category Package
+revision 65891
+shortdesc windows files of thumbpdf
+containersize 2308
+containerchecksum 08858ef8ed5197871c375cd2bdee111fbc96755c8605a36b18d55d8fdb6a464669d927f1228f88eb704b17baddc763191c31ed323fee45e18b65cb824c8b7bcc
+binfiles arch=windows size=2
+ bin/windows/thumbpdf.exe

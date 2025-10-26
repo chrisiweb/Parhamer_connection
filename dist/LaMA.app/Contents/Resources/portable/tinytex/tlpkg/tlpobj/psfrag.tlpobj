@@ -1,0 +1,25 @@
+name psfrag
+category Package
+revision 15878
+shortdesc Replace strings in encapsulated PostScript figures
+longdesc Allows LaTeX constructions (equations, picture environments,
+longdesc etc.) to be precisely superimposed over Encapsulated PostScript
+longdesc figures, using your own favorite drawing tool to create an EPS
+longdesc figure and placing simple text 'tags' where each replacement is
+longdesc to be placed, with PSfrag automatically removing these tags
+longdesc from the figure and replacing them with a user specified LaTeX
+longdesc construction, properly aligned, scaled, and/or rotated.
+containersize 4464
+containerchecksum 71bf5c02e7a8a17eaa891f15c88777dcbbfc3ecf8b4a72dea49683f061bc86427ab813dbac5f5b8ab4742edcb92cd32d510675a80b0b3cdff2dc2cf127ee89fa
+doccontainersize 68776
+doccontainerchecksum 072210deb2635a2032f6ac2d100ef72aa4471f69dec03fbb25fbb0d78b89aa2df0972b244d4335e8ed16e1a5f0cb8e04d22ad44dd5740fda59f9a4e5300befaa
+srccontainersize 13816
+srccontainerchecksum fd02b807b47f3818545e48825ddb11d188e9e3fa384b0f3412bb09051daedf73c2587a74d70aeda472047c1eac039252a25cacbf74a3c8df76be13a2644372de
+runfiles size=4
+ texmf-dist/dvips/psfrag/psfrag.pro
+ texmf-dist/tex/latex/psfrag/psfrag.sty
+catalogue-also psfragx
+catalogue-ctan /macros/latex/contrib/psfrag
+catalogue-license other-free
+catalogue-topics graphics-text
+catalogue-version 3.04

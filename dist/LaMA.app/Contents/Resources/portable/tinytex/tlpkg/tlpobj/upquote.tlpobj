@@ -1,0 +1,27 @@
+name upquote
+category Package
+revision 26059
+shortdesc Show "realistic" quotes in verbatim
+longdesc Typewriter-style fonts are best for program listings, but
+longdesc Computer Modern Typewriter prints ` and ' as bent opening and
+longdesc closing single quotes. Other fonts, and most programming
+longdesc languages, print ` as a grave accent and ' upright; ' is used
+longdesc both to open and to close quoted strings. The package switches
+longdesc the typewriter font to Computer Modern Typewriter in OT1
+longdesc encoding, and modifies the behaviour of verbatim, verbatim*,
+longdesc \verb, and \verb* to print in the "` and ' way". It does
+longdesc thisregardless of other fonts or encodings in use, so long as
+longdesc the package is loaded after the other fonts were. The package
+longdesc does not affect \tt, \texttt, etc.
+containersize 1272
+containerchecksum 06360c313124487f291a8daf7399a3139cec8c0a05be12724cedb3d60393ecb07aa31e34f9b74a83048f5752a8d826505f91f2c85d34348264975b48a1813fab
+doccontainersize 163312
+doccontainerchecksum 4b92923e8af2dcd65e82269994c766b88c6f78f6e7b8d10b9f44889832150711acb0cbaf467d595d6745863f385569f7eeccb4ce69df8361e56910969532e314
+srccontainersize 2688
+srccontainerchecksum dcb227a6ebb481e9c4abb9f9ddacafda03ae4a445768a3a242c6dc3bc79f83e9e5f185db4d353916b4d50f5aefa9884bc52fbced79894e1c00cd7f40f0940884
+runfiles size=1
+ texmf-dist/tex/latex/upquote/upquote.sty
+catalogue-ctan /macros/latex/contrib/upquote
+catalogue-license lppl1.2
+catalogue-topics verbatim
+catalogue-version 1.3

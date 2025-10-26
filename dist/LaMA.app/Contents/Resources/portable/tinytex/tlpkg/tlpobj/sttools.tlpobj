@@ -1,0 +1,25 @@
+name sttools
+category Package
+revision 76567
+shortdesc Various macros
+longdesc A collection of tools and macros, providing: miscellaneous
+longdesc float control, page styles for floats, multipage tabulars, even
+longdesc columns at end of twocolumn region, switching between one- and
+longdesc two-column anywhere,
+containersize 12468
+containerchecksum ab172b6ba2c5a04467ad03862736be8bb8d15d08895f47490fb7156badaad71e0d5c29302a75548eaa420131b9126b8caf320fb4e45212315d0e4f97e58e403c
+doccontainersize 630216
+doccontainerchecksum 6b85817e18bf0b7c4db1f018f9111a4e9f87c605a132e5777f002fa36a559604bf2faaf0861e1c9d685af4896489c8f527741959138e4e5f1dc9040455813817
+srccontainersize 19320
+srccontainerchecksum 0a11ea72ef815fbfd3cf41c520cb778cbee78e047ebea41abfb46ef2a77ea337c8d5237759772547d45dd893ff9a771e28865d454bb653433a88659047656ecd
+runfiles size=30
+ texmf-dist/tex/latex/sttools/cuted.sty
+ texmf-dist/tex/latex/sttools/cuted2024.sty
+ texmf-dist/tex/latex/sttools/floatpag.sty
+ texmf-dist/tex/latex/sttools/flushend.sty
+ texmf-dist/tex/latex/sttools/stabular.sty
+ texmf-dist/tex/latex/sttools/stfloats.sty
+catalogue-ctan /macros/latex/contrib/sttools
+catalogue-license lppl1.3
+catalogue-topics collection
+catalogue-version 3.4

@@ -1,0 +1,27 @@
+name pst-math
+category Package
+revision 67535
+shortdesc Enhancement of PostScript math operators to use with PSTricks
+longdesc PostScript lacks a lot of basic operators such as tan, acos,
+longdesc asin, cosh, sinh, tanh, acosh, asinh, atanh, exp (with e base).
+longdesc Also (oddly) cos and sin use arguments in degrees. Pst-math
+longdesc provides all those operators in a header file pst-math.pro with
+longdesc wrappers pst-math.sty and pst-math.tex. In addition, sinc,
+longdesc gauss, gammaln and bessel are implemented (only partially for
+longdesc the latter). The package is designed essentially to work with
+longdesc pst-plot but can be used in whatever PS code (such as PSTricks
+longdesc SpecialCoor "!", which is useful for placing labels). The
+longdesc package also provides a routine SIMPSON for numerical
+longdesc integration and a solver of linear equation systems.
+containersize 5208
+containerchecksum 12bd81bed4fc5de91cd4db49cb97a9911848c347a9a9325cb61637368bda4e0f35f9c5c348bd385d46907b61aa06682ae1a9d70616d4c5c81659550064d4cc0c
+doccontainersize 226768
+doccontainerchecksum 1b07b3086fa3e1d12f255632ceddf5b30c219472763cc43c0649b669a6014bb76e3a0fe7c182d0ea24c54fee8d2efe8399867321992e20f7f418d28198661bd2
+runfiles size=5
+ texmf-dist/dvips/pst-math/pst-math.pro
+ texmf-dist/tex/generic/pst-math/pst-math.tex
+ texmf-dist/tex/latex/pst-math/pst-math.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-math
+catalogue-license lppl
+catalogue-topics maths calculation pstricks
+catalogue-version 0.67

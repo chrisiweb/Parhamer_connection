@@ -1,0 +1,26 @@
+name sauerj
+category Package
+revision 15878
+shortdesc A bundle of utilities by Jonathan Sauer
+longdesc The bundle consists of: a tool for collecting text for later
+longdesc re-use, a tool for typesetting the "meta-information" within a
+longdesc text, a tool for use in constructing macros with multiple
+longdesc optional parameters, a package for multiple column parallel
+longdesc texts, a tool for processing key-value structured lists, and
+longdesc macros for typesetting a number as a German-language string.
+containersize 5004
+containerchecksum a4fe5bad7f3d5c895d6166846100cabb1b59e5f37c06d21e451acbaeed0847ab93d9995e70209ab18cc55bf8c78a6c83cbbdd49a45a4cfe511cdad41baf3ddfb
+doccontainersize 543096
+doccontainerchecksum 3ec0f5c2132a809b4f2f945255f0806508a3dfa3733119368ba59e4dcf5304ac9876ea5f05912faf926db651d1aaf4a3a1c40744fe7d3a077d8bd9dde2676754
+srccontainersize 29484
+srccontainerchecksum 05d2adc3b802e3c338dd92818cf7ce4d3bd6964dba8522bf4628bfc2d13939bde47cd0892b4fb629270d5e9104b9577fe6e3ba6eb71ca60a07f5e6441b0f572b
+runfiles size=8
+ texmf-dist/tex/latex/sauerj/collect.sty
+ texmf-dist/tex/latex/sauerj/metainfo.sty
+ texmf-dist/tex/latex/sauerj/optparams.sty
+ texmf-dist/tex/latex/sauerj/parcolumns.sty
+ texmf-dist/tex/latex/sauerj/processkv.sty
+ texmf-dist/tex/latex/sauerj/zahl2string.sty
+catalogue-ctan /macros/latex/contrib/sauerj
+catalogue-license lppl
+catalogue-topics collection

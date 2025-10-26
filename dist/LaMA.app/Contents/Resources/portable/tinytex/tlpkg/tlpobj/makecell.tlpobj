@@ -1,0 +1,26 @@
+name makecell
+category Package
+revision 15878
+shortdesc Tabular column heads and multilined cells
+longdesc This package supports common layouts for tabular column heads
+longdesc in whole documents, based on one-column tabular environment. In
+longdesc addition, it can create multi-lined tabular cells. The Package
+longdesc also offers: a macro which changes the vertical space around
+longdesc all the cells in a tabular environment (similar to the function
+longdesc of the tabls package, but using the facilities of the array)
+longdesc macros for multirow cells, which use the facilities of the
+longdesc multirow package; macros to number rows in tables, or to skip
+longdesc cells; diagonally divided cells; horizontal lines in tabular
+longdesc environments with defined thickness.
+containersize 4460
+containerchecksum ba32b6a68b0a4cd6df36d460832e5cd9664a9c305c24dbca93a4fce69e97b6db3d86e3f219a0511c7d70378ddd9424d3685d60cabbc8554077c6bfbd8847789b
+doccontainersize 690256
+doccontainerchecksum 7c762852f1c7b4609fa823117e765d2b42ad857e2ffa1ca84aa3df74497c88dfc0a2cf05747f11f14453873ee70c4b0f2f890112c567d04ad0d61ada37e14335
+srccontainersize 14792
+srccontainerchecksum bb2d33b674b612e67bbbc1bf04a68f3804fc37b9e22e19c9af05746efa869ef52db48c5828724b88de130b15120e9ae003f49ea6389f7add98c712550af87d4e
+runfiles size=4
+ texmf-dist/tex/latex/makecell/makecell.sty
+catalogue-ctan /macros/latex/contrib/makecell
+catalogue-license lppl
+catalogue-topics table
+catalogue-version 0.1e

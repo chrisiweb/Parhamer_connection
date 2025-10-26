@@ -1,0 +1,20 @@
+name threeparttable
+category Package
+revision 17383
+shortdesc Tables with captions and notes all the same width
+longdesc Provides a scheme for tables that have a structured note
+longdesc section, after the caption. This scheme provides an answer to
+longdesc the old problem of putting footnotes in tables -- by making
+longdesc footnotes entirely unnecessary. Note that a threeparttable is
+longdesc not a float of itself; but you can place it in a table or a
+longdesc table* environment, if necessary.
+containersize 5448
+containerchecksum f947dd01e56f6f3db8a4ed0b8f3ec564a38486fcb27f30bb3bacdf31af8360590e7e3886cc00cfbab813213974f4b335ff06ceb521d25519e8b95e345a002692
+doccontainersize 280024
+doccontainerchecksum 6b5eb1d6ceea740ec54ba935c45f03c2e6328140e86122a38b90d84e375382adfcfe14e2e9f56384f825c913140f01a1eb6266d2d46f6b813a34b4da652ee31d
+runfiles size=5
+ texmf-dist/tex/latex/threeparttable/3parttable.sty
+ texmf-dist/tex/latex/threeparttable/threeparttable.sty
+catalogue-ctan /macros/latex/contrib/threeparttable
+catalogue-license other-free
+catalogue-topics table notes

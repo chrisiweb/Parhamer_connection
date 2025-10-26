@@ -1,0 +1,26 @@
+name moreverb
+category Package
+revision 22126
+shortdesc Extended verbatim
+longdesc A collection of verbatim facilities that provide line-numbered
+longdesc verbatim, verbatim that obeys TAB characters, verbatim input
+longdesc and verbatim output to file. The package makes use of the LaTeX
+longdesc required verbatim package. The package is formed from a series
+longdesc of small pieces, and is somewhat unstructured. The user who
+longdesc looks for thought-through verbatim facilities is advised to
+longdesc consider using the fancyvrb package in place of moreverb.
+containersize 2324
+containerchecksum 673b7ab5951e418fe10622fb1a4b4a420c4c436684afbb1474c58b7aa7b235f7063555a220133257b351b5847be5e880714e44ca49bd9198a4306c0e821dcdde
+doccontainersize 114952
+doccontainerchecksum 27e4f361f5d7193c97629debec048168045bc38e353f677829677cb5ce5c0a9ad8f5b2576bd9f870da8dfbf16d745e489ba79e3dfe6aa1da8a9cab1ad72ace06
+srccontainersize 7080
+srccontainerchecksum 55ec67b5b9616459a776b0ca386be19cb6ae57fa2a7bde1f6a1896233f4f303277474d629c884e40bcd8d076522ab4e41fbe8850304dbd33469a1f21750c81ef
+runfiles size=2
+ texmf-dist/tex/latex/moreverb/moreverb.sty
+catalogue-also vrb fancyvrb
+catalogue-contact-repository https://github.com/rf-latex/moreverb
+catalogue-contact-support https://github.com/rf-latex/moreverb/issues
+catalogue-ctan /macros/latex/contrib/moreverb
+catalogue-license lppl
+catalogue-topics verbatim
+catalogue-version 2.3a

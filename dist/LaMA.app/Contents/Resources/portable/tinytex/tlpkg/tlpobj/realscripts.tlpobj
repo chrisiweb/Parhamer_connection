@@ -1,0 +1,24 @@
+name realscripts
+category Package
+revision 56594
+shortdesc Access OpenType subscript and superscript glyphs
+longdesc This small package replaces \textsuperscript and \textsubscript
+longdesc commands by equivalent commands that use OpenType font features
+longdesc to access appropriate glyphs if possible. The package also
+longdesc patches LaTeX's default footnote command to use this new
+longdesc \textsuperscript for footnote symbols. The package requires
+longdesc fontspec running on either XeLaTeX or LuaLaTeX. The package
+longdesc holds functions that were once parts of the xltxtra package,
+longdesc which now loads realscripts by default.
+containersize 1880
+containerchecksum fc0c686971c536b3490438e74322aec06371857a987bd70a6def7310441229fc4813d2080c5aa9b5e22cf78dc8ab1c3ed75b301acd987117d3e6f1f589f78981
+doccontainersize 104544
+doccontainerchecksum bddc4958f2c57e5e05fa31912a6c19ee123be463527f2e1121405194ac47b6a806790c204268bcf590785c927808b75305079ed44537ec84284c594d691c906d
+srccontainersize 4468
+srccontainerchecksum 117c3dadf6aaf7a46a3290f6c49d23f62af1206e512bde7098068071e9edf00bc7da0fb34392b0911a4ae525eb0a99b946317d31d12d3312879debdfbb345a84
+runfiles size=2
+ texmf-dist/tex/latex/realscripts/realscripts.sty
+catalogue-ctan /macros/unicodetex/latex/realscripts
+catalogue-license lppl1.3
+catalogue-topics off subsup-pos
+catalogue-version 0.3d

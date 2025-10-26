@@ -1,0 +1,17 @@
+name mnras
+category Package
+revision 68878
+shortdesc Monthly Notices of the Royal Astronomical Society
+longdesc Package for preparing papers in the journal "Monthly Notices of
+longdesc the Royal Astronomical Society".
+containersize 26004
+containerchecksum cb8e7cdcef07bead94509ab42af1e3d6a966b7266b75473f5a6107d2fe7f3f4c2f732c9544072def55d923883b5ad495a166cb128bf67e10211919be9f4fdda3
+doccontainersize 365164
+doccontainerchecksum be0eaacc684772a599ef62a782d73b41e0e9963cc9ab0624805cac56af8b8f8dc529405588c687a018ffe888b643902ddfbd0f833cb7cb67a3053bd5c34e373e
+runfiles size=27
+ texmf-dist/bibtex/bst/mnras/mnras.bst
+ texmf-dist/tex/latex/mnras/mnras.cls
+catalogue-ctan /macros/latex/contrib/mnras
+catalogue-license lppl1.3
+catalogue-topics journalpub class doc-templ
+catalogue-version 3.2

@@ -1,0 +1,18 @@
+name ifmtarg
+category Package
+revision 47544
+shortdesc If-then-else command for processing potentially empty arguments
+longdesc This package provides a command for the LaTeX programmer for
+longdesc testing whether an argument is empty.
+containersize 664
+containerchecksum b04aebac5acfe90a149f417cdf0d45b3a7cbe53d53d4d9f39d5badddfcb894e07f397933199bca702f3f0e66458133ba17feb5ace2ebda4a25bb24bf1af5d259
+doccontainersize 36996
+doccontainerchecksum 8f456c15ecd5090d2124a85b02c1ad100dc999064b258678cad3c444acae3e88b95e38f7ad1785bfc91f385d6bc1664c0b58282d5ef36e6cff9857b81176ab7b
+srccontainersize 2712
+srccontainerchecksum e30806ba6fa85737f67dbfbf7cc1556781bd4cb2179672e5b9980e7f625366d5627c69411dae34a9e1c0fc29c16acaf302c344d9d93b9dd4afdf23bea020cc63
+runfiles size=1
+ texmf-dist/tex/latex/ifmtarg/ifmtarg.sty
+catalogue-ctan /macros/latex/contrib/ifmtarg
+catalogue-license lppl
+catalogue-topics macro-supp
+catalogue-version 1.2b

@@ -1,0 +1,21 @@
+name sectsty
+category Package
+revision 15878
+shortdesc Control sectional headers
+longdesc A LaTeX2e package to help change the style of any or all of
+longdesc LaTeX's sectional headers in the article, book, or report
+longdesc classes. Examples include the addition of rules above or below
+longdesc a section title.
+containersize 4852
+containerchecksum 7e164b14f29a385f8a97e09ad124c347a154e316ac2eb41e0bf9f161d44f2782995fe271b5472ef90dfa4ffdd5495de81090b44f5777243ea76c9f75fcbde2b4
+doccontainersize 216820
+doccontainerchecksum 69d7fc032c06d015d7a6e6d2273c5240b146062565882fca0ddf5b7b795b788207bc9b478366a0a40e4acf223b07482f5cf41a65dd9b37047bcbf12566f6a826
+srccontainersize 21356
+srccontainerchecksum fc79d4c7c437d9c5ff7d8dc62439242cb772f250527ca099cd1180e58742a9ff42e7c63776c24fa5563c95b5d2bccd97df0e1c086869bbcf5ff2ed8ff5297bf4
+runfiles size=6
+ texmf-dist/tex/latex/sectsty/sectsty.sty
+catalogue-also titlesec
+catalogue-ctan /macros/latex/contrib/sectsty
+catalogue-license lppl
+catalogue-topics headings
+catalogue-version 2.0.2

@@ -1,0 +1,32 @@
+name revtex4-1
+category Package
+revision 56590
+shortdesc Styles for various Physics Journals
+longdesc This is an old version of revtex, and is kept as a courtesy to
+longdesc users having difficulty with the incompatibility of that latest
+longdesc version.
+containersize 61308
+containerchecksum 8c3e7c3845cd070ec51430a14a5b2d6f5b49821a837a6ac1f3a8889b353324479cf6121de0084b021c46722c425caa997b1b14df454f70bf7201ae4884de0f33
+doccontainersize 5428696
+doccontainerchecksum d17acddfc14e54d74b874d6d7599a3d20a2e314072a760b0d03ae7e17184e0264fc2d98f0d3b32109147f9b4e0a099e0c7f7e8747730a567d3a2b44d4e4d22f9
+srccontainersize 79740
+srccontainerchecksum d21d299085b7ce98e665cdd28754878c95beb7b0f0dbec970be3e39334bb520eee0ae4784cb4118b60edc0a92c6abb5bca8ad567cda65f5acdfd72449b15f2f9
+runfiles size=140
+ texmf-dist/bibtex/bst/revtex4-1/aipauth4-1.bst
+ texmf-dist/bibtex/bst/revtex4-1/aipnum4-1.bst
+ texmf-dist/bibtex/bst/revtex4-1/apsrev4-1.bst
+ texmf-dist/bibtex/bst/revtex4-1/apsrmp4-1.bst
+ texmf-dist/tex/latex/revtex4-1/aip4-1.rtx
+ texmf-dist/tex/latex/revtex4-1/aps10pt4-1.rtx
+ texmf-dist/tex/latex/revtex4-1/aps11pt4-1.rtx
+ texmf-dist/tex/latex/revtex4-1/aps12pt4-1.rtx
+ texmf-dist/tex/latex/revtex4-1/aps4-1.rtx
+ texmf-dist/tex/latex/revtex4-1/apsrmp4-1.rtx
+ texmf-dist/tex/latex/revtex4-1/revsymb4-1.sty
+ texmf-dist/tex/latex/revtex4-1/revtex4-1.cls
+catalogue-also revtex4-0 revtex
+catalogue-contact-home https://journals.aps.org/revtex
+catalogue-ctan /obsolete/macros/latex/contrib/revtex4-1
+catalogue-license lppl1.3
+catalogue-topics physics journalpub obsolete
+catalogue-version 4.1s

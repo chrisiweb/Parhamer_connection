@@ -1,0 +1,40 @@
+name thmtools
+category Package
+revision 67018
+shortdesc Extensions to theorem environments
+longdesc The bundle provides several packages for commonly-needed
+longdesc support for typesetting theorems. The packages should work with
+longdesc kernel theorems (theorems 'out of the box' with LaTeX), and the
+longdesc theorem and amsthm packages. Features of the bundle include: a
+longdesc key-value interface to \newtheorem; a \listoftheorems command;
+longdesc hyperref and autoref compatibility; a mechanism for restating
+longdesc entire theorems in a single macro call.
+containersize 13416
+containerchecksum 7d150df3f868339c6bcccb2e881105d9eba11bab8cbbbf42d5a696a7496cfbb87f0ca848e5cf7a63239e563a75515b15d4acc4a72046ca9539c4597e077333be
+doccontainersize 264936
+doccontainerchecksum 939567cab1c401d0946de706105d23add703e991bf36dc58f4e1d40fa35b5b30b37a9e32bc2d252f247da1f1db654bf3aad460dd1882389c00a8e11106270840
+srccontainersize 20760
+srccontainerchecksum a086c028394cff2fcb5c011d2a69627ce2f9651694b8e1596ece652111e88d43c1f1e358ae4c1201ddb0166180d6dec9eb14ebec8a05469636061c224c6f39e9
+runfiles size=23
+ texmf-dist/tex/latex/thmtools/aliasctr.sty
+ texmf-dist/tex/latex/thmtools/parseargs.sty
+ texmf-dist/tex/latex/thmtools/thm-amsthm.sty
+ texmf-dist/tex/latex/thmtools/thm-autoref.sty
+ texmf-dist/tex/latex/thmtools/thm-beamer.sty
+ texmf-dist/tex/latex/thmtools/thm-kv.sty
+ texmf-dist/tex/latex/thmtools/thm-listof.sty
+ texmf-dist/tex/latex/thmtools/thm-llncs.sty
+ texmf-dist/tex/latex/thmtools/thm-ntheorem.sty
+ texmf-dist/tex/latex/thmtools/thm-patch.sty
+ texmf-dist/tex/latex/thmtools/thm-restate.sty
+ texmf-dist/tex/latex/thmtools/thmdef-mdframed.sty
+ texmf-dist/tex/latex/thmtools/thmdef-shaded.sty
+ texmf-dist/tex/latex/thmtools/thmdef-thmbox.sty
+ texmf-dist/tex/latex/thmtools/thmtools.sty
+ texmf-dist/tex/latex/thmtools/unique.sty
+catalogue-contact-bugs https://github.com/muzimuzhi/thmtools/issues
+catalogue-contact-repository https://github.com/muzimuzhi/thmtools
+catalogue-ctan /macros/latex/contrib/thmtools
+catalogue-license lppl1.3c
+catalogue-topics maths maths-theorem
+catalogue-version 76

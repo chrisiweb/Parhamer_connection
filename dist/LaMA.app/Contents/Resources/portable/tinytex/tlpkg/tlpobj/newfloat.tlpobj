@@ -1,0 +1,27 @@
+name newfloat
+category Package
+revision 68434
+shortdesc Define new floating environments
+longdesc The package offers the command \DeclareFloatingEnvironment,
+longdesc which the user may use to define new floating environments
+longdesc which behave like the LaTeX standard foating environments
+longdesc figure and table.
+containersize 6816
+containerchecksum 6b7ec618044ee10c16722460fccf4e3b71092ed5fc902b0aff431c7407d50e97bc27a2e9bf4c561df50da7d605a3a1ea95c20f47727111e7077e338f0c0e483e
+doccontainersize 118716
+doccontainerchecksum e3faedb4cdb78304c738a4437fa503f7870c81c13eb82652ebf5a5ccb2befa1180683a5704b16891715c60445eac214cf8e6fb01f1d9675954d45e1a7535d659
+srccontainersize 18424
+srccontainerchecksum 150ef59ef64c4378dda85cf5472947575bf78ede8c080ebc9f2ad37ef8928c1d59c50c5772cf48683330bce60ce633e2295493c7bd65b658e3538628cbbbfd37
+runfiles size=22
+ texmf-dist/tex/latex/newfloat/newfloat.sty
+ texmf-dist/tex/latex/newfloat/newfloat_v1.0.sty
+ texmf-dist/tex/latex/newfloat/newfloat_v1.1.sty
+catalogue-also float
+catalogue-contact-bugs https://gitlab.com/axelsommerfeldt/newfloat/-/issues
+catalogue-contact-home https://gitlab.com/axelsommerfeldt/newfloat
+catalogue-contact-repository https://gitlab.com/axelsommerfeldt/newfloat/tree/master
+catalogue-contact-support https://gitlab.com/axelsommerfeldt/newfloat/-/issues
+catalogue-ctan /macros/latex/contrib/newfloat
+catalogue-license lppl1.3
+catalogue-topics float
+catalogue-version 1.2

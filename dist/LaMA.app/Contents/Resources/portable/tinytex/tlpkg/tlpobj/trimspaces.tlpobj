@@ -1,0 +1,21 @@
+name trimspaces
+category Package
+revision 15878
+shortdesc Trim spaces around an argument or within a macro
+longdesc A very short package that allows you to expandably remove
+longdesc spaces around a token list (commands are provided to remove
+longdesc spaces before, spaces after, or both); or to remove surrounding
+longdesc spaces within a macro definition, or to define space-stripped
+longdesc macros.
+containersize 936
+containerchecksum 09bfe50d1b14502311aea7a20df80e70c1907b1c8443aba9453aa0a3eb76cbd34728734b81df63bd5895a4a5a55ddfe6d0feedf7d5d28d6b5922a374bc550c9e
+doccontainersize 148416
+doccontainerchecksum 8e26064de0c14d6caa1d6cf625cbd2d598102056136dfa20d0a7ffb178c26829db0206d87893937b63f83171744a29bea3567e16e2a7a0d454734a0b72837277
+srccontainersize 2488
+srccontainerchecksum a34429fb9b8514d25ac523f0e3bfdc880b84951ff228ede3016e2d29c001b7f8058755870fc3c63e6041ef4768290177dabc6d520157082fb077497017065b65
+runfiles size=1
+ texmf-dist/tex/latex/trimspaces/trimspaces.sty
+catalogue-ctan /macros/latex/contrib/trimspaces
+catalogue-license lppl
+catalogue-topics macro-supp
+catalogue-version 1.1

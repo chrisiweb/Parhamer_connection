@@ -1,0 +1,23 @@
+name endfloat
+category Package
+revision 57090
+shortdesc Move floats to the end, leaving markers where they belong
+longdesc Place all floats on pages by themselves at the end of the
+longdesc document, optionally leaving markers like "[Figure 3 about
+longdesc here]" in the text near to where the figure (or table) would
+longdesc normally have occurred. Float types figure and table are
+longdesc recognised by the package, unmodified. Since several packages
+longdesc define other types of float, it is possible to register these
+longdesc float types with endfloat.
+containersize 5080
+containerchecksum 9c3820ddd36934dcfd049ab766ed037119459d02e9c049401b910b1c14ae2aed93d94110db66f0cdd2149451e152b5bcac14866c7844ba4a47f8c0a27756f733
+doccontainersize 181292
+doccontainerchecksum 0004d60fe959415670b5173bbab6d37733ed82b537d714c7357dae85ff8f7204e316c48d2651b1b53cc9b6ad0206a47c9cde1acdeb6aae676a25e50f363238c2
+srccontainersize 29220
+srccontainerchecksum bc5150716b23d3aa1e3a66e29fca3e8f9703199feb05b4bf76834e79654c39b0f6790ef1f0c193abeb0acfd0b2717076d4e2c89069221e1bc45716e0de314e85
+runfiles size=5
+ texmf-dist/tex/latex/endfloat/endfloat.sty
+catalogue-ctan /macros/latex/contrib/endfloat
+catalogue-license gpl
+catalogue-topics float
+catalogue-version 2.7

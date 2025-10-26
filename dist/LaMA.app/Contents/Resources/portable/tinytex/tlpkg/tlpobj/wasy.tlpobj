@@ -1,0 +1,43 @@
+name wasy
+category Package
+revision 53533
+shortdesc The wasy fonts (Waldi symbol fonts)
+longdesc This font contains all lasy characters (by L.Lamport, copyright
+longdesc notice in lasychr.mf), and a lot more symbols. Provided are the
+longdesc Metafont files for 5-10pt, and bold and slanted 10pt fonts,
+longdesc together with a .tex and .pdf documentation, and a file for
+longdesc using the fonts in a PLAIN-TeX document. Type-1 fonts by
+longdesc Michael Sharpe and Taco Hoekwater are available as separate
+longdesc package wasy-type1. Support under LaTeX is provided by Axel
+longdesc Kielhorn's wasysym package.
+containersize 24132
+containerchecksum 4c747ea3cfab820b803f624a32178a1d09cbb5a3c441ee423abc74caeef9217095491c0c490f11d3a6d6adf052b97492e081b2abedce6cc9c61410a8e878f5b8
+doccontainersize 305032
+doccontainerchecksum 4ee0dba83e3d1e00a1c58bc1c27d1b8e7e1677bfadf1d2653be216618d65fd168eab7aae26a5fe5ffae42c546b3438e2ad15f1a7bbfd58cd7b75cafa78a46205
+runfiles size=50
+ texmf-dist/fonts/source/public/wasy/lasychr.mf
+ texmf-dist/fonts/source/public/wasy/rsym.mf
+ texmf-dist/fonts/source/public/wasy/wasy10.mf
+ texmf-dist/fonts/source/public/wasy/wasy5.mf
+ texmf-dist/fonts/source/public/wasy/wasy6.mf
+ texmf-dist/fonts/source/public/wasy/wasy7.mf
+ texmf-dist/fonts/source/public/wasy/wasy8.mf
+ texmf-dist/fonts/source/public/wasy/wasy9.mf
+ texmf-dist/fonts/source/public/wasy/wasyb10.mf
+ texmf-dist/fonts/source/public/wasy/wasychr.mf
+ texmf-dist/fonts/source/public/wasy/wasysl10.mf
+ texmf-dist/fonts/tfm/public/wasy/wasy10.tfm
+ texmf-dist/fonts/tfm/public/wasy/wasy5.tfm
+ texmf-dist/fonts/tfm/public/wasy/wasy6.tfm
+ texmf-dist/fonts/tfm/public/wasy/wasy7.tfm
+ texmf-dist/fonts/tfm/public/wasy/wasy8.tfm
+ texmf-dist/fonts/tfm/public/wasy/wasy9.tfm
+ texmf-dist/fonts/tfm/public/wasy/wasyb10.tfm
+ texmf-dist/fonts/tfm/public/wasy/wasysl10.tfm
+ texmf-dist/tex/plain/wasy/wasyfont.tex
+catalogue-alias wasy2
+catalogue-also wasy-type1 wasysym
+catalogue-ctan /fonts/wasy
+catalogue-license pd
+catalogue-topics font font-mf font-symbol
+catalogue-version 2.5

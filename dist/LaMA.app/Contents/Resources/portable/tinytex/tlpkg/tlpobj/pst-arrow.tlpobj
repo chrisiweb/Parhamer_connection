@@ -1,0 +1,17 @@
+name pst-arrow
+category Package
+revision 61069
+shortdesc Special arrows for PSTricks
+longdesc This package has all the code from the package pstricks-add
+longdesc which was related to arrows, like multiple arrows and so on.
+containersize 3356
+containerchecksum 3e928de0ec8f1c9dd80143e35e3dcc9d51ff106fa12193798f5d2a77f49b3049f042273102b3dfd1460de68814ab32a3aa4eeb14daad846d729e7f6ddcdaa5fc
+doccontainersize 138288
+doccontainerchecksum 19878f237410d2db75096be382efef2ab1c5d169b4bf48b393956bf13a697d2c96b0da528c1044ee9b36ca8231ba4ad2b478bee24402033ebbcdf2778e4128a4
+runfiles size=4
+ texmf-dist/tex/generic/pst-arrow/pst-arrow.tex
+ texmf-dist/tex/latex/pst-arrow/pst-arrow.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-arrow
+catalogue-license lppl
+catalogue-topics pstricks
+catalogue-version 0.05

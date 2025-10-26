@@ -1,0 +1,20 @@
+name needspace
+category Package
+revision 74631
+shortdesc Insert pagebreak if not enough space
+longdesc Provides commands to disable pagebreaking within a given
+longdesc vertical space. If there is not enough space between the
+longdesc command and the bottom of the page, a new page will be started.
+containersize 940
+containerchecksum 7278612bc6fe35f7e91caf0e78afd32511ad31f6f31cb90f102a1e4c4babfb7b77d3e1c324df5c8b14bc2daac058550e6cb9b1a4de0a2cd63368efbc05a68152
+doccontainersize 183912
+doccontainerchecksum 780bf65aed55d1f1feb000f9cba888a16c2e2e9b61a2a4161893447ec92d7e168cf8579fad62f4d0ebb8faeda6c196a9b9dd53f45992fa3d129e6e3f3783dcfa
+srccontainersize 2216
+srccontainerchecksum b938ba0010ca713acacb95a17ef1e8a86c6a418e970cffc3a4b9cba277ab8a2004b86460dc3686b024ea399c98d88fbd4b9a411344b5a90eb3731acf6e816d3b
+runfiles size=1
+ texmf-dist/tex/latex/needspace/needspace.sty
+catalogue-contact-repository https://github.com/LaTeX-Package-Repositories/herries-press
+catalogue-ctan /macros/latex/contrib/needspace
+catalogue-license lppl1.3c
+catalogue-topics layout
+catalogue-version 1.3e

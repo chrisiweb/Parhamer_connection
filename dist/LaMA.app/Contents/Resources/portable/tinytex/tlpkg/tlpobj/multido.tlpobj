@@ -1,0 +1,22 @@
+name multido
+category Package
+revision 18302
+shortdesc A loop facility for Generic TeX
+longdesc The package provides the \multido command, which was originally
+longdesc designed for use with PSTricks. Fixed-point arithmetic is used
+longdesc when working on the loop variable, so that the package is
+longdesc equally applicable in graphics applications like PSTricks as it
+longdesc is with the more common integer loops.
+containersize 3684
+containerchecksum 5c861bddcb8b2bdb654dc4438621834a68b2bca102799317c9a220f9bc9bc4c9d70775375302a85736f8706bb7fbfc1a4c24fae2f850237e8f54ad521b1cef83
+doccontainersize 106732
+doccontainerchecksum 8cef36438fbe57c54f625b178331f7a6ca19854abcddb475283fc0cb4a362764c443de05989245e962dba9e2e4f17734533502fbd4b2ef4fc8e8c36b96bc68ab
+srccontainersize 976
+srccontainerchecksum 3f3f6f5813ab1da542ebc9c4837da72339804866875bf225292d8a36ebf54b33f12d3e84de9d0b5027d3e8889e10180649a19e25c7ec6bb532296e9e204e25e5
+runfiles size=4
+ texmf-dist/tex/generic/multido/multido.tex
+ texmf-dist/tex/latex/multido/multido.sty
+catalogue-ctan /macros/generic/multido
+catalogue-license lppl
+catalogue-topics macro-supp
+catalogue-version 1.42

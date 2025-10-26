@@ -1,0 +1,35 @@
+name wasy-type1
+category Package
+revision 53534
+shortdesc Type 1 versions of wasy fonts
+longdesc Converted (Adobe Type 1) outlines of the wasy fonts.
+depend wasy
+execute addMixedMap wasy.map
+containersize 261536
+containerchecksum d7131c025bd97bdaf62697feb698da97d175783e4b0502d3e85b60a663f46a0520268a6063956afaddc6308ddd21954992bf8d216049cb324133e3760ac20825
+doccontainersize 740
+doccontainerchecksum d9c88d39deabe19393df0b6d83bddd644e347592735cd7511dc70374ea015cd7fdf36ac9f320b44c612c8276eee3d7cd94f9e0b26de050c0771c85ec7dbae53c
+runfiles size=91
+ texmf-dist/fonts/afm/public/wasy-type1/wasy10.afm
+ texmf-dist/fonts/afm/public/wasy-type1/wasy5.afm
+ texmf-dist/fonts/afm/public/wasy-type1/wasy6.afm
+ texmf-dist/fonts/afm/public/wasy-type1/wasy7.afm
+ texmf-dist/fonts/afm/public/wasy-type1/wasy8.afm
+ texmf-dist/fonts/afm/public/wasy-type1/wasy9.afm
+ texmf-dist/fonts/afm/public/wasy-type1/wasyb10.afm
+ texmf-dist/fonts/afm/public/wasy-type1/wasysl10.afm
+ texmf-dist/fonts/map/dvips/wasy-type1/wasy.map
+ texmf-dist/fonts/type1/public/wasy-type1/wasy10.pfb
+ texmf-dist/fonts/type1/public/wasy-type1/wasy5.pfb
+ texmf-dist/fonts/type1/public/wasy-type1/wasy6.pfb
+ texmf-dist/fonts/type1/public/wasy-type1/wasy7.pfb
+ texmf-dist/fonts/type1/public/wasy-type1/wasy8.pfb
+ texmf-dist/fonts/type1/public/wasy-type1/wasy9.pfb
+ texmf-dist/fonts/type1/public/wasy-type1/wasyb10.pfb
+ texmf-dist/fonts/type1/public/wasy-type1/wasysl10.pfb
+catalogue-alias wasy2-ps
+catalogue-also wasy wasysym
+catalogue-ctan /fonts/wasy-type1
+catalogue-license pd
+catalogue-topics font font-type1 font-symbol
+catalogue-version 001.002

@@ -1,0 +1,34 @@
+name ntgclass
+category Package
+revision 65522
+shortdesc "European" versions of standard classes
+longdesc The bundle offers versions of the standard LaTeX article and
+longdesc report classes, rewritten to reflect a more European design,
+longdesc and the a4 package, which is better tuned to the shape of a4
+longdesc paper than is the a4paper class option of the standard classes.
+longdesc The classes include several for article and report
+longdesc requirements, and a letter class. The elements of the bundle
+longdesc were designed by members of the Dutch TeX Users Group NTG.
+containersize 16076
+containerchecksum f0bfad104459f2740712d186f7f9aab20e9860ccf75f8c552a4c80d8b14ece4d503d2aabbd7d3000e1bf05203f41ebd49f2c693b4d36478b631cd27ce71c9c0d
+doccontainersize 1665028
+doccontainerchecksum c6a6d7302edac0aef33d1747900c3781683c2a0deb4d9dc3cafabda375e9cc92d9b57b6638442c164b7435279d43f208d2ebbdacf944e96c71ee368087d70922
+srccontainersize 55736
+srccontainerchecksum 60cc5982eeabb092b53f1bda76c12e3c090d9777d6a39ebe7b675dfa5dfab27450edac8da7e44539a67af1cf737060e0e52dd80116b8b7f784f46efc9fe7df82
+runfiles size=71
+ texmf-dist/tex/latex/ntgclass/a4.sty
+ texmf-dist/tex/latex/ntgclass/artikel1.cls
+ texmf-dist/tex/latex/ntgclass/artikel2.cls
+ texmf-dist/tex/latex/ntgclass/artikel3.cls
+ texmf-dist/tex/latex/ntgclass/boek.cls
+ texmf-dist/tex/latex/ntgclass/boek3.cls
+ texmf-dist/tex/latex/ntgclass/brief.cls
+ texmf-dist/tex/latex/ntgclass/ntg10.clo
+ texmf-dist/tex/latex/ntgclass/ntg11.clo
+ texmf-dist/tex/latex/ntgclass/ntg12.clo
+ texmf-dist/tex/latex/ntgclass/rapport1.cls
+ texmf-dist/tex/latex/ntgclass/rapport3.cls
+catalogue-ctan /macros/latex/contrib/ntgclass
+catalogue-license lppl1.3
+catalogue-topics class letter
+catalogue-version 2.1f
