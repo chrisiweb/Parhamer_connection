@@ -35,26 +35,5 @@ create-dmg \
   "$DIST_DIR/${DMG_NAME}.dmg" \
   "$DIST_DIR/${APP_NAME}.app"
 
-# === 🎨 Icon zur DMG hinzufügen ===
-echo "🎨 Füge Icon zur DMG hinzu..."
-cd "$(dirname "$0")"
-
-# Schreibbare Kopie erzeugen
-hdiutil convert "$DIST_DIR/${DMG_NAME}.dmg" -format UDRW -o "$DIST_DIR/${DMG_NAME}_rw.dmg"
-
-# Icon anwenden
-sips -i "$ICON_DMG"
-DeRez -only icns "$ICON_DMG" > /tmp/tmpicns.rsrc
-Rez -append /tmp/tmpicns.rsrc -o "$DIST_DIR/${DMG_NAME}_rw.dmg"
-SetFile -a C "$DIST_DIR/${DMG_NAME}_rw.dmg"
-rm /tmp/tmpicns.rsrc
-
-# Zurückkonvertieren in finale DMG
-hdiutil convert "$DIST_DIR/${DMG_NAME}_rw.dmg" -format UDZO -imagekey zlib-level=9 -o "$DIST_DIR/${DMG_NAME}_final.dmg"
-
-# Aufräumen & umbenennen
-rm "$DIST_DIR/${DMG_NAME}_rw.dmg"
-mv "$DIST_DIR/${DMG_NAME}_final.dmg" "$DIST_DIR/${DMG_NAME}.dmg"
-
 echo "✅ Fertig! Deine DMG-Datei befindet sich hier:"
 echo "➡️  $DIST_DIR/${DMG_NAME}.dmg"
