@@ -16,10 +16,10 @@ create-dmg \
   --volicon "$ICON_DMG" \
   --background "bg_mac_installer.png" \
   --window-pos 200 120 \
-  --window-size 450 210 \
+  --window-size 500 300 \
   --icon-size 100 \
-  --icon "${APP_NAME}.app" 10 80 \
-  --app-drop-link 300 80 \
+  --icon "${APP_NAME}.app" 10 150 \
+  --app-drop-link 300 150 \
   "$DIST_DIR/${DMG_NAME}.dmg" \
   "$DIST_DIR/${APP_NAME}.app"
 
