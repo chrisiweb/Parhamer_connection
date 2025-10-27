@@ -71,10 +71,16 @@ class Worker_UpdateLaMA(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def task(self, path_installer):
-        download_link = (
-            "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.exe"
-        )
-        path_installer = os.path.join(path_home, "Downloads", "LaMA_setup.exe")
+        if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
+            download_link = (
+                "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.dmg"
+            )
+            path_installer = os.path.join(path_home, "Downloads", "LaMA_setup.dmg")        
+        else:
+            download_link = (
+                "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.exe"
+            )
+            path_installer = os.path.join(path_home, "Downloads", "LaMA_setup.exe")
         # urlretrieve(download_link, path_installer)
 
         # timeout_start = time.time()
@@ -981,30 +987,58 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 json.dump(self.lama_settings, f, ensure_ascii=False)
 
             if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
-                refresh_ddb(self, auto_update='mac')
-                opened_file = os.path.basename(sys.argv[0])
-                name, extension = os.path.splitext(opened_file)
-
-                filename_update = os.path.join(
-                    path_programm,
-                    "_database",
-                    "_config",
-                    "update",
-                    "update_mac",
-                    "update%s" % extension,
+                refresh_ddb(self, auto_update=True)
+                text = "Neue Version von LaMA wird heruntergeladen ..."
+                path_installer = os.path.join(
+                    path_home, "Downloads", "LaMA_setup.dmg"
                 )
-                try:
-                    if extension == ".py":
-                        os.system('python3 "{}"'.format(filename_update))
-                    else:
-                        os.system('chmod 777 "{}"'.format(filename_update))
-                        os.system(filename_update)
-                    sys.exit(0)
-                except Exception as e:
-                    warning_window(
-                        'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
-                        'Fehler:\n"{}"'.format(e),
+
+                Dialog_checkchanges = QtWidgets.QDialog()
+                ui = Ui_Dialog_processing()
+                ui.setupUi(Dialog_checkchanges, text)
+
+                thread = QtCore.QThread(Dialog_checkchanges)
+                worker = Worker_UpdateLaMA()
+                worker.finished.connect(Dialog_checkchanges.close)
+                worker.moveToThread(thread)
+                thread.started.connect(partial(worker.task, path_installer))
+                thread.start()
+                thread.exit()
+                Dialog_checkchanges.exec()
+
+                if worker.response == False:
+                    critical_window(
+                        "LaMA konnte nicht heruntergeladen werden. Bitte überprüfen Sie die Internetverbindung und versuchen Sie es später erneut."
                     )
+                    return
+                elif worker.response == True:
+                    os.startfile('"' + path_installer + '"')
+                    sys.exit(0)              
+                # OLD VERSION - UPDATE
+                # refresh_ddb(self, auto_update='mac')
+                # opened_file = os.path.basename(sys.argv[0])
+                # name, extension = os.path.splitext(opened_file)
+
+                # filename_update = os.path.join(
+                #     path_programm,
+                #     "_database",
+                #     "_config",
+                #     "update",
+                #     "update_mac",
+                #     "update%s" % extension,
+                # )
+                # try:
+                #     if extension == ".py":
+                #         os.system('python3 "{}"'.format(filename_update))
+                #     else:
+                #         os.system('chmod 777 "{}"'.format(filename_update))
+                #         os.system(filename_update)
+                #     sys.exit(0)
+                # except Exception as e:
+                #     warning_window(
+                #         'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
+                #         'Fehler:\n"{}"'.format(e),
+                #     )
             else:
                 refresh_ddb(self, auto_update=True)
                 text = "Neue Version von LaMA wird heruntergeladen ..."
