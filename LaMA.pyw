@@ -988,6 +988,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 
             if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
                 refresh_ddb(self, auto_update=True)
+
                 text = "Neue Version von LaMA wird heruntergeladen ..."
                 path_installer = os.path.join(
                     path_home, "Downloads", "LaMA_setup.dmg"
@@ -1012,7 +1013,10 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     )
                     return
                 elif worker.response == True:
-                    os.startfile('"' + path_installer + '"')
+                    if sys.platform.startswith('darwin'):  # macOS
+                        subprocess.call(['open', path_installer])
+                    elif os.name == 'posix':  # Linux
+                        subprocess.call(['xdg-open', path_installer])
                     sys.exit(0)              
                 # OLD VERSION - UPDATE
                 # refresh_ddb(self, auto_update='mac')
