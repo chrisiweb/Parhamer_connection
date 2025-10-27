@@ -1,8 +1,0 @@
-name texcount.windows
-category Package
-revision 65891
-shortdesc windows files of texcount
-containersize 2304
-containerchecksum efd43f5cf09035df63ecb614b06151ff557084da0c6c18ddd1a0408a67b8918a008f7ac7d6f5794b6f9b63397eac07abe1381ab117f1b0f4b1e205de47165962
-binfiles arch=windows size=2
- bin/windows/texcount.exe
