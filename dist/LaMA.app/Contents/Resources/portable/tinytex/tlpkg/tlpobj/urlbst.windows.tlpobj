@@ -1,8 +1,0 @@
-name urlbst.windows
-category Package
-revision 65891
-shortdesc windows files of urlbst
-containersize 2304
-containerchecksum 6ad2237b6d2f50081cbbe7d6e472006113a29e5ddfc6107bb3923cdcb998e119288cedbe2f5bd0703f1bce8ace4cb6f213041cbd44b80514c0ed1f78aa4862f6
-binfiles arch=windows size=2
- bin/windows/urlbst.exe
