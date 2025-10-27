@@ -14,7 +14,7 @@ echo "💽 Erstelle DMG..."
 create-dmg \
   --volname "$DMG_NAME" \
   --volicon "$ICON_DMG" \
-  --background "mac installer.png" \
+  --background "bg_mac_installer.png" \
   --window-pos 200 120 \
   --window-size 450 210 \
   --icon-size 100 \
