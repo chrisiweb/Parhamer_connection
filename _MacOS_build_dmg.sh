@@ -27,12 +27,12 @@ echo "💽 Erstelle DMG..."
 create-dmg \
   --volname "$DMG_NAME" \
   --volicon "$ICON_DMG" \
+  --background "bg_mac_installer.png" \
   --window-pos 200 120 \
-  --window-size 450 210 \
+  --window-size 500 300 \
   --icon-size 100 \
-  --icon "${APP_NAME}.app" 10 80 \
-  --add-file "arrow-right.icns" "arrow-right.icns" 120 80 \
-  --app-drop-link 310 80 \
+  --icon "${APP_NAME}.app" 10 160 \
+  --app-drop-link 280 160 \
   "$DIST_DIR/${DMG_NAME}.dmg" \
   "$DIST_DIR/${APP_NAME}.app"
 

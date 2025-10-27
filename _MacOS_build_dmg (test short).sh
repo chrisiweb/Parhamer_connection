@@ -18,8 +18,8 @@ create-dmg \
   --window-pos 200 120 \
   --window-size 500 300 \
   --icon-size 100 \
-  --icon "${APP_NAME}.app" 10 150 \
-  --app-drop-link 300 150 \
+  --icon "${APP_NAME}.app" 10 160 \
+  --app-drop-link 280 160 \
   "$DIST_DIR/${DMG_NAME}.dmg" \
   "$DIST_DIR/${APP_NAME}.app"
 
