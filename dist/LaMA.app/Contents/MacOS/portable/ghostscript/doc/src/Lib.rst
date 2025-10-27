@@ -1,1 +1,0 @@
-../../../../../Resources/portable/ghostscript/doc/src/Lib.rst

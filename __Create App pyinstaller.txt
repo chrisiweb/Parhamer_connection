@@ -22,3 +22,16 @@ Enter in terminal: pip3.11 install pyqt5 v
 Create App bundle:
 	
 	python3 -m PyInstaller --windowed --icon=icon_lama.icns --name=LaMA --add-data="portable:portable" LaMA.pyw
+
+Create DMG FILE
+
+create-dmg \
+  --volname "LaMA Installer" \
+  --volicon "icon_lama.icns" \
+  --window-pos 200 120 \
+  --window-size 600 400 \
+  --icon-size 100 \
+  --icon "LaMA.app" 50 250 \
+  --app-drop-link 250 200 \
+  "dist/LaMA_setup.dmg" \
+  "dist/LaMA.app"
