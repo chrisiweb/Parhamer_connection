@@ -10,4 +10,5 @@ __pycache__/
 Teildokument/
 miktex-portable/
 LaMA_programdata/
-
+dist/
+build/
