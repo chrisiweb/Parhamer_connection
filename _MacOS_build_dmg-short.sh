@@ -9,19 +9,6 @@ PYTHON_SCRIPT="LaMA.pyw"
 DMG_NAME="${APP_NAME}_setup"
 DIST_DIR="dist"
 
-# === 🧹 Vorherige Builds löschen ===
-echo "🧹 Entferne alte Build-Dateien..."
-rm -rf build "$DIST_DIR" "$APP_NAME.spec"
-
-# === 🐍 App mit PyInstaller erstellen ===
-echo "🐍 Erstelle macOS App..."
-python3 -m PyInstaller \
-  --windowed \
-  --name="$APP_NAME" \
-  --icon="$ICON_APP" \
-  --add-data="portable:portable" \
-  "$PYTHON_SCRIPT"
-
 # === 💽 DMG mit create-dmg erstellen ===
 echo "💽 Erstelle DMG..."
 create-dmg \
@@ -31,8 +18,7 @@ create-dmg \
   --window-size 450 210 \
   --icon-size 100 \
   --icon "${APP_NAME}.app" 10 80 \
-  --add-file "arrow-right.icns" "arrow-right.icns" 120 80 \
-  --app-drop-link 310 80 \
+  --app-drop-link 300 80 \
   "$DIST_DIR/${DMG_NAME}.dmg" \
   "$DIST_DIR/${APP_NAME}.app"
 
