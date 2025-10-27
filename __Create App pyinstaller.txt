@@ -25,13 +25,13 @@ Create App bundle:
 
 Create DMG FILE
 
-create-dmg \
-  --volname "LaMA Installer" \
-  --volicon "icon_lama.icns" \
-  --window-pos 200 120 \
-  --window-size 600 400 \
+create-dmg \               
+  --volname "LaMA_setup" \                                   
+  --volicon "icon_lama_installer.icns" \            
+  --window-pos 200 120 \        
+  --window-size 450 210 \
   --icon-size 100 \
-  --icon "LaMA.app" 50 250 \
-  --app-drop-link 250 200 \
+  --icon "LaMA.app" 10 80 \
+  --app-drop-link 210 80 \
   "dist/LaMA_setup.dmg" \
   "dist/LaMA.app"
