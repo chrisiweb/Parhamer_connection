@@ -70,7 +70,7 @@ class Worker_UpdateLaMA(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
-    def task(self, path_installer):
+    def task(self, path_installer, ui):
         if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
             download_link = (
                 "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.dmg"
@@ -84,10 +84,22 @@ class Worker_UpdateLaMA(QtCore.QObject):
         # urlretrieve(download_link, path_installer)
 
         # timeout_start = time.time()
-
         try:
-            r = requests.get(download_link, allow_redirects=True, timeout=(5, 10))
-            open(path_installer, "wb").write(r.content)
+            with requests.get(download_link, stream=True) as r:
+                r.raise_for_status()
+                total_size = int(r.headers.get('content-length', 0))
+                block_size = 102400  # 1 KB Blöcke
+                downloaded = 0
+                with open(path_installer, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=block_size):
+                        if chunk:
+                            f.write(chunk)
+                            downloaded += len(chunk)
+                            percent = int(downloaded * 100 / total_size)
+                            ui.label.setText(f"Neue Version von LaMA wird heruntergeladen...  ({percent} %)")
+    
+            # r = requests.get(download_link, allow_redirects=True, timeout=(5, 10))
+            # open(path_installer, "wb").write(r.content)
             self.response = True
 
         except requests.exceptions.ConnectionError:
@@ -986,38 +998,45 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             with open(lama_settings_file, "w+", encoding="utf8") as f:
                 json.dump(self.lama_settings, f, ensure_ascii=False)
 
+         
+            refresh_ddb(self, auto_update=True)
+            text = "Neue Version von LaMA wird heruntergeladen ..."
             if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
-                refresh_ddb(self, auto_update=True)
-
-                text = "Neue Version von LaMA wird heruntergeladen ..."
                 path_installer = os.path.join(
                     path_home, "Downloads", "LaMA_setup.dmg"
                 )
+            else:
+                path_installer = os.path.join(
+                    path_home, "Downloads", "LaMA_setup.exe"
+                )                
 
-                Dialog_checkchanges = QtWidgets.QDialog()
-                ui = Ui_Dialog_processing()
-                ui.setupUi(Dialog_checkchanges, text)
+            Dialog_checkchanges = QtWidgets.QDialog()
+            ui = Ui_Dialog_processing()
+            ui.setupUi(Dialog_checkchanges, text)
 
-                thread = QtCore.QThread(Dialog_checkchanges)
-                worker = Worker_UpdateLaMA()
-                worker.finished.connect(Dialog_checkchanges.close)
-                worker.moveToThread(thread)
-                thread.started.connect(partial(worker.task, path_installer))
-                thread.start()
-                thread.exit()
-                Dialog_checkchanges.exec()
+            thread = QtCore.QThread(Dialog_checkchanges)
+            worker = Worker_UpdateLaMA()
+            worker.finished.connect(Dialog_checkchanges.close)
+            worker.moveToThread(thread)
+            thread.started.connect(partial(worker.task, path_installer, ui))
+            thread.start()
+            thread.exit()
+            Dialog_checkchanges.exec()
 
-                if worker.response == False:
-                    critical_window(
-                        "LaMA konnte nicht heruntergeladen werden. Bitte überprüfen Sie die Internetverbindung und versuchen Sie es später erneut."
-                    )
-                    return
-                elif worker.response == True:
-                    if sys.platform.startswith('darwin'):  # macOS
-                        subprocess.call(['open', path_installer])
-                    elif os.name == 'posix':  # Linux
-                        subprocess.call(['xdg-open', path_installer])
-                    sys.exit(0)              
+            if worker.response == False:
+                critical_window(
+                    "LaMA konnte nicht heruntergeladen werden. Bitte überprüfen Sie die Internetverbindung und versuchen Sie es später erneut."
+                )
+                return
+            
+            elif worker.response == True:
+                if sys.platform.startswith('darwin'):  # macOS
+                    subprocess.call(['open', path_installer])
+                # elif os.name == 'posix':  # Linux
+                #     subprocess.call(['xdg-open', path_installer])
+                else:
+                    os.startfile('"' + path_installer + '"')
+                sys.exit(0)              
                 # OLD VERSION - UPDATE
                 # refresh_ddb(self, auto_update='mac')
                 # opened_file = os.path.basename(sys.argv[0])
