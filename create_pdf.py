@@ -841,14 +841,20 @@ def extract_error_from_output(latex_output):
 
 def build_pdf_file(ui, folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
-        lama_path = os.path.dirname(sys.argv[0])
-        if lama_path == "":
-            lama_path = "."
 
         if sys.platform.startswith('darwin'):
+            lama_path = os.path.dirname(sys.argv[0])
+            if lama_path == "":
+                lama_path = "."
             folder = 'universal-darwin'
             gs = os.path.join(lama_path, 'portable', 'ghostscript', 'lib', 'gs')
         elif sys.platform.startswith('linux'):
+            if getattr(sys, 'frozen', False):
+                # Wenn aus AppImage oder PyInstaller gestartet
+                lama_path = os.path.dirname(sys.executable)
+            else:
+                # Normaler Python-Start
+                lama_path = os.path.dirname(os.path.abspath(__file__))
             folder = 'x86_64-linux'  
             gs = "gs"
 
@@ -948,14 +954,14 @@ def open_pdf_file(folder_name, file_name):
         # os.system("xdg-open {0}".format(file_path))
 
         try:
-            subprocess.run(
+            subprocess.Popen(
                 [
                     "evince",
                     file_path,
                 ]
             )
         except FileNotFoundError:
-            subprocess.run(
+            subprocess.Popen(
                 [
                     "xdg-open",
                     file_path,
