@@ -1,6 +1,6 @@
 import tkinter as tk
 import subprocess
-import threading
+# import threading
 import sys
 from functools import partial
 
@@ -22,8 +22,8 @@ class Redirect:
         pass
 
 
-def run(textbox=None):
-    threading.Thread(target=test, args=[textbox]).start()
+# def run(textbox=None):
+#     threading.Thread(target=test, args=[textbox]).start()
 
 
 def test(textbox=None):

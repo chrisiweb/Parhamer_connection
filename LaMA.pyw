@@ -6,6 +6,11 @@ __lastupdate__ = "10/25"
 #minor change##
 ##################
 import sys
+import os
+
+if sys.platform.startswith("linux"): ## ignore Linux warning: QSocketNotifier: Can only be used with threads started with QThread
+    os.environ["QT_LOGGING_RULES"] = "*.warning=false"
+    os.environ["QT_NO_GLIB"] = "1"
 
 # if sys.platform.startswith("darwin"):
 #     reload_ddb = True
@@ -573,6 +578,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             if range_limit > 2:
                 create_pdf(name, index, range_limit)
                 temp_filename = name + ".pdf"
+
                 
                 if index % 2 == 0:
                     new_filename = name + "_{}_Loesung.pdf".format(
@@ -9366,7 +9372,7 @@ if __name__ == "__main__":
     # splash = QSplashScreen(splash_pix)
     # adding progress bar
     progressBar = QtWidgets.QProgressBar(splash)
-    progressBar.setMaximum(46)
+    progressBar.setMaximum(45)
     progressBar.setGeometry(25, splash_pix.height() - 4, splash_pix.width() - 50, 20)
 
     # splash.setMask(splash_pix.mask())
@@ -9387,9 +9393,7 @@ if __name__ == "__main__":
 
     import time
     i = step_progressbar(i, "time")
-    # Simulate something that takes time
-    # i = step_progressbar(i, "threading")
-    # import threading
+
 
     i = step_progressbar(i, "PyQt5")
     from PyQt5 import QtCore, QtWidgets, QtGui
@@ -9413,11 +9417,6 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "re")
     import re
-
-
-
-    i = step_progressbar(i, "sys")
-    import os
 
     i= step_progressbar(i, "requestes")
     import requests

@@ -7910,9 +7910,7 @@ if __name__ == "__main__":
 
     import time
     i = step_progressbar(i, "time")
-    # Simulate something that takes time
-    # i = step_progressbar(i, "threading")
-    # import threading
+
 
     i = step_progressbar(i, "PyQt5")
     from PyQt5 import QtCore, QtWidgets, QtGui

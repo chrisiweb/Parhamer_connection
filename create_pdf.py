@@ -7,7 +7,6 @@ import re
 import json
 import subprocess
 
-
 from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader, path_home, path_compiler
 from config import *
 # (
@@ -845,29 +844,27 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         lama_path = os.path.dirname(sys.argv[0])
         if lama_path == "":
             lama_path = "."
+
         if sys.platform.startswith('darwin'):
             folder = 'universal-darwin'
             gs = os.path.join(lama_path, 'portable', 'ghostscript', 'lib', 'gs')
         elif sys.platform.startswith('linux'):
-            folder = 'x86_64-linux'   
-            if shutil.which('gs'): 
-                raise FileNotFoundError("Ghostscript nicht gefunden. Bitte installiere es mit: sudo apt install ghostscript")
-                #gs = "gs"
+            folder = 'x86_64-linux'  
+            gs = "gs"
+
             
         latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder,'latex')
         dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')
 
-        
-        if "Teildokument" in file_name:
-            terminal_command = f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'      
-        else:
-            terminal_command = f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'
-         
         process = subprocess.Popen(
             f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"',
             stdout=subprocess.PIPE,
             shell=True,
         )
+
+
+         
+
 
     else:
         drive_programm = os.path.splitdrive(path_programm)[0]
@@ -945,15 +942,25 @@ def open_pdf_file(folder_name, file_name):
 
         file_path = file_path + ".pdf"
 
-        # webbrowser.open(file_path, new=2, autoraise=True)
+        #subprocess.run(["evince", "--unique", file_path])
+        #webbrowser.open(file_path, new=2, autoraise=True)
 
         # os.system("xdg-open {0}".format(file_path))
-        subprocess.run(
-            [
-                "xdg-open",
-                file_path,
-            ]
-        )
+
+        try:
+            subprocess.run(
+                [
+                    "evince",
+                    file_path,
+                ]
+            )
+        except FileNotFoundError:
+            subprocess.run(
+                [
+                    "xdg-open",
+                    file_path,
+                ]
+            )            
     elif sys.platform.startswith("darwin"):
         if is_empty(path_pdf_reader) == False:
             if os.path.exists(path_pdf_reader)== False:
@@ -1055,7 +1062,10 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
 # Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com""".format(link),
 #         titel="Keine LaTeX-Distribution gefunden")
 #         return
-
+    if sys.platform.startswith("linux"):
+        if not shutil.which('gs'):
+            critical_window('Ghostscript konnte auf Ihrem Linux System nicht gefunden werden.', 'Bitte installiere Ghostscript im Terminal mit:\nsudo apt install ghostscript')
+            return
 
     
     errors_latex_output = working_window_latex_output(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
