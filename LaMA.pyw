@@ -94,7 +94,15 @@ class Worker_UpdateLaMA(QtCore.QObject):
         # urlretrieve(download_link, path_installer)
 
         # timeout_start = time.time()
-        try:
+        
+        if sys.platform.startswith("linux"):
+            try:
+                subprocess.run(["AppImageUpdate", "--no-gui", sys.executable])
+                self.response = True
+                self.finished.emit()
+            except:
+                pass
+        try:    
             with requests.get(download_link, stream=True) as r:
                 r.raise_for_status()
                 total_size = int(r.headers.get('content-length', 0))

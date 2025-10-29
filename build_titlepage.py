@@ -100,7 +100,7 @@ def prepare_individual_titlepage(titlepage, dict_titlepage, MainWindow):
             add_on = None
 
         if add_on != None:
-            title_header = title_header + f"\\\ [0.5cm] \\textsc{{\Large {add_on}}}"
+            title_header = title_header + f"\\\ [0.5cm] \\textsc{{\\Large {add_on}}}"
 
     else:
         title_header = data_gesamt['Pruefungstyp']
@@ -116,7 +116,7 @@ def prepare_individual_titlepage(titlepage, dict_titlepage, MainWindow):
     if is_empty(data_gesamt["Klasse"]):
         klasse = ""
     else:
-        klasse = data_gesamt["Klasse"].replace("_","\_")
+        klasse = data_gesamt["Klasse"].replace("_","\\_")
     
     titlepage = titlepage.replace("[[KLASSE]]", klasse)
 
@@ -139,7 +139,7 @@ def prepare_individual_titlepage(titlepage, dict_titlepage, MainWindow):
             nichtgenuegend = notenschluessel[3] / 100
             
             beurteilungsraster = (
-                f"\large\\beurteilung{zusatz}{{{gut}}}{{{befriedigend}}}{{{genuegend}}}{{{nichtgenuegend}}}{{ % Prozentschluessel\n"
+                f"\\large\\beurteilung{zusatz}{{{gut}}}{{{befriedigend}}}{{{genuegend}}}{{{nichtgenuegend}}}{{ % Prozentschluessel\n"
                 f"T1={{{round(pkt_typ1)}}}, % Punkte im Teil 1\n"
                 f"T2={{{round(pkt_typ2)}}}, % Punkte im Teil 2\n}}\n\n"
             )
@@ -156,7 +156,7 @@ def prepare_individual_titlepage(titlepage, dict_titlepage, MainWindow):
             ge_lower = notenschluessel[6]
 
             beurteilungsraster = (
-                f"\large\individualbeurteilung{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}{{ % Prozentschluessel\n"
+                f"\\large\\individualbeurteilung{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}{{ % Prozentschluessel\n"
                 f"T1={{{round(pkt_typ1)}}}, % Punkte im Teil 1\n"
                 f"T2={{{round(pkt_typ2)}}}, % Punkte im Teil 2\n}}\n\n"
             )              
@@ -198,7 +198,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
     else:
         klasse = self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
     
-    klasse = klasse.replace("_","\_")
+    klasse = klasse.replace("_","\\_")
 
     if (
         self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
@@ -215,12 +215,12 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         if self.dict_all_infos_for_file["data_gesamt"]["#"]==0:
             titlepage = (
                 "\\textsc{{Grundkompetenzcheck{0}}}  \\hfill {1} \\hfill \\textsc{{Name:}} \\rule{{5cm}}{{0.4pt}} \\hfill {2}"
-                "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(gruppe_name, klasse, datum_kurz)
+                "\\normalsize \\\\ \\vspace{{\\baselineskip}} \n\n".format(gruppe_name, klasse, datum_kurz)
             )
         else:
             titlepage = (
                 "\\textsc{{{0}. Grundkompetenzcheck{1}}} \\hfill {2} \\hfill \\textsc{{Name:}} \\rule{{5cm}}{{0.4pt}} \\hfill {3}"
-                "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(self.dict_all_infos_for_file["data_gesamt"]["#"], gruppe_name, klasse,datum_kurz)
+                "\\normalsize \\\\ \\vspace{{\\baselineskip}} \n\n".format(self.dict_all_infos_for_file["data_gesamt"]["#"], gruppe_name, klasse,datum_kurz)
             )
 
         return titlepage, dict_titlepage
@@ -267,9 +267,9 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         if self.checkBoxName.isChecked():
             name = "\\footnotesize Name: \\rule{8cm}{0.3pt}"
             if self.pushButtonName_current_index == 1:
-                name = f"\\begin{{center}}{name}\end{{center}}"
+                name = f"\\begin{{center}}{name}\\end{{center}}"
             elif self.pushButtonName_current_index == 2:
-                name = f"\\begin{{flushright}}{name}\end{{flushright}}"
+                name = f"\\begin{{flushright}}{name}\\end{{flushright}}"
             name = name + "\n\n"
         else:
             name = ""
@@ -314,7 +314,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                     logo_input = (
                         "\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}}\n"
                         "\\includegraphics[width=1\\textwidth]{{{0}}}\n"
-                        "\\end{{minipage}} \\\ [1cm] \n".format(logo_name)
+                        "\\end{{minipage}} \\\\ [1cm] \n".format(logo_name)
                     )
                 else:
                     warning_window(
@@ -369,13 +369,13 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                 if add_on != None:
                     title_header = (
                         title_header
-                        + "\\\ [0.5cm] \\textsc{{\Large {0}}}".format(add_on)
+                        + "\\\\ [0.5cm] \\textsc{{\\Large {0}}}".format(add_on)
                     )
 
-                title_header = title_header + "\\\ [0.5cm] \n\n"
+                title_header = title_header + "\\\\ [0.5cm] \n\n"
 
             else:
-                title_header = "\\textsc{{\\Huge {0}}} \\\ [2cm]".format(
+                title_header = "\\textsc{{\\Huge {0}}} \\\\ [2cm]".format(
                     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                 )
         else:
@@ -383,35 +383,35 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
 
         if dict_titlepage["datum"] == True:
             if dict_titlepage["datum_combobox"]==0:
-                datum_text = "\\textsc{{\Large am {0}}}\\\ [1cm] \n\n".format(datum)
+                datum_text = "\\textsc{{\\Large am {0}}}\\\\ [1cm] \n\n".format(datum)
             elif dict_titlepage["datum_combobox"]==1:
-                datum_text = "\\vspace{0.8cm}\n\n\Large Datum: \\rule{8cm}{0.4pt}\\\ [0.8cm] \n\n"
+                datum_text = "\\vspace{0.8cm}\n\n\\Large Datum: \\rule{8cm}{0.4pt}\\\\ [0.8cm] \n\n"
         else:
             datum_text = ""
 
         if dict_titlepage["klasse"] == True:
-            klasse = f"\\textsc{{\Large Klasse {klasse}}} \\\ [1cm] \n\n"
+            klasse = f"\\textsc{{\\Large Klasse {klasse}}} \\\\ [1cm] \n\n"
         else:
             klasse = ""
 
         if ausgabetyp == "schularbeit" and maximum > 2:
             gruppe_name = self.dict_gruppen[gruppe]
-            gruppe_name = "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n\n".format(gruppe_name)
+            gruppe_name = "\\textsc{{\\Large Gruppe {0}}} \\\\ [1cm]\n\n".format(gruppe_name)
         else:
             gruppe_name = ""
 
         if dict_titlepage["name"] == True:
-            name = "\\Large Name: \\rule{8cm}{0.4pt} \\\ [1cm]\n\n"
+            name = "\\Large Name: \\rule{8cm}{0.4pt} \\\\ [1cm]\n\n"
         else:
             name = ""
 
         if dict_titlepage["note"] == True:
-            note = "\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n\n"
+            note = "\\Large Note: \\rule{8cm}{0.4pt} \\\\ [1cm]\n\n"
         else:
             note = "\\vspace{1cm}\n\n"
 
         if dict_titlepage["unterschrift"] == True:
-            unterschrift = "\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ [1cm]\n\n"
+            unterschrift = "\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\\ [1cm]\n\n"
         else:
             unterschrift = "\\vspace{1cm}\n\n"
 
@@ -433,7 +433,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                 nichtgenuegend = notenschluessel[3] / 100
                 
                 beurteilungsraster = (
-                    f"\large\\beurteilung{zusatz}{{{gut}}}{{{befriedigend}}}{{{genuegend}}}{{{nichtgenuegend}}}{{ % Prozentschluessel\n"
+                    f"\\large\\beurteilung{zusatz}{{{gut}}}{{{befriedigend}}}{{{genuegend}}}{{{nichtgenuegend}}}{{ % Prozentschluessel\n"
                     f"T1={{{round(pkt_typ1)}}}, % Punkte im Teil 1\n"
                     f"T2={{{round(pkt_typ2)}}}, % Punkte im Teil 2\n}}\n\n"
                 )
@@ -452,7 +452,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                 ge_lower = notenschluessel[6]
 
                 beurteilungsraster = (
-                    f"\large\individualbeurteilung{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}{{ % Prozentschluessel\n"
+                    f"\\large\\individualbeurteilung{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}{{ % Prozentschluessel\n"
                     f"T1={{{round(pkt_typ1)}}}, % Punkte im Teil 1\n"
                     f"T2={{{round(pkt_typ2)}}}, % Punkte im Teil 2\n}}\n\n"
                 )              

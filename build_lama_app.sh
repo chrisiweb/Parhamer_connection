@@ -2,7 +2,8 @@
 set -e
 
 # =========================================================
-#  Build-Skript für LaMA als AppImage (Ubuntu 20.04–25.10)
+#  Build-Skript für LaMA als AppImage mit zsync-Update-Support
+#  Kompatibel mit Ubuntu 20.04–25.10
 # =========================================================
 
 APP_NAME="LaMA"
@@ -11,6 +12,8 @@ PORTABLE_DIR="portable"
 ICON_FILE="lama_icon.png"
 APPDIR="LaMA.AppDir"
 VENV="venv_lama"
+OUTPUT="${APP_NAME}.AppImage"
+UPDATE_URL="gh-releases-zsync|mylama|lama|latest|${OUTPUT}.zsync"  # 🔁 GitHub-Update-Link
 
 echo "🔧 Starte AppImage-Build für $APP_NAME ..."
 
@@ -101,19 +104,38 @@ Terminal=false
 EOF
 
 # ---------------------------------------------------------
-# 8. AppImage erzeugen
+# 8. AppImage erzeugen (mit zsync-Metadaten)
 # ---------------------------------------------------------
 ARCH=$(uname -m)
-echo "🏗️  Erzeuge AppImage für Architektur: $ARCH"
-ARCH=$ARCH appimagetool "$APPDIR"
-
-# ✅ AppImage umbenennen
-mv ${APP_NAME}-${ARCH}.AppImage ${APP_NAME}.AppImage
+echo "🏗️  Erzeuge AppImage mit zsync-Updateinfo (${ARCH}) ..."
+ARCH=$ARCH appimagetool \
+  --updateinformation "${UPDATE_URL}" \
+  "$APPDIR" \
+  "${OUTPUT}"
 
 # ---------------------------------------------------------
-# 9. Fertig 🎉
+# 9. .zsync-Datei erzeugen
+# ---------------------------------------------------------
+if ! command -v zsyncmake &>/dev/null; then
+  echo "⚙️  Installiere zsync ..."
+  sudo apt install -y zsync
+fi
+
+echo "🔁 Erzeuge .zsync-Datei ..."
+zsyncmake "${OUTPUT}"
+
+# ---------------------------------------------------------
+# 10. Fertig 🎉
 # ---------------------------------------------------------
 echo "✅ Fertig! AppImage wurde erstellt:"
-ls -lh ${APP_NAME}.AppImage
-echo "💡 Starte mit: chmod +x ${APP_NAME}.AppImage && ./${APP_NAME}.AppImage"
+ls -lh "${OUTPUT}" "${OUTPUT}.zsync"
+echo
+echo "📦 AppImage: ${OUTPUT}"
+echo "🔄 Update-Datei: ${OUTPUT}.zsync"
+echo
+echo "🌍 Lade beide Dateien hoch nach GitHub Releases:"
+echo "    https://github.com/mylama/lama/releases/latest"
+echo
+echo "💡 Nutzer können das AppImage aktualisieren mit:"
+echo "    AppImageUpdate ${OUTPUT}"
 

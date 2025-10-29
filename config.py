@@ -102,7 +102,7 @@ def is_empty(structure):
 
 
 def extract_topic_abbr(topic):
-    x = re.search("\(([a-zA-Z0-9]+)\)", topic)
+    x = re.search("\\(([a-zA-Z0-9]+)\\)", topic)
     if x != None:
         return x.group(1)
     else:

@@ -180,7 +180,7 @@ def add_file(database, name, themen, titel, af, quelle, content, content_transla
 def get_default_info(content):
     if 'langesbeispiel' in content:
         pagebreak = True
-        punkte = int(re.split('begin{langesbeispiel}.*item\[(..?)\]', content)[1])
+        punkte = int(re.split('begin{langesbeispiel}.*item\\[(..?)\\]', content)[1])
     elif 'beispiel' in content:
         pagebreak = False
         punkte = int(re.split('begin{beispiel}.*{(..?)}', content)[1])

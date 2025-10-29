@@ -1327,7 +1327,7 @@ def setup_stackSage(self):
     self.label_sg_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
     self.gridLayout_6.addWidget(self.label_sg_pkt, 1, 2, 1, 1)
 
-    regexp = QtCore.QRegExp("[0-9,;/\.]*")
+    regexp = QtCore.QRegExp("[0-9,;/\\.]*")
     validator = QtGui.QRegExpValidator(regexp)
 
     # QRegExp, QRegExpValidator, .setValidator, 

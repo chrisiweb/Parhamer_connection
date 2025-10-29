@@ -20,7 +20,7 @@ def tex_preamble(
     else:
         start = """\\documentclass[18pt]{beamer}
 \\let\\oldframe\\frame
-\\renewcommand\\frame[1][allowframebreaks, c]{\oldframe[#1]}
+\\renewcommand\\frame[1][allowframebreaks, c]{\\oldframe[#1]}
 \\usetheme{Boadilla}
 \\usecolortheme{seahorse}
 \date{}
