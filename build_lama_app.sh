@@ -107,10 +107,13 @@ ARCH=$(uname -m)
 echo "🏗️  Erzeuge AppImage für Architektur: $ARCH"
 ARCH=$ARCH appimagetool "$APPDIR"
 
+# ✅ AppImage umbenennen
+mv ${APP_NAME}-${ARCH}.AppImage ${APP_NAME}.AppImage
+
 # ---------------------------------------------------------
 # 9. Fertig 🎉
 # ---------------------------------------------------------
 echo "✅ Fertig! AppImage wurde erstellt:"
-ls -lh ${APP_NAME}-*.AppImage
-echo "💡 Starte mit: chmod +x ${APP_NAME}-x86_64.AppImage && ./${APP_NAME}-x86_64.AppImage"
+ls -lh ${APP_NAME}.AppImage
+echo "💡 Starte mit: chmod +x ${APP_NAME}.AppImage && ./${APP_NAME}.AppImage"
 

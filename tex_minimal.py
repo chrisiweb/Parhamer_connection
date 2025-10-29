@@ -11,15 +11,15 @@ def tex_preamble(
     ):
 
     if beamer_mode == False:
-        start = f"""\documentclass[a4paper,{font_size}]{{{documentclass}}}
+        start = f"""\\documentclass[a4paper,{font_size}]{{{documentclass}}}
 \\usepackage{{geometry}}
-\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}
+\\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}
 """
-        spacing = "\onehalfspacing %Zeilenabstand"
+        spacing = "\\onehalfspacing %Zeilenabstand"
 
     else:
-        start = """\documentclass[18pt]{beamer}
-\let\oldframe\\frame
+        start = """\\documentclass[18pt]{beamer}
+\\let\\oldframe\\frame
 \\renewcommand\\frame[1][allowframebreaks, c]{\oldframe[#1]}
 \\usetheme{Boadilla}
 \\usecolortheme{seahorse}
@@ -30,12 +30,12 @@ def tex_preamble(
     if bookmark == False:
         bookmark_pkg = ""
     else:    
-        bookmark_pkg = f"\\usepackage{{bookmark}}\n\setcounter{{tocdepth}}{{{bookmark}}}"
+        bookmark_pkg = f"\\usepackage{{bookmark}}\n\\setcounter{{tocdepth}}{{{bookmark}}}"
 
     if tasks != False:
         tasks_package =f"""
 \\usepackage{{tasks}}
-\settasks{{
+\\settasks{{
 label-width=4ex,
 after-skip = {tasks} , % undo paragraph skip
 after-item-skip = {tasks} % undo paragraph skip
@@ -55,9 +55,9 @@ after-item-skip = {tasks} % undo paragraph skip
 {bookmark_pkg}
 {tasks_package}
 
-\pagestyle{{{pagestyle}}} %PAGESTYLE: empty, plain
+\\pagestyle{{{pagestyle}}} %PAGESTYLE: empty, plain
 {spacing}
-\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Überschriften
+\\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Überschriften
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -70,7 +70,7 @@ after-item-skip = {tasks} % undo paragraph skip
 """
     return preamble
 
-tex_end = "\end{document}"
+tex_end = "\\end{document}"
 
 def begin_beispiel(themen = None, punkte = 0, halbe_punkte = False):
     if halbe_punkte == True:
@@ -81,12 +81,12 @@ def begin_beispiel(themen = None, punkte = 0, halbe_punkte = False):
         string = ""
     return f"\\begin{{beispiel}}{string}{{{punkte:g}}}"
 
-end_beispiel = "\n\end{beispiel}"
+end_beispiel = "\n\\end{beispiel}"
 
 def begin_beispiel_lang(punkte = 0):
-    return f"\\begin{{langesbeispiel}} \item[{punkte:g}]"
+    return f"\\begin{{langesbeispiel}} \\item[{punkte:g}]"
 
-end_beispiel_lang = "\end{langesbeispiel}"
+end_beispiel_lang = "\\end{langesbeispiel}"
 
 
 

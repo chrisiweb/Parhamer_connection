@@ -76,11 +76,16 @@ class Worker_UpdateLaMA(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def task(self, path_installer, ui):
-        if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
+        if sys.platform.startswith("darwin"):
             download_link = (
                 "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.dmg"
             )
-            path_installer = os.path.join(path_home, "Downloads", "LaMA_setup.dmg")        
+            path_installer = os.path.join(path_home, "Downloads", "LaMA_setup.dmg") 
+        elif sys.platform.startswith("linux"):
+            download_link = (
+                "https://github.com/mylama/lama/releases/latest/download/LaMA.AppImage"
+            )
+            path_installer = os.path.join(path_home, "Downloads", "LaMA.AppImage")                    
         else:
             download_link = (
                 "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.exe"
@@ -1007,10 +1012,14 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
          
             refresh_ddb(self, auto_update=True)
             text = "Neue Version von LaMA wird heruntergeladen ..."
-            if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
+            if sys.platform.startswith("darwin"):
                 path_installer = os.path.join(
                     path_home, "Downloads", "LaMA_setup.dmg"
                 )
+            elif sys.platform.startswith("linux"):
+                path_installer = os.path.join(
+                    path_home, "Downloads", "LaMA.AppImage"
+                )            
             else:
                 path_installer = os.path.join(
                     path_home, "Downloads", "LaMA_setup.exe"
@@ -1038,8 +1047,9 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             elif worker.response == True:
                 if sys.platform.startswith('darwin'):  # macOS
                     subprocess.call(['open', path_installer])
-                # elif os.name == 'posix':  # Linux
-                #     subprocess.call(['xdg-open', path_installer])
+                elif sys.platform.startswith('linux'):  # Linux
+                    os.chmod(path_installer, 0o755)  # sicherstellen, dass es ausführbar ist
+                    subprocess.Popen([path_installer], start_new_session=True)
                 else:
                     os.startfile('"' + path_installer + '"')
                 sys.exit(0)              
@@ -1071,9 +1081,18 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             else:
                 refresh_ddb(self, auto_update=True)
                 text = "Neue Version von LaMA wird heruntergeladen ..."
-                path_installer = os.path.join(
-                    path_home, "Downloads", "LaMA_setup.exe"
-                )
+                if sys.platform.startswith("darwin"):
+                    path_installer = os.path.join(
+                        path_home, "Downloads", "LaMA_setup.dmg"
+                    )
+                elif sys.platform.startswith("linux"):
+                    path_installer = os.path.join(
+                        path_home, "Downloads", "LaMA.AppImage"
+                    )            
+                else:
+                    path_installer = os.path.join(
+                        path_home, "Downloads", "LaMA_setup.exe"
+                    )  
 
                 Dialog_checkchanges = QtWidgets.QDialog()
                 ui = Ui_Dialog_processing()
@@ -1083,7 +1102,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 worker = Worker_UpdateLaMA()
                 worker.finished.connect(Dialog_checkchanges.close)
                 worker.moveToThread(thread)
-                thread.started.connect(partial(worker.task, path_installer))
+                thread.started.connect(partial(worker.task, path_installer, ui))
                 thread.start()
                 thread.exit()
                 Dialog_checkchanges.exec()
@@ -1094,7 +1113,12 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     )
                     return
                 elif worker.response == True:
-                    os.startfile('"' + path_installer + '"')
+                    if sys.platform.startswith('darwin'):  # macOS
+                        subprocess.call(['open', path_installer])
+                    elif sys.platform.startswith('linux'):  # Linux
+                        subprocess.call(['xdg-open', path_installer])
+                    else:
+                        os.startfile('"' + path_installer + '"')
                     sys.exit(0)
         QtWidgets.QApplication.restoreOverrideCursor()
 
