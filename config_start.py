@@ -102,7 +102,7 @@ elif sys.platform.startswith("darwin"):
     path_standard_pdf_reader = ""
     path_compiler = ""
 elif sys.platform.startswith("linux"):
-    path_programm = os.path.join(os.path.expanduser('~'), ".LaMA")
+    path_programm = os.path.join(os.path.expanduser('~'), ".local","share","LaMA")
 
     if not os.path.isdir(path_programm):
         os.mkdir(path_programm)
@@ -114,6 +114,18 @@ elif sys.platform.startswith("linux"):
     lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
 
     lama_settings_file = os.path.join(path_programm, "lama_settings"
+            )
+    lama_titlepage_save = os.path.join(
+                path_programm, "lama_titlepage_save"
+            )
+    lama_individual_titlepage  = os.path.join(
+                path_programm, "lama_individual_titlepage"
+            )
+    cria_titlepage_save  = os.path.join(
+                path_programm, "cria_titlepage_save"
+            )
+    cria_individual_titlepage  = os.path.join(
+                path_programm, "cria_individual_titlepage"
             )
 
     lama_notenschluessel_file = os.path.join(

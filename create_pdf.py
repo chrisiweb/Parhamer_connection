@@ -840,16 +840,23 @@ def extract_error_from_output(latex_output):
 ###
 
 
-
 def build_pdf_file(ui, folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
         lama_path = os.path.dirname(sys.argv[0])
         if lama_path == "":
             lama_path = "."
-        latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin', 'universal-darwin', 'latex')
-        dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin', 'universal-darwin', 'dvips')
-        ps2pdf = os.path.join(lama_path, 'portable', 'ghostscript', 'lib', 'ps2pdf')
-        gs = os.path.join(lama_path, 'portable', 'ghostscript', 'lib', 'gs')
+        if sys.platform.startswith('darwin'):
+            folder = 'universal-darwin'
+            gs = os.path.join(lama_path, 'portable', 'ghostscript', 'lib', 'gs')
+        elif sys.platform.startswith('linux'):
+            folder = 'x86_64-linux'   
+            if shutil.which('gs'): 
+                raise FileNotFoundError("Ghostscript nicht gefunden. Bitte installiere es mit: sudo apt install ghostscript")
+                #gs = "gs"
+            
+        latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder,'latex')
+        dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')
+
         
         if "Teildokument" in file_name:
             terminal_command = f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'      
