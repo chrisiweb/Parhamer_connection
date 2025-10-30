@@ -10,7 +10,7 @@
 %
 
 \NeedsTeXFormat{LaTeX2e}[1996/12/26]
-\ProvidesPackage{srdp-mathematik}[2025/05/08 v1.13.3 Standard-Schularbeitsformate]
+\ProvidesPackage{srdp-mathematik}[2025/10/30 v1.14.0 Standard-Schularbeitsformate]
 
 \usepackage{color}
 \usepackage{xcolor}
@@ -684,20 +684,24 @@ Beurteilung: \rule{10.5cm}{0.4pt}
 %
 %
 % PROBLEM min vspac 3.11cm sonst leicht nach oben gerutscht. Min Spaltenbreite ?
-\newcommand\zuordnen[2][0]{%%
-\pgfmathsetseed{\theZufall}
-\declarenumlist{group}{1}{4}
+\NewDocumentCommand{\zuordnen}{ O{0} O{4} m }{%
+\FPeval{\shift}{0}\FPeval{\choices}{2}
+\FPeval{\inputA}{clip(abs(trunc(#1,0)))}\FPeval{\inputB}{clip(abs(trunc(#2,0)))}
+\ifthenelse{\inputA=0}{\FPeval{\shift}{clip(#1)}\FPeval{\choices}{clip(#2)}}{}
+\ifthenelse{\inputA>0}{\FPeval{\choices}{clip(#1)}\ifthenelse{\inputB=0}{\FPeval{\shift}{clip(#2)}}{\FPeval{\shift}{0}}}{}
+\pgfmathsetseed{\theZufall}\ifthenelse{\choices>4}{\FPeval{\randommax}{4}}{\FPeval{\randommax}{\choices}}
+\declarenumlist{group}{1}{\randommax}\ifthenelse{\choices>4}{\PackageWarning{srdp-mathemathik}{Maximum of 4 exceeded.}}{}
 \pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}
+\ifnum\choices<2 \else\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}\fi
+\ifnum\choices<3 \else\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}\fi
+\ifnum\choices<4 \else\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}\fi
 \STset{ save list = {\links = a2, \rechts = b2}}
 \begin{spreadtab}{{tabular}{cc}}
 \SThidecol 0.45& \SThidecol \\ 
-a1+(#1) & (0.9-a2) \\
+a1+(\shift) & (0.9-a2) \\
 \end{spreadtab}
 \bgroup
-  \jeroen@set@keys{#2}%%
+  \jeroen@set@keys{#3}%%
 	\begin{minipage}{0.88\linewidth}
 	\vspace{0.2cm}
 \begin{minipage}[t][][t]{\links\textwidth}  \vspace{0pt} 
@@ -705,9 +709,9 @@ a1+(#1) & (0.9-a2) \\
 	\tabulinesep=3mm
 	\begin{tabu}{|>{\vphantom{\"Ag}}M|C{1cm}|p{0.001pt}}\hhline{--}
 	\jeroen@get{R\theantworta}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantworta}}&\\ \hhline{--}
-	\jeroen@get{R\theantwortb}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantwortb}}&\\ \hhline{--}
-	\jeroen@get{R\theantwortc}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantwortc}}&\\ \hhline{--}
-	\jeroen@get{R\theantwortd}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantwortd}}&\\ \hhline{--}
+	\ifnum\choices<2 \else\jeroen@get{R\theantwortb}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantwortb}}&\\ \hhline{--}\fi
+	\ifnum\choices<3 \else\jeroen@get{R\theantwortc}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantwortc}}&\\ \hhline{--}\fi
+	\ifnum\choices<4 \else\jeroen@get{R\theantwortd}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantwortd}}&\\ \hhline{--}\fi
 	\end{tabu}
 	\end{minipage}
 	\hfill
@@ -718,9 +722,9 @@ a1+(#1) & (0.9-a2) \\
 	\cellcolor[gray]{0.92}A& \jeroen@get{A}&\\ \hhline{--}
 	\cellcolor[gray]{0.92}B& \jeroen@get{B}&\\ \hhline{--}
 	\cellcolor[gray]{0.92}C& \jeroen@get{C}&\\ \hhline{--}
-	\cellcolor[gray]{0.92}D& \jeroen@get{D}&\\ \hhline{--}
-	\cellcolor[gray]{0.92}E& \jeroen@get{E}&\\ \hhline{--}
-	\cellcolor[gray]{0.92}F& \jeroen@get{F}&\\ \hhline{--}
+	\ifnum\choices<2 \else\cellcolor[gray]{0.92}D& \jeroen@get{D}&\\ \hhline{--}\fi
+	\ifnum\choices<3 \else\cellcolor[gray]{0.92}E& \jeroen@get{E}&\\ \hhline{--}\fi
+	\ifnum\choices<4 \else\cellcolor[gray]{0.92}F& \jeroen@get{F}&\\ \hhline{--}\fi
 	\multicolumn{1}{c}{~}&\multicolumn{1}{c}{\parbox{10pt}{~}}&\\
 	\end{tabu}
 	\end{minipage}
