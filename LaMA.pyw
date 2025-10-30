@@ -1132,7 +1132,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             
             elif worker.response == True:
                 if sys.platform.startswith('darwin'):  # macOS
-                    subprocess.Popen(["open", "/Applications/LaMA.app"])
+                    subprocess.run(["open", "/Applications/LaMA.app"])
                     #subprocess.call(['open', path_installer])      
                 elif sys.platform.startswith('linux'):  # Linux
                     os.chmod(path_installer, 0o755)  # sicherstellen, dass es ausführbar ist
