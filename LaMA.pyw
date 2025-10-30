@@ -1132,7 +1132,23 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             
             elif worker.response == True:
                 if sys.platform.startswith('darwin'):  # macOS
-                    subprocess.run(["open", "/Applications/LaMA.app"])
+                    def launch_app_safely(app_path):
+                        # 1️⃣ Warten, bis App vollständig kopiert ist
+                        for _ in range(10):
+                            if os.path.exists(os.path.join(app_path, "Contents", "MacOS")):
+                                break
+                            time.sleep(0.2)
+
+                        # 2️⃣ Kurze Pause, damit Spotlight / Launch Services sie registrieren kann
+                        time.sleep(1.0)
+
+                        # 3️⃣ App „öffnen“ mit absolutem Pfad
+                        print(f"🚀 Starte App: {app_path}")
+                        subprocess.run(["open", "-a", app_path], check=False)
+                    time.sleep(1.5)  # <- ganz wichtig!
+                    launch_app_safely("/Applications/LaMA.app")     
+                    #subprocess.call(['open', "/Applications/LaMA.app"])
+                    #subprocess.run(["open", "/Applications/LaMA.app"])
                     #subprocess.call(['open', path_installer])      
                 elif sys.platform.startswith('linux'):  # Linux
                     os.chmod(path_installer, 0o755)  # sicherstellen, dass es ausführbar ist
