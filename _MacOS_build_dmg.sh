@@ -22,6 +22,16 @@ python3 -m PyInstaller \
   --add-data="portable:portable" \
   "$PYTHON_SCRIPT"
 
+# === 🔏 App lokal signieren (ad-hoc) ===
+echo "🔏 Entferne .DS_Store-Dateien..."
+find "$DIST_DIR/${APP_NAME}.app" -name ".DS_Store" -delete
+
+echo "🔏 Signiere App..."
+codesign --force --deep --sign - "$DIST_DIR/${APP_NAME}.app"
+
+echo "🧹 Entferne Quarantäne-Attribute..."
+xattr -cr "$DIST_DIR/${APP_NAME}.app"
+
 # === 💽 DMG mit create-dmg erstellen ===
 echo "💽 Erstelle DMG..."
 create-dmg \

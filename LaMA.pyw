@@ -77,10 +77,15 @@ class Worker_UpdateLaMA(QtCore.QObject):
     @QtCore.pyqtSlot()
     def task(self, path_installer, ui):
         if sys.platform.startswith("darwin"):
+            # self.response = True
+            # self.finished.emit()
             download_link = (
                 "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.dmg"
             )
-            path_installer = os.path.join(path_home, "Downloads", "LaMA_setup.dmg") 
+            path_installer = os.path.join(path_home, "Downloads", "LaMA_setup.dmg")
+            if os.path.exists(path_installer):
+                print("🧹 Alte Installationsdatei wird entfernt...")
+                os.remove(path_installer) 
         elif sys.platform.startswith("linux"):
             download_link = (
                 "https://github.com/mylama/lama/releases/latest/download/LaMA.AppImage"
@@ -95,6 +100,7 @@ class Worker_UpdateLaMA(QtCore.QObject):
 
         # timeout_start = time.time()
         
+
         if sys.platform.startswith("linux"):
             try:
                 subprocess.run(["AppImageUpdate", "--no-gui", sys.executable])
@@ -118,10 +124,82 @@ class Worker_UpdateLaMA(QtCore.QObject):
     
             # r = requests.get(download_link, allow_redirects=True, timeout=(5, 10))
             # open(path_installer, "wb").write(r.content)
+
             self.response = True
 
         except requests.exceptions.ConnectionError:
             self.response = False
+        if sys.platform.startswith("darwin"):
+            def install_dmg(path_installer):
+                volume_path = None
+                try:
+                    print("🔧 Mounting DMG...")
+                    ui.label.setText(f"Neue Version von LaMA wird installiert...  (8 %)")
+                    mount_output = subprocess.check_output(
+                        ["hdiutil", "attach", path_installer, "-nobrowse", "-noautoopen"]
+                    ).decode()
+
+                    # Volume finden
+                    for line in mount_output.splitlines():
+                        if "/Volumes/" in line:
+                            parts = line.split()
+                            for p in parts:
+                                if p.startswith("/Volumes/"):
+                                    volume_path = p
+                                    break
+                        if volume_path:
+                            break
+                    ui.label.setText(f"Neue Version von LaMA wird installiert...  (17 %)")
+                    if not volume_path or not os.path.exists(volume_path):
+                        print("❌ Volume konnte nicht gefunden werden.")
+                        return False
+
+                    print(f"📁 Gemountet unter: {volume_path}")
+
+                    app_source = os.path.join(volume_path, "LaMA.app")
+                    app_target = "/Applications/LaMA.app"
+
+                    # Alte App entfernen
+                    ui.label.setText(f"Neue Version von LaMA wird installiert...  (23 %)")
+                    if os.path.exists(app_target):
+                        print("🧹 Entferne alte Version...")
+                        shutil.rmtree(app_target)
+
+                    # Quarantäne entfernen
+                    ui.label.setText(f"Neue Version von LaMA wird installiert...  (37 %)")
+                    print("🧼 Entferne Quarantäne...")
+                    subprocess.run(["xattr", "-cr", app_source], check=False)
+
+                    # Neue App kopieren
+                    ui.label.setText(f"Neue Version von LaMA wird installiert...  (56 %)")
+                    print("📦 Kopiere neue Version...")
+                    shutil.copytree(app_source, app_target, symlinks=True)
+
+                    # DMG aushängen
+                    ui.label.setText(f"Neue Version von LaMA wird installiert...  (83 %)")
+                    print("💾 Hänge DMG aus...")
+                    subprocess.run(["hdiutil", "detach", volume_path, "-quiet", "-force"], check=False)
+
+                    # App starten
+                    ui.label.setText(f"Neue Version von LaMA wird installiert...  (91 %)")
+
+                    
+
+                    print("✅ Update erfolgreich installiert.")
+                    return True
+
+                except subprocess.CalledProcessError as e:
+                    print("⚠️ hdiutil Fehler:", e.output.decode())
+                    return False
+
+                except Exception as e:
+                    print("⚠️ Fehler beim Update:", e)
+                    return False
+            ui.label.setText(f"Neue Version von LaMA wird installiert...  (0 %)")
+            success = install_dmg(path_installer)
+            if not success:
+                self.response = False
+
 
         self.finished.emit()
 
@@ -1054,7 +1132,8 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             
             elif worker.response == True:
                 if sys.platform.startswith('darwin'):  # macOS
-                    subprocess.call(['open', path_installer])
+                    subprocess.Popen(["open", "/Applications/LaMA.app"])
+                    #subprocess.call(['open', path_installer])      
                 elif sys.platform.startswith('linux'):  # Linux
                     os.chmod(path_installer, 0o755)  # sicherstellen, dass es ausführbar ist
                     subprocess.Popen([path_installer], start_new_session=True)
