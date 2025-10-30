@@ -847,7 +847,7 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
             if lama_path == "":
                 lama_path = "."
             folder = 'universal-darwin'
-            gs = os.path.join(lama_path, 'portable', 'ghostscript', 'lib', 'gs')
+            gs = os.path.join(lama_path, 'portable', 'ghostscript', 'bin', 'gs')
         elif sys.platform.startswith('linux'):
             if getattr(sys, 'frozen', False):
                 # Wenn aus AppImage oder PyInstaller gestartet
