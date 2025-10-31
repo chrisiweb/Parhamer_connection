@@ -15,4 +15,4 @@ build/
 LaMA.AppDir
 *.AppImage
 *.zsync
-.DS_Store
+*DS_Store*
