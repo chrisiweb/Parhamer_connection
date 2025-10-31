@@ -23,7 +23,7 @@ def tex_preamble(
 \\renewcommand\\frame[1][allowframebreaks, c]{\\oldframe[#1]}
 \\usetheme{Boadilla}
 \\usecolortheme{seahorse}
-\date{}
+\\date{}
 """
         spacing = ""               
 

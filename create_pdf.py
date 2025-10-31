@@ -489,36 +489,14 @@ def prepare_tex_for_pdf(self):
     # else:
     #     shutil.copy2(path_tabu_pkg, copy_path_tabu_pkg)
     ###################################################################
-
-    path_srdptables_pkg = os.path.join(path_programm, "_database", "_config", "srdp-tables.sty")
+    ##### REMOVE LEFT-OVER SRDP-Packages
+    
     copy_path_srdptables_pkg = os.path.join(path_localappdata_lama,"Teildokument","srdp-tables.sty")
-    if os.path.isfile(copy_path_srdptables_pkg):
-        pass
-    else:
-        try:
-            shutil.copy2(path_srdptables_pkg, copy_path_srdptables_pkg)
-        except FileNotFoundError:
-            refresh_ddb(self)
-            shutil.copy2(path_srdptables_pkg, copy_path_srdptables_pkg)
-
-    ###################################################
-    path_srdp_pkg = os.path.join(
-        path_programm, "_database", "_config", "srdp-mathematik.sty"
-    )
-    copy_path_srdp_pkg = os.path.join(
-        path_localappdata_lama,"Teildokument","srdp-mathematik.sty"
-    )
+    copy_path_srdp_pkg = os.path.join(path_localappdata_lama,"Teildokument","srdp-mathematik.sty")
     if os.path.isfile(copy_path_srdp_pkg):
-        pass
-    else:
-        if sys.platform.startswith("darwin"):
-            path_srdp_pkg_mac = os.path.join(path_home, "Library", "texmf", "tex", "latex", "srdp-mathematik.sty")
-            if os.path.isfile(path_srdp_pkg_mac):
-                shutil.copy2(path_srdp_pkg_mac, copy_path_srdp_pkg)
-            else:
-                shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
-        else:                  
-            shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
+        os.remove(copy_path_srdp_pkg)
+    if os.path.isfile(copy_path_srdptables_pkg):
+        os.remove(copy_path_srdptables_pkg)
 
     ########################################################
 
@@ -888,21 +866,25 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
 
         latex = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
         dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
-        ps2pdf = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'lib', 'ps2pdf.bat')
+        gs = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'bin', 'gswin64c.exe')
         # if os.path.isfile(os.path.join(path_compiler, "dvips.exe")):
         #     dvips = os.path.join(path_compiler, "dvips.exe")
         # else:
         #     dvips = "dvips"
 
-        # if os.path.isfile(os.path.join(path_compiler, "ps2pdf.exe")):
+        if os.path.isfile(gs):
+            print('yes')
+        else:
+            print('no')
+        # return
         #     ps2pdf = os.path.join(path_compiler, "ps2pdf.exe")
         # else:
         #     ps2pdf = "ps2pdf"
 
         if is_empty(drive):
-            terminal_command = f'cd "{folder_name}" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {dvips} "{file_name}.dvi" & {ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
+            terminal_command = f'cd "{folder_name}" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {dvips} "{file_name}.dvi" & {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'
         else:
-            terminal_command = f'{drive} & cd "{folder_name}" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {dvips} "{file_name}.dvi" & {ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
+            terminal_command = f'{drive} & cd "{folder_name}" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {dvips} "{file_name}.dvi" & {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'
 
 
         process = subprocess.Popen(

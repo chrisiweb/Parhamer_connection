@@ -2255,11 +2255,11 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                             return
         return False
 
-    def delete_style_package_in_teildokument(self, package_name):
-        style_package_path = os.path.join(path_programm, "Teildokument", package_name)
+    # def delete_style_package_in_teildokument(self, package_name):
+    #     style_package_path = os.path.join(path_programm, "Teildokument", package_name)
 
-        if os.path.isfile(style_package_path):
-            os.remove(style_package_path)
+    #     if os.path.isfile(style_package_path):
+    #         os.remove(style_package_path)
 
     @report_exceptions
     def update_style_package(self):
@@ -2274,29 +2274,14 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 
         refresh_ddb(self, auto_update=True)
 
-        path_new_srdpmathematik_package = os.path.join(
-            path_programm, "_database", "_config", "srdp-mathematik.sty"
-        )
+        if sys.platform.startswith("linux"):
+            lama_path = os.path.dirname(os.path.abspath(__file__))
+        else:
+            lama_path = os.path.dirname(sys.argv[0])
 
-        path_new_srdptables_package = os.path.join(
-            path_programm, "_database", "_config", "srdp-tables.sty"
-        )
-        
-        if os.path.isfile(path_new_srdpmathematik_package) == False or os.path.isfile(path_new_srdptables_package) == False:
-            warning_window(
-                'Das Paket "srdp-mathematik.sty" konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.'
-            )
-            return
+        path_new_srdp_packages = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'texmf-dist', 'tex', 'latex', 'srdp-mathematik')
+        packages = ['srdp-mathematik.sty', 'srdp-tables.sty']
 
-        # paket_teildokument = os.path.join(path_programm, "Teildokument", package_name)
-        # if os.path.isfile(paket_teildokument):
-        #     os.remove(paket_teildokument)
-
-        # paket_teildokument = os.path.join(
-        #     path_programm, "Teildokument", package_name
-        # )
-        # if os.path.isfile(paket_teildokument):
-        #     os.remove(paket_teildokument)
 
         if sys.platform.startswith("darwin"):
             possible_locations = [os.path.join(path_home, "Library", "texmf")]
@@ -2311,12 +2296,61 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 os.path.join(os.environ["ProgramFiles(x86)"], "MiKTeX 2.9"),
                 os.path.join(os.environ["ProgramFiles"]),
                 os.path.join(os.environ["ProgramFiles(x86)"]),
-                # os.path.join(
-                # "C:\Users\Christoph\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
             ]
 
-        # update_successfull=False
+
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
+        
+        for pkg in packages:
+            path_new_pkg = os.path.join(path_new_srdp_packages, pkg)
+            if os.path.isfile(path_new_pkg) == False:
+                warning_window(f'Das Paket "{pkg}" konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.')
+                return
+
+            response = self.copy_style_package(pkg, path_new_pkg, possible_locations) 
+
+            if response == False:
+                QtWidgets.QApplication.restoreOverrideCursor()
+                critical_window(
+                    'Das Update von "srdp-mathematik.sty" konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.'
+                    )
+                return
+            elif response == None:
+                return
+            # else:
+            #     location_found = response 
+        QtWidgets.QApplication.restoreOverrideCursor()
+
+        information_window(
+            'Das Paket "srdp-mathematik.sty" wurde erfolgreich aktualisiert.'
+        )                            
+        # path_new_srdpmathematik_package = os.path.join(
+        #     path_programm, "_database", "_config", "srdp-mathematik.sty"
+        # )
+
+        # path_new_srdptables_package = os.path.join(
+        #     path_programm, "_database", "_config", "srdp-tables.sty"
+        # )
+        
+        # if os.path.isfile(path_new_srdpmathematik_package) == False or os.path.isfile(path_new_srdptables_package) == False:
+        #     warning_window(
+        #         'Das Paket "srdp-mathematik.sty" konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.'
+        #     )
+        #     return
+
+        # paket_teildokument = os.path.join(path_programm, "Teildokument", package_name)
+        # if os.path.isfile(paket_teildokument):
+        #     os.remove(paket_teildokument)
+
+        # paket_teildokument = os.path.join(
+        #     path_programm, "Teildokument", package_name
+        # )
+        # if os.path.isfile(paket_teildokument):
+        #     os.remove(paket_teildokument)
+
+        # update_successfull=False
+        
 
 
         package_list = {
@@ -2370,7 +2404,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 
             
             
-            self.delete_style_package_in_teildokument(package)
+            # self.delete_style_package_in_teildokument(package)
 
                 
             

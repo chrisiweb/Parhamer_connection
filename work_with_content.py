@@ -216,7 +216,7 @@ def edit_content_quiz(content, solution):
         "\\lueckentext",
         "\\zuordnen",
     ]
-    content = content.replace("\onehalfspacing", "")
+    content = content.replace("\\onehalfspacing", "")
     if "\\begin{pspicture*}" in content:
         content = content.replace(
             "\\begin{pspicture*}", "\\resizebox{!}{0.7\\textheight}{\\begin{pspicture*}"

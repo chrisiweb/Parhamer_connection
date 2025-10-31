@@ -100,7 +100,7 @@ def prepare_individual_titlepage(titlepage, dict_titlepage, MainWindow):
             add_on = None
 
         if add_on != None:
-            title_header = title_header + f"\\\ [0.5cm] \\textsc{{\\Large {add_on}}}"
+            title_header = title_header + f"\\\\ [0.5cm] \\textsc{{\\Large {add_on}}}"
 
     else:
         title_header = data_gesamt['Pruefungstyp']
