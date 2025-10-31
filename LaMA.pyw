@@ -2272,14 +2272,12 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         if response == False:
             return
 
-        refresh_ddb(self, auto_update=True)
-
         if sys.platform.startswith("linux"):
             lama_path = os.path.dirname(os.path.abspath(__file__))
         else:
             lama_path = os.path.dirname(sys.argv[0])
 
-        path_new_srdp_packages = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'texmf-dist', 'tex', 'latex', 'srdp-mathematik')
+        path_new_srdp_packages = os.path.join(lama_path, 'portable', 'tinytex', 'texmf-dist', 'tex', 'latex', 'srdp-mathematik')
         packages = ['srdp-mathematik.sty', 'srdp-tables.sty']
 
 
