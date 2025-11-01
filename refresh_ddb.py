@@ -10,9 +10,9 @@ from git_sync import git_reset_repo_to_origin, check_for_changes, check_internet
 from standard_dialog_windows import warning_window, information_window, question_window, critical_window, custom_window
 import urllib.request
 import urllib.error
-import requests
 import json
-import pathlib
+
+
 
 
 list_klassen = config_loader(config_file, "list_klassen")
@@ -31,10 +31,9 @@ class Worker_CheckChanges(QtCore.QObject):
     def task(self, Ui_MainWindow):
         Ui_MainWindow.worker_response = []
         modified_files, new_files = check_for_changes(database)
-
+    
         if modified_files !=[] or new_files != []:
-            modified = b", ".join(modified_files)
-            modified = modified.decode()
+            modified = ", ".join(modified_files)
             new = ", ".join(new_files)
 
             Ui_MainWindow.worker_response = [modified, new]
@@ -92,8 +91,6 @@ class Worker_RefreshDDB(QtCore.QObject):
 
 
 def refresh_ddb(self, auto_update=False):
-    # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-    # print(auto_update)
     if self.developer_mode_active == True:
         text = 'Änderungen überprüfen ...'
     elif auto_update == 'mac':
@@ -126,18 +123,18 @@ def refresh_ddb(self, auto_update=False):
         if not is_empty(self.worker_response):
             QtWidgets.QApplication.restoreOverrideCursor()
             response= question_window("""
-        Es befinden sich lokale Änderungen in Ihrer Datenbank. Durch das Aktualisieren der Datenbank werden alle lokalen Änderungen UNWIDERRUFLICH gelöscht!
+Es befinden sich lokale Änderungen in Ihrer Datenbank. Durch das Aktualisieren der Datenbank werden alle lokalen Änderungen UNWIDERRUFLICH gelöscht!
 
-        Lokale Änderungen können durch "Datei - Datenbank hochladen" online gespeichert werden. 
+Lokale Änderungen können durch "Datei - Datenbank hochladen" online gespeichert werden.
 
-        Sind Sie sicher, dass Sie die lokalen Änderungen unwiderruflich löschen möchten? 
+Sind Sie sicher, dass Sie die lokalen Änderungen unwiderruflich löschen möchten? 
                     """, titel="Lokale Änderungen löschen?", detailed_text="""
         Geänderte/Gelöschte Dateien: {0} \n\n
         Neu erstellte Dateien: {1}            
                     """.format(self.worker_response[0], self.worker_response[1]), buttontext_yes="Lokale Änderungen löschen", buttontext_no="Abbrechen", default="no")    
             if response == False:
                 return
-            # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
         link = "https://mylama.github.io/lama/"
         # if self.display_mode == 1:
         #     color = "rgb(88, 111, 124)"
@@ -147,7 +144,6 @@ def refresh_ddb(self, auto_update=False):
 
     working_window(Worker_RefreshDDB(), text, self,show_donation_notice=True)
 
-    # QtWidgets.QApplication.restoreOverrideCursor()
 
     if not is_empty(self.missing_images_addon):
         string_missing_images = "\n".join(self.missing_images_addon)

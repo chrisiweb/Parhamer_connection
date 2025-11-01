@@ -2,10 +2,12 @@ import shutil
 import os
 from config_start import database, lama_developer_credentials, lama_user_credentials
 from dulwich import porcelain
+from dulwich.index import build_index_from_tree
 import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError, ProtocolError
 import socket
+import time
 
 
 
@@ -50,6 +52,24 @@ def resolve_divergence():
     head = os.path.join(database, '.git', 'refs', 'heads', 'master')
     origin = os.path.join(database, '.git', 'refs', 'remotes', 'origin', 'master')
     shutil.copyfile(origin, head)
+
+def restore_working_tree():
+    repo = porcelain.Repo(database)
+    repo._worktree_path = database
+
+    branch_ref = b"refs/remotes/origin/master"
+    commit = repo[branch_ref]          # Commit-Objekt
+    tree_id = commit.tree              # SHA des Trees, nicht das Objekt selbst
+
+    # Jede Datei aus dem Tree neu schreiben
+    for entry_path, mode, sha in repo.object_store.iter_tree_contents(tree_id):
+        abs_path = os.path.join(database, entry_path.decode())
+        os.makedirs(os.path.dirname(abs_path), exist_ok=True)
+        blob = repo.object_store[sha]
+        with open(abs_path, "wb") as f:
+            f.write(blob.data)
+
+    print("📄 Alle Dateien aus origin/master neu geschrieben.")
 
 
 def git_reset_repo_to_origin():
@@ -243,6 +263,33 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
 
 
 def check_for_changes(database):
-    repo = porcelain.open_repo(database)
+    repo = porcelain.Repo(database)
+    repo._worktree_path = database
     status = porcelain.status(repo)
-    return status.unstaged, status.untracked
+    untracked = [p.decode("utf-8") for p in status.untracked]
+    changed = []
+
+    head_commit = repo[b"HEAD"]
+    tree_id = head_commit.tree
+    blob_map = {path: sha for path, mode, sha in repo.object_store.iter_tree_contents(tree_id)}
+
+    for path_b in status.unstaged:
+        abs_path = os.path.join(database, path_b.decode("utf-8"))
+        if not os.path.exists(abs_path):
+            changed.append(path_b.decode())
+            continue
+
+        blob_sha = blob_map.get(path_b)
+        if not blob_sha:
+            changed.append(path_b.decode())
+            continue
+
+        blob_data = repo.object_store[blob_sha].data
+        with open(abs_path, "rb") as f:
+            file_data = f.read()
+
+        if blob_data != file_data:
+            changed.append(path_b.decode())
+
+    # return {"unstaged": changed, "untracked": untracked}
+    return changed, untracked
