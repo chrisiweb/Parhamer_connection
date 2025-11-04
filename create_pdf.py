@@ -446,48 +446,13 @@ def prepare_tex_for_pdf(self):
         for all in list_3:
             list_2.append(all)
    
-    # for all in list_2:
-    #     print(f"{all['name']}: {all['themen']}")
 
-
-
-    # print(list_2)
 
     list_2.sort(key= lambda text: order_gesammeltedateien(text, current_program))
-    # print(list_2)
-        #     # print(item)
-        #     for index_1, klasse in enumerate(list_klassen):
-        #         # print(f"INDEX 1: {index_1}")
-        #         dict_klasse = eval("dict_{}".format(klasse))
-        #         for index_2, topic in enumerate(dict_klasse):
-        #             # print(index_2)
-        #             # print(dict_klasse[topic])
 
-        #             for index_3, subtopic in enumerate(dict_klasse[topic]):
-        #                 if item == f"{topic}.{subtopic}":
-        #                     # print('TRUE')
-        #                     return [index_1, index_2, index_3]
-
-
-        # print(f"{all['name']}: {all['themen']}")
-    # for all in list_2:
-    #     print(f"{all['name']}: {all['themen']}")
 
     gesammeltedateien = list_1 + list_2
-    
-    # print(suchbegriffe)
-    # print(gesammeltedateien)
-    # return
-    ######################################################
-    ########### work around ####################
-    #########################################
 
-    # path_tabu_pkg = os.path.join(path_programm, "_database", "_config", "tabu.sty")
-    # copy_path_tabu_pkg = os.path.join(path_localappdata_lama,"Teildokument","tabu.sty")
-    # if os.path.isfile(copy_path_tabu_pkg):
-    #     pass
-    # else:
-    #     shutil.copy2(path_tabu_pkg, copy_path_tabu_pkg)
     ###################################################################
     ##### REMOVE LEFT-OVER SRDP-Packages
     
@@ -867,19 +832,7 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         latex = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
         dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
         gs = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'bin', 'gswin64c.exe')
-        # if os.path.isfile(os.path.join(path_compiler, "dvips.exe")):
-        #     dvips = os.path.join(path_compiler, "dvips.exe")
-        # else:
-        #     dvips = "dvips"
 
-        if os.path.isfile(gs):
-            print('yes')
-        else:
-            print('no')
-        # return
-        #     ps2pdf = os.path.join(path_compiler, "ps2pdf.exe")
-        # else:
-        #     ps2pdf = "ps2pdf"
 
         if is_empty(drive):
             terminal_command = f'cd "{folder_name}" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {dvips} "{file_name}.dvi" & {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'

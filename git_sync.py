@@ -291,5 +291,37 @@ def check_for_changes(database):
         if blob_data != file_data:
             changed.append(path_b.decode())
 
-    # return {"unstaged": changed, "untracked": untracked}
     return changed, untracked
+
+
+
+def check_for_lokal_repo_changes():
+    repo = porcelain.Repo(database)
+    repo._worktree_path = database
+    status = porcelain.status(repo)
+    untracked = [p.decode("utf-8") for p in status.untracked]
+    changed = []
+
+    head_commit = repo[b"HEAD"]
+    tree_id = head_commit.tree
+    blob_map = {path: sha for path, mode, sha in repo.object_store.iter_tree_contents(tree_id)}
+
+    for path_b in status.unstaged:
+        abs_path = os.path.join(database, path_b.decode("utf-8"))
+        if not os.path.exists(abs_path):
+            changed.append(path_b.decode())
+            continue
+
+        blob_sha = blob_map.get(path_b)
+        if not blob_sha:
+            changed.append(path_b.decode())
+            continue
+
+        blob_data = repo.object_store[blob_sha].data
+        with open(abs_path, "rb") as f:
+            file_data = f.read()
+
+        if blob_data != file_data:
+            changed.append(path_b.decode())
+
+    return {"unstaged": changed, "untracked": untracked}
