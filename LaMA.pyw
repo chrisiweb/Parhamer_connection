@@ -2246,7 +2246,7 @@ DATEIEN im Teildokument-Ordner:
             set_width=300)
 
 
-        except:
+        except Exception as e:
             QtWidgets.QApplication.restoreOverrideCursor()
 
             if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
@@ -2261,7 +2261,7 @@ DATEIEN im Teildokument-Ordner:
                 "Die Servicedateien konnte nicht gesendet werden.",
                 text,
                 titel="Fehler beim Senden",
-                detailed_text="Fehlermeldung:\n" + str(sys.exc_info()),
+                detailed_text=f"Fehlermeldung:\n\nFehler: {e}\n\n{str(sys.exc_info())}",
             )
 
 
