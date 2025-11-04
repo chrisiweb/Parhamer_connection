@@ -6551,7 +6551,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.update_punkte()
 
-        try:
+        try:  
             if self.lama_settings['halfpoints']==False:
                 self.spinBox_default_pkt.setValue(
                     self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
@@ -6564,6 +6564,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             print('Error: self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"] not found (KeyError)')
             self.spinBox_default_pkt.setValue(1)
             self.doublespinBox_default_pkt.setValue(1)    
+
+
         # try:
         #     print(self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"])
         #     self.spinBox_default_pkt.setValue(
