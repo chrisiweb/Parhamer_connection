@@ -2048,6 +2048,65 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         }
 
 
+        def check_command(cmd, name=None):
+            """Prüft, ob ein Befehl ausgeführt werden kann und gibt Version oder Fehler zurück."""
+            name = name or cmd
+            try:
+                # Versuche, das Programm zu finden (auch wenn Pfade manuell gesetzt sind)
+                path = shutil.which(cmd)
+                if not path:
+                    return f"{name}: ❌ nicht gefunden"
+                
+                # Führe einen einfachen Versionsbefehl aus
+                result = subprocess.run([cmd, "--version"], capture_output=True, text=True, timeout=5)
+                if result.returncode == 0:
+                    # Nur erste Zeile der Ausgabe zeigen
+                    version_line = result.stdout.splitlines()[0] if result.stdout else "Version erkannt"
+                    return f"{name}: ✅ OK – {version_line}"
+                else:
+                    return f"{name}: ⚠️ Fehlercode {result.returncode}"
+            except FileNotFoundError:
+                return f"{name}: ❌ nicht gefunden"
+            except subprocess.TimeoutExpired:
+                return f"{name}: ⚠️ Timeout bei Aufruf"
+            except Exception as e:
+                return f"{name}: ⚠️ Ausnahme – {e}"
+
+        if sys.platform.startswith('darwin'):
+            lama_path = os.path.dirname(sys.argv[0])
+            if lama_path == "":
+                lama_path = "."
+            folder = 'universal-darwin'
+            latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder,'latex')
+            dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')
+            gs = os.path.join(lama_path, 'portable', 'ghostscript', 'bin', 'gs')
+        elif sys.platform.startswith('linux'):
+            if getattr(sys, 'frozen', False):
+                # Wenn aus AppImage oder PyInstaller gestartet
+                lama_path = os.path.dirname(sys.executable)
+            else:
+                # Normaler Python-Start
+                lama_path = os.path.dirname(os.path.abspath(__file__))
+            folder = 'x86_64-linux'  
+            gs = "gs"
+            latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder,'latex')
+            dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')       
+        else:
+            latex = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
+            dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
+            gs = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'bin', 'gswin64c.exe')
+
+        programs = [latex, dvips, gs,"latex", "dvips", "gs"]
+
+        latex_installer_string = ""
+        for prog in programs:
+            latex_installer_string += f"{check_command(prog)}\n\n"
+
+        path_teildokument = os.path.join(path_programm, "Teildokument")
+        teildokument_dateien = [f for f in os.listdir(path_teildokument) if os.path.isfile(os.path.join(path_teildokument, f))]
+        
+        files_teildokument_folder = "\n".join(teildokument_dateien)
+
         from smtplib import SMTP_SSL
         from email.mime.multipart import MIMEMultipart
         from email.mime.text import MIMEText
@@ -2086,11 +2145,20 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     
 
         try:
-            body = f"KONTAKT:\nNAME: {dict_sendfiles['name']}\nE-MAIL: {dict_sendfiles['email']}\n\nLaMA Version: {__version__}\n\nBetriebssystem: {sys.platform}"
+            body = f"""
+KONTAKT:
+NAME: {dict_sendfiles['name']}
+E-MAIL: {dict_sendfiles['email']}
+
+LaMA Version: {__version__}
+Betriebssystem: {sys.platform}
+
+LaTeX DISTRIBUTIONEN:
+{latex_installer_string}
+DATEIEN im Teildokument-Ordner:
+{files_teildokument_folder}"""
             sender_email = "lamabugfix@gmail.com"
             recipient_email = "lama.helpme@gmail.com"
-
-
 
             message = MIMEMultipart()
             message['Subject'] = "LaMA Service Dateien"
@@ -2191,6 +2259,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 
             critical_window(
                 "Die Servicedateien konnte nicht gesendet werden.",
+                text,
                 titel="Fehler beim Senden",
                 detailed_text="Fehlermeldung:\n" + str(sys.exc_info()),
             )

@@ -833,7 +833,6 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
         gs = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'bin', 'gswin64c.exe')
 
-
         if is_empty(drive):
             terminal_command = f'cd "{folder_name}" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {dvips} "{file_name}.dvi" & {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'
         else:
