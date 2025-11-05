@@ -40,7 +40,7 @@ if sys.platform.startswith("win"):
     
     
     path_standard_pdf_reader = os.path.join(os.path.dirname(sys.argv[0]), "SumatraPDF-3.4.6-64.exe")
-    path_compiler = os.path.join(os.path.dirname(sys.argv[0]), "miktex-portable","texmfs","install","miktex","bin","x64")
+
 
     # ## OLD VERSION!!
     # path_programm = os.path.dirname(sys.argv[0])
@@ -100,7 +100,7 @@ elif sys.platform.startswith("darwin"):
             )
 
     path_standard_pdf_reader = ""
-    path_compiler = ""
+
 elif sys.platform.startswith("linux"):
     path_programm = os.path.join(os.path.expanduser('~'), ".local","share","LaMA")
 
@@ -132,7 +132,7 @@ elif sys.platform.startswith("linux"):
                 path_programm, "lama_notenschluessel.json"
             )
     path_standard_pdf_reader = ""
-    path_compiler = ""
+
 path_home = Path.home()
 
 lama_user_credentials = 'ghp_PwshmR'

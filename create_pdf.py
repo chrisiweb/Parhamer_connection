@@ -7,7 +7,7 @@ import re
 import json
 import subprocess
 
-from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader, path_home, path_compiler
+from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader, path_home
 from config import *
 # (
 #     config_file,
@@ -824,10 +824,7 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         else:
             drive = ""
 
-        # if os.path.isfile(os.path.join(path_compiler, "latex.exe")):
-        #     latex = os.path.join(path_compiler, "latex.exe")
-        # else:
-        #     latex = "latex"
+
 
         latex = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
         dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')

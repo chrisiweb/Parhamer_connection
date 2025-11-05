@@ -2042,7 +2042,8 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             'worksheet' : checkbox_worksheet.isChecked(),
             'preview' : checkbox_preview.isChecked(),
             'temp':checkbox_temp.isChecked(),
-            '_local_database':checkbox_local_ddb.isChecked(),            
+            '_local_database':checkbox_local_ddb.isChecked(), 
+            'lama_settings':True,           
             'name': line_edit_name.text(),
             'email': line_edit_email.text(),
         }
@@ -2107,6 +2108,43 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         
         files_teildokument_folder = "\n".join(teildokument_dateien)
 
+
+        def create_string_of_relevant_pathes():
+            from config_start import lama_individual_titlepage, path_standard_pdf_reader,cria_individual_titlepage
+            try:
+                with open(lama_settings_file, "r", encoding="utf8") as f:
+                    lama_settings = json.load(f)
+                if is_empty(lama_settings['pdf_reader']):
+                    if os.path.isfile(path_standard_pdf_reader):
+                        path_pdf_reader = path_standard_pdf_reader
+                    else:
+                        path_pdf_reader = ""
+                else:
+                    path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
+            except (FileNotFoundError, KeyError):
+                if os.path.isfile(path_standard_pdf_reader):
+                    path_pdf_reader = path_standard_pdf_reader
+                else:
+                    path_pdf_reader = ""
+            dict_paths = {
+                "path_programm": path_programm,
+                "path_localappdata_lama":path_localappdata_lama,
+                "lama_settings_file":lama_settings_file,
+                "lama_titlepage_save":lama_titlepage_save,
+                "lama_individual_titlepage":lama_individual_titlepage,
+                "cria_titlepage_save":cria_titlepage_save,
+                "cria_individual_titlepage":cria_individual_titlepage,
+                "lama_notenschluessel_file":lama_notenschluessel_file,
+                "path_pdf_reader":path_pdf_reader,
+            }
+            _string = ""
+            for name, value in dict_paths.items():
+                _string += f"{name}: {value}\n\n"
+            return _string
+
+        string_of_relevant_pathes = create_string_of_relevant_pathes()
+
+
         from smtplib import SMTP_SSL
         from email.mime.multipart import MIMEMultipart
         from email.mime.text import MIMEText
@@ -2156,7 +2194,10 @@ Betriebssystem: {sys.platform}
 LaTeX DISTRIBUTIONEN:
 {latex_installer_string}
 DATEIEN im Teildokument-Ordner:
-{files_teildokument_folder}"""
+{files_teildokument_folder}
+
+Alle relevanten DATEIPFADE:
+{string_of_relevant_pathes}"""
             sender_email = "lamabugfix@gmail.com"
             recipient_email = "lama.helpme@gmail.com"
 
@@ -2173,12 +2214,15 @@ DATEIEN im Teildokument-Ordner:
             
             list_send_files = []
             for all in dict_sendfiles:
-                
                 if dict_sendfiles[all] == True:
                     if all == "temp":
                         file_name = os.path.join(path_teildokument, "temp.txt")
                         if os.path.isfile(file_name):
                             list_send_files.append(file_name)
+                    elif all == "lama_settings":
+                        file_name = os.path.join(path_programm, "lama_settings")
+                        if os.path.isfile(file_name):
+                            list_send_files.append(file_name)                       
                     elif all == "_local_database":
                         file_name = os.path.join(path_programm, "_database", "_local_database.json")
                         if os.path.isfile(file_name):
