@@ -6551,6 +6551,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.update_punkte()
 
+
+        if not 'halfpoints' in self.lama_settings:
+            print('KeyError. Write key "halfpoints" to lama_settings dictionary.')
+            self.lama_settings['halfpoints']=False
+            with open(lama_settings_file, "w+", encoding="utf8") as f:
+                json.dump(self.lama_settings, f, ensure_ascii=False)
+            with open(lama_settings_file, "r", encoding="utf8") as f:
+                self.lama_settings = json.load(f)
         try:  
             if self.lama_settings['halfpoints']==False:
                 self.spinBox_default_pkt.setValue(
