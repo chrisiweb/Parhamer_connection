@@ -7053,7 +7053,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if index + 1 == len(self.list_alle_aufgaben_sage[list_index]):
             self.delete_widget(layout, index)
             self.erase_aufgabe(aufgabe)
-
+            if len(self.list_alle_aufgaben_sage[list_index])==1:
+                self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[list_index][0], delete=True)
         else:
             self.erase_aufgabe(aufgabe)
             self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[list_index][index], delete=True)
