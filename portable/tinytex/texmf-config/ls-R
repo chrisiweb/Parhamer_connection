@@ -2,7 +2,3 @@
 
 ./:
 ls-R
-web2c
-
-./web2c:
-updmap.cfg
