@@ -1,0 +1,80 @@
+%% S. Lurp --- STRETCHY --- MIT License
+\ifcsname pdfextension\endcsname
+    \protected\def\pdfliteral{\pdfextension literal}
+    \let\pdfxform=\saveboxresource
+    \let\pdfrefxform=\useboxresource
+    \def\pdflastxform{\lastsavedboxresourceindex}
+\fi
+
+\let\@xp=\expandafter
+\def\strty@gbl#1{}
+\def\strty@strip{\@xp\strty@gbl\string}
+
+\bgroup\lccode`?=`p\lccode`!=`t
+\lowercase{\egroup\def\strty@rmpt#1?!{#1}}
+\def\strty@nopt#1{\@xp\strty@rmpt\the\dimexpr #1\relax}
+
+\def\strty@mult#1#2{\strty@nopt{#1\dimexpr #2pt\relax}}
+\def\strty@add#1#2{\strty@nopt{#1pt+#2pt}}
+
+\def\strty@afterfi#1#2\fi{\fi#1}
+
+\def\strty@repeatit#1#2#3{%
+    \ifnum#1>0 %
+        #2%
+        \strty@afterfi{\@xp\strty@repeatit\@xp{\the\numexpr #1-1\relax}{#2}{#3}}%
+    \else%
+        #3%
+    \fi%
+}
+
+\def\strty@@prepeat#1#2#3{%
+    \unless\ifnum#1>#2 %
+        #3{#1}%
+        \strty@afterfi{\@xp\strty@@prepat\@xp{\the\numexpr #1+1\relax}{#2}{#3}}%
+    \fi%
+}
+        
+
+\def\strty@prepeat#1#2{\strty@@prepeat{1}{#1}{#2}}
+
+\def\strty@maxdim#1#2{\ifdim\dimexpr#1\relax>\dimexpr#2\relax \dimexpr#1\relax\else\dimexpr#2\relax\fi}
+
+\def\strty@@ifnextchar{%
+    \ifx\strty@reg@D\strty@reg@A %
+        \expandafter\strty@reg@B%
+    \else%
+        \expandafter\strty@reg@C%
+    \fi%
+}
+
+\long\def\strty@ifnextchar#1#2#3{%
+    \let\strty@reg@A=#1\relax\def\strty@reg@B{#2}\def\strty@reg@C{#3}%
+    \futurelet\strty@reg@D\strty@@ifnextchar%
+}
+
+\def\strty@scalebox#1#2{{%
+    \setbox0=\hbox{#2}%
+    \hbox to#1\wd0{%
+        \vrule width\z@ height#1\ht0 depth#1\dp0%
+        \pdfliteral{q #1 0 0 #1 0 0 cm}%
+        \rlap{\copy0}%
+        \pdfliteral{Q}%
+        \hfil%
+    }%
+}}
+
+\def\strty@pttrans{0.996264 0 0 0.996264 0 0 cm}
+\def\strty@ptm{.996264}
+\def\strty@setpttrans{%
+    \def\strty@trans##1##2{{\strty@mult\strty@ptm{##1}}{\strty@mult\strty@ptm{##2}}}%
+}
+
+\def\strty@unpack#1#2{#1 #2}
+\def\strty@p#1#2{\@xp\strty@unpack\expanded{\strty@trans{#1}{#2}}\space}
+\def\strty@unpack@d#1#2#3#4{%
+    \strty@nopt{#1pt+\strty@ptm\dimexpr#3\relax} %
+    \strty@nopt{#2pt+\strty@ptm\dimexpr#4\relax}%
+}
+\def\strty@pd#1#2#3#4{\@xp\strty@unpack@d\expanded{\strty@trans{#1}{#2}}{#3}{#4}\space}
+

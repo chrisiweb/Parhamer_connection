@@ -1,0 +1,244 @@
+%% $Id: pst-vehicle.tex 376 2021-12-29 12:28:42Z herbert $
+%%
+%% This is file `pst-vehicle.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-vehicle.tex'
+%%
+%% Thomas Söll
+%% with the collaboration of
+%% Juergen Gilg
+%% Manuel Luque
+%% Herbert Voß (bugfixes)
+%%
+%% This program can redistributed and/or modified under %%
+%% the terms of the LaTeX Project Public License        %%
+%% Distributed from CTAN archives in directory          %%
+%% macros/latex/base/lppl.txt; either version 1.3c of   %%
+%% the License, or (at your option) any later version.  %%
+%%
+%% DESCRIPTION:
+%%   `pst-vehicle' is a PSTricks package
+%%
+%%
+\csname PSTvehicleLoaded\endcsname
+\let\PSTvehicleLoaded\endinput
+% Requires PSTricks, pst-xkey, pst-node packages
+\ifx\PSTricksLoaded\endinput\else\input pstricks.tex\fi
+\ifx\PSTXKeyLoaded\endinput\else\input pst-xkey.tex\fi
+\ifx\PSTplotLoaded\endinput\else\input pst-plot.tex\fi
+\ifx\PSTnodeLoaded\endinput\else\input pst-node.tex\fi
+\def\fileversion{1.3}
+\def\filedate{2021/12/29}
+\message{`PST' v\fileversion, \filedate}
+
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+
+\definecolor{greenSlp}{rgb}{0,0.4,0.0}
+\definecolor{redSlp}{rgb}{0.7,0.134,0.134}
+
+\pst@addfams{pst-vehicle}
+\define@key[psset]{pst-vehicle}{backwheel}[\wheelA]{\def\pst@backwheel{#1 }} %
+\define@key[psset]{pst-vehicle}{frontwheel}[\wheelA]{\def\pst@frontwheel{#1 }} %
+\define@key[psset]{pst-vehicle}{ownvehicle}{\def\pst@ownvehicle{#1 }} %
+\define@key[psset]{pst-vehicle}{vehicle}[\Bike]{\def\pst@vehicle{#1}} %
+\define@key[psset]{pst-vehicle}{GravNode}[]{\def\pst@GravNode{#1 }} %
+\define@key[psset]{pst-vehicle}{d}[5.8]{\def\pst@d{#1 }} %
+\define@key[psset]{pst-vehicle}{rF}[1.6]{\def\pst@rF{#1 }} %
+\define@key[psset]{pst-vehicle}{rB}[1.6]{\def\pst@rB{#1 }} %
+\define@key[psset]{pst-vehicle}{gang}[1]{\def\pst@gang{#1 }} %
+\define@key[psset]{pst-vehicle}{epsilon}[1e-6]{\def\pst@epsilon{#1 }} %
+\define@key[psset]{pst-vehicle}{startPos}[0]{\def\pst@startPos{#1 }} %
+\define@boolkey[psset]{pst-vehicle}[Pst@]{showSlope}[true]{} %
+\define@boolkey[psset]{pst-vehicle}[Pst@]{MonoAxis}[false]{} %
+%\define@boolkey[psset]{pst-vehicle}[Pst@]{EqValveStartPos}[true]{} %
+
+\input{pst-vehicle.data}
+
+\psset[pst-vehicle]{gang=1,epsilon=1e-6,rB=1.6,rF=1.6,d=5.8,vehicle=\Bike,ownvehicle=,backwheel=\wheelA,frontwheel=\wheelA,showSlope=true,%
+startPos=0,MonoAxis=false,GravNode=dA12 2 div 1}
+\psset{algebraic}
+\def\psVehicle{\def\pst@par{}\pst@object{psVehicle}}%
+\def\psVehicle@i#1#2#3{%
+\pst@killglue%
+\begingroup%
+\use@par
+%-----------------------------------------------------------------------------------------------------
+\expandafter\ifx\pst@vehicle\HighWheeler\psset{rF=4,rB=1.13,d=5.8}\fi
+\expandafter\ifx\pst@vehicle\Bike\psset{rF=1.6,rB=1.6,d=5.8}\fi
+\expandafter\ifx\pst@vehicle\Truck\psset{rF=1.9,rB=1.9,d=6.28}\fi
+\expandafter\ifx\pst@vehicle\Tractor\psset{rF=1,rB=1.4,d=4}\fi
+\expandafter\ifx\pst@vehicle\UniCycle\psset{rB=1.6,MonoAxis=true}\fi
+\expandafter\ifx\pst@vehicle\Segway\psset{MonoAxis=true}\fi
+\begin@SpecialObj
+\pst@Verb{%
+ /rpn { tx@AlgToPs begin AlgToPs end cvx } def%
+ /X0 #2 def % -------------- x-Wert des Punktes auf der Kurve, wo das Hinterrad die Kurve berührt; von diesem Wert startet die Rechnung
+ /XST \pst@startPos\space def %   Untergrenze für die Integration bei der Rotationswinkelbestimmung
+%---- % Definition of the function f(x), its first derivative f'(x) and  \sqrt{1+f'(x)^2}   Definition de la fonction et la premiere derivee
+  /func (#3) rpn def
+  /Diff (Derive(1,#3)) rpn def
+  /DiffI (Derive(2,#3)) rpn def
+  /dAB (sqrt(1+Diff^2)) rpn def
+  /dABdiff (Derive(1,sqrt(1+(Derive(1,#3))^2))) rpn def
+  /x XST def func /funcxST exch def %---- f(XST)
+  /x XST def Diff /DiffxST exch def %---- f'(XST)
+  /x X0 def func /funcX0 exch def % ----- f(X0)
+  /x X0 def Diff /DiffX0 exch def % ----- f'(X0)
+  /x X0 def DiffI /DiffIX0 exch def % --- f''(X0)
+%-----------------------------------------------------------------------------------------------------------------------
+/eps \pst@epsilon def
+% Definition of a transmission between frontwheel and backwheel (interesting for vehicles with pedals) --- Gangschaltung
+/Gang \pst@gang def
+%% Definition of a scaling factor for the vehicles
+#1 /skal exch def
+%------------------ Radius frontwheel -----------------------------------------
+/rF \pst@rF def
+/rB \pst@rB def
+/dA12 \pst@d def
+/rFs rF skal mul def
+/rBs rB skal mul def
+%--------% dA12 = Distance between the axes of the wheels ----- Achsabstand --- distance entre les axes
+/dA12s dA12 skal mul def
+/tA 1 1 DiffX0 dup mul add sqrt div def%
+/deltaX0 tA DiffX0 mul rBs mul def
+/deltaY0 tA rBs mul def
+%-----------------------------------------------------------------------------------------------------------------------------------------
+/Function ((x-X0+rBs*DiffX0/(sqrt(1+(DiffX0)^2))-rFs*(Diff)/(sqrt(1+(Diff)^2)))^2+%
+            (func-funcX0+rFs/(sqrt(1+(Diff)^2))-rBs/(sqrt(1+(DiffX0)^2)))^2-dA12s^2) rpn def
+%-----------------------------------------------------------------------------------------------------------------------------------------
+/FunctionST ((x-XST+rBs*DiffxST/(sqrt(1+(DiffxST)^2))-rFs*(Diff)/(sqrt(1+(Diff)^2)))^2+%
+            (func-funcxST+rFs/(sqrt(1+(Diff)^2))-rBs/(sqrt(1+(DiffxST)^2)))^2-dA12s^2) rpn def
+%--------- inferior value to search for the intersection point of the frontwheel with the curve
+/Zeros { %%  Funktion xinf
+1 dict begin
+/Xinf exch def % ---------------------------------- Untergrenze für die Schnittpunktsuche des Vorderrades mit der Kurve
+% superior value to search for the intersection point of the frontwheel with the curve = X0 + distance axes + radius frontwheel + radius backwheel
+/Xsup Xinf dA12s add rBs rFs add add def % ---------- Obergrenze für die Schnittpunktsuche des Vorderrades mit der Kurve
+%---% Calculating the intersection point of the frontwheel with the function------ Schnittpunktberechnung ---------------------------------
+/NB 0 def %-----------------loop-variable  -----  Laufvariable für loop
+/NbreIterations 200 def % ---------- Maximum of iterations for the loop
+{ %------------------------------------ loop begin ---------------------
+ /xM Xinf Xsup add 2 div def %--------- Mittelwert von xM = (Xinf + Xsup):2
+   /x Xinf def
+   /F_1 FUNK def %----------------- F(Xinf)
+   /x xM def %-------------------------
+   /F_M FUNK def %----------------- F(xM)
+   F_M 0 eq {exit} if %---------------- if F(xM) = 0 --> exit
+    F_1 F_M mul 0 ge {/Xinf xM def} %-- F(Xinf) * F(xM) >= 0 Xinf = xM, else Xsup = xM
+                     {/Xsup xM def}
+    ifelse
+ Xinf Xsup sub abs 1e-8 le {exit} if %- if Xinf - Xsup <= 10^-8 --> exit
+  /NB NB 1 add def %------------------- else loopvariable NB = NB + 1  Loopvariable um eins erhöhen
+ NB NbreIterations ge {exit} if %------ if number of iterations >= 200 --> exit
+ } loop
+xM
+ end
+} def
+% \ifPst@EqValveStartPos
+/FUNK {FunctionST} def XST Zeros /FWxST exch def
+% \else /FWxST XST def \fi
+/FUNK {Function} def X0 Zeros /FWx exch def
+/FWy /x FWx def func def  %----------------------- Berührpunkt des Vorderrades (FWx,FWy)
+/mFWy /x FWx def Diff def %----------------------- mFWy = Tangentensteigung in (FWx,FWy)
+/TermFW 1 1 mFWy dup mul add sqrt div def %             1/sqrt(1+f'(x_Q)^2)
+/deltaxFW TermFW mFWy mul rFs mul def %                  skal*rF*f'(x_Q)*1/sqrt(1+f'(x_Q)^2)
+/deltayFW TermFW rFs mul def %                           skal*rF*1/sqrt(1+f'(x_Q)^2)
+%------------------------------------------------------------------------------------
+/KWRho {DiffI 1 Diff dup mul add 3 exp sqrt div} def
+/dPhiB {1 rBs div KWRho sub dAB mul abs} def
+/AngleCumB { %
+ X1 X2 /x {dPhiB} eps SIMPSON
+ } def
+ /dPhiF {1 rFs div KWRho sub dAB mul abs} def
+/AngleCumF { %
+ X1 X2 /x {dPhiF} eps SIMPSON
+ } def
+% % length of the curve for the wheels  -- La longueur de la courbe pour la roue avant  --- Kurvenlänge
+/X1 XST def /X2 X0 def %  Integral_{0}^{X0}
+/sB AngleCumB def % ---backwheel - length from 0 to X0 ---- roue arrière ---- Kurvenlänge von 0 bis X0 (Hinterrad)
+/X1 FWxST def /X2 FWx def
+/sF AngleCumF def % --frontwheel - length from 0 to the abscissa of the intersection frontwheel with curve - roue avant -- Kurvenlänge von 0 bis zum SP Vorderrad - Kurve
+%--------------------------------------------------------------------------------------------------------------------
+%---% Definition angle of rotation for the backwheel --- Definition de l'angle de roue arriere ---- Rotationswinkel des Hinterrades
+/phiB sB RadToDeg neg def
+%---% Definition angle of rotation for the frontwheel --- Definition de l'angle de roue avant  ---- Rotationswinkel des Vorderrades
+/phiF sF RadToDeg neg def
+%---------------------------------------------------------------------------------------------------------------------
+%--% coordinates for the axes of the wheels within the non-scaled system -- Koordinaten der Vorderradachse im nicht skalierten System ( außerhalb der \psscalebox )
+%----------------------------------------------------------------------------------------------------------------------
+/AFx FWx deltaxFW sub def %          % x-coordinate front axis   x-Koordinate der Vorderradachse
+/AFy FWy deltayFW add def %          % y-coordinate front axis   y-Koordinate der Vorderradachse
+/ABx X0 deltaX0 sub def %            % x-coordinate back axis    x-Koordinate der Hinterradachse
+/ABy funcX0 deltaY0 add def %        % y-coordinate back axis    y-Koordinate der Hinterradachse
+%--------------- Koordinaten der Vorderradachse im System des Fahrzeugs, also unskalierte Größen verwenden --( innerhalb der \psscalebox )
+%--coordinates for the front axis of the wheels within \psscalebox  -- Die Koordinaten der Hinterradachse sind im System des Fahrzeugs  (0,0)
+/AF1x dA12 dup mul rF rB sub dup mul sub sqrt def
+/AF1y rF rB sub def
+%------% slope and angle of the vehicle-----------------------------------------------------------------------------
+/m-vehicle AFy ABy sub AFx ABx sub div def
+/beta m-vehicle 1 atan def %          % angle for both radii of front- and backwheel are equal -- Neigungswinkel des Fahrzeugs bei gleich großen Rädern
+/alpha AF1y neg AF1x atan def %       % additional angle if radii of front- and backwheel are not equal --  zusätzlicher Winkel bei unterschiedlich großen Rädern
+% whole angle (correction with +180 in case the whole angle gets 90 degrees which can be possible with not equal radii)
+/gamma beta alpha add AFx ABx lt { 180 add } if def %   gesamter Neigungswinkel des Fahrzeugs
+%--------% Special case (mono-axis vehicle) Nr 4 --> segway ---------------------------------------------------------------------------
+\ifPst@MonoAxis DiffX0 1 atan /omega exch def DiffX0 /mVehicle exch def \else FWy funcX0 sub FWx X0 sub div /mVehicle exch def mVehicle 1 atan /omega exch def \fi
+/normNorm FWy funcX0 eq { 1 } { X0 FWx sub FWy funcX0 sub div dup mul 1 add sqrt } ifelse def
+/mTgy FWy funcX0 eq { 1 } { X0 FWx sub FWy funcX0 sub div normNorm div } ifelse def
+/mTgx FWy funcX0 eq { 0 } { 1 normNorm div } ifelse def
+/xMTg X0 FWx add 2 div def
+/yMTg funcX0 FWy add 2 div def
+}%
+%------------------------%%%%  END OF PS-CODE %%%%%--------------------------------------------------------
+\pnode(!FWx FWy){FW}%
+% % angle between the axes   angle de droite entre les axes
+\rput{!gamma}(!ABx ABy){%  Das Fahrzeug wird mit Hilfe der Hinterradachse (ABx,ABy) und Gesamtdrehwinkel gamma gesetzt
+%------------------------- % SETTING SOME VEHICLES  -------------------------------------------------------
+\psscalebox{#1}{%---------------Das Fahrzeug kann skaliert werden -----------------------------------------
+%\psset{linecolor=#2}%
+\pnode(!\pst@GravNode){GravC}%
+\pst@vehicle}}%
+\ifPst@showSlope
+\rput{!omega}(!X0 mVehicle 0 ge { 0 add } { 100 add } ifelse funcX0 0.75 sub){%
+\psframebox[fillstyle=solid,fillcolor=greenSlp,linestyle=none]{\footnotesize\color{white}$m\geq 0$}}
+\rput{!omega}(!X0 mVehicle 0 lt { 0 add } { 100 add } ifelse funcX0 0.75 sub){%
+\psframebox[fillstyle=solid,fillcolor=redSlp,linestyle=none]{\footnotesize\color{white}$m < 0$}}
+\ifPst@MonoAxis
+\psplotTangent[linewidth=0.75\pslinewidth,linecolor=orange,nodesep=-2]{X0}{1}{#3}
+\psplotTangent[linewidth=0.75\pslinewidth,linecolor=greenSlp,Tnormal,nodesep=-2]{X0}{1}{#3}
+\psdot[linecolor=red](!X0 funcX0)
+\else
+\pcline[linecolor=greenSlp,nodesepA=-1,nodesepB=-3](!xMTg yMTg)(!xMTg mTgy 0 ge { mTgx } { mTgx neg } ifelse add yMTg mTgy abs add)
+\pcline[linecolor=magenta,nodesep=-2](FW)(!X0 funcX0)
+\psdot[linecolor=red](FW)
+\psdot[linecolor=red](!X0 funcX0)
+\fi%
+\fi%
+\showpointsfalse
+\end@SpecialObj
+\endgroup\ignorespaces}%
+%
+\def\SlopeoMeter#1#2{%
+\colorlet{slpmColor}{#1}
+\rput{0}(0,0){%
+\pscircle[fillstyle=solid,fillcolor=black!90,linewidth=0.5pt,linestyle=solid](0,0){2.2}
+\rput{!#2}(0,0){%
+\multido{\r=.500+-.008,\rC=0+0.02}{25}{%
+\pscircle[linewidth=0.008,linecolor=slpmColor,strokeopacity=\rC](0,0){!\r}
+}
+\multido{\i=0+2,\r=.400+-.008,\rC=0+0.02}{50}{%
+\pswedge[linestyle=none,linewidth=0,fillstyle=solid,fillcolor=slpmColor,opacity=\r](0,0){2}{\i}{!\i\space 2 add}
+}}
+\multido{\nA=-90+10}{19}{%
+\psline[linecolor=slpmColor](1.8;\nA)(1.95;\nA)
+\rput(1.65;\nA){\psscalebox{0.4}{\color{slpmColor!10}\nA}}
+}
+\rput(-0.95,0.85){\psscalebox{0.6}{\color{slpmColor!20}\texttt{Steigungswinkel}}}
+\rput(-0.95,0.5){\psscalebox{0.75}{\color{slpmColor!40}\texttt{Slope-o-Meter}}}
+\rput{!#2}(0,0){%
+\pspolygon[fillstyle=solid,fillcolor=slpmColor!50,linecolor=slpmColor,linejoin=2,linewidth=0.1pt](0.1;15)(0.1;-15)(1.75;0)
+\pscircle[fillstyle=solid,fillcolor=black,linestyle=none,linewidth=0pt](0,0){0.3}
+}}}
+\catcode`\@=\PstAtCode\relax
+\endinput

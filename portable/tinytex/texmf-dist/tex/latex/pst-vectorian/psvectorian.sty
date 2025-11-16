@@ -1,0 +1,287 @@
+% psvectorian.sty 0.41 du 09/06/2021
+%% ------------------------------------------------
+%% Copyright (C) 2010-2021 Fradin Patrick
+%% Adaptation à pst-xkey par Herbert Voss
+%% Utilisation de psvectorian.pro conseillée par Herbert Voss
+%% ------------------------------------------------
+% Ce package fournit la commande \psvectorian[options]{num}
+% qui s'utilise ainsi: \rput[refpoint]{angle}(x,y){\psvectorian[options]{num}}
+%
+% Les options de \psvectorian sont:
+%
+% scale = nombre (échelle, 1 par défaut)
+% opacity = nombre entre 0 et 1 (opacité, 1 par défaut)
+% width = nombre+unité (largeur, naturelle par défaut)
+% height = nombre+unité (hauteur, naturelle par défaut)
+% color = couleur (\psvectorianDefaultColor par défaut)
+% flip = true/false (symétrie horizontale, false par défaut)
+% mirror = true/false (symétrie verticale, false par défaut)
+%
+\NeedsTeXFormat{LaTeX2e}% 
+\RequirePackage{graphicx,pstricks}%
+\ProvidesPackage{psvectorian}[2021/09/06 v0.41 vector ornaments]%
+%
+\pst@addfams{psvectorian}%% Herbert V.
+\pstheader{psvectorian.pro}%% Herbert V.
+%
+\newcommand*\psvectorianDefaultColor{black}%couleur par défaut
+%
+\define@key[psset]{psvectorian}{scale}{\def\@psvectorianBox##1{\scalebox{#1}{##1}}}%
+\define@key[psset]{psvectorian}{width}{%
+ \def\@psvectorianWidth{#1}%
+ \ifx\@psvectorianHeight\empty\def\@psvectorianBox##1{\resizebox*{#1}{!}{##1}}%
+ \else\def\@psvectorianBox##1{\resizebox*{#1}{\@psvectorianHeight}{##1}}%
+ \fi}%
+%
+\define@key[psset]{psvectorian}{height}{%
+ \def\@psvectorianHeight{#1}%
+ \ifx\@psvectorianWidth\empty\def\@psvectorianBox##1{\resizebox*{!}{#1}{##1}}%
+ \else\def\@psvectorianBox##1{\resizebox*{\@psvectorianWidth}{#1}{##1}}%
+ \fi}%
+%
+\define@key[psset]{psvectorian}{color}{\def\@psvectorianColor{#1}}%
+%
+\define@key[psset]{psvectorian}{opacity}{\def\@psvectorianOpacity{#1}}%%
+%
+\define@boolkey[psset]{psvectorian}[Pst@]{flip}[true]{%
+ \ifPst@flip\def\@psvectorianflip##1{\rotatebox{180}{\reflectbox{##1}}}%
+ \else      \def\@psvectorianflip##1{##1}%
+ \fi}%
+%
+\define@boolkey[psset]{psvectorian}[Pst@]{mirror}[true]{%
+ \ifPst@mirror\let\@psvectorianmirror\reflectbox%
+ \else        \def\@psvectorianmirror##1{##1}%
+ \fi}
+%
+\newcommand*\psvectorian[2][]{%
+\bgroup%
+  \def\@psvectorianWidth{}%
+  \def\@psvectorianHeight{}%
+  \psset[psvectorian]{scale=1,opacity=1,color=\psvectorianDefaultColor,flip=false,mirror=false}{}%
+  \ifx\relax#1\relax\else\psset[psvectorian]{#1}\fi%
+  \psset{linecolor=\@psvectorianColor,opacity=\@psvectorianOpacity}%
+  \@psvectorianBox{\@psvectorianmirror{\@psvectorianflip{\@psvectorianDraw{#2}}}}%
+\egroup%
+}%
+%
+\def\pst@setColor{\pst@usecolor\pslinecolor}%
+%
+%%%%%%%%%%%%% appels des motifs %%%%%%%%
+\def\@psvectorianWidhtHeight#1{%calcul largeur hauteur en bp
+\ifcase#1\relax%
+\or\def\@psvectorianX{136}\def\@psvectorianY{107}%
+\or\def\@psvectorianX{133}\def\@psvectorianY{48}%
+\or\def\@psvectorianX{130}\def\@psvectorianY{65}%
+\or\def\@psvectorianX{133}\def\@psvectorianY{133}%
+\or\def\@psvectorianX{129}\def\@psvectorianY{146}%
+\or\def\@psvectorianX{134}\def\@psvectorianY{148}%
+\or\def\@psvectorianX{136}\def\@psvectorianY{135}%
+\or\def\@psvectorianX{134}\def\@psvectorianY{134}%
+\or\def\@psvectorianX{79}\def\@psvectorianY{105}%
+\or\def\@psvectorianX{80}\def\@psvectorianY{99}%
+\or\def\@psvectorianX{123}\def\@psvectorianY{67}%
+\or\def\@psvectorianX{136}\def\@psvectorianY{136}%
+\or\def\@psvectorianX{136}\def\@psvectorianY{236}%
+\or\def\@psvectorianX{123}\def\@psvectorianY{67}%
+\or\def\@psvectorianX{103}\def\@psvectorianY{52}%
+\or\def\@psvectorianX{103}\def\@psvectorianY{52}%
+\or\def\@psvectorianX{74}\def\@psvectorianY{59}%
+\or\def\@psvectorianX{74}\def\@psvectorianY{59}%
+\or\def\@psvectorianX{81}\def\@psvectorianY{81}%
+\or\def\@psvectorianX{81}\def\@psvectorianY{81}%
+\or\def\@psvectorianX{68}\def\@psvectorianY{55}%
+\or\def\@psvectorianX{34}\def\@psvectorianY{61}%
+\or\def\@psvectorianX{68}\def\@psvectorianY{55}%
+\or\def\@psvectorianX{78}\def\@psvectorianY{75}%
+\or\def\@psvectorianX{80}\def\@psvectorianY{88}%
+\or\def\@psvectorianX{59}\def\@psvectorianY{120}%
+\or\def\@psvectorianX{101}\def\@psvectorianY{98}%
+\or\def\@psvectorianX{52}\def\@psvectorianY{102}%
+\or\def\@psvectorianX{65}\def\@psvectorianY{65}%
+\or\def\@psvectorianX{63}\def\@psvectorianY{64}%
+\or\def\@psvectorianX{48}\def\@psvectorianY{48}%
+\or\def\@psvectorianX{48}\def\@psvectorianY{48}%
+\or\def\@psvectorianX{85}\def\@psvectorianY{85}%
+\or\def\@psvectorianX{85}\def\@psvectorianY{85}%
+\or\def\@psvectorianX{97}\def\@psvectorianY{97}%
+\or\def\@psvectorianX{97}\def\@psvectorianY{97}%
+\or\def\@psvectorianX{105}\def\@psvectorianY{104}%
+\or\def\@psvectorianX{105}\def\@psvectorianY{104}%
+\or\def\@psvectorianX{112}\def\@psvectorianY{112}%
+\or\def\@psvectorianX{112}\def\@psvectorianY{112}%
+\or\def\@psvectorianX{111}\def\@psvectorianY{113}%
+\or\def\@psvectorianX{111}\def\@psvectorianY{113}%
+\or\def\@psvectorianX{123}\def\@psvectorianY{63}%
+\or\def\@psvectorianX{123}\def\@psvectorianY{63}%
+\or\def\@psvectorianX{385}\def\@psvectorianY{64}%
+\or\def\@psvectorianX{453}\def\@psvectorianY{97}%
+\or\def\@psvectorianX{114}\def\@psvectorianY{32}%
+\or\def\@psvectorianX{114}\def\@psvectorianY{32}%
+\or\def\@psvectorianX{163}\def\@psvectorianY{61}%
+\or\def\@psvectorianX{164}\def\@psvectorianY{125}%
+\or\def\@psvectorianX{164}\def\@psvectorianY{125}%
+\or\def\@psvectorianX{248}\def\@psvectorianY{197}%
+\or\def\@psvectorianX{134}\def\@psvectorianY{134}%
+\or\def\@psvectorianX{134}\def\@psvectorianY{134}%
+\or\def\@psvectorianX{269}\def\@psvectorianY{116}%
+\or\def\@psvectorianX{269}\def\@psvectorianY{116}%
+\or\def\@psvectorianX{207}\def\@psvectorianY{103}%
+\or\def\@psvectorianX{228}\def\@psvectorianY{116}%
+\or\def\@psvectorianX{204}\def\@psvectorianY{102}%
+\or\def\@psvectorianX{451}\def\@psvectorianY{189}%
+\or\def\@psvectorianX{205}\def\@psvectorianY{205}%
+\or\def\@psvectorianX{205}\def\@psvectorianY{205}%
+\or\def\@psvectorianX{212}\def\@psvectorianY{212}%
+\or\def\@psvectorianX{212}\def\@psvectorianY{212}%
+\or\def\@psvectorianX{132}\def\@psvectorianY{166}%
+\or\def\@psvectorianX{177}\def\@psvectorianY{175}%
+\or\def\@psvectorianX{80}\def\@psvectorianY{155}%
+\or\def\@psvectorianX{361}\def\@psvectorianY{154}%
+\or\def\@psvectorianX{448}\def\@psvectorianY{227}%
+\or\def\@psvectorianX{226}\def\@psvectorianY{79}%
+\or\def\@psvectorianX{443}\def\@psvectorianY{81}%
+\or\def\@psvectorianX{216}\def\@psvectorianY{58}%
+\or\def\@psvectorianX{216}\def\@psvectorianY{58}%
+\or\def\@psvectorianX{308}\def\@psvectorianY{93}%
+\or\def\@psvectorianX{373}\def\@psvectorianY{120}%
+\or\def\@psvectorianX{308}\def\@psvectorianY{93}%
+\or\def\@psvectorianX{207}\def\@psvectorianY{89}%
+\or\def\@psvectorianX{207}\def\@psvectorianY{132}%
+\or\def\@psvectorianX{249}\def\@psvectorianY{122}%
+\or\def\@psvectorianX{454}\def\@psvectorianY{31}%
+\or\def\@psvectorianX{176}\def\@psvectorianY{45}%
+\or\def\@psvectorianX{454}\def\@psvectorianY{24}%
+\or\def\@psvectorianX{449}\def\@psvectorianY{20}%
+\or\def\@psvectorianX{290}\def\@psvectorianY{45}%
+\or\def\@psvectorianX{453}\def\@psvectorianY{22}%
+\or\def\@psvectorianX{454}\def\@psvectorianY{17}%
+\or\def\@psvectorianX{436}\def\@psvectorianY{44}%
+\or\def\@psvectorianX{454}\def\@psvectorianY{15}%
+\or\def\@psvectorianX{454}\def\@psvectorianY{10}%89
+%
+\or\def\@psvectorianX{30}\def\@psvectorianY{30}%90
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%91
+\or\def\@psvectorianX{43}\def\@psvectorianY{29}%92
+\or\def\@psvectorianX{59}\def\@psvectorianY{29}%93
+\or\def\@psvectorianX{59}\def\@psvectorianY{29}%94
+\or\def\@psvectorianX{43}\def\@psvectorianY{29}%95
+\or\def\@psvectorianX{30}\def\@psvectorianY{15}%96
+\or\def\@psvectorianX{29}\def\@psvectorianY{14}%97
+\or\def\@psvectorianX{29}\def\@psvectorianY{14}%98
+\or\def\@psvectorianX{45}\def\@psvectorianY{15}%99
+\or\def\@psvectorianX{29}\def\@psvectorianY{30}%100
+\or\def\@psvectorianX{132}\def\@psvectorianY{30}%101
+\or\def\@psvectorianX{43}\def\@psvectorianY{29}%102
+\or\def\@psvectorianX{42}\def\@psvectorianY{30}%103
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%104
+\or\def\@psvectorianX{45}\def\@psvectorianY{30}%105
+\or\def\@psvectorianX{44}\def\@psvectorianY{30}%106
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%107
+\or\def\@psvectorianX{59}\def\@psvectorianY{29}%108
+\or\def\@psvectorianX{72}\def\@psvectorianY{29}%109
+\or\def\@psvectorianX{29}\def\@psvectorianY{15}%110
+\or\def\@psvectorianX{43}\def\@psvectorianY{28}%111
+\or\def\@psvectorianX{15}\def\@psvectorianY{59}%112
+\or\def\@psvectorianX{57}\def\@psvectorianY{28}%113
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%114
+\or\def\@psvectorianX{43}\def\@psvectorianY{29}%115
+\or\def\@psvectorianX{29}\def\@psvectorianY{29}%116
+\or\def\@psvectorianX{29}\def\@psvectorianY{29}%117
+\or\def\@psvectorianX{29}\def\@psvectorianY{29}%118
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%119
+\or\def\@psvectorianX{29}\def\@psvectorianY{44}%120
+\or\def\@psvectorianX{30}\def\@psvectorianY{44}%121
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%122
+\or\def\@psvectorianX{59}\def\@psvectorianY{29}%123
+\or\def\@psvectorianX{58}\def\@psvectorianY{59}%124
+\or\def\@psvectorianX{30}\def\@psvectorianY{44}%125
+\or\def\@psvectorianX{29}\def\@psvectorianY{43}%126
+\or\def\@psvectorianX{44}\def\@psvectorianY{28}%127
+\or\def\@psvectorianX{45}\def\@psvectorianY{29}%128
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%129
+\or\def\@psvectorianX{29}\def\@psvectorianY{29}%130
+\or\def\@psvectorianX{45}\def\@psvectorianY{44}%131
+\or\def\@psvectorianX{45}\def\@psvectorianY{44}%132
+\or\def\@psvectorianX{15}\def\@psvectorianY{15}%133
+\or\def\@psvectorianX{15}\def\@psvectorianY{15}%134
+\or\def\@psvectorianX{15}\def\@psvectorianY{14}%135
+\or\def\@psvectorianX{72}\def\@psvectorianY{44}%136
+\or\def\@psvectorianX{149}\def\@psvectorianY{74}%137
+\or\def\@psvectorianX{15}\def\@psvectorianY{7}%138
+\or\def\@psvectorianX{73}\def\@psvectorianY{37}%139
+\or\def\@psvectorianX{15}\def\@psvectorianY{15}%140
+\or\def\@psvectorianX{15}\def\@psvectorianY{15}%141
+\or\def\@psvectorianX{30}\def\@psvectorianY{30}%142
+\or\def\@psvectorianX{30}\def\@psvectorianY{30}%143
+\or\def\@psvectorianX{29}\def\@psvectorianY{30}%144
+\or\def\@psvectorianX{15}\def\@psvectorianY{15}%145
+\or\def\@psvectorianX{15}\def\@psvectorianY{15}%146
+\or\def\@psvectorianX{31}\def\@psvectorianY{29}%147
+\or\def\@psvectorianX{30}\def\@psvectorianY{44}%148
+\or\def\@psvectorianX{29}\def\@psvectorianY{28}%149
+\or\def\@psvectorianX{30}\def\@psvectorianY{44}%150
+\or\def\@psvectorianX{43}\def\@psvectorianY{29}%151
+\or\def\@psvectorianX{57}\def\@psvectorianY{28}%152
+\or\def\@psvectorianX{57}\def\@psvectorianY{28}%153
+\or\def\@psvectorianX{34}\def\@psvectorianY{17}%154
+\or\def\@psvectorianX{34}\def\@psvectorianY{17}%155
+\or\def\@psvectorianX{45}\def\@psvectorianY{28}%156
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%157
+\or\def\@psvectorianX{58}\def\@psvectorianY{29}%158
+\or\def\@psvectorianX{43}\def\@psvectorianY{29}%159
+\or\def\@psvectorianX{43}\def\@psvectorianY{30}%160
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%161
+\or\def\@psvectorianX{30}\def\@psvectorianY{44}%162
+\or\def\@psvectorianX{46}\def\@psvectorianY{29}%163
+\or\def\@psvectorianX{29}\def\@psvectorianY{44}%164
+\or\def\@psvectorianX{45}\def\@psvectorianY{26}%165
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%166
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%167
+\or\def\@psvectorianX{59}\def\@psvectorianY{30}%168
+\or\def\@psvectorianX{58}\def\@psvectorianY{29}%169
+\or\def\@psvectorianX{59}\def\@psvectorianY{30}%170
+\or\def\@psvectorianX{30}\def\@psvectorianY{29}%171
+\or\def\@psvectorianX{29}\def\@psvectorianY{15}%172
+\or\def\@psvectorianX{29}\def\@psvectorianY{44}%173
+\or\def\@psvectorianX{28}\def\@psvectorianY{44}%174
+\or\def\@psvectorianX{29}\def\@psvectorianY{42}%175
+\or\def\@psvectorianX{29}\def\@psvectorianY{43}%176
+\or\def\@psvectorianX{31}\def\@psvectorianY{44}%177
+\or\def\@psvectorianX{28}\def\@psvectorianY{44}%178
+\or\def\@psvectorianX{29}\def\@psvectorianY{44}%179
+\or\def\@psvectorianX{30}\def\@psvectorianY{45}%180
+\or\def\@psvectorianX{43}\def\@psvectorianY{30}%181
+\or\def\@psvectorianX{45}\def\@psvectorianY{29}%182
+\or\def\@psvectorianX{44}\def\@psvectorianY{27}%183
+\or\def\@psvectorianX{42}\def\@psvectorianY{29}%184
+\or\def\@psvectorianX{45}\def\@psvectorianY{29}%185
+\or\def\@psvectorianX{43}\def\@psvectorianY{14}%186
+\or\def\@psvectorianX{28}\def\@psvectorianY{29}%187
+\or\def\@psvectorianX{30}\def\@psvectorianY{30}%188
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%189
+\or\def\@psvectorianX{44}\def\@psvectorianY{29}%190
+\or\def\@psvectorianX{73}\def\@psvectorianY{58}%191
+\or\def\@psvectorianX{29}\def\@psvectorianY{44}%192
+\or\def\@psvectorianX{44}\def\@psvectorianY{14}%193
+\or\def\@psvectorianX{90}\def\@psvectorianY{90}%194
+\or\def\@psvectorianX{90}\def\@psvectorianY{90}%195
+\or\def\@psvectorianX{148}\def\@psvectorianY{30}%196
+\fi%
+}%
+%
+\def\@psvectorianDraw#1{%dessin du motif
+\@psvectorianWidhtHeight{#1}%
+\psset{unit=1bp}%
+\begin{pspicture}(0,0)(\@psvectorianX,\@psvectorianY)%
+\begin@SpecialObj
+\addto@pscode{
+tx@vectorianDict begin 
+/fill \tx@setTransparency /fill load def 
+vec#1 
+end
+}
+\end@SpecialObj
+\end{pspicture}%
+}%
+\endinput%
+%%%%%%%%%%%%%%%% fin %%%%%%%%%%%%%%%%

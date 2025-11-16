@@ -1,0 +1,26 @@
+\expandafter\edef\csname _ catcode\endcsname{\the\catcode`_}
+\expandafter\edef\csname @ catcode\endcsname{\the\catcode`@}
+
+\let\olduscore=\_
+
+\input ptb-utils
+
+\_checkloaded{pdfToolbox}
+
+\def\pdfToolboxversion{0.2}
+\def\pdfToolboxdate{April, 2025}
+
+\say{This is pdfToolbox, version \pdfToolboxversion (\pdfToolboxdate)}
+
+\input ptb-pdfData
+\input ptb-pdfGraphics
+\input ptb-pdfDstruct
+
+\def\@pdftoolbox[#1]{{\setfontandscale{bf}{#1}\localcolor rgb{1 0 0}{PDF}\localcolor rgb{0 0 1}{\setscale{#1+5pt}T}\localcolor rgb{0 .9 0}{OOLBOX}}}
+\def\pdftoolbox{\@ifnextchar[ \@pdftoolbox {\@pdftoolbox[\dimexpr\currscale-3pt\relax]}}
+
+\let\_=\olduscore
+
+\catcode`_=\csname _ catcode\endcsname
+\catcode`@=\csname @ catcode\endcsname
+

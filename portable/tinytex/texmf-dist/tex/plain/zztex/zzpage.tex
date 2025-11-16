@@ -1,0 +1,908 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Page Facilities
+%
+% Synopsis:  This module contains all the user facilities for
+%            specifying things about the page layout.  It also
+%            contains the output routines.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   7 March 1990
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Tracing Page Makeup
+%                       ------- ---- ------
+
+
+\def \tracepagemakeup #1{%
+  \if \posp{\tracingpagemakeup}%
+    \writelog{ZzTeX page \the\pagenumber: #1}%
+  \fi}
+
+%                       Initialize Page Parameters
+%                       ---------- ---- ----------
+
+
+% Here we assume that the type area width is the same on both pages.
+
+\def \zpageinit {%
+  \gcalculate \trimplusbleedheight = {\standardbleed,+,\trimheight,+,%
+                                      \standardbleed}%
+  \gcalculate \trimplusbleedwidth = {\standardbleed,+,\trimwidth,+,%
+                                     \standardbleed}%
+  \gcalculate \typeareawidth = {\oddlefttextmargin,+,\textmeasure,+,%
+                                \oddrighttextmargin}%
+  \gcalculate \evenoutermargin = {\trimwidth,-,\typeareawidth,-,%
+                                  \eveninnermargin}%
+  \gcalculate \evenbleedshift = {-\evenlefttextmargin,-,\evenoutermargin,-,%
+                                 \standardbleed}%
+  \gcalculate \oddoutermargin = {\trimwidth,-,\typeareawidth,-,%
+                                 \oddinnermargin}%
+  \gcalculate \oddbleedshift = {-\oddlefttextmargin,-,\oddinnermargin,-,%
+                                 \standardbleed}}
+
+%                       Page Number
+%                       ---- ------
+
+
+\countdef \pagenumber = 0
+
+\declaresnapitem{\pagenumber}
+
+\def \setpagenumber #1{%                                {number}
+  \global\pagenumber = #1\relax
+  \setcolumnnumber{1}}
+
+\def \evenpagep {\evenp{\pagenumber}}
+\def \oddpagep {\oddp{\pagenumber}}
+
+\def \folio {}
+
+\def \setfoliostyle #1{%                                {\style}
+  \ztoksa = \expandaftertwice{\name{#1folio}}%
+  \xdef \folio {\the\ztoksa}}
+
+\def \chapterpagefolio {\the\chaptercomptext-\number\pagenumber}
+\def \arabicfolio {\number\pagenumber}
+\let \decimalfolio = \arabicfolio
+\def \letterfolio {\ucletter\pagenumber}
+\def \partpagefolio {\the\partcomptext-\number\pagenumber}
+\def \romanfolio {\romannumeral\pagenumber}
+
+%                       Marks
+%                       -----
+
+
+% These macros hold the five parts of the current mark, each part having
+% three subparts.  When a part is saved, the first subpart is expanded and
+% the second and third subparts are not.
+
+\definetoks{\zmarki}   \zmarki = {{???}{???}{???}}
+\definetoks{\zmarkii}  \zmarkii = {{???}{???}{???}}
+\definetoks{\zmarkiii} \zmarkiii = {{???}{???}{???}}
+\definetoks{\zmarkiv}  \zmarkiv = {{???}{???}{???}}
+\definetoks{\zmarkv}   \zmarkv = {{???}{???}{???}}
+
+
+\def \setmarkinfothree #1#2#3#4{%       {part}{text1}{text2}{text3}
+  {\tcounta = #1\relax
+   \edef \znext {{#2}}%
+   \global\name{\zmark\romannumeral\tcounta} = \expandafter{\znext{#3}{#4}}%
+   \mark{\noexpand\or \the\zmarki \noexpand\or \the\zmarkii
+         \noexpand\or \the\zmarkiii \noexpand\or \the\zmarkiv
+         \noexpand\or \the\zmarkv}}%
+  \if \vmodep \repeatpenalty \fi} % In case glue follows the mark.
+
+\def \setmarkinfo #1#2#3{%                      {part}{text1}{text2}
+  \setmarkinfothree{#1}{#2}{#3}{???}}
+
+
+\let \firstnewmark = \firstmark
+\let \bottommark = \botmark
+
+\def \markinfo #1#2#3{%                         {mark}{part}{subpart}
+  \ifcase #3%
+    \relax
+  \or
+    \expandafter\zoneofthree
+      \ifcase #2\expandafter\relax #1\else {???}{???}{???}\fi
+  \or
+    \expandafter\ztwoofthree
+      \ifcase #2\expandafter\relax #1\else {???}{???}{???}\fi
+  \or
+    \expandafter\zthreeofthree
+      \ifcase #2\expandafter\relax #1\else {???}{???}{???}\fi
+  \else
+    \error{invsubpart}{The subpart `#3' is invalid}%
+  \fi}
+
+%                       Page Screen
+%                       ---- ------
+
+
+\def \fullpagescreen #1{%                               {color}
+  \if \inbackground
+    \vskip -\standardbleed
+    \moveleft \standardbleed \vbox{%
+      \colorrule{#1}{width \trimplusbleedwidth height \trimplusbleedheight}}%
+  \else
+    \hrule width 0pt
+    \vsinkfromtrim{-\standardbleed}
+    \smashbox{%
+      \colorparrule{#1}
+        {\if \evenp{\pagenumber}\evenbleedshift \else \oddbleedshift \fi}
+        {width \trimplusbleedwidth height 0pt depth \trimplusbleedheight}}%
+  \fi}
+
+%                       New Headers & Footers Scheme
+%                       --- ------- - ------- ------
+
+
+% Most of the definitions are in zzrunner.tex, but these need to be in
+% here so they can be used in design files.
+
+
+\def \headerblindformat {}
+
+\def \footerblindformat {}
+
+\def \headercornermarkformat {%
+  \line{\vrule height .5pt depth 0pt width 6pt \hfil
+        \vrule height .5pt depth 0pt width 6pt}%
+  \nointerlineskip
+  \line{\vrule height 6pt depth 0pt width .5pt \hfil
+        \vrule height 6pt depth 0pt width .5pt}%
+  \vfil}
+
+\def \footercornermarkformat {%
+  \vfil
+  \line{\vrule height 6pt depth 0pt width .5pt \hfil
+        \vrule height 6pt depth 0pt width .5pt}%
+  \nointerlineskip
+  \line{\vrule height .5pt width 6pt \hfil
+        \vrule height .5pt width 6pt}}
+
+%                       Old Headers & Footers Scheme
+%                       --- ------- - ------- ------
+
+
+\def \zcurheader{\normalheader}
+\def \zcurfooter{\normalfooter}
+
+\setflag \zoverrunners = \false
+\let \zsaveheader = \relax
+\let \zsavefooter = \relax
+
+
+\def \setrunners #1#2{%                                 {header}{footer}
+  \if \zoverrunners
+    \gdef \zsaveheader {#1}%
+    \gdef \zsavefooter {#2}%
+  \else
+    \gdef \zcurheader {#1}%
+    \gdef \zcurfooter {#2}%
+  \fi}
+
+\def \overriderunners #1#2{%                            {header}{footer}
+  \if \notp{\zoverrunners}%
+    \global\let \zsaveheader = \zcurheader
+    \global\let \zsavefooter = \zcurfooter
+    \global\setflag \zoverrunners = \true
+  \fi
+  \gdef \zcurheader {#1}%
+  \gdef \zcurfooter {#2}}
+
+\def \blindrunners {%
+  \overriderunners{\blindheader}{\blindfooter}}
+
+\def \zsetrunnerstoks #1{%                              {tokens}
+  \expandafter\overriderunners \the#1}
+
+\def \zoverriderunnerstoks #1{%                              {tokens}
+  \expandafter\overriderunners \the#1}
+
+% The following macro is used to initialize the \runners parameter.
+
+\def \zoldrunners #1{%
+  \runners = {#1}}
+
+% The following macro is called from the output routine.
+
+\def \znextpagerunners {%
+  \if \zoverrunners
+    \global\let \zcurheader = \zsaveheader
+    \global\let \zcurfooter = \zsavefooter
+    \global\setflag \zoverrunners = \false
+  \fi}
+
+
+% The following macros provide some standard, simple header and footer
+% formats.
+
+\def \blindheader {}
+
+\def \blindfooter {}
+
+\def \cornermarkheader {\headercornermarkformat}
+
+\def \cornermarkfooter {\footercornermarkformat}
+
+% The following header and footer formats are provided by the design.
+% Just in case they are forgotten:
+
+\def \normalheader {%
+  \warning{noheadfoot}{No normal header format has been specified}}
+\def \normalfooter {%
+  \warning{noheadfoot}{No normal footer format has been specified}}
+\def \chapterheader {%
+  \warning{noheadfoot}{No chapter header format has been specified}}
+\def \chapterfooter {%
+  \warning{noheadfoot}{No chapter footer format has been specified}}
+
+%                       Multiple Columns
+%                       -------- -------
+
+
+% The following parameters are calculated by the \setpagecolumns command:
+
+\setflag \zdofullbreak = \false         % True if doing a full break.
+\setflag \zusetypewidth = \false        % True if using type area width.
+
+\definecount{\columncount}{0}           % Number of columns on page.
+\definecount{\columnnumber}{0}          % Current column number.
+% \hsize
+% \vsize
+
+
+% The \setpagecolumns command accepts the following options:
+%
+%   \fullbreak
+%   \shortbreak
+%   \usetextmeasure
+%   \usetextwidth
+%   \usetypewidth
+
+\def \setpagecolumns #1#2#3{%           {options}{columns}{gutter-width}
+  \endgraf
+  {\def \fullbreak {\global\setflag \zdofullbreak = \true}%
+   \def \shortbreak {\global\setflag \zdofullbreak = \false}%
+   \def \usetextmeasure {\global\setflag \zutw = \false}%
+   \def \usetextwidth {\global\setflag \zutw = \false}%
+   \def \usetypewidth {\global\setflag \zutw = \true}%
+   \global\setflag \zdofullbreak = \false
+   \global\setflag \zutw = \false
+   #1}%
+  \if \andp{\zusetypewidth}{\notp{\zutw}}%
+    \zejectcolpage
+  \else\if \onep{\columncount}%
+    \if \orp{\gtrp{#2}{1}}{\zutw}\penalty \zpenoneton \fi
+  \else\if \neqlp{#2}{\columncount}%
+    \zejectcolpage
+  \fi\fi\fi
+  \global\columncount = #2\relax
+  \global\setflag \zusetypewidth = \zutw
+  \tdimena = \if \zusetypewidth \typeareawidth \else \textmeasure \fi
+  \calculate \tdimenb = {-#3,*,\columncount,+,#3,+,\tdimena,/,\columncount}%
+  \settextwidth{\tdimenb}%
+  \global\hsize = \hsize                % Make these two parameters global.
+  \global\parfillskip = \parfillskip
+  \setcolumnnumber{1}%
+  \tracepagemakeup{Columns: \the\columncount; width: \the\hsize; gutter: #3.}}
+
+\def \zejectcolpage {%
+  \if \zdofullbreak
+    \freshpage{\full\floats\any}%
+  \else
+    \freshpage{\short\floats\any}%
+  \fi
+  \global\vsize = \textareaheight}      % Needed even if no page eject.
+
+
+\def \setcolumnnumber #1{%                              {number}
+  \global\columnnumber = #1\relax
+  \if \andp{\oddpagep}{\lastcolumnp}%
+    \global\brokenpenalty = \oddbrokenpenalty
+  \else
+    \global\brokenpenalty = \evenbrokenpenalty
+  \fi}
+
+\def \firstcolumnp {\eqlp{\columnnumber}{1}}
+\def \lastcolumnp  {\eqlp{\columnnumber}{\columncount}}
+
+
+%-----------------------------------------------------------------------------
+%
+% This old command is deprecated, although it will work forever.
+
+
+\def \setcolumns #1#2#3{%               {count}{gutter-width}{use-type-area}
+  \endgraf
+  \if \andp{\zusetypewidth}{\notp{#3}}%
+    \freshpage{\short\floats\any}%
+    \global\vsize = \textareaheight % Needed even if no page eject.
+  \else \if \eqlp{\columncount}{1}%
+    \if \orp{\gtrp{#1}{1}}{#3}%
+      \penalty \zpenoneton
+    \fi
+  \else \if \neqlp{#1}{\columncount}%
+    \freshpage{\short\floats\any}%
+    \global\vsize = \textareaheight % Needed even if no page eject.
+  \fi\fi\fi
+  \global\columncount = #1\relax
+  \global\setflag \zusetypewidth = #3\relax
+  {\zpageinit
+   \tdimena = #2\relax
+   \multiply \tdimena by \columncount
+   \advance \tdimena by -#2\relax
+   \if \zusetypewidth
+     \advance \tdimena by -\typeareawidth
+   \else
+     \advance \tdimena by -\textmeasure
+   \fi
+   \divide \tdimena by -\columncount
+   \settextwidth{\tdimena}%
+   \global\hsize = \hsize               % Make these two parameters global.
+   \global\parfillskip = \parfillskip}%
+  \setcolumnnumber{1}%
+  \tracepagemakeup{Columns: \the\columncount; width: \the\hsize; gutter: #2.}}
+
+%                       Column Breaks
+%                       ------ ------
+
+
+\def \columnbreak #1{%                          {penalty}
+  \penalty #1\relax}
+
+\def \freshcolumn #1{%                          {options}
+  {\let \zfill = \relax
+   \let \full = \relax \def \short {\def \zfill {\vfill}}%
+   #1\relax%
+   \if \notp{\dimzerop{\lastskip}}\vskip -\lastskip \fi
+   \zfill
+   \penalty \zpenfreshcol}}
+
+\def \fullcolumnbreak {\freshcolumn{\full}}
+\def \shortcolumnbreak {\freshcolumn{\short}}
+
+\def \blankcolumn {%
+  \line{}%
+  \shortcolumnbreak}
+
+%                       Page Breaks
+%                       ---- ------
+
+
+%~ This command starts a new page. The options specify the
+%~ exact behavior:
+%~ & |\any|& Start an even or odd page.
+%~ & |\even|&  Start an even page.
+%~ & |\floats|& Place all floats before new page.
+%~ & |\full|& Current page is bottomed out.
+%~ & |\nofloats|& No need to place all floats.
+%~ & |\odd|& Start an odd page.
+%~ & |\short|& Run current page short.
+%~ &.
+
+\def \freshpage #1{%                            {options} %^page_makeup
+  \if \vmodep
+    {\let \zfill = \vfill
+     \let \short = \relax \def \full {\let \zfill = \relax}%
+     \let \zflush = \zpenfreshpage
+     \let \nofloats = \relax \def \floats {\let \zflush = \zpenflushpage}%
+     \let \zpage = \relax
+     \let \any = \relax
+     \def \odd {\def \zpage {\if \evenpagep \blankpage \fi}}%
+     \def \even {\def \zpage {\if \oddpagep \blankpage \fi}}%
+     #1\relax%
+     \if \notp{\dimzerop{\lastskip}}\vskip -\lastskip \fi
+     \zfill
+     \if \notp{\lastcolumnp}%
+       \penalty \zpenfreshcol
+       \if \notp{\lastcolumnp}%
+         \loop
+           \blankcolumn
+         \if \notp{\lastcolumnp}\repeat
+       \fi
+       \line{}%
+       \vfill
+     \fi
+     \penalty \zflush
+     \zpage}%
+  \else
+    \error{pagepar}{Page break requested in the middle of a paragraph}%
+  \fi}
+
+%~ This command starts a new page, bottoming out the current page.
+
+\def \fullpagebreak {\freshpage{\full\nofloats\any}}    %^page_makeup
+
+%~ This command starts a new page, leaving the current page short.
+%~ The argument specifies the number of lines short, or, if 
+%~ specified as |\asap|, runs the page as short as possible.
+
+\def \shortpagebreak #1{%                               {lines} %^page_makeup
+  {\def \zarg {#1}\def \zasap {\asap}%
+   \if \tokeqlp{\zarg}{\zasap}%
+     \freshpage{\short\nofloats\any}%
+   \else
+     \kern -\dp\strutbox
+     \kern #1\baselineskip
+     \fullpagebreak
+   \fi}}
+
+\def \blankpage {%
+  \blindrunners
+  \pagehint{(blank)}%
+  \hrule width 0pt
+  \freshpage{\short\nofloats\any}}
+
+\def \blankleaf {%
+  \freshpage{\short\floats\odd}
+  \blankpage
+  \freshpage{\short\even}
+  \blankpage}
+
+%                       Overriding Text Area Height
+%                       ---------- ---- ---- ------
+
+
+\definedimen{\zortahsave}{0pt}          % Saved normal text area height.
+\definecount{\zortahcount}{0}           % Number of overridden pages.
+
+
+%~ This command changes the number of lines on the specified number
+%~ of pages, beginning with the current page. The nominal line count
+%~ is increased or decreased by the specified number of lines,
+%~ which should be coded with a plus or minus sign. A fractional
+%~ number of lines is allowed. It is best to change two pages (a spread)
+%~ with each command.
+
+\def \overridetextareaheight #1#2{%             {pages}{lines} %^page_makeup
+  \if \posp{\zortahcount}%
+    \warning{overortah}{Text area height overridden during previous override}%
+    \zresetortah
+  \fi
+  {\global\zortahsave = \textareaheight
+   \global\zortahcount = #1\relax
+   \global\advance \textareaheight by #2\baselineskip
+   \global\vsize = \textareaheight
+   \if \dimneqlp{\pagegoal}{\maxdimen}%
+     \tdimena = \textareaheight
+     \advance \tdimena by -\zortahsave
+     \advance \tdimena by \pagegoal
+     \global\pagegoal = \tdimena
+   \fi}%
+  \tracepagemakeup{Overriding text area height: pages: #1, vsize: \the\vsize, 
+                   goal: \the\pagegoal.}}
+
+\def \zresetortah {%
+  \global\zortahcount = 0
+  \global\textareaheight = \zortahsave
+  \global\vsize = \textareaheight
+%%%  \global\pagegoal = \vsize
+  \tracepagemakeup{Un-overriding text area height: vsize: \the\vsize.}}
+
+\def \zortahdivfinal {%
+  \if \posp{\zortahcount}%
+    \warning{divortah}{Text area height overridden across a division}%
+    \zresetortah
+  \fi}
+
+%                       Text Margins
+%                       ---- -------
+
+
+% The following two macros are really bogus, because TeX doesn't
+% always know what page it's on, except in the output routine.
+
+\def \thislefttextmargin {%
+  \if \evenpagep \evenlefttextmargin \else \oddlefttextmargin \fi}
+
+\def \thisrighttextmargin {%
+  \if \evenpagep \evenrighttextmargin \else \oddrighttextmargin \fi}
+
+\definedimen{\typeareashift}{0pt}
+\definecount{\ztaspage}{0}
+
+\def \determinetypeareashift #1{%                               {page}
+  \global\typeareashift = \if \evenp{#1}-\evenlefttextmargin \else
+                                        -\oddlefttextmargin \fi}
+
+%                       Layout Summary
+%                       ------ -------
+
+
+{\catcode`\_ = \catactive
+
+\gdef \zlayoutsummary {%
+  {\def _{\space}%
+   \writelog{}%
+   \writelog{Layout:}%
+   \writelog{}%
+   \tdimena = .013837\trimwidth
+   \tdimenb = .013837\trimheight
+   \writelog{Trim: \thefactor\tdimena"_x_\thefactor\tdimenb"}%
+   \tdimena = .013837\headmargin
+   \writelog{Head margin: \thefactor\tdimena"}%
+   \tdimena = .083333\typeareawidth
+   \tdimenb = .083333\typeareaheight
+   \writelog{Type area: \thefactor\tdimena pc_x_\thefactor\tdimenb pc}%
+   \tdimena = .013837\eveninnermargin
+   \tdimenb = .013837\oddinnermargin
+   \writelog{Inside margins: even \thefactor\tdimena", odd \thefactor\tdimenb"}%
+   \tdimena = .013837\evenoutermargin
+   \tdimenb = .013837\oddoutermargin
+   \writelog{Outside margins: even \thefactor\tdimena", odd \thefactor\tdimenb"}%
+   \tdimena = .083333\evenlefttextmargin
+   \tdimenb = .083333\oddlefttextmargin
+   \writelog{Left text margins: even \thefactor\tdimena pc,
+                                odd \thefactor \tdimenb pc}%
+   \tdimena = .083333\evenrighttextmargin
+   \tdimenb = .083333\oddrighttextmargin
+   \writelog{Right text margins: even \thefactor\tdimena pc,
+                                 odd \thefactor\tdimenb pc}%
+   \tdimena = .083333\textmeasure
+   \tdimenb = .083333\textareaheight
+   \writelog{Text area: \thefactor\tdimena pc_x_\thefactor\tdimenb pc}%
+   \writelog{Top skip: \the\topskip, delta: \the\topdelta}%
+   \writelog{}}}
+
+}% \catcode
+
+%                       Debugging
+%                       ---------
+
+
+\def \zlogoutf {-1}                     % First page to log.
+\def \zlogoutl {-1}                     % Last page to log.
+
+
+\def \logoutput #1#2{%                  {first-page}{last-page}
+  \global\def \zlogoutf {#1}%
+  \global\def \zlogoutl {#2}}
+
+%                       Output Routine
+%                       ------ -------
+
+
+% The following definitions are for special penalties that control
+% page makeup:
+
+\def \zpennormal    {-10000\relax}      % Normal page break.
+\def \zpenoneton    {-10001\relax}      % Switch from 1 to n columns.
+\def \zpenfreshcol  {-10002\relax}      % Fresh column.
+\def \zpenfreshpage {-10003\relax}      % Fresh page.
+\def \zpenflushpage {-10004\relax}      % Fresh page, and flush floats.
+\def \zpenfloatpage {-10005\relax}      % Page of floats scheduled.
+
+% We need to put the depth of box 255 in a convenient place.
+
+\definedimen{\zoutputcoldepth}{0pt}
+
+% We must save \mathdisplayprevgraf across the output routine.
+
+\definecount{\zsavemdpg}{0}
+
+% The following boxes hold parts of the page:
+
+\definebox{\zcolbox}            % One column's worth.
+\definebox{\zbodybox}           % The body, multiple columns' worth.
+\definebox{\zonetonbox}         % Stuff preceding 1- to n-column switch.
+\setflag \zonetontype = \false  % True if 1-to-n text uses type area width.
+
+% This toks register is invoked at the beginning of every column, so that
+% things like index carryovers can be performed.
+
+\definetoks{\everycolumn}
+\everycolumn = {\relax}
+
+
+\output = {\zoutput}
+
+\def \zoutput {%
+  \if \andp{\notp{\lssp{\pagenumber}{\zlogoutf}}}%
+           {\notp{\gtrp{\pagenumber}{\zlogoutl}}}%
+    \tracingoutput = 1
+    \showboxdepth = 1000 \showboxbreadth = 1000\relax
+  \fi
+  \tracepagemakeup{[Output routine invoked for column \the\columnnumber;
+                    penalty: \the\outputpenalty.}%
+  \tracepagemakeup{Vsize: \the\vsize;
+                   Box 255: \the\ht255+\the\dp255 \space x \the\wd255.}%
+  \zoutputcoldepth = \dp255\relax
+  \let \zsavewith = \zwith              % Save these items across the
+  \let \zsavevariant = \zvariant        % output routine in case they
+  \zsavemdpg = \mathdisplayprevgraf     % are altered within it.
+  \normalbaselines
+  \let \par = \endgraf
+  \everyparagraph = {}%
+  \spaceskip = 0pt
+  \tcounta = \outputpenalty
+  \if \eqlp{\tcounta}{-'10000000000}\tcounta = \zpenflushpage \fi
+  \if \gtrp{\tcounta}{-10000}\tcounta = -10000\relax \fi
+  \negate \tcounta
+  \advance \tcounta by -10000\relax
+  \ifcase \tcounta
+    \zpagenormal \or
+    \zpageoneton \or
+    \zpagefreshcol \or
+    \zpagefreshpage \or
+    \zpageflushpage \or
+    \zpagefloatpage \else
+    \zzerror{Invalid page break penalty: \the\outputpenalty}%
+  \fi
+  \global\let \zvariant = \zsavevariant
+  \global\let \zwith = \zsavewith
+  \global\mathdisplayprevgraf = \zsavemdpg
+  \tracepagemakeup{Output routine complete.]}}
+
+\def \zpagenormal {%
+  \tracepagemakeup{Process normal column.}%
+  \zcolumnsave
+  \if \lastcolumnp
+    \zpagecontents
+    \setcolumnnumber{1}%
+  \else
+    \tcounta = \columnnumber \increment \tcounta
+    \setcolumnnumber{\tcounta}%
+  \fi
+  \zfloatinit
+  \zschedulefloats{\zfloatcount}{\true}{\false}%
+  \if \gtrp{\zfloatcount}{99}%
+    \zfltpage{\zpenfloatpage}%
+  \else
+    \zeverycol
+  \fi}
+
+\def \zpageoneton {%
+  \tracepagemakeup{Process 1- to n-column transition.}%
+  \zonetoncolumnbody
+  \global\setflag \zonetontype = \zusetypewidth
+  \global\advance \vsize by -\ht\zonetonbox
+  \global\advance \vsize by -\dp\zonetonbox
+  \tracepagemakeup{Space remaining on page: \the\vsize.}}
+
+\def \zpagefreshcol {%
+  \tracepagemakeup{Process `fresh column' request.}%
+  \zpagenormal}
+
+\def \zpagefreshpage {%
+  \tracepagemakeup{Process `fresh page' request.}%
+  \zpagenormal}
+
+\def \zpageflushpage {%
+  \tracepagemakeup{Process `fresh page, flush floats' request.}%
+  \zcolumnsave
+  \if \lastcolumnp
+    \zpagecontents
+    \setcolumnnumber{1}%
+  \else
+    \tcounta = \columnnumber \increment \tcounta
+    \setcolumnnumber{\tcounta}%
+  \fi
+  \zfloatinit
+  \zschedulefloats{\zfloatcount}{\true}{\true}%
+  \if \posp{\zfloatcount}%
+    \zfltpage{\zpenflushpage}%
+  \else
+    \zeverycol
+  \fi}
+
+\def \zpagefloatpage {%
+  \tracepagemakeup{Process page of floats.}%
+  \zcolumnsave
+  \if \lastcolumnp
+    \zpagecontents
+    \setcolumnnumber{1}%
+  \else
+    \tcounta = \columnnumber \increment \tcounta
+    \setcolumnnumber{\tcounta}%
+  \fi
+  \zfloatinit
+  \zschedulefloats{\zfloatcount}{\true}{\false}%
+  \if \gtrp{\zfloatcount}{99}%
+    \zfltpage{\zpenfloatpage}%
+  \fi}
+
+\def \zfltpage #1{%                                     {penalty}
+  \if \notp{\emptytoksp{\zfltrunners}}%
+    \zoverriderunnerstoks{\zfltrunners}%
+  \fi
+  {\leftskip = 0pt \rightskip = 0pt
+   \line{}}%
+  \kern -\topskip               % Why bother to do this?
+  \nobreak \vfill
+  \penalty #1}
+
+\def \zeverycol {%
+  {\zadjtitle = \zadjtitlemark          % \adjusttitle should adjust mark.
+   \def \zadjloc {\mark}%
+   \the\everycolumn}}
+
+%                       Page Makeup: Column
+%                       ---- ------- ------
+
+
+\def \zcolumnsave {%
+  \zcolumnbody
+  \if \firstcolumnp
+    \global\setbox \zbodybox = \hbox to \zbodyboxwidth {\box\zcolbox \hss}%
+    \ztoksa = \expandafter{\topmark}%
+    \xdef \topmarki {\the\ztoksa}%
+    \ztoksa = \expandafter{\firstnewmark}%
+    \xdef \firstnewmarki {\the\ztoksa}%
+    \ztoksa = \expandafter{\bottommark}%
+    \xdef \bottommarki {\the\ztoksa}%
+  \else
+    \global\setbox \zbodybox = \hbox to \zbodyboxwidth {%
+      \unhbox\zbodybox \hfill \box\zcolbox}%
+  \fi}
+
+\def \zbodyboxwidth {%
+  \if \zusetypewidth \typeareawidth \else \textmeasure \fi}
+
+\def \zcolumnbody {%
+  \tracepagemakeup{Wrapping up the column; hsize: \the\hsize.}%
+  {\vbadness = 10000\relax
+   \global\setbox \zcolbox = \vbox to \vsize {%
+     \setindentation{0pt}{0pt}%
+     \boxmaxdepth = \maxdepth
+     \if \notp{\voidboxp{\ztopcolinsert}}\unvbox \ztopcolinsert \fi
+     \unvbox 255 % Page built by TeX.
+     \if \risingfootnotes
+       \if \notp{\voidboxp{\zfninsert}}\zfootnoteformat{\zoutputcoldepth}\fi
+     \fi
+     \if \risingbottomfloats
+       \if \notp{\voidboxp{\zbotcolinsert}}\unvbox \zbotcolinsert \fi
+     \fi
+     \if \raggedbottom
+       \kern -\zoutputcoldepth \vfill
+     \fi
+     \if \notp{\risingfootnotes}%
+       \if \notp{\voidboxp{\zfninsert}}\zfootnoteformat{\zoutputcoldepth}\fi
+     \fi
+     \if \notp{\risingbottomfloats}%
+       \if \notp{\voidboxp{\zbotcolinsert}}\unvbox \zbotcolinsert \fi
+     \fi}}}
+
+% This is a special version of \zcolumnbody for the 1- to n-column
+% transition.
+
+\def \zonetoncolumnbody {%
+  \global\setbox \zonetonbox = \vbox{%
+    \setindentation{0pt}{0pt}%
+    \boxmaxdepth = \maxdepth
+    \if \notp{\voidboxp{\ztopcolinsert}}\unvbox \ztopcolinsert \fi
+    \unvbox 255 % Page built by TeX.
+    \vskip \baselineskip
+    \vskip -\topskip
+    % Ignore footnotes.
+    % Ignore bottom style.
+    % Ignore bottom floats.
+    % Don't produce text area bottom rule.
+    }}
+
+%                       Page Makeup: Page
+%                       ---- ------- ----
+
+
+\def \zpagecontents {%
+  \tracepagemakeup{Shipping out the final page.}%
+  \shipout \vbox to \trimheight {%
+    \parskip = 0pt \parindent = 0pt
+    \setindentation{0pt}{0pt}%
+    \zpageheadmargin
+    \nointerlineskip
+    \zpagetypearea
+    \vfil
+    \nointerlineskip
+    \zpageoverlay}%
+  \if \posp{\zortahcount}%             % If overriding text area height:
+    \global\decrement \zortahcount
+    \if \zerop{\zortahcount}\zresetortah \fi
+  \fi
+  \tcounta = \pagenumber \increment \tcounta
+  \setpagenumber{\tcounta}%
+  \global\vsize = \textareaheight % In case it was reset for this page.
+  \znextpagerunners}
+
+\def \zpagelengthmarks {%
+  \tdimena = \headmargin
+  \advance \tdimena by \typeareaheight
+  \advance \tdimena by -\footerheight
+  \vskip \tdimena
+  \vbox to 0pt{%
+    \hbox to \trimwidth{%
+      \llap{\vrule height .5pt width .75pc}\hfil
+      \rlap{\vrule height .5pt width .75pc}}%
+    \vss}
+  \vskip -\tdimena
+  \nointerlineskip}
+
+\setflag \inbackground = \false
+
+\def \zpageheadmargin {%
+  \vbox to \headmargin {%
+    \hrule height 0pt width \trimwidth
+    \nointerlineskip
+    \smashbox{%
+      \setflag \inbackground = \true
+      \zcurback}%
+    \nointerlineskip
+    \vfil
+    \zmakeuprule{\trimwidth}{.5pt}}}
+
+\def \zpagetypearea {%
+  \if \evenpagep
+    \negate \eveninnermargin
+    \advance \eveninnermargin by \trimwidth
+    \advance \eveninnermargin by -\evenlefttextmargin
+    \advance \eveninnermargin by -\textmeasure
+    \advance \eveninnermargin by -\evenrighttextmargin
+  \fi
+  \moveright \if \oddpagep \oddinnermargin \else \eveninnermargin \fi
+  \vbox to \typeareaheight {%
+    \zadjtitle = \zadjtitlemark         % \adjusttitle should adjust mark.
+    \def \zadjloc {\mark}%
+    \zpageheader
+    \nointerlineskip
+    \ztextandmargins
+    \zmakeuprule{\typeareawidth}{.5pt}%
+    \vss                                % Allows text area height to vary.
+    \vbox to \footerheight{%
+      \vss
+      \zpagefooter}}}
+
+\def \zpageheader {%
+  \vbox to \headerheight {%
+    \hsize = \typeareawidth
+    \zoutputbeginblack
+    \zcurheader
+    \zoutputendblack
+    \vfil
+    \zmakeuprule{\typeareawidth}{.5pt}}}
+
+\def \ztextandmargins {%
+  \hbox to \typeareawidth {%
+    \if \notp{\zusetypewidth}%
+      \hbox to \thislefttextmargin{\hss}%
+    \fi
+    \vbox{%
+      \boxmaxdepth = \maxdepth
+      \if \andp{\zusetypewidth}{\notp{\zonetontype}}%
+        \moveright \thislefttextmargin
+      \fi
+      \box\zonetonbox
+      \nointerlineskip
+      \vbox{\box\zbodybox}}%
+    \hss}}
+
+\def \zpagefooter {%
+  \hsize = \typeareawidth
+  \zoutputbeginblack
+  \zcurfooter
+  \zoutputendblack
+  \if \PDFhyperlinks \PDFmark{P:\folio}\fi}
+
+% This macro invokes the page overlay after positioning to the
+% upper-left corner of the trim.
+
+\def \zpageoverlay {%
+  \vbox to 0pt{%
+    \offinterlineskip
+    \kern -\trimheight
+    \name{\pageoverlay\the\zoverlay}%
+    \vss}}
+
+\def \zmakeuprule #1#2{%                                {width}{height}
+  \if \DVIWindoinuse
+    \colorspecial{ifview color push rgb 0 1 0}%
+    \tdimena = #1\tcounta = \tdimena
+    \tdimena = #2\tcountb = \tdimena
+    \special{viewrule: \the\tcounta\space \the\tcountb}%
+    \colorspecial{ifview color pop}%
+  \fi}

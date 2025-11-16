@@ -1,0 +1,3199 @@
+% jats.4ht (2025-07-09-13:35), generated from tex4ht-jats.tex
+% Copyright 2022-2025 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <https://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2025-07-09-13:35}
+
+\exit:ifnot{amsart,% 
+amsbook,% 
+amsproc,% 
+article,% 
+biblatex,% 
+book,% 
+hyperref,% 
+latex,% 
+memoir,% 
+report,% 
+scrartcl,% 
+scrbook,% 
+scrreprt,% 
+tex4ht,% 
+url}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{tex4ht}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \special{t4ht.xml}
+\Configure{ext}{xml}
+\Configure{VERSION}{\HCode{<?xml version="1.0" encoding="UTF-8"?>\Hnewline}}
+
+% select JATS version
+\NewConfigure{DtdVersion}{1}
+\Configure{DtdVersion}{1.3}
+
+\def\:DTD{jats} % this is necessary to prevent html-mml from overriding DOCTYPE
+%
+\Configure{DOCTYPE}{\HCode{<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v\a:DtdVersion\space 20210610//EN" "JATS-archivearticle1-3.dtd">\Hnewline}}
+
+% XML configuratins
+\edef\html:xmlns{}
+\NewConfigure{xmlns}[2]{\concat:config\html:xmlns{xmlns:#1="#2"\Hnewline}}
+\Configure{xmlns}{xlink}{http://www.w3.org/1999/xlink}
+\Configure{xmlns}{mml}{http://www.w3.org/1998/Math/MathML}
+
+\Configure{HTML}{\HCode{<article dtd-version="\a:DtdVersion" \html:xmlns xml:lang="\Get:Language">\Hnewline}}{\HCode{\Hnewline</article>}}
+\Configure{@HEAD}{}
+\Configure{HEAD}{\HCode{<front>}}{\HCode{</front>}}
+% Add header structure
+% Journal info in <journal-meta>. It needs to be provided fully from the user configuration
+\NewConfigure{JournalMeta}{1}
+% basic article meta can be reconstructed from \title and \author
+%
+% Title needs to be placed at the correct place by DOM filter
+\Configure{TITLE}{\HCode{<article-title>}}{\HCode{</article-title>}}
+
+% You can put license and copyright info into Permissions
+\NewConfigure{Permissions}{1}
+\Configure{Permissions}{\HCode{<permissions></permissions>}}
+
+\NewConfigure{ArticleMeta}{1}
+  \Configure{ArticleMeta}{
+  \HCode{<article-meta>}%
+    % title from \title command is placed by make4ht DOM filter. If you want more complex title,
+    % use \Configure{TitleGroup}
+    \a:TitleGroup%
+    \JATS:Contributors%
+    \a:Permissions
+  \HCode{</article-meta>}%
+}
+% enable to configure contributors
+\def\JATS:Contributors{}
+\NewConfigure{Contributor}[1]{\concat:config\JATS:Contributors{#1}}
+\NewConfigure{TitleGroup}{1}
+
+% insert metas into document header
+\Configure{@HEAD}{\a:JournalMeta}
+\Configure{@HEAD}{\a:ArticleMeta}
+
+\Configure{HtmlPar}
+  {\EndP\HCode{<!--l. \the\inputlineno-->%
+<p \csname a:!P\endcsname>}}
+  {\EndP\HCode{<!--l. \the\inputlineno-->%
+<p \csname a:!P\endcsname>}}
+  {\Tg</p>}%
+  {\Tg</p>}%
+
+\def\Declare:Language#1#2{%
+\expandafter\gdef\csname rfclang#1\endcsname{#2}%
+}
+\def\Get:Language{%
+\ifx\bbl@main@language\@undefined en-US%
+\else%
+\expandafter\ifdefined\csname rfclang\bbl@main@language\endcsname \csname rfclang\bbl@main@language\endcsname\fi%
+\fi%
+}
+
+\Declare:Language{UKenglish}{en}
+\Declare:Language{USenglish}{en}
+\Declare:Language{latex}{en}
+\Declare:Language{acadian}{fr}
+\Declare:Language{albanian}{sq}
+\Declare:Language{american}{en}
+\Declare:Language{amharic}{am}
+\Declare:Language{arabic}{ar}
+\Declare:Language{armenian}{hy}
+\Declare:Language{australian}{en}
+\Declare:Language{austrian}{de}
+\Declare:Language{basque}{eu}
+\Declare:Language{bengali}{bn}
+\Declare:Language{brazilian}{pt}
+\Declare:Language{brazil}{pt}
+\Declare:Language{breton}{br}
+\Declare:Language{british}{en}
+\Declare:Language{bulgarian}{bg}
+\Declare:Language{canadian}{en}
+\Declare:Language{canadien}{fr}
+\Declare:Language{catalan}{ca}
+\Declare:Language{croatian}{hr}
+\Declare:Language{czech}{cs}
+\Declare:Language{danish}{da}
+\Declare:Language{divehi}{dv}
+\Declare:Language{dutch}{nl}
+\Declare:Language{english}{en}
+\Declare:Language{esperanto}{eo}
+\Declare:Language{estonian}{et}
+\Declare:Language{finnish}{f\/i}
+\Declare:Language{francais}{fr}
+\Declare:Language{french}{fr}
+\Declare:Language{galician}{gl}
+\Declare:Language{germanb}{de}
+\Declare:Language{german}{de}
+\Declare:Language{greek}{el}
+\Declare:Language{hebrew}{he}
+\Declare:Language{hindi}{hi}
+\Declare:Language{hungarian}{hu}
+\Declare:Language{icelandic}{is}
+\Declare:Language{interlingua}{ia}
+\Declare:Language{irish}{ga}
+\Declare:Language{italian}{it}
+\Declare:Language{kannada}{kn}
+\Declare:Language{khmer}{km}
+\Declare:Language{korean}{ko}
+\Declare:Language{lao}{lo}
+\Declare:Language{latin}{la}
+\Declare:Language{latvian}{lv}
+\Declare:Language{lithuanian}{lt}
+\Declare:Language{lowersorbian}{dsb}
+\Declare:Language{magyar}{hu}
+\Declare:Language{malayalam}{ml}
+\Declare:Language{marathi}{mr}
+\Declare:Language{naustrian}{de}
+\Declare:Language{newzealand}{en}
+\Declare:Language{ngerman}{de}
+\Declare:Language{norsk}{no}
+\Declare:Language{norwegiannynorsk}{nn}
+\Declare:Language{nynorsk}{no}
+\Declare:Language{occitan}{oc}
+\Declare:Language{oldchurchslavonic}{cu}
+\Declare:Language{persian}{fa}
+\Declare:Language{polish}{pl}
+\Declare:Language{polutonikogreek}{el}
+\Declare:Language{portuges}{pt}
+\Declare:Language{portuguese}{pt}
+\Declare:Language{romanian}{ro}
+\Declare:Language{romansh}{rm}
+\Declare:Language{russian}{ru}
+\Declare:Language{samin}{se}
+\Declare:Language{sanskrit}{sa}
+\Declare:Language{scottish}{gd}
+\Declare:Language{serbian}{sr}
+\Declare:Language{serbo-croatian}{sh}
+\Declare:Language{slovak}{sk}
+\Declare:Language{slovene}{sl}
+\Declare:Language{slovenian}{sl}
+\Declare:Language{spanish}{es}
+\Declare:Language{swedish}{sv}
+\Declare:Language{tamil}{ta}
+\Declare:Language{telugu}{te}
+\Declare:Language{thai}{th}
+\Declare:Language{tibetan}{bo}
+\Declare:Language{turkish}{tr}
+\Declare:Language{turkmen}{tk}
+\Declare:Language{ukrainian}{uk}
+\Declare:Language{uppersorbian}{hsb}
+\Declare:Language{urdu}{ur}
+\Declare:Language{vietnamese}{vi}
+\Declare:Language{welsh}{cy}
+
+\Configure{Link}{xref}{rid=}{id=}{}
+\LinkCommand\ExternalLink{ext-link,xlink:href,id}
+
+\Configure{IMG}
+  {\ht:special{t4ht=<graphic\Hnewline xlink:href="\a:imgdir}}
+  {\ht:special{t4ht=" xlink:title="}}
+  {" }
+  {\ht:special{t4ht=" }}
+  {\ht:special{t4ht=\xml:empty>}}
+
+\Configure{htf}{0}{+}{<italic}{}{}{}{}{>}{</italic>}
+\Configure{htf}{4}{+}{<sc}{}{}{}{}{>}{</sc>}
+\Configure{htf}{6}{+}{<underline}{}{}{}{}{>}{</underline>}
+
+\Configure{mathml}{mml:}
+\edef\math:type:inline{display="inline" }
+
+\ifdefined\AtBeginDocument
+\AtBeginDocument{
+  \Configure{DviMathML}{%
+    \ifx\a:@math\math:type:inline%
+    \PushStack\math:types{inline-formula}%
+    \HCode{<inline-formula>}%
+    \else%
+    \HCode{<disp-formula>}%
+    \PushStack\math:types{disp-formula}%
+    \fi%
+  }{\PopStack\math:types\:temp\HCode{</\:temp>}}%
+}%
+\fi
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{latex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{underline}
+   {\HCode{<underline>}\:gobble}
+   {\HCode{</underline>}}
+
+\Configure{textsuperscript}
+  {\HCode{<sup>}}
+  {\HCode{</sup>}}
+
+\Configure{textsubscript}
+  {\HCode{<sub>}}
+  {\HCode{</sub>}}
+
+% We must override MathML's version of basic font commands.
+\AtBeginDocument{%
+\Configure{texttt}
+   {\ifmathml\providemtextclass{\mml:class="texttt"
+         mathvariant="monospace" }\else\Protect\HCode{<monospace>}\NoFonts\fi}
+   {\ifmathml\else\EndNoFonts\Protect\HCode{</monospace>}\fi}%
+\Configure{textit}
+   {\ifmathml \providemtextclass{\mml:class="textit"
+         mathvariant="italic" }\else\Protect\HCode{<italic>}\NoFonts\fi}
+   {\ifmathml\else\EndNoFonts\Protect\HCode{</italic>}\fi}%
+\Configure{textrm}
+   {\ifmathml \providemtextclass{\mml:class="textrm"
+         mathvariant="normal" }\else\Protect\HCode{<roman>}\NoFonts\fi}
+   {\ifmathml\else\EndNoFonts\Protect\HCode{</roman>}\fi}%
+\Configure{textup}
+   {\ifmathml \providemtextclass{\mml:class="textup"
+         mathvariant="normal" }\else\Protect\HCode{<roman>}\NoFonts\fi}
+   {\ifmathml\else\EndNoFonts\Protect\HCode{</roman>}\fi}%
+\Configure{textsl}
+   {\ifmathml \providemtextclass{\mml:class="textsl"
+         mathvariant="italic" }\else\Protect\HCode{<italic>}\NoFonts\fi}
+   {\ifmathml\else\EndNoFonts\Protect\HCode{</italic>}\fi}%
+\Configure{textsf}
+   {\ifmathml \providemtextclass{\mml:class="textsf"
+         mathvariant="sans-serif" }\else\Protect\HCode{<sans-serif>}\NoFonts\fi}
+   {\ifmathml\else\EndNoFonts\Protect\HCode{</sans-serif>}\fi}%
+\Configure{textbf}
+   {\ifmathml \providemtextclass{\mml:class="textbf"
+         mathvariant="bold" }\else\Protect\HCode{<bold>}\NoFonts\fi}
+   {\ifmathml\else\EndNoFonts\Protect\HCode{</bold>}\fi}%
+\Configure{textsc}
+   {\ifmathml \providemtextclass{\mml:class="textsc"
+         mathvariant="normal" }\else\Protect\HCode{<sc>}\NoFonts\fi}
+   {\ifmathml\else\EndNoFonts\Protect\HCode{</sc>}\fi}%
+\Configure{emph}
+   {\ifmathml \providemtextclass{\mml:class="emph"
+         mathvariant="italic" }\else\Protect\HCode{<italic>}\NoFonts\fi}
+   {\ifmathml\else\EndNoFonts\Protect\HCode{</italic>}\fi}%
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{book}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{maketitle}
+   {\ifvmode \IgnorePar\fi \EndP {\Configure{maketitle}{}{}{}{}%
+% \let\thanks\let \prOteCt \relax \Protect \csname acp:c\endcsname {18}\:gobble
+\def\TeX{TeX}%
+\def\mbox{\hbox}%
+\def\gobble:font##1##2{##2}\:TITLE: \no:fonts
+\def\footnotemark[##1]{}%
+\def\:hashintitle{\protect\symbol{35}}
+\let\#\:hashintitle
+\NoFonts\Tag{TITLE+}{\@title}\EndNoFonts}
+%
+    \HCode{<maketitle>}}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</maketitle>}}
+   {\NoFonts\IgnorePar\HCode{<article-title>}\IgnorePar}
+   {\HCode{</article-title>}\IgnoreIndent\EndNoFonts}
+\def\date:zeropad#1{\ifnum #1<10 0\fi#1}
+\Configure{thanks author date and}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<contrib contrib-type="author"><name><string-name>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-name></name></contrib>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<date iso-8601-date="\the\year-\date:zeropad{\the\month}-\date:zeropad{\the\day}"><string-date>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-date></date>}}
+   {\HCode{</string-name></name></contrib><contrib contrib-type="author"><name><string-name>}}
+   {\HCode{}}
+
+\Configure{thank}
+{\HCode{<affref rid="\the\c@footnote">}}
+{\HCode{</affref>}}
+{\HCode{<aff id="\the\c@footnote"><affmark>}}
+{\HCode{</affmark>}} {\HCode{</aff>}}
+
+\Configure{section}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{section}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsubsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{paragraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+\Configure{likesection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likeparagraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+\Configure{float}
+   {\ifOption{refcaption}{}{\csname par\endcsname\ShowPar \leavevmode}}
+     {\IgnorePar\EndP\HCode{<fig>}}
+   {\ifvmode \IgnorePar \fi\EndP
+     \HCode{</fig>}\csname par\endcsname\ShowPar}
+
+\ConfigureEnv{figure}
+{\IgnorePar\EndP\HCode{<fig>\Hnewline}%
+    \bgroup \Configure{float}{\ShowPar}{}{}%
+   }
+   {\egroup
+   \IgnorePar\EndP\HCode{</fig>}\par}
+   {}{}
+
+
+\Configure{caption}{\IgnorePar\EndP\HCode{<label>}}
+   {: } {\HCode{</label><caption>}\noindent\ShowPar}
+   {\HCode{</caption>}\HCode{<!--tex4ht:label?:
+   \cur:th\:currentlabel\space-->}%
+}
+
+\ConfigureEnv{table}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{table*}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{tabular}
+     {\Configure{noalign}%
+  {\f:tabular\d:tabular \HCode{<tr><td colspan="\ar:cnt">}}
+  {\HCode{</td></tr>}\pend:def\TableNo{0}\c:tabular\e:tabular}%
+%
+      \IgnorePar\ifvmode\else\HCode{<!--tex4ht:inline-->}\fi
+\EndP\HCode{}%
+      \PushStack\Col:Marg\AllColMargins
+     }
+     {\HCode{}\PopStack\Col:Marg\AllColMargins\ShowPar
+      \Configure{noalign}{}{}%
+%
+      \ShowPar
+%
+     }{}{}
+
+
+\Configure{footnotemark}{\bgroup\NoFonts\HCode{<fn symbol="}\Configure{textsuperscript}{}{}}{\HCode{">}\EndNoFonts\egroup}
+% suppress footnote number in footnotext, it was already used in footnotemark
+\Configure{footnotetext}{\NoFonts\ShowPar\setbox0=\vbox\bgroup}
+{\egroup\EndNoFonts\SaveEndP\par\ShowPar\normalsize}% force new paragraph and normal font size
+{\EndP\RecallEndP\HCode{</fn>}}%
+
+\ConfigureEnv{quote}
+   {}{}
+   {\ifvmode\IgnorePar\fi\EndP%
+    \HCode{<disp-quote>}}
+   {\IgnorePar\EndP\HCode{</disp-quote>}\ShowPar\ShowIndent}
+
+\def\ConfigJatsList#1#2{%
+\ConfigureList{#1}%
+   {\ifvmode\IgnorePar\fi\EndP\EndP\HCode{<list list-type="#2">}%
+       \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</list-item></list>}}
+   {\end:itm\global\def\end:itm{\EndP\Tg</list-item>}\DeleteMark}
+   {\HCode{<list-item>}\par\ShowPar
+}
+ }
+
+\ConfigJatsList{itemize}{bulleted}
+\ConfigJatsList{enumerate}{order}
+\ConfigureList{description}%
+   {\ifvmode\IgnorePar\fi\EndP\HCode{<def-list>}%
+      \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</def></def-item></def-list>}\ShowPar}
+   {\end:itm \global\def\end:itm{\EndP\HCode{</def></def-item>}}\HCode{<def-item><term>}\NoFonts\HtmlParOff}
+   {\EndNoFonts\HCode{</term><def>}\HtmlParOn\par\ShowPar
+}
+
+\ConfigureList{thebibliography}%
+   {\ifvmode\IgnorePar\fi \EndP \HCode{<ref-list>}\let\en:bib=\empty}
+   {\en:bib \ifvmode\IgnorePar\fi \EndP \HCode{</ref-list>}}
+   {\en:bib\def\en:bib{\HCode{</mixed-citation></ref>}}%
+    \HCode{<ref><label>}%
+     \Configure{HtmlPar}%
+    {\EndP}%
+    {\EndP}%
+    {} {}%
+  }
+   {\HCode{</label><mixed-citation>}}
+
+
+
+\Configure{chapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{chapter}
+   {\if@mainmatter
+       \HCode{<label>}\chaptername\ \thechapter\HCode{</label>}\fi}
+
+
+\Configure{appendix}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{appendix}{\HCode{<label>}%
+   \appendixname\ \thechapter\HCode{</label>}}
+
+\Configure{likechapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{report}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{maketitle}
+   {\ifvmode \IgnorePar\fi \EndP {\Configure{maketitle}{}{}{}{}%
+% \let\thanks\let \prOteCt \relax \Protect \csname acp:c\endcsname {18}\:gobble
+\def\TeX{TeX}%
+\def\mbox{\hbox}%
+\def\gobble:font##1##2{##2}\:TITLE: \no:fonts
+\def\footnotemark[##1]{}%
+\def\:hashintitle{\protect\symbol{35}}
+\let\#\:hashintitle
+\NoFonts\Tag{TITLE+}{\@title}\EndNoFonts}
+%
+    \HCode{<maketitle>}}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</maketitle>}}
+   {\NoFonts\IgnorePar\HCode{<article-title>}\IgnorePar}
+   {\HCode{</article-title>}\IgnoreIndent\EndNoFonts}
+\def\date:zeropad#1{\ifnum #1<10 0\fi#1}
+\Configure{thanks author date and}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<contrib contrib-type="author"><name><string-name>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-name></name></contrib>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<date iso-8601-date="\the\year-\date:zeropad{\the\month}-\date:zeropad{\the\day}"><string-date>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-date></date>}}
+   {\HCode{</string-name></name></contrib><contrib contrib-type="author"><name><string-name>}}
+   {\HCode{}}
+
+\Configure{thank}
+{\HCode{<affref rid="\the\c@footnote">}}
+{\HCode{</affref>}}
+{\HCode{<aff id="\the\c@footnote"><affmark>}}
+{\HCode{</affmark>}} {\HCode{</aff>}}
+
+\Configure{section}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{section}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsubsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{paragraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+\Configure{likesection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likeparagraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+\Configure{float}
+   {\ifOption{refcaption}{}{\csname par\endcsname\ShowPar \leavevmode}}
+     {\IgnorePar\EndP\HCode{<fig>}}
+   {\ifvmode \IgnorePar \fi\EndP
+     \HCode{</fig>}\csname par\endcsname\ShowPar}
+
+\ConfigureEnv{figure}
+{\IgnorePar\EndP\HCode{<fig>\Hnewline}%
+    \bgroup \Configure{float}{\ShowPar}{}{}%
+   }
+   {\egroup
+   \IgnorePar\EndP\HCode{</fig>}\par}
+   {}{}
+
+
+\Configure{caption}{\IgnorePar\EndP\HCode{<label>}}
+   {: } {\HCode{</label><caption>}\noindent\ShowPar}
+   {\HCode{</caption>}\HCode{<!--tex4ht:label?:
+   \cur:th\:currentlabel\space-->}%
+}
+
+\ConfigureEnv{table}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{table*}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{tabular}
+     {\Configure{noalign}%
+  {\f:tabular\d:tabular \HCode{<tr><td colspan="\ar:cnt">}}
+  {\HCode{</td></tr>}\pend:def\TableNo{0}\c:tabular\e:tabular}%
+%
+      \IgnorePar\ifvmode\else\HCode{<!--tex4ht:inline-->}\fi
+\EndP\HCode{}%
+      \PushStack\Col:Marg\AllColMargins
+     }
+     {\HCode{}\PopStack\Col:Marg\AllColMargins\ShowPar
+      \Configure{noalign}{}{}%
+%
+      \ShowPar
+%
+     }{}{}
+
+
+\Configure{footnotemark}{\bgroup\NoFonts\HCode{<fn symbol="}\Configure{textsuperscript}{}{}}{\HCode{">}\EndNoFonts\egroup}
+% suppress footnote number in footnotext, it was already used in footnotemark
+\Configure{footnotetext}{\NoFonts\ShowPar\setbox0=\vbox\bgroup}
+{\egroup\EndNoFonts\SaveEndP\par\ShowPar\normalsize}% force new paragraph and normal font size
+{\EndP\RecallEndP\HCode{</fn>}}%
+
+\ConfigureEnv{quote}
+   {}{}
+   {\ifvmode\IgnorePar\fi\EndP%
+    \HCode{<disp-quote>}}
+   {\IgnorePar\EndP\HCode{</disp-quote>}\ShowPar\ShowIndent}
+
+\def\ConfigJatsList#1#2{%
+\ConfigureList{#1}%
+   {\ifvmode\IgnorePar\fi\EndP\EndP\HCode{<list list-type="#2">}%
+       \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</list-item></list>}}
+   {\end:itm\global\def\end:itm{\EndP\Tg</list-item>}\DeleteMark}
+   {\HCode{<list-item>}\par\ShowPar
+}
+ }
+
+\ConfigJatsList{itemize}{bulleted}
+\ConfigJatsList{enumerate}{order}
+\ConfigureList{description}%
+   {\ifvmode\IgnorePar\fi\EndP\HCode{<def-list>}%
+      \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</def></def-item></def-list>}\ShowPar}
+   {\end:itm \global\def\end:itm{\EndP\HCode{</def></def-item>}}\HCode{<def-item><term>}\NoFonts\HtmlParOff}
+   {\EndNoFonts\HCode{</term><def>}\HtmlParOn\par\ShowPar
+}
+
+\ConfigureList{thebibliography}%
+   {\ifvmode\IgnorePar\fi \EndP \HCode{<ref-list>}\let\en:bib=\empty}
+   {\en:bib \ifvmode\IgnorePar\fi \EndP \HCode{</ref-list>}}
+   {\en:bib\def\en:bib{\HCode{</mixed-citation></ref>}}%
+    \HCode{<ref><label>}%
+     \Configure{HtmlPar}%
+    {\EndP}%
+    {\EndP}%
+    {} {}%
+  }
+   {\HCode{</label><mixed-citation>}}
+
+
+
+\ConfigureEnv{abstract}
+{\ifvmode\IgnorePar\fi\EndP\HCode{<abstract>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</abstract>}\par}{}{}
+
+\Configure{abstracttitle}{\ifvmode\IgnorePar\fi\EndP\HCode{<label>}\HtmlParOff\NoFonts}
+   {\HCode{</label>}\EndNoFonts\HtmlParOn\par}
+
+
+
+\Configure{chapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{chapter}
+   {\if@mainmatter
+       \HCode{<label>}\chaptername\ \thechapter\HCode{</label>}\fi}
+
+
+\Configure{appendix}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{appendix}{\HCode{<label>}%
+   \appendixname\ \thechapter\HCode{</label>}}
+
+\Configure{likechapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{maketitle}
+   {\ifvmode \IgnorePar\fi \EndP {\Configure{maketitle}{}{}{}{}%
+% \let\thanks\let \prOteCt \relax \Protect \csname acp:c\endcsname {18}\:gobble
+\def\TeX{TeX}%
+\def\mbox{\hbox}%
+\def\gobble:font##1##2{##2}\:TITLE: \no:fonts
+\def\footnotemark[##1]{}%
+\def\:hashintitle{\protect\symbol{35}}
+\let\#\:hashintitle
+\NoFonts\Tag{TITLE+}{\@title}\EndNoFonts}
+%
+    \HCode{<maketitle>}}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</maketitle>}}
+   {\NoFonts\IgnorePar\HCode{<article-title>}\IgnorePar}
+   {\HCode{</article-title>}\IgnoreIndent\EndNoFonts}
+\def\date:zeropad#1{\ifnum #1<10 0\fi#1}
+\Configure{thanks author date and}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<contrib contrib-type="author"><name><string-name>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-name></name></contrib>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<date iso-8601-date="\the\year-\date:zeropad{\the\month}-\date:zeropad{\the\day}"><string-date>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-date></date>}}
+   {\HCode{</string-name></name></contrib><contrib contrib-type="author"><name><string-name>}}
+   {\HCode{}}
+
+\Configure{thank}
+{\HCode{<affref rid="\the\c@footnote">}}
+{\HCode{</affref>}}
+{\HCode{<aff id="\the\c@footnote"><affmark>}}
+{\HCode{</affmark>}} {\HCode{</aff>}}
+
+\Configure{section}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{section}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsubsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{paragraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+\Configure{likesection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likeparagraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+\Configure{float}
+   {\ifOption{refcaption}{}{\csname par\endcsname\ShowPar \leavevmode}}
+     {\IgnorePar\EndP\HCode{<fig>}}
+   {\ifvmode \IgnorePar \fi\EndP
+     \HCode{</fig>}\csname par\endcsname\ShowPar}
+
+\ConfigureEnv{figure}
+{\IgnorePar\EndP\HCode{<fig>\Hnewline}%
+    \bgroup \Configure{float}{\ShowPar}{}{}%
+   }
+   {\egroup
+   \IgnorePar\EndP\HCode{</fig>}\par}
+   {}{}
+
+
+\Configure{caption}{\IgnorePar\EndP\HCode{<label>}}
+   {: } {\HCode{</label><caption>}\noindent\ShowPar}
+   {\HCode{</caption>}\HCode{<!--tex4ht:label?:
+   \cur:th\:currentlabel\space-->}%
+}
+
+\ConfigureEnv{table}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{table*}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{tabular}
+     {\Configure{noalign}%
+  {\f:tabular\d:tabular \HCode{<tr><td colspan="\ar:cnt">}}
+  {\HCode{</td></tr>}\pend:def\TableNo{0}\c:tabular\e:tabular}%
+%
+      \IgnorePar\ifvmode\else\HCode{<!--tex4ht:inline-->}\fi
+\EndP\HCode{}%
+      \PushStack\Col:Marg\AllColMargins
+     }
+     {\HCode{}\PopStack\Col:Marg\AllColMargins\ShowPar
+      \Configure{noalign}{}{}%
+%
+      \ShowPar
+%
+     }{}{}
+
+
+\Configure{footnotemark}{\bgroup\NoFonts\HCode{<fn symbol="}\Configure{textsuperscript}{}{}}{\HCode{">}\EndNoFonts\egroup}
+% suppress footnote number in footnotext, it was already used in footnotemark
+\Configure{footnotetext}{\NoFonts\ShowPar\setbox0=\vbox\bgroup}
+{\egroup\EndNoFonts\SaveEndP\par\ShowPar\normalsize}% force new paragraph and normal font size
+{\EndP\RecallEndP\HCode{</fn>}}%
+
+\ConfigureEnv{quote}
+   {}{}
+   {\ifvmode\IgnorePar\fi\EndP%
+    \HCode{<disp-quote>}}
+   {\IgnorePar\EndP\HCode{</disp-quote>}\ShowPar\ShowIndent}
+
+\def\ConfigJatsList#1#2{%
+\ConfigureList{#1}%
+   {\ifvmode\IgnorePar\fi\EndP\EndP\HCode{<list list-type="#2">}%
+       \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</list-item></list>}}
+   {\end:itm\global\def\end:itm{\EndP\Tg</list-item>}\DeleteMark}
+   {\HCode{<list-item>}\par\ShowPar
+}
+ }
+
+\ConfigJatsList{itemize}{bulleted}
+\ConfigJatsList{enumerate}{order}
+\ConfigureList{description}%
+   {\ifvmode\IgnorePar\fi\EndP\HCode{<def-list>}%
+      \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</def></def-item></def-list>}\ShowPar}
+   {\end:itm \global\def\end:itm{\EndP\HCode{</def></def-item>}}\HCode{<def-item><term>}\NoFonts\HtmlParOff}
+   {\EndNoFonts\HCode{</term><def>}\HtmlParOn\par\ShowPar
+}
+
+\ConfigureList{thebibliography}%
+   {\ifvmode\IgnorePar\fi \EndP \HCode{<ref-list>}\let\en:bib=\empty}
+   {\en:bib \ifvmode\IgnorePar\fi \EndP \HCode{</ref-list>}}
+   {\en:bib\def\en:bib{\HCode{</mixed-citation></ref>}}%
+    \HCode{<ref><label>}%
+     \Configure{HtmlPar}%
+    {\EndP}%
+    {\EndP}%
+    {} {}%
+  }
+   {\HCode{</label><mixed-citation>}}
+
+
+
+\ConfigureEnv{abstract}
+{\ifvmode\IgnorePar\fi\EndP\HCode{<abstract>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</abstract>}\par}{}{}
+
+\Configure{abstracttitle}{\ifvmode\IgnorePar\fi\EndP\HCode{<label>}\HtmlParOff\NoFonts}
+   {\HCode{</label>}\EndNoFonts\HtmlParOn\par}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amsart}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{maketitle}
+   {\ifvmode \IgnorePar\fi \EndP {\Configure{maketitle}{}{}{}{}%
+% \let\thanks\let \prOteCt \relax \Protect \csname acp:c\endcsname {18}\:gobble
+\def\TeX{TeX}%
+\def\mbox{\hbox}%
+\def\gobble:font##1##2{##2}\:TITLE: \no:fonts
+\def\footnotemark[##1]{}%
+\def\:hashintitle{\protect\symbol{35}}
+\let\#\:hashintitle
+\NoFonts\Tag{TITLE+}{\@title}\EndNoFonts}
+%
+    \HCode{<maketitle>}}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</maketitle>}}
+   {\NoFonts\IgnorePar\HCode{<article-title>}\IgnorePar}
+   {\HCode{</article-title>}\IgnoreIndent\EndNoFonts}
+\def\date:zeropad#1{\ifnum #1<10 0\fi#1}
+\Configure{thanks author date and}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<contrib contrib-type="author"><name><string-name>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-name></name></contrib>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<date iso-8601-date="\the\year-\date:zeropad{\the\month}-\date:zeropad{\the\day}"><string-date>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-date></date>}}
+   {\HCode{</string-name></name></contrib><contrib contrib-type="author"><name><string-name>}}
+   {\HCode{}}
+
+\Configure{thank}
+{\HCode{<affref rid="\the\c@footnote">}}
+{\HCode{</affref>}}
+{\HCode{<aff id="\the\c@footnote"><affmark>}}
+{\HCode{</affmark>}} {\HCode{</aff>}}
+
+\Configure{section}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{section}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsubsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{paragraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+\Configure{float}
+   {\ifOption{refcaption}{}{\csname par\endcsname\ShowPar \leavevmode}}
+     {\IgnorePar\EndP\HCode{<fig>}}
+   {\ifvmode \IgnorePar \fi\EndP
+     \HCode{</fig>}\csname par\endcsname\ShowPar}
+
+\ConfigureEnv{figure}
+{\IgnorePar\EndP\HCode{<fig>\Hnewline}%
+    \bgroup \Configure{float}{\ShowPar}{}{}%
+   }
+   {\egroup
+   \IgnorePar\EndP\HCode{</fig>}\par}
+   {}{}
+
+
+\Configure{caption}{\IgnorePar\EndP\HCode{<label>}}
+   {: } {\HCode{</label><caption>}\noindent\ShowPar}
+   {\HCode{</caption>}\HCode{<!--tex4ht:label?:
+   \cur:th\:currentlabel\space-->}%
+}
+
+\ConfigureEnv{abstract}
+{\ifvmode\IgnorePar\fi\EndP\HCode{<abstract>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</abstract>}\par}{}{}
+
+\Configure{abstracttitle}{\ifvmode\IgnorePar\fi\EndP\HCode{<label>}\HtmlParOff\NoFonts}
+   {\HCode{</label>}\EndNoFonts\HtmlParOn\par}
+
+\ConfigureEnv{table}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{table*}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{tabular}
+     {\Configure{noalign}%
+  {\f:tabular\d:tabular \HCode{<tr><td colspan="\ar:cnt">}}
+  {\HCode{</td></tr>}\pend:def\TableNo{0}\c:tabular\e:tabular}%
+%
+      \IgnorePar\ifvmode\else\HCode{<!--tex4ht:inline-->}\fi
+\EndP\HCode{}%
+      \PushStack\Col:Marg\AllColMargins
+     }
+     {\HCode{}\PopStack\Col:Marg\AllColMargins\ShowPar
+      \Configure{noalign}{}{}%
+%
+      \ShowPar
+%
+     }{}{}
+
+
+\Configure{footnotemark}{\bgroup\NoFonts\HCode{<fn symbol="}\Configure{textsuperscript}{}{}}{\HCode{">}\EndNoFonts\egroup}
+% suppress footnote number in footnotext, it was already used in footnotemark
+\Configure{footnotetext}{\NoFonts\ShowPar\setbox0=\vbox\bgroup}
+{\egroup\EndNoFonts\SaveEndP\par\ShowPar\normalsize}% force new paragraph and normal font size
+{\EndP\RecallEndP\HCode{</fn>}}%
+
+\ConfigureEnv{quote}
+   {}{}
+   {\ifvmode\IgnorePar\fi\EndP%
+    \HCode{<disp-quote>}}
+   {\IgnorePar\EndP\HCode{</disp-quote>}\ShowPar\ShowIndent}
+
+\def\ConfigJatsList#1#2{%
+\ConfigureList{#1}%
+   {\ifvmode\IgnorePar\fi\EndP\EndP\HCode{<list list-type="#2">}%
+       \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</list-item></list>}}
+   {\end:itm\global\def\end:itm{\EndP\Tg</list-item>}\DeleteMark}
+   {\HCode{<list-item>}\par\ShowPar
+}
+ }
+
+\ConfigJatsList{itemize}{bulleted}
+\ConfigJatsList{enumerate}{order}
+\ConfigureList{description}%
+   {\ifvmode\IgnorePar\fi\EndP\HCode{<def-list>}%
+      \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</def></def-item></def-list>}\ShowPar}
+   {\end:itm \global\def\end:itm{\EndP\HCode{</def></def-item>}}\HCode{<def-item><term>}\NoFonts\HtmlParOff}
+   {\EndNoFonts\HCode{</term><def>}\HtmlParOn\par\ShowPar
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amsbook}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{maketitle}
+   {\ifvmode \IgnorePar\fi \EndP {\Configure{maketitle}{}{}{}{}%
+% \let\thanks\let \prOteCt \relax \Protect \csname acp:c\endcsname {18}\:gobble
+\def\TeX{TeX}%
+\def\mbox{\hbox}%
+\def\gobble:font##1##2{##2}\:TITLE: \no:fonts
+\def\footnotemark[##1]{}%
+\def\:hashintitle{\protect\symbol{35}}
+\let\#\:hashintitle
+\NoFonts\Tag{TITLE+}{\@title}\EndNoFonts}
+%
+    \HCode{<maketitle>}}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</maketitle>}}
+   {\NoFonts\IgnorePar\HCode{<article-title>}\IgnorePar}
+   {\HCode{</article-title>}\IgnoreIndent\EndNoFonts}
+\def\date:zeropad#1{\ifnum #1<10 0\fi#1}
+\Configure{thanks author date and}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<contrib contrib-type="author"><name><string-name>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-name></name></contrib>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<date iso-8601-date="\the\year-\date:zeropad{\the\month}-\date:zeropad{\the\day}"><string-date>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-date></date>}}
+   {\HCode{</string-name></name></contrib><contrib contrib-type="author"><name><string-name>}}
+   {\HCode{}}
+
+\Configure{thank}
+{\HCode{<affref rid="\the\c@footnote">}}
+{\HCode{</affref>}}
+{\HCode{<aff id="\the\c@footnote"><affmark>}}
+{\HCode{</affmark>}} {\HCode{</aff>}}
+
+\Configure{section}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{section}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsubsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{paragraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+\Configure{float}
+   {\ifOption{refcaption}{}{\csname par\endcsname\ShowPar \leavevmode}}
+     {\IgnorePar\EndP\HCode{<fig>}}
+   {\ifvmode \IgnorePar \fi\EndP
+     \HCode{</fig>}\csname par\endcsname\ShowPar}
+
+\ConfigureEnv{figure}
+{\IgnorePar\EndP\HCode{<fig>\Hnewline}%
+    \bgroup \Configure{float}{\ShowPar}{}{}%
+   }
+   {\egroup
+   \IgnorePar\EndP\HCode{</fig>}\par}
+   {}{}
+
+
+\Configure{caption}{\IgnorePar\EndP\HCode{<label>}}
+   {: } {\HCode{</label><caption>}\noindent\ShowPar}
+   {\HCode{</caption>}\HCode{<!--tex4ht:label?:
+   \cur:th\:currentlabel\space-->}%
+}
+
+\ConfigureEnv{abstract}
+{\ifvmode\IgnorePar\fi\EndP\HCode{<abstract>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</abstract>}\par}{}{}
+
+\Configure{abstracttitle}{\ifvmode\IgnorePar\fi\EndP\HCode{<label>}\HtmlParOff\NoFonts}
+   {\HCode{</label>}\EndNoFonts\HtmlParOn\par}
+
+\ConfigureEnv{table}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{table*}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{tabular}
+     {\Configure{noalign}%
+  {\f:tabular\d:tabular \HCode{<tr><td colspan="\ar:cnt">}}
+  {\HCode{</td></tr>}\pend:def\TableNo{0}\c:tabular\e:tabular}%
+%
+      \IgnorePar\ifvmode\else\HCode{<!--tex4ht:inline-->}\fi
+\EndP\HCode{}%
+      \PushStack\Col:Marg\AllColMargins
+     }
+     {\HCode{}\PopStack\Col:Marg\AllColMargins\ShowPar
+      \Configure{noalign}{}{}%
+%
+      \ShowPar
+%
+     }{}{}
+
+
+\Configure{footnotemark}{\bgroup\NoFonts\HCode{<fn symbol="}\Configure{textsuperscript}{}{}}{\HCode{">}\EndNoFonts\egroup}
+% suppress footnote number in footnotext, it was already used in footnotemark
+\Configure{footnotetext}{\NoFonts\ShowPar\setbox0=\vbox\bgroup}
+{\egroup\EndNoFonts\SaveEndP\par\ShowPar\normalsize}% force new paragraph and normal font size
+{\EndP\RecallEndP\HCode{</fn>}}%
+
+\ConfigureEnv{quote}
+   {}{}
+   {\ifvmode\IgnorePar\fi\EndP%
+    \HCode{<disp-quote>}}
+   {\IgnorePar\EndP\HCode{</disp-quote>}\ShowPar\ShowIndent}
+
+\def\ConfigJatsList#1#2{%
+\ConfigureList{#1}%
+   {\ifvmode\IgnorePar\fi\EndP\EndP\HCode{<list list-type="#2">}%
+       \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</list-item></list>}}
+   {\end:itm\global\def\end:itm{\EndP\Tg</list-item>}\DeleteMark}
+   {\HCode{<list-item>}\par\ShowPar
+}
+ }
+
+\ConfigJatsList{itemize}{bulleted}
+\ConfigJatsList{enumerate}{order}
+\ConfigureList{description}%
+   {\ifvmode\IgnorePar\fi\EndP\HCode{<def-list>}%
+      \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</def></def-item></def-list>}\ShowPar}
+   {\end:itm \global\def\end:itm{\EndP\HCode{</def></def-item>}}\HCode{<def-item><term>}\NoFonts\HtmlParOff}
+   {\EndNoFonts\HCode{</term><def>}\HtmlParOn\par\ShowPar
+}
+
+
+\Configure{chapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{chapter}
+   {\if@mainmatter
+       \HCode{<label>}\chaptername\ \thechapter\HCode{</label>}\fi}
+
+
+\Configure{appendix}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{appendix}{\HCode{<label>}%
+   \appendixname\ \thechapter\HCode{</label>}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amsproc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{maketitle}
+   {\ifvmode \IgnorePar\fi \EndP {\Configure{maketitle}{}{}{}{}%
+% \let\thanks\let \prOteCt \relax \Protect \csname acp:c\endcsname {18}\:gobble
+\def\TeX{TeX}%
+\def\mbox{\hbox}%
+\def\gobble:font##1##2{##2}\:TITLE: \no:fonts
+\def\footnotemark[##1]{}%
+\def\:hashintitle{\protect\symbol{35}}
+\let\#\:hashintitle
+\NoFonts\Tag{TITLE+}{\@title}\EndNoFonts}
+%
+    \HCode{<maketitle>}}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</maketitle>}}
+   {\NoFonts\IgnorePar\HCode{<article-title>}\IgnorePar}
+   {\HCode{</article-title>}\IgnoreIndent\EndNoFonts}
+\def\date:zeropad#1{\ifnum #1<10 0\fi#1}
+\Configure{thanks author date and}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<contrib contrib-type="author"><name><string-name>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-name></name></contrib>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<date iso-8601-date="\the\year-\date:zeropad{\the\month}-\date:zeropad{\the\day}"><string-date>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-date></date>}}
+   {\HCode{</string-name></name></contrib><contrib contrib-type="author"><name><string-name>}}
+   {\HCode{}}
+
+\Configure{thank}
+{\HCode{<affref rid="\the\c@footnote">}}
+{\HCode{</affref>}}
+{\HCode{<aff id="\the\c@footnote"><affmark>}}
+{\HCode{</affmark>}} {\HCode{</aff>}}
+
+\Configure{section}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{section}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsubsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{paragraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+\Configure{float}
+   {\ifOption{refcaption}{}{\csname par\endcsname\ShowPar \leavevmode}}
+     {\IgnorePar\EndP\HCode{<fig>}}
+   {\ifvmode \IgnorePar \fi\EndP
+     \HCode{</fig>}\csname par\endcsname\ShowPar}
+
+\ConfigureEnv{figure}
+{\IgnorePar\EndP\HCode{<fig>\Hnewline}%
+    \bgroup \Configure{float}{\ShowPar}{}{}%
+   }
+   {\egroup
+   \IgnorePar\EndP\HCode{</fig>}\par}
+   {}{}
+
+
+\Configure{caption}{\IgnorePar\EndP\HCode{<label>}}
+   {: } {\HCode{</label><caption>}\noindent\ShowPar}
+   {\HCode{</caption>}\HCode{<!--tex4ht:label?:
+   \cur:th\:currentlabel\space-->}%
+}
+
+\ConfigureEnv{abstract}
+{\ifvmode\IgnorePar\fi\EndP\HCode{<abstract>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</abstract>}\par}{}{}
+
+\Configure{abstracttitle}{\ifvmode\IgnorePar\fi\EndP\HCode{<label>}\HtmlParOff\NoFonts}
+   {\HCode{</label>}\EndNoFonts\HtmlParOn\par}
+
+\ConfigureEnv{table}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{table*}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{tabular}
+     {\Configure{noalign}%
+  {\f:tabular\d:tabular \HCode{<tr><td colspan="\ar:cnt">}}
+  {\HCode{</td></tr>}\pend:def\TableNo{0}\c:tabular\e:tabular}%
+%
+      \IgnorePar\ifvmode\else\HCode{<!--tex4ht:inline-->}\fi
+\EndP\HCode{}%
+      \PushStack\Col:Marg\AllColMargins
+     }
+     {\HCode{}\PopStack\Col:Marg\AllColMargins\ShowPar
+      \Configure{noalign}{}{}%
+%
+      \ShowPar
+%
+     }{}{}
+
+
+\Configure{footnotemark}{\bgroup\NoFonts\HCode{<fn symbol="}\Configure{textsuperscript}{}{}}{\HCode{">}\EndNoFonts\egroup}
+% suppress footnote number in footnotext, it was already used in footnotemark
+\Configure{footnotetext}{\NoFonts\ShowPar\setbox0=\vbox\bgroup}
+{\egroup\EndNoFonts\SaveEndP\par\ShowPar\normalsize}% force new paragraph and normal font size
+{\EndP\RecallEndP\HCode{</fn>}}%
+
+\ConfigureEnv{quote}
+   {}{}
+   {\ifvmode\IgnorePar\fi\EndP%
+    \HCode{<disp-quote>}}
+   {\IgnorePar\EndP\HCode{</disp-quote>}\ShowPar\ShowIndent}
+
+\def\ConfigJatsList#1#2{%
+\ConfigureList{#1}%
+   {\ifvmode\IgnorePar\fi\EndP\EndP\HCode{<list list-type="#2">}%
+       \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</list-item></list>}}
+   {\end:itm\global\def\end:itm{\EndP\Tg</list-item>}\DeleteMark}
+   {\HCode{<list-item>}\par\ShowPar
+}
+ }
+
+\ConfigJatsList{itemize}{bulleted}
+\ConfigJatsList{enumerate}{order}
+\ConfigureList{description}%
+   {\ifvmode\IgnorePar\fi\EndP\HCode{<def-list>}%
+      \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</def></def-item></def-list>}\ShowPar}
+   {\end:itm \global\def\end:itm{\EndP\HCode{</def></def-item>}}\HCode{<def-item><term>}\NoFonts\HtmlParOff}
+   {\EndNoFonts\HCode{</term><def>}\HtmlParOn\par\ShowPar
+}
+
+
+\Configure{chapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{chapter}
+   {\if@mainmatter
+       \HCode{<label>}\chaptername\ \thechapter\HCode{</label>}\fi}
+
+
+\Configure{appendix}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{appendix}{\HCode{<label>}%
+   \appendixname\ \thechapter\HCode{</label>}}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{biblatex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     \def\bibConfigure{%
+  \ConfigureList{thebibliography}
+  {\ifvmode \IgnorePar \fi \EndP \EndP
+    \HCode{<ref-list>}\HtmlParOff%
+   \immediate\write\@auxout{%
+     \string\providecommand\string\BibFileName[2][]{}
+   }%
+   \immediate\write\@auxout{%
+       \string\BibFileName[\therefsection]{\FileName}}%
+    \PushMacro \end:itm \global \let \end:itm =\empty}%
+  {\ifvmode \IgnorePar \fi \EndP
+    \PopMacro \end:itm \global \let \end:itm \end:itm \EndP
+    \HCode {</mixed-citation></ref></ref-list>}\HtmlParOn\ShowPar}%
+  {\ifvmode \IgnorePar \fi \EndP \gHAdvance \bibN by 1
+    \end:itm \global \def \end:itm {\EndP \HCode{</mixed-citation></ref>}}%
+    \Tag{X\therefsection-\abx@field@entrykey}{bibitem-\bibN}
+    \HCode {<ref id="bibitem-\bibN"><label>}}%
+  {\ifvmode \IgnorePar \fi \EndP
+    \HCode {</label><mixed-citation publication-type="\thefield{entrytype}"  id="bib-\bibN">}}%
+}
+
+\DeclareFieldFormat{title}{\HCode{<source>}#1\HCode{</source>}}
+\DeclareFieldFormat{booktitle}{\HCode{<source>}#1\HCode{</source>}}
+\DeclareFieldFormat{maintitle}{\HCode{<source>}#1\HCode{</source>}}
+\DeclareFieldFormat{journaltitle}{\HCode{<source>}#1\HCode{</source>}}
+\DeclareFieldFormat[article]{title}{\HCode{<article-title>}#1\HCode{</article-title>}}
+\DeclareFieldFormat[incollection]{title}{\HCode{<part-title>}#1\HCode{</part-title>}}
+\DeclareFieldFormat[inbook]{title}{\HCode{<part-title>}#1\HCode{</part-title>}}
+\DeclareFieldFormat{year}{\HCode{<year>}#1\HCode{</year>}}
+\DeclareFieldFormat{date}{\HCode{<date-in-citation content-type="published">}#1\HCode{</date-in-citation>}}
+\DeclareFieldFormat{pages}{\HCode{<page-range>}#1\HCode{</page-range>}}
+\DeclareListFormat{publisher}{\usebibmacro{list:delim}{#1}\HCode{<publisher-name>}#1\HCode{</publisher-name>}\isdot\usebibmacro{list:andothers}}
+\DeclareListFormat{location}{\usebibmacro{list:delim}{#1}\HCode{<publisher-loc>}#1\HCode{</publisher-loc>}\isdot\usebibmacro{list:andothers}}
+\DeclareNameFormat{author}{%
+  \nameparts{#1}% This command initializes commands used in the following bibmacro
+  \HCode{<string-name>}% use
+  \usebibmacro{name:family-given}%
+    {\namepartfamily}%
+    {\namepartgiveni}%
+    {\namepartprefix}%
+    {\namepartsuffix}%
+  \HCode{</string-name>}%
+  \usebibmacro{name:andothers}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{url}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{url}%
+     {\tmp:toks{#1}\ExternalLink[\noexpand\the\tmp:toks]{}{}{\let\UrlBigBreaks\empty
+                         \let\UrlBreaks\empty #1}\EndExternalLink}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{hyperref}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{memoir}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{maketitle}
+   {\ifvmode \IgnorePar\fi \EndP {\Configure{maketitle}{}{}{}{}%
+% \let\thanks\let \prOteCt \relax \Protect \csname acp:c\endcsname {18}\:gobble
+\def\TeX{TeX}%
+\def\mbox{\hbox}%
+\def\gobble:font##1##2{##2}\:TITLE: \no:fonts
+\def\footnotemark[##1]{}%
+\def\:hashintitle{\protect\symbol{35}}
+\let\#\:hashintitle
+\NoFonts\Tag{TITLE+}{\@title}\EndNoFonts}
+%
+    \HCode{<maketitle>}}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</maketitle>}}
+   {\NoFonts\IgnorePar\HCode{<article-title>}\IgnorePar}
+   {\HCode{</article-title>}\IgnoreIndent\EndNoFonts}
+\def\date:zeropad#1{\ifnum #1<10 0\fi#1}
+\Configure{thanks author date and}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<contrib contrib-type="author"><name><string-name>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-name></name></contrib>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<date iso-8601-date="\the\year-\date:zeropad{\the\month}-\date:zeropad{\the\day}"><string-date>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-date></date>}}
+   {\HCode{</string-name></name></contrib><contrib contrib-type="author"><name><string-name>}}
+   {\HCode{}}
+
+\Configure{thank}
+{\HCode{<affref rid="\the\c@footnote">}}
+{\HCode{</affref>}}
+{\HCode{<aff id="\the\c@footnote"><affmark>}}
+{\HCode{</affmark>}} {\HCode{</aff>}}
+
+\Configure{section}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{section}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsubsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{paragraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+\Configure{likesection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likeparagraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+\Configure{float}
+   {\ifOption{refcaption}{}{\csname par\endcsname\ShowPar \leavevmode}}
+     {\IgnorePar\EndP\HCode{<fig>}}
+   {\ifvmode \IgnorePar \fi\EndP
+     \HCode{</fig>}\csname par\endcsname\ShowPar}
+
+\ConfigureEnv{figure}
+{\IgnorePar\EndP\HCode{<fig>\Hnewline}%
+    \bgroup \Configure{float}{\ShowPar}{}{}%
+   }
+   {\egroup
+   \IgnorePar\EndP\HCode{</fig>}\par}
+   {}{}
+
+
+\Configure{caption}{\IgnorePar\EndP\HCode{<label>}}
+   {: } {\HCode{</label><caption>}\noindent\ShowPar}
+   {\HCode{</caption>}\HCode{<!--tex4ht:label?:
+   \cur:th\:currentlabel\space-->}%
+}
+
+\ConfigureEnv{table}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{table*}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{tabular}
+     {\Configure{noalign}%
+  {\f:tabular\d:tabular \HCode{<tr><td colspan="\ar:cnt">}}
+  {\HCode{</td></tr>}\pend:def\TableNo{0}\c:tabular\e:tabular}%
+%
+      \IgnorePar\ifvmode\else\HCode{<!--tex4ht:inline-->}\fi
+\EndP\HCode{}%
+      \PushStack\Col:Marg\AllColMargins
+     }
+     {\HCode{}\PopStack\Col:Marg\AllColMargins\ShowPar
+      \Configure{noalign}{}{}%
+%
+      \ShowPar
+%
+     }{}{}
+
+
+\Configure{footnotemark}{\bgroup\NoFonts\HCode{<fn symbol="}\Configure{textsuperscript}{}{}}{\HCode{">}\EndNoFonts\egroup}
+% suppress footnote number in footnotext, it was already used in footnotemark
+\Configure{footnotetext}{\NoFonts\ShowPar\setbox0=\vbox\bgroup}
+{\egroup\EndNoFonts\SaveEndP\par\ShowPar\normalsize}% force new paragraph and normal font size
+{\EndP\RecallEndP\HCode{</fn>}}%
+
+\ConfigureEnv{quote}
+   {}{}
+   {\ifvmode\IgnorePar\fi\EndP%
+    \HCode{<disp-quote>}}
+   {\IgnorePar\EndP\HCode{</disp-quote>}\ShowPar\ShowIndent}
+
+\def\ConfigJatsList#1#2{%
+\ConfigureList{#1}%
+   {\ifvmode\IgnorePar\fi\EndP\EndP\HCode{<list list-type="#2">}%
+       \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</list-item></list>}}
+   {\end:itm\global\def\end:itm{\EndP\Tg</list-item>}\DeleteMark}
+   {\HCode{<list-item>}\par\ShowPar
+}
+ }
+
+\ConfigJatsList{itemize}{bulleted}
+\ConfigJatsList{enumerate}{order}
+\ConfigureList{description}%
+   {\ifvmode\IgnorePar\fi\EndP\HCode{<def-list>}%
+      \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</def></def-item></def-list>}\ShowPar}
+   {\end:itm \global\def\end:itm{\EndP\HCode{</def></def-item>}}\HCode{<def-item><term>}\NoFonts\HtmlParOff}
+   {\EndNoFonts\HCode{</term><def>}\HtmlParOn\par\ShowPar
+}
+
+\ConfigureList{thebibliography}%
+   {\ifvmode\IgnorePar\fi \EndP \HCode{<ref-list>}\let\en:bib=\empty}
+   {\en:bib \ifvmode\IgnorePar\fi \EndP \HCode{</ref-list>}}
+   {\en:bib\def\en:bib{\HCode{</mixed-citation></ref>}}%
+    \HCode{<ref><label>}%
+     \Configure{HtmlPar}%
+    {\EndP}%
+    {\EndP}%
+    {} {}%
+  }
+   {\HCode{</label><mixed-citation>}}
+
+
+\ConfigureEnv{abstract}
+{\ifvmode\IgnorePar\fi\EndP\HCode{<abstract>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</abstract>}\par}{}{}
+
+\Configure{abstracttitle}{\ifvmode\IgnorePar\fi\EndP\HCode{<label>}\HtmlParOff\NoFonts}
+   {\HCode{</label>}\EndNoFonts\HtmlParOn\par}
+
+
+\Configure{chapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{chapter}
+   {\if@mainmatter
+       \HCode{<label>}\chaptername\ \thechapter\HCode{</label>}\fi}
+
+
+\Configure{appendix}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{appendix}{\HCode{<label>}%
+   \appendixname\ \thechapter\HCode{</label>}}
+
+\Configure{likechapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{scrbook}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{maketitle}
+   {\ifvmode \IgnorePar\fi \EndP {\Configure{maketitle}{}{}{}{}%
+% \let\thanks\let \prOteCt \relax \Protect \csname acp:c\endcsname {18}\:gobble
+\def\TeX{TeX}%
+\def\mbox{\hbox}%
+\def\gobble:font##1##2{##2}\:TITLE: \no:fonts
+\def\footnotemark[##1]{}%
+\def\:hashintitle{\protect\symbol{35}}
+\let\#\:hashintitle
+\NoFonts\Tag{TITLE+}{\@title}\EndNoFonts}
+%
+    \HCode{<maketitle>}}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</maketitle>}}
+   {\NoFonts\IgnorePar\HCode{<article-title>}\IgnorePar}
+   {\HCode{</article-title>}\IgnoreIndent\EndNoFonts}
+\def\date:zeropad#1{\ifnum #1<10 0\fi#1}
+\Configure{thanks author date and}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<contrib contrib-type="author"><name><string-name>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-name></name></contrib>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<date iso-8601-date="\the\year-\date:zeropad{\the\month}-\date:zeropad{\the\day}"><string-date>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-date></date>}}
+   {\HCode{</string-name></name></contrib><contrib contrib-type="author"><name><string-name>}}
+   {\HCode{}}
+
+\Configure{thank}
+{\HCode{<affref rid="\the\c@footnote">}}
+{\HCode{</affref>}}
+{\HCode{<aff id="\the\c@footnote"><affmark>}}
+{\HCode{</affmark>}} {\HCode{</aff>}}
+
+\Configure{section}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{section}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsubsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{paragraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+\Configure{likesection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likeparagraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+\Configure{float}
+   {\ifOption{refcaption}{}{\csname par\endcsname\ShowPar \leavevmode}}
+     {\IgnorePar\EndP\HCode{<fig>}}
+   {\ifvmode \IgnorePar \fi\EndP
+     \HCode{</fig>}\csname par\endcsname\ShowPar}
+
+\ConfigureEnv{figure}
+{\IgnorePar\EndP\HCode{<fig>\Hnewline}%
+    \bgroup \Configure{float}{\ShowPar}{}{}%
+   }
+   {\egroup
+   \IgnorePar\EndP\HCode{</fig>}\par}
+   {}{}
+
+
+\Configure{caption}{\IgnorePar\EndP\HCode{<label>}}
+   {: } {\HCode{</label><caption>}\noindent\ShowPar}
+   {\HCode{</caption>}\HCode{<!--tex4ht:label?:
+   \cur:th\:currentlabel\space-->}%
+}
+
+\ConfigureEnv{table}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{table*}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{tabular}
+     {\Configure{noalign}%
+  {\f:tabular\d:tabular \HCode{<tr><td colspan="\ar:cnt">}}
+  {\HCode{</td></tr>}\pend:def\TableNo{0}\c:tabular\e:tabular}%
+%
+      \IgnorePar\ifvmode\else\HCode{<!--tex4ht:inline-->}\fi
+\EndP\HCode{}%
+      \PushStack\Col:Marg\AllColMargins
+     }
+     {\HCode{}\PopStack\Col:Marg\AllColMargins\ShowPar
+      \Configure{noalign}{}{}%
+%
+      \ShowPar
+%
+     }{}{}
+
+
+\Configure{footnotemark}{\bgroup\NoFonts\HCode{<fn symbol="}\Configure{textsuperscript}{}{}}{\HCode{">}\EndNoFonts\egroup}
+% suppress footnote number in footnotext, it was already used in footnotemark
+\Configure{footnotetext}{\NoFonts\ShowPar\setbox0=\vbox\bgroup}
+{\egroup\EndNoFonts\SaveEndP\par\ShowPar\normalsize}% force new paragraph and normal font size
+{\EndP\RecallEndP\HCode{</fn>}}%
+
+\ConfigureEnv{quote}
+   {}{}
+   {\ifvmode\IgnorePar\fi\EndP%
+    \HCode{<disp-quote>}}
+   {\IgnorePar\EndP\HCode{</disp-quote>}\ShowPar\ShowIndent}
+
+\def\ConfigJatsList#1#2{%
+\ConfigureList{#1}%
+   {\ifvmode\IgnorePar\fi\EndP\EndP\HCode{<list list-type="#2">}%
+       \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</list-item></list>}}
+   {\end:itm\global\def\end:itm{\EndP\Tg</list-item>}\DeleteMark}
+   {\HCode{<list-item>}\par\ShowPar
+}
+ }
+
+\ConfigJatsList{itemize}{bulleted}
+\ConfigJatsList{enumerate}{order}
+\ConfigureList{description}%
+   {\ifvmode\IgnorePar\fi\EndP\HCode{<def-list>}%
+      \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</def></def-item></def-list>}\ShowPar}
+   {\end:itm \global\def\end:itm{\EndP\HCode{</def></def-item>}}\HCode{<def-item><term>}\NoFonts\HtmlParOff}
+   {\EndNoFonts\HCode{</term><def>}\HtmlParOn\par\ShowPar
+}
+
+\ConfigureList{thebibliography}%
+   {\ifvmode\IgnorePar\fi \EndP \HCode{<ref-list>}\let\en:bib=\empty}
+   {\en:bib \ifvmode\IgnorePar\fi \EndP \HCode{</ref-list>}}
+   {\en:bib\def\en:bib{\HCode{</mixed-citation></ref>}}%
+    \HCode{<ref><label>}%
+     \Configure{HtmlPar}%
+    {\EndP}%
+    {\EndP}%
+    {} {}%
+  }
+   {\HCode{</label><mixed-citation>}}
+
+
+
+\Configure{chapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{chapter}
+   {\if@mainmatter
+       \HCode{<label>}\chaptername\ \thechapter\HCode{</label>}\fi}
+
+
+\Configure{appendix}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{appendix}{\HCode{<label>}%
+   \appendixname\ \thechapter\HCode{</label>}}
+
+\Configure{likechapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{scrartcl}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{maketitle}
+   {\ifvmode \IgnorePar\fi \EndP {\Configure{maketitle}{}{}{}{}%
+% \let\thanks\let \prOteCt \relax \Protect \csname acp:c\endcsname {18}\:gobble
+\def\TeX{TeX}%
+\def\mbox{\hbox}%
+\def\gobble:font##1##2{##2}\:TITLE: \no:fonts
+\def\footnotemark[##1]{}%
+\def\:hashintitle{\protect\symbol{35}}
+\let\#\:hashintitle
+\NoFonts\Tag{TITLE+}{\@title}\EndNoFonts}
+%
+    \HCode{<maketitle>}}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</maketitle>}}
+   {\NoFonts\IgnorePar\HCode{<article-title>}\IgnorePar}
+   {\HCode{</article-title>}\IgnoreIndent\EndNoFonts}
+\def\date:zeropad#1{\ifnum #1<10 0\fi#1}
+\Configure{thanks author date and}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<contrib contrib-type="author"><name><string-name>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-name></name></contrib>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<date iso-8601-date="\the\year-\date:zeropad{\the\month}-\date:zeropad{\the\day}"><string-date>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-date></date>}}
+   {\HCode{</string-name></name></contrib><contrib contrib-type="author"><name><string-name>}}
+   {\HCode{}}
+
+\Configure{thank}
+{\HCode{<affref rid="\the\c@footnote">}}
+{\HCode{</affref>}}
+{\HCode{<aff id="\the\c@footnote"><affmark>}}
+{\HCode{</affmark>}} {\HCode{</aff>}}
+
+\Configure{section}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{section}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsubsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{paragraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+\Configure{likesection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likeparagraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+\Configure{float}
+   {\ifOption{refcaption}{}{\csname par\endcsname\ShowPar \leavevmode}}
+     {\IgnorePar\EndP\HCode{<fig>}}
+   {\ifvmode \IgnorePar \fi\EndP
+     \HCode{</fig>}\csname par\endcsname\ShowPar}
+
+\ConfigureEnv{figure}
+{\IgnorePar\EndP\HCode{<fig>\Hnewline}%
+    \bgroup \Configure{float}{\ShowPar}{}{}%
+   }
+   {\egroup
+   \IgnorePar\EndP\HCode{</fig>}\par}
+   {}{}
+
+
+\Configure{caption}{\IgnorePar\EndP\HCode{<label>}}
+   {: } {\HCode{</label><caption>}\noindent\ShowPar}
+   {\HCode{</caption>}\HCode{<!--tex4ht:label?:
+   \cur:th\:currentlabel\space-->}%
+}
+
+\ConfigureEnv{table}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{table*}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{tabular}
+     {\Configure{noalign}%
+  {\f:tabular\d:tabular \HCode{<tr><td colspan="\ar:cnt">}}
+  {\HCode{</td></tr>}\pend:def\TableNo{0}\c:tabular\e:tabular}%
+%
+      \IgnorePar\ifvmode\else\HCode{<!--tex4ht:inline-->}\fi
+\EndP\HCode{}%
+      \PushStack\Col:Marg\AllColMargins
+     }
+     {\HCode{}\PopStack\Col:Marg\AllColMargins\ShowPar
+      \Configure{noalign}{}{}%
+%
+      \ShowPar
+%
+     }{}{}
+
+
+\Configure{footnotemark}{\bgroup\NoFonts\HCode{<fn symbol="}\Configure{textsuperscript}{}{}}{\HCode{">}\EndNoFonts\egroup}
+% suppress footnote number in footnotext, it was already used in footnotemark
+\Configure{footnotetext}{\NoFonts\ShowPar\setbox0=\vbox\bgroup}
+{\egroup\EndNoFonts\SaveEndP\par\ShowPar\normalsize}% force new paragraph and normal font size
+{\EndP\RecallEndP\HCode{</fn>}}%
+
+\ConfigureEnv{quote}
+   {}{}
+   {\ifvmode\IgnorePar\fi\EndP%
+    \HCode{<disp-quote>}}
+   {\IgnorePar\EndP\HCode{</disp-quote>}\ShowPar\ShowIndent}
+
+\def\ConfigJatsList#1#2{%
+\ConfigureList{#1}%
+   {\ifvmode\IgnorePar\fi\EndP\EndP\HCode{<list list-type="#2">}%
+       \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</list-item></list>}}
+   {\end:itm\global\def\end:itm{\EndP\Tg</list-item>}\DeleteMark}
+   {\HCode{<list-item>}\par\ShowPar
+}
+ }
+
+\ConfigJatsList{itemize}{bulleted}
+\ConfigJatsList{enumerate}{order}
+\ConfigureList{description}%
+   {\ifvmode\IgnorePar\fi\EndP\HCode{<def-list>}%
+      \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</def></def-item></def-list>}\ShowPar}
+   {\end:itm \global\def\end:itm{\EndP\HCode{</def></def-item>}}\HCode{<def-item><term>}\NoFonts\HtmlParOff}
+   {\EndNoFonts\HCode{</term><def>}\HtmlParOn\par\ShowPar
+}
+
+\ConfigureList{thebibliography}%
+   {\ifvmode\IgnorePar\fi \EndP \HCode{<ref-list>}\let\en:bib=\empty}
+   {\en:bib \ifvmode\IgnorePar\fi \EndP \HCode{</ref-list>}}
+   {\en:bib\def\en:bib{\HCode{</mixed-citation></ref>}}%
+    \HCode{<ref><label>}%
+     \Configure{HtmlPar}%
+    {\EndP}%
+    {\EndP}%
+    {} {}%
+  }
+   {\HCode{</label><mixed-citation>}}
+
+
+
+\ConfigureEnv{abstract}
+{\ifvmode\IgnorePar\fi\EndP\HCode{<abstract>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</abstract>}\par}{}{}
+
+\Configure{abstracttitle}{\ifvmode\IgnorePar\fi\EndP\HCode{<label>}\HtmlParOff\NoFonts}
+   {\HCode{</label>}\EndNoFonts\HtmlParOn\par}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{scrreprt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{maketitle}
+   {\ifvmode \IgnorePar\fi \EndP {\Configure{maketitle}{}{}{}{}%
+% \let\thanks\let \prOteCt \relax \Protect \csname acp:c\endcsname {18}\:gobble
+\def\TeX{TeX}%
+\def\mbox{\hbox}%
+\def\gobble:font##1##2{##2}\:TITLE: \no:fonts
+\def\footnotemark[##1]{}%
+\def\:hashintitle{\protect\symbol{35}}
+\let\#\:hashintitle
+\NoFonts\Tag{TITLE+}{\@title}\EndNoFonts}
+%
+    \HCode{<maketitle>}}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</maketitle>}}
+   {\NoFonts\IgnorePar\HCode{<article-title>}\IgnorePar}
+   {\HCode{</article-title>}\IgnoreIndent\EndNoFonts}
+\def\date:zeropad#1{\ifnum #1<10 0\fi#1}
+\Configure{thanks author date and}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</aff>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<contrib contrib-type="author"><name><string-name>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-name></name></contrib>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{<date iso-8601-date="\the\year-\date:zeropad{\the\month}-\date:zeropad{\the\day}"><string-date>}}
+   {\ifvmode \IgnorePar\fi\EndP \HCode{</string-date></date>}}
+   {\HCode{</string-name></name></contrib><contrib contrib-type="author"><name><string-name>}}
+   {\HCode{}}
+
+\Configure{thank}
+{\HCode{<affref rid="\the\c@footnote">}}
+{\HCode{</affref>}}
+{\HCode{<aff id="\the\c@footnote"><affmark>}}
+{\HCode{</affmark>}} {\HCode{</aff>}}
+
+\Configure{section}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{section}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{subsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{subsubsection}
+   {\ifnum \c:secnumdepth>\c@secnumdepth \expandafter\:gobble
+    \else
+       \HCode{<label>}\@seccntformat{section}%
+       \HCode{</label>}\fi }
+
+
+\Configure{paragraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+\Configure{likesection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likesubsubsection}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\Configure{likeparagraph}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+\Configure{float}
+   {\ifOption{refcaption}{}{\csname par\endcsname\ShowPar \leavevmode}}
+     {\IgnorePar\EndP\HCode{<fig>}}
+   {\ifvmode \IgnorePar \fi\EndP
+     \HCode{</fig>}\csname par\endcsname\ShowPar}
+
+\ConfigureEnv{figure}
+{\IgnorePar\EndP\HCode{<fig>\Hnewline}%
+    \bgroup \Configure{float}{\ShowPar}{}{}%
+   }
+   {\egroup
+   \IgnorePar\EndP\HCode{</fig>}\par}
+   {}{}
+
+
+\Configure{caption}{\IgnorePar\EndP\HCode{<label>}}
+   {: } {\HCode{</label><caption>}\noindent\ShowPar}
+   {\HCode{</caption>}\HCode{<!--tex4ht:label?:
+   \cur:th\:currentlabel\space-->}%
+}
+
+\ConfigureEnv{table}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{table*}
+   {\ifvmode \IgnorePar\fi \EndP \HCode{<table-wrap position="float">}
+   \Configure{float}{}{}{}{}
+   }
+   {\ifvmode \IgnorePar\fi \EndP \HCode{</table-wrap>}\par\ShowPar}
+   {}{}
+
+\ConfigureEnv{tabular}
+     {\Configure{noalign}%
+  {\f:tabular\d:tabular \HCode{<tr><td colspan="\ar:cnt">}}
+  {\HCode{</td></tr>}\pend:def\TableNo{0}\c:tabular\e:tabular}%
+%
+      \IgnorePar\ifvmode\else\HCode{<!--tex4ht:inline-->}\fi
+\EndP\HCode{}%
+      \PushStack\Col:Marg\AllColMargins
+     }
+     {\HCode{}\PopStack\Col:Marg\AllColMargins\ShowPar
+      \Configure{noalign}{}{}%
+%
+      \ShowPar
+%
+     }{}{}
+
+
+\Configure{footnotemark}{\bgroup\NoFonts\HCode{<fn symbol="}\Configure{textsuperscript}{}{}}{\HCode{">}\EndNoFonts\egroup}
+% suppress footnote number in footnotext, it was already used in footnotemark
+\Configure{footnotetext}{\NoFonts\ShowPar\setbox0=\vbox\bgroup}
+{\egroup\EndNoFonts\SaveEndP\par\ShowPar\normalsize}% force new paragraph and normal font size
+{\EndP\RecallEndP\HCode{</fn>}}%
+
+\ConfigureEnv{quote}
+   {}{}
+   {\ifvmode\IgnorePar\fi\EndP%
+    \HCode{<disp-quote>}}
+   {\IgnorePar\EndP\HCode{</disp-quote>}\ShowPar\ShowIndent}
+
+\def\ConfigJatsList#1#2{%
+\ConfigureList{#1}%
+   {\ifvmode\IgnorePar\fi\EndP\EndP\HCode{<list list-type="#2">}%
+       \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</list-item></list>}}
+   {\end:itm\global\def\end:itm{\EndP\Tg</list-item>}\DeleteMark}
+   {\HCode{<list-item>}\par\ShowPar
+}
+ }
+
+\ConfigJatsList{itemize}{bulleted}
+\ConfigJatsList{enumerate}{order}
+\ConfigureList{description}%
+   {\ifvmode\IgnorePar\fi\EndP\HCode{<def-list>}%
+      \PushMacro\end:itm
+\global\let\end:itm=\empty}
+   {\PopMacro\end:itm \global\let\end:itm \end:itm
+\EndP\HCode{</def></def-item></def-list>}\ShowPar}
+   {\end:itm \global\def\end:itm{\EndP\HCode{</def></def-item>}}\HCode{<def-item><term>}\NoFonts\HtmlParOff}
+   {\EndNoFonts\HCode{</term><def>}\HtmlParOn\par\ShowPar
+}
+
+\ConfigureList{thebibliography}%
+   {\ifvmode\IgnorePar\fi \EndP \HCode{<ref-list>}\let\en:bib=\empty}
+   {\en:bib \ifvmode\IgnorePar\fi \EndP \HCode{</ref-list>}}
+   {\en:bib\def\en:bib{\HCode{</mixed-citation></ref>}}%
+    \HCode{<ref><label>}%
+     \Configure{HtmlPar}%
+    {\EndP}%
+    {\EndP}%
+    {} {}%
+  }
+   {\HCode{</label><mixed-citation>}}
+
+
+
+\ConfigureEnv{abstract}
+{\ifvmode\IgnorePar\fi\EndP\HCode{<abstract>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</abstract>}\par}{}{}
+
+\Configure{abstracttitle}{\ifvmode\IgnorePar\fi\EndP\HCode{<label>}\HtmlParOff\NoFonts}
+   {\HCode{</label>}\EndNoFonts\HtmlParOn\par}
+
+
+
+\Configure{chapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{chapter}
+   {\if@mainmatter
+       \HCode{<label>}\chaptername\ \thechapter\HCode{</label>}\fi}
+
+
+\Configure{appendix}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\TitleMark\space\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+\ConfigureMark{appendix}{\HCode{<label>}%
+   \appendixname\ \thechapter\HCode{</label>}}
+
+\Configure{likechapter}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{<sec>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP\IgnorePar\HCode{</sec>\Hnewline}}
+   {\HCode{<title>}\HtmlParOff}
+   {\HCode{</title>}\HtmlParOn \ShowPar\par}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\endinput
+

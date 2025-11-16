@@ -1,0 +1,104 @@
+\input ptb-utils
+\_checkloaded{stacks}
+
+%   Creates a macro stack, a stack which stores the definition of macros.
+%   #1: The name of the stack.
+\def\createmacrostack#1{\_xp\def\csname mstack@#1@sp\endcsname{0}}
+
+%   Gets the current pointer on a macro stack.
+%   #1: The name of the stack.
+\def\macrostackpointer#1{\csname mstack@#1@sp\endcsname}
+
+%   Pushes a macro onto a macro stack.
+%   #1: The name of the stack.
+%   #2: The control sequence to push onto the stack.
+\def\macrostackpush#1#2{%
+    \_xp\edef\csname mstack@#1@sp\endcsname{\the\numexpr \csname mstack@#1@sp\endcsname + 1\relax}%
+    \_xp\let\csname mstack@#1@def@\csname mstack@#1@sp\endcsname\endcsname=#2%
+    \_xp\edef\csname mstack@#1@name@\csname mstack@#1@sp\endcsname\endcsname{\_mstrip#2}%
+}
+
+%   Gets a macro on a stack.
+%   #1: The name of the stack
+%   #2: The index on the stack
+\def\macrostackget#1#2{%
+    \csname mstack@#1@def@#2\endcsname%
+}
+
+%   Decrements the stack pointer of a macrostack without restoring the definition of the control sequence.
+%   #1: The name of the stack.
+\def\macrostackdecrement#1{%
+    \_xp\let\csname mstack@#1@name@\csname mstack@#1@sp\endcsname\endcsname=\undefined%
+    \_xp\let\csname mstack@#1@def@\csname mstack@#1@sp\endcsname\endcsname=\undefined%
+    \_xp\edef\csname mstack@#1@sp\endcsname{\the\numexpr \csname mstack@#1@sp\endcsname - 1\relax}%
+}
+
+%   Sets the control sequence from the top of the stack, without popping it.
+%   #1: The name of the stack
+\def\macrostackset#1{%
+    \_xplet{\csname\csname mstack@#1@name@\csname mstack@#1@sp\endcsname\endcsname\endcsname}{\csname mstack@#1@def@\csname mstack@#1@sp\endcsname\endcsname}%
+}
+
+%   Pops a control sequence off of the top of the stack.
+%   This restores the definition of the control sequence.
+%   #1: The name of the stack.
+\def\macrostackpop#1{%
+    \macrostackset{#1}%
+    \macrostackdecrement{#1}%
+}
+
+%   Peeks at the top of a macro stack.
+%   #1: The name of the stack.
+%   #2: A control sequence to put the definition of the control sequence at the top of the stack into.
+%   #3: A control sequence to put the name of the control sequence at the top of the stack into.
+\def\macrostackpeek#1#2#3{%
+    \_xp\let#2\csname mstack@#1@def@\csname mstack@#1@sp\endcsname\endcsname%
+    \_xp\let#3\csname mstack@#1@name@\csname mstack@#1@sp\endcsname\endcsname%
+}
+
+\def\createstack#1{\_xp\def\csname stack@#1@sp\endcsname{0}}
+
+\def\stackpush#1#2{%
+    \_xp\edef\csname stack@#1@sp\endcsname{\the\numexpr \csname stack@#1@sp\endcsname + 1\relax}%
+    \_xp\def\csname stack@#1@\csname stack@#1@sp\endcsname\endcsname{#2}%
+}
+
+\def\stackdecrement#1{%
+    \_xp\let\csname stack@#1@\csname stack@#1@sp\endcsname\endcsname=\undefined%
+    \_xp\edef\csname stack@#1@sp\endcsname{\the\numexpr \csname stack@#1@sp\endcsname - 1\relax}%
+}
+
+\def\stackpop#1#2{%
+    \stacktop{#1}{#2}%
+    \stackdecrement{#1}%
+}
+
+\def\stacktop#1#2{%
+    \_xp\let\_xp#2\csname stack@#1@\csname stack@#1@sp\endcsname\endcsname%
+}
+
+\def\_rstackpush#1#2{\stackpush{#2}{#1}}
+\def\_rstackpop#1#2{\stackpop{#2}{#1}}
+
+\createmacrostack{macro_stack}
+\createstack{macro_stack_ptr}
+
+\def\macro_stack_ptr{0}
+\def\beginscope{%
+    \_xp\_rstackpush\_xp{\macro_stack_ptr}{macro_stack_ptr}%
+}
+
+\def\endscope{%
+    \stackpop{macro_stack_ptr}\_uregB%
+    \loop\ifnum\macro_stack_ptr>\_uregB%
+        \macrostackpop{macro_stack}%
+        \edef\macro_stack_ptr{\the\numexpr \macro_stack_ptr - 1\relax}%
+    \repeat%
+}
+
+\def\localize#1{%
+    \macrostackpush{macro_stack}{#1}%
+    \edef\macro_stack_ptr{\the\numexpr \macro_stack_ptr + 1\relax}%
+}
+
+

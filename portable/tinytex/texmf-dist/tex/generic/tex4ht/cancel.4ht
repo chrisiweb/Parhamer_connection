@@ -1,0 +1,47 @@
+% cancel.4ht (2022-05-19-13:37), generated from tex4ht-4ht.tex
+% Copyright 2022 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2022-05-19-13:37}
+
+\def\:cancelchoose#1#2{\relax\ifmmode\csname a:#1-math\endcsname#2\csname b:#1-math\endcsname\else\csname a:#1\endcsname#2\csname b:#1\endcsname\fi}
+\NewConfigure{cancel}{2}
+\NewConfigure{cancel-math}{2}
+\def\:tempa#1{\:cancelchoose{cancel}{#1}}
+% \def\:tempa#1{\ifmmode\a:cancelmath#1\b:cancelmath\else\a:cancel#1\b:cancel\fi}
+\HLet\cancel\:tempa
+
+\NewConfigure{bcancel}{2}
+\NewConfigure{bcancel-math}{2}
+\def\:tempa#1{\:cancelchoose{bcancel}{#1}}
+% \def\:tempa#1{\ifmmode\a:bcancelmath#1\b:bcancelmath\else\a:bcancel#1\b:bcancel\fi}
+\HLet\bcancel\:tempa
+
+\NewConfigure{xcancel}{2}
+\NewConfigure{xcancel-math}{2}
+\def\:tempa#1{\:cancelchoose{xcancel}{#1}}
+% \def\:tempa#1{\ifmmode\a:xcancelmath#1\b:xcancelmath\else\a:xcancel#1\b:xcancel\fi}
+\HLet\xcancel\:tempa
+
+\NewConfigure{cancelto}{3}
+\def\:tempa#1#2{\a:cancelto#1\b:cancelto#2\c:cancelto}
+\HLet\cancelto\:tempa
+
+
+\Hinput{cancel}
+\endinput
+

@@ -1,0 +1,12 @@
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-solides3d}[2017/03/03 package wrapper for pst-solides3d]
+\input{pst-solides3d.tex}
+\ProvidesFile{pst-solides3d.tex}
+  [\filedate\space v\fileversion\space `PST-solides3D']
+\IfFileExists{pst-solides3d.pro}{%
+   \ProvidesFile{pst-solides3d.pro}[2023/11/02 v. 4.28,  PostScript prologue file]
+     \@addtofilelist{pst-solides3d.pro}}{}%
+\IfFileExists{pst-implicitsurface.pro}{%
+   \ProvidesFile{pst-implicitsurface.pro}[2016/12/10 v. 0.01,  PostScript prologue file]
+     \@addtofilelist{pst-implicitsurface.pro}}{}%
+\endinput

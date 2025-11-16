@@ -1,0 +1,145 @@
+% This file is part of the CTAN package named plain-widow.
+% 
+%   pxwreport.tex: change \plainoutput to \PXoutput
+%                  that writes a report about problematic lines
+%                  widow lines, club lines, and hyphenate last words
+%   Version 1.0, 13.05.2025
+%
+%   Copyright (C) 2025  Udo Wermuth (author)
+%
+%   This program is free software: you can redistribute it and/or modify
+%   it under the terms of the GNU General Public License as published by
+%   the Free Software Foundation, either version 3 of the License, or
+%   (at your option) any later version.
+%
+%   This program is distributed in the hope that it will be useful,
+%   but WITHOUT ANY WARRANTY; without even the implied warranty of
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   GNU General Public License for more details.
+%
+%   You should have received a copy of the GNU General Public License
+%   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%
+%%% control sequences for club lines
+\newtoks\PXclublines % stores their page numbers
+\newif\ifPXfoundclubline % true: >= 1 entry
+\def\PXpagehasclubline{\edef\next{%   no \global
+  \ifPXfoundclubline \the\PXclublines,
+   \the\pageno\else\the\pageno\fi}%
+ \global\PXfoundclublinetrue
+ \global\PXclublines=\expandafter{\next}}
+%%% and for widow and displaywidow lines
+\newtoks\PXwidowlines \newif\ifPXfoundwidowline
+\def\PXpagehaswidowline#1{% #1: 0, 1, or 2
+% 0: widow, 1: displaywidow, 2: postdisplay
+ \edef\next{%               \global not required
+  \ifPXfoundwidowline \the\PXwidowlines,
+   % displaywidow and postdisplay in parentheses
+   \ifnum#1=0 \the\pageno \else (\the\pageno)\fi
+  \else\ifnum#1=0 \the\pageno\else(\the\pageno)%
+  \fi\fi \ifnum#1=2 ?\fi}% `?' marks postdisplay
+ \global\PXfoundwidowlinetrue
+ \global\PXwidowlines=\expandafter{\next}}
+%%% and for broken lines
+\newtoks\PXbrokenlines\newif\ifPXfoundbrokenline
+\def\PXpagehasbrokenline{\edef\next{%
+  \ifPXfoundbrokenline \the\PXbrokenlines,
+   \the\pageno\else\the\pageno\fi}%
+ \global\PXfoundbrokenlinetrue
+ \global\PXbrokenlines=\expandafter{\next}}
+\newhelp\PXnoreload{The reload redeclares a few
+ registers; already stored information is lost.}
+\def\PXreport{% report problematic line breaks
+ \ifnum\PXprint=1 \par   % exercise page builder
+  \write16{Widow lines on the following pages:
+   \ifPXfoundwidowline \the\PXwidowlines
+   \else none found\fi.}
+  \write16{Club lines on the following pages:
+   \ifPXfoundclubline \the\PXclublines
+   \else none found\fi.}
+  \write16{Hyphen at page break on the following
+   pages: \ifPXfoundbrokenline
+    \the\PXbrokenlines\else none found\fi.}
+ \fi}
+\expandafter\ifx\csname PXprint\endcsname\relax
+ \def\PXprint{1 }\expandafter\let\csname PXbye%
+ \expandafter\endcsname\csname bye\endcsname
+\else\errhelp=\PXnoreload \errmessage{Don't
+ input this file more than once}\fi
+\outer\def\bye{\PXreport\csname PXbye\endcsname}
+% if \interlinepenalty<>0 add its value to \defs
+\def\PXpenB{101 }\brokenpenalty=101 % change: +1
+\def\PXpenC{150 }\clubpenalty=150 %            0
+\def\PXpenD{51 }\displaywidowpenalty=51 %     +1
+\def\PXpenW{151 }\widowpenalty=151 %          +1
+%%% combinations (sums) of two or more penalties
+% ... with \widowpenalty
+\def\PXpenBW{252 }
+\def\PXpenCW{301 }
+\def\PXpenBCW{402 }
+% ... with \clubpenalty, no \widowpenalty
+\def\PXpenCD{201 }
+\def\PXpenBC{251 }
+\def\PXpenBCD{302 }
+% ... with \displaywidowpenalty, no \clubpenalty
+\def\PXpenBD{152 }
+% check pages for ``postdisplay widow line''
+\postdisplaypenalty=2 %              change = +2
+%%% IMPORTANT: all values must be unique
+\newif\ifPXpagewithclub % true: page has a club
+\newif\ifPXpagewithwidow      % or a widow or a
+\newif\ifPXpagewithdisplaywidow % display widow
+\newif\ifPXpagewithhyphen % or ends with hyphen
+\newif\ifPXpagewithpostdisplaytext % check page
+\def\PXoutput{% report problematic lines
+ \ifnum\outputpenalty=\PXpenW
+  \PXpagewithwidowtrue
+ \else\ifnum\outputpenalty=\PXpenBW
+  \PXpagewithhyphentrue
+  \PXpagewithwidowtrue
+ \else\ifnum\outputpenalty=\PXpenCW
+  \PXpagewithclubtrue
+  \PXpagewithwidowtrue
+ \else\ifnum\outputpenalty=\PXpenBCW
+  \PXpagewithhyphentrue
+  \PXpagewithclubtrue
+  \PXpagewithwidowtrue
+ \else\ifnum\outputpenalty=\PXpenC
+  \PXpagewithclubtrue
+ \else\ifnum\outputpenalty=\PXpenBC
+  \PXpagewithhyphentrue
+  \PXpagewithclubtrue
+ \else\ifnum\outputpenalty=\PXpenCD
+  \PXpagewithclubtrue
+  \PXpagewithdisplaywidowtrue
+ \else\ifnum\outputpenalty=\PXpenBCD
+  \PXpagewithhyphentrue
+  \PXpagewithclubtrue
+  \PXpagewithdisplaywidowtrue
+ \else\ifnum\outputpenalty=\PXpenB
+  \PXpagewithhyphentrue
+ \else\ifnum\outputpenalty=\PXpenBD
+  \PXpagewithhyphentrue
+  \PXpagewithdisplaywidowtrue
+ \else\ifnum\outputpenalty=\PXpenD
+  \PXpagewithdisplaywidowtrue
+ \else\ifnum\outputpenalty=\postdisplaypenalty
+  \PXpagewithpostdisplaytexttrue
+ \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+ \PXpreplain \plainoutput \PXpostplain
+ \PXpostoutput}
+\output={\PXoutput}\let\PXpostoutput=\relax
+\def\PXpreplain{% todos before \plainoutput
+ \ifPXpagewithclub \PXpagehasclubline \fi
+ \ifPXpagewithhyphen \PXpagehasbrokenline \fi}
+\def\PXpostplain{% todos after \plainoutput
+ \ifPXpagewithwidow \PXpagehaswidowline0\fi
+ \ifPXpagewithdisplaywidow
+  \PXpagehaswidowline1\fi
+ \ifPXpagewithpostdisplaytext
+  \PXpagehaswidowline2\fi}
+\def\startwithPlain{\holdinginserts=0
+ \displaywidowpenalty=50 \widowpenalty=150
+ \brokenpenalty=100 \postdisplaypenalty=0
+ \def\footlinedist{24pt }\def\PXprint{0 }%
+ \output={\plainoutput}\wlog{use plainoutput}}

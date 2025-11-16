@@ -1,0 +1,611 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Art Facilities
+%
+% Synopsis:  This module provides facilities to deal with external art.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   7 June 1991
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Art File Root & Placing Control
+%                       --- ---- ---- - ------- -------
+
+
+\def \zartroot {}
+\setflag \zplaceart = \true
+
+
+\def \setartroot #1{%                                   {root/}
+  \gdef \zartroot {#1}}
+
+\def \zprependartroot #1#2{%                            {\name}{filespec}
+  \edef #1{\zartroot#2}}
+
+\def \placeart #1{%
+  \setflag \zplaceart = #1}
+
+%                       Imported Art
+%                       -------- ---
+
+
+\defineblock{\art}{\endart}{\false}{}
+
+%~block art Type
+% \abovepenalty = integer               % Penalty above block.
+% \aboveskip = glue                     % Space b/b above block.
+% \belowpenalty = integer               % Penalty below block.
+% \belowskip = glue                     % Space b/b below block.
+% \setflag \cliptobb = flag             % Clip art to its bounding box?
+% \hfuzz = dimen                        % Horizontal fuzz.
+% \hscale = dimen                       % Horizontal scale (in points).
+% \leftindent = glue                    % Left indentation.
+% \rightindent = glue                   % Right indentation.
+% \vscale = dimen                       % Vertical scale (in points).
+% \vshift = dimen                       % Vertical shift.
+%~end
+
+\definedimen{\artwidth}{0pt}
+\definedimen{\artheight}{0pt}
+\definedimen{\hscale}{0pt}
+\definedimen{\vscale}{0pt}
+
+
+%~ The format of the *file-info* argument is:
+%~ *file*,*width*,*height*,*scale*[,*gutter*,*file*,...]&/
+%~ The *file* is a file name preceded by |!| or |=|.
+
+\def \art #1#2{%                                {type}{file-info}
+  \beginblockscope{art}%
+  \global\increment \artdepth
+  \abovepenalty = \breakgood                    %~default hard
+  \belowpenalty = \breakgood                    %~default hard
+  \setflag \cliptobb = \false                   %~default soft
+  \hfuzz = 1pt                                  %~default soft
+  \hscale = 1.0pt                               %~default hard
+  \vscale = 1.0pt                               %~default hard
+  \vshift = \mindimen                           %~default soft
+  \processdesign{\art}{#1}%
+  \global\increment \artnumber
+  \global\artwidth = 0pt
+  \global\artheight = 0pt
+  \artformat{#2}%
+  \endart}
+
+\def \endart {%
+  \global\decrement \artdepth
+  \endblockscope{art}}
+
+\def \artformat #1{%                            {info}
+  \endgraf
+  \bbskipabove{\abovepenalty}{\aboveskip}%
+  \alterindentation{\leftindent}{\rightindent}%
+  \noindent \zbldartline 0pt,#1,\zmark \endgraf
+  \prevdepth = 0pt                              % Nothing better to do.
+  \bbskipbelow{\belowpenalty}{\belowskip}}
+
+\def \zbldartline #1,#2,#3,#4,#5,#6\zmark{%     gutter,file,width,height,scale,...,\zmark
+  \zbuildartlineb{#1}{#2}{#3}{#4}{#5}%
+  \zwriteartinfo{#2}{#3}{#4}{#5}%
+  \if \notp{\emptyargp{#6}}\zbldartline #6\zmark \fi}
+
+%                       Place Art File
+%                       ----- --- ----
+
+
+\definedimen{\zleftslop}{0pt}
+\definedimen{\zrightslop}{0pt}
+\definedimen{\ztopslop}{0pt}
+\definedimen{\zbottomslop}{0pt}
+\definedimen{\zartwidth}{0pt}
+\definedimen{\zartheight}{0pt}
+\definedimen{\zartscale}{0pt}
+
+
+\def \zbuildartlineb #1#2#3#4#5{%       {gutter}{file}{width}{height}{scale}
+  \kern #1\relax
+  \zparseartfile #2,0pt,0pt,0pt,0pt,\zmark
+  \zchkartfile{\zgotart}%
+  \zcalcartdimens{#3}{#4}{#5}%
+  \zbuildartlinec{\zartfile}%
+  \gcalculate \artwidth = {\artwidth,+,#1,+,\zartwidth}%
+  \if \dimgtrp{\zartheight}{\artheight}\global\artheight = \zartheight \fi}
+
+\def \zparseartfile #1,#2,#3,#4,#5,#6\zmark{% spec,left,right,top,bottom\zmark
+  \zparseartspec #1.eps.\zmark
+  \zleftslop = #2%
+  \zrightslop = #3%
+  \ztopslop = #4%
+  \zbottomslop = #5\relax}
+
+\def \zcalcartdimens #1#2#3{%                           {width}{height}{scale}
+  \if \orp{\andp{\dimzerop{#1}}{\dimzerop{#2}}}
+          {\forceepsbb}%
+    \if \zgotart
+      \zreadepsbb{\zartwidth}{\zartheight}{\zartfile}%
+    \else
+      \zartwidth = 20pc \zartheight = 10pc
+    \fi
+  \else
+    \calculate \zartwidth = {#1,-,\zleftslop,-,\zrightslop}%
+    \calculate \zartheight = {#2,-,\ztopslop,-,\zbottomslop}%
+  \fi
+  \zcalcartscale #3\zmark
+  \calculate \zartwidth = {\zartwidth,S,\zartscale,S,\hscale}%
+  \calculate \zartheight = {\zartheight,S,\zartscale,S,\vscale}%
+  \calculate \zleftslop = {\zleftslop,S,\zartscale,S,\hscale}%
+  \calculate \zbottomslop = {\zbottomslop,S,\zartscale,S,\vscale}%
+  \if \forceepsbb
+    \advance \zleftslop by \zbbxorigin
+    \advance \zbottomslop by \zbbyorigin
+  \fi}
+
+\def \zcalcartscale #1#2\zmark{%                        scale\zmark
+  \if \codeeqlp{#1}{=}%
+    \if \emptyargp{#2}%
+      \calculate \zartscale = {\hsize,R,\zartwidth}%
+    \else
+      \calculate \zartscale = {#2,R,\zartwidth}%
+    \fi
+  \else
+    \calculate \zartscale = {#1#2pt,/,100}%
+  \fi}
+
+\def \zbuildartlinec #1{%                                         {title}
+  \if \dimeqlp{\vshift}{\mindimen}%
+    \measureascenderheight{\vshift}%
+  \fi
+  \vtop {%                                      % Place art in a vbox.
+    \offinterlineskip
+    \rule{height \vshift width 0pt}%            % Force the height of the
+    \kern -\vshift                              % box to match ascenders.
+    \rule{height 0pt width \zartwidth}%         % Force the width of the box.
+    \if \andp{\zplaceart}{\zgotart}%
+      \rule{height 0pt depth \zartheight width 0pt}%    % Force its depth.
+      \zplaceartfile
+      \vss
+    \else
+      \vbox to \zartheight{%                            % Force its depth.
+        \topcornermarks{\zartwidth}{.5pc}{.25pt}%
+        \vss
+        \hbox to \zartwidth {\hss \zannofont #1\hss}%
+        \hbox to \zartwidth {\hss \zannofont
+          \if \notp{\zplaceart}[not placing]\fi
+          \if \notp{\zgotart}[to come]\fi
+          \hss}%
+        \vss
+        \bottomcornermarks{\zartwidth}{.5pc}{.25pt}}%
+    \fi}}
+
+\def \zplaceartfile {%
+  \kern \zbottomslop
+  \moveleft \zleftslop \vbox{%
+    \special{CTM: push}%
+    \special{CTM: scale \thefactor\hscale \space \thefactor\vscale}%
+    \specialplaceepsfile{\zartfile}{\zartscale}{\cliptobb}%
+    \special{CTM: pop}}%
+  \kern -\zbottomslop}
+
+%                       Duplicates and Missing Art
+%                       ---------- --- ------- ---
+
+
+% Write an art entry into the cross-reference file.
+
+\def \zwriteartinfo #1#2#3#4{%                  {file}{width}{height}{scale}
+  \zbeginhidewrite
+    \edef \znext {\noexpand\xref{art}{\noexpand\folio}%
+                                     {#1}%
+                                     {#2,#3}
+                                     {#4}}%
+    \znext
+   \zendhidewrite}
+
+% This macro is invoked by \xref. In copy mode, it checks to make sure
+% that no art file is used twice.
+
+\def \xrefart #1#2#3#4{%                        {page}{number}{title}{tag}
+  \ifnum \xrefmode=\xrefcopymode
+    \zxrefarta #2,\zmark
+  \fi}
+
+\def \zxrefarta #1#2,#3\zmark{%
+  \if \notp{\orp{\codeeqlp{#1}{!}}{\codeeqlp{#1}{=}}}%
+    \if \definedp{\zart:#1#2}%
+      \warning{dupart}{Art file `#1#2' is used more than once in the book}%
+    \fi
+    \withname\gdef{\zart:#1#2}{}%
+  \fi}
+
+% This macro is invoked at the end of the run.
+
+\def \zmissingartmsg {%
+  \if \posp{\zmissingart}%
+    \remark{Number of missing art files in this run: \number\zmissingart.}%
+  \fi}
+
+%                       Built-In Art Blocks
+%                       -------- --- ------
+
+\def \fullpagegraphic #1{%                              {art-spec}
+  \vsinkfromtrim{-\standardbleed}
+  \smashbox{%
+    \with{\hfuzz=99pc%
+       \leftindent=\if \evenpagep \evenbleedshift \else \oddbleedshift \fi}  
+    \art{graphic}{#1}}}
+        
+\def \artgraphicdesign {%
+  \aboveskip = \noskip
+  \belowskip = \noskip
+  \setflag \cliptobb = \false
+  \hfuzz = 1pt
+  \leftindent = 0pt
+  \rightindent = 0pt
+  \vshift = 0pt}
+
+%                       Glyph Definitions
+%                       ----- -----------
+
+
+% This macro allows the user to define a "glyph," which is an EPS file
+% that is treated like a fancy character.  The bounding box must be
+% perfect. 
+
+\def \defineglyph #1#2#3{%            {\name}{spec,width,height,scale}{raise}
+  \gdef #1{\zglyph #2,#3\zmark}}
+
+\def \zglyph #1,#2,#3,#4,#5\zmark{%     spec,width,height,scale,raise\zmark
+  {\zparseartspec #1.eps.\zmark
+   \zchkartfile{\zgotart}%
+   \zartwidth = #2%
+   \zartheight = #3%
+   \tdimena = #4\typesize               % \tdimena = final scale in points.
+   \divide \tdimena by 10
+   \calculate \zartwidth = {\zartwidth,P,\thefactor\tdimena}%
+   \calculate \zartheight = {\zartheight,P,\thefactor\tdimena}%
+   \raise #5 \hbox to \zartwidth{%
+     \rule{height \zartheight depth 0pt width 0pt}%
+     \if \zgotart
+       \specialplaceglyph{\zartfile}{\tdimena}{\false}%
+     \fi
+     \hfil}}}
+
+\defineglyph{\acidfree}{!acidfree,2pc,2pc,35}{-1.5pt}
+
+%                       Panel Label Block
+%                       ----- ----- -----
+
+
+\defineblock{\panellabel}{\endpanellabel}{\false}{}
+
+%~block panellabel Type
+% \aboveskip = glue                     % Space b/b above block.
+% \belowskip = glue                     % Space b/b below block.
+% \bodyfont = {...}                     % Font for text.
+% \style = {...}                        % Label style.
+% \vshift = dimen                       % Vertical shift.
+%~end
+
+\def \panellabel #1#2{%                         {type}{label-list}
+  \beginblockscope{panellabel}%
+  \global\increment \panellabeldepth
+  \style = {letter in parens}%                  %~default soft
+  \vshift = 0pt                                 %~default soft
+  \processdesign{\panellabel}{#1}%
+  \global\increment \panellabelnumber
+  \panellabelformat{#2}%
+  \endpanellabel}
+
+\def \endpanellabel {%
+  \global\decrement \panellabeldepth
+  \endblockscope{panellabel}}
+
+\def \panellabelformat #1{%                     {panel-list}
+  \endgraf
+  \bbskipabove{\breaknever}{\aboveskip}%
+  \the\bodyfont
+  \noindent
+  \zdolabel #1,\zmark
+  \endgraf
+  \bbskipbelow{\breakallowed}{\belowskip}}
+
+\def \zdolabel #1,#2,#3\zmark{%                         shift,label,...
+  \rlap{%
+    \hspace{#1}%
+    \smash{\lower \vshift \hbox{#2}}}%
+  \if \notp{\emptyargp{#3}}\zdolabel #3\zmark \fi}
+
+%                       Frames
+%                       ------
+
+
+\defineblock{\frame}{\endframe}{\false}{}
+
+%~block frame Type
+% \abovepenalty = integer               % Penalty above block.
+% \aboveskip = glue                     % Space b/b above block.
+% \def \backgroundformat ##1{...}       % Background formatter.
+% \belowpenalty = integer               % Penalty below block.
+% \belowskip = glue                     % Space b/b below block.
+% \deferredparams = {...}               % Deferred parameter calculations.
+% \framecolor = {color}                 % Color of frame.
+% \framewidths = {left,right,top,bot}   % Widths of frame segments.
+% \framegaps = {left,right,top,bot}     % Gaps between frame and material.
+% \leftindent = glue                    % Left indentation of enclosed material.
+% \screencolor = {color}                % Background screen color.
+% \width = dimen                        % Width of enclosed material.
+%~end
+
+% Together, \leftindent and \width specify the position of the enclosed
+% text within the text box, not of the frame itself.
+
+
+\definetoks{\deferredparams}
+\definetoks{\framecolor}
+\definetoks{\framewidths}
+\definetoks{\framegaps}
+\definetoks{\screencolor}
+
+\definecount{\framepage}{0}
+
+\definecount{\zdivframecounter}{0}
+
+\def \frame #1{%                                {type}
+  \beginblockscope{frame}%
+  \global\increment \framedepth
+  \global\increment \zdivframecounter
+  \whichpage{\framepage}{zE:\the\divisionname-\the\zdivframecounter}%
+  \abovepenalty = \breakgood                    %~default hard
+  \def \backgroundformat ##1{}%                 %~default soft
+  \belowpenalty = \breakgood                    %~default hard
+  \deferredparams = {}%                         %~default soft
+  \framecolor = {black}%                        %~default soft
+  \leftindent = 0pt                             %~default soft
+  \screencolor = {}%                            %~default soft
+  \width = \naturalwidth                        %~default soft
+  \processdesign{\frame}{#1}%
+  \global\increment \framenumber
+  \setbox\zboxa = \vtop \bgroup
+    \zpushvcontext}
+
+\def \endframe {%
+    \endgraf
+    \unskip
+    \zpopvcontext
+    \egroup % \vtop
+  \the\deferredparams
+  \setbox\zboxb = \hbox to \width{%
+    \hspace{-\leftindent}\box\zboxa \hss}%
+  \edef \zcolorrule {\noexpand\colorrule{\the\framecolor}}%
+  \def \zarga ##1,##2,##3,##4\zmark{##1\relax}%
+  \def \zargb ##1,##2,##3,##4\zmark{##2\relax}%
+  \def \zargc ##1,##2,##3,##4\zmark{##3\relax}%
+  \def \zargd ##1,##2,##3,##4\zmark{##4\relax}%
+  \tdimenc = \expandafter\zargc\the\framegaps\zmark
+  \advance \tdimenc by \ht\zboxb
+  \advance \tdimenc by \dp\zboxb
+  \advance \tdimenc by \expandafter\zargd\the\framegaps\zmark
+  \setbox\zboxa = \vtop {%
+    \offinterlineskip
+    \measureascenderheight{\tdimena}%           % Force the height of the
+    \rule{width 0pt height \tdimena}%           % box to match ascenders.
+    \kern -\tdimena
+    \smashbox{\backgroundformat{\tdimenc}}%
+    \if \notp{\emptytoksp{\screencolor}}%
+      \tdimend = \expandafter\zarga\the\framegaps\zmark
+      \advance \tdimend by \wd\zboxb
+      \advance \tdimend by \expandafter\zargb\the\framegaps\zmark
+      \smashbox{%
+%%%      \moveright \expandafter\zarga\the\framewidths\zmark \smashbox{%
+        \colorrule{\the\screencolor}{width \tdimend height \tdimenc}}%
+    \fi
+    \zcolorrule{height \expandafter\zargc\the\framewidths\zmark}%
+    \kern -\expandafter\zargc\the\framewidths\zmark
+    \hbox {%
+      \rlap{\zcolorrule{height \tdimenc
+                        width \expandafter\zarga\the\framewidths\zmark}}%
+      \hskip \expandafter\zarga\the\framegaps\zmark
+      \vbox {%
+        \vskip \expandafter\zargc\the\framegaps\zmark
+        \box\zboxb
+        \vskip \expandafter\zargd\the\framegaps\zmark}%
+      \hskip \expandafter\zargb\the\framegaps\zmark
+      \llap{\zcolorrule{height \tdimenc
+                        width \expandafter\zargb\the\framewidths\zmark}}}%
+    \kern -\expandafter\zargd\the\framewidths\zmark
+    \zcolorrule{height \expandafter\zargd\the\framewidths\zmark}%
+    \tagpageonly{\uniquetag{zE}{\the\zdivframecounter}}}%
+  \advance \leftindent by -\expandafter\zarga\the\framewidths\zmark
+  \advance \leftindent by -\expandafter\zarga\the\framegaps\zmark
+  \frameformat
+  \global\decrement \framedepth
+  \endblockscope{frame}}
+
+\def \frameformat {%
+  \bbskipabove{\abovepenalty}{\aboveskip}%
+  \hindent{\leftindent} \rlap{\box\zboxa}\par
+  \prevdepth = 0pt                              % Last thing in box is rule.
+  \bbskipbelow{\belowpenalty}{\belowskip}}
+
+% This macro is invoked at the beginning of each division.
+
+\def \zframedivinit {%
+  \global\zdivframecounter = 0\relax}
+
+%                       Margin Rules
+%                       ------ -----
+
+
+\defineblock{\marginrule}{\endmarginrule}{\false}{}
+
+%~block marginrule Type
+% \artspec = {...}                      % Art spec for graphic above rule.
+% \leftshift = dimen                    % Horizontal shift for rule in left margin.
+% \position = {...}                     % Position options.
+% \rightshift = dimen                   % Horizonal shift for rule in right margin.
+% \rulecolor = {...}                    % Color of rule.
+% \rulewidth = dimen                    % Width of rule.
+% \vshift = dimen                       % Vertical shift for note.
+%~end
+
+\definetoks{\artspec}
+\definedimen{\leftshift}{0pt}
+\definedimen{\rightshift}{0pt}
+
+\definecount{\marginrulepage}{0}
+
+\definecount{\zdivmrcounter}{0}
+\definedimen{\zmrshift}{0pt}
+\definedimen{\zmrprevdepth}{0pt}
+
+\def \marginrule #1#2{%                                 {type}{height,depth}
+  \blockcantbein{\marginrule}{\marginrule}%
+  \beginblockscope{marginrule}%
+  \global\increment \marginruledepth
+  \global\increment \zdivmrcounter
+  \whichpage{\marginrulepage}{zR:\the\divisionname-\the\zdivmrcounter}%
+  \rulecolor = {black}                                  %~default soft
+  \vshift = 0pt                                         %~default soft
+  \processdesign{\marginrule}{#1}%
+  \zparsemrpos{\the\position}%
+  \marginruleformat{#2}%
+  \endmarginrule}
+
+\def \endmarginrule {%
+  \global\decrement \marginruledepth
+  \endblockscope{marginrule}}
+
+\def \marginruleformat #1{%                             {height,depth}
+  \if \vmodep
+    \zmrprevdepth = \prevdepth
+    \nointerlineskip
+  \else
+    \vadjust
+  \fi
+  \bgroup
+    \topskip = 0pt
+    \moveright \zmrshift \vtop to 0pt{%
+      \vskip \vshift
+      \zmrgraphic
+      \zmrrule #1\zmark
+      \vss
+      \tagpageonly{\uniquetag{zR}{\the\zdivmrcounter}}}%
+  \egroup
+  \if \vmodep \prevdepth = \zmrprevdepth \fi}
+
+% This macro sets up variables that specify the position of a margin rule
+% according to the \position design parameter:
+%
+%   \ifevenpage         Use next position only on even page.
+%   \ifoddpage          Use next position only on odd page.
+%   \leftmargin         Shift note to left margin.
+%   \outsidemargin      Shift note to outside margin.
+%   \rightmargin        Shift note to right margin.
+
+\definecount{\zmrhpos}{0}
+
+\def \zparsemrpos #1{%                                 {options...}
+  \global\zmrhpos = 0
+  {\def \ifevenpage   ##1{\if \evenp{\marginrulepage}##1\fi}%
+   \def \ifoddpage    ##1{\if \oddp{\marginrulepage}##1\fi}%
+   \def \leftmargin   {\global\zmrhpos=1\relax}%
+   \def \outsidemargin{\ifevenpage{\leftmargin}\ifoddpage{\rightmargin}}%
+   \def \rightmargin  {\global\zmrhpos=2\relax}%
+   #1\relax}%
+  \ifcase \zmrhpos
+    \error{nomrpos}
+          {No horizontal position has been specified for a margin rule}%
+  \or
+    \if \negp{\leftshift}%
+      \zmrshift = \leftshift 
+    \else
+      \if \evenp{\marginrulepage}%
+        \calculate \zmrshift = {-\evenlefttextmargin,+,\leftshift}%
+      \else
+        \calculate \zmrshift = {-\oddlefttextmargin,+,\leftshift}%
+      \fi
+    \fi
+  \or
+    \calculate \zmrshift = {\textmeasure,+,\rightshift}%
+  \fi}
+
+\def \zmrgraphic {%
+  \if \emptytoksp{\artspec}%
+    \artheight = 0pt
+  \else
+    \xdef \znext {\noexpand\art{zmarginrule}{\the\artspec}}%
+    \znext
+    \kern -1pt
+  \fi}
+
+\definedimen{\zmrdepth}{0pt}
+
+\def \zmrrule #1,#2\zmark{%                             height,depth\zmark
+  \calculate \zmrdepth = {#2,-,\artheight}%
+  \setbox \zboxa = \hbox{\vrule width 0pt height #1 depth \zmrdepth}%
+  \vskip -\ht\zboxa
+  \colorrule{\the\rulecolor}{width \rulewidth height #1 depth \zmrdepth}}
+
+\def \artzmarginruledesign {%
+  \aboveskip = \noskip
+  \belowskip = \noskip
+  \setflag \cliptobb = \false
+  \hfuzz = 999pc
+  \leftindent = 0pt
+  \rightindent = 0pt
+  \vshift = \mindimen}
+
+% This macro is invoked at the beginning of each division.
+
+\def \zmrdivinit {%
+  \global\zdivmrcounter = 0\relax}
+
+%                       Corner Marks
+%                       ------ -----
+
+
+\def \topcornermarks #1#2#3{%           {box-width}{length}{thickness} 
+  \hbox to #1{\vrule height #3 depth 0pt width #2 \hss
+              \vrule height #3 depth 0pt width #2}%
+  \nointerlineskip
+  \hbox to #1{\vrule height #2 depth 0pt width #3 \hss
+              \vrule height #2 depth 0pt width #3}}
+
+\def \bottomcornermarks #1#2#3{%        {box-width}{length}{thickness}
+  \hbox to #1{\vrule height #2 depth 0pt width #3 \hss
+              \vrule height #2 depth 0pt width #3}%
+  \nointerlineskip
+  \hbox to #1{\vrule height #3 depth 0pt width #2 \hss
+              \vrule height #3 depth 0pt width #2}}
+
+%                       Utilities
+%                       ---------
+
+
+\definecount{\zmissingart}{0}           % Count of missing art files.
+
+
+% Check that the art file exists and issue remark if not.
+
+\def \zchkartfile #1{%                                  {\flag}
+  \setflag #1= \true
+  \checkfile{\znext}{\zartfile}%
+  \if \notp{\znext}%
+    \remark{Art file `\zartfile' is missing; ignored for now}%
+    \global\increment \zmissingart
+    \setflag #1= \false
+  \fi}
+
+\def \zparseartspec #1#2.#3.#4\zmark{%                    name.ext.\zmark
+  \def \zartfile {???}%                                 % Why do this?
+  \if \codeeqlp{#1}{!}%
+    \def \zartfile{#2.#3}%
+  \else\if \codeeqlp{#1}{=}%
+    \zprependartroot{\zartfile}{#2.#3}%
+  \else
+    \zprependartroot{\zartfile}{#1#2.#3}%
+  \fi\fi}

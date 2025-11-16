@@ -1,0 +1,290 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Interface to BibTeX
+%
+% Synopsis:  This module provides the definitions necessary for ZzTeX to
+%            interface to BibTeX.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   21 July 1992
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Bibliography Preparation
+%                       ------------ -----------
+
+
+\def \zbiblioinit {}
+
+\ignore
+\setflag \zbiblioing = \false
+
+\def \preparebiblio {%
+  \setflag \zbiblioing = \true}
+
+\def \zbibfinal {%
+  \if \zbiblioing
+    \remark{[Generating auxiliary file for BibTeX.}%
+    {\immediate\openout \zwritea = \jobname.aux\relax
+     \immediate\write \zwritea
+       {\zcomment BibTeX auxiliary file for book `\jobname'.}%
+     \processdesign{\biblio}{}%
+     \immediate\write \zwritea {\string\bibstyle{\the\bibliostyle}}%
+     \immediate\write \zwritea {\string\bibdata{\the\bibliofiles}}%
+     \let \zxmodesave = \xrefmode
+     \let \xrefmode = \xrefloadauxmode
+     \input \jobname.zzc\relax
+     \let \xrefmode = \zxmodesave
+     \immediate\write \zwritea {\zcomment [end]}%
+     \immediate\closeout \zwritea}
+    \remark{Auxiliary file complete.]}%
+  \fi}
+
+\endignore
+
+%                       Citations
+%                       ---------
+
+
+%~ This citation command produces the key associated with 
+%~ the specified tag. The key is usually the bibliography
+%~ entry number or the author/year combination.&/
+%~ *Note:* Some books do not allow this command to be used.
+
+\def \cite #1{%                                         {tag} %^citation
+  \ensurepar
+  \if \definedp{\=zB:#1}%
+    \zcitetext{#1}{\expandafterthrice\zbibdata \name{\=zB:#1}0}%
+  \else
+    \zuncite{#1}%
+  \fi
+  \zxrefcite{\true}{#1}}
+
+%~ This citation command produces the author associated with
+%~ the specified tag.
+
+\def \citeauthor #1{%                                   {tag} %^citation
+  \ensurepar
+  \if \definedp{\=zB:#1}%
+    \zcitetext{#1}{\expandafterthrice\zbibdata \name{\=zB:#1}1}%
+  \else
+    \zuncite{#1}%
+  \fi
+  \zxrefcite{\true}{#1}}
+
+%~ This citation command produces the year associated with
+%~ the specified tag.
+
+\def \citeyear #1{%                                     {tag} %^citation
+  \ensurepar
+  \if \definedp{\=zB:#1}%
+    \zcitetext{#1}{\expandafterthrice\zbibdata \name{\=zB:#1}2}%
+  \else
+    \zuncite{#1}%
+  \fi
+  \zxrefcite{\true}{#1}}
+
+\def \nocite #1{%                                       {tag}
+  \zxrefcite{\false}{#1}}
+
+\def \zcitetext #1#2{%                                  {tag}{text}
+  \if \PDFhyperlinks
+    \tagbutton{#1}{#2}%
+  \else
+    #2%
+  \fi}
+
+\def \zxrefcite #1#2{%
+  \ifcase \xrefcites
+    \relax
+  \or
+    \xref{cite}{\folio}{}{}{#2}%
+  \else
+    \customcitexref{#1}{#2}%                            {boolean}{tag}
+  \fi}
+
+\def \zbibdata #1\zmark#2\zmark#3#4#5#6{%         folio\zmark xxx\zmark
+                                        %         {label}{author}{year}n
+  \if \DVIWindoinuse \colorspecial{ifview color push rgb .75 .35 0}\fi
+  \ifcase #6 #3\or #4\or #5\fi
+  \if \DVIWindoinuse \colorspecial{ifview color pop}\fi
+  \if \indexcites \xcite1{#4}\fi}
+
+\def \zuncite #1{%
+  \writelog{ZzTeX citation: undefined tag `#1'.}%
+  \zxwriteinfo{\false}{undef-tag}{#1}{}%
+  \global\increment \zuntagrefs
+  \zbibdata -\zmark-\zmark{???}--0}
+
+%                       Bibliography Cross-Reference
+%                       ------------ ---------------
+
+
+% When tags are loaded, define the name \=zB:tag to contain the
+% bibliographic info.
+
+\def \xrefbib #1#2#3#4{%                {page}{???}{{label}{author}{year}}{tag}
+  \ifnum \xrefmode=\xrefloadtagmode
+    \if \definedp{\=zB:#4}\zduptag{#4}\fi
+    \withname\gdef{\=zB:#4}{#1\zmark#2\zmark#3}%
+  \fi}
+
+% This macro loads the cite cross-reference entries and invokes the
+% specified macro for each one.
+
+\def \mapxrefcites #1{%                                         {\macro}
+  {\let \zmapcitemacro = #1\relax
+  \zxloadcomp{\xrefloadcitemode}}}
+
+\def \xrefcite #1#2#3#4{%                                       {page}{}{}{tag}
+  \ifnum \xrefmode=\xrefloadcitemode
+    \zmapcitemacro{#1}{#4}%
+  \fi}
+
+%                       Biblio Block
+%                       ------ -----
+
+
+\defineblock{\biblio}{\endbiblio}{\false}{}
+
+%~block biblio
+% \bibliofiles = {file,...}             % List of biblio database files. 
+% \bibliostyle = {name}                 % Name of biblio style.
+% \setflag \citeself = boolean          % If true, \bibitem cites itself.
+%~end
+
+\definetoks{\bibliofiles}
+\definetoks{\bibliostyle}
+
+\definecount{\zbiblionum}{0}
+
+
+\def \biblio {%
+  \blockcantbein{\biblio}{\biblio}%
+  \blockmustbein{\biblio}{\list}%
+  \beginblockscope{biblio}%
+  \global\increment \bibliodepth
+  \setflag \citeself = \false                   %~default soft
+  \processdesign{\biblio}{}%
+  \global\increment \biblionumber
+  \def \begin ##1##2{}%
+  \def \end ##1{}%
+  \let \bibitem = \zbibitem
+  \let \newblock = \relax
+  \let \em = \it
+  \zbiblionum = 0\relax}
+
+\def \endbiblio {%
+  \endgraf
+  \fakepar                                      % In case biblio is empty.
+  \global\decrement \bibliodepth
+  \endblockscope{biblio}}
+
+%                       Bibliography Item
+%                       ------------ ----
+
+
+\definetoks{\zbibtoksa}
+\definetoks{\zbibtoksb}
+\definetoks{\zbibtoksc}
+\definetoks{\bibitemtag}                        % Tag of current \bibitem.
+
+
+% This supports items of the form `\bibitem[label][author][year]{tag}'.
+
+\def \zbibitem {%
+  \futurelet\znext \zbibitema}
+
+\def \zbibitema {%
+  \ifx \znext[%
+    \let \znext = \zbibitemb
+  \else
+    \increment \zbiblionum
+    % Expand \number\zbiblionum by hand.
+    \edef \znext {\noexpand\zbibitemb[\number\zbiblionum]}%
+  \fi
+  \znext}
+
+\def \zbibitemb[#1]{%                                   [label]
+  \zbibtoksa = {#1}%
+  \futurelet\znext \zbibitemc}
+
+\def \zbibitemc {%
+  \if \tokeqlp{\znext}{[}%
+    \let \znext = \zbibitemd
+  \else
+    \def \znext {\zbibitemd[???]}%
+  \fi
+  \znext}
+
+\def \zbibitemd[#1]{%                                   [author]
+  \zbibtoksb = {#1}%
+  \futurelet\znext \zbibiteme}
+
+\def \zbibiteme {%
+  \if \tokeqlp{\znext}{[}%
+    \let \znext = \zbibitemf
+  \else
+    \def \znext {\zbibitemf[???]}%
+  \fi
+  \znext}
+
+\def \zbibitemf[#1]#2{%                                   [year]{tag}
+  \zbibtoksc = {#1}%
+  \bibitemtag = {#2}%
+  \item{\the\zbibtoksa}%
+  \if \PDFhyperlinks \PDFmark{T:#2}\fi
+  \if \notp{\emptyargp{#2}}%
+    \edef \znext{\noexpand\xref{bib}{\noexpand\folio}
+                            {???}
+                            {{\the\zbibtoksa}{\the\zbibtoksb}{\the\zbibtoksc}}
+                            {#2}}%
+    \znext
+    \if \citeself \nocite{#2}\fi
+  \fi
+  \if \indexcites
+    \edef \znext {\noexpand\xbiblio1{\the\zbibtoksb}}%
+    \znext
+  \fi
+  \ignorespaces}
+
+%                       Bibliography Citation Page List
+%                       ------------ -------- ---- ----
+
+
+\setflag \zcitexrefsloaded = \false
+
+
+% If this macro is specified as the \endpartext of a bibliography
+% list, it will append a list of the citation pages to each entry.
+
+\def \citepagelist #1{%                                 {button?}
+  \if \notp{\zcitexrefsloaded}%
+    \mapxrefcites{\zbibcitelist}%
+    \global\setflag \zcitexrefsloaded = \true
+  \fi
+  \setflag \zbibfirstpage = \true
+  \def \zbibprevpage {}%
+  \withname\maplistlf {\=citetag:\the\bibitemtag}
+                      {\zbibcitepage{##1}{#1}}}
+
+\def \zbibcitelist #1#2{%                               {page}{tag}
+  \if \withname\undefinedp {\=citetag:#2}%
+    \withname\setlist {\=citetag:#2}={}%
+  \fi
+  \withname\appendlf {\=citetag:#2}{#1}}
+
+\def \zbibcitepage #1#2{%                               {page}{button?}
+  \stringeql{\zsamepage}{#1}{\zbibprevpage}%
+  \if \notp{\zsamepage}%
+    \if \notp{\emptydefp{\zbibprevpage}},\space \fi
+    \if #2%
+      \pagebutton{#1}{#1}%
+    \else
+      #1%
+    \fi
+    \def \zbibprevpage {#1}%
+  \fi}

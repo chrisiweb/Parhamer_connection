@@ -1,0 +1,995 @@
+%% $Id: pst-fit.tex 881 2024-03-17 20:32:53Z herbert $
+%%
+%% This is file `pst-fit.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-fit.tex'
+%%
+%% Buddy Ledger <buddyledger@gmail.com>
+%% Herbert Voss <hvoss@tug.org>
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-fit' is a PSTricks package for curve fitting
+%%
+\csname PSTfitLoaded\endcsname
+\let\PSTfitLoaded\endinput
+% Requires PSTricks, pst-plot
+\ifx\PSTricksLoaded\endinput\else   \input pstricks.tex\fi
+\ifx\PSTricksAddLoaded\endinput\else\input pstricks-add.tex\fi
+\ifx\PSTXKeyLoaded\endinput\else    \input pst-xkey \fi
+%
+\def\fileversion{0.03}
+\def\filedate{2024/03/17}
+\message{`PST-fit' v\fileversion, \filedate\space (BL,HV)}
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+%
+\pst@addfams{pst-fit}
+%
+\define@key[psset]{pst-fit}{symbolFont}{\def\psk@symbolFont{/#1 }}%
+\psset[pst-fit]{symbolFont=StandardSymbolsPS}
+%
+\def\beginplot@ErrorLine{\begin@OpenObj}
+\def\endplot@ErrorLine{\psErrorLine@ii}
+\def\psErrorLine@ii{%
+  \addto@pscode{
+    \pst@cp     % current point
+    \psline@iii % arc and lineto type
+    \tx@ErrorLine   
+  }%
+  \end@OpenObj%
+}
+%
+\def\tx@ErrorLine{ErrorLine }
+\pst@def{ErrorLine}<{
+  /copypt { dup 3 2 roll dup 4 1 roll exch } def %copy point
+  NArray n 0 eq not  
+    { n { \psk@relyerr\space 0 eq not
+    {copypt copypt dup \psk@relyerr\space mul add ArrowA
+    dup \psk@relyerr\space mul sub
+    Lineto
+    copypt dup \psk@relyerr\space mul sub ArrowB L} if
+    \psk@relxerr\space 0 eq not  
+    {copypt copypt exch dup \psk@relxerr\space mul add exch ArrowA
+    exch dup \psk@relxerr\space mul sub exch
+    Lineto
+    copypt exch dup \psk@relxerr\space mul sub exch ArrowB L pop pop }
+    { pop pop } ifelse } repeat
+    } if
+}>
+
+\define@boolkey[psset]{pst-fit}[Pst@]{ScyBase}[true]{}%
+\define@boolkey[psset]{pst-fit}[Pst@]{ScxBase}[true]{}%
+\psset{ScyBase=true,ScxBase=true}
+
+\def\pstScalePoints(#1,#2)#3#4{%
+%  xScale | yScale | xOperator | yOperator 
+% the operators can be any Postscript code
+\pst@def{ScalePoints}<%
+    /y ED /x ED
+    /yOper { #4\space y mul #2\space mul } def
+    /xOper { #3\space x mul #1\space mul } def
+    counttomark dup dup cvi eq not { exch pop } if
+    /m exch def /n m 2 div cvi def
+    n {
+      #4\space y mul #2\space mul m 1 roll
+      #3\space x mul #1\space mul m 1 roll
+      /m m 2 sub
+      def } repeat>%
+}
+\def\psLineToXAxis@ii{%
+\addto@pscode{\pst@cp \psline@iii \tx@LineToXAxis}%
+\end@OpenObj}
+
+\def\tx@LineToXAxis{LineToXAxis }
+
+\pst@def{LineToXAxis}<{%
+NArray
+n 0 eq not
+  { %n 1 eq { 0 0 /n 2 def } if
+    %ArrowA
+    %/n n 2 sub def
+    %2 copy pop 0 \ifPst@ScyBase yOper \fi moveto Lineto
+    n { 2 copy 2 copy pop 0 \ifPst@ScyBase yOper \fi 4 2 roll ArrowA Lineto
+        2 copy pop 0 \ifPst@ScyBase yOper \fi ArrowB L pop pop
+    } repeat
+    %2 copy moveto pop 0 \ifPst@ScyBase yOper \fi
+    %L
+    %pop pop
+} if}>
+
+\def\psLineToYAxis@ii{%
+\addto@pscode{\pst@cp \psline@iii \tx@LineToYAxis}%
+\end@OpenObj}
+\def\tx@LineToYAxis{LineToYAxis }
+\pst@def{LineToYAxis}<{
+NArray
+n 0 eq not
+  { %n 1 eq { 0 0 /n 2 def } if
+    %ArrowA
+    %/n n 2 sub def
+    %CP 2 copy moveto exch pop 0 \ifPst@ScxBase xOper \fi exch Lineto
+    n { 2 copy 2 copy exch pop 0 \ifPst@ScxBase xOper \fi exch 4 2 roll ArrowA Lineto
+        2 copy exch pop 0 \ifPst@ScxBase xOper \fi exch ArrowB L pop pop
+    } repeat
+    %2 copy moveto exch pop 0 \ifPst@ScxBase xOper \fi exch
+    %L
+    %pop pop
+} if}>
+%
+%%%%%%PREPAREPOINTS
+\define@key[psset]{pst-fit}{plotNoTwo}{\def\psk@plotNoTwo{#1}}%
+\define@key[psset]{pst-fit}{plotNoTwoFunc}{\def\psk@plotNoTwoFunc{#1}} %Must operate on two stack elements and return one
+\psset{plotNoTwo=0,plotNoTwoFunc=dup mul exch dup mul add sqrt}
+
+%\def\tx@PreparePoints{PreparePoints }
+\pst@def{PreparePoints}<{%
+  counttomark /m exch def
+  \ifPsk@xyValues\else % we have only y values
+    /mm m def
+    /M m 1 add def
+    m { mm exch M 2 roll /M M 1 add def /mm mm 1 sub def } repeat
+    /m m dup add def
+  \fi
+  \ifPst@ChangeOrder
+    /m0 m def
+    m \psk@plotNoMax\space 1 add div 1 sub cvi {
+      m0 \psk@plotNoMax\space 1 add roll /m0 m0 \psk@plotNoMax\space 1 add sub def
+    } repeat
+  \fi
+  /n m \psk@plotNoMax\space 1 add div cvi def
+  \psk@plotNoMax\space 1 gt {% multiple data files?
+    n {
+      \psk@plotNoTwo\space 0 gt {
+        \psk@plotNoMax\space copy
+        \psk@plotNoMax\space \psk@plotNoTwo\space 1 sub neg roll % x yNo y yNoTwo y [yNo y yNoTwo y]
+        \psk@plotNoMax\space 1 sub { pop } repeat % x yNo y yNoTwo y yNoTwo
+        \psk@plotNoMax\space 1 add 1 roll } if
+      \psk@plotNoMax\space \psk@plotNo\space 1 sub neg roll % x yNo y y y ...
+      \psk@plotNoMax\space 1 sub { pop } repeat % x [yNoTwo] yNo
+      \psk@plotNoTwo\space 0 gt {
+          \psk@plotNoTwoFunc\space } if %x f(yNo,yNoTwo)
+      /m m \psk@plotNoMax\space 1 sub sub def
+      m 2 roll
+    } repeat
+  } if % no multiple data files
+%    counttomark /m exch def
+%    /n m 2 div cvi def
+  /xMax -99999 def /yMax -99999 def
+  /xP 0 def /yP 0 def
+  m copy
+  n {
+    /y exch def /x exch def
+    xMax x lt { /xMax x def } if
+    yMax y lt {/yMax y def } if
+    xP x gt { /xP x def } if
+    yP y gt { /yP y def } if
+  } repeat
+%    m 2 roll
+  \psk@xStep\space 0 gt \psk@yStep\space 0 gt or (\psk@xStart) length 0 gt or
+  (\psk@yStart) length 0 gt or (\psk@xEnd) length 0 gt or (\psk@yEnd) length 0 gt or {
+%
+    (\psk@xStart) length 0 gt {\psk@xStart\space }{ xP } ifelse /xStart exch def
+    (\psk@yStart) length 0 gt {\psk@yStart\space }{ yP } ifelse /yStart exch def
+    (\psk@xEnd) length 0 gt { \psk@xEnd\space }{ xMax } ifelse /xEnd exch def
+    (\psk@yEnd) length 0 gt { \psk@yEnd\space }{ yMax } ifelse /yEnd exch def
+    n {
+      m -2 roll
+      2 copy /yVal exch def /xVal exch def
+      xVal xP ge
+      yVal yP ge and
+      xVal xEnd le and
+      yVal yEnd le and
+      xVal xStart ge and
+      yVal yStart ge and {
+        /xP xP \psk@xStep\space add def
+        /yP yP \psk@yStep\space add def
+      }{%
+        pop pop
+        /m m 2 sub def
+      } ifelse
+    } repeat
+  }{%
+    /ncount 0 def
+    (\psk@nEnd) length 0 gt { \psk@nEnd\space }{ m } ifelse
+    /nEnd exch def
+    n {
+      m -2 roll
+      \psk@nStep\space 1 gt {
+        ncount \psk@nStart\space sub \psk@nStep\space mod 0 eq }{ true } ifelse
+        ncount nEnd le and
+        ncount \psk@nStart\space ge and not {
+          pop pop
+          /m m 2 sub def
+        } if
+        /ncount ncount 1 add def
+      } repeat
+  } ifelse
+}>
+%
+
+\def\beginplot@PrintCoor{\begin@SpecialObj}
+\def\endplot@PrintCoor{%
+  \psPrintCoor@ii %\psk@fillstyle\ifpsshadow\pst@closedshadow\fi%
+  %\pst@stroke
+  \end@SpecialObj%
+}
+\define@key[psset]{pst-fit}{relxerr}{\def\psk@relxerr{#1}}
+\define@key[psset]{pst-fit}{relyerr}{\def\psk@relyerr{#1}}
+\define@key[psset]{pst-fit}{yShift}{\def\psk@yShift{#1}}
+\define@boolkey[psset]{pst-fit}[Pst@]{science}[true]{}%
+\psset[pst-fit]{science=false,relxerr=0.1,relyerr=0.1,yShift=0}
+%Following is new pst-func.tex key which conflicts with mine. 
+%Must specify [pst-fit] in psset to correct.
+%\define@boolkey[psset]{pst-add}[Pst@]{science}[true]{%
+%  \ifPst@science\def\psk@Scin{true }\else\def\psk@Scin{false }\fi}
+
+\def\psPrintCoor@ii{%
+   \addto@pscode{%
+      false
+      \tx@NArray
+      \pst@number\psxunit
+      \pst@number\psyunit
+      \psPrintCoor@iii
+}}
+
+\def\psPrintCoor@iii{%
+     /mfont { \psk@PSfont\space findfont \psk@fontscale\space scalefont setfont } bind def
+     /mfontexp { \psk@PSfont\space findfont \psk@fontscale 1.2 div scalefont setfont } bind def
+     /s1 { \psk@symbolFont\space findfont \psk@fontscale\space scalefont setfont } bind def
+     /ttxspc \psk@fontscale\space 4 div def
+     /txspc ttxspc 4 div def
+     %pop
+     /ysc ED
+     /xsc ED
+     n 0 eq not {%
+     n {%
+     ysc div /Yval ED
+     xsc div /Xval ED
+   \ifPst@science
+     %X Coordinate 
+     Xval 0 gt { Xval log floor }{ Xval 0 lt { Xval -1 mul log floor }{ 0 } ifelse } ifelse
+     cvi /xcoorexp ED  
+     Xval 10 xcoorexp exp div
+     \psk@decimals\space -1 gt {%
+     10 \psk@decimals\space exp dup 3 1 roll mul round exch div } if
+     \psk@decimals\space 0 eq { cvi } if /xcoor ED
+     %Y Coordinate
+     Yval 0 gt { Yval log floor }{ Yval 0 lt { Yval -1 mul log floor }{ 0 } ifelse } ifelse
+     cvi /ycoorexp ED  
+     Yval 10 ycoorexp exp div
+     \psk@decimals\space -1 gt {%
+     10 \psk@decimals\space exp dup 3 1 roll mul round exch div } if
+     \psk@decimals\space 0 eq { cvi } if /ycoor exch def
+     %Prep Strings
+     xcoorexp \psk@valuewidth\space string cvs /xcoorexp ED
+     ycoorexp \psk@valuewidth\space string cvs /ycoorexp ED
+     xcoor \psk@valuewidth\space string cvs /xcoor ED
+     ycoor \psk@valuewidth\space string cvs /ycoor ED
+     %X Error
+     \psk@relxerr\space Xval mul /delx ED \psk@relxerr\space 0 ne {%
+     delx 0 gt { delx log floor }{ delx 0 lt { delx -1 mul log floor }{ 0 } ifelse } ifelse
+     cvi /delxexp ED
+     delx 10 delxexp exp div dup mul sqrt
+     \psk@decimals\space -1 gt {%
+     10 \psk@decimals\space exp dup 3 1 roll mul round exch div } if
+     \psk@decimals\space 0 eq { cvi } if /delx ED
+     %Prep Strings
+     delxexp \psk@valuewidth\space string cvs /delxexp ED
+     delx \psk@valuewidth\space string cvs /delx ED } if
+     %Y Error    
+     \psk@relyerr\space Yval mul /dely ED \psk@relyerr\space 0 ne {%
+     dely 0 gt { dely log floor }{ dely 0 lt { dely -1 mul log floor }{ 0 } ifelse } ifelse
+     cvi /delyexp ED
+     dely 10 delyexp exp div dup mul sqrt
+     \psk@decimals\space -1 gt {%
+     10 \psk@decimals\space exp dup 3 1 roll mul round exch div } if
+     \psk@decimals\space 0 eq { cvi } if /dely ED
+     %Prep Strings
+     delyexp \psk@valuewidth\space string cvs /delyexp ED
+     dely \psk@valuewidth\space string cvs /dely ED } if
+   \else
+     Xval \psk@decimals\space -1 gt
+     { 10 \psk@decimals\space exp dup 3 1 roll mul round exch div } if
+     \psk@decimals\space 0 eq {cvi} if /xcoor ED
+     Yval \psk@decimals\space -1 gt
+     { 10 \psk@decimals\space exp dup 3 1 roll mul round exch div } if
+     \psk@decimals\space 0 eq {cvi} if /ycoor ED
+     xcoor \psk@valuewidth\space string cvs /xcoor ED
+     ycoor \psk@valuewidth\space string cvs /ycoor ED
+     %
+     \psk@relxerr\space Xval mul dup mul sqrt
+     \psk@decimals\space -1 gt
+     { 10   \psk@decimals\space exp dup 3 1 roll mul round exch div } if
+     \psk@decimals\space 0 eq {cvi} if /delx ED
+     \psk@relyerr\space Yval mul dup mul sqrt
+     \psk@decimals\space -1 gt
+     { 10   \psk@decimals\space exp dup 3 1 roll mul round exch div } if
+     \psk@decimals\space 0 eq {cvi} if /dely ED
+     delx \psk@valuewidth\space string cvs /delx ED
+     dely \psk@valuewidth\space string cvs /dely ED
+   \fi
+%    
+     newpath
+     Xval xsc mul %\psk@xShift\space xsc mul add
+     Yval ysc mul %\psk@yShift\space ysc mul add
+     moveto
+     \Pst@Debug\space 0 gt {
+     mfont
+     Xval \psk@valuewidth\space string cvs show (,) show
+     Yval \psk@valuewidth\space string cvs show }
+     {s1 (\string\050) show 
+     mfont xcoor show
+       \ifPst@science
+       mfont (x) show
+       mfont (10) show
+       0 ttxspc rmoveto mfontexp xcoorexp \ifPst@comma\space dot2comma \fi show
+       \fi
+     \psk@relxerr\space 0 ne
+     { \ifPst@science
+       0 ttxspc neg rmoveto s1 (\string\261) show
+       mfont delx show
+       mfont (x) show
+       mfont (10) show
+       0 ttxspc rmoveto mfontexp delxexp show
+       0 ttxspc neg rmoveto s1 (,) show
+       \else
+       s1 (\string\261) show
+       mfont delx show
+       s1 (,) show
+       \fi }
+     { \ifPst@science
+       0 ttxspc neg rmoveto s1 (,) show
+       \else
+       s1 (,) show
+       \fi } ifelse
+%start on ycoor   
+     mfont ycoor show
+       \ifPst@science
+       mfont (x) show
+       mfont (10) show
+       0 ttxspc rmoveto mfontexp ycoorexp \ifPst@comma\space dot2comma \fi show
+       \fi
+     \psk@relyerr\space 0 ne
+     { \ifPst@science
+       0 ttxspc neg rmoveto s1 (\string\261) show
+       mfont dely show
+       mfont (x) show
+       mfont (10) show
+       0 ttxspc rmoveto mfontexp delyexp \ifPst@comma\space dot2comma \fi show
+       0 ttxspc neg rmoveto s1 (\string\051) show
+       \else
+       s1 (\string\261) show
+       mfont dely \ifPst@comma\space dot2comma \fi show
+       s1 (\string\051) show
+       \fi }
+       { s1 (\string\051) show } ifelse } ifelse
+ } repeat } if }
+
+%%%POLY FIT
+\define@key[psset]{pst-fit}{EqPos}[{}]{\def\psk@EqPos{#1}}
+\define@key[psset]{pst-fit}{MaPos}[{}]{\def\psk@MaPos{#1}}%added Feb3, 2012 Matrix out
+\define@key[psset]{pst-fit}{MaScale}[{}]{\def\psk@MaScale{#1}}%added Feb3, 2012 Matrix out
+\define@boolkey[psset]{pst-fit}[Pst@]{ShowEq}[true]{}%
+\psset{EqPos=,ShowEq=true,MaPos=0 0,MaScale=1}
+
+\define@key[psset]{pst-fit}{PolyOrder}[{}]{\def\psk@PolyOrder{#1}}
+\define@boolkey[psset]{pst-fit}[Pst@]{ReduceOrder}[true]{%these percents are critical removal results in shift to in x-dir
+\ifPst@ReduceOrder%
+\def\psk@ReduceOrder{true}\else\def\psk@ReduceOrder{false}\fi}%
+\define@boolkey[psset]{pst-fit}[Pst@]{PowerFit}[true]{%these percents are critical removal results in shift to in x-dir
+\ifPst@PowerFit%
+\def\psk@PowerFit{true}\def\psk@LogEFit{false}%
+\def\psk@LogTFit{false}\def\psk@ExpFit{false}%
+\def\psk@GaussFit{false}\def\psk@CustomFit{false}\def\psk@RecipFit{false}%
+\else\def\psk@PowerFit{false}\fi}%
+\define@boolkey[psset]{pst-fit}[Pst@]{LogEFit}[true]{%
+\ifPst@LogEFit%
+\def\psk@PowerFit{false}\def\psk@LogEFit{true}%
+\def\psk@LogTFit{false}\def\psk@ExpFit{false}%
+\def\psk@GaussFit{false}\def\psk@CustomFit{false}\def\psk@RecipFit{false}%
+\else\def\psk@LogEFit{false}\fi}%
+\define@boolkey[psset]{pst-fit}[Pst@]{LogTFit}[true]{%
+\ifPst@LogTFit%
+\def\psk@PowerFit{false}\def\psk@LogEFit{false}%
+\def\psk@LogTFit{true}\def\psk@ExpFit{false}%
+\def\psk@GaussFit{false}\def\psk@CustomFit{false}\def\psk@RecipFit{false}%
+\else\def\psk@LogTFit{false}\fi}%
+\define@boolkey[psset]{pst-fit}[Pst@]{ExpFit}[true]{%
+\ifPst@ExpFit%
+\def\psk@PowerFit{false}\def\psk@LogEFit{false}%
+\def\psk@LogTFit{false}\def\psk@ExpFit{true}%
+\def\psk@GaussFit{false}\def\psk@CustomFit{false}\def\psk@RecipFit{false}%
+\else\def\psk@ExpFit{false}\fi}%
+\define@boolkey[psset]{pst-fit}[Pst@]{GaussFit}[true]{%
+\ifPst@GaussFit%
+\def\psk@PowerFit{false}\def\psk@LogEFit{false}%
+\def\psk@LogTFit{false}\def\psk@ExpFit{false}%
+\def\psk@GaussFit{true}\def\psk@CustomFit{false}\def\psk@RecipFit{false}%
+\else\def\psk@GaussFit{false}\fi}%
+\define@boolkey[psset]{pst-fit}[Pst@]{RecipFit}[true]{%
+\ifPst@RecipFit%
+\def\psk@PowerFit{false}\def\psk@LogEFit{false}%
+\def\psk@LogTFit{false}\def\psk@ExpFit{false}%
+\def\psk@GaussFit{false}\def\psk@CustomFit{false}\def\psk@RecipFit{true}%
+\else\def\psk@RecipFit{false}\fi}%
+\define@boolkey[psset]{pst-fit}[Pst@]{CustomFit}[true]{%
+\ifPst@CustomFit%
+\def\psk@PowerFit{false}\def\psk@LogEFit{false}%
+\def\psk@LogTFit{false}\def\psk@ExpFit{false}%
+\def\psk@GaussFit{false}\def\psk@CustomFit{true}\def\psk@RecipFit{false}%
+\else\def\psk@CustomFit{false}\fi}%
+\define@key[psset]{pst-fit}{FXtrans}[{}]{\def\psk@FXtrans{#1}}
+\define@key[psset]{pst-fit}{FYtrans}[{}]{\def\psk@FYtrans{#1}}
+\define@key[psset]{pst-fit}{RYtrans}[{}]{\def\psk@RYtrans{#1}}
+\define@key[psset]{pst-fit}{Yint}[{}]{\def\psk@Yint{#1}}
+\define@key[psset]{pst-fit}{CheckZeroX}[{}]{\def\psk@CheckZeroX{#1}}
+\define@key[psset]{pst-fit}{CheckZeroY}[{}]{\def\psk@CheckZeroY{#1}}
+\psset{PolyOrder=1,ReduceOrder=false,PowerFit=false,LogEFit=false,LogTFit=false,%
+      ExpFit=false,GaussFit=false,RecipFit=false,CustomFit=false,%
+        FXtrans=,FYtrans=,RYtrans=,Yint=,CheckZeroX=,CheckZeroY=}
+
+\def\beginplot@GLLSR{\begin@SpecialObj}
+\def\endplot@GLLSR{%
+  \psGLLSR@ii\psk@fillstyle\ifpsshadow\pst@closedshadow\fi%
+  \pst@stroke
+  \end@SpecialObj%
+}
+\def\psGLLSR@ii{\addto@pscode{false \tx@NArray \psGLLSR@iii }}
+\def\psGLLSR@iii{%
+  %General Fit Model: y = a0 + a1*x + a2*x^2 + ... + an*x^n
+  %Define Fonts
+  /mfont { \psk@PSfont\space findfont \psk@fontscale\space scalefont setfont } bind def
+  /mfontbig { \psk@PSfont\space findfont \psk@fontscale\space 2 mul scalefont setfont } bind def
+  /mfontexp { \psk@PSfont\space findfont \psk@fontscale\space 2 div scalefont setfont } bind def
+   mfont
+  %Default parameters
+  (\psk@PolyOrder) length 0 gt { \psk@PolyOrder\space /order ED }{ /order 1 def } ifelse
+  /PolyEq true def
+  (\psk@Yint) length 0 gt
+    {\psk@Yint\space /Yint ED /setYint true def /ReduceOrder true def }
+    { /Yint 0 def /setYint false def /ReduceOrder false def} ifelse
+  /CheckZeroX false def
+  /CheckZeroY false def
+  /FXtrans {1 mul} def
+  /FYtrans { Yint sub } def
+  /RYtrans {1 mul} def
+  /xPr {(x) show} def
+  %Special Fit Functions (Linear Transforms)
+  \psk@PowerFit\space { /order 1 def /CheckZeroX true def /CheckZeroY true def /PolyEq false def
+       /FXtrans {log} def /FYtrans {Yint sub log} def /RYtrans {10 exch exp Yint add} def /ReduceOrder false def } if
+  \psk@LogTFit\space { /order 1 def /CheckZeroX true def /PolyEq true def
+       /xPr { (log) show (\string\050) show (x) show (\string\051) show } def
+       /FXtrans {log} def /FYtrans {1 mul} def /RYtrans {1 mul} def } if %
+  \psk@LogEFit\space { /order 1 def /CheckZeroX true def /PolyEq true def
+        /xPr { (ln) show (\string\050) show (x) show (\string\051) show } def
+       /FXtrans {ln} def /FYtrans {1 mul} def /RYtrans {1 mul} def } if %
+  \psk@ExpFit\space { /order 1 def /CheckZeroY true def /PolyEq false def
+       /FXtrans {1 mul} def /FYtrans {Yint sub ln} def /RYtrans {Euler exch exp Yint add} def  /ReduceOrder false def } if %
+  \psk@GaussFit\space { /order 2 def /CheckZeroY true def /PolyEq false def
+       /FXtrans {1 mul} def /FYtrans {Yint sub ln} def /RYtrans {Euler exch exp Yint add} def  /ReduceOrder false def } if %
+  \psk@RecipFit\space { /order 1 def /CheckZeroX true def /PolyEq true def
+        /xPr { (\string\050) show (1) show (\string\244) show (x) show (\string\051) show } def
+       /FXtrans { 1 exch div } def /FYtrans {1 mul} def /RYtrans {1 mul} def } if
+  \psk@CustomFit\space { /PolyFit false def
+       (\psk@FXtrans) length 0 gt { {\psk@FXtrans\space} /FXtrans ED } if 
+       (\psk@FYtrans) length 0 gt { {\psk@FYtrans\space} /FYtrans ED } if
+       (\psk@RYtrans) length 0 gt { {\psk@RYtrans\space} /RYtrans ED } if
+       (\psk@CheckZeroX) length 0 gt { {\psk@CheckZeroX\space} /CheckZeroX ED } if
+       (\psk@CheckZeroY) length 0 gt { {\psk@CheckZeroY\space} /CheckZeroY ED } if
+       (\psk@ReduceOrder) length 0 gt { {\psk@ReduceOrder\space} /ReduceOrder ED } if } if %
+  %Initialize Arrays
+  /A order 1 add order 1 add mul array def
+  /B order 1 add array def
+  /ai order 1 add array def
+  %Coordinate Conversion Operators X Y PLU -> Plot Units (pts), X Y RLU -> Real Units (arbitrary)
+  /PLU {exch \pst@number\psxunit\space mul exch \pst@number\psyunit\space mul } def
+  /RLU {exch \pst@number\psxunit\space div exch \pst@number\psyunit\space div } def
+  /PRA { %Inputs: Array [ #rows #cols X Y Scale boolean(print equal sign) boolean(return) ]
+         %"pra" prefix has been added to all variables to minimize chance of naming conflicts
+%         /praSc exch def /praYc exch def /praXc exch def
+%         /praCol exch def /praRow exch def /praARY exch def
+         /praTemp exch def /praARY exch def
+         praTemp length 7 eq {%
+         %praTemp 4 get /praSc exch def
+         %praTemp 3 get /praYc exch def
+         %praTemp 2 get /praXc exch def
+         %praTemp 1 get /praCol exch def
+         %praTemp 0 get /praRow exch def pop
+         /tempfontscale \psk@fontscale praTemp 4 get mul def
+         %/praXc praTemp 2 get \pst@number\psxunit\space mul def
+         /praYc praTemp 3 get \pst@number\psyunit\space mul def
+         /praXmax -999999 def
+         /praYmin 999999 def
+         /prafont {\psk@PSfont\space findfont tempfontscale scalefont setfont} bind def
+         /prasym { \psk@symbolFont\space findfont tempfontscale 2 mul scalefont setfont} bind def
+         prafont
+         praTemp 2 get \pst@number\psxunit\space mul praTemp 3 get \pst@number\psyunit\space mul moveto
+         praARY length praTemp 1 get praTemp 0 get mul eq not { (Row x Col > Vector Dim) show }{%
+         /praXstart praTemp 2 get \pst@number\psxunit\space mul def
+         0 1 praTemp 1 get 1 sub {/praj ED
+         0 1 praTemp 0 get 1 sub {/prai ED /prak praj praTemp 1 get prai mul add def
+         praARY prak get \psk@valuewidth string cvs \ifPst@comma\space dot2comma \fi show
+         currentpoint pop dup praXmax gt { /praXmax ED }{ pop } ifelse
+         currentpoint pop praXstart sub neg tempfontscale 1.5 mul neg rmoveto
+         } for
+         currentpoint exch pop dup praYmin lt { /praYmin ED }{ pop } ifelse
+         /praXstart praXmax tempfontscale 0.75 mul add def
+         praXstart praTemp 3 get \pst@number\psyunit\space mul moveto
+         } for
+         %Brackets
+          newpath
+          praTemp 2 get \pst@number\psxunit\space mul tempfontscale 0.125 mul add
+          praTemp 3 get \pst@number\psyunit\space mul tempfontscale add moveto
+          praTemp 2 get \pst@number\psxunit\space mul tempfontscale 0.125 mul sub
+          praTemp 3 get \pst@number\psyunit\space mul tempfontscale add lineto
+          praTemp 2 get \pst@number\psxunit\space mul tempfontscale 0.125 mul sub
+          praYmin tempfontscale add lineto
+          praTemp 2 get \pst@number\psxunit\space mul tempfontscale 0.125 mul add
+          praYmin tempfontscale add lineto
+          stroke
+          newpath
+          praXmax tempfontscale 0.125 mul sub
+          praTemp 3 get \pst@number\psyunit\space mul tempfontscale add moveto
+          praXmax tempfontscale 0.125 mul add
+          praTemp 3 get \pst@number\psyunit\space mul tempfontscale add lineto
+          praXmax tempfontscale 0.125 mul add
+          praYmin tempfontscale add lineto
+          praXmax tempfontscale 0.125 mul sub
+          praYmin tempfontscale add lineto
+          stroke
+          praTemp 5 get {
+          praXmax tempfontscale add
+          praTemp 3 get \pst@number\psyunit\space mul tempfontscale add praYmin add 2 div moveto
+          prasym (=) show currentpoint pop /praXmax ED} if
+         %Left Bracket
+         praTemp 2 get \pst@number\psxunit\space mul praYmin tempfontscale 2 mul sub moveto %Return to bottom left
+         %the following are defined for use with cascade calls to PRA
+         % (Xl,Yb) - Print next matrix below last
+         % (Xr,Yt) - Print next matrix beside last
+         % (Xr,Yb) - Print next matrix beside and below last
+         tx@Dict /praYb known {
+         praYmin tempfontscale 1.5 mul sub \pst@number\psyunit\space div praYb lt {
+         /praYb praYmin tempfontscale 1.5 mul sub \pst@number\psyunit\space div def } if }
+         { /praYb praYmin tempfontscale 1.5 mul sub \pst@number\psyunit\space div def } ifelse
+         /praYb praYmin tempfontscale 1.5 mul sub \pst@number\psyunit\space div def
+         %
+         tx@Dict /praXl known not {/praXl praTemp 2 get def } if
+        % { praTemp 6 get {/praXl praTemp 2 get def} if } ifelse 
+         tx@Dict /praYt known not {/praYt praTemp 3 get def }
+         { praTemp 6 get {/praYt praYb def} if } ifelse
+         %
+         tx@Dict /praXr known {
+         praTemp 6 get { /praXr praXl def }{ /praXr praXmax tempfontscale add \pst@number\psxunit\space div def } ifelse }{%
+         /praXr praXmax tempfontscale add \pst@number\psxunit\space div def } ifelse
+         \psk@PSfont\space findfont \psk@fontscale\space scalefont setfont } ifelse
+         }{ \psk@PSfont\space findfont \psk@fontscale\space scalefont setfont
+         0 0 moveto (PRA Error Not Enough Parameters) show } ifelse } def
+  0 1 A length 1 sub { A exch 0 put } for
+  0 1 B length 1 sub { B exch 0 put } for
+  0 1 ai length 1 sub { ai exch 0 put } for
+  %%%%%%%%
+  %Remove Zero Data (As Required By Transformation Functions)
+  CheckZeroX CheckZeroY or {
+  n { /tmpx false def /tmpy false def
+    CheckZeroY { dup \pst@number\psyunit\space div Yint sub 0 le { /tmpy true def  } if } if  
+    CheckZeroX { exch dup \pst@number\psxunit\space div 0 le { /tmpx true def } if exch } if
+    tmpx tmpy or { pop pop /n n 1 sub def }{ n 2 mul 2 roll } ifelse
+    } repeat } if
+  %%%
+  %%%%
+  %Determine Max/Min X for Plotting
+  exch dup dup
+  \pst@number\psxunit\space div /xEnd ED
+  \pst@number\psxunit\space div /xStart ED    
+  exch
+  /ybar 0 def
+  n {                         % number of data pairs
+    dup \pst@number\psyunit\space div ybar add /ybar ED
+    2 copy      %copy point
+    \pst@number\psyunit\space div /Yval ED
+    \pst@number\psxunit\space div /Xval ED
+    Xval xStart lt { /xStart Xval def } if    % find the lowest xi
+    Xval xEnd gt { /xEnd Xval def } if        % find the largest xi
+    n 2 mul 2 roll    %roll the original point to the bottom of the stack
+  } repeat
+  ybar n div /ybar ED
+  %Scale X & Y variables and apply Linear Transform if applicable
+  n {
+    \pst@number\psyunit\space div FYtrans
+    n 2 mul 1 roll
+    \pst@number\psxunit\space div FXtrans
+    n 2 mul 1 roll
+  } repeat
+  %START ASSEMBLY OF LEAST SQUARES MATRIX
+  1 1 order 1 add { /ci exch def
+    1 1 ci { /cj exch def
+      /epk ci cj add 2 sub def
+      /sum 0 def
+      n { n 2 mul 1 roll
+        dup epk exp sum add /sum ED
+        n 2 mul 1 roll
+      } repeat
+      A
+      ci 1 sub order 1 add mul cj add 1 sub
+      sum put %i row, j col standard
+      A
+      cj 1 sub order 1 add mul ci add 1 sub
+      sum put %j row, i col reversed
+    } for
+    /sum 0 def
+    1 1 n { /cl exch def
+      2 copy
+      exch
+      ci 1 sub exp mul sum add /sum ED
+      n 2 mul 2 roll
+    } for
+    B
+    ci 1 sub
+    sum put
+  } for
+  \Pst@Debug\space 1 eq {
+  %A [ order 1 add order 1 add 5 20 0.5 false false ] PRA
+  A [ order 1 add order 1 add \psk@MaPos\space \psk@MaScale\space true false ] PRA
+  B [ order 1 add 1 praXr praYt \psk@MaScale\space false true ] PRA
+  } if
+  %END OF ASSEMBLE MATRIX
+ %REDUCE ORDER FOR Y INTERCEPT FOR MODELS WHICH ARE APPROPRIATE
+  ReduceOrder {
+    /elemOld { exch 1 sub order 1 add mul add 1 sub } def
+    /elemNew { exch 2 sub order mul add 2 sub  } def     
+    /dummyA order order mul array def                    
+    0 1 dummyA length 1 sub { dummyA exch 0 put } for  
+    /dummyB order array def
+    0 1 dummyB length 1 sub { dummyB exch 0 put } for
+    /ai order array def
+    0 1 ai length 1 sub { ai exch 0 put } for
+    %Translate A to dummyA
+    2 1 order 1 add {/ci ED
+      2 1 order 1 add {/cj ED
+        dummyA ci cj elemNew
+        A ci cj elemOld get
+        put
+      } for
+      dummyB ci 2 sub
+      B ci 1 sub get
+      put
+    } for
+  /order order 1 sub def                                             %temporarily reduce system order
+  /A order 1 add order 1 add mul array def 0 1 A length 1 sub {/ci ED A ci dummyA ci get put } for  %put dummyA in new A
+  /B order 1 add array def 0 1 B length 1 sub {/ci ED B ci dummyB ci get put } for                  %put dummyB in new B
+  \Pst@Debug\space 1 eq {
+  A [ order 1 add order 1 add praXr praYt \psk@MaScale\space true false ] PRA
+  B [ order 1 add 1 praXr praYt \psk@MaScale\space false true ] PRA } if
+  \tx@GaussSolve
+  /order order 1 add def                                             %restore system order
+  /m m 1 add def
+  % \Pst@Debug\space 1 eq {
+  %ai [ order 1 add 1 praXr praYt \psk@MaScale\space false false ] PRA } if
+  /dummyai order 1 add array def
+  0 1 dummyai length 1 sub {/ci ED dummyai ci 0 put } for
+  0 1 ai length 1 sub {/ci ED dummyai ci 1 add ai ci get put } for
+  /ai dummyai def
+  ai 0 Yint put
+  %ai [ order 2 sub 1 0 0 \psk@MaScale\space true false ] PRA
+  }{ \tx@GaussSolve } ifelse
+  %\Pst@Debug\space 1 eq {
+  %ai [ order 1 add 1 praXr praYt \psk@MaScale\space false false ] PRA } if
+  %%%%%%%%%%%%%%%%%%%%%%%%%%
+  %% END SOLVE CURVE FITS %%
+  %%%%%%%%%%%%%%%%%%%%%%%%%%
+  %%%%%%%%%%%%%%%%%%%%%
+  %% PLOT CURVE FITS %%
+  %%%%%%%%%%%%%%%%%%%%%
+  newpath
+  (\psk@xStart) length 0 gt             % special start value?
+  { \psk@xStart\space /xStart ED } if 
+  (\psk@xEnd) length 0 gt             % special end value?
+  { \psk@xEnd\space /xEnd ED } if
+  /xStep xEnd xStart sub \psk@plotpoints\space div def
+  /Xnow xStart def
+  /Ynow 0 def
+  1 1 m { /ci exch def ai ci 1 sub get ci 1 sub { Xnow FXtrans mul } repeat Ynow add /Ynow exch def } for
+  Xnow Ynow RYtrans PLU moveto
+  \psk@plotpoints\space cvi
+  { /Xnow Xnow xStep add def
+  /Ynow 0 def
+  1 1 m { /ci exch def ai ci 1 sub get ci 1 sub { Xnow FXtrans mul } repeat Ynow add /Ynow exch def } for
+  Xnow Ynow RYtrans PLU lineto
+  } repeat
+  %
+  /yminusdot 0 def
+  /yminusbar 0 def
+  n {
+    2 copy
+    /Ynow ED
+    /Xnow ED
+    /Ydot 0 def
+    1 1 m { /ci exch def
+     ai ci 1 sub get ci 1 sub { Xnow mul } repeat Ydot add /Ydot exch def } for %
+    Ynow Ydot sub dup mul yminusdot add /yminusdot ED
+    Ynow ybar sub dup mul yminusbar add /yminusbar ED
+    n 2 mul 2 roll
+  } repeat
+  1 yminusdot yminusbar div sub /rsquared ED
+  %%%%%%%%%%%%%%%%%%%%%%%%%
+  %% END PLOT CURVE FITS %%
+  %%%%%%%%%%%%%%%%%%%%%%%%%
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %% START PRINT EQUATIONS %%
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %% http://www-k12.atmos.washington.edu/~ovens/gmt/doc/html/GMT_Docs/node153.html
+  \ifPst@ShowEq
+  % Setup Cursor
+  (\psk@EqPos) length 0 gt
+  {\psk@EqPos\space PLU }
+  {2 -5 PLU } ifelse moveto
+ % Power Fit Equation %
+  \psk@PowerFit\space {
+  10 ai 0 get exp
+  \psk@decimals\space -1 gt
+    { 10 \psk@decimals exp dup 3 1 roll mul round exch div } if
+    \psk@decimals\space 0 eq { cvi } if  /tmpA exch def
+  ai 1 get
+  \psk@decimals\space -1 gt
+    { 10 \psk@decimals exp dup 3 1 roll mul round exch div } if
+    \psk@decimals\space 0 eq { cvi } if  /tmpB exch def
+  (y = ) show
+  tmpA  \psk@valuewidth string cvs \ifPst@comma\space dot2comma \fi show
+  (x) show
+  0 \psk@fontscale 4 div rmoveto
+  mfontexp tmpB \psk@valuewidth string cvs \ifPst@comma\space dot2comma \fi show mfont
+  0 \psk@fontscale 4 div neg rmoveto
+  setYint Yint 0 ne and { Yint 0 gt { (+) show } if Yint 
+    \psk@valuewidth string cvs \ifPst@comma\space dot2comma \fi show } if } if
+ % Exponential Fit Equation %
+  \psk@ExpFit\space {
+  Euler ai 0 get exp
+  \psk@decimals\space -1 gt
+    { 10 \psk@decimals exp dup 3 1 roll mul round exch div } if
+    \psk@decimals\space 0 eq { cvi } if  /tmpA exch def 
+  Euler ai 1 get exp
+  \psk@decimals\space -1 gt
+    { 10 \psk@decimals exp dup 3 1 roll mul round exch div } if
+    \psk@decimals\space 0 eq { cvi } if  /tmpB exch def
+  (y = ) show
+  (\string\050) show tmpA \psk@valuewidth string \ifPst@comma\space dot2comma \fi cvs 
+    \ifPst@comma\space dot2comma \fi show (\string\051) show
+  %(e) show
+  (\string\264) show  % centered dot
+  %0 \psk@fontscale 4 div rmoveto
+  %mfontexp tmpB \psk@valuewidth string cvs show
+  (\string\050) show tmpB \psk@valuewidth string \ifPst@comma\space dot2comma \fi cvs 
+    \ifPst@comma\space dot2comma \fi show (\string\051) show   %( )
+  0 \psk@fontscale 2 div rmoveto
+  mfontexp (x) show mfont
+  0 \psk@fontscale 2 div neg rmoveto
+  setYint Yint 0 ne and { Yint 0 gt { (+) show } if Yint 
+    \psk@valuewidth string cvs \ifPst@comma\space dot2comma \fi show } if} if
+  % Gaussian Fit Equation %
+  \psk@GaussFit\space {
+  /tmpA Euler ai 0 get ai 1 get dup mul 4 div ai 2 get div sub exp def
+  /tmpB ai 1 get 2 div ai 2 get div def
+  /tmpC ai 2 get def
+  tmpA
+  \psk@decimals\space -1 gt
+    { 10 \psk@decimals exp dup 3 1 roll mul round exch div } if
+    \psk@decimals\space 0 eq { cvi } if  /tmpA exch def
+  tmpB
+  \psk@decimals\space -1 gt
+    { 10 \psk@decimals exp dup 3 1 roll mul round exch div } if
+    \psk@decimals\space 0 eq { cvi } if  /tmpB exch def
+  tmpC
+  \psk@decimals\space -1 gt
+    { 10 \psk@decimals exp dup 3 1 roll mul round exch div } if
+    \psk@decimals\space 0 eq { cvi } if  /tmpC exch def
+  (y = ) show
+  tmpA 30 string cvs \ifPst@comma\space dot2comma \fi show
+  (e) show
+  0 \psk@fontscale 4 div rmoveto
+  mfontexp tmpC \psk@valuewidth string cvs \ifPst@comma\space dot2comma \fi show
+  (\string\(x) show
+  tmpB 0 ne { tmpB 0 ge { (+) show } if tmpB 
+    \psk@valuewidth string cvs \ifPst@comma\space dot2comma \fi show } if
+  (\string\)) show
+  0 \psk@fontscale 4 div rmoveto (2) show mfont
+  0 \psk@fontscale 2 div neg rmoveto
+  setYint Yint 0 ne and { Yint 0 gt { (+) show } if Yint 
+    \psk@valuewidth string cvs \ifPst@comma\space dot2comma \fi show } if } if
+  %%%%%%%%%%%%%%%
+  % Round Coeff %
+  %%%%%%%%%%%%%%%
+  0 1 ai length 1 sub {/ci exch def
+    ai ci get
+    \psk@decimals\space -1 gt
+    { 10 \psk@decimals exp dup 3 1 roll mul round exch div } if
+    \psk@decimals\space 0 eq { cvi } if
+  ai ci 3 -1 roll put } for
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Plot Polynomial (including Linear) Fit %
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  PolyEq { (y =) show
+  1 1 m { /ci exch def
+          ai ci 1 sub get 30 string cvs \ifPst@comma\space dot2comma \fi show
+          ci 1 sub 0 gt { xPr } if
+          ci 1 sub 1 gt {%
+             0 \psk@fontscale 4 div rmoveto ci 1 sub 30 string cvs 
+             \ifPst@comma\space dot2comma \fi show
+             0 \psk@fontscale 4 div neg rmoveto } if 
+          ci m eq not { ai ci get 0 lt {}{ (+) show } ifelse } if
+  } for } if
+  %Print Rsquared
+  rsquared
+  \psk@decimals\space -1 gt
+  { 10 \psk@decimals exp dup 3 1 roll mul round exch div } if
+  \psk@decimals\space 0 eq { cvi } if  /rsquared exch def
+  \psk@EqPos\space PLU moveto
+  0 \psk@fontscale 1.5 mul neg rmoveto
+%  \define@boolkey[psset]{pst-tools}[Pst@]{comma}[true]{%
+%  \ifPst@comma\def\psk@decimalSeparator{,}\else\def\psk@decimalSeparator{.}\fi}
+  (R) show
+  0 \psk@fontscale 2 div rmoveto
+  mfontexp (2) show mfont
+  0 \psk@fontscale 2 div neg rmoveto
+  ( = ) show
+  rsquared \psk@valuewidth string cvs \ifPst@comma\space dot2comma \fi show
+  \fi 
+}
+%
+\def\tx@GaussSolve{GaussSolve }
+\pst@def{GaussSolve}<{%
+%Required Variables
+%order,A,B,ai
+  /er 1 def  %
+  /tol 0.00001 def %
+  /m order 1 add def %number of equations
+  /Aout m m mul array def %This is for printing the scaled identity matrix which A becomes
+  0 1 Aout length 1 sub { Aout exch 0 put } for
+  /elem { exch 1 sub m mul add 1 sub } def %Array i j
+  %DETERMINE SCALE FACTORS
+  /sc m array def %row scale factors
+  0 1 sc length 1 sub { sc exch 0 put } for
+  1 1 m { /ci exch def
+    sc
+    ci 1 sub
+    A ci 1 elem get
+    dup mul sqrt
+    put
+    2 1 m { /cj exch def
+      A ci cj elem get
+      dup mul sqrt
+      sc ci 1 sub get gt {%
+      sc
+      ci 1 sub
+      A ci cj elem get
+      dup mul sqrt
+      put } if
+    } for
+  % 1 ci mul 1 sc ci 1 sub get 30 string cvs show
+  } for
+  %END OF SCALE FACTORS
+  %CALL ELIMINATE
+  order 1 ge {%
+  1 1 m 1 sub { /ck exch def
+    %Call Pivot
+    /p ck def
+    A ck ck elem get
+    sc ck 1 sub get div
+    dup mul sqrt
+    /big exch def
+    ck 1 add 1 m {/cii exch def
+      A cii ck elem get
+      sc cii 1 sub get div
+      dup mul sqrt
+      /dummy exch def
+      dummy big gt { /big dummy def /p cii def } if
+    } for
+    p ck eq not {
+    ck 1 m {/cjj exch def
+      A p cjj elem get
+      /dummy exch def
+      A p cjj elem
+      A ck cjj elem get
+      put
+      A ck cjj elem
+      dummy
+      put
+    } for
+    B p 1 sub get
+    /dummy exch def
+    B p 1 sub
+    B ck 1 sub get
+    put
+    B ck 1 sub
+    dummy
+    put
+    sc p 1 sub get
+    /dummy exch def
+    sc p 1 sub
+    sc ck 1 sub get
+    put
+    sc ck 1 sub
+    dummy
+    put
+    } if 
+    %End Pivot
+    %Back to Eliminate
+    A ck ck elem get
+    sc ck 1 sub get div
+    dup mul sqrt tol lt { /er -1 def } if
+    ck 1 add 1 m { /ci exch def
+      A ci ck elem get
+      A ck ck elem get div
+      /factor exch def
+      %ck 1 add 1 m { /cj exch def
+      1 1 m { /cj exch def  %Line Changed from above, requires more calcs but allows debugging of matrix ops.
+        A ci cj elem %index
+        A ci cj elem get
+        A ck cj elem get
+        factor
+        mul sub %value
+        put
+      } for
+      B ci 1 sub %index
+      B ci 1 sub get
+      B ck 1 sub get
+      factor
+      mul sub %value
+      put
+    } for
+  } for
+    \Pst@Debug\space 1 eq {
+    A [ order 1 add order 1 add praXr praYt \psk@MaScale\space true false ] PRA
+    B [ order 1 add 1 praXr praYt \psk@MaScale\space false true ] PRA
+  } if
+  } if
+  %Start Back Substitution
+  %Add Error check for er -1
+  ai m 1 sub
+  B m 1 sub get
+  A m m elem get
+  div put
+  %%%%Added for debug
+  Aout m m elem
+  A m m elem get dup div
+  put
+  %%%%
+  order 1 ge {%
+  m 1 sub -1 1 { /ci exch def
+    /sum 0 def
+    ci 1 add 1 m { /cj exch def
+      A ci cj elem get
+      ai cj 1 sub get
+      mul sum add
+      /sum exch def
+    } for
+    ai ci 1 sub
+    B ci 1 sub get
+    sum sub
+    A ci ci elem get
+    div put
+    %%%%Added for debug
+    Aout ci ci elem
+    A ci ci elem get dup div
+    put
+    %%%%
+  } for
+  A ck ck elem get
+  sc ck 1 sub get div
+  dup mul sqrt tol lt { /er -1 def } if
+  } if
+  \Pst@Debug\space 1 eq {
+  Aout [ order 1 add order 1 add praXr praYt \psk@MaScale\space true false ] PRA
+  ai [ order 1 add 1 praXr praYt \psk@MaScale\space false false ] PRA } if}>
+
+%
+\catcode`\@=\PstAtCode\relax
+%
+%% END: pst-fit.tex
+\endinput
+

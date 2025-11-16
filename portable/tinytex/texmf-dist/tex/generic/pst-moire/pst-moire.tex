@@ -1,0 +1,412 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                   %%
+%% This is file `pst-moire.tex'                                      %%
+%%                                                                   %%
+%% IMPORTANT NOTICE:                                                 %%
+%%                                                                   %%
+%% Package `pst-moire'                                               %%
+%%                                                                   %%
+%% Jürgen Gilg, Manuel Luque, Jean-Michel Sarlat                     %%
+%%                                                                   %%
+%% Copyright (C) 2018                                                %%
+%%                                                                   %%
+%% This program can redistributed and/or modified under              %%
+%% the terms of the LaTeX Project Public License                     %%
+%% Distributed from CTAN archives in directory                       %%
+%% macros/latex/base/lppl.txt; either version 1.3c of                %%
+%% the License, or (at your option) any later version.               %%
+%%                                                                   %%
+%% DESCRIPTION:                                                      %%
+%%   `pst-moire' is a PSTricks package to draw moire patterns        %%
+%%                                                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\fileversion{2.2}%
+\def\filedate{2021/09/03}%
+\message{`PST-MOIRE v\fileversion, \filedate\space (ML)}%
+\csname PSTMoireLoaded\endcsname
+% Requires PSTricks, pst-xkey and pst-node packages
+\ifx\PSTricksLoaded\endinput\else\input pstricks.tex\fi
+\ifx\PSTXKeyLoaded\endinput\else\input pst-xkey \fi
+\ifx\MultidoLoaded\endinput\else\input multido.tex \fi
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+%
+\pstheader{pst-moire.pro}
+%
+\pst@addfams{pst-moire}
+\define@key[psset]{pst-moire}{Rmax}{\edef\psk@moire@R{#1}} % en cm
+\define@key[psset]{pst-moire}{scale}{\edef\psk@moire@scale{#1}} % echelle
+\define@key[psset]{pst-moire}{Alpha}{\edef\psk@moire@Alpha{#1}} % pente des traits pour Gauss en degrés
+\define@key[psset]{pst-moire}{rotate}{\edef\psk@moire@rot{#1 }} % rotation de la grille
+\define@key[psset]{pst-moire}{E}{\edef\psk@moire@E{#1 }} % espacement entre 2 traits de Gauss
+\define@key[psset]{pst-moire}{n}{\edef\psk@moire@n{#1 }} % nombre de cercles
+\define@key[psset]{pst-moire}{T}{\edef\psk@moire@T{#1 }} % période : dr en mm
+% random-dots parameters
+\define@key[psset]{pst-moire}{r}{\edef\psk@moire@r{#1 }} % r des trous en pts
+\define@key[psset]{pst-moire}{p}{\edef\psk@moire@p{#1 }} % pas de la grille
+\define@key[psset]{pst-moire}{k}{\edef\psk@moire@k{#1 }} % k : facteur qui module la dispersion des trous
+\define@key[psset]{pst-moire}{symbole}{\def\psk@moire@symbol{#1}} % motif (lettre ou chiffre)
+\define@key[psset]{pst-moire}{PSfont}{\def\pst@moirage@PSfont{/#1 }}
+\define@key[psset]{pst-moire}{fontsize}{\def\pst@moirage@fontsize{#1 }}
+\define@key[psset]{pst-moire}{vadjust}{\def\pst@moirage@vadjust{#1 }}
+\define@key[psset]{pst-moire}{hadjust}{\def\pst@moirage@hadjust{#1 }}
+\define@key[psset]{pst-moire}{hole}{\def\pst@moirage@hole{#1}}
+%
+\psset[pst-moire]{Rmax=6,scale=1,Alpha=70,rotate=0,E=0.25,n=30,T=2}
+\psset[pst-moire]{r=0.5,p=4,k=0.2,symbole=2,rotate=0,PSfont=Helvetica-Bold,fontsize=4.7,vadjust=-1.5,hadjust=0,hole=round}
+%
+\def\variablesMoirages{%
+ /R \psk@moire@R\space def
+ /reduction {\psk@moire@scale\space mul} def
+ /unit {\pst@number\psunit mul reduction} def
+ /moire  {\psk@moire@type} def
+ /rot \psk@moire@rot def
+ /Runit R unit def
+ /E1 \psk@moire@E def
+ /nr \psk@moire@n def
+ /Tr \psk@moire@T \pst@number\psunit 10 div mul def
+ /circle { newpath 0 0 radius 0 360 arc closepath} def
+ /NombreTraits  Runit \pst@number\psrunit div 10 mul cvi def
+ /NombreTraitsLinear Runit 2.845 div cvi def
+ /reduc \psk@moire@scale\space def
+ /Alpha \psk@moire@Alpha\space def
+ /m Alpha dup sin exch cos div def % tan(Alpha)
+ /linecolor {\pst@usecolor\pslinecolor} def
+ /linewidth {\pst@number\pslinewidth SLW} def
+ /mm {\pst@number\psunit 10 div} bind def % le millimetre
+ /DotSize  {\psk@dotsize} def
+ /DotStyle {\@nameuse{psds@\psk@dotstyle}} def
+ }
+%% Reservation des noms de macros
+% adaptation de la macro de pst-solides3d
+% #1=type de reservation associee a une liste qui
+% doit forcement etre du type pst@moire@list@#1
+\def\pst@moire@reservednames#1{%
+\edef\@tempa{\csname pst@moire@list@#1\endcsname}
+\@for \name:=\@tempa\do{%
+  \expandafter\def\csname pst@moire@#1@\name\endcsname{}%
+}}
+% nature du moiré
+\def\pst@moire@list@type{%
+  circle,Fresnel,radial,square,Gauss,Newton,Bouasse,linear,dot,chess}
+%
+%% Reservation de macros correspondants aux types
+\pst@moire@reservednames{type}
+\define@key[psset]{pst-moire}{type}{%
+ \ifcsname pst@moire@type@#1\endcsname
+   \def\psk@moire@type{pst-#1}%
+ \else
+    \@pstrickserr{The moire #1 is not defined, the moire by default is
+    drawn}{}%
+ \fi}
+% moiré par defaut
+\psset[pst-moire]{type=Fresnel}%
+%
+%  01 novembre 2018
+%% Ajout de moiré à  la liste des types
+\def\addtomoirelisttype#1{%
+% ajouter les nouveaux objets  la liste
+\expandafter\def\expandafter\pst@moire@list@type\expandafter%
+ {\pst@moire@list@type,#1}%
+% Reserver le nom des nouveaux types
+ \edef\@tempa{#1}%
+ \@for \name:=\@tempa\do{%
+  \expandafter\def\csname pst@moire@type@\name\endcsname{}%
+ }}
+%
+\def\psmoire{\def\pst@par{}\pst@object{psmoire}}
+\def\psmoire@i{\@ifnextchar({\psmoire@do}{\psmoire@do(0,0)}}
+\def\psmoire@do(#1){%
+\begingroup%
+\use@par%
+  \begin@SpecialObj%
+  \pst@@getcoor{#1}%
+    \addto@pscode{
+ moireDict begin
+  \variablesMoirages
+  \pst@coor  translate
+ rot rotate
+  \psk@moire@type\space
+ end
+    }%
+  \end@SpecialObj%
+\endgroup%
+}%
+%
+\def\psRandomDot{\def\pst@par{}\pst@object{psRandomDot}}
+\def\psRandomDot@i{\@ifnextchar({\psRandomDot@ii}{\psRandomDot@ii(10,10)}}
+\def\psRandomDot@ii(#1,#2){%
+\begin@SpecialObj
+\addto@pscode{%
+/cm {\pst@number\psunit mul } bind def
+/pagewidth #1 cm def % en cm
+/pageheight #2 cm def % en cm
+% pas de la grille
+/gridwidth \psk@moire@p def
+% rayon des trous
+/holeradius \psk@moire@r def
+/symbol (\psk@moire@symbol) def
+/alpha \psk@moire@rot def
+/PSfont {\pst@moirage@PSfont} def
+/fontsize \pst@moirage@fontsize def
+/vadjust \pst@moirage@vadjust def
+/hadjust \pst@moirage@hadjust def
+/hole (\pst@moirage@hole) def
+PSfont findfont fontsize scalefont setfont
+% nombre aléatoire compris entre 0.0000 et 1.0000
+/rand01 {rand 10000 mod 10000 div} def
+% holedispersion permet de choisir le rayon du disque où on placera aléatoirement le centre du trou
+/holedispersion {gridwidth \psk@moire@k neg \psk@moire@k 2 mul rand01 mul add mul} def
+/loy pageheight -2 div def
+/hiy pageheight 2 div def
+/hix pagewidth 2 div def
+/lox pagewidth -2 div def
+/squarehole {
+  xi holeradius neg add
+  yi holeradius neg add moveto
+  0 holeradius 2 mul rlineto
+  holeradius 2 mul 0 rlineto
+  0 holeradius 2 mul neg rlineto
+}
+def
+%
+/revealer {
+2 srand
+  newpath
+  lox gridwidth sub loy gridwidth sub moveto
+ pagewidth  2 gridwidth mul add 0 rlineto
+  0 pageheight 2 gridwidth mul add  rlineto
+  pagewidth neg  2 gridwidth mul sub 0 rlineto
+loy gridwidth hiy
+  {
+    /y exch def
+lox gridwidth hix
+    {
+      /x exch def
+      /xi x holedispersion add def
+      /yi y holedispersion add def
+hole (round) eq {
+      xi holeradius add yi moveto
+      xi yi holeradius 360 0 arcn
+      }{
+  squarehole
+      } ifelse
+    }
+    for
+  }
+  for
+  closepath
+  fill
+} def
+symbol stringwidth /wy exch def /wx exch def
+/baselayer
+{
+1 setgray
+lox gridwidth sub loy gridwidth sub pagewidth 2 gridwidth mul add pageheight 2 gridwidth mul add rectstroke
+% 0 setgray
+\pst@usecolor\pslinecolor
+2 srand
+loy gridwidth hiy
+  {
+    /y exch def
+lox gridwidth hix
+    {
+      /x exch def
+      /xi x holedispersion add def
+      /yi y holedispersion add def
+   gsave
+      xi yi moveto
+      wx -2 div hadjust add wy -2 div vadjust add rmoveto
+      symbol show
+   grestore
+    }
+    for
+  }
+  for
+} def
+-90 rotate
+baselayer
+alpha rotate
+revealer
+ }% fin du code ps
+ \end@SpecialObj
+ }% % fin de la commande PSTricks
+% https://lspwww.epfl.ch/publications/books/moire/figs1II.html
+%
+% Figure "star1" from the Moire Demonstration Kit accompanying the book:
+%		"The Theory of the Moire Phenomenon"
+% by I. Amidror, published by Springer, 2007.
+%
+%		* * *  Copyright (c) 2007 EPFL  * * *
+%
+% Author: I. Amidror
+%
+% Modified: March 30, 2007
+%
+% ********************************************************************************
+%
+% An aperiodic dot screen that has undergone a non-linear transformation
+%
+% ********************************************************************************
+% adapted by Manuel Luque for PSTricks
+% November 15, 2018
+%
+\define@key[psset]{pst-moire}{function}{\edef\psk@moire@function{#1 }} %  la fonction
+\define@boolkey[psset]{pst-moire}[Pst@moire@]{layers}[true]{}
+% Default values
+\psset[pst-moire]{function=5 r mul t 5 mul sin neg 0.5 mul 1 add mul 2.5 sub,layers=true}
+%
+\def\psGlassPattern{\def\pst@par{}\pst@object{psGlassPattern}}
+\def\psGlassPattern@i{%
+\addbefore@par{dotsize=1pt,fillcolor=black}
+\begin@SpecialObj
+\addto@pscode{%
+ \ifPst@algebraic
+      /fonction (\psk@moire@function) tx@AlgToPs begin AlgToPs end cvx def
+    \else
+      /fonction  { \psk@moire@function } def
+    \fi
+  \psk@dotsize
+  \@nameuse{psds@\psk@dotstyle}
+   /dotcolor {\pst@usecolor\pslinecolor } def
+   /dotcolor2  {\pst@usecolor\psfillcolor} def
+\ifPst@moire@layers /layers true def \else /layers false def \fi
+/star-shapped {
+20 dict begin
+/Atan { /atan load stopped { pop pop 0 } if } def % return 0 if atan not known
+/cm {\pst@number\psunit mul} bind def
+/dim 15 cm def
+/dim2 7.5 cm def
+/myrand {rand 2147483647 div 2 mul 1 sub} def	% random number between -1...1
+/pr 2 def		% period for dot screen
+% ************ Draw the dot-screen:
+% draw first (reference) dot screen:
+10 srand		% seed for rand
+/y dim2 neg def
+1 setgray
+-7.5 cm -7.5 cm 15 cm 15 cm rectfill
+%0 setgray
+%-7.5 cm -7.5 cm 15 cm 15 cm rectstroke
+gsave
+-7.5 cm -7.5 cm 14.75 cm 14.75 cm rectclip
+dotcolor
+0 pr dim 	% draw horizontal lines of dots
+{
+	/x dim2 neg def
+	/ysave exch dim2 sub def
+	0 pr dim 		% draw a horizontal line of dots
+		{/xsave exch dim2 sub def
+		/x1 x dim2 div def
+		/y1 y dim2 div def
+		/r2 x1 x1 mul y1 y1 mul add def
+		/r r2 sqrt def
+		/t y1 x1  Atan def	% angle in degrees!
+		/cost fonction  def
+		xsave
+		fonction t cos mul 		% g1(x,y)
+		add
+		myrand  sub
+		ysave
+		fonction t sin mul 		% g2(x,y)
+		add
+		myrand sub Dot
+		/x x pr add def
+	} for
+	/y y pr add def
+} for
+grestore
+layers {
+gsave
+-7.25 cm -7.25 cm 14.75 cm 14.75 cm rectclip
+% draw second dot screen:
+%0 setgray
+dotcolor2
+10 srand		% same seed for rand
+/y dim2 neg def
+0 pr dim		% draw horizontal lines of dots
+{
+	/x dim2 neg def
+	/ysave exch dim2 sub def
+	0 pr dim		
+		{/xsave exch dim2 sub def
+		xsave
+		myrand sub
+		ysave
+		myrand sub Dot
+		/x x pr add def
+	} for
+	/y y pr add def
+} for
+grestore
+} if
+end
+ } def
+star-shapped
+ }% fin du code ps
+ \end@SpecialObj
+ }% % fin de la commande PSTricks
+%
+\define@key[psset]{pst-moire}{NumberDots}{\edef\psk@moire@NumberDots{#1 }} %  Number of dots
+\define@key[psset]{pst-moire}{coefficients}{\edef\psk@moire@coefficients{#1 }} % [a b theta tx ty]
+\define@key[psset]{pst-moire}{srand}{\edef\psk@moire@srand{#1 }} % graine aléatoire pour postscript
+\define@boolkey[psset]{pst-moire}[Pst@moire@]{revlayer}[true]{}
+\define@boolkey[psset]{pst-moire}[Pst@moire@]{layer}[true]{}
+% Default values
+\psset{NumberDots=2000,coefficients=1.05 1.05 0 0 0,revlayer=true,layer=true,srand=10}
+%
+\def\psRandomDotPatterns{\def\pst@par{}\pst@object{psRandomDotPatterns}}
+\def\psRandomDotPatterns@i{%
+\addbefore@par{dotsize=2pt,fillcolor=black}
+\begin@SpecialObj
+\addto@pscode{%
+  /N_ \psk@moire@NumberDots def
+  \psk@dotsize
+  \@nameuse{psds@\psk@dotstyle}
+  /dotcolor {\pst@usecolor\pslinecolor } def
+  /dotcolor2  {\pst@usecolor\psfillcolor} def
+  /DOT {r 0 360 arc fill} def
+\ifPst@moire@revlayer /revealinglayer true def \else /revealinglayer false def \fi
+\ifPst@moire@layer /layer true def \else /layer false def \fi
+/cm {\pst@number\psunit mul} bind def
+/xmax 5 cm round cvi def
+/ymax xmax def
+/GlassPattern {
+7 dict begin
+gsave  %%%%%%%%%%%%%% herbert
+/ty exch def
+/tx exch def
+/t exch def % theta degrees
+/b exch def
+/a exch def
+layer {
+\psk@moire@srand srand
+N_ {
+    /x rand 2 xmax mul mod xmax sub def % -xmax<x<xmax
+    /y rand 2 ymax mul mod ymax sub def % -ymax<y<ymax
+    /r rand 2147483647 div 2 mul def
+ dotcolor x y DOT
+   } repeat
+ } if
+% transformation
+a b scale t rotate tx ty translate
+\psk@moire@srand srand
+revealinglayer {
+N_{
+    /x rand 2 xmax mul mod xmax sub def % -xmax<x<xmax
+    /y rand 2 ymax mul mod ymax sub def % -ymax<y<ymax
+    /r rand 2147483647 div 2 mul def
+ dotcolor2 x y DOT
+    } repeat
+ } if
+grestore
+end
+ } def
+[\psk@moire@coefficients] length 3 eq {\psk@moire@coefficients 0 0} {\psk@moire@coefficients} ifelse
+GlassPattern
+ }% fin du code ps
+ \end@SpecialObj
+ }% % fin de la commande PSTricks
+ \catcode`\@=\PstAtCode\relax
+%% END: pst-moire.tex
+\endinput
+

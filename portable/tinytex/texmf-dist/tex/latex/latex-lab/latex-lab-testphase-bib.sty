@@ -1,0 +1,180 @@
+%%
+%% This is file `latex-lab-testphase-bib.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-bib.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-bib.dtx (C) Copyright 2023 LaTeX Project
+\def\ltlabbibdate{2025-05-09}
+\def\ltlabbibversion{0.81c}
+\ProvidesExplPackage {latex-lab-testphase-bib} {\ltlabbibdate} {\ltlabbibversion}
+  {Code related to the tagging of bibliography and cite command}
+\RequirePackage{latex-lab-testphase-block}
+\def\hyper@nopatch@bib{}
+
+\providecommand*\@extra@binfo{}%
+\providecommand\@extra@b@citeb{}
+\tl_new:N\l__tag_bib_citekey_tl
+\AddToHookWithArguments{cmd/@lbibitem/before}
+ {
+   \tl_set:Nn\l__tag_bib_citekey_tl{#2}
+ }
+\AddToHookWithArguments{cmd/@lbibitem/before}[latex-lab-testphase-bib/target]
+ {
+   \AddToHookNext{para/begin}
+     {
+       \makebox[0pt][r]{\MakeLinkTarget*{cite.#2\@extra@b@citeb}\hspace{\leftmargin}}
+     }
+ }
+\let\@kernel@copy@lbibitem\@lbibitem
+\AddToHookWithArguments{cmd/@bibitem/before}
+ {
+   \tl_set:Nn\l__tag_bib_citekey_tl{#1}
+ }
+\AddToHookWithArguments{cmd/@bibitem/before}[latex-lab-testphase-bib/target]
+ {
+   \AddToHookNext{para/begin}
+     {
+       \makebox[0pt][r]{\MakeLinkTarget*{cite.#1\@extra@b@citeb}\hspace{\leftmargin}}
+     }
+ }
+\let\@kernel@copy@bibitem\@bibitem
+\AddToHook{env/thebibliography/begin}
+  {
+    \cs_set:Npn \__block_list_item_begin:
+     {
+       \tag_struct_begin:n
+         {
+          tag=\LItag,
+          label= cite.\l__tag_bib_citekey_tl\@extra@b@citeb
+         }
+     }
+  }
+\NewMirroredHookPairWithArguments{bibcite/before}{bibcite/after}{2}
+\def\bibcite#1#2{%
+   \@newl@bel{b}{#1\@extra@binfo}{%
+      \UseHookWithArguments{bibcite/before}{2}{#1}{#2}
+       #2
+      \UseHookWithArguments{bibcite/after}{2}{#1}{#2}
+       }%
+     }%
+\let\@kernel@copy@bibcite\bibcite
+\AddToHookWithArguments{bibcite/before}
+  {
+    \tag_mc_end_push:
+    \exp_args:Ne\tagstructbegin{tag=Reference,ref=cite.#1\@extra@b@citeb}
+    \tagmcbegin{}
+  }
+\AddToHookWithArguments{bibcite/after}[tag]
+  {
+    \tag_mc_end:
+    \tagstructend
+    \tag_mc_begin_pop:n{}
+  }
+\AddToHook{package/hyperref/after}
+  {
+    \AddToHookWithArguments{bibcite/before}
+     {
+       \hyper@linkstart{cite}{cite.#1\@extra@b@citeb}
+     }
+    \AddToHookWithArguments{bibcite/after}{\hyper@linkend}
+  }
+\newcommand\hyper@natlinkstart[1]{}
+\newcommand\hyper@natlinkend{}
+\AddToHook{package/natbib/after}
+ {
+   \RemoveFromHook{cmd/@bibitem/before} [latex-lab-testphase-bib/target]
+   \RemoveFromHook{cmd/@lbibitem/before}[latex-lab-testphase-bib/target]
+ }
+\AddToHookWithArguments{cmd/hyper@natlinkstart/before}
+ {
+   \leavevmode
+   \tag_mc_end_push:
+   \exp_args:Ne\tag_struct_begin:n{tag=Reference,ref=cite.#1\@extra@b@citeb}
+   \tag_mc_begin:n{}
+ }
+\AddToHook{cmd/hyper@natlinkend/after}
+ {
+  \tag_mc_end:
+  \tag_struct_end:
+  \tag_mc_begin_pop:n{}
+ }
+
+\AddToHook{package/hyperref/after}
+  {
+    \renewcommand\hyper@natlinkstart[1]{}
+    \renewcommand\hyper@natlinkend{}
+    \AddToHookWithArguments{cmd/hyper@natlinkstart/before}
+      {
+        \Hy@backout{#1}%
+          \hyper@linkstart{cite}{cite.#1}%
+          \def\hyper@nat@current{#1}
+      }
+    \AddToHook{cmd/hyper@natlinkend/after}
+      {
+        \hyper@linkend
+      }
+  }
+
+\AddToHook{cmd/blx@bibinit/after}
+  {
+    \cs_set:Npn \__block_list_item_begin:
+     {
+       \xifinlist{\the\c@refsection @\abx@field@entrykey}{\blx@anchors}
+        {
+          \tag_struct_begin:n
+           {
+            tag=\LItag,
+           }
+        }
+        {
+          \tag_struct_begin:n
+           {
+            tag=\LItag,
+            label= cite.\the\c@refsection @\abx@field@entrykey
+           }
+        }
+     }
+  }
+\AddToHook{package/biblatex/after}
+ {
+  \appto\blx@mknohyperref
+   {
+    \let\blx@anchors\@empty
+    \protected\def\blx@anchor{%
+       \xifinlist{\the\c@refsection @\abx@field@entrykey}{\blx@anchors}
+         {}
+         {\listxadd\blx@anchors{\the\c@refsection @\abx@field@entrykey}}}%
+   }
+ }
+\endinput
+%%
+%% End of file `latex-lab-testphase-bib.sty'.

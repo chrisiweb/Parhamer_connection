@@ -1,0 +1,427 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Bibliography Facility
+%
+% Synopsis:  This module provides a new bibliography facility to replace
+%            zzbibtex. It is more flexible so that it can handle numeric,
+%            key, and author/year citations.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   1 December 2016
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Initialization
+%                       --------------
+
+
+\def \zbiblioinit {%
+  \if \definedp{\bibliodesign}%
+    \begingroup
+      \bibliodesign
+      \globaldefs = 1
+      \citestyle = \citestyle
+    \endgroup
+  \fi}
+
+%                       Bibliography Cross-Reference
+%                       ------------ ---------------
+
+
+% When tags are loaded, define the name \=zB:tag to contain the
+% bibliographic info in this format:
+%   folio\zmark key\zmark {author}{year}{full-author}
+
+\def \xrefbib #1#2#3#4{%                {folio}{key}{{author}{year}{full-author}}{tag}
+  \ifnum \xrefmode=\xrefloadtagmode
+    \if \definedp{\=zB:#4}\zduptag{#4}\fi
+    \withname\gdef{\=zB:#4}{#1\zmark#2\zmark#3}%
+  \fi}
+
+% This macro loads the cite cross-reference entries and invokes the
+% specified macro for each one.
+
+\def \mapxrefcites #1{%                                         {\macro}
+  {\let \zmapcitemacro = #1\relax
+  \zxloadcomp{\xrefloadcitemode}}}
+
+\def \xrefcite #1#2#3#4{%                                       {page}{}{}{tag}
+  \ifnum \xrefmode=\xrefloadcitemode
+    \zmapcitemacro{#1}{#4}%
+  \fi}
+
+%                       Biblio Block
+%                       ------ -----
+
+
+\defineblock{\biblio}{\endbiblio}{\false}{}
+
+%~block biblio
+% \citestyle = integer                  % Citation style.
+% \setflag \indexcites = boolean        % If true, index each cite (not implemented).
+% \setflag \citeself = boolean          % If true, \bibitem cites itself (not implemented).
+%~end
+
+\definecount{\citestyle}{-1}
+
+\chardef \citebynumber     = 0
+\chardef \citebykey        = 1
+\chardef \citebyauthoryear = 2
+
+
+\def \biblio {%
+  \blockcantbein{\biblio}{\biblio}%
+  \blockmustbein{\biblio}{\list}%
+  \beginblockscope{biblio}%
+  \global\increment \bibliodepth
+  \setflag \citeself = \false                   %~default soft
+  \processdesign{\biblio}{}%
+  \global\increment \biblionumber}
+
+\def \endbiblio {%
+  \endgraf
+  \fakepar                                      % In case biblio is empty.
+  \global\decrement \bibliodepth
+  \endblockscope{biblio}}
+
+%                       Bibliography Items
+%                       ------------ -----
+
+
+\definecount{\zbibitemnumber}{0}
+\definetoks{\zbibauthor}
+\definetoks{\zbibyear}
+\definetoks{\zbibfullauthor}
+\definetoks{\bibitemtag}                        % Tag of current \bibitem.
+
+
+%~ The |\bibitem| command is used in a |\biblio| block to start
+%~ each entry in the bibliography. It takes two arguments; the
+%~ format of the first argument depends on the citation style.
+%~ * Cited by number: |\bibitem{}{*tag*}|
+%~ * Cited by key: |\bibitem{*key*}{*tag*}|
+%~ * Cited by author/year: |\bibitem{*author*;*year*;*full-author*}{*tag*}|
+%~ *.
+%~ In the author/year format, the second semicolon and *full-author* are
+%~ optional.
+
+\def \bibitem #1#2{%                            {[info]}{tag}
+  \blockmustbein{\bibitem}{\biblio}%
+  \zbibitemnumber = \itemnumber
+  \increment \zbibitemnumber
+  \ifcase \citestyle
+    \edef \zbibkey {\the\zbibitemnumber}%
+    \zbibauthor = {}%
+    \zbibyear = {}%
+    \zbibfullauthor = {}%
+  \or
+    \def \zbibkey {#1}%
+    \zbibauthor = {}%
+    \zbibyear = {}%
+    \zbibfullauthor = {}%
+  \or
+    \def \zbibkey {}%
+    \zparseauthoryear #1;;;\zmark
+  \else
+    \error{invalidcitestyle}{The \string\citestyle parameter is invalid: \the\citestyle}%
+  \fi
+  \bibitemtag = {#2}%
+  \item{\zbibkey}%
+  \if \PDFhyperlinks \PDFmark{T:#2}\fi
+  \if \notp{\emptyargp{#2}}%
+    \edef \znext {%
+      \noexpand\xref{bib}{\noexpand\folio}
+                         {\zbibkey}
+                         {{\the\zbibauthor}{\the\zbibyear}{\the\zbibfullauthor}}
+                         {#2}}%
+    \znext
+  \fi
+%%%  \if \indexcites
+%%%    \edef \znext {\noexpand\xbiblio1{\the\zbibauthor}}%
+%%%    \znext
+%%%  \fi
+  \ignorespaces}
+
+\def \zparseauthoryear #1;#2;#3;#4\zmark{%
+  \if \orp{\emptyargp{#1}}{\emptyargp{#2}}%
+    \error{nocitetags}{The author and/or year are missing}%
+  \fi
+  \zbibauthor = {#1}%
+  \zbibyear = {#2}%
+  \zbibfullauthor = {#3}}
+
+%                       Bibliography Citation Page List
+%                       ------------ -------- ---- ----
+
+
+\setflag \zcitexrefsloaded = \false
+
+
+%~ If this macro is specified as the |\endpartext| of a bibliography
+%~ |\list|, then each entry in the bibliography will include a list
+%~ of the pages citing that entry. The argument determines whether
+%~ each page is made into a hyperlinked PDF button.
+%~
+%~ In order for the citation information to be available, the
+%~ |\xrefcites| document parameter must be set to 1.
+
+\def \citepagelist #1{%                                 {button?}
+  \if \notp{\zcitexrefsloaded}%
+    \mapxrefcites{\zbibcitelist}%
+    \global\setflag \zcitexrefsloaded = \true
+  \fi
+  \setflag \zbibfirstpage = \true
+  \def \zbibprevpage {}%
+  \withname\maplistlf {\=citetag:\the\bibitemtag}
+                      {\zbibcitepage{##1}{#1}}}
+
+\def \zbibcitelist #1#2{%                               {page}{tag}
+  \if \withname\undefinedp {\=citetag:#2}%
+    \withname\setlist {\=citetag:#2}={}%
+  \fi
+  \withname\appendlf {\=citetag:#2}{#1}}
+
+\def \zbibcitepage #1#2{%                               {page}{button?}
+  \stringeql{\zsamepage}{#1}{\zbibprevpage}%
+  \if \notp{\zsamepage}%
+    \if \notp{\emptydefp{\zbibprevpage}},\space \fi
+    \if #2%
+      \pagebutton{#1}{#1}%
+    \else
+      #1%
+    \fi
+    \def \zbibprevpage {#1}%
+  \fi}
+
+%                       Low-Level Citation Commands
+%                       --------- -------- --------
+
+
+%~ This command produces the key of the bibliography entry specified
+%~ by the *tag*. The command makes sense only for the numbered or
+%~ keyed citation styles.
+
+\def \citekey #1{%                                      {tag} %^citation
+  \if \eqlp{\citestyle}{\citebyauthoryear}%
+    \warning{badcitekey}{The \noexpand\citekey command doesn't make sense
+                         when citing by author/year}%
+  \fi
+  \zcitetaginfo{#1}%
+  \zcitetext{#1}{\zcitekey}%
+  \zxrefcite{\true}{#1}}
+%%%  \if \indexcites \zciteindex{\zcitekey}\fi}
+
+%~ This command produces the author of the bibliography entry specified
+%~ by the *tag*. The command makes sense only for the author/year
+%~ citation style.
+
+\def \citeauthor #1{%                                      {tag} %^citation
+  \if \neqlp{\citestyle}{\citebyauthoryear}%
+    \warning{badciteauthor}{The \noexpand\citeauthor command only makes sense
+                            when citing by author/year}%
+  \fi
+  \zcitetaginfo{#1}%
+  \zcitetext{#1}{\zciteauthor}%
+  \zxrefcite{\true}{#1}}
+
+%~ This command produces the year of the bibliography entry specified
+%~ by the *tag*. The command makes sense only for the author/year
+%~ citation style.
+
+\def \citeyear #1{%                                      {tag} %^citation
+  \if \neqlp{\citestyle}{\citebyauthoryear}%
+    \warning{badciteyear}{The \noexpand\citeyear command only makes sense
+                          when citing by author/year}%
+  \fi
+  \zcitetaginfo{#1}%
+  \zcitetext{#1}{\zciteyear}%
+  \zxrefcite{\true}{#1}}
+
+%~ This command produces the full author of the bibliography entry specified
+%~ by the *tag*. The command makes sense only for the author/year
+%~ citation style.
+
+\def \citefullauthor #1{%                                      {tag} %^citation
+  \if \neqlp{\citestyle}{\citebyauthoryear}%
+    \warning{badcitefullauthor}{The \noexpand\citefullauthor command only makes sense
+                                when citing by author/year}%
+  \fi
+  \zcitetaginfo{#1}%
+  \zcitetext{#1}{\zcitefullauthor}%
+  \zxrefcite{\true}{#1}}
+
+\def \zcitetaginfo #1{%                                 {tag}
+  \zcitenoinfo
+  \if \definedp{\=zB:#1}%
+    \expandafterthrice\zcitetaginfoa \name{\=zB:#1}%
+  \else
+    \writelog{ZzTeX citation: undefined tag `#1'.}%
+    \zxwriteinfo{\false}{undef-tag}{#1}{}%
+    \global\increment \zuntagrefs
+  \fi}
+
+\def \zcitetaginfoa #1\zmark#2\zmark#3#4#5{% folio\zmark key\zmark
+                                           % {author}{year}{full-author}
+  \if \eqlp{\citestyle}{\citebyauthoryear}%
+    \def \zciteauthor     {#3}%
+    \def \zciteyear       {#4}%
+    \def \zcitefullauthor {#5}%
+  \else
+    \def \zcitekey        {#2}%
+  \fi}
+
+\def \zcitenoinfo {%
+  \def \zcitekey        {???}%
+  \def \zciteauthor     {???author???}%
+  \def \zciteyear       {???}%
+  \def \zcitefullauthor {???full-author???}}
+
+\def \zcitetext #1#2{%                                  {tag}{text}
+  \if \DVIWindoinuse \colorspecial{ifview color push rgb .5 .22 .24}\fi
+  \if \PDFhyperlinks
+    \tagbutton{#1}{#2}%
+  \else
+    #2%
+  \fi
+  \if \DVIWindoinuse \colorspecial{ifview color pop}\fi}
+
+\def \zxrefcite #1#2{%                                  {defined?}{tag}
+  \ifcase \xrefcites
+    \relax
+  \or
+    \xref{cite}{\folio}{}{}{#2}%
+  \else
+    \customcitexref{#1}{#2}%                            {boolean}{tag}
+  \fi}
+
+%%%\def \zciteindex #1{%                           {\zcitemacro}
+%%%  \expandafter\xcite\expandafter1\expandafter{#1}}
+
+%                       High-Level Citation Commands
+%                       ---------- -------- --------
+
+
+%~ This high-level citation command produces the key or author/year
+%~ of the bibliography entry specified by the *tag*. The text
+%~ is formatted in the style appropriate for a noun in a sentence.
+%~ There are two formats for the command:
+%~ * |\citenoun{*tag*}| accepts a tag and produces the key or author/year.
+%~ * |\citenoun{*tag*;*info*}| accepts a tag and additional 
+%~ information such as a page number or section reference.
+%~ *.
+%~ The format of the text produced is controlled by the |\citenounformat|,
+%~ |\citenouninfoformat|, and |\citepunct| macros in the design file.
+
+\def \citenoun #1{%                             {tag[;info]} %^citation
+  \expandafter\zsetcitepunc \citepunct
+  \zcitetagsinfo #1;;\zmark
+  \def \zcitenounsep {}%
+  \expandafter\zcitenoun \zcitetags,\zmark}
+
+\def \zcitenoun #1,#2\zmark {%                  tag,other-tags\zmark
+  \zcitenounsep
+  \edef \zcitenounsep {\zcitesep}%
+  \if \eqlp{\citestyle}{\citebyauthoryear}%
+    \if \emptydefp{\zciteinfo}%
+      \zciteonetag{\citenounformat}#1!!\zmark
+    \else
+      \citenouninfoformat{\citeauthor{#1}}{\citeyear{#1}}{\zciteinfo}%
+    \fi
+  \else
+    \if \emptydefp{\zciteinfo}%
+      \citenounformat{\citekey{#1}}%
+    \else
+      \citenouninfoformat{\citekey{#1}}{\zciteinfo}%
+    \fi
+  \fi
+  \if \notp{\emptyargp{#2}}\zcitenoun #2\zmark \fi}
+
+%~ This high-level citation command produces the key or author/year
+%~ of the bibliography entry specified by the *tag*. The text
+%~ is formatted in the style appropriate for a parenthetical
+%~ citation list. There are two formats for the command:
+%~ * |\citeparen{*tag-list*}| accepts one or more tags separated
+%~ by commas and produces a parenthetical list of keys or author/years.
+%~ * |\citeparen{*tag*;*info*}| accepts a tag and additional 
+%~ information such as a page number or section reference.
+%~ *.
+%~ The format of the text produced is controlled by the |\citeparenformat|,
+%~ |\citepareninfoformat|, and |\citepunct| macros in the design file.
+
+\def \citeparen #1{%                            {tags[;info]} %^citation
+  \expandafter\zsetcitepunc \citepunct
+  \zcitetagsinfo #1;;\zmark
+  \expandafter\zciteparen \zcitetags,\zmark
+  \zcitecfence}
+
+\def \zciteparen #1,#2\zmark {%                 tag,other-tags\zmark
+  \zciteofence
+  \edef \zciteofence {\zcitesep}%
+  \if \eqlp{\citestyle}{\citebyauthoryear}%
+    \if \emptydefp{\zciteinfo}%
+      \zciteonetag{\citeparenformat}#1!!\zmark
+    \else
+      \citepareninfoformat{\citeauthor{#1}}{\citeyear{#1}}{\zciteinfo}%
+    \fi
+  \else
+    \if \emptydefp{\zciteinfo}%
+      \citeparenformat{\citekey{#1}}%
+    \else
+      \citepareninfoformat{\citekey{#1}}{\zciteinfo}%
+    \fi
+  \fi
+  \if \notp{\emptyargp{#2}}\zciteparen #2\zmark \fi}
+
+%~ This high-level citation command produces the key or author/year
+%~ of the bibliography entry specified by the *tag*. The text
+%~ is formatted in the style appropriate for a citation that is part
+%~ of a surrounding parenthetical sentence.
+%~ There are two formats for the command:
+%~ * |\citeplain{*tag*}| accepts a tag and produces the key or author/year.
+%~ * |\citeplain{*tag*;*info*}| accepts a tag and additional 
+%~ information such as a page number or section reference.
+%~ *.
+%~ The format of the text produced is controlled by the |\citeplainformat|
+%~ and |\citeplaininfoformat| macros in the design file.
+
+\def \citeplain #1{%                            {tag[;info]} %^citation
+  \zcitetagsinfo #1;;\zmark
+  \expandafter\zciteplain \zcitetags,\zmark}
+
+\def \zciteplain #1,#2\zmark {%                 tag,other-tags\zmark
+  \if \eqlp{\citestyle}{\citebyauthoryear}%
+    \if \emptydefp{\zciteinfo}%
+      \zciteonetag{\citeparenformat}#1!!\zmark
+    \else
+      \citepareninfoformat{\citeauthor{#1}}{\citeyear{#1}}{\zciteinfo}%
+    \fi
+  \else
+    \if \emptydefp{\zciteinfo}%
+      \citeparenformat{\citekey{#1}}%
+    \else
+      \citepareninfoformat{\citekey{#1}}{\zciteinfo}%
+    \fi
+  \fi
+  \if \notp{\emptyargp{#2}}\zciteplain #2\zmark \fi}
+
+\def \zsetcitepunc #1#2#3{%
+  \def \zciteofence {#1}%
+  \def \zcitecfence {#2}%
+  \def \zcitesep    {#3}}
+
+\def \zcitetagsinfo #1;#2;#3\zmark {%           {tags[;info]}
+  \if \emptyargp{#1}%
+    \warning{nocitetags}{No bibliography entry tags were specified}%
+  \fi
+  \def \zcitetags {#1}%
+  \def \zciteinfo {#2}}
+
+\def \zciteonetag #1#2!#3!#4\zmark {%
+  \if \emptyargp{#2}%
+    \citeyear{#3}%
+  \else
+    #1{\citeauthor{#2}}{\citeyear{#2}}%
+  \fi}

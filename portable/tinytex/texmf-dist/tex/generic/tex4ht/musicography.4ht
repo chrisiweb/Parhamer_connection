@@ -1,0 +1,84 @@
+% musicography.4ht (2022-11-28-13:11), generated from tex4ht-4ht.tex
+% Copyright 2022 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2022-11-28-13:11}
+
+\NewConfigure{musSymbol}{2}
+\NewDocumentCommand{\:musSymbol}{ O{\musFont} m m m m }{%
+  \a:musSymbol\o:musSymbol:[#1]{#2}{#3}{#4}{#5}\b:musSymbol%
+}
+
+\NewConfigure{musFlaggedNote}{2}
+\NewDocumentCommand{\:musFlaggedNote}{ m m }{%
+  \a:musFlaggedNote\o:musFlaggedNote:{#1}{#2}\b:musFlaggedNote
+}
+\HLet\musFlaggedNote\:musFlaggedNote
+
+
+\NewConfigure{musStemmedNote}{2}
+\NewDocumentCommand{\:musStemmedNote}{ m }{%
+  \a:musStemmedNote\o:musStemmedNote:{#1}\b:musStemmedNote%
+}
+
+\HLet\musStemmedNote\:musStemmedNote
+
+
+\NewConfigure{musDottedNote}{2}
+\NewDocumentCommand{\:musDottedNote}{ m }{%
+  \a:musDottedNote\o:musDottedNote:{#1}\b:musDottedNote%
+}
+
+\HLet\musDottedNote\:musDottedNote
+
+
+\NewConfigure{musStack}{2}
+\NewDocumentCommand{\:musStack}{ O{\musNumFont} m }{%
+  \a:musStack\o:musStack:[#1]{#2}\b:musStack%
+}
+
+\HLet\musStack\:musStack
+
+\NewConfigure{meterCplus}{2}
+\NewDocumentCommand{\:meterCplus}{ m }{\a:meterCplus\o:meterCplus:{#1}\b:meterCplus}
+\HLet\meterCplus\:meterCplus
+
+
+\Configure{musStack}{\Picture+{}}{\EndPicture}
+\Css{.mustack{display:block-inline}}
+\Configure{musDottedNote}{\Picture+{}}{\EndPicture}
+\Configure{musStemmedNote}{\Picture+{}}{\EndPicture}
+\Configure{musFlaggedNote}{\Picture+{}}{\EndPicture}
+\Configure{musSymbol}{\Picture+{}}{\EndPicture}
+\Configure{meterCplus}{\Picture+{}}{\EndPicture}
+
+
+% \def\:tempa#1#2{%
+% \def\:tempb{\x:unicode{#2}}%
+% \HLet#1\:tempb%
+% }
+% these characters are strange, they seems to overlap with the following character, and they are too small
+% it is probably better to use images
+% \:tempa\musEighth{1D160}
+% \:tempa\musSixteenth{1D161}
+% \:tempa\musThirtySecond{1D162}
+% \:tempa\musSixtyFourth{1D163}
+
+
+\Hinput{musicography}
+\endinput
+

@@ -1,0 +1,140 @@
+%%
+%% This is file `pst-lsystem.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-lsystem.tex'
+%%
+%% Herbert Voss <herbert -> dante.de>
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-lsystem' is a PSTricks package for lsystem macros
+%%
+%%
+\csname PSTlsystemLoaded\endcsname
+\let\PSTlsystemLoaded\endinput
+% Requires PSTricks
+\ifx\PSTricksLoaded\endinput\else\input pstricks.tex\fi
+\ifx\PSTXKeyLoaded\endinput\else\input pst-xkey.tex \fi
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+% interface to the `xkeyval' package
+\pst@addfams{pst-lsystem}
+
+\def\fileversion{0.02}
+\def\filedate{2018/12/31}
+\message{`PST-lsystem' v\fileversion, \filedate\space (hv)}
+%
+\pstheader{pst-lsystem.pro}
+%
+\def\pst@lsystem@checkRule#1#2{%
+  \def\pst@tempg{}%
+  \pst@cntm=0
+  \ifx\relax#2\relax\else\pst@lsystem@@checkRule#2;\fi
+%  \let#1\pst@tempg
+%  \@namedef{\expandafter\@gobble\detokenize\expandafter{\string#1number}}{\the\pst@cntm}%
+  \expandafter\let\csname#1\endcsname\pst@tempg
+  \global\expandafter\edef\csname#1number\endcsname{\the\pst@cntm}%
+}
+\def\pst@lsystem@@checkRule#1#2;{%[A
+  \ifx#1[ \edef\pst@tempg{\pst@tempg\space B}%
+  \else 
+    \ifx#1] \edef\pst@tempg{\pst@tempg\space E}%
+    \else 
+      \edef\pst@tempg{\pst@tempg\space #1}%
+      \ifcat A#1\global\advance\pst@cntm by 1\fi
+    \fi
+  \fi
+  \ifx\relax#2\relax \else\pst@lsystem@@checkRule#2;\fi
+}
+%
+\define@key[psset]{pst-lsystem}{F}[]{\pst@lsystem@checkRule{psk@lsystem@F}{#1}}
+\define@key[psset]{pst-lsystem}{X}[]{\pst@lsystem@checkRule{psk@lsystem@X}{#1}}
+\define@key[psset]{pst-lsystem}{Y}[]{\pst@lsystem@checkRule{psk@lsystem@Y}{#1}}
+\define@key[psset]{pst-lsystem}{Start}[]{\pst@lsystem@checkRule{psk@lsystem@Start}{#1}}
+\define@key[psset]{pst-lsystem}{Angle}[45]{\def\psk@lsystem@Angle{#1 }}
+\define@key[psset]{pst-lsystem}{N}[5]{\def\psk@lsystem@N{#1 }}
+\define@key[psset]{pst-lsystem}{Ftype}[4]{\def\psk@lsystem@Ftype{#1 }}
+\define@key[psset]{pst-lsystem}{N2}[4]{\def\psk@lsystem@Nii{#1 }}
+\define@key[psset]{pst-lsystem}{BaseLength}[1mm]{\pst@getlength{#1}\psk@lsystem@BaseLength}
+\psset[pst-lsystem]{F={},X={},Y={},Start={},Angle=45,N=5,Ftype=4,BaseLength=1mm}
+%
+\define@key[psset]{pst-lsystem}{usecolor}[0]{\def\psk@lsystem@color{#1}}% 0 is no color
+%
+\define@key[psset]{pst-lsystem}{order}[5]{\pst@getint{#1}\psk@lsystem@order}
+\psset[pst-lsystem]{order=5,usecolor=0}
+%
+\def\pslsystem{\def\pst@par{}\pst@object{pslsystem}}
+\def\pslsystem@i{\@ifnextchar(\pslsystem@ii{\pslsystem@ii(0,0)}}%
+\def\pslsystem@ii(#1){%  #1: origin of starting point 
+  \begin@SpecialObj
+  \pst@getcolor{\pslinecolor}\psk@linecolor
+  \pst@getcoor{#1}\pst@tempA
+  \addto@pscode{
+    \pst@tempA\space  /yOrig ED /xOrig ED
+    tx@lsystemDict begin 
+    /order \psk@lsystem@order\space def
+    /N \psk@lsystem@N def
+    /Ftype \psk@lsystem@Ftype def
+    /angle \psk@lsystem@Angle def
+    /START {\psk@lsystem@Start } bind def
+    /Element { \psk@lsystem@BaseLength } def
+    \ifcase\psk@lsystem@Ftype
+      /F { D } def 
+    \or %1
+      /F { 0 eq { D } if } def 
+    \or %2
+      /F { dup 0 eq { D } if } def 
+    \or %3
+      /F { pop D } def 
+    \else %4
+        /F { dup 0 eq { D }{ 1 sub \psk@lsystem@Fnumber {dup} repeat \psk@lsystem@F } ifelse pop } def
+    \fi
+    /X { dup 0 ne { 1 sub \psk@lsystem@Xnumber { dup } repeat \psk@lsystem@X } if pop } def
+    /Y { dup 0 ne { 1 sub \psk@lsystem@Ynumber { dup } repeat \psk@lsystem@Y } if pop } def
+    /START {\psk@lsystem@Start } def
+    1 setlinejoin
+    1 setlinecap
+% define a color procedure.  Parameter is depth.  BW used if no color defined
+    \ifcase\psk@lsystem@color
+      /color { pop \pst@usecolor\psk@linecolor } def
+    \or
+      /color { % random branches
+        pop 3 {rand 100 mod 100 div} repeat setrgbcolor
+      } def 
+    \or 
+      /color { % random subtrees
+        2 eq {3 {rand 100 mod 100 div} repeat setrgbcolor} if
+      } def 
+    \or
+      /color { % lighter green towards leaves, linear
+        order exch sub order 2 mul div 1 3 div exch .7 exch sethsbcolor
+      } def
+    \or
+      /color { % lighter green towards leaves, exponential
+        neg 1.5 exch exp 2 div 1 3 div exch .7 exch sethsbcolor
+      } def
+    \else
+      /color { pop \pst@usecolor\psk@linecolor } def
+    \fi
+    xOrig yOrig moveto
+    90 rotate
+    N START
+    end
+    \pst@number\pslinewidth SLW
+    \pst@usecolor\psk@linecolor
+  }%
+  \pst@stroke
+  \end@SpecialObj}
+%
+%
+\catcode`\@=\PstAtCode\relax
+%
+%% END: pst-lsystem.tex
+\endinput
+%
+

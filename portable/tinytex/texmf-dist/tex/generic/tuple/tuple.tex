@@ -1,0 +1,1157 @@
+% !TeX encoding = UTF-8
+% Ce fichier contient le code de l'extension "tuple"
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                    %
+\def\tplname                      {tuple}                            %
+\def\tplversion                    {0.2}                             %
+%                                                                    %
+\def\tpldate                    {2024/12/20}                         %
+%                                                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%____________________________________________________________________
+% Author     : Christian Tellechea                                   |
+% Status     : Maintained                                            |
+% Email      : unbonpetit@netc.fr                                    |
+% Package URL: https://www.ctan.org/pkg/tuple                        |
+% Copyright  : Christian Tellechea 2024                              |
+% Licence    : Released under the LaTeX Project Public License v1.3c |
+%              or later, see http://www.latex-project.org/lppl.txt   |
+% Files      : 1) tuple.tex                                          |
+%              2) tuple.sty                                          |
+%              3) README                                             |
+%              4) tuple-doc-fr.tex                                   |
+%              5) tuple-doc-fr.pdf                                   |
+%              6) tuple-doc-en.tex                                   |
+%              7) tuple-doc-en.pdf                                   |
+%--------------------------------------------------------------------
+
+\csname tpl_load_once\endcsname
+\expandafter\let\csname tpl_load_once\endcsname\endinput
+
+\expandafter\edef\csname tpl_restorecatcode\endcsname{\catcode\number`\_=\the\catcode`\_\relax }
+\catcode`\_11
+
+\def\tpl_exec_first\fi\tpl_exec_second#1#2{\fi#1}
+\def\tpl_exec_second#1#2{#2}
+\ifdefined\tpl_fromsty\tpl_exec_first\fi\tpl_exec_second
+	{%
+	\def\tpl_error#1{\PackageError\tplname{#1}{Read the \tplname\space manual}}% pour LaTeX
+	}
+	{%
+	\def\tpl_error#1{\errmessage{Package \tplname\space Error: #1^^J}}% pour TeX
+	\immediate\write -1 {Package: \tpldate\space v\tplversion\space Expandable operations for tuples of numbers (CT)}%
+	\input expl3-generic.tex % pour fp
+	}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%           Macros diverses           %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tpl_stripsp#1{%
+	\def\tpl_stripsp##1##2{\expanded{\tpl_stripsp_i\_marksp##2\__nil\_marksp#1\_marksp\_nil{##1}}}%
+	\def\tpl_stripsp_i##1\_marksp#1##2\_marksp##3\_nil{\tpl_stripsp_ii##3##1##2\__nil#1\__nil\_nil}%
+	\def\tpl_stripsp_ii##1#1\__nil##2\_nil{\tpl_stripsp_iii##1##2\_nil}%
+	\def\tpl_stripsp_iii##1##2\__nil##3\_nil##4{\unexpanded{##4{##2}}}%
+}
+\tpl_stripsp{ }
+\def\tpl_swaparg#1#2{#2{#1}}
+\def\tpl_e_second#1#2{\expandafter\tpl_swaparg\expandafter{#2}{#1}}
+\def\tpl_x_second#1#2{\expandafter\tpl_swaparg\expandafter{\expanded{#2}}{#1}}
+\def\tpl_swaptwo#1#2{#2#1}
+\def\tpl_e_after#1#2{\expandafter\tpl_swaptwo\expandafter{#2}{#1}}
+\def\tpl_x_after#1#2{\expandafter\tpl_swaptwo\expandafter{\expanded{#2}}{#1}}
+\def\tpl_error_inmethod#1{{\tpl_error{#1}}{-1}}
+\def\tpl_gobone#1{}
+\def\tpl_gobtonil#1\_nil{}
+\def\tpl_firsttonil#1#2\_nil{#1}
+\def\tpl_antefi#1\fi{\fi#1}
+\def\tpl_testifx#1{\ifx#1\tpl_exec_first\fi\tpl_exec_second}
+\def\tpl_testifnum#1{\ifnum#1\tpl_exec_first\fi\tpl_exec_second}
+\def\tpl_testifcsname#1{\ifcsname#1\endcsname\tpl_exec_first\fi\tpl_exec_second}
+\def\tpl_cs_enxp#1{\expandafter\noexpand\csname#1\endcsname}
+\def\tpl_ifempty#1#2#3{\tpl_ifempty_a#1\_YN{#3}\_YN{#2}\_nil}
+\def\tpl_ifempty_a#1#2\_YN#3#4\_nil{#3}
+\def\tpl_foreach#1\in#2\do#3{% #1=macro recevant chaque élément #2=liste d'éléments #3=code
+	\def\tpl_foreach_a##1,{%
+		\ifx\tpl_foreach_a##1\else
+			\def#1{##1}%
+			#3%
+			\expandafter\tpl_foreach_a
+		\fi
+	}%
+	\expandafter\tpl_foreach_a#2,\tpl_foreach_a,% 1-développer #2 au cas où...
+}
+
+%---------------
+% indexage développable d'un tuple
+%---------------
+\def\tpl_index_tuple#1{\tpl_index_tuple_a0#1,\relax,}%
+\def\tpl_index_tuple_a#1#2,{% TODO : le faire 8 par 8 ?
+	\ifx\relax#2\else
+		\tpl_antefi
+		#1:#2,\tpl_e_second\tpl_index_tuple_a{\the\numexpr#1+1}%
+	\fi%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%            Choix options            %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tpl_testifstreq#1#2{% teste si #1=#2
+	\tpl_stripsp{\def\tpl__tmpa}{#1}%
+	\tpl_stripsp{\def\tpl__tmpb}{#2}%
+	\tpl_testifx{\tpl__tmpa\tpl__tmpb}
+}
+\def\tplsetmode#1{%
+	\tpl_testifstreq{#1}{int}
+		{%
+		\tpl_set_mode_a#1:\_nil
+		}
+		{%
+		\tpl_ifddot{#1}
+			{\tpl_set_mode_a#1\_nil}
+			{\tpl_error{":" expected in "\detokenize{#1}"}}%
+		}%
+}
+\def\tpl_set_mode_a#1:#2\_nil{%
+	\let\tpl_expr_eval\fpeval
+	\tpl_testifstreq{#1}{int}
+		{%
+		\def\tplfpcompare##1##2##3{\ifnum##1##2##3 \tpl_exec_first\fi\tpl_exec_second}%
+		\def\tpl_item_add##1##2{\the\numexpr##1+##2\relax}%
+		\def\tpl_item_addsq##1##2{\the\numexpr##1+##2*##2\relax}%
+		}
+		{%
+		\tpl_testifstreq{#1}{dec}
+			{%
+			\tpl_testifstreq{#2}{long}
+				{%
+				\tpl_e_after{\let\tplfpcompare}{\csname fp_compare:nNnTF\endcsname}%
+				\def\tpl_item_add##1##2{\fpeval{##1+##2}}%
+				\def\tpl_item_addsq##1##2{\fpeval{##1+##2*##2}}%
+				}
+				{%
+				\tpl_testifstreq{#2}{short}
+					{%
+					\def\tplfpcompare##1##2##3{\ifdim##1pt##2##3pt \tpl_exec_first\fi\tpl_exec_second}%
+					\let\tpl_item_add\tpl_short_short_add
+					\def\tpl_item_addsq##1##2{\tpl_x_second\tpl_short_short_add{\tpl_short_mult{##2}{##2}}{##1}}%
+					}%
+					{%
+					\tpl_error{number 'short' or 'long' expected in '\detokenize{#1:#2}'}%
+					}%
+				}%
+			}
+			{%
+			\tpl_error{number "long" or "dec" expected in "\detokenize{#1:#2}"}%
+			}%
+		}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%   Moteur rudimentaire de calcul    %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%      Macros développables sur les
+%        décimaux courts "#8.#8"
+\def\tpl_gob_zeros#1{%
+	\tpl_testifx{0#1}
+		\tpl_gob_zeros
+		{\tpl_testifx{\empty#1}0{#1}}%
+}
+\def\tpl_split_iv_iv#1{\tpl_split_iv_iv_a#1{}{}{}{}{}{}{}{}{}\_nil}% coupe le nombre #1 en 2 nombres de 4 chiffres
+\def\tpl_esplit_iv_iv#1{\expandafter\tpl_split_iv_iv_a#1{}{}{}{}{}{}{}{}{}\_nil}% coupe le nombre #1 en 2 nombres de 4 chiffres
+\def\tpl_split_iv_iv_a#1#2#3#4#5#6#7#8#9{\tpl_split_iv_iv_b#9#8#7#6#5#4#3#2#1000000000}
+\def\tpl_split_iv_iv_b#1#2#3#4#5#6#7#8#9{{#9#8#7#6#5}{#4#3#2#1}\tpl_gobtonil}
+
+\def\tpl_pack_iv_iv#1{\tpl_pack_iv_iv_a#100000000\_nil}
+\def\tpl_pack_iv_iv_a#1#2#3#4#5#6#7#8{{#1#2#3#4}{#5#6#7#8}\tpl_gobtonil}
+%---------------
+% multiplication #8.#8 * #8*#8 -> #16.#8
+%---------------
+\def\tpl_ifdot#1#2#3{\tpl_ifdot_a#1\_YN{#2}\mark_dot.\_YN{#3}\mark_dot\_nil}% #1 contient-il "." ? #2=T #3=F
+\def\tpl_ifdot_a#1.#2\_YN#3\mark_dot#4\_nil{#3}%
+
+\def\tpl_hi#1{\expandafter\tpl_hi_a\the\numexpr#1\relax{}{}{}{}{}{}{}{}{}\_nil}
+\def\tpl_hi_a#1#2#3#4#5#6#7#8#9{\tpl_hi_b#9#8#7#6#5#4#3#2#1000000000}
+\def\tpl_hi_b#1#2#3#4#5#6#7#8#9{#9#8#7#6#5\tpl_gobtonil}
+
+\def\tpl_pack_hi_unpack_lo#1#2{\expandafter\tpl_pack_hi_unpack_lo_a\the\numexpr#2\relax{}{}{}{}{}{}{}{}{}\_nil{#1}}
+\def\tpl_pack_hi_unpack_lo_a#1#2#3#4#5#6#7#8#9{\tpl_pack_hi_unpack_lo_b#9#8#7#6#5#4#3#2#1000000000}
+\def\tpl_pack_hi_unpack_lo_b#1#2#3#4#5#6#7#8#9{\tpl_pack_hi_unpack_lo_c{#9#8#7#6#5}{#4#3#2#1}}
+\def\tpl_pack_hi_unpack_lo_c#1#2#3\_nil#4{#4{#1}#2}
+
+\def\tpl_short_mult#1#2{% #1=a,b #2=c,d  (a,b,c,d 8 chiffres max chacun)
+	\tpl_short_mult_a#1\relax#2\relax
+}
+\def\tpl_short_mult_a#1#2\relax#3#4\relax{%
+	\tpl_x_after\tpl_short_mult_b{\unless\ifx-#1+\fi#1#2\relax\unless\ifx-#3+\fi#3#4\relax}%
+}
+\def\tpl_short_mult_b#1#2\relax#3#4\relax{%
+	\unless\ifx#1#3-\fi
+	\tpl_x_after\tpl_short_mult_c{0#2\tpl_ifdot{#2}{}{.0}\relax0#4\tpl_ifdot{#4}{}{.0}\relax}%
+}
+\def\tpl_short_mult_c#1.#2\relax#3.#4\relax{% #1=hi(a)
+	\tpl_x_after\tpl_short_mult_d{\tpl_split_iv_iv{#1}\tpl_pack_iv_iv{#2}\tpl_split_iv_iv{#3}\tpl_pack_iv_iv{#4}}%
+}
+\def\tpl_short_mult_d#1#2#3#4#5#6#7#8{%  #1=a1 #2=a0 . #3=b1 #4=b0
+%                                     *  #5=c1 #6=c0 . #7=d1 #8=d0
+	\tpl_pack_hi_unpack_lo{\tpl_short_mult_e{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}}{%
+		#8*#2+#3*#7+#6*#4+\tpl_hi{#8*#3+#7*#4+\tpl_hi{#4*#8}}% d0a0 + d1b1 +c0b0 + hi(d0b1 + d1b0 + hi(b0d0))
+		}%
+}
+\def\tpl_short_mult_e#1#2#3#4#5#6#7#8#9{%  #1=a1 #2=a0 . #3=b1 #4=b0 * #5=c1 #6=c0 . #7=d1 #8=d0 #9=retenue pour rang suivan
+	\tpl_pack_hi_unpack_lo{\tpl_short_mult_f{#1}{#2}{#3}{#5}{#6}{#7}}{#9+#8*#1+#7*#2+#6*#3+#5*#4}% d0a1+d1a0+c0b1+c1b0
+}
+\def\tpl_short_mult_f#1#2#3#4#5#6#7{% #1=a1 #2=a0 #3=b1 #4=c1 #5=c0 #6=d1 #7=retenue
+	\tpl_pack_hi_unpack_lo{\tpl_short_mult_g{#1}{#2}{#4}{#5}}{#7+#1*#6+#2*#5+#3*#4}.% d1a1+c0a0+c1b1%
+}
+\def\tpl_short_mult_g#1#2#3#4#5{% #1=a1 #2=a0 #3=c1 #4=c0 #5=retenue
+	\tpl_pack_hi_unpack_lo{\tpl_short_mult_h{#1}{#3}}{#5+#1*#4+#2*#3}%
+}
+\def\tpl_short_mult_h#1#2#3{\expandafter\tpl_gob_zeros\the\numexpr#1*#2+#3\relax}
+%---------------
+%  addition #16.#8 + #16.#8 -> #16.#8 (décimaux non signés)
+%---------------
+\def\tpl_split_viii_viii#1{\tpl_split_viii_viii_a#1{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}\_nil}
+\def\tpl_split_viii_viii_a#1#2#3#4#5#6#7#8{\tpl_split_viii_viii_b{#8#7#6#5#4#3#2#1}}
+\def\tpl_split_viii_viii_b#1#2#3#4#5#6#7#8#9{\tpl_split_viii_viii_c#9#8#7#6#5#4#3#2#100000000000000000}
+\def\tpl_split_viii_viii_c#1#2#3#4#5#6#7#8{\tpl_split_viii_viii_d{#8#7#6#5#4#3#2#1}}
+\def\tpl_split_viii_viii_d#1#2#3#4#5#6#7#8#9{{#9#8#7#6#5#4#3#2}{#1}\tpl_gobtonil}
+
+\def\tpl_decpart_format_viii#1{\tpl_decpart_format_viii_a#100000000\_nil}
+\def\tpl_decpart_format_viii_a#1#2#3#4#5#6#7#8{#1#2#3#4#5#6#7#8\tpl_gobtonil}
+\def\tpl_shortadd#1#2{% #1=décimal ou entier ; #2 de la forme 'x.y'
+	\tpl_x_after{\tpl_shortadd_a#1}{\tpl_ifdot{#1}{}{.0}}\relax#2\relax
+}
+\def\tpl_shortadd_a#1.#2\relax#3.#4\relax{% a.b + c.d
+	\tpl_x_after\tpl_shortadd_b{\tpl_split_viii_viii{#1}\tpl_split_viii_viii{#3}{\the\numexpr\tpl_decpart_format_viii{#2}+\tpl_decpart_format_viii{#4}\relax}}%
+}
+\def\tpl_shortadd_b#1#2#3#4#5{% #1=hi8(a) #2=lo8(a) #3=hi8(c) #4=lo8(c) #5=b+c
+	\tpl_x_after{\tpl_shortadd_c{#1}{#3}}{\the\numexpr#2+#4\tpl_testifnum{#5>99999999 }{+1\relax!.\tpl_gobone}{\relax!.}#5}%
+}
+\def\tpl_shortadd_c#1#2#3!{% #1=hi8(a) #2=hi8(c) #3=lo8(a)+lo8(c)+retenue
+	\the\numexpr#1+#2\tpl_testifnum{#3>99999999 }{+1\relax\tpl_gobone}{\relax}#3%
+}
+%---------------
+%  addition entiers signés <signe>#8.#8
+%---------------
+\def\tpl_intpart_format#1{%
+	\tpl_ifempty{#1}{+0}{\tpl_intpart_format_a#1\_nil}%
+}
+\def\tpl_intpart_format_a#1#2\_nil{%
+	\ifx#1--\tpl_ifempty{#2}0{}%
+	\else
+		\ifx#1++\tpl_ifempty{#2}0{}%
+		\else+#1%
+		\fi
+	\fi#2%
+}
+\def\tpl_short_short_add#1#2{% a.b + c.d
+	\tpl_x_after\tpl_short_short_add_a{#1\tpl_ifdot{#1}{}{.0}\relax#2\tpl_ifdot{#2}{}{.0}\relax}%
+}
+\def\tpl_short_short_add_a#1.#2\relax#3.#4\relax{%
+	\tpl_x_after\tpl_short_short_add_b{%
+		\tpl_intpart_format{#1}.\tpl_decpart_format_viii{#2}\relax
+		\tpl_intpart_format{#3}.\tpl_decpart_format_viii{#4}\relax%
+	}%
+}
+\def\tpl_short_short_add_b#1#2.#3\relax#4#5.#6\relax{% #1=+/- #2.#3 "+" #4=+/- #5.#6
+	\tpl_testifx{#1#4}% mêmes signes ?
+		{%
+		\ifx-#1-\fi% afficher le signe -
+		\tpl_e_second\tpl_short_short_add_c{\the\numexpr#3+#6}{#2}{#5}%
+		}
+		{% signes différents
+		\tpl_x_after\tpl_short_short_add_d{\the\numexpr#1#2#4#5\relax.\the\numexpr#1#3#4#6\relax}\_nil
+		}%
+}
+\def\tpl_short_short_add_c#1#2#3{% relatifs de mêmes signes : #1=somme (dec part) #2=intpart(a) #3=intpart(b)
+	\the\numexpr#2+#3\ifnum#1>99999999 +1\fi.\tpl_decpart_format{#1}%
+}
+\def\tpl_short_short_add_d#1.#2\_nil{%
+	\tpl_x_after\tpl_short_short_add_e{\unless\ifnum#1<0 +\fi#1.\unless\ifnum#2<0 +\fi}#2\_nil
+}
+\def\tpl_short_short_add_e#1#2.#3#4\_nil{%résultat : #1=signe #2=intpart #3=signe #4=decpart
+	\ifx#1#3% memes signes
+		\the\numexpr#1#2\relax.\expandafter\tpl_gobone\the\numexpr#4+100000000\relax%
+	\else
+		\ifnum#2=0
+			#30.\tpl_decpart_format{#4}% prendre le signe de decpart
+		\else
+			\ifnum#4=0
+				#1#2%
+			\else
+				\tpl_x_after\tpl_short_short_add_f{\the\numexpr#1#2#31\relax.\expandafter\tpl_abs\the\numexpr#3#4#1100000000\relax}\_nil{#1}%
+			\fi
+		\fi
+	\fi
+}
+\def\tpl_short_short_add_f#1.#2\_nil#3{%  #1=intpart final #2=decpart final   #3=signe intpart
+	\ifnum#1=0 #3\fi#1.\tpl_decpart_format{#2}%
+}
+\def\tpl_abs#1{\unless\ifx-#1#1\fi}
+\def\tpl_decpart_format#1{\expandafter\tpl_decpart_format_a\the\numexpr100000000+#1\relax\_nil}
+\def\tpl_decpart_format_a#1#2#3#4#5#6#7#8#9{\expandafter\tpl_decpart_format_b\the\numexpr#9#8#7#6#5#4#3#2\relax{}{}{}{}{}{}{}{}{}}
+\def\tpl_decpart_format_b#1#2#3#4#5#6#7#8{#8#7#6#5#4#3#2#1\tpl_gobtonil}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%        Quicksort développable       %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%---------------
+%  Effectue un quicksort en indexant en
+%  même temps les éléments sous la forme "idx:val"
+%---------------
+\def\tpl_quicksort_and_index#1{\tpl_quicksort_and_index_a0;{#1}?}% #1= tuple finissant par ","
+\def\tpl_quicksort_and_index_a#1;#2{\tpl_quicksort_and_index_b{#1}#2!,}% #1=index de départ #2= tuple finissant par ","
+\def\tpl_quicksort_and_index_b#1#2,{%
+	\tpl_testifx{!#2}
+		{\tpl_quicksort_and_index_d{#1}}
+		{\tpl_quicksort_and_index_c{#1}{}{}{#2}}%
+}
+\def\tpl_quicksort_and_index_c#1#2#3#4#5,{% #1=index courant #2=part lt #3=part gt #4=pivot #5=élément courant
+	\tpl_testifx{!#5}% partition achevée -> partitionner "part lt" et passer les arguments <pivot><part gt> pour la macro
+		{%             \tpl_quicksort_and_index_d lancée à la fin du partitionnement de "part lt"
+		\tpl_quicksort_and_index_a#1;{#2}{#4}{#3}% arg {#4}{#3} lus à la fin par \tpl_quicksort_and_index_d
+		}
+		{%
+		\tplfpcompare{#5}<{#4}
+			{\tpl_quicksort_and_index_c{#1}{#2#5,}{#3}}
+			{\tpl_quicksort_and_index_c{#1}{#2}{#3#5,}}%
+		{#4}%
+		}%
+}
+\def\tpl_quicksort_and_index_d#1#2{% #1=index ancien #2=pivot #3=part gt (à suivre, non lu par cette macro)
+	\ifx?#2\else\tpl_antefi#1:#2,\expandafter\tpl_quicksort_and_index_a\the\numexpr#1+1;\fi
+}
+
+%TODO : insertion sort && fusion sort
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%    Macros pour set, get, split     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tpl_csdef#1{\expandafter\def\csname#1\endcsname}
+\def\tpl_csedef#1{\expandafter\edef\csname#1\endcsname}
+\tpl_foreach\__temp\in{1,2,3,4,5,6,7,8,9}\do{% définition des macros qui parcourent le tuple indexé
+	\tpl_csdef {get_\__temp\expandafter}\expandafter##\expandafter1\__temp:##2,{##2\tpl_gobtonil}%
+	\tpl_csedef{split_\__temp\expandafter}\expandafter\_nil\expandafter##\expandafter1\__temp:##2,{##1\__temp:##2,?}%
+	\tpl_csedef{set_\__temp\expandafter}\expandafter##\expandafter1\expandafter\_nil\expandafter##\expandafter2\__temp:##3,{##2\__temp:##1,}%
+	\tpl_csdef {gobto_\the\numexpr\__temp+1\relax   0\expandafter}\expandafter##\expandafter1\__temp   9:##2,{}%
+	\tpl_csdef {gobto_\the\numexpr\__temp+1\relax  00\expandafter}\expandafter##\expandafter1\__temp  99:##2,{}%
+	\tpl_csdef {gobto_\the\numexpr\__temp+1\relax 000\expandafter}\expandafter##\expandafter1\__temp 999:##2,{}%
+	\tpl_csdef {gobto_\the\numexpr\__temp+1\relax0000\expandafter}\expandafter##\expandafter1\__temp9999:##2,{}%
+	\tpl_csedef{passto_\__temp   0\expandafter}\expandafter##\expandafter1\expandafter\_nil\expandafter##\expandafter2\the\numexpr\__temp   0-1:##3,{##2\the\numexpr\__temp   0-1:##3,##1\noexpand\_nil}%
+	\tpl_csedef{passto_\__temp  00\expandafter}\expandafter##\expandafter1\expandafter\_nil\expandafter##\expandafter2\the\numexpr\__temp  00-1:##3,{##2\the\numexpr\__temp  00-1:##3,##1\noexpand\_nil}%
+	\tpl_csedef{passto_\__temp 000\expandafter}\expandafter##\expandafter1\expandafter\_nil\expandafter##\expandafter2\the\numexpr\__temp 000-1:##3,{##2\the\numexpr\__temp 000-1:##3,##1\noexpand\_nil}%
+	\tpl_csedef{passto_\__temp0000\expandafter}\expandafter##\expandafter1\expandafter\_nil\expandafter##\expandafter2\the\numexpr\__temp0000-1:##3,{##2\the\numexpr\__temp0000-1:##3,##1\noexpand\_nil}%
+}
+\tpl_csdef{get_0}#10:#2,{#2\tpl_gobtonil}%
+\tpl_csdef{split_0}\_nil#10:#2,{#10:#2,?}%
+\tpl_csdef{set_0}#1\_nil#20:#3,{#20:#1,}%
+\tpl_csdef{gobto_10}#19:#2,{}
+\tpl_csdef{gobto_100}#199:#2,{}
+\tpl_csdef{gobto_1000}#1999:#2,{}
+\tpl_csdef{gobto_10000}#19999:#2,{}
+\tpl_csdef{gobto_00}{}
+\tpl_csdef{gobto_000}{}
+\tpl_csdef{gobto_0000}{}
+\tpl_csdef{passto_00}{}
+\tpl_csdef{passto_000}{}
+\tpl_csdef{passto_0000}{}
+
+\def\tpl_reverse#1{\tpl_reverse_a#1{}{}{}{}{}{}{}{}{}\_nil}
+\def\tpl_reverse_a#1#2#3#4#5#6#7#8#9{#9#8#7#6#5#4#3#2#1\tpl_gobtonil}
+%---------------
+%  getitem (développable)
+%---------------
+\def\tpl_getitem#1#2{% #1=index #2=tuple
+	\tpl_x_after\tpl_getitem_a{\tpl_reverse{#1}}\relax#2\_nil% #2=tuple (finissant par ",")
+}
+\def\tpl_getitem_a#1{% #1=chiffre unités
+	\expandafter\tpl_getitem_b\csname get_#1\endcsname{0}%
+}
+\def\tpl_getitem_b#1#2#3{% #1=commandes à exécuter  #2=nb de 0  #3=chiffre courant
+	\tpl_testifx{\relax#3}
+		{\tpl_getitem_c#1\_nil}
+		{\tpl_e_second\tpl_getitem_b{\csname gobto_#3#2\endcsname#1}{#20}}%
+}
+\def\tpl_getitem_c#1#2\_nil{%
+	\tpl_ifempty{#2}
+		{}
+		{\expanded{\unexpanded{\tpl_getitem_c#2\_nil}\expandafter\expandafter\expandafter}}#1%
+}
+%---------------
+% set item (développable)
+%--------------
+\def\tpl_setitem#1#2#3{% #1=index #2=valeur  #3=tuple
+	\tpl_x_after\tpl_setitem_a{{#2}\tpl_reverse{#1}}\relax#3% #3=tuple (finissant par ",")
+}
+\def\tpl_setitem_a#1#2{% #1= valeur #2=chiffre unités
+	\tpl_e_second\tpl_setitem_b{\csname set_#2\endcsname#1}{0}%
+}
+\def\tpl_setitem_b#1#2#3{% #1=commandes à exécuter  #2=nb de 0  #3=chiffre courant
+	\tpl_testifx{\relax#3}
+		{#1\_nil}
+		{\tpl_e_second\tpl_setitem_b{\csname passto_#3#2\endcsname#1}{#20}}%
+}
+%---------------
+%  split at index (développable)
+%--------------
+\def\tpl_split#1#2{% #1=index #2=tuple -> coupe avec "?" le tuple après l'index #1 et renvoie 'tuple1?tuple2'
+	\tpl_x_after\tpl_split_a{\tpl_reverse{#1}}\relax#2% #2=tuple (finissant par ",")
+}
+\def\tpl_split_a#1{% #1=chiffre unités
+	\tpl_e_second\tpl_setitem_b{\csname split_#1\endcsname}{0}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%        Constructeur de tuple       %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\newtuple#1{%
+	\tpl_x_after\tpl_newtuple_a{\tpl_stripsp\detokenize{#1}}\_nil
+}
+\def\tpl_newtuple_a#1\_nil#2{%
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error{Impossible to define a tuple with an empty name}%
+		}
+		{%
+		\tpl_testifcsname{tpl_tuple(#1)}
+			{\tpl_error{Tuple '#1' already defined}}%
+			{\tpl_csedef{tpl_tuple(#1)}{\tpl_e_second\tpl_newtuple_b{\detokenize\expandafter{\expanded{#2}}}}}%
+		}%
+}
+%---------------
+%  \tpl_newtuple_b est développable et renvoie :
+%  (len,sum,sumsq){tuple indexé}{tuple ordonné indexé}
+%--------------
+\def\tpl_newtuple_b#1{%
+	\tpl_ifempty{#1}
+		{(0,0,0,nan,nan){}{}}
+		{\tpl_newtuple_c(0,0,0){}{}#1,\relax,}%
+}
+\def\tpl_newtuple_c(#1,#2,#3)#4#5#6,{% #1=index courant #2=sum #3=sumsq #4=éléments lus indexés #5=éléments lus désindexés #6=élément courant
+	\tpl_testifx{\relax#6}% fin atteinte -> trouver min, max et renvoyer le tout "(len,sum,sum:x^2,min,max){tuple indexé}{tuple ordonné indexé}"
+		{\tpl_x_second{(#1,#2,#3){#4}}{\tpl_e_second\tpl_quicksort_and_index{\tpl_gobone#5,}}}% manger ',' qui commence #5
+		{\tpl_stripsp\tpl_newtuple_d{#6}(#1,#2,#3){#4}{#5}}%
+}
+\def\tpl_newtuple_d#1{% #1=item en cours
+	\tpl_ifempty{#1}
+		{%
+		\tpl_newtuple_c
+		}
+		{%
+		\tpl_ifddot{#1}% si ":" est contenu dans #1, c'est indexé
+			{\tpl_newtuple_f#1\_nil}% traiter ce qui est après ":"
+			{\tpl_newtuple_e{#1}}%
+		}%
+}
+\def\tpl_newtuple_e#1(#2,#3,#4)#5#6{% #1=item en cours #2=index courant #3=sum   #4=sumsq #5=éléments déjà triés #6=elements non indexés
+	\tpl_x_after\tpl_newtuple_c{(\the\numexpr#2+1,\tpl_item_add{#3}{#1},\tpl_item_addsq{#4}{#1})}{#5#2:#1,}{#6,#1}%
+}
+\def\tpl_newtuple_f#1:#2\_nil{%
+	\tpl_ifempty{#2}
+		{\tpl_newtuple_c}
+		{\tpl_newtuple_e{#2}}%
+}
+\def\tpl_ifddot#1#2#3{\tpl_ifddot_a#1\_YN{#2}\mark_ddot:\_YN{#3}\mark_ddot\_nil}% #1 contient-il ":" ? #2=T #3=F
+\def\tpl_ifddot_a#1:#2\_YN#3\mark_ddot#4\_nil{#3}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%            Les méthodes            %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tpl_error_only_for_tuples  #1{\tpl_error_inmethod{Method '#1' only available for tuples}}
+\def\tpl_error_no_argument    #1#2{\tpl_error_inmethod{Method '#1' does not accept argument '\detokenize{#2}'}}
+\def\tpl_error_argument_required#1{\tpl_error_inmethod{Method '#1' requires an argument}}
+\def\tpl_error_empty_tuple#1{\tpl_error_inmethod{Method '#1' not compatible with an empty tuple}}
+%---------------
+%  Méthode len (développable)
+%--------------
+\def\tpl_method_len#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{len}}
+			{\tpl_method_len_a#2\_nil}%
+		}
+		{%
+		\tpl_error_no_argument{len}{#1}%
+		}%
+}
+\def\tpl_method_len_a(#1,#2\_nil{{#1}{0}}% renvoie un nombre
+%---------------
+% Méthode sum (développable)
+%--------------
+\def\tpl_method_sum#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{sum}}
+			{\tpl_method_sum_a#2\_nil}%
+		}
+		{%
+		\tpl_error_no_argument{sum}{#1}%%
+		}%
+}
+\def\tpl_method_sum_a(#1,#2,#3\_nil{{#2}{0}}% renvoie un nombre
+%---------------
+% Méthode min (développable)
+%---------------
+\def\tpl_method_min#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{min}}
+			{\tpl_method_min_a#2\_nil}%
+		}
+		{%
+		\tpl_error_no_argument{min}{#1}%%
+		}%
+}
+\def\tpl_method_min_a#1)#2#3\_nil{%
+	\tpl_ifempty{#3}
+		{\tpl_error_empty_tuple{min}}
+		{\tpl_method_min_b#3\_nil}%
+}
+\def\tpl_method_min_b0:#1,#2\_nil{{#1}{0}}% renvoie un nombre
+%---------------
+% Méthode max (développable)
+%---------------
+\def\tpl_method_max#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{max}}
+			{\tpl_method_max_a#2\_nil}%
+		}
+		{%
+		\tpl_error_no_argument{max}{#1}%
+		}%
+}
+\def\tpl_method_max_a(#1,#2)#3#4\_nil{%
+	\tpl_ifempty{#4}
+		{\tpl_error_empty_tuple{max}}
+		{{\tpl_e_second\tpl_getitem{\the\numexpr#1-1}{#4}}{0}}% renvoie un nombre
+}
+%---------------
+% Méthode mean (développable)
+%---------------
+\def\tpl_method_mean#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{mean}}
+			{\tpl_method_mean_a#2\_nil}%
+		}
+		{%
+		\tpl_error_no_argument{mean}{#1}%%
+		}%
+}
+\def\tpl_method_mean_a(#1,#2,#3\_nil{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_testifnum{#1=0 }
+		{\tpl_error_empty_tuple{mean}}
+		{{\tpl_expr_eval{#2/#1}}{0}}% renvoie un nombre
+}%
+%---------------
+% Méthode med (développable)
+%---------------
+\def\tpl_method_med#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{med}}
+			{\tpl_method_med_a#2\_nil}%
+		}
+		{%
+		\tpl_error_no_argument{med}{#1}%%
+		}%
+}
+\def\tpl_method_med_a(#1,#2)#3#4\_nil{%
+	\tpl_testifnum{#1=0 }
+		{\tpl_error_empty_tuple{med}}
+		{\tpl_method_quantile_a0.5\_nil(#1,#2){#3}{#4}\_nil}% renvoie un nombre
+}
+%---------------
+% Méthode quantile (développable)
+%---------------
+\def\tpl_method_quantile#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error_argument_required{quantile}%
+		}%
+		{%
+		\tpl_testifnum{#3<1 }
+			{%
+			\tpl_error_only_for_tuples{quantile}%
+			}
+			{%
+			\tpl_testifnum{0\ifdim #1pt<0pt \else1\fi\ifdim#1pt<1pt 1\fi=11 }% si #1 dans [0 ; 1[
+				{\tpl_method_quantile_a#1\_nil#2\_nil}%
+				{\tpl_error_inmethod{Method 'quantile': argument '#1' not in [0;1-]}}%
+			}%
+		}%
+}
+\def\tpl_method_quantile_a#1\_nil(#2,#3)#4#5\_nil{%
+	\tpl_testifnum{#2=0 }
+		{\tpl_error_empty_tuple{quantile}}
+		{\tpl_x_after\tpl_method_quantile_b{{\tpl_expr_eval{(#2-1)*#1+1}}{\tpl_expr_eval{trunc((#2-1)*#1+1)}}}{#5}}% renvoie un nombre
+}
+\def\tpl_method_quantile_b#1#2#3{% #1=(len-1)*p+1 #2=E(#1) #3=tuple trié
+	{%
+	\tpl_expr_eval{% interpolation linéaire
+		(1-#1+#2)*\tpl_e_second\tpl_getitem{\the\numexpr#2-1\relax}{#3}%
+		+%
+		(#1-#2)*\tpl_getitem{#2}{#3}%
+		}%
+	}%
+	{0}%
+}
+%---------------
+% Méthode stdev (développable)
+%---------------
+\def\tpl_method_stdev#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{stdev}}
+			{\tpl_method_stdev_a#2\_nil}%
+		}
+		{%
+		\tpl_error_no_argument{stdev}{#1}%%
+		}%
+}
+\def\tpl_method_stdev_a(#1,#2,#3)#4\_nil{%
+	\tpl_testifnum{#1=0 }
+		{\tpl_error_empty_tuple{stdev}}
+		{{\tpl_expr_eval{sqrt(#3/#1-(#2/#1)**2)}}{0}}% renvoie un nombre
+}
+%---------------
+% Méthode get (développable)
+%---------------
+\def\tpl_method_get#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error_inmethod{Method 'get': argument required}%
+		}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{get}}%
+			{\tpl_e_second\tpl_method_get_a{\the\numexpr#1\relax}#2\_nil}%
+		}%
+}
+\def\tpl_method_get_a#1(#2,#3)#4#5\_nil{%
+	\tpl_testifnum{#2=0 }
+		{%
+		\tpl_error_empty_tuple{get}%
+		}
+		{%
+		\tpl_testifnum{0\ifnum#1>-1 1\fi\ifnum#1<#2 1\fi=11 }% si index dans [0 ; len -1]
+			{%
+			{\tpl_getitem{#1}{#4}}{0}%
+			}
+			{%
+			\tpl_testifnum{0\ifnum#1<0 1\fi\ifnum\numexpr#1+#2+1>0 1\fi=11 }% si index dans [-len ; -1]
+				{{\tpl_e_second\tpl_getitem{\the\numexpr#1+#2\relax}{#4}}{0}}
+				{\tpl_error_inmethod{Method 'get': invalid index '\detokenize{#1}'}}%
+			}%
+		}%
+}
+%---------------
+% Méthode set (développable)
+%---------------
+\def\tpl_method_set#1#2#3{% #1=arg méthode ("index1:val1,index2:val2, etc") #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error_inmethod{Method 'set': argument required}%
+		}
+		{\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{set}}%
+			{\tpl_x_after\tpl_method_set_a{#1}\_nil#2\_nil}% xdévelopper #1 et dégrouper #1 et #3
+		}%
+}
+\def\tpl_method_set_a#1\_nil(#2,#3)#4#5\_nil{% #2=len
+	\tpl_testifnum{#2=0 }% si tuple vide, on envoie '0:0,' avec len=1
+		{\tpl_method_set_b{0:0,}{1}#1,\relax:\relax,\_nil}
+		{\tpl_method_set_b{#4}{#2}#1,\relax:\relax,\_nil}%
+}
+\def\tpl_method_set_b#1#2#3:#4,{% #1=tuple #2=len #3=index courant #4=valeur courante
+	\tpl_testifx{\relax#3}
+		{%
+		{\tpl_newtuple_b{#1}}{1}\tpl_gobtonil
+		}
+		{%
+		\tpl_testifnum{0\ifnum#3>-1 1\fi\ifnum#3<#2 1\fi=11 }% si index dans [0 ; len-1]
+			{%
+			\tpl_x_second\tpl_method_set_b{\tpl_setitem{#3}{#4}{#1}}{#2}%
+			}%
+			{%
+			\tpl_testifnum{0\ifnum#3<0 1\fi\ifnum\numexpr#3+#2+1>0 1\fi=11 }% si index dans [-len ; -1]
+				{\tpl_x_second\tpl_method_set_b{\tpl_e_second\tpl_setitem{\the\numexpr#3+#2}{#4}{#1}}{#2}}
+				{\tpl_error_inmethod{Method 'set': invalid index '#3'}\tpl_gobtonil}%
+			}%
+		}%
+}
+%---------------
+% Méthode sorted (développable)
+%---------------
+\def\tpl_method_sorted#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{sorted}}%
+			{\tpl_method_sorted_a#2\_nil}%
+		}
+		{%
+		\tpl_error_no_argument{sorted}{#1}%%
+		}%
+}
+\def\tpl_method_sorted_a(#1)#2#3\_nil{%
+	{(#1){\tpl_ifempty{#3}{#2}{#3}}{}}{1}%
+}
+%---------------
+% Méthode store (_NON_ développable)
+%---------------
+\def\tpl_ifcs#1{% #1 est-il constitué d'une seule séquence de contrôle ?
+	\tpl_testifnum{\tpl_ifempty{#1}0{\tpl_e_second\tpl_ifempty{\tpl_gobone#1}10}\ifnum\expandafter\expandafter\expandafter`\expandafter\tpl_firsttonil\string#1.\_nil=\escapechar1\fi=11 }%
+}
+\def\tpl_method_store#1#2#3{% #1=arg méthode #2=len #3=index courant #4=valeur courante
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error_argument_required{store}%
+		}
+		{%
+		\tpl_testifnum{#3<1 }
+			\tpl_method_store_a
+			\tpl_method_store_b
+		#1\_nil#2\_nil
+		}%
+}
+\def\tpl_method_store_a#1\_nil#2\_nil{% #1=arg méthode #2=résultat méthodes précédentes
+	\tpl_ifcs{#1}
+		{\unexpanded{{\def#1{#2}}}{-1}}%  bloquer le développement
+		{\tpl_error_inmethod{Method 'store': unexpected argument '\detokenize{#1}'}}%
+}
+\def\tpl_method_store_b#1\_nil(#2,#3)#4#5\_nil{% #1=arg méthode #2=arg méthode #3=flag #4=résultat méthodes précédentes
+	\tpl_ifempty{#1}
+		{\tpl_error_inmethod{Method 'store': impossible to define a tuple with an empty name}}
+		{{\noexpand\tpl_csedef{tpl_tuple(\tpl_stripsp\detokenize{#1})}{\tpl_e_second\tpl_newtuple_b{\detokenize\expandafter{\expanded{#4}}}}}{-1}}% bypass \newtuple pour permettre de modifier le tuple initial
+}
+%---------------
+% Méthode split (_NON_ développable)
+%---------------
+\def\tpl_method_split#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error_inmethod{Method 'split': argument required}%
+		}
+		{%
+		\tpl_testifnum{#3>0 }
+			{\tpl_method_split_a#1\_nil#2\_nil}% dégrouper #1 et #3
+			{\tpl_error_only_for_tuples{split}}%
+		}%
+}
+
+\def\tpl_method_split_a#1#2#3\_nil(#4,#5)#6#7\_nil{% #1=index de coupure #2=nom tuple 1 #3=nom tuple2
+	\tpl_testifnum{#4=0 }
+		{%
+		\tpl_error_empty_tuple{split}%
+		}
+		{%
+		\tpl_testifnum{\tpl_ifempty{#2}01\tpl_ifempty{#3}01=11 }% si les deux noms ne sont pas vide
+			{%
+			\tpl_testifnum{0\ifnum#1>-1 1\fi\ifnum#1<\numexpr#4-1\relax1\fi=11 }% si #1 dans [0;len-2]
+				{%
+				\tpl_x_after\tpl_method_split_b{\tpl_split{#1}{#6}}?{#2}{#3}%
+				}
+				{%
+				\tpl_testifnum{0\ifnum#1<-1 1\fi\ifnum\numexpr#1+#4+1>0 1\fi=11 }% si #1 dans [-len ; -2]
+					{\tpl_x_after\tpl_method_split_b{\tpl_e_second\tpl_split{\the\numexpr#1+#4}{#6}}?{#2}{#3}}
+					{\tpl_error_inmethod{Method 'split': invalid index '#1"}}%
+				}%
+			}
+			{%
+			\tpl_error_inmethod{Method 'split': empty name not allowed}%
+			}%
+		}%
+}
+\def\tpl_method_split_b#1?#2?#3#4{%
+	{%
+	\noexpand\tpl_csedef{tpl_tuple(\tpl_stripsp\detokenize{#3})}{\tpl_e_second\tpl_newtuple_b{\detokenize\expandafter{\expanded{#1}}}}%
+	\noexpand\tpl_csedef{tpl_tuple(\tpl_stripsp\detokenize{#4})}{\tpl_e_second\tpl_newtuple_b{\detokenize\expandafter{\expanded{#2}}}}%
+	}%
+	{-1}%
+}
+%---------------
+% Méthode add (développable)
+%---------------
+\def\tpl_method_add#1#2#3{% #1=arg méthode (index1:items,index2:items,...) #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error_inmethod{Method 'add': argument required}%
+		}
+		{%
+		\tpl_testifnum{#3>0 }
+			{\tpl_x_after\tpl_method_add_a{#1}\_nil#2\_nil}% xdévelopper # et dégrouper #1 et #3
+			{\tpl_error_only_for_tuples{add}}%
+		}%
+}
+\def\tpl_method_add_a#1\_nil(#2,#3)#4#5\_nil{% #2=len
+	\tpl_method_add_b{#4}{#2}#1,\relax:\relax,\_nil
+}
+
+\def\tpl_method_add_b#1#2#3:#4,{% #1=tuple #2=len #3=index courant #4=item(s)
+	\tpl_testifx{\relax#3}
+		{%
+		{\tpl_newtuple_b{#1}}{1}%
+		\tpl_gobtonil
+		}
+		{%
+		\tpl_testifnum{#3<0 }
+			{%
+			\tpl_testifnum{\numexpr#3+#2+2>0 }% si index dans [-n-1 ; -1]
+				{\tpl_x_second{\tpl_method_add_c{#1}{#2}}{\the\numexpr#3+#2+1}{#4}}%
+				{\tpl_error_inmethod{Method 'add': invalid index '\detokenize{#3:#4}'}\tpl_gobtonil}%
+			}
+			{%
+			\tpl_method_add_c{#1}{#2}{#3}{#4}%
+			}%
+		}%
+}
+\def\tpl_method_add_c#1#2#3#4{% #1=tuple #2=len #3=index courant #4=item(s)
+	\tpl_testifnum{#3=0 }
+		{%
+		\tpl_method_add_b{#4,#1}{#2}% si index=0 : ajouter au début
+		}
+		{%
+		\tpl_testifnum{#3=#2 }
+			{%
+			\tpl_method_add_b{#1#4,}{#2}% si index=len : ajouter #4 à la fin
+			}
+			{%
+			\tpl_testifnum{0\ifnum#3>0 1\fi\ifnum#3<#2 1\fi=11 }% si index dans [1 ; len-1]
+				{\tpl_x_after\tpl_method_add_d{\expandafter\tpl_split\expandafter{\the\numexpr#3-1}{#1}}?{#4}{#2}}
+				{\tpl_error_inmethod{Method 'add': invalid index '\detokenize{#3:#4}'}\tpl_gobtonil}%
+			}%
+		}%
+}
+
+\def\tpl_method_add_d#1?#2?#3#4{%#1=tuple 1  #2=tuple 2  #3=items à insérer  #4=len
+	\tpl_method_add_b{#1#3,#2}{#4}%
+}
+%---------------
+% Méthode op (développable)
+%---------------
+\def\tpl_eval_op#1#2{\tpl_subst_idx_a#1\?{\tpl_subst_idx_b#1\_nil{#2}}\_markit idx\?{\tpl_subst_val{#1}}\_markit\_nil}
+\def\tpl_subst_idx_a#1idx#2\?#3\_markit#4\_nil{#3}%
+\def\tpl_subst_idx_b#1idx#2\_nil#3{\tpl_eval_op{#1#3#2}{#3}}
+\def\tpl_subst_val#1#2{\tpl_subst_val_a#1\?{\tpl_subst_val_b#1\_nil{#2}}\_markit val\?{\tpl_expr_eval{#1}}\_markit\_nil}
+\def\tpl_subst_val_a#1val#2\?#3\_markit#4\_nil{#3}%
+\def\tpl_subst_val_b#1val#2\_nil#3{\tpl_subst_val{#1#3#2}{#3}}
+\def\tpl_method_op#1#2#3{% #1=arg méthode f(idx, val) #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error_argument_required{op}%
+		}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{op}}
+			{\tpl_method_op_a#1\_nil#2\_nil}%
+		}%
+}
+\def\tpl_method_op_a#1\_nil#2)#3#4\_nil{%
+	{\tpl_x_second\tpl_newtuple_b{\tpl_method_op_b{#1}#3\relax:\relax,}}{1}%
+}
+\def\tpl_method_op_b#1#2:#3,{%
+	\tpl_testifx{\relax#2}
+		{}
+		{#2:\tpl_eval_op{#1}{#2}{#3},\tpl_method_op_b{#1}}%
+}
+%---------------
+% Méthode filter (développable)
+%---------------
+\def\tpl_method_filter#1#2#3{% #1=arg méthode f(idx, val) #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error_argument_required{filter}%
+		}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{filter}}
+			{\tpl_method_filter_a#1\_nil#2\_nil}%
+		}%
+}
+\def\tpl_method_filter_a#1\_nil#2)#3#4\_nil{%
+	{\tpl_x_second\tpl_newtuple_b{\tpl_method_filter_b{#1}#3\relax:\relax,}}{1}%
+}
+\def\tpl_method_filter_b#1#2:#3,{%
+	\tpl_testifx{\relax#2}
+		{}
+		{%
+		\tpl_testifnum{\tpl_eval_op{#1}{#2}{#3}=1 }
+			{#2:#3,}
+			{}%
+		\tpl_method_filter_b{#1}%
+		}%
+}
+%---------------
+% Méthode pos (développable)
+%---------------
+\def\tpl_method_pos#1#2#3{% #1=arg méthode {valeur} #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error_argument_required{pos}%
+		}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{pos}}
+			{\tpl_method_pos_a#1[1]\_nil#2\_nil}%
+		}%
+}
+\def\tpl_method_pos_a#1[#2]#3\_nil#4)#5#6\_nil{%
+	{\tpl_method_pos_b{1}{#2}{#1}#5\relax:\relax,\_nil}{0}%
+}
+\def\tpl_method_pos_b#1#2#3#4:#5,{% #1=occurrence en cours #2=occurrence souhaitée #3=nombre cherché
+	\tpl_testifx{\relax#4}
+		{%
+		-1\tpl_gobtonil% si occurrence non trouvée, renvoyer -1
+		}
+		{%
+		\tplfpcompare{#3}={#5}% nombres correspondent ?
+			{%
+			\tpl_testifnum{#1=#2 }% occurrence souhaitée ?
+				{#4\tpl_gobtonil}
+				{\tpl_e_second\tpl_method_pos_b{\the\numexpr#1+1}{#2}{#3}}%
+			}% à la première occurrence, renvoyer #2
+			{%
+			\tpl_method_pos_b{#1}{#2}{#3}%
+			}%
+		}%
+}
+%---------------
+% Méthode comp (développable)
+%---------------
+\def\tpl_eval_comp#1#2{\tpl_subst_xa_a#1\?{\tpl_subst_xa_b#1\_nil{#2}}\_markit xa\?{\tpl_subst_xb{#1}}\_markit\_nil}
+\def\tpl_subst_xa_a#1xa#2\?#3\_markit#4\_nil{#3}%
+\def\tpl_subst_xa_b#1xa#2\_nil#3{\tpl_eval_comp{#1#3#2}{#3}}
+\def\tpl_subst_xb#1#2{\tpl_subst_xb_a#1\?{\tpl_subst_xb_b#1\_nil{#2}}\_markit xb\?{\tpl_expr_eval{#1}}\_markit\_nil}
+\def\tpl_subst_xb_a#1xb#2\?#3\_markit#4\_nil{#3}%
+\def\tpl_subst_xb_b#1xb#2\_nil#3{\tpl_subst_xb{#1#3#2}{#3}}
+\def\tpl_method_comp#1#2#3{% #1=arg méthode "{op}{nom tuple B}" #2=résultat méthodes précédentes #3=flag
+	\tpl_ifempty{#1}
+		{%
+		\tpl_error_inmethod{Method 'comp' requires arguments}%
+		}
+		{%
+		\tpl_testifnum{#3<1 }
+			{\tpl_error_only_for_tuples{comp}}
+			{\tpl_method_comp_a#1\_nil#2\_nil}%
+		}%
+}
+\def\tpl_method_comp_a#1#2\_nil#3\_nil{%
+	\tpl_testifcsname{tpl_tuple(\tpl_stripsp\detokenize{#2})}
+		{\tpl_x_after\tpl_method_comp_b{{#1}\csname tpl_tuple(\tpl_stripsp\detokenize{#2})\endcsname}#3}
+		{\tpl_error_inmethod{Method 'comp': tuple '#2' undefined}}%
+}
+\def\tpl_method_comp_b#1(#2,#3)#4#5(#6,#7)#8#9{%
+	\tpl_testifnum{#2=#6 }
+		{{\tpl_x_second\tpl_newtuple_b{\tpl_method_comp_c{#1}#4\relax:\relax,\_nil#8\relax:\relax,\_nil}}{1}}
+		{\tpl_error_inmethod{Method 'comp' requires tuple with same length}}%
+}
+\def\tpl_method_comp_c#1#2:#3,#4\_nil#5:#6,#7\_nil{%
+	\tpl_testifx{\relax#3}
+		{}
+		{#2:\tpl_eval_comp{#1}{#6}{#3},\tpl_method_comp_c{#1}#4\_nil#7\_nil}%
+}
+%---------------
+% Méthode show (développable ou _NON_ développable, dépend des macros \tplformat et \tplsep)
+%---------------
+\def\tpl_method_show#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	\tpl_testifnum{#3=1 }
+		{{\tpl_method_show_a#2}{0}}
+		{\tpl_error_only_for_tuples{show}}%
+}
+\def\tpl_method_show_a#1)#2#3{\tpl_unindex\tplformat\tplsep{#2}}
+\def\tplformat#1#2{#2}% #1=index en cours #2=item en cours
+\def\tplsep{, }
+%---------------
+% Méthode end_exe (privée et développable)
+%---------------
+\def\tpl_method_end_exe#1#2#3{% #1=arg méthode #2=résultat méthodes précédentes #3=flag
+	{%
+	\tpl_testifnum{#3=1 }
+		{\tpl_method_end_exe_a#2}
+		{\unexpanded{#2}}% diriger vers l'affichage si flag<1
+	}%
+	{-1}%
+}
+\def\tpl_method_end_exe_a#1)#2#3{\tpl_unindex\tpl_method_end_exe_format\tpl_method_end_exe_sep{#2}}
+\def\tpl_method_end_exe_format#1#2{#2}
+\def\tpl_method_end_exe_sep{, }
+%---------------
+% macro \tpl_unindex
+%---------------
+\def\tpl_unindex#1#2#3{% #1=macro pour formater un item #2=macro séparateur #3=tuple indexé
+	\tpl_ifempty{#3}
+		{}%
+		{\tpl_unindex_a{#1}{#2}#3\relax:\relax,}%
+}
+\def\tpl_unindex_a#1#2#3:#4,#5{% #1=macro pour formater un item #2=macro séparateur #3=index courant #4=item courant #5=prochain index
+	\unexpanded\expandafter{#1{#3}{#4}}% afficher l'item
+	\tpl_testifx{\relax#5}
+		{%
+		\tpl_unindex_b
+		}
+		{%
+		#2% afficher le séparateur
+		\tpl_unindex_a{#1}{#2}#5%
+		}%
+}
+\def\tpl_unindex_b#1,{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%    La macro utilisateur \tplexe    %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tplexe#1{%
+	\tpl_exea#1.end_exe.\_nil
+}
+\def\tpl_exea#1.{% #1=nom du tuple TODO:tester trié ou pas
+	\tpl_testifcsname{tpl_tuple(\tpl_stripsp\detokenize{#1})}
+		{\expandafter\expandafter\expandafter\tpl_exeb\csname tpl_tuple(\tpl_stripsp\detokenize{#1})\endcsname1}
+		{\tpl_error{Tuple '\detokenize{#1}' not defined}\tpl_gobtonil}%
+}
+% Flag
+%    -1 : c'est la dernière méthode appelée, les autres sont ignorées
+%     0 : résultat est un nombre ou est affichable
+%     1 : résultat est un tuple
+\def\tpl_exeb(#1)#2#3#4{% #1=flag #2=données du tuple #3=tuple non indexé #4=tuple indexé
+	\tpl_exec{(#1){#2}{#3}}{#4}%{#5}% grouper les argument du tuple
+}
+\def\tpl_exec#1#2{% #1=résultat des dernières méthodes (soit le tuple entier (carac){tupleNTR}{tuple TR}, soit un nombre) #2=flag
+	\tpl_testifnum{#2=-1 }
+		{#1\tpl_gobtonil}% renvoie #1 et ignore toutes les autres méthodes
+		{\tpl_exed{#1}{#2}}%
+}
+\def\tpl_exed#1#2#3.{% #1=résultat des dernières méthodes (soit le tuple entier (carac){tupleNTR}{tuple TR}, soit un nombre) #2=flag #3=méthode (et arguments) en cours de traitement
+	\tpl_x_after\tpl_exee{\tpl_split_method_args{#3}}{#1}{#2}%
+}
+\def\tpl_exee#1#2#3#4{% #1=nom méthode  #2=arg méthode  #3=argument laissé par les méthodes  #4=flag
+	\tpl_testifcsname{tpl_method_#1}
+		{\tpl_x_after\tpl_exec{\csname tpl_method_#1\endcsname{#2}{#3}{#4}}}% 3 arg à chaque méthode 1er=arg méthode #2=résultat précédent #3=flag
+		{\tpl_error{Unknown method "#1"}\tpl_gobtonil}%
+}
+
+\def\tpl_list_methods{len,sum,min,max,mean,med,quantile,stdev,get,set,sorted,store,split,add,op,filter,pos,comp,show,end_exe}
+\def\tpl_iftrueempty#1{\if\relax\detokenize{#1}\relax\tpl_exec_first\fi\tpl_exec_second}
+\tpl_foreach\_temp\in\tpl_list_methods\do{%
+	\tpl_csedef{tpl_try_\_temp}##1{%
+		\tpl_cs_enxp{tpl_try_\_temp _a}##1\noexpand\__nil\_temp\noexpand\___nil\noexpand\_nil
+	}%
+	\tpl_csedef{tpl_try_\_temp _a\expandafter}\expandafter##\expandafter1\_temp##2\_nil{%
+		\noexpand\tpl_iftrueempty{##1}% ##1 ne _doit_ pas être ' ' donc la syntaxe ". method" est invalide
+			{{\_temp}{\noexpand\tpl_sanitize_arg##2}\noexpand\tpl_gobtonil}% <- argument Vrai
+	}%
+}
+\def\tpl_split_method_args#1{% #1=<méthode><arg> -> retour {methode}{arg} ou {methode}{{arg1}{arg2}{arg3}...} 
+	\tpl_e_after{\tpl_split_method_args_a{#1}}\tpl_list_methods,\relax,\_nil
+}
+\def\tpl_split_method_args_a#1#2,{%
+	\tpl_testifx{\relax#2}
+		{%
+		{\detokenize{#1}}{}\tpl_gobtonil
+		}
+		{%
+		\csname tpl_try_#2\endcsname{#1}%
+			%{} <- inclus dans la macro \tpl_try_<methode>_a
+			{\tpl_split_method_args_a{#1}}% <- argument Faux
+		}%
+}
+\def\tpl_sanitize_arg#1\__nil#2\___nil{\tpl_stripsp\unexpanded{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%   La macro utilisateur \gentuple   %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tpl_strip_lastcomma#1{\tpl_strip_lastcomma_i#1\empty\tpl_gobtonil, \empty\_nil}%
+\def\tpl_strip_lastcomma_i#1, \empty{#1}
+\def\tpl_id#1{#1}
+\def\tpl_is_while#1{\tpl_stripsp{\expandafter\tpl_is_while_a\tpl_id}{#1}\while\_nil}
+\def\tpl_is_while_a#1\while#2\_nil{\tpl_ifempty{#1}{\tpl_is_while_b#2\_nil}{\tpl_exec_second}}
+\def\tpl_is_while_b#1\while#2\_nil{\tpl_ifempty{#1#2}}
+\def\tpl_is_until#1{\tpl_stripsp{\expandafter\tpl_is_until_a\tpl_id}{#1}\until\_nil}
+\def\tpl_is_until_a#1\until#2\_nil{\tpl_ifempty{#1}{\tpl_is_until_b#2\_nil}{\tpl_exec_second}}
+\def\tpl_is_until_b#1\until#2\_nil{\tpl_ifempty{#1#2}}
+\def\gentuple#1{%
+	\tpl_x_second\tpl_strip_lastcomma{\tpl_gentuple_a#1\_nil}%
+}
+\def\tpl_gentuple_a#1\genrule#2;#3\_nil{% #1=amorce #2=expression de génération #3=\while|\until <condition>
+	\tpl_stripsp{\expandafter\tpl_gentuple_b\tpl_id}{#3}\_nil#1\genrule#2;%
+}
+\def\tpl_gentuple_b#1#2\_nil#3\genrule#4;{% #1=\while|\until  #2=condition  #3=amorce  #4=expression de génération
+	\tpl_is_while{#1}
+		{%
+		\tpl_gentuple_c0{}{}#3\relax,{#4}{#2}\tpl_gentuple_g
+		}
+		{%
+		\tpl_is_until{#1}
+			{\tpl_gentuple_c0{}{}#3\relax,{#4}{#2}\tpl_gentuple_f}
+			{\tpl_error{\string\while\space or \string\until\space expected before condition}}%
+		}%
+}
+\def\tpl_gentuple_c#1#2#3#4,{% #1=index en cours #2=n1,n2,n3,...  #3={n1}{n2}{n3}... #4=item d'amorce en cours
+	\tpl_testifx{\relax#4}
+		{#2\tpl_gentuple_e{#1}{#1}{#3}}% afficher l'amorce '#2' puis aller à la macro récursive
+		{\tpl_e_second\tpl_gentuple_c{\the\numexpr#1+1}{#2#4,}{#3{#4}}}%
+}
+\def\tpl_gentuple_e#1#2#3#4#5#6{% #1=index en cours #2=nb de variables #3=dernières valeurs #4=expression de génération #5=condition arret #6=\tpl_gentuple_g(while) ou \tpl_gentuple_f(until)
+		\tpl_x_second{#6}{\tpl_expr_eval{\tpl_subst_allvalues{#2}{#4}{#3}{#1}}}% <- #1=valeur pour \i (index courant)
+		{#1}{#2}{#3}{#4}{#5}%
+}
+\def\tpl_gentuple_f#1#2#3#4#5#6{% #1=item en cours #2=index en cours #3=nb de variables #4=dernières valeurs #5=expression de génération #6=condition arret (until)
+	#1% afficher '#1,' avant de faire le test
+	\ifnum\tpl_x_second\tpl_subst_val{\tpl_subst_i{#6}{#2}}{#1}=0 % tant que condition d'arrêt non vérifiée
+		\tpl_antefi
+		, % séparateur si pas le dernier
+		\tpl_x_after\tpl_gentuple_e{{\the\numexpr#2+1}{#3}{\tpl_gobone#4{#1}}}{#5}{#6}\tpl_gentuple_f% puis recommencer
+	\fi
+}
+\def\tpl_gentuple_g#1#2#3#4#5#6{% #1=item en cours #2=index en cours #3=nb de variables #4=dernières valeurs #5=expression de génération #6=condition de poursuite (while)
+	\ifnum\tpl_x_second\tpl_subst_val{\tpl_subst_i{#6}{#2}}{#1}=1 % tant que condition de poursuite en vérifiée
+		\tpl_antefi
+		#1, % séparateur toujours présent, même arès le dernier nombre
+		\expandafter\tpl_gentuple_e\expanded{{\the\numexpr#2+1}{#3}{\tpl_gobone#4{#1}}}{#5}{#6}\tpl_gentuple_g% puis recommencer
+	\fi
+}
+%---------------
+% macros auxiliaires pour \gentuple
+%---------------
+\tpl_foreach\__temp\in{i,1,2,3,4,5,6,7,8,9}\do{% définition des macros de remplacement \1, \2, etc
+	\tpl_csedef{tpl_subst_\__temp}##1##2{\tpl_cs_enxp{tpl_subst_\__temp _a}##1\noexpand\?{\tpl_cs_enxp{tpl_subst_\__temp _b}##1\noexpand\_nil{##2}}\noexpand\_markit\tpl_cs_enxp{\__temp}\noexpand\?{\noexpand\unexpanded{##1}}\noexpand\_markit\noexpand\_nil}%
+	\tpl_csdef {tpl_subst_\__temp _a\expandafter}\expandafter##\expandafter1\csname\__temp\endcsname##2\?##3\_markit##4\_nil{##3}%
+	\tpl_csedef{tpl_subst_\__temp _b\expandafter}\expandafter##\expandafter1\csname\__temp\endcsname##2\_nil##3{\tpl_cs_enxp{tpl_subst_\__temp}{##1##3##2}{##3}}%
+}
+\def\tpl_subst_allvalues#1#2#3{% #1=nombre de variables #2=expression où il y a \1, \2, etc #3=valeurs pour les variables #4=valeur pour \i
+	\tpl_subst_allvalues_a{1}{#1}{#2}#3{}{}{}{}{}{}{}{}{}\_nil%{#4}% <- ajouter l'index courant qui est la valeur pour \i
+}
+\def\tpl_subst_allvalues_a#1#2#3#4{% #1=n° de remplacement en cours #2=nb total de remplacements #3=expression #4=valeur de la variable n°#1
+	\tpl_testifnum{#1>#2 }
+		{\tpl_firsttonil{\tpl_subst_i{#3}}}% <- mange tout jusqu'au \_nil puis lit la valeur pour \i
+		{\tpl_x_after\tpl_subst_allvalues_a{{\the\numexpr#1+1}{#2}{\csname tpl_subst_#1\endcsname{#3}{#4}}}}%
+}
+
+\tpl_restorecatcode
+\tplsetmode{dec : long}
+\endinput
+
+Versions :
+ _____________________________________________________________________________
+| Version |    Date    | Changements                                          |
+|-----------------------------------------------------------------------------|
+|   0.1   | 16/11/2024 | Première version                                     |
+|-----------------------------------------------------------------------------|
+|   0.2   | 20/12/2024 | * choix du type de nombres dans le tuple : "int",    |
+|         |            |   "dec:short" ou bien "dec:long" (défaut)            |
+|         |            | * index négatifs possibles pour les méthodes get,    |
+|         |            |   set, add et split                                  |
+|         |            | * ajout d'un moteur de calcul rudimentaire pour les  |
+|         |            |   décimaux #8.#8 avec produit de type #16.#8         |
+|         |            | * la méthode 'pos' admet un argument optionnel pour  |
+|         |            |   indiquer l'occurrence cherchée                     |
+|-----------------------------------------------------------------------------|

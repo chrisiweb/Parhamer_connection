@@ -1,0 +1,181 @@
+%%
+%% This is file `turkish.bdf',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% babelbib.dtx  (with options: `latex,turkish')
+%% 
+%%   babelbib package
+%% 
+%%   Copyright  2003--2021 Harald Harders
+%%   Copyright  2019--2021 Norbert Preining
+%% 
+%%   This program can be redistributed and/or modified under the terms
+%%   of the LaTeX Project Public License Distributed from CTAN
+%%   archives in directory macros/latex/base/lppl.txt; either
+%%   version 1 of the License, or any later version.
+%% 
+%%   harald.harders@gmx.de
+%%   norbert@preining.info
+%% 
+%% Language definitions for Turkish by
+%%   Ahmed Zahid Demirciler <ahmed.demirciler@gmail.com>
+\ProvidesFile{turkish.bdf}
+  [2021/01/06 v1.34  babelbib: multilingual bibliographies]
+\newcommand\bibsturkish[1][turkish]{%
+  \def\biblanguagename{#1}%
+  \def\btxetalshort##1{\protect\foreignlanguage{#1}{vd##1{}}}%
+  \def\btxetallong##1{\protect\foreignlanguage{#1}{ve di\u{g}erleri}}%
+  \def\btxandshort##1{\protect\foreignlanguage{#1}{ve}}%
+  \def\btxandlong##1{\protect\foreignlanguage{#1}{ve}}%
+  \def\btxandcomma##1{}%
+  \def\btxinlong##1{\protect\foreignlanguage{#1}{i\c{c}inde}}%
+  \def\btxinshort##1{\protect\foreignlanguage{#1}{i\c{c}inde}}%
+  \def\btxofseriesshort##1{\protect\foreignlanguage{#1}{in}}%
+  \def\btxinseriesshort##1{\protect\foreignlanguage{#1}{i\c{c}inde}}%
+  \def\btxofserieslong##1{\protect\foreignlanguage{#1}{in}}%
+  \def\btxinserieslong##1{\protect\foreignlanguage{#1}{i\c{c}inde}}%
+  \def\btxeditorshort##1{\protect\foreignlanguage{#1}{ed##1{}}}%
+  \def\btxeditorlong##1{\protect\foreignlanguage{#1}{edit\"{o}r}}%
+  \def\btxeditorsshort##1{\protect\foreignlanguage{#1}{ed##1{}}}%
+  \def\btxeditorslong##1{\protect\foreignlanguage{#1}{edit\"{o}rler}}%
+  \def\btxvolumeshort##1{\protect\foreignlanguage{#1}{C##1{}}}%
+  \def\btxvolumelong##1{\protect\foreignlanguage{#1}{cilt}}%
+  \def\btxjvolumeshort##1{\PackageError{babelbib}{Comment for
+      btxjvolumeshort in Turkish undefined. Please send the translation to the
+      authors}{} [##1]}%
+  \def\btxjvolumelong##1{\PackageError{babelbib}{Comment for
+      btxjvolumelong in Turkish undefined. Please send the translation to the
+      authors}{} [##1]}%
+  \def\btxnumbershort##1{\protect\foreignlanguage{#1}{S##1{}}}%
+  \def\btxnumberlong##1{\protect\foreignlanguage{#1}{say{\i}}}%
+  \def\btxeditionshort##1{\protect\foreignlanguage{#1}{bs##1{}}}%
+  \def\btxeditionlong##1{\protect\foreignlanguage{#1}{bas{\i}m}}%
+  \def\btxchaptershort##1{\protect\foreignlanguage{#1}{B\"{o}l##1{}}}%
+  \def\btxchapterlong##1{\protect\foreignlanguage{#1}{b\"{o}l\"{u}m}}%
+  \def\btxpageshort##1{\protect\foreignlanguage{#1}{s##1{}}}%
+  \def\btxpagelong##1{\protect\foreignlanguage{#1}{sayfa}}%
+  \def\btxpagesshort##1{\protect\foreignlanguage{#1}{sy##1{}}}%
+  \def\btxpageslong##1{\protect\foreignlanguage{#1}{sayfa}}%
+  \def\btxmastthesis##1{\protect\foreignlanguage{#1}{Y\"{u}ksek lisans tezi}}%
+  \def\btxphdthesis##1{\protect\foreignlanguage{#1}{Doktora tezi}}%
+  \def\btxtechrepshort##1{\protect\foreignlanguage{#1}{Rap##1{}}}%
+  \def\btxtechreplong##1{\protect\foreignlanguage{#1}{Rapor}}%
+  \def\btxmonjanlong##1{\protect\foreignlanguage{#1}{Ocak}}%
+  \def\btxmonfeblong##1{\protect\foreignlanguage{#1}{\c{S}ubat}}%
+  \def\btxmonmarlong##1{\protect\foreignlanguage{#1}{Mart}}%
+  \def\btxmonaprlong##1{\protect\foreignlanguage{#1}{Nisan}}%
+  \def\btxmonmaylong##1{\protect\foreignlanguage{#1}{May{\i}s}}%
+  \def\btxmonjunlong##1{\protect\foreignlanguage{#1}{Haziran}}%
+  \def\btxmonjullong##1{\protect\foreignlanguage{#1}{Temmuz}}%
+  \def\btxmonauglong##1{\protect\foreignlanguage{#1}{A\u{g}ustos}}%
+  \def\btxmonseplong##1{\protect\foreignlanguage{#1}{Eyl\"{u}l}}%
+  \def\btxmonoctlong##1{\protect\foreignlanguage{#1}{Ekim}}%
+  \def\btxmonnovlong##1{\protect\foreignlanguage{#1}{Kas{\i}m}}%
+  \def\btxmondeclong##1{\protect\foreignlanguage{#1}{Aral{\i}}}%
+  \def\btxmonjanshort##1{\protect\foreignlanguage{#1}{Oca##1{}}}%
+  \def\btxmonfebshort##1{\protect\foreignlanguage{#1}{\c{S}ub##1{}}}%
+  \def\btxmonmarshort##1{\protect\foreignlanguage{#1}{Mar##1{}}}%
+  \def\btxmonaprshort##1{\protect\foreignlanguage{#1}{Nis##1{}}}%
+  \def\btxmonmayshort##1{\protect\foreignlanguage{#1}{May}}%
+  \def\btxmonjunshort##1{\protect\foreignlanguage{#1}{Haz}}%
+  \def\btxmonjulshort##1{\protect\foreignlanguage{#1}{Tem}}%
+  \def\btxmonaugshort##1{\protect\foreignlanguage{#1}{A\u{g}u##1{}}}%
+  \def\btxmonsepshort##1{\protect\foreignlanguage{#1}{Eyl##1{}}}%
+  \def\btxmonoctshort##1{\protect\foreignlanguage{#1}{Eki##1{}}}%
+  \def\btxmonnovshort##1{\protect\foreignlanguage{#1}{Kas##1{}}}%
+  \def\btxmondecshort##1{\protect\foreignlanguage{#1}{Ara##1{}}}%
+  \def\Btxinlong##1{\protect\foreignlanguage{#1}{i\c{c}inde}}%
+  \def\Btxinshort##1{\protect\foreignlanguage{#1}{i\c{c}inde}}%
+  \def\Btxeditorshort##1{\protect\foreignlanguage{#1}{Ed##1{}}}%
+  \def\Btxeditorlong##1{\protect\foreignlanguage{#1}{Edit\"{o}r}}%
+  \def\Btxeditorsshort##1{\protect\foreignlanguage{#1}{Ed##1{}}}%
+  \def\Btxeditorslong##1{\protect\foreignlanguage{#1}{Edit\"{o}rler}}%
+  \def\Btxvolumeshort##1{\protect\foreignlanguage{#1}{C##1{}}}%
+  \def\Btxvolumelong##1{\protect\foreignlanguage{#1}{cilt}}%
+  \def\Btxjvolumeshort##1{\protect\foreignlanguage{#1}{C##1{}}}%
+  \def\Btxjvolumelong##1{\protect\foreignlanguage{#1}{cilt}}%
+  \def\Btxjvolumeshort##1{\PackageError{babelbib}{Comment for
+      btxjvolumeshort in Turkish undefined. Please send the translation to the
+      authors}{} [##1]}%
+  \def\Btxjvolumelong##1{\PackageError{babelbib}{Comment for
+      btxjvolumelong in Turkish undefined. Please send the translation to the
+      authors}{} [##1]}%
+  \def\Btxnumbershort##1{\protect\foreignlanguage{#1}{S##1{}}}%
+  \def\Btxnumberlong##1{\protect\foreignlanguage{#1}{say{\i}}}%
+  \def\Btxeditionshort##1{\protect\foreignlanguage{#1}{ed##1{}}}%
+  \def\Btxeditionlong##1{\protect\foreignlanguage{#1}{bas{\i}m}}%
+  \def\Btxchaptershort##1{\protect\foreignlanguage{#1}{B\"{o}l##1{}}}%
+  \def\Btxchapterlong##1{\protect\foreignlanguage{#1}{b\"{o}l\"{u}m}}%
+  \def\Btxpageshort##1{\protect\foreignlanguage{#1}{s##1{}}}%
+  \def\Btxpagelong##1{\protect\foreignlanguage{#1}{sayfa}}%
+  \def\Btxpagesshort##1{\protect\foreignlanguage{#1}{s##1{}}}%
+  \def\Btxpageslong##1{\protect\foreignlanguage{#1}{sayfalar}}%
+  \def\Btxtechrepshort##1{\protect\foreignlanguage{#1}{Rap##1{}}}%
+  \def\Btxtechreplong##1{\protect\foreignlanguage{#1}{Rapor}}%
+  \def\btxurldatecomment##1{\protect\foreignlanguage{#1}{, g\"{o}r\"{u}ld\"{u} ##1}}%
+  \def\btxfnamespaceshort{}%
+  \def\btxfnamespacelong{ }%
+  \def\btxnumeralshort##1{\protect\foreignlanguage{#1}{%
+      \ifnumber{##1}{##1\textsuperscript{\underline a}}{##1}}}%
+  \def\btxnumerallong##1{\btxnumeralshort{#1}{##1}}%
+  \def\btxprintmonthyearnum##1##2{##1/##2}%
+  \def\btxkeywordlanguage##1{{\protect\selectlanguage{#1}##1}}%
+  \ifbbbblanguagenames
+    \def\btxlanguagenameamerican{\protect\foreignlanguage{#1}{ingilizce}}%
+    \def\btxlanguagenameaustrian{\protect\foreignlanguage{#1}{almanca}}%
+    \def\btxlanguagenamebrazil{\protect\foreignlanguage{#1}{portekizce}}%
+    \def\btxlanguagenamebrazilian{\protect\foreignlanguage{#1}{portekizce}}%
+    \def\btxlanguagenamebritish{\protect\foreignlanguage{#1}{ingilizce}}%
+    \def\btxlanguagenamebulgarian{\protect\foreignlanguage{#1}{bulgarca}}%
+    \def\btxlanguagenamecanadian{\protect\foreignlanguage{#1}{ingilizce}}%
+    \def\btxlanguagenamecanadien{\protect\foreignlanguage{#1}{frans{\i}zca}}%
+    \def\btxlanguagenamecatalan{\protect\foreignlanguage{#1}{katalanca}}%
+    \def\btxlanguagenamecroatian{\protect\foreignlanguage{#1}{h{\i}rvat\c{c}a}}%
+    \def\btxlanguagenameczech{\protect\foreignlanguage{#1}{\c{c}ek\c{c}e}}%
+    \def\btxlanguagenamedanish{\protect\foreignlanguage{#1}{danca}}%
+    \def\btxlanguagenamedutch{\protect\foreignlanguage{#1}{hollandaca}}%
+    \def\btxlanguagenameenglish{\protect\foreignlanguage{#1}{ingilizce}}%
+    \def\btxlanguagenameesperanto{\protect\foreignlanguage{#1}{esperanto}}%
+    \def\btxlanguagenamefinnish{\protect\foreignlanguage{#1}{fince}}%
+    \def\btxlanguagenamefrancais{\protect\foreignlanguage{#1}{franc\'es}}%
+    \def\btxlanguagenamefrench{\protect\foreignlanguage{#1}{frans{\i}zca}}%
+    \def\btxlanguagenamefrenchb{\protect\foreignlanguage{#1}{frans{\i}zca}}%
+    \def\btxlanguagenamegerman{\protect\foreignlanguage{#1}{almanca}}%
+    \def\btxlanguagenamegermanb{\protect\foreignlanguage{#1}{almanca}}%
+    \def\btxlanguagenamegreek{\protect\foreignlanguage{#1}{yunanca}}%
+    \def\btxlanguagenamehebrew{\protect\foreignlanguage{#1}{ibranice}}%
+    \def\btxlanguagenamehungarian{\protect\foreignlanguage{#1}{macarca}}%
+    \def\btxlanguagenameicelandic{\protect\foreignlanguage{#1}{izlandaca}}%
+    \def\btxlanguagenameirish{\protect\foreignlanguage{#1}{irlandaca}}%
+    \def\btxlanguagenameitalian{\protect\foreignlanguage{#1}{italyanca}}%
+    \def\btxlanguagenamelatin{\protect\foreignlanguage{#1}{latince}}%
+    \def\btxlanguagenamenaustrian{\protect\foreignlanguage{#1}{almanca}}%
+    \def\btxlanguagenamengerman{\protect\foreignlanguage{#1}{almanca}}%
+    \def\btxlanguagenamenorsk{\protect\foreignlanguage{#1}{norve\c{c}\c{c}e}}%
+    \def\btxlanguagenamenynorsk{\protect\foreignlanguage{#1}{norve\c{c}\c{c}e}}%
+    \def\btxlanguagenamepolish{\protect\foreignlanguage{#1}{leh\c{c}}}%
+    \def\btxlanguagenameportuges{\protect\foreignlanguage{#1}{portekizce}}%
+    \def\btxlanguagenameportuguese{\protect\foreignlanguage{#1}{portekizce}}%
+    \def\btxlanguagenamerussian{\protect\foreignlanguage{#1}{rus\c{c}a}}%
+    \def\btxlanguagenamescottish{\protect\foreignlanguage{#1}{isko\c{c}\c{c}a}}%
+    \def\btxlanguagenameserbian{\protect\foreignlanguage{#1}{s{\i}rp\c{c}a}}%
+    \def\btxlanguagenamespanish{\protect\foreignlanguage{#1}{espa\~nol}}%
+    \def\btxlanguagenameswedish{\protect\foreignlanguage{#1}{isve\c{c}\c{c}e}}%
+    \def\btxlanguagenameturkish{\protect\foreignlanguage{#1}{t\"{u}rk\c{c}e}}%
+    \def\btxlanguagenameUKenglish{\protect\foreignlanguage{#1}{ingilizce}}%
+    \def\btxlanguagenameUSenglish{\protect\foreignlanguage{#1}{ingilizce}}%
+  \fi
+}
+\AtBeginDocument{%
+  \ifbbbbfixlanguage
+  \else
+    \bbbbaddto{turkish}{bibsturkish}
+  \fi
+  \bbbbaddto{turkish}{btxifchangecaseoff}
+}
+
+\endinput
+%%
+%% End of file `turkish.bdf'.

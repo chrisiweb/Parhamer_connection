@@ -1,0 +1,65 @@
+% This file is part of the CTAN package named ifis-macros.
+% 
+%   ifisinteger.tex: provide macro \ifisint to check if a given
+%                    input is a valid number for \TeX.
+%   Usage: \ifisint <argument>\Boolend <true branch>\else <false branch>\fi
+%
+%   Copyright (C) 2024,2025  Udo Wermuth (author)
+%
+%   This program is free software: you can redistribute it and/or modify
+%   it under the terms of the GNU General Public License as published by
+%   the Free Software Foundation, either version 3 of the License, or
+%   (at your option) any later version.
+%
+%   This program is distributed in the hope that it will be useful,
+%   but WITHOUT ANY WARRANTY; without even the implied warranty of
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   GNU General Public License for more details.
+%
+%   You should have received a copy of the GNU General Public License
+%   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%
+\catcode`\@=11 %  use the private prefix ``II@''
+\newif\ifII@itis      % main result of the macro
+%% helper macros
+\def\II@rmsign #1{\ifx#1+\else\ifx#1-\else
+ \II@endrm#1\fi\fi\II@rmsign}
+\def\II@endrm #1\fi\fi#2{\fi\fi#1}
+\def\II@zeros #1{\ifx#1''\else\ifx#1""\else
+ \II@cont#1\fi\fi\II@zeros}
+\def\II@cont #1\fi\fi#2{\fi\fi\II@hdlzero#1}
+\def\II@hdlzero #1{\ifx#10 \else
+ \II@xchgfi #1\fi\II@hdlzero}
+\def\II@xchgfi #1\fi#2{\fi\ifx#1`\else0\fi#1}
+%% constants with the sentinel `W'
+\def\II@cfd{02147483647W}%  canonical forms with
+\def\II@cfh{"07FFFFFFFW}% W of TeX's max integer
+\def\II@cfo{'017777777777W}%    in dec, hex, oct
+\def\II@W{W}\def\II@hexW{"W}% all unsigned input
+\def\II@octW{'W}% with W for which TeX inserts 0
+%% assignments
+\let\Boolend=\iffalse \font\II@font=cmr10
+\let\IIcurrentmode=\errorstopmode    % CONFIGURE
+%% main macro
+\def\ifisint #1\Boolend{\II@itisfalse % see S1.2
+ \edef\II@digs{\II@rmsign#1W}% S1.1 with 2 \edef
+ \edef\II@digs{\expandafter\II@rmsign\II@digs}%
+ \ifx\II@digs\II@W\else\ifx\II@digs\II@octW
+ \else\ifx\II@digs\II@hexW\else  % S1.2 finished
+  \edef\II@cf{\expandafter\II@zeros\II@digs}% S2
+  \wlog{=== start ignore}\batchmode\begingroup
+   \setbox0=\hbox{\count255=\II@cf
+    \xdef\II@val{\the\count255}}%
+   \setbox0=\hbox{\II@font\count255=#1W}%   S3.1
+   \xdef\II@wd{\the\wd0}%
+  \endgroup\IIcurrentmode\wlog{=== stop ignore}%
+  \ifdim\II@wd=10.2778pt % \wd of hbox `W'; S3.2
+   \II@itistrue \ifnum\II@val=2147483647 %  S4.1
+    \ifx\II@cf\II@cfd
+    \else\ifx\II@cf\II@cfh
+    \else\ifx\II@cf\II@cfo                % S4.2
+    \else \II@itisfalse                   % S4.3
+   \fi\fi\fi\fi
+  \else \II@itisfalse                     % S3.3
+ \fi\fi\fi\fi \ifII@itis}
+\catcode`\@=12

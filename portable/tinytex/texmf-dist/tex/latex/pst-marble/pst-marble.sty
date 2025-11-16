@@ -1,0 +1,11 @@
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-marble}[2019/02/18 package wrapper for PSTricks pst-marble.tex]
+\input pst-marble.tex
+\ProvidesFile{pst-marble.tex}
+  [\filedate\space v\fileversion\space `PST-marble']
+
+\IfFileExists{pst-marble.pro}{
+  \ProvidesFile{pst-marble.pro}
+    [2019-02-26 v. 1.6,  PostScript prologue file]
+\@addtofilelist{pst-marble.pro}}{}
+\endinput

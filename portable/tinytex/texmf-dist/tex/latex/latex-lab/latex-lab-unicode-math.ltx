@@ -1,0 +1,97 @@
+%%
+%% This is file `latex-lab-unicode-math.ltx',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-unicode-math.dtx  (with options: `kernel')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-unicode-math.dtx
+\ProvidesExplFile
+ {latex-lab-unicode-math.ltx}
+ {2025-06-30}
+ {0.1e}
+ {unicode-math adaptions}
+\str_if_exist:cF { l__socket_tagsupport/math/luamml/artifact_plug_str }
+ {
+   \NewTaggingSocket{math/luamml/artifact}{0}
+ }
+\def\bBigg@#1#2
+ {{\ensuremath
+    {
+     \Uvextensible height~#1~ \dimexpr0.5\big@size\relax ~ depth ~#1~
+     \dimexpr0.5\big@size\relax~ axis~exact~#2
+    }
+ }}
+\protected\def\varinjlim
+  {\mathop{\Udelimiterunder 0 "2192 {\qopname\relax o{\luamml_ignore:\mathstrut lim}}}}
+\protected\def\varprojlim
+  {\mathop{\Udelimiterunder 0 "2190 {\qopname\relax o{\luamml_ignore:\mathstrut lim}}}}
+\protected\def\varlimsup
+  {\mathop{\overline{\qopname\relax o{\luamml_ignore:\mathstrut lim}}}}
+\protected\def\varliminf
+  {\mathop{\underline{\qopname\relax o{lim}}}}
+\AtBeginDocument
+ {
+  \cs_gset_protected_nopar:Npn \sqrtsign
+    {
+      \tag_socket_use:n {math/luamml/artifact}
+      \tex_Uradical:D \symoperators "0221A\scan_stop:
+    }
+ }
+\cs_set_nopar:Npn \plainroot@ #1 \of #2
+  {
+    \bool_if:nTF
+      {
+        \__um_int_if_zero_p:n \uproot@ && \__um_int_if_zero_p:n \leftroot@
+      }
+      {
+        \tag_socket_use:n {math/luamml/artifact}
+        \Uroot \c__um_radical_sqrt_tl { #1 } { #2 }
+      }
+      {
+        \hbox_set:Nn \rootbox
+          {
+            \c_math_toggle_token \m@th
+            \scriptscriptstyle { #1 }
+            \c_math_toggle_token
+          }
+        \mathchoice
+          { \r@@t \displaystyle      { #2 } }
+          { \r@@t \textstyle         { #2 } }
+          { \r@@t \scriptstyle       { #2 } }
+          { \r@@t \scriptscriptstyle { #2 } }
+      }
+     \c_group_end_token
+  }
+\DeclareRobustCommand {\frac}[2]
+ {{\tag_socket_use:n{math/luamml/artifact}\Ustack{\begingroup#1\endgroup\@@over#2}}}
+\endinput
+%%
+%% End of file `latex-lab-unicode-math.ltx'.

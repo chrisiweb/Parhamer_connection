@@ -1,0 +1,408 @@
+%% COPYRIGHT 2014 by Thomas Soell
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2003/12/01 or later.
+%
+% This work consists of the file pstricks.tex, PostScript macros
+% for Generic TeX.
+% See the PSTricks User's Guide for description.
+%
+\csname PSTperspectiveLoaded\endcsname
+\let\PSTperspectiveLoaded\endinput
+\ifx\PSTGradLoaded\endinput \else\input pst-grad \fi
+\ifx\PSTricksAddLoaded\endinput\else\input pstricks-add \fi
+%
+\def\fileversion{1.05}
+\def\filedate{2016/01/04}
+\message{ v\fileversion, \filedate (ts)}
+\message{ v\fileversion, \filedate}
+\edef\TheAtCode{\the\catcode`\@}
+\catcode`\@=11
+\pst@addfams{pst-perspective}
+\define@boolkey[psset]{pst-perspective}[Pst@]{translineA}[false]{} % showtransline
+\define@boolkey[psset]{pst-perspective}[Pst@]{translineB}[false]{} % showtransline
+\define@boolkey[psset]{pst-perspective}[Pst@]{translineK}[true]{} % show transline
+\define@boolkey[psset]{pst-perspective}[Pst@]{hideline}[false]{} % show hideline
+\define@boolkey[psset]{pst-perspective}[Pst@]{differentcol}[false]{} % unterschiedliche Farben der Fl\"{a}chen
+\define@boolkey[psset]{pst-perspective}[Pst@]{LowPoint}[false]{} % Basis durch z.B. tief liegenden Pkt
+\define@boolkey[psset]{pst-perspective}[Pst@]{symX}[true]{} % Symmetrieachse bei spiegelverkehrten Bildern
+\define@key[psset]{pst-perspective}{topfillstyle}[solid]{\def\psk@transTS@topfillstyle{#1}}
+\define@key[psset]{pst-perspective}{topangle}[45]{\def\psk@transTS@topangle{#1}}
+\define@key[psset]{pst-perspective}{topmidpoint}[0.5]{\def\psk@transTS@topmidpoint{#1}}
+\define@key[psset]{pst-perspective}{toplinecolor}[black]{\def\psk@transTS@toplinecolor{#1}}
+\define@key[psset]{pst-perspective}{topfillcolor}[gray]{\def\psk@transTS@topfillcolor{#1}}
+\define@key[psset]{pst-perspective}{toplinewidth}[0.8pt]{\def\psk@transTS@toplinewidth{#1}}
+\define@key[psset]{pst-perspective}{hidecolor}[black!80]{\def\psk@transTS@hidecolor{#1}}
+\define@key[psset]{pst-perspective}{facecolorT}[yellow]{\def\psk@transTS@facecolorT{#1}}
+\define@key[psset]{pst-perspective}{facecolorR}[red]{\def\psk@transTS@facecolorR{#1}}
+\define@key[psset]{pst-perspective}{hidelinestyle}[solid]{\def\psk@transTS@hidelinestyle{#1}}
+\define@key[psset]{pst-perspective}{hidelinewidth}[0.7pt]{\def\psk@transTS@hidelinewidth{#1}}
+\define@key[psset]{pst-perspective}{transcolor}[blue]{\def\psk@transTS@transcolor{#1}}
+\define@key[psset]{pst-perspective}{transAcolor}[green]{\def\psk@transTS@transAcolor{#1}}
+\define@key[psset]{pst-perspective}{transBcolor}[blue]{\def\psk@transTS@transBcolor{#1}}
+\define@key[psset]{pst-perspective}{translinestyle}[solid]{\def\psk@transTS@translinestyle{#1}}
+\define@key[psset]{pst-perspective}{transAlinestyle}[dashed]{\def\psk@transTS@transAlinestyle{#1}}
+\define@key[psset]{pst-perspective}{transBlinestyle}[dashed]{\def\psk@transTS@transBlinestyle{#1}}
+\define@key[psset]{pst-perspective}{translinewidth}[0.8pt]{\def\psk@transTS@translinewidth{#1}}
+\define@key[psset]{pst-perspective}{transAlinewidth}[0.7pt]{\def\psk@transTS@transAlinewidth{#1}}
+\define@key[psset]{pst-perspective}{transBlinewidth}[0.7pt]{\def\psk@transTS@transBlinewidth{#1}}
+\define@key[psset]{pst-perspective}{LowP}[{0|0}]{\def\psk@transTS@LowP{#1 }}
+\define@key[psset]{pst-perspective}{originT}[{0|0}]{\def\psk@transTS@originT{#1 }}
+\define@key[psset]{pst-perspective}{base}[0]{\def\psk@transTS@base{#1 }} % y-Wert der Basis f\"{u}r die Transformation
+\define@key[psset]{pst-perspective}{symline}[0]{\def\psk@transTS@symline{#1 }} % Symmetrieachse
+\define@key[psset]{pst-perspective}{phi}[45]{\def\psk@transTS@phi{#1 }}% Winkel f\"{u}r das Schr\"{a}gbild
+\define@key[psset]{pst-perspective}{deltaphi}[0]{\def\psk@transTS@deltaphi{#1 }}% zus\"{a}tzlicher Winkel f\"{u}r das Schr\"{a}gbild
+\define@key[psset]{pst-perspective}{vkf}[0.5]{\def\psk@transTS@vkf{#1 }} % Verk\"{u}rzungsfaktor
+\psset[pst-perspective]{phi=45,vkf=0.5,base=0,translineA=false,translineB=false,transAcolor=green,transBcolor=blue,differentcol=false,%
+transAlinewidth=0.7pt,transBlinewidth=0.7pt,transAlinestyle=dashed,transBlinestyle=dashed,deltaphi=0,facecolorT=yellow,facecolorR=red,%
+symline=0,symX=true,hidecolor=black!80,translineK=true,transcolor=blue,translinewidth=0.8pt,translinestyle=solid,%
+LowPoint=false,LowP={0,0},originT={0,0},hideline=false,hidelinewidth=0.7pt,hidelinestyle=dashed,%
+topfillstyle=solid,topangle=45,topmidpoint=0.5,toplinecolor=black,toplinewidth=0.8pt,topfillcolor=gray%
+}%
+\SpecialCoor%
+\def\ba{\psk@transTS@base}
+\def\pstransTS{\pst@object{pstpstransTS}}%
+%
+\def\pstpstransTS@i(#1)#2#3{%
+\begingroup%
+% (#1) Punkt 1
+% #2 Node-Name des Startpunktes % #3 Node-Name des transformierten Punktes
+\pst@killglue
+\use@par
+\rput(\psk@transTS@originT){\pnode(#1){#2}}%
+\pst@getcoor{#1}\pst@tempA%
+\pst@getcoor{\psk@transTS@LowP}\pst@tempB
+\rput(\psk@transTS@originT){\pnode(! %
+\pst@tempA \tx@UserCoor /y1 ED /x1 ED
+\ifPst@LowPoint
+\pst@tempB \tx@UserCoor /y2 ED /x2 ED
+\else
+/y2 \psk@transTS@base def \fi
+/lang y2 y1 sub abs \psk@transTS@vkf mul def
+/lang2 y2 y1 sub def
+lang2 0 ge {/alph2 \psk@transTS@phi \psk@transTS@deltaphi add 180 sub def} {/alph2 \psk@transTS@phi \psk@transTS@deltaphi add def} ifelse
+lang alph2 PtoC exch x1 add exch y2 add){#3}
+\ifPst@translineA
+\ifPst@LowPoint
+\pcline[linecolor=\psk@transTS@transAcolor,linestyle=\psk@transTS@transAlinestyle,linewidth=\psk@transTS@transAlinewidth](! \pst@tempA \tx@UserCoor pop \pst@tempB \tx@UserCoor exch pop)(#2)
+\else
+\pcline[linecolor=\psk@transTS@transAcolor,linestyle=\psk@transTS@transAlinestyle,linewidth=\psk@transTS@transAlinewidth](! \pst@tempA \tx@UserCoor pop \psk@transTS@base)(#2)
+\fi
+\else \fi%
+\ifPst@translineB
+\ifPst@LowPoint
+\pcline[linecolor=\psk@transTS@transBcolor,linestyle=\psk@transTS@transBlinestyle,linewidth=\psk@transTS@transBlinewidth](! \pst@tempA \tx@UserCoor pop \pst@tempB \tx@UserCoor exch pop)(#3)
+\else
+\pcline[linecolor=\psk@transTS@transBcolor,linestyle=\psk@transTS@transBlinestyle,linewidth=\psk@transTS@transBlinewidth](! \pst@tempA \tx@UserCoor pop \psk@transTS@base)(#3)
+\fi
+\else \fi%
+}%
+\endgroup
+\ignorespaces
+}
+\def\pstransTSX{\pst@object{pstpstransTSX}}%
+%
+\def\pstpstransTSX@i(#1)#2#3{%
+\begingroup%
+% (#1) Punkt 1
+% #2 Node-Name des Startpunktes % #3 Node-Name des transformierten Punktes
+\pst@killglue
+\use@par
+\rput(\psk@transTS@originT){\pnode(#1){#2}}%
+\pst@getcoor{#1}\pst@tempA%
+\pst@getcoor{\psk@transTS@LowP}\pst@tempB
+\rput(\psk@transTS@originT){\pnode(! %
+\pst@tempA \tx@UserCoor /y1 ED /x1 ED
+\ifPst@LowPoint
+\pst@tempB \tx@UserCoor /y2 ED /x2 ED
+\else
+/x2 \psk@transTS@base def \fi
+/x3 \psk@transTS@symline def
+\ifPst@symX
+/lang x2 x1 sub x1 x3 sub 2 mul add abs \psk@transTS@vkf mul def
+\else
+/lang x2 x1 sub abs \psk@transTS@vkf mul def \fi
+/lang2 x2 x1 sub def
+x2 x1 ge {/alph2 \psk@transTS@phi \psk@transTS@deltaphi add def} {/alph2 \psk@transTS@phi \psk@transTS@deltaphi add 180 sub def} ifelse
+lang alph2 PtoC exch x2 add exch y1 add){#3}
+\ifPst@translineA
+\ifPst@LowPoint
+\pcline[linecolor=\psk@transTS@transAcolor,linestyle=\psk@transTS@transAlinestyle,linewidth=\psk@transTS@transAlinewidth](! \pst@tempB \tx@UserCoor pop \pst@tempA \tx@UserCoor exch pop)(#2)
+\else
+\pcline[linecolor=\psk@transTS@transAcolor,linestyle=\psk@transTS@transAlinestyle,linewidth=\psk@transTS@transAlinewidth](! \psk@transTS@base \pst@tempA \tx@UserCoor exch pop)(#2)
+\fi
+\else \fi%
+\ifPst@translineB
+\ifPst@LowPoint
+\pcline[linecolor=\psk@transTS@transBcolor,linestyle=\psk@transTS@transBlinestyle,linewidth=\psk@transTS@transBlinewidth](! \pst@tempB \tx@UserCoor pop \pst@tempA \tx@UserCoor exch pop)(#3)
+\else
+\pcline[linecolor=\psk@transTS@transBcolor,linestyle=\psk@transTS@transBlinestyle,linewidth=\psk@transTS@transBlinewidth](! \psk@transTS@base \pst@tempA \tx@UserCoor exch pop )(#3)
+\fi
+\else \fi%
+}%
+\endgroup
+\ignorespaces
+}
+%------------------------------------------------------------------
+\def\pstransTSK{\pst@object{pstpstransTSK}}%
+\def\pstpstransTSK@i(#1)#2#3#4{%
+\begingroup%
+% (#1) Koordinaten des Punktes (kartesisch oder Polarkoordinaten)
+%  #2  Originall\"{a}nge #3  Node-Name des Startpunktes %  #4   Node-Name des transformierten Punktes
+\pst@killglue
+\use@par
+\rput(#1){\pnode(0,0){#3}}
+\rput(#1){\pnode(! %
+/l1 #2 def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi PtoC){#4}}
+\ifPst@translineK
+\pcline[linecolor=\psk@transTS@transcolor,linestyle=\psk@transTS@translinestyle,linewidth=\psk@transTS@translinewidth](#3)(#4)
+\else \fi%
+\endgroup
+\ignorespaces
+}
+%--------------------------------------------------------------------------------
+%--------------------------------------------------------------------------------
+\def\psboxTS{\pst@object{pstpsboxTS}}%
+\def\pstpsboxTS@i(#1,#2,#3)#4#5#6#7{%
+\begingroup%
+% (#1) Koordinaten des Punktes (kartesisch oder Polarkoordinaten)
+%  #2  Originall\"{a}nge #3  Node-Name des Startpunktes %  #4   Node-Name des transformierten Punktes
+\pst@killglue
+\use@par
+\colorlet{colorfl}{#7}
+%-------------------------------------------------
+{\ifPst@differentcol
+\psset{fillstyle=solid,fillcolor=colorfl}%
+\else
+\psset{fillstyle=solid,fillcolor=colorfl!60}%
+\fi
+\pspolygon%
+(!/l1 #1 #4 add def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 add exch #2 add exch)%
+%-------------------------------------------------
+(!/l1 #1 #4 add def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 add exch #2 #5 add add exch)%
+%-------------------------------------------------
+(!/l1 #1 #4 add def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 #6 add add exch #2 #5 add add exch)%
+%-------------------------------------------------
+(!/l1 #1 #4 add def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 #6 add add exch #2 add exch)%
+}%
+%-------------------------------------------------
+{\ifPst@differentcol
+\psset{fillstyle=solid,fillcolor=\psk@transTS@facecolorR}%
+\else
+\psset{fillstyle=solid,fillcolor=colorfl!90}%
+\fi
+\pspolygon%
+(!/l1 #1 #4 add def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 add exch #2 #5 add add exch)%
+%-------------------------------------------------
+(!/l1 #1 def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 add exch #2 #5 add add exch)%
+%-------------------------------------------------
+(!/l1 #1 def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 #6 add add exch #2 #5 add add exch)%
+%-------------------------------------------------
+(!/l1 #1 #4 add def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 #6 add add exch #2 #5 add add exch)%
+}%
+%%-------------------------------------------------
+{\ifPst@differentcol
+\psset{fillstyle=solid,fillcolor=\psk@transTS@facecolorT}%
+\else
+\psset{fillstyle=solid,fillcolor=colorfl!40}%
+\fi
+\pspolygon%
+(!/l1 #1 #4 add def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 #6 add add exch #2 #5 add add exch)%
+%-------------------------------------------------
+(!/l1 #1 def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 #6 add add exch #2 #5 add add exch)%
+%-------------------------------------------------
+(!/l1 #1 def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 #6 add add exch #2 add exch)%
+%-------------------------------------------------
+(!/l1 #1 #4 add def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 #6 add add exch #2 add exch)%
+}%
+%-------------------------------------------------
+\ifPst@hideline
+\pcline[nodesep=1.1pt,linecolor=\psk@transTS@hidecolor,linestyle=\psk@transTS@hidelinestyle,linewidth=\psk@transTS@hidelinewidth]%
+(!/l1 #1 def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 add exch #2 add exch)%
+(!/l1 #1 #4 add def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 add exch #2 add exch)%
+%-------------------------------------------------
+\pcline[nodesep=1.1pt,linecolor=\psk@transTS@hidecolor,linestyle=\psk@transTS@hidelinestyle,linewidth=\psk@transTS@hidelinewidth]%
+(!/l1 #1 def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 add exch #2 add exch)%
+(!/l1 #1 def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 #6 add add exch #2 add exch)%
+%-------------------------------------------------
+\pcline[nodesep=1.1pt,linecolor=\psk@transTS@hidecolor,linestyle=\psk@transTS@hidelinestyle,linewidth=\psk@transTS@hidelinewidth]%
+(!/l1 #1 def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 add exch #2 add exch)%
+(!/l1 #1 def
+/l2 l1 \psk@transTS@vkf mul def
+l2 \psk@transTS@phi 180 add PtoC #3 add exch #2 #5 add add exch)%
+\else \fi%
+\endgroup
+\ignorespaces
+}
+%------------------------------------------------------------------
+\def\psCircleTS{\pst@object{pstpsCircleTS}}%
+\def\pstpsCircleTS@i#1{%
+\begingroup%
+\pst@killglue
+\use@par
+\def\punkte{}
+\multido{\i=0+3}{120}{%
+\pstransTS(#1;\i){AnfPktC\i}{EndPktC'\i}
+\xdef\punkte{\punkte(EndPktC'\i)}}
+\expandafter\psccurve\punkte
+\endgroup
+\ignorespaces
+}
+%--------------------------------------------------------------------------------
+%------------------------------------------------------------------
+\def\psCircleTSX{\pst@object{pstpsCircleTSX}}%
+\def\pstpsCircleTSX@i#1{%
+\begingroup%
+\pst@killglue
+\use@par
+\def\punkte{}
+\multido{\i=0+3}{120}{%
+\pstransTSX(#1;\i){AnfPktC\i}{EndPktC'\i}
+\xdef\punkte{\punkte(EndPktC'\i)}}
+\expandafter\psccurve\punkte
+\endgroup
+\ignorespaces
+}
+%--------------------------------------------------------------------------------
+%------------------------------------------------------------------
+\def\psArcTS{\pst@object{pstpsArcTS}}%
+\def\pstpsArcTS@i#1#2#3{%
+\begingroup%
+\pst@killglue
+\use@par
+\pst@Verb{%
+/v \psk@transTS@vkf def%
+/ph \psk@transTS@phi def%
+/t 1 v 2 exp sub v 4 exp 2 v 2 exp mul 2 ph mul cos mul add 1 add sqrt div def%
+/ws 2 sqrt 2 div 1 t sub sqrt mul ASIN 180 mul Pi div def%
+}
+\def\punkte{}
+\multido{\r=0+1}{#3}{%
+\pstransTS(! #1 ws #2 add \r\space add PtoC){AnfPkt}{EndPkt\r}
+\xdef\punkte{\punkte(EndPkt\r)}}
+\expandafter\pscurve\punkte
+\endgroup
+\ignorespaces
+}
+%--------------------------------------------------------------------------------
+%------------------------------------------------------------------
+\def\psArcTSX{\pst@object{pstpsArcTSX}}%
+\def\pstpsArcTSX@i#1#2#3{%
+\begingroup%
+\pst@killglue
+\use@par
+\pst@Verb{%
+/v \psk@transTS@vkf def%
+/ph \psk@transTS@phi def%
+/t 1 v 2 exp sub v 4 exp 2 v 2 exp mul 2 ph mul cos mul add 1 add sqrt div def%
+/ws 2 sqrt 2 div 1 t sub sqrt mul ASIN 180 mul Pi div def%
+}
+\def\punkte{}
+\multido{\r=0+1}{#3}{%
+\pstransTSX(! #1 ws 90 add #2 add \r\space add PtoC){AnfPkt}{EndPkt\r}
+\xdef\punkte{\punkte(EndPkt\r)}}
+\expandafter\pscurve\punkte
+\endgroup
+\ignorespaces
+}
+%--------------------------------------------------------------------------------
+%------------------------------------------------------------------
+\def\psZylinderTS{\pst@object{pstpsZylinderTS}}%
+\def\pstpsZylinderTS@i#1#2{%
+\begingroup%
+\pst@killglue
+\use@par
+\pst@Verb{%
+/v \psk@transTS@vkf def%
+/ph \psk@transTS@phi def%
+/t 1 v 2 exp sub v 4 exp 2 v 2 exp mul 2 ph mul cos mul add 1 add sqrt div def%
+/ws 2 sqrt 2 div 1 t sub sqrt mul ASIN 180 mul Pi div def%
+/Ra 0.5 1 t add mul 1 v 2 exp sub mul v 2 exp add v ph cos mul 1 t 2 exp sub sqrt mul add sqrt def%
+/Rb 0.5 1 t sub mul 1 v 2 exp sub mul v 2 exp add v ph cos mul 1 t 2 exp sub sqrt mul sub sqrt def%
+/we 2 sqrt 2 div 1 t sub sqrt mul v mul ph sin mul Ra div ASIN 180 mul Pi div def%
+}
+\def\punkteA{}
+\def\punkteB{}
+\def\punkteC{}
+\def\punkteD{}
+\multido{\r=0+1}{180}{%
+\pstransTS[originT={0,0}](! #1 ph 0 ge {ws 180 add} {ws} ifelse \r\space add PtoC){ZylA\r}{ZylA'\r}%
+\xdef\punkteA{\punkteA(ZylA'\r)}}%
+\multido{\rB=0+1}{180}{%
+\pstransTS[originT={0,#2}](! #1 ph 0 ge {ws} {ws 180 add} ifelse \rB\space add PtoC){ZylB\rB}{ZylB'\rB}%
+\xdef\punkteB{\punkteB(ZylB'\rB)}}%
+\multido{\rC=0+1}{180}{%
+\pstransTS[originT={0,0}](! #1 ws \rC\space add PtoC){ZylC\rC}{ZylC'\rC}%
+\xdef\punkteC{\punkteC(ZylC'\rC)}}%
+\multido{\rD=0+1}{360}{%
+\pstransTS[originT={0,#2}](#1;\rD){ZylD\rD}{ZylD'\rD}%
+\xdef\punkteD{\punkteD(ZylD'\rD)}}%
+%-----------------------------------------------
+\pscustom{%
+\expandafter\pscurve\punkteA%
+\rlineto(0,#2)
+\expandafter\pscurve\punkteB%
+\closepath%
+}%
+%-----------------------------------------------
+\pscustom[fillstyle=\psk@transTS@topfillstyle,gradangle=\psk@transTS@topangle,gradmidpoint=\psk@transTS@topmidpoint,linecolor=\psk@transTS@toplinecolor,%
+linewidth=\psk@transTS@toplinewidth,fillcolor=\psk@transTS@topfillcolor]{%
+\expandafter\psccurve\punkteD%
+\closepath
+}%
+%\psrotate(0,#2){! we}{%
+%\psellipse[fillstyle=\psk@transTS@topfillstyle,gradangle=\psk@transTS@topangle,gradmidpoint=\psk@transTS@topmidpoint,linecolor=\psk@transTS@toplinecolor,%
+%linewidth=\psk@transTS@toplinewidth,fillcolor=\psk@transTS@topfillcolor](0,#2)(!Ra #1 mul Rb #1 mul)}%
+\ifPst@hideline
+\psset{linecolor=\psk@transTS@hidecolor,linestyle=\psk@transTS@hidelinestyle,linewidth=\psk@transTS@hidelinewidth}%
+\expandafter\pscurve\punkteC%
+\else \fi%
+\endgroup
+\ignorespaces
+}
+%--------------------------------------------------------------------------------
+\catcode`\@=\TheAtCode\relax
+\endinput
+%%
+%% END pst-perspective.tex 

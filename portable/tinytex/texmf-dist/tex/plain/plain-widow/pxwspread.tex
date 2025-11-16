@@ -1,0 +1,147 @@
+% This file is part of the CTAN package named plain-widow.
+% 
+%   pxwspread.tex: change \plainoutput to \PXspread
+%                  that writes a report about problematic lines
+%                  and avoids widow lines for a spread
+%                  also: club lines and hyphenated words at page break
+%   Version 1.0, 13.05.2025
+%
+%   Copyright (C) 2025  Udo Wermuth (author)
+%
+%   This program is free software: you can redistribute it and/or modify
+%   it under the terms of the GNU General Public License as published by
+%   the Free Software Foundation, either version 3 of the License, or
+%   (at your option) any later version.
+%
+%   This program is distributed in the hope that it will be useful,
+%   but WITHOUT ANY WARRANTY; without even the implied warranty of
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   GNU General Public License for more details.
+%
+%   You should have received a copy of the GNU General Public License
+%   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%
+\input pxwsingle.tex
+\newif\ifPXprinttwo %true:do \PXsinglepage twice
+\def\PXuseSpread{% initialize: work with spreads
+ \ifPXprinttwo %print with \PXsinglepage 2 pages
+  \global\PXprinttwofalse    % first of two done
+ \else \PXactivateSpread % printing done; switch
+ \fi}
+\let\PXpostsingle=\PXuseSpread
+\newcount\PXppts % sum of points for +1
+\newcount\PXzpts % sum of points for  0
+\newcount\PXmpts % sum of points for -1
+\newif\ifPXrightPage % true: check spread break
+\def\PXactivateSpread{% switch output routine
+ % initialize 3 registers, the flag, and \PXpts
+ % that stores the 1st letter of a register name
+ \gdef\PXpts{p}\global\PXppts=0 \global\PXzpts=0
+ \global\PXmpts=0 \global\PXrightPagetrue
+ \PXmaxVsize % start with 2\vsize+2\baselineskip
+ \global\output={\PXspread}}
+\def\PXbrkPts #1.{% #1: points; add to register
+ \expandafter\global\expandafter\advance
+  \csname PX\PXpts pts\endcsname by #1
+ \ifPXrightPage % double them for the right page
+  \expandafter\global\expandafter\advance
+   \csname PX\PXpts pts\endcsname by #1 \fi}
+\def\PXlogPts{\PXlog{Points: \the\PXmpts,
+ \the\PXzpts, \the\PXppts}}
+\def\PXevalPtsSetVsize{\PXresetVsize
+ % \PXlogPts % to see the points, uncomment line
+ \ifnum\PXzpts>1 % ignore club line on left page
+  \ifnum\PXzpts>\PXppts \ifnum\PXmpts>\PXppts
+     \global\advance\vsize by 1\baselineskip
+     \PXminusdist\wlog{SPREAD: \vsize + 1 line}%
+   \else\global\advance\vsize by -1\baselineskip
+    \PXplusdist\wlog{SPREAD: \vsize - 1 line}\fi
+  \else\ifnum\PXzpts>\PXmpts
+   \global\advance\vsize by -1\baselineskip
+   \PXplusdist\wlog{SPREAD: \vsize - 1 line}%
+ \fi\fi\fi}
+\def\PXmaxVsize{%use max \vsize for current page
+ \PXresetVsize %start with saved value of \vsize
+ \global\advance\vsize by +1\baselineskip
+ \ifPXrightPage   % double the (\vsize + 1 line)
+  \global\advance\vsize by \vsize
+  % second \topskip becomes a \baselineskip
+  \global\advance\vsize by -1\topskip
+  \global\advance\vsize by +1\baselineskip \fi}
+\def\PXdecVsizeChgReg{% change \vsize & register
+ \if\PXpts m\else   % change \vsize if > minimum
+  \global\advance\vsize by -1\baselineskip
+  \ifPXrightPage    % change value for two lines
+   \global\advance\vsize by -1\baselineskip
+ \fi\fi  % indicate current register with \PXpts
+ \xdef\PXpts{\if\PXpts pz%   cycle chars: p -> z
+  \else\if\PXpts zm\else p\fi\fi}}%  z -> m -> p
+\def\PXspread{% main \output for spreads
+ \ifnum\outputpenalty     =\PXpenW  \PXbrkPts16.
+ \else\ifnum\outputpenalty=\PXpenBW \PXbrkPts20.
+ \else\ifnum\outputpenalty=\PXpenCW \PXbrkPts17.
+ \else\ifnum\outputpenalty=\PXpenBCW\PXbrkPts21.
+ \else\ifnum\outputpenalty=\PXpenB  \PXbrkPts 4.
+ \else\ifnum\outputpenalty=\PXpenBC \PXbrkPts 5.
+ \else\ifnum\outputpenalty=\PXpenBD \PXbrkPts 4.
+ \else\ifnum\outputpenalty=\PXpenBCD\PXbrkPts 5.
+ \else\ifnum\outputpenalty=\PXpenC  \PXbrkPts 1.
+ \else\ifnum\outputpenalty=\PXpenCD \PXbrkPts 1.
+ \else\ifnum\outputpenalty<-9999 %  forced break
+   % switch \output except for 2\vsize + 2 lines
+   \if\PXpts p\PXbrkPts32. % wait, assign 64 pts
+   \else \let\PXnextStep=\PXprepOutputOfPage \fi
+ \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+ \if\PXpts m\ifPXrightPage     % go to left page
+   \global\PXrightPagefalse \PXmaxVsize
+  \else \let\PXnextStep=\PXprepOutputOfPage \fi
+ \fi \PXnextStep}
+\def\PXnextStep{% default action without switch
+ \PXdecVsizeChgReg %prepare next \vsize & \PXpts
+ \unvbox255 \ifnum\outputpenalty<10000
+  \penalty\outputpenalty \else \penalty0 \fi}
+\def\PXprepOutputOfPage{\PXevalPtsSetVsize
+ \ifnum\outputpenalty<-9999 %     a forced break
+  \unvbox255 \penalty\outputpenalty
+  \global\PXprinttwotrue  % print 2 single pages
+  \global\output={\PXsinglepage}%
+ \else \global\holdinginserts=0
+  \unvbox\PrevPageBotMark % restore old \botmark
+  \penalty\RestoreBotMark \unvbox255
+  \ifnum\outputpenalty<10000
+   \penalty\outputpenalty \else \penalty0 \fi
+  \global\output={\PXsinglespreadpages}\fi}
+\def\PXsinglespreadpages{% print pages of spread
+ \ifnum\outputpenalty=\RestoreBotMark
+  \setbox0=\vbox{\unvbox255 }%   ignore contents  
+ \else\ifPXrightPage \SaveCurrentBotMark
+  \PXlog{(right) spread }\PXoutput \PXresetVsize
+  \global\holdinginserts=1 \PXpostspread
+ \else \PXlog{OUTPUT: (left) }\PXoutput
+  \global\PXrightPagetrue
+ \fi\fi}
+\let\PXpostspread=\PXactivateSpread
+\def\startwithSingle{\let\PXpostsingle=\relax
+ \output={\PXsinglepage}}
+\def\fromSpreadtoReport{%
+ \def\PXpostspread{\global\holdinginserts=0
+  \global\output={\PXoutput}}}
+\def\PXswitchtoSpread{%
+ \global\let\PXpostoutput=\relax
+ \global\let\PXpostsingle=\PXuseSpread
+ \global\let\PXpostspread=\PXactivateSpread
+ \PXactivateSpread}
+\def\fromReporttoSpread{% sometimes delayed
+ \ifodd\pageno \gdef\PXpostoutput{%
+   \SaveCurrentBotMark \global\holdinginserts=1
+   \PXswitchtoSpread}%
+ \else \SaveCurrentBotMark
+  \global\holdinginserts=1 \PXswitchtoSpread
+ \fi}
+\def\fromSingletoSpread{% sometimes delayed
+ \def\PXpostsingle{\ifodd\pageno
+   \global\let\PXpostsingle=\PXswitchtoSpread
+  \else \PXswitchtoSpread \fi}}
+\def\fromSpreadtoSingle{\def\PXpostspread{%
+  \global\let\PXpostsingle=\relax
+  \global\output{\PXsinglepage}}}

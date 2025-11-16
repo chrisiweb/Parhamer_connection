@@ -1,0 +1,63 @@
+%% $Id: pst-turtle.tex 1093 2019-10-02 11:28:36Z herbert $
+%%
+%% This is file `pst-turtle.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-turtle.tex'
+%%
+%% Herbert Voss <hvoss@tug.org>
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-turtle' is a PSTricks package to plot special functions
+%%
+%% For a ChangeLog go the the end
+%%
+\csname PSTturtleLoaded\endcsname
+\let\PSTfuncLoaded\endinput
+% Requires some PSTricks packages
+\ifx\PSTricksLoaded\endinput\else   \input pstricks.tex\fi
+\ifx\PSTXKeyLoaded\endinput\else    \input pst-xkey.tex \fi
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+% interface to the `xkeyval' package
+\pst@addfams{pst-turtle}
+%
+\def\fileversion{0.02}
+\def\filedate{2019/10/02}
+\message{`PST-turtle' v\fileversion, \filedate\space (hv)}
+%
+\define@boolkey[psset]{pst-turtle}[Pst@]{showhead}[true]{}%
+\psset{showhead=false}
+%
+\pstheader{pst-turtle.pro}
+%
+\def\psTurtle{\pst@object{psTurtle}}
+\def\psTurtle@i{\@ifnextchar(\psTurtle@ii{\psTurtle@ii(0,0)}}
+\def\psTurtle@ii(#1)#2{%
+  \pst@getcoor{#1}\pst@tempA
+  \begin@OpenObj
+  \psset{unit=1cm}%
+  \addto@pscode{
+    tx@TurtleDict begin 
+    \pst@tempA translate 
+    \pst@number\psxunit \pst@number\psyunit scale
+    0 0 moveto 
+    turtle % initialize
+    #2 
+    2 setlinejoin
+    end
+    1 \pst@number\psxunit div 1 \pst@number\psyunit div scale
+  }%
+  \end@OpenObj
+}
+\catcode`\@=\PstAtCode\relax
+%
+%% END: pst-turtle.tex
+\endinput
+%
+

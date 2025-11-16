@@ -1,0 +1,131 @@
+% listings.4ht (2025-02-27-12:30), generated from tex4ht-4ht.tex
+% Copyright 2001-2009 Eitan M. Gurari
+% Copyright 2009-2025 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <https://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2025-02-27-12:30}
+
+\@ifpackageloaded{xcolor}{}{%
+\RequirePackage{xcolor}
+}
+\def\lst@makecaption#1#2{\cptA: #1\if :#1:\else\cptB:\fi \cptC: #2\cptD:}
+
+\newif\iflstnest
+\append:defII\lst@EnterMode{%
+  \ifx \lsthk:EveryLine\:UnDef
+     \let\lsthk:EveryLine\lsthk@EveryLine
+  \fi
+  \ifx \lsthk:EveryLine\lsthk@EveryLine
+      \pend:def\lsthk@EveryLine{\c:listings
+             \def\dd:listings{\d:listings\let\dd:listings\empty}}%
+  \fi
+  \append:def\lsthk@EveryPar{\dd:listings}%
+  \iflstnest\else
+  \a:listings\fi\bgroup
+  %\Configure{$}{}{}{}%
+  \aftergroup\lst:EnterMode  }
+\def\lst:EnterMode{\iflstnest\else\b:listings\fi\egroup}
+\NewConfigure{listings}{4}
+\let\dd:listings=\empty
+\append:defI\lst@Init{\csname a:listings-init\endcsname\global\lstnesttrue}
+\pend:def\lst@DeInit{\csname b:listings-init\endcsname\global\lstnestfalse}
+\NewConfigure{listings-init}{2}
+\pend:def\lst@escapebegin{\csname b:listings-init\endcsname\nobreak\hbox\bgroup\lsthk@OutputBox}
+\append:def\lst@escapeend{\lsthk@PostOutput\egroup\csname a:listings-init\endcsname}
+\lst@AddToHook{TextStyle}{%
+   \Configure{listings}{}{}{}{}%
+   \lst@ifmode\else%
+   \a:lstinline \bgroup \aftergroup\b:lstinline\aftergroup\egroup%
+   \fi%
+  }
+\NewConfigure{lstinline}{2}
+\ConfigureToc{lol} {}{\empty}{}{\newline}
+\lst@UserCommand\lstlistoflistings{\bgroup%
+    \ifdefined\chapter\chapter*{\lstlistlistingname}\else\section*{\lstlistlistingname}\fi%
+    \TableOfContents[lol]%
+  \egroup}
+\def\:tempa{%
+   \ifx\lst@OutputBox\@gobble\else \the\everypar \fi
+   \global\advance\lst@newlines\m@ne
+   \lst@newlinetrue
+}%
+\HLet\lst@NewLine\:tempa
+\def\:tempa#1{
+    \begingroup%
+      \lsthk@PreSet\gdef\lst@intname{#1}%
+      \expandafter\lstset\expandafter{\lst@set}%
+      \lsthk@DisplayStyle%
+      \catcode\active=\active%
+      \a:lstinputlisting\ht:special{t4ht@[}
+      \pend:def\cptA:{\ht:special{t4ht@]}}
+      \append:def\cptD:{\ht:special{t4ht@[}}
+      \lst@Init\relax \let\lst@gobble\z@%
+      \lst@SkipToFirst%
+      \lst@ifprint \def\lst@next{\input{#1}}%
+             \else \let\lst@next\@empty \fi%
+      \ht:special{t4ht@]}\lst@next\ht:special{t4ht@[}\lst@DeInit\ht:special{t4ht@]}%
+      \b:lstinputlisting%
+    \endgroup}
+
+\HLet\lst@InputListing\:tempa
+\NewConfigure{lstinputlisting}{2}
+\def\:tempa#1{%
+   \setbox\z@\hbox{{\lst@currstyle{\kern#1}}}%
+   \global\advance\lst@currlwidth \wd\z@
+   \tmp:dim=#1 \let\:tempc=\empty
+   \loop \ifdim \tmp:dim>\a:lst@Kern
+      \advance \tmp:dim by -\a:lst@Kern
+      \advance \tmp:dim by -\b:lst@Kern
+      \append:def\:tempc{\:nbsp}%
+   \repeat
+   \setbox\z@\hbox{{\lst@currstyle{\:tempc}}}%
+   \lst@OutputBox\z@}
+\HLet\lst@Kern\:tempa
+\NewConfigure{lst@Kern}{2}
+\Configure{lst@Kern}{0.499em}{0.1em}
+\def\lst@outputspace{\HCode{ }}
+
+\def\lst:newaddcontentsline#1#2#3{\gHAdvance\TitleCount by 1
+  {\protect:wrtoc%
+  \Tag{)Qlisting-\the\numexpr\listingN+1\relax}{\FileNumber}% write listings id to the xref file, so it can be used in links
+  \protected@edef\:temp{#3}%
+   \protected@edef\:temp{\the\:tokwrite{\string\doTocEntry%
+   \string\toclol% identify this entry as list of listings
+   {\thetable}{\string\csname\space a:TocLink\string\endcsname%
+     {\FileNumber}{listing-\the\numexpr\listingN+1\relax}{}{\ifx\:temp\empty\else \ignorespaces #3\fi}}%
+       {}\relax}}\:temp%
+}}%
+\pend:defI\lst@MakeCaption{%
+  \let\lst:addcontentsline\addcontentsline%
+  \let\addcontentsline\lst:newaddcontentsline%
+}
+\append:defI\lst@MakeCaption{%
+  \let\addcontentsline\lst:addcontentsline
+}
+\ConfigureToc{lol} {}{\empty}{}{\newline}
+\AtBeginDocument{%
+\def\lstlistoflistings{\bgroup%
+    \ifdefined\chapter\chapter*{\lstlistlistingname}\else\section*{\lstlistlistingname}\fi%
+    \TableOfContents[lol]%
+  \egroup}}
+
+\HLet\lst@frameInit=\empty
+\HLet\lst@frameExit=\empty
+
+\Hinput{listings}
+\endinput
+

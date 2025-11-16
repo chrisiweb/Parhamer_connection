@@ -1,0 +1,168 @@
+% moderncv.4ht (2024-08-19-13:32), generated from tex4ht-4ht.tex
+% Copyright 2024 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2024-08-19-13:32}
+
+\NewConfigure{section}{2}
+\RenewDocumentCommand\section{sm}{\a:section #2\b:section}
+
+\NewConfigure{subsection}{2}
+\RenewDocumentCommand\subsection{sm}{\a:subsection #2\b:subsection}
+
+
+\NewConfigure{cvitem}{3}
+\renewcommand*{\cvitem}[3][.25em]{
+\a:cvitem  #2\b:cvitem #3\c:cvitem
+}
+
+\NewConfigure{cvdoubleitem}{2}
+\renewcommand*{\cvdoubleitem}[5][.25em]{%
+\a:cvdoubleitem
+\cvitem{#2}{#3}
+\cvitem{#4}{#5}
+\b:cvdoubleitem
+}
+
+\NewConfigure{cvlistitem}{2}
+\renewcommand*{\cvlistitem}[2][.25em]{%
+  \a:cvlistitem\cvitem[#1]{\listitemsymbol}{#2}\b:cvlistitem
+}
+
+\NewConfigure{cvlistdoubleitem}{2}
+\renewcommand*{\cvlistdoubleitem}[3][.25em]{%
+  \a:cvlistdoubleitem%
+  \cvitem[#1]{\listitemsymbol}{#2}%
+  \cvitem[#1]{\listitemsymbol}{#3}%
+  \b:cvlistdoubleitem%
+}
+
+\NewConfigure{cvhead}{2}
+\NewConfigure{cvphoto}{2}
+
+
+\renewcommand*{\makecvhead}{%
+  \a:cvhead
+  % recompute lengths (in case we are switching from letter to resume, or vice versa)
+  \recomputecvlengths%
+  % optional detailed information (pre-rendering)
+  \@initializebox{\makecvheaddetailsbox}%
+  \if@details%
+    \def\phonesdetails{}%
+    \collectionloop{phones}{% the key holds the phone type (=symbol command prefix), the item holds the number
+      \protected@edef\phonesdetails{\phonesdetails\protect\makenewline\csname\collectionloopkey phonesymbol\endcsname\collectionloopitem}}%
+    \def\socialsdetails{}%
+    \collectionloop{socials}{% the key holds the social type (=symbol command prefix), the item holds the link
+      \protected@edef\socialsdetails{\socialsdetails\protect\makenewline\csname\collectionloopkey socialsymbol\endcsname\collectionloopitem}}%
+    \savebox{\makecvheaddetailsbox}{%
+      \addressfont\color{color2}%
+      \if@left\begin{tabular}[b]{@{}r@{}}\fi%
+      \if@right\begin{tabular}[b]{@{}l@{}}\fi%
+        \ifthenelse{\isundefined{\@addressstreet}}{}{\makenewline\addresssymbol\@addressstreet%
+          \ifthenelse{\equal{\@addresscity}{}}{}{\makenewline\@addresscity}% if \addresstreet is defined, \addresscity and addresscountry will always be defined but could be empty
+          \ifthenelse{\equal{\@addresscountry}{}}{}{\makenewline\@addresscountry}}%
+        \ifthenelse{\isundefined{\@born}}{}{\makenewline\bornsymbol\@born}%
+        \phonesdetails% needs to be pre-rendered as loops and tabulars seem to conflict
+        \ifthenelse{\isundefined{\@email}}{}{\makenewline\emailsymbol\emaillink{\@email}}%
+        \ifthenelse{\isundefined{\@homepage}}{}{\makenewline\homepagesymbol\httpslink{\@homepage}}%
+        \socialsdetails% needs to be pre-rendered as loops and tabulars seem to conflict
+        \ifthenelse{\isundefined{\@extrainfo}}{}{\makenewline\@extrainfo}%
+      \end{tabular}
+    }\fi%
+  % optional photo (pre-rendering)
+  \@initializebox{\makecvheadpicturebox}%
+  \savebox{\makecvheadpicturebox}{%
+    \ifthenelse{\isundefined{\@photo}}%
+      {}%
+      {%
+        \a:cvphoto\includegraphics[]{\@photo}\b:cvphoto}%
+          }%
+  % name and title (pre-rendering)
+  \@initializelength{\makecvheaddetailswidth}\settowidth{\makecvheaddetailswidth}{\usebox{\makecvheaddetailsbox}}%
+  \@initializelength{\makecvheadpicturewidth}\settowidth{\makecvheadpicturewidth}{\usebox{\makecvheadpicturebox}}%
+  \ifthenelse{\lengthtest{\makecvheadnamewidth=0pt}}% check for dummy value (equivalent to \ifdim\makecvheadnamewidth=0pt)
+    {\setlength{\makecvheadnamewidth}{\textwidth-\makecvheaddetailswidth-\makecvheadpicturewidth}}%
+    {}%
+  \@initializebox{\makecvheadnamebox}%
+  \savebox{\makecvheadnamebox}{%
+    \begin{minipage}[b]{\makecvheadnamewidth}%
+      \if@left\raggedright\fi%
+      \if@right\raggedleft\fi%
+      \namestyle{\@firstname\ \@lastname}%
+      \ifthenelse{\equal{\@title}{}}{}{\\[1.25em]\titlestyle{\@title}}%
+    \end{minipage}}%
+  % rendering
+  \if@left%
+    \usebox{\makecvheadnamebox}%
+    \hfill%
+    \llap{\usebox{\makecvheaddetailsbox}}% \llap is used to suppress the width of the box, allowing overlap if the value of makecvheadnamewidth is forced
+    \usebox{\makecvheadpicturebox}\fi%
+  \if@right%
+    \usebox{\makecvheadpicturebox}%
+    \rlap{\usebox{\makecvheaddetailsbox}}% \llap is used to suppress the width of the box, allowing overlap if the value of makecvheadnamewidth is forced
+    \hfill%
+    \usebox{\makecvheadnamebox}\fi%
+  \\[2.5em]%
+  % optional quote
+  \ifthenelse{\isundefined{\@quote}}%
+    {}%
+    {{\centering\begin{minipage}{\quotewidth}\centering\quotestyle{\@quote}\end{minipage}\\[2.5em]}}%
+  \b:cvhead\par}% to avoid weird spacing bug at the first section if no blank line is left after \makecvhead
+
+
+\RenewDocumentCommand\cvskilllegend{s +O{.25em} +O{\skillLegend@defaultLevelOne} +O{\skillLegend@defaultLevelTwo} +O{\skillLegend@defaultLevelThree} +O{\skillLegend@defaultLevelFour} +O{\skillLegend@defaultLevelFive} +m}{%
+\begin{tabular}{l l l l l l}
+                \raggedleft\hintstyle{#8}  & \cvskill{1}\, & \,{\skillLegend@FontSize #3} & \cvskill{3}\, &\,{\skillLegend@FontSize #5 } \\%
+                            %
+                        & \cvskill{2}\, & \,\multirow{2}{\cvskilllegend@leftdescriptorwidth}{{\skillLegend@FontSize #4}} & \cvskill{4}\,  &\,{\skillLegend@FontSize #6 } \\%
+                    %
+                        &  &   & \cvskill{5}\, &\,{\skillLegend@FontSize #7 }%
+            \end{tabular}%
+}%
+
+
+\NewConfigure{cvskill}{2}
+\def\:tempa#1{\def\:cvskillamount{#1}\a:cvskill\o:cvskill:{#1}\b:cvskill}
+\HLet\cvskill\:tempa
+
+\NewConfigure{cvskillhead}{2}
+\NewConfigure{cvskillentry}{2}
+\RenewDocumentCommand\cvskillhead{O{.25em} +O{\skillMatrix@HeaderDefaultOne} +O{\skillMatrix@HeaderDefaultTwo} +O{\skillMatrix@HeaderDefaultThree} +O{\skillMatrix@HeaderDefaultFour}}{%
+    \begingroup
+    \a:cvskillhead
+        \begin{tabular}{ p{6em}  p{12em} p{4em} p{20em}}%
+            { #2} & { #3} & { #4} & { #5}
+        \end{tabular}%
+    \b:cvskillhead
+    \endgroup
+    \par\addvspace{#1}
+}
+
+\RenewDocumentCommand\cvskillentry{s +O{.25em} +m +m +m +m +m}{%
+\a:cvskillentry
+\cvitem{#3}{
+    \begin{tabular}{ p{6em}  p{12em} p{4em} p{20em}}
+            \centering \cvskill{#4} &\centering {#5} & \centering {#6} &{\itshape#7}%
+        \end{tabular}}%
+  \b:cvskillentry
+        \par\addvspace{#2}
+}
+
+
+\Hinput{moderncv}
+\endinput
+

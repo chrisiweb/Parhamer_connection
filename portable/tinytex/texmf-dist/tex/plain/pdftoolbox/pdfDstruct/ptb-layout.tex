@@ -1,0 +1,41 @@
+\input ptb-utils
+
+\_checkloaded{layout}
+
+\input pdfData/ptb-key-value
+
+\def\setlayout#1{%
+    \mapkeys{%
+        page width={%
+            name=_width,
+            default=\novalue%
+        },
+        page height={%
+            name=_height,
+            default=\novalue%
+        },
+        horizontal margin={%
+            name=_hmargin,
+            default=\novalue%
+        },
+        vertical margin={%
+            name=_vmargin,
+            default=\novalue%
+        }%
+    }{#1}%
+    \unless\ifx\_width\novalue%
+        \pdfpagewidth=\_width\relax%
+    \fi%
+    \unless\ifx\_height\novalue%
+        \pdfpageheight=\_height\relax%
+    \fi%
+    \unless\ifx\_hmargin\novalue%
+        \hoffset=\dimexpr\_hmargin-\pdfhorigin\relax%
+        \hsize=\dimexpr\pdfpagewidth - \_hmargin * 2\relax%
+    \fi%
+    \unless\ifx\_vmargin\novalue%
+        \voffset=\dimexpr\_vmargin-\pdfvorigin\relax%
+        \vsize=\dimexpr\pdfpageheight - \_vmargin * 2\relax%
+    \fi%
+}
+

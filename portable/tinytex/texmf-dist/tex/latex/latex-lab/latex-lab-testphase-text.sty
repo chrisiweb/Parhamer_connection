@@ -1,0 +1,127 @@
+%%
+%% This is file `latex-lab-testphase-text.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-text.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-text.dtx (C) Copyright 2023-2025 LaTeX Project
+\def\ltlabtextdate{2025-05-10}
+\def\ltlabtextversion{0.85f}
+
+\ProvidesExplPackage {latex-lab-testphase-text} {\ltlabtextdate} {\ltlabtextversion}
+  {Code related to the tagging of various small text commands}
+
+\AddToHook{cmd/LaTeX/before}
+  {
+    \mode_leave_vertical:
+    \tag_mc_end_push:
+    \tag_struct_begin:n{tag=Span,actualtext=LaTeX,phoneme=[ˈlaːtɛx]}
+    \tag_mc_begin:n{}
+    \tag_suspend:n{LaTeX}
+  }
+\AddToHook{cmd/LaTeX/after}
+ {
+   \tag_resume:n{LaTeX}
+   \tag_mc_end:
+   \tag_struct_end:
+   \tag_mc_begin_pop:n{}
+ }
+\AddToHook{cmd/TeX/before}
+ {
+   \mode_leave_vertical:
+   \tag_mc_end_push:
+   \tag_struct_begin:n{tag=Span,actualtext=TeX}
+   \tag_mc_begin:n{}
+ }
+\AddToHook{cmd/TeX/after}
+ {
+   \tag_mc_end:
+   \tag_struct_end:
+   \tag_mc_begin_pop:n{}
+ }
+\AddToHook{cmd/emph/before}
+  {
+    \mode_leave_vertical:
+    \tag_mc_end_push:
+    \tag_struct_begin:n{tag=Em}
+    \tag_mc_begin:n{}
+  }
+
+\AddToHook{cmd/emph/after}
+  {
+    \tag_mc_end:
+    \tag_struct_end:
+    \tag_mc_begin_pop:n{}
+  }
+\DeclareRobustCommand\mbox[1]
+  {
+   \leavevmode
+   \tag_socket_use:nnn {math/luamml/hbox}
+    {}{ \hbox{#1} }
+  }
+\long\def\@imakebox[#1][#2]#3{%
+  \tag_socket_use:nnn {math/luamml/hbox}{}
+   {
+     \@begin@tempboxa\hbox{#3}%
+       \setlength\@tempdima{#1}%       support calc
+       \hb@xt@\@tempdima{%
+        \expandafter\ifx\csname bm@#2\endcsname\relax
+          \bm@c
+          \@latex@warning{Unexpected~alignment~#2}%
+        \else
+          \csname bm@#2\endcsname
+        \fi}%
+     \@end@tempboxa
+   }}
+\def\makeph@nt#1{%
+  \setbox\z@\hbox
+    {\SuspendTagging{\makeph@nt}%
+     \color@begingroup#1\color@endgroup\ResumeTagging{\makeph@nt}}\finph@nt}
+\def\@kernel@mathph@nt#1#2{%
+  \setbox\z@\hbox{\SuspendTagging{\mathph@nt}$\m@th#1{#2}$\ResumeTagging{\mathph@nt}}\finph@nt}
+\def\mathph@nt#1#2
+ {
+  \setbox \z@ = \hbox {
+    $
+    \m@th
+    #1
+    {
+      \let\mathph@nt\@kernel@mathph@nt
+      #2
+    }
+    \UseTaggingSocket{math/luamml/save/nNn}{{mathphant} #1 {mphantom}}
+    $
+  }
+   \UseTaggingSocket{math/luamml/finph@nt}{}{\finph@nt}
+ }
+\endinput
+%%
+%% End of file `latex-lab-testphase-text.sty'.

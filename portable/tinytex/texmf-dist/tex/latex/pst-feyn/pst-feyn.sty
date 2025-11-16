@@ -1,0 +1,14 @@
+%% $Id: pst-feyn.sty 826 2018-09-27 09:21:43Z herbert $
+\PassOptionsToPackage{dvipsnames,svgnames}{pstricks}
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-feyn}[2018/09/26 package wrapper for 
+  pst-feyn.tex (hv)]
+\input{pst-feyn.tex}
+\IfFileExists{pst-feyn.pro}{%
+  \ProvidesFile{pst-feyn.pro}
+    [2018/09/26 v. 0.01,  PostScript prologue file (hv)]
+    \@addtofilelist{pst-feyn.pro}}{}%
+\ProvidesFile{pst-feyn.tex}
+  [\filedate\space v\fileversion\space `PST-feyn' (hv)]
+\endinput
+

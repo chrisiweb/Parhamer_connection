@@ -1,0 +1,806 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Sectioning Facilities
+%
+% Synopsis:
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   25 August 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Part and Chapter Texts
+%                       ---- --- ------- -----
+
+
+\long\def \setauthortext #1{%                                   {text} %^modifier
+  \with{\authortext = {#1}}}
+
+\long\def \setopenertext #1{%                                   {text} %^modifier
+  \with{\openertext = {#1}}}
+
+%                       Part
+%                       ----
+
+
+\defineblock{\part}{\endpart}{\true}{}
+
+%~block part
+% \setflag \allowintoc = flag           % Allow in ToC?
+% \authortext = {...}                   % Author needed for opener.
+% \def \comptextformat {...}            % Composite number text formatter.
+% \def \paging {...}                    % Paging before part opener.
+% \def \partformat ##1{...}             % Part page formatter.
+% \openertext = {...}                   % Special text needed for opener.
+% \def \providemark ##1{...}            % Mark provider.
+% \resetnumber = {...}                  % List of numbers to reset.
+% \runners = {style,...}                % Running head/foot styles.
+% \style = {...}                        % Heading style.
+%~end
+
+\def \part #1{%                                         {title}
+  \closeanychapter
+  \beginblockscope{part}%
+  \global\increment \partdepth
+  \authortext = {}%                             %~default hard
+  \openertext = {}%                             %~default hard
+  \runners = {blind,normal}%                    %~default soft
+  \zoldrunners{\blindheader\blindfooter}%
+  \style = {Caps/lowercase, \noindent}          %~default soft
+  \processdesign{\part}{}%
+  \global\increment \partnumber
+  \setcomptext{\partcomptext}%
+  \paging
+  \remark{Starting PART \number\partnumber.}%
+  % Next three things are done first, in case opener is more than one page.
+  \providemark{#1}%
+  \zpartchaptoc{\the\partcomptext}{#1}{80}%
+  \settaginfo{\the\partcomptext}{#1}
+  \zsetrunnerstoks{\runners}%
+  {\partformat{#1}}%
+  \endgraf}
+
+\def \endpart {%
+  \global\decrement \partdepth
+  \endblockscope{part}}
+
+\def \setpartnumber #1{%                                        {number}
+  \global\partnumber = #1\relax
+  \global\decrement \partnumber}
+
+%                       Quasi-Part
+%                       ----------
+
+
+\defineblock{\quasipart}{\endquasipart}{\true}{}
+
+%~block quasipart
+% \setflag \allowintoc = flag           % Allow in ToC?
+% \openertext = {...}                   % Special text needed for opener.
+% \def \paging {...}                    % Paging before part opener.
+% \def \quasipartformat ##1{...}        % Part page formatter.
+% \def \providemark ##1{...}            % Mark provider.
+% \resetnumber = {...}                  % List of numbers to reset.
+% \runners = {style,...}                % Running head/foot styles.
+% \style = {...}                        % Heading style.
+%~end
+
+\def \quasipart #1{%                                            {title}
+  \closeanychapter
+  \beginblockscope{quasipart}%
+  \global\increment \quasipartdepth
+  \openertext = {}%                             %~default hard
+  \runners = {blind,normal}%                    %~default soft
+  \zoldrunners{\blindheader\blindfooter}%
+  \style = {Caps/lowercase, \noindent}%         %~default soft
+  \processdesign{\quasipart}{}%
+  \global\increment \quasipartnumber
+  \paging
+  \def \znext {#1}%
+  \remark{Starting QUASIPART `\expandafter\zdefof \meaning\znext\zmark'.}%
+  % Next three things are done first, in case opener is more than one page.
+  \providemark{#1}%
+  \zpartchaptoc{}{#1}{85}%
+  \settaginfo{}{#1}%
+  \zsetrunnerstoks{\runners}%
+  {\quasipartformat{#1}}%
+  \endgraf}
+%%%  \endquasipart}
+
+\def \endquasipart {%
+  \global\decrement \quasipartdepth
+  \endblockscope{quasipart}}
+
+%                       Chapter
+%                       -------
+
+\defineblock{\chapter}{\endchapter}{\true}{}
+
+%~block chapter
+% \setflag \allowintoc = boolean        % Allow in ToC?
+% \authorlevel = integer                % Author ToC entry level.
+% \authortext = {...}                   % Author text needed for opener.
+% \def \comptextformat {...}            % Composite number text formatter.
+% \difficulty = integer                 % Level of difficulty.
+% \numberfont = {...}                   % Font for number.
+% \numberwordfont = {...}               % Font for word like "chapter".
+% \def \numberformat {...}              % Number format.
+% \numbersink = glue                    % Sinkage to number, or
+% \numberskip = glue                    % Space b/b to number.
+% \openertext = {...}                   % Special text needed for opener.
+% \def \paging {...}                    % Initial paging.
+% \def \providemark ##1{...}            % Mark provider.
+% \resetnumber = {...}                  % List of numbers to reset.
+% \setflag \resetsection = boolean      % Reset section number?
+% \runners = {style,...}                % Running head/foot styles.
+% \style = {...}                        % Heading style.
+% \textsink = sinkage                   % Sinkage to text, or
+% \textskip = skip                      % Space b/b from rule to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \titlesink = glue                     % Sinkage to title, or
+% \titleskip = glue                     % Space b/b from number to title.
+%~end
+
+\def \chapter #1{%                              {title}
+  \closeanychapter
+  \beginblockscope{chapter}%
+  \global\increment \chapterdepth
+  \authorlevel = 0                              %~default hard
+  \authortext = {}%                             %~default hard
+  \difficulty = 0                               %~default with
+  \openertext = {}%                             %~default hard
+  \setflag \resetsection = \true                %~default hard
+  \runners = {chapter,normal}%                  %~default soft
+  \zoldrunners{\chapterheader\chapterfooter}%
+  \style = {Caps/lowercase, \noindent}%         %~default soft
+  \processdesign{\chapter}{}%
+  \if \resetsection
+    \global\sectionnumber = 0
+    \global\quasisectionnumber = 0
+    \global\chapterappendixnumber = 0
+  \fi
+  \global\simpleheadnumber = 0
+  \global\increment \chapternumber
+  \setcomptext{\chaptercomptext}%
+  \paging
+  \remark{Starting chapter \if \emptytoksp{\chaptercomptext}'#1'\else
+                           \the\chaptercomptext \fi.}%
+  \zsetrunnerstoks{\runners}%
+  \chapterformat{#1}%
+  \deferfloats{\true}%
+  \settaginfo{\the\chaptercomptext}{#1}}
+
+\def \endchapter {%
+  \closeanysection
+  \global\decrement \chapterdepth
+  \endblockscope{chapter}}
+
+\def \chapterformat #1{%
+  {\the\numberfont
+   \zsinkskip{\numbersink}{\breakbest}{\numberskip}%
+   \numberformat\par}%
+  {\the\titlefont
+   \zsinkskip{\titlesink}{\breaknever}{\titleskip}%
+   \titleformat{#1}\par}%
+  \providemark{#1}%
+  \zpartchaptoc{\the\chaptercomptext}{#1}{70}%
+  \zsinkskip{\textsink}{\breaknever}{\textskip}}
+
+\def \setchapternumber #1{%                                     {number}
+  \global\chapternumber = #1\relax
+  \global\decrement \chapternumber}
+
+\def \setappendixnumber #1{%                                     {number}
+  \global\appendixnumber = #1\relax
+  \global\decrement \appendixnumber}
+
+\def \setsectionnumber #1{%                                     {number}
+  \global\sectionnumber = #1\relax
+  \global\decrement \sectionnumber}
+
+%                       Quasi-Chapter
+%                       -------------
+
+
+\defineblock{\quasichapter}{\endquasichapter}{\true}{}
+
+%~block quasichapter
+% \setflag \allowintoc = boolean        % Allow in ToC?
+% \authorlevel = integer                % Author ToC entry level.
+% \authortext = {...}                   % Author text needed for opener.
+% \openertext = {...}                   % Special text needed for opener.
+% \def \paging {...}                    % Initial paging.
+% \def \providemark ##1{...}            % Mark provider.
+% \resetnumber = {...}                  % List of numbers to reset.
+% \runners = {style,...}                % Running head/foot styles.
+% \style = {...}                        % Heading style.
+% \textsink = sinkage                   % Sinkage to text, or
+% \textskip = skip                      % Skip from rule to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \titlesink = glue                     % Sinkage to title, or
+% \titleskip = glue                     % Space b/b to title.
+%~end
+
+\def \quasichapter #1{%                                 {title}
+  \closeanychapter
+  \beginblockscope{quasichapter}%
+  \global\increment \quasichapterdepth
+  \authorlevel = 0                              %~default hard
+  \authortext = {}%                             %~default hard
+  \openertext = {}%                             %~default hard
+  \runners = {chapter,normal}%                  %~default soft
+  \zoldrunners{\chapterheader\chapterfooter}%
+  \style = {Caps/lowercase, \noindent}%         %~default soft
+  \processdesign{\quasichapter}{}%
+  \global\increment \quasichapternumber
+  \chaptercomptext = {}%
+  \paging
+  \def \znext {#1}%
+  \remark{Starting quasichapter `\expandafter\zdefof \meaning\znext\zmark'.}%
+  \zsetrunnerstoks{\runners}%
+  \quasichapterformat{#1}%
+  \deferfloats{\true}%
+  \settaginfo{}{#1}}
+
+\def \endquasichapter {%
+  \closeanysection
+  \global\decrement \quasichapterdepth
+  \endblockscope{quasichapter}}
+
+\def \quasichapterformat #1{%
+  {\the\titlefont
+   \zsinkskip{\titlesink}{\breaknever}{\titleskip}%
+   \titleformat{#1}\par}
+  \providemark{#1}%
+  \zpartchaptoc{}{#1}{75}%
+  \zsinkskip{\textsink}{\breaknever}{\textskip}}
+
+%                       Appendix
+%                       --------
+
+
+\defineblock{\appendix}{\endappendix}{\true}{}
+
+%~block appendix
+% \setflag \allowintoc = boolean        % Allow in ToC?
+% \authortext = {...}                   % Author text needed for opener.
+% \def \comptextformat {...}            % Composite number text formatter.
+% \numberfont = {...}                   % Font for number.
+% \numberwordfont = {...}               % Font for word like "appendix".
+% \def \numberformat {...}              % Number format.
+% \numbersink = glue                    % Sinkage to number, or
+% \numberskip = glue                    % Space b/b to number.
+% \openertext = {...}                   % Special text needed for opener.
+% \def \paging {...}                    % Initial paging.
+% \def \providemark ##1{...}            % Mark provider.
+% \resetnumber = {...}                  % List of numbers to reset.
+% \setflag \resetsection = boolean      % Reset section number?
+% \runners = {style,...}                % Running head/foot styles.
+% \style = {...}                        % Heading style.
+% \textsink = sinkage                   % Sinkage to text, or
+% \textskip = skip                      % Space b/b from rule to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \titlesink = glue                     % Sinkage to title, or
+% \titleskip = glue                     % Space b/b from number to title.
+%~end
+
+\def \appendix #1{%                             {title}
+  \closeanychapter
+  \beginblockscope{appendix}%
+  \global\increment \appendixdepth
+  \authortext = {}%                             %~default hard
+  \openertext = {}%                             %~default hard
+  \setflag \resetsection = \true                %~default hard
+  \runners = {chapter,normal}%                  %~default soft
+  \zoldrunners{\chapterheader\chapterfooter}%
+  \style = {Caps/lowercase, \noindent}%         %~default soft
+  \processdesign{\appendix}{}%
+  \if \resetsection
+    \global\sectionnumber = 0
+    \global\quasisectionnumber = 0
+    \global\chapterappendixnumber = 0
+  \fi
+  \global\increment \appendixnumber
+  \setcomptext{\chaptercomptext}%               % Not \appendixcomptext!
+  \paging
+  \remark{Starting appendix \the\chaptercomptext.}%
+  \zsetrunnerstoks{\runners}%
+  \appendixformat{#1}%
+  \deferfloats{\true}%
+  \settaginfo{\the\chaptercomptext}{#1}}
+
+\def \endappendix {%
+  \closeanysection
+  \global\decrement \appendixdepth
+  \endblockscope{appendix}}
+
+\def \appendixformat #1{%
+  {\the\numberfont
+   \zsinkskip{\numbersink}{\breakbest}{\numberskip}%
+   \numberformat\par}%
+  {\the\titlefont
+   \zsinkskip{\titlesink}{\breaknever}{\titleskip}%
+   \titleformat{#1}\par}%
+  \providemark{#1}%
+  \zpartchaptoc{\the\chaptercomptext}{#1}{71}%
+  \zsinkskip{\textsink}{\breaknever}{\textskip}}
+
+%                       Section
+%                       -------
+
+
+\defineblock{\section}{\endsection}{\true}{}
+
+%~block section
+% \aboveskip = glue                     % Space b/b above title.
+% \setflag \allowintoc = boolean        % Allow in ToC?
+% \def \comptextformat {...}            % Composite number text formatter.
+% \difficulty = integer                 % Level of difficulty.
+% \numberfont = {...}                   % Number font.
+% \def \providemark ##1{...}            % Mark provider.
+% \resetnumber = {...}                  % List of numbers to reset.
+% \style = {...}                        % Heading style.
+% \textskip = skip                      % Skip from title to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \topadjust = dimen                    % Adjust if at top of page.
+%~end
+
+\def \section #1{%                                      {title}
+  \closeanysection
+  \beginblockscope{section}%
+  \global\increment \sectiondepth
+  \difficulty = 0                       %~default with
+  \style = {Caps/lowercase, \noindent}% %~default soft
+  \topadjust = \mindimen                %~default hard
+  \processdesign{\section}{}%
+  \global\subsectionnumber = 0
+  \global\subsubsectionnumber = 0
+  \global\subsubsubsectionnumber = 0
+  \global\increment \sectionnumber
+  \setcomptext{\sectioncomptext}%
+  \sectionformat{#1}%
+  \settaginfo{\the\sectioncomptext}{#1}}
+
+\def \endsection {%
+  \closeanysubsection
+  \global\decrement \sectiondepth
+  \endblockscope{section}}
+
+\def \sectionformat #1{%
+  {\if \emptytoksp{\numberfont}\the\titlefont \else \the\numberfont \fi
+   \zskipabovehead{\breakbest}{\aboveskip}%
+   \titleformat{#1}\par}%
+  \providemark{#1}%
+  \ztocentry{\the\sectioncomptext}{#1}{60}{\allowintoc}%
+  \bbskipabove{\breaknever}{\textskip}%
+  \overrideclubpenalty{\breaknever}}
+
+%                       Quasi-Section
+%                       -------------
+
+
+\defineblock{\quasisection}{\endquasisection}{\true}{}
+
+%~block quasisection
+% \aboveskip = glue                     % Space b/b above title.
+% \setflag \allowintoc = boolean        % Allow in ToC?
+% \difficulty = integer                 % Level of difficulty.
+% \def \providemark ##1{...}            % Mark provider.
+% \resetnumber = {...}                  % List of numbers to reset.
+% \style = {...}                        % Heading style.
+% \textskip = skip                      % Skip from title to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \topadjust = dimen                    % Adjust if at top of page.
+%~end
+
+\def \quasisection #1{%                                 {tile}
+  \closeanysection
+  \beginblockscope{quasisection}%
+  \global\increment \quasisectiondepth
+  \difficulty = 0                       %~default with
+  \style = {Caps/lowercase, \noindent}% %~default soft
+  \topadjust = \mindimen                %~default hard
+  \processdesign{\quasisection}{}%
+  \global\increment \quasisectionnumber % In case needed for \tagpageonly.
+  \quasisectionformat{#1}%
+  \settaginfo{}{#1}}
+
+\def \endquasisection {%
+  \closeanysubsection
+  \global\decrement \quasisectiondepth
+  \endblockscope{quasisection}}
+
+\def \quasisectionformat #1{%
+  {\the\titlefont
+   \zskipabovehead{\breakbest}{\aboveskip}%
+   \titleformat{#1}\par}
+  \providemark{#1}%
+  \ztocentry{}{#1}{65}{\allowintoc}%
+  \bbskipabove{\breaknever}{\textskip}%
+  \overrideclubpenalty{\breaknever}}
+
+%                       Chapter Appendix
+%                       ------- --------
+
+
+\defineblock{\chapterappendix}{\endchapterappendix}{\true}{}
+
+%~block chapterappendix
+% \aboveskip = glue                     % Space b/b above title.
+% \setflag \allowintoc = boolean        % Allow in ToC?
+% \def \comptextformat {...}            % Composite number text formatter.
+% \difficulty = integer                 % Level of difficulty.
+% \numberfont = {...}                   % Number font.
+% \def \providemark ##1{...}            % Mark provider.
+% \resetnumber = {...}                  % List of numbers to reset.
+% \style = {...}                        % Heading style.
+% \textskip = skip                      % Skip from title to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \topadjust = dimen                    % Adjust if at top of page.
+%~end
+
+\def \chapterappendix #1{%                              {title}
+  \closeanysection
+  \beginblockscope{chapterappendix}%
+  \global\increment \chapterappendixdepth
+  \difficulty = 0                       %~default with
+  \style = {Caps/lowercase, \noindent}% %~default soft
+  \topadjust = \mindimen                %~default hard
+  \processdesign{\chapterappendix}{}%
+  \global\subsectionnumber = 0
+  \global\subsubsectionnumber = 0
+  \global\subsubsubsectionnumber = 0
+  \global\increment \chapterappendixnumber
+  \setcomptext{\sectioncomptext}%       % Not \chapterappendixcomptext!
+  \chapterappendixformat{#1}%
+  \settaginfo{\the\sectioncomptext}{#1}}
+
+\def \endchapterappendix {%
+  \closeanysubsection
+  \global\decrement \chapterappendixdepth
+  \endblockscope{chapterappendix}}
+
+\def \chapterappendixformat #1{%
+  {\if \emptytoksp{\numberfont}\the\titlefont \else \the\numberfont \fi
+   \zskipabovehead{\breakbest}{\aboveskip}%
+   \titleformat{#1}\par}%
+  \providemark{#1}%
+  \ztocentry{\the\sectioncomptext}{#1}{61}{\allowintoc}%
+  \bbskipabove{\breaknever}{\textskip}%
+  \overrideclubpenalty{\breaknever}}
+
+%                       Subsection
+%                       ----------
+
+
+\defineblock{\subsection}{\endsubsection}{\false}{}
+
+%~block subsection
+% \aboveskip = glue                     % Space b/b above title.
+% \setflag \allowintoc = flag           % Allow in ToC?
+% \def \comptextformat {...}            % Composite number text formatter.
+% \difficulty = integer                 % Level of difficulty.
+% \numberfont = {...}                   % Font for number.
+% \def \providemark ##1{...}            % Mark provider.
+% \style = {...}                        % Heading style.
+% \textskip = skip                      % Skip from title to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \topadjust = dimen                    % Adjust if at top of page.
+%~end
+
+\def \subsection #1{%                                   {title}
+  \closeanysubsection
+  \beginblockscope{subsection}%
+  \global\increment \subsectiondepth
+  \difficulty = 0                       %~default with
+  \style = {Caps/lowercase, \noindent}% %~default soft
+  \topadjust = \mindimen                %~default hard
+  \processdesign{\subsection}{}%
+  \global\subsubsectionnumber = 0
+  \global\subsubsubsectionnumber = 0
+  \global\increment \subsectionnumber
+  \setcomptext{\subsectioncomptext}%
+  \subsectionformat{#1}%
+  \settaginfo{\the\subsectioncomptext}{#1}%
+  \ignorespaces}
+
+\def \endsubsection {%
+  \closeanysubsubsection
+  \global\decrement \subsectiondepth
+  \endblockscope{subsection}}
+
+\def \subsectionformat #1{%
+  {\if \emptytoksp{\numberfont}\the\titlefont \else \the\numberfont \fi
+   \zskipabovehead{\breakbetter}{\aboveskip}%
+   \titleformat{#1}}%
+  \providemark{#1}%
+  \ztocentry{\the\subsectioncomptext}{#1}{50}{\allowintoc}%
+  \if \dimposp{\textskip}%
+    \par
+    \bbskipabove{\breaknever}{\textskip}%
+  \fi
+  \overrideclubpenalty{\breaknever}}
+
+%                       Quasi-Subsection
+%                       ----------------
+
+
+\defineblock{\quasisubsection}{\endquasisubsection}{\false}{}
+
+%~block quasisubsection
+% \aboveskip = glue                     % Space b/b above title.
+% \setflag \allowintoc = boolean        % Allow in ToC?
+% \difficulty = integer                 % Level of difficulty.
+% \def \providemark ##1{...}            % Mark provider.
+% \style = {...}                        % Heading style.
+% \textskip = skip                      % Skip from title to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \topadjust = dimen                    % Adjust if at top of page.
+%~end
+
+\def \quasisubsection #1{%                              {title}
+  \closeanysubsection
+  \beginblockscope{quasisubsection}%
+  \global\increment \quasisubsectiondepth
+  \difficulty = 0                       %~default with
+  \style = {Caps/lowercase, \noindent}% %~default soft
+  \topadjust = \mindimen                %~default hard
+  \processdesign{\quasisubsection}{}%
+  \quasisubsectionformat{#1}%
+  \settaginfo{}{#1}%
+  \ignorespaces}
+
+\def \endquasisubsection {%
+  \closeanysubsubsection
+  \global\decrement \quasisubsectiondepth
+  \endblockscope{quasisubsection}}
+
+\def \quasisubsectionformat #1{%
+  {\the\titlefont
+   \zskipabovehead{\breakbetter}{\aboveskip}%
+   \titleformat{#1}}
+  \providemark{#1}%
+  \ztocentry{}{#1}{55}{\allowintoc}%
+  \if \dimposp{\textskip}%
+    \par
+    \bbskipabove{\breaknever}{\textskip}%
+  \fi
+  \overrideclubpenalty{\breaknever}}
+
+%                       Subsubsection
+%                       -------------
+
+
+\defineblock{\subsubsection}{\endsubsubsection}{\false}{}
+
+%~block subsubsection
+% \aboveskip = glue                     % Space b/b above title.
+% \setflag \allowintoc = flag           % Allow in ToC?
+% \def \comptextformat {...}            % Composite number text formatter.
+% \difficulty = integer                 % Level of difficulty.
+% \numberfont = {...}                   % Font for number.
+% \def \providemark ##1{...}            % Mark provider.
+% \style = {...}                        % Heading style.
+% \textskip = skip                      % Skip from title to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \topadjust = dimen                    % Adjust if at top of page.
+%~end
+
+\def \subsubsection #1{%                                {title}
+  \closeanysubsubsection
+  \beginblockscope{subsubsection}%
+  \global\increment \subsubsectiondepth
+  \difficulty = 0                       %~default with
+  \style = {Caps/lowercase, \noindent}% %~default soft
+  \topadjust = \mindimen                %~default hard
+  \processdesign{\subsubsection}{}%
+  \global\subsubsubsectionnumber = 0
+  \global\increment \subsubsectionnumber
+  \setcomptext{\subsubsectioncomptext}%
+  \subsubsectionformat{#1}%
+  \settaginfo{\the\subsubsectioncomptext}{#1}%
+  \ignorespaces}
+
+\def \endsubsubsection {%
+  \closeanysubsubsubsection
+  \global\decrement \subsubsectiondepth
+  \endblockscope{subsubsection}}
+
+\def \subsubsectionformat #1{%
+  {\if \emptytoksp{\numberfont}\the\titlefont \else \the\numberfont \fi
+   \zskipabovehead{\breakgood}{\aboveskip}%
+   \titleformat{#1}}%
+  \providemark{#1}%
+  \ztocentry{\the\subsubsectioncomptext}{#1}{40}{\allowintoc}%
+  \if \dimposp{\textskip}%
+    \par
+    \bbskipabove{\breaknever}{\textskip}%
+  \fi
+  \overrideclubpenalty{\breaknever}}
+
+%                       Subsubsubsection
+%                       ----------------
+
+
+\defineblock{\subsubsubsection}{\endsubsubsubsection}{\false}{}
+
+%~block subsubsubsection
+% \aboveskip = glue                     % Space b/b above title.
+% \setflag \allowintoc = flag           % Allow in ToC?
+% \def \comptextformat {...}            % Composite number text formatter.
+% \difficulty = integer                 % Level of difficulty.
+% \numberfont = {...}                   % Font for number.
+% \def \providemark ##1{...}            % Mark provider.
+% \style = {...}                        % Heading style.
+% \textskip = skip                      % Skip from title to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \topadjust = dimen                    % Adjust if at top of page.
+%~end
+
+\def \subsubsubsection #1{%                             {title}
+  \closeanysubsubsubsection
+  \beginblockscope{subsubsubsection}%
+  \global\increment \subsubsubsectiondepth
+  \difficulty = 0                       %~default with
+  \style = {Caps/lowercase, \noindent}% %~default soft
+  \topadjust = \mindimen                %~default hard
+  \processdesign{\subsubsubsection}{}%
+  \global\increment \subsubsubsectionnumber
+  \setcomptext{\subsubsubsectioncomptext}%
+  \subsubsubsectionformat{#1}%
+  \settaginfo{\the\subsubsubsectioncomptext}{#1}%
+  \ignorespaces}
+
+\def \endsubsubsubsection {%
+  \global\decrement \subsubsubsectiondepth
+  \endblockscope{subsubsubsection}}
+
+\def \subsubsubsectionformat #1{%
+  {\if \emptytoksp{\numberfont}\the\titlefont \else \the\numberfont \fi
+   \zskipabovehead{\breakgood}{\aboveskip}%
+   \titleformat{#1}}%
+  \providemark{#1}%
+  \ztocentry{\the\subsubsubsectioncomptext}{#1}{30}{\allowintoc}%
+  \if \dimposp{\textskip}%
+    \par
+    \bbskipabove{\breaknever}{\textskip}%
+  \fi
+  \overrideclubpenalty{\breaknever}}
+
+%                       Simple Head
+%                       ------ ----
+
+
+\defineblock{\simplehead}{\endsimplehead}{\false}{}
+
+%~block simplehead Type
+% \aboveskip = glue                     % Space b/b above title.
+% \setflag \allowclubline = flag        % True if club allowed below.
+% \setflag \allowintoc = boolean        % Allow in ToC?
+% \difficulty = integer                 % Level of difficulty.
+% \style = {...}                        % Heading style.
+% \textskip = skip                      % Skip from title to text.
+% \titlefont = {...}                    % Title font.
+% \def \titleformat ##1{...}            % Title format.
+% \tocentrylevel = integer              % ToC entry level number (optional).
+% \topadjust = dimen                    % Adjust if at top of page.
+%~end
+
+\definecount{\tocentrylevel}{0}
+
+
+\def \simplehead #1#2{%                                 {type}{title}
+  \endgraf
+  \beginblockscope{simplehead}%
+  \global\increment \simpleheaddepth
+  \setflag \allowclubline = \false      %~default soft
+  \setflag \allowintoc = \true          %~default with
+  \difficulty = 0                       %~default with
+  \style = {Caps/lowercase, \noindent}% %~default soft
+  \tocentrylevel = 0                    %~default soft
+  \topadjust = \mindimen                %~default hard
+  \processdesign{\simplehead}{#1}%
+  \global\increment \simpleheadnumber
+  \simpleheadformat{#2}%
+  \endsimplehead}
+
+\def \endsimplehead {%
+  \global\decrement \simpleheaddepth
+  \endblockscope{simplehead}%
+  \ignorespaces}
+
+\def \simpleheadformat #1{%
+  {\the\titlefont
+   \zskipabovehead{\breakgood}{\aboveskip}%
+   \titleformat{#1}}%
+  \if \dimzerop{\textskip}%
+    \nobreak
+  \else
+    \endgraf
+    \bbskipabove{\breaknever}{\textskip}%
+  \fi
+  \if \posp{\tocentrylevel}%
+    \ztocentry{}{#1}{\tocentrylevel}{\allowintoc}%
+  \fi
+  \if \notp{\allowclubline}\overrideclubpenalty{\breaknever}\fi}
+
+%                       Useful Utilities
+%                       ------ ---------
+
+
+\def \chapterorchapterappendixcomptext {%
+  \if \inblockp{\chapterappendix}%
+    \the\sectioncomptext
+  \else
+    \the\chaptercomptext
+  \fi}
+
+\def \textonlyhead {%                                   %^modifier
+  \with{\setflag\allowintoc=\false
+        \def\providemark##1{}}}
+
+\def \closeanychapter {%
+  \closeifinblock{\part}{\endpart}%
+  \closeifinblock{\quasipart}{\endquasipart}%
+  \closeifinblock{\quasichapter}{\endquasichapter}%
+  \closeifinblock{\chapter}{\endchapter}%
+  \closeifinblock{\appendix}{\endappendix}}
+
+\def \closeanysection {%
+  \closeifinblock{\quasisection}{\endquasisection}%
+  \closeifinblock{\section}{\endsection}%
+  \closeifinblock{\chapterappendix}{\endchapterappendix}}
+
+\def \closeanysubsection {%
+  \closeifinblock{\quasisubsection}{\endquasisubsection}%
+  \closeifinblock{\subsection}{\endsubsection}}
+
+\def \closeanysubsubsection {%
+  \closeifinblock{\subsubsection}{\endsubsubsection}}
+
+\def \closeanysubsubsubsection {%
+  \closeifinblock{\subsubsubsection}{\endsubsubsubsection}}
+
+\def \zsinkskip #1#2#3{%                        {sink}{penalty}{skip}
+  \if \dimposp{#3}%
+    \bbskipabove{#2}{#3}%
+  \else
+    \vsinkfromtypearea{#1}%
+  \fi}
+
+\def \zskipabovehead #1#2{%                     {penalty}{skip}
+  \bbskipabove{#1}{#2}%
+  \if \dimneqlp{\topadjust}{\mindimen}%
+    \vskip -\topadjust
+    \tdimena = \prevdepth
+    \rule{height 0pt depth 0pt width 0pt}%
+    \prevdepth = \tdimena
+    \penalty \breaknever
+    \vskip \topadjust
+  \fi}
+
+% If the author level is negative, the ToC entry goes before the chapter's
+% entry. Otherwise it goes after the chapter's entry.
+
+\def \zpartchaptoc #1#2#3{%
+  \edef \znext {\noexpand\tocentry{}{\the\authortext}}%
+  \if \andp{\notp{\emptytoksp{\authortext}}}{\negp{\authorlevel}}%
+    \znext{-\authorlevel}%
+  \fi
+  \ztocentry{#1}{#2}{#3}{\allowintoc}%
+  \if \andp{\notp{\emptytoksp{\authortext}}}{\posp{\authorlevel}}%
+    \znext{\authorlevel}%
+  \fi}

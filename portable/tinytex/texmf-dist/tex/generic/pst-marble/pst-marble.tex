@@ -1,0 +1,119 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                   %%
+%% This is file `pst-marble.tex'                                     %%
+%%                                                                   %%
+%% IMPORTANT NOTICE:                                                 %%
+%%                                                                   %%
+%% Package `pst-marble'                                              %%
+%%                                                                   %%
+%% Aubrey Jaffer, with help of Manuel Luque, Jürgen Gilg             %%
+%% Email address: agj@alum.mit.edu                                   %%
+%% Copyright (C) 2018-2019  Aubrey Jaffer                            %%
+%%                                                                   %%
+%% This program can redistributed and/or modified under              %%
+%% the terms of the LaTeX Project Public License                     %%
+%% Distributed from CTAN archives in directory                       %%
+%% macros/latex/base/lppl.txt; either version 1.3c of                %%
+%% the License, or (at your option) any later version.               %%
+%%                                                                   %%
+%% DESCRIPTION:                                                      %%
+%%   `pst-marble' is a PSTricks package to draw marble-like patterns %%
+%%                                                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csname PSTMARBLELoaded\endcsname
+\let \PSTMARBLELoaded\endinput
+\ifx\PSTricksLoaded\endinput\else\input pstricks.tex\fi
+\ifx\PSTXKeyLoaded\endinput \else\input pst-xkey.tex\fi
+\def\fileversion{1.6}
+\def\filedate{2019/03/20}
+\message{`PST' v\fileversion, \filedate}
+%
+\pstheader{pst-marble.pro}
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+\pst@addfams{pst-marble}
+\define@key[psset]{pst-marble}{background}{\def\pst@marble@background{#1 }}
+\define@key[psset]{pst-marble}{paper}{\def\pst@marble@paper{#1 }}
+\define@key[psset]{pst-marble}{viscosity}{\def\pst@marble@visc{#1 }}
+\define@key[psset]{pst-marble}{oversample}{\def\pst@marble@oversample{#1 }}
+\define@key[psset]{pst-marble}{overscan}{\def\pst@marble@overscan{#1 }}
+\define@key[psset]{pst-marble}{seed}{\def\pst@marble@seed{#1}}
+\define@key[psset]{pst-marble}{actions}{\def\pst@marble@actions{#1 }}
+\define@key[psset]{pst-marble}{spractions}{\def\pst@marble@spractions{#1 }}
+\define@key[psset]{pst-marble}{shadings}{\def\pst@marble@shadings{#1 }}
+% colors are red, green, and blue components between 0 and 1.
+\define@key[psset]{pst-marble}{colors}{\def\pst@marble@colors{#1 }}
+\define@boolkey[psset]{pst-marble}[Pst@]{drawcontours}[true]{}
+\define@boolkey[psset]{pst-marble}[Pst@]{bckg}[true]{}
+\psset[pst-marble]{
+    seed={Mathematical Marbling},
+    background={
+      [1 1 1]
+    },
+    paper={
+      [1 1 1]
+    },
+    colors={
+      [0.275 0.569 0.796]
+      [0.965 0.882 0.302]
+      [0.176 0.353 0.129]
+      [0.635 0.008 0.094]
+      [0.078 0.165 0.518]
+      [0.824 0.592 0.031]
+      [0.059 0.522 0.392]
+      [0.816 0.333 0.475]
+      [0.365 0.153 0.435]
+      [0.624 0.588 0.439]
+    },
+    viscosity=1000,
+    oversample=0,
+    overscan=1,
+    actions={0 0 36 colors 35 concentric-rings},
+    spractions={},
+    shadings={},
+    drawcontours=false,
+    bckg=true
+    }
+\psset[pstricks]{shapealpha=1}
+\def\psMarble{\pst@object{psMarble}}
+\def\psMarble@i(#1,#2){
+\@ifnextchar({\psMarble@ii(#1,#2)}{\psMarble@ii(#1 -0.5 mul, #2 -0.5 mul)(#1 0.5 mul,#2 0.5 mul)}}
+\def\psMarble@ii(#1,#2)(#3,#4){
+\begin@SpecialObj
+\addto@pscode{
+plotdict begin
+/FILL {\tx@setTransparency \tx@setBlendmode fill } def
+/STROKE {\pst@number\pslinewidth 1000 div SLW \tx@setStrokeTransparency \tx@setBlendmode systemdict /stroke get exec} def
+/cm {\pst@number\psunit mul } bind def
+/background \pst@marble@background color-norm def
+/paper \pst@marble@paper color-norm def
+/colors [\pst@marble@colors] def
+/seed (\pst@marble@seed) rc4setkey def
+/lox #1 cm cvi def
+/loy #2 cm cvi def
+/hix #3 cm cvi def
+/hiy #4 cm cvi def
+/visc \pst@marble@visc abs def
+/oversample \pst@marble@oversample dup 0 eq \pst@marble@visc 0 lt and {pop 1} if def
+/overscan \pst@marble@overscan def
+/actions [\pst@marble@actions] def
+/acnt actions length def
+/spractions [\pst@marble@spractions] def
+/pcnt spractions length def
+/shadings [\pst@marble@shadings] def
+/scnt shadings length def
+\ifPst@drawcontours /Contours {STROKE} def \else /Contours {FILL} def \fi
+gsave
+\ifPst@bckg
+    background aload pop setrgbcolor
+    lox loy hix lox sub hiy loy sub rectfill
+%    newpath lox loy moveto lox hiy lineto hix hiy lineto hix loy lineto closepath FILL
+\fi
+    lox loy hix lox sub hiy loy sub rectclip
+    marble
+grestore
+end}% fin du code ps
+\end@SpecialObj}% % fin de la commande PSTricks
+\catcode`\@=\PstAtCode\relax
+\endinput

@@ -1,0 +1,49 @@
+\_checkloaded{lists}
+
+\input pdfData/ptb-counters
+
+\createcounter{list depth}
+\_xp\def\csname liststyle1\endcsname{$\bullet$}
+\_xp\def\csname liststyle2\endcsname{$\circ$}
+\_xp\def\csname liststyle3\endcsname{$-$}
+\def\blist{%
+    \bgroup\par%
+    \advancecounter{list depth}{1}%
+    \def\item{%
+        \par\egroup\bgroup\medskip\setbox0=\hbox{\csname liststyle\the\counter{list depth}\endcsname\quad}%
+        \advance\leftskip by \dimexpr\wd0+\enumindent\relax\leavevmode\kern-\wd0\box0%
+    }%
+    \def\mtext{%
+        \par\egroup\medskip\bgroup%
+    }
+    \bgroup%
+}
+\def\elist{\par\egroup\egroup\medskip}
+
+\def\_numtoletter#1{\ifcase#1 0\or a\or b\or c\or d\or e\or f\or g\or h\or i\or j\or k\or l\or m\or n\or o\or p\or q\or r\or s\or t\or u\or v\or w\or x\or y\or z\else ---\fi}
+\createcounter{enum count}
+\createcounter{enum depth}
+\_xp\def\csname enumstyle1\endcsname#1{{\bf(#1)}}
+\_xp\setmacrotolen\_xp{\csname enumstyle1@wd\endcsname}{\csname enumstyle1\endcsname{20}}
+\_xp\def\csname enumstyle2\endcsname#1{{\bf(\romannumeral#1)}}
+\_xp\setmacrotolen\csname enumstyle2@wd\endcsname{\csname enumstyle2\endcsname{20}}
+\_xp\def\csname enumstyle3\endcsname#1{{\bf(\_numtoletter{#1})}}
+\_xp\setmacrotolen\csname enumstyle3@wd\endcsname{\csname enumstyle3\endcsname{20}}
+\def\enumindent{.25cm}
+\def\benum{\bgroup\par%
+    \setcounter{enum count}{0}%
+    \advancecounter{enum depth}{1}%
+    \def\item{%
+        \par\egroup\advancecounter{enum count}{1}\bgroup\medskip%
+        \setbox0=\hbox{\hbox to\csname enumstyle\the\counter{enum depth}@wd\endcsname%
+            {\hss\csname enumstyle\the\counter{enum depth}\endcsname{\the\counter{enum count}}}%
+            \quad%
+        }%
+        \advance\leftskip by \dimexpr\wd0+\enumindent\relax\noindent\kern-\wd0\box0%
+    }%
+    \def\mtext{%
+        \par\egroup\medskip\bgroup%
+    }
+    \bgroup%
+}
+\def\eenum{\par\egroup\egroup\par\medskip}

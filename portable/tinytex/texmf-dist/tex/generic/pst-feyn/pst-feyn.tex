@@ -1,0 +1,344 @@
+%% $Id: pst-feyn.tex 826 2018-09-27 09:21:43Z herbert $
+%%
+%% This is file `pst-feyn.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-feyn.tex'
+%%
+%% Herbert Voss <hvoss _at_ tug.org>
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-feyn' is a style file for the drawing of Feynman diagrams.
+%%    originally made by J.A.M. Vermaseren 14-feb-1994 for the picture environment
+%
+%%
+\csname PSTFeynLoaded\endcsname
+\let\PSTFeynLoaded\endinput
+% Requires PSTricks,
+\ifx\PSTricksLoaded\endinput\else   \input pstricks.tex\fi
+\ifx\PSTXKeyLoaded\endinput\else    \input pst-xkey \fi
+%
+\def\fileversion{0.01}
+\def\filedate{2018/09/26}
+\message{`PST-feyn' v\fileversion, \filedate\space (HV,DL)}
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+\pst@addfams{pst-feyn}
+
+\pstheader{pst-feyn.pro}
+%
+\def\axoxoff{0 }
+\def\axoyoff{0 }
+\def\axoxo{0 }
+\def\axoyo{0 }
+%
+\define@key[psset]{pst-feyn}{amplitude}[0.25]{\pst@getlength{#1}\psk@feyn@amplitude}
+\define@key[psset]{pst-feyn}{windings}[10]{\pst@checknum{#1}\psk@feyn@windings}
+%\pst@getint{#1}\psk@feyn@windings}
+\define@key[psset]{pst-feyn}{radius}[1]{\pst@getlength{#1}\psk@feyn@radius}
+\psset[pst-feyn]{amplitude=0.25,windings=10,radius=1}
+%
+\def\psGluon{\pst@object{psGluon}}
+\def\psGluon@i(#1)(#2){% Draws a gluon from (P1) to (P2) with amplitude and number of windings
+%\put(\axoxoff,\axoyoff){\special{"\axocolor #1 \axoxo add #2 \axoyo add #3
+% \axoxo add #4 \axoyo add #5 #6 \axowidth \axoscale gluon showpage}}
+  \pst@getcoor{#1}\pst@tempA
+  \pst@getcoor{#2}\pst@tempB
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch 
+    \pst@tempB\space \axoyo add exch \axoxo add exch 
+    \psk@feyn@amplitude\space %\pst@number\psunit mul 
+    \psk@feyn@windings
+    tx@FeynDict begin gluon end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+
+\def\psPhoton{\pst@object{psPhoton}}
+\def\psPhoton@i(#1)(#2){%   Draws a photon from (x1,y1) to (x2,y2) with amplitude and number of windings
+  \pst@getcoor{#1}\pst@tempA
+  \pst@getcoor{#2}\pst@tempB
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch 
+    \pst@tempB\space \axoyo add exch \axoxo add exch 
+    \psk@feyn@amplitude\space %\pst@number\psunit mul 
+    \psk@feyn@windings
+    tx@FeynDict begin photon end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\def\psZigZag{\pst@object{psZigZag}}
+\def\psZigZag@i(#1)(#2){%   Draws a zigzag from (x1,y1) to (x2,y2) with amplitude and number of windings
+  \pst@getcoor{#1}\pst@tempA
+  \pst@getcoor{#2}\pst@tempB
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch 
+    \pst@tempB\space \axoyo add exch \axoxo add exch 
+    \psk@feyn@amplitude\space %\pst@number\psunit div 
+    \psk@feyn@windings
+    tx@FeynDict begin zigzag end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\def\psPhotonArc{\pst@object{psPhotonArc}}
+\def\psPhotonArc@i(#1)(#2,#3){%   Draws a photon on an arc segment. start angle and target angle are (#2,#3)
+  \pst@getcoor{#1}\pst@tempA
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch 
+    \psk@feyn@radius
+    #2 #3 
+    \psk@feyn@amplitude\space %\pst@number\psunit div 
+    \psk@feyn@windings
+    tx@FeynDict begin photonarc end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\def\psGluonArc{\pst@object{psGluonArc}}
+\def\psGluonArc@i(#1)(#2,#3){%
+%
+%   Draws a gluon on an arc segment. The center of the curve is at (1,2)
+%   The radius, start angle and target angle are (#2,#3,#4), 5 is the
+%   amplitude of the gluon, and 6 is the number of windings.
+%New \psGluonArc[options](Coor)(phi1,\phi2)
+  \pst@getcoor{#1}\pst@tempA
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch translate
+    \psk@feyn@radius 
+    #2 #3 % start angle end angle
+    \psk@feyn@amplitude\space %\pst@number\psunit div 
+    \psk@feyn@windings
+    tx@FeynDict begin gluearc end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\def\psArrowArc{\pst@object{psArrowArc}}%   Draws an arc segment with an arrow in it.
+\def\psArrowArc@i(#1)(#2,#3){%
+  \pst@getcoor{#1}\pst@tempA
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch 
+    \psk@feyn@radius\space %\pst@number\psrunit div 
+    #2 #3
+    tx@FeynDict begin arrowarc end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\def\psLongArrowArc{\pst@object{psLongArrowArc}}
+\def\psLongArrowArc@i(#1)(#2,#3){%  Draws an arc segment with an arrow at its end. 
+%   The arc segment runs anticlockwise
+  \begingroup
+  \use@keep@par
+  \psarc(#1){\psk@feyn@radius pt}{#2}{#3}%
+  \endgroup
+  \pst@getcoor{#1}\pst@tempA
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch 
+    \psk@feyn@radius
+    #2 #3 
+    tx@FeynDict begin longarrowarc end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\def\DashArrowArc(#1,#2)(#3,#4,#5)#6{
+%
+%   Draws a dashed arc segment with an arrow in it. The center of the curve
+%   is at (1,2).
+%   The radius, start angle and target angle are (#3,#4,#5).
+%   The arc segment runs anticlockwise
+%
+\put(\axoxoff,\axoyoff){\special{" tx@FeynDict begin \axocolor #1 \axoxo add #2 \axoyo add #3
+ #4 #5 #6 \axowidth \axoscale dasharrowarc end showpage}}
+}
+%
+\def\psArrowArcn{\pst@object{psArrowArcn}}%   Draws an arc segment with an arrow in it.
+\def\psArrowArcn@i(#1)(#2,#3){%
+  \pst@getcoor{#1}\pst@tempA
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch 
+    \psk@feyn@radius\space \pst@number\psrunit div 
+    #2 #3
+    tx@FeynDict begin arrowarcn end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\def\LongArrowArcn(#1,#2)(#3,#4,#5){
+%
+%   Draws an arc segment with an arrow at the end. The center of the curve
+%   is at (1,2).
+%   The radius, start angle and target angle are (#3,#4,#5).
+%   The arc segment runs clockwise
+%
+\put(\axoxoff,\axoyoff){\special{" tx@FeynDict begin \axocolor #1 \axoxo add #2 \axoyo add #3
+ #4 #5 \axowidth \axoscale longarrowarcn end showpage}}
+}
+%
+\def\DashArrowArcn(#1,#2)(#3,#4,#5)#6{
+%
+%   Draws a dashed arc segment with an arrow in it. The center of the curve
+%   is at (1,2).
+%   The radius, start angle and target angle are (#3,#4,#5).
+%   The arc segment runs clockwise
+%
+\put(\axoxoff,\axoyoff){\special{" tx@FeynDict begin \axocolor #1 \axoxo add #2 \axoyo add #3
+ #4 #5 #6 \axowidth \axoscale dasharrowarcn end showpage}}
+}
+%
+\def\psArrowLine{\pst@object{psArrowLine}}
+\def\psArrowLine@i(#1)(#2){% Draws a line with an arrow in it from (x1,y1) to (x2,y2)
+  \begingroup
+  \use@keep@par
+  \psline(#1)(#2)%
+  \endgroup
+  \pst@getcoor{#1}\pst@tempA
+  \pst@getcoor{#2}\pst@tempB
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch %\tx@UserCoor
+    \pst@tempB\space \axoyo add exch \axoxo add exch %\tx@UserCoor
+    tx@FeynDict begin arrowline end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\def\LongArrow(#1,#2)(#3,#4){
+%
+%   Draws a line with an arrow at the end from (x1,y1) to (x2,y2)
+%
+\put(\axoxoff,\axoyoff){\special{" tx@FeynDict begin \axocolor #1 \axoxo add #2 \axoyo add #3
+ \axoxo add #4 \axoyo add \axowidth \axoscale longarrow end showpage}}
+}
+%
+\def\DashArrowLine(#1,#2)(#3,#4)#5{
+%
+%   Draws a dashed line with an arrow in it from (x1,y1) to (x2,y2)
+%   The size of the dashes is given by the fifth argument.
+%
+\put(\axoxoff,\axoyoff){\special{" tx@FeynDict begin \axocolor #1 \axoxo add #2 \axoyo add #3
+ \axoxo add #4 \axoyo add #5 \axowidth \axoscale dasharrowline end showpage}}
+}
+%
+\def\psCArc{\pst@object{psCArc}}
+\def\psCArc@i(#1)(#2,#3){% Draws an arc segment. The center of the curve is at .
+ %\axocolor #1 \axoxo add #2 \axoyo add #3 #4 #5 \axowidth \axoscale carc end showpage
+  \pst@getcoor{#1}\pst@tempA
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch 
+    \psk@feyn@radius\space %\pst@number\psrunit div 
+    #2 #3
+    tx@FeynDict begin carc end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\let\psText\rput
+%
+\def\psBCirc{\pst@object{psBCirc}}
+\def\psBCirc@i(#1)#2{\begingroup\use@par\pscircle[fillstyle=solid,fillcolor=white](#1){#2}\endgroup}%
+%   Draws a circle at (1,2) and radius 3 that is blanked out.
+%
+\def\psGCirc{\pst@object{psGCirc}}% fill the circle with a gray scale 
+\def\psGCirc@i(#1)#2#3{{\use@par\pscircle[fillstyle=solid,fillcolor={[gray]#3}](#1){#2}}}%
+%
+\def\psCCirc{\pst@object{psCCirc}}% #3 is the color of the circle, #4 the color of the contents
+\def\psCCirc@i(#1)#2#3#4{\begingroup\use@par\pscircle[linecolor=#3,fillstyle=solid,fillcolor=#4](#1){#2}\endgroup}
+%
+\def\psPText{\@ifnextchar[\psPText@i{\psPText@i[c]}}
+\def\psPText@i[#1](#2)(#3)#4{%
+%    \definecolor{temp@color}{gray}{#3}%
+    \rput[#1]{#3}(#2){\shortstack{#4}}%
+%    \rput[#1](#2){\textcolor{temp@color}{\shortstack{#4}}}%
+}
+%
+\def\psLogAxis{\pst@object{psLogAxis}}
+%   LogAxis(x1,y1)(x2,y2)(num_logs,hashsize,offset)
+\def\psLogAxis@i(#1)(#2)(#3,#4,#5){%
+%   The line is from (x1,y1) to (x2,y2) and the marks are on the left side
+%   when hashsize is positive, and right when it is negative.
+%   num_logs is the number of orders of magnitude and offset is the number
+%   at which one starts at (x1,y1) (like if offset=2 we start at 2)
+%   When offset is 0 we start at 1. Width is the linewidth.
+  \pst@getcoor{#1}\pst@tempA
+  \pst@getcoor{#2}\pst@tempB
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch 
+    \pst@tempB\space \axoyo add exch \axoxo add exch 
+    #3 #4 #5 
+    tx@FeynDict begin logaxis end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\def\psLinAxis{\pst@object{psLinAxis}}
+%   LinAxis(x1,y1)(x2,y2)(num_decs,per_dec,hashsize,offset)
+\def\psLinAxis@i(#1)(#2)(#3,#4,#5,#6){%
+%   The line is from (x1,y1) to (x2,y2) and the marks are on the left side
+%   when hashsize is positive, and right when it is negative.
+%   num_decs is the number of accented marks, per_dec the number of
+%   divisions between them and offset is the number
+%   at which one starts at (x1,y1) (like if offset=2 we start at the second
+%   small mark) Width is the linewidth.
+  \pst@getcoor{#1}\pst@tempA
+  \pst@getcoor{#2}\pst@tempB
+  \begin@OpenObj
+  \addto@pscode{
+    \pst@tempA\space \axoyo add exch \axoxo add exch 
+    \pst@tempB\space \axoyo add exch \axoxo add exch 
+    #3 #4 #5 #6 
+    tx@FeynDict begin linaxis end 
+  }%
+  \end@OpenObj
+  \ignorespaces
+}
+%
+\def\psBText{\pst@object{psBText}}%   Draws a box with the center at (x1,y1) and postscript text in it.
+\def\psBText@i(#1)#2{\begingroup\use@par
+  \rput(#1){\psframebox[fillstyle=solid,fillcolor=white]{\shortstack{#2}}}%
+\endgroup}
+%
+\def\psGText{\pst@object{psGText}}%   The color of the background is in #2
+\def\psCText@i(#1)#2#3{\begingroup\use@par
+    \rput(#1){\psframebox[fillcolor={[gray]#2},fillstyle=solid]{\shortstack{#3}}}%
+  \endgroup}
+%
+\def\psCText{\pst@object{psCText}}%  The color of box and text is in #2
+\def\psCText@i(#1)#2#3#4{\begingroup\use@par
+    \rput(#1){\psframebox[linecolor=#2,fillcolor=#3,fillstyle=solid]{\shortstack{#4}}}%
+  \endgroup}
+%
+\catcode`\@=\PstAtCode\relax
+%
+%% END: pst-feyn.tex
+\endinput
+

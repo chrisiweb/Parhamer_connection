@@ -1,0 +1,420 @@
+%% S. Lurp --- STRETCHY --- MIT License
+\def\strty@cd{.5523}
+\def\strty@circle#1#2#3{%   x, y, radius
+        \strty@pd{#3}{0}{#1}{#2}
+    m
+        \strty@pd{#3}{\strty@mult\strty@cd{#3}}{#1}{#2}
+        \strty@pd{\strty@mult\strty@cd{#3}}{#3}{#1}{#2}
+        \strty@pd{0}{#3}{#1}{#2}
+    c
+        \strty@pd{-\strty@mult\strty@cd{#3}}{#3}{#1}{#2}
+        \strty@pd{-#3}{\strty@mult\strty@cd{#3}}{#1}{#2}
+        \strty@pd{-#3}{0}{#1}{#2}
+    c
+        \strty@pd{-#3}{-\strty@mult\strty@cd{#3}}{#1}{#2}
+        \strty@pd{-\strty@mult\strty@cd{#3}}{-#3}{#1}{#2}
+        \strty@pd{0}{-#3}{#1}{#2}
+    c
+        \strty@pd{\strty@mult\strty@cd{#3}}{-#3}{#1}{#2}
+        \strty@pd{#3}{-\strty@mult\strty@cd{#3}}{#1}{#2}
+        \strty@pd{#3}{0}{#1}{#2}
+    c
+    S
+}
+
+\def\strty@extensible#1#2#3#4#5#6#7{%   name, bg code, fg code, symbol, x displacement, y displacement, kern
+    \@xp\def\csname #1\endcsname##1{{%
+        \setbox0=\hbox{$\strty@repeatit{\numexpr##1-1\relax}{{#4}#7}{{#4}}$}%
+        \def\strty@trans####1####2{%
+            {\strty@mult{.5}{\strty@nopt{####1\dimexpr\wd0+#5\relax}}}%
+            {\strty@nopt{####2\dimexpr#6\relax}}%
+        }%
+        \rlap{\kern.5\wd0$\vcenter{\pdfliteral{\strty@pttrans\space#2}}$}%
+        \rlap{\copy0}%
+        \rlap{\kern.5\wd0$\vcenter{\pdfliteral{\strty@pttrans\space#3}}$}%
+        \kern\wd0\relax%
+    }}%
+}%
+
+\def\strty@repeatedsym#1#2#3{%
+    \@xp\def\csname #1\endcsname##1{{%
+        \strty@repeatit{\numexpr##1-1\relax}{{#2}#3}{{#2}}%
+    }}%
+}
+
+\def\strty@limitsop@nolim#1#2#3#4#5{% operator, sup, sub, sup kern, sub kern
+    \mathop{#1}\nolimits^{\mkern#4#2}_{\mkern#5#3}%
+}
+
+\def\strty@limitsop@lim#1#2#3#4#5{% operator, sup, sub, sup kern, sub kern
+    \mathop{#1}\limits^{\mkern#4#2}_{\mkern#5#3}%
+}
+
+\def\strty@createoplims#1#2#3#4#5{
+    \@xp\def\csname \strty@strip#1@nolim\endcsname##1##2##3{%
+        \strty@limitsop@nolim{#1{##1}}{##2}{##3}{#2}{#3}
+    }%
+    \@xp\def\csname \strty@strip#1@lim\endcsname##1##2##3{%
+        \strty@limitsop@lim{#1{##1}}{##2}{##3}{#4}{#5}
+    }%
+}
+
+\strty@repeatedsym{strty@dint@sym}{\displaystyle\int}{\mkern-10mu}
+\strty@repeatedsym{strty@tint@sym}{\textstyle\int}{\mkern-7mu}
+\strty@createoplims\strty@dint@sym{0mu}{-12mu}{12mu}{-15mu}
+\strty@createoplims\strty@tint@sym{0mu}{-7mu}{7mu}{-7mu}
+
+\def\strtyint#1#2#3{%
+    \mathchoice%
+        {\strty@dint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@tint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@tint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@tint@sym@nolim{#1}{#2}{#3}}%
+}
+
+\def\strtyintlimits#1#2#3{%
+    \mathchoice%
+        {\strty@dint@sym@lim{#1}{#2}{#3}}%
+        {\strty@tint@sym@lim{#1}{#2}{#3}}%
+        {\strty@tint@sym@lim{#1}{#2}{#3}}%
+        {\strty@tint@sym@lim{#1}{#2}{#3}}%
+}
+
+\strty@extensible{strty@doint@sym}{}{
+    q
+    .5 w
+    \strty@circle{0pt}{0pt}{1}
+    Q
+}{\displaystyle\int}{-2pt}{4pt}{\mkern-10mu}
+
+\strty@extensible{strty@toint@sym}{}{
+    q
+    .5 w
+    \strty@circle{0pt}{0pt}{1}
+    Q
+}{\textstyle\int}{-2pt}{2.3333pt}{\mkern-7mu}
+
+\strty@extensible{strty@dlcaint@sym}{}{
+    q
+    .5 w
+    \strty@circle{0pt}{0pt}{1}
+    .3 w
+    1 j 1 J
+    \strty@p{-1}{0} m
+    \strty@pd{-1}{0}{-1pt}{-1.5pt} l
+    \strty@p{-1}{0} m
+    \strty@pd{-1}{0}{1.5pt}{-1pt} l
+    S
+    Q
+}{\displaystyle\int}{-2pt}{4pt}{\mkern-10mu}
+
+\strty@extensible{strty@tlcaint@sym}{}{
+    q
+    .5 w
+    \strty@circle{0pt}{0pt}{1}
+    .3 w
+    1 j 1 J
+    \strty@p{-1}{0} m
+    \strty@pd{-1}{0}{-1pt}{-1.5pt} l
+    \strty@p{-1}{0} m
+    \strty@pd{-1}{0}{1.5pt}{-1pt} l
+    S
+    Q
+}{\textstyle\int}{-2pt}{2.3333pt}{\mkern-7mu}
+
+\strty@extensible{strty@dsqint@sym}{}{
+    q
+    .5 w
+    1 j 1 J
+    \strty@p{-1}{1} m
+    \strty@p{1}{1} l
+    \strty@p{1}{-1} l
+    \strty@p{-1}{-1} l
+    s
+    Q
+}{\displaystyle\int}{-2pt}{4pt}{\mkern-10mu}
+
+\strty@extensible{strty@tsqint@sym}{}{
+    q
+    .5 w
+    1 j 1 J
+    \strty@p{-1}{1} m
+    \strty@p{1}{1} l
+    \strty@p{1}{-1} l
+    \strty@p{-1}{-1} l
+    s
+    Q
+}{\textstyle\int}{-2pt}{2.3333pt}{\mkern-7mu}
+
+\strty@extensible{strty@drsqint@sym}{}{
+    q
+    .5 w
+    1 j 1 J
+    \strty@pd{-1}{1}{4pt}{0pt} m
+    \strty@pd{1}{1}{-4pt}{0pt} l
+        \strty@pd{1}{1}{-4pt+\strty@mult\strty@cd{4}pt}{0pt}
+        \strty@pd{1}{0}{0pt}{\strty@mult\strty@cd{4}pt}
+        \strty@p{1}{0}
+    c
+        \strty@pd{1}{0}{0pt}{-\strty@mult\strty@cd{4}pt}
+        \strty@pd{1}{-1}{-4pt+\strty@mult\strty@cd{4}pt}{0pt}
+        \strty@pd{1}{-1}{-4pt}{0pt}
+    c
+    \strty@pd{-1}{-1}{4pt}{0pt} l
+        \strty@pd{-1}{-1}{4pt-\strty@mult\strty@cd{4}pt}{0pt}
+        \strty@pd{-1}{0}{0pt}{-\strty@mult\strty@cd{4}pt}
+        \strty@p{-1}{0}
+    c
+        \strty@pd{-1}{0}{0pt}{\strty@mult\strty@cd{4}pt}
+        \strty@pd{-1}{1}{4pt-\strty@mult\strty@cd{4}pt}{0pt}
+        \strty@pd{-1}{1}{4pt}{0pt}
+    c
+    s
+    Q
+}{\displaystyle\int}{-2pt}{4pt}{\mkern-10mu}
+
+\strty@extensible{strty@trsqint@sym}{}{
+    q
+    .5 w
+    1 j 1 J
+    \strty@pd{-1}{1}{2.3333pt}{0pt} m
+    \strty@pd{1}{1}{-2.3333pt}{0pt} l
+        \strty@pd{1}{1}{-2.3333pt+\strty@mult\strty@cd{2.3333}pt}{0pt}
+        \strty@pd{1}{0}{0pt}{\strty@mult\strty@cd{2.3333}pt}
+        \strty@p{1}{0}
+    c
+        \strty@pd{1}{0}{0pt}{-\strty@mult\strty@cd{2.3333}pt}
+        \strty@pd{1}{-1}{-2.3333pt+\strty@mult\strty@cd{2.3333}pt}{0pt}
+        \strty@pd{1}{-1}{-2.3333pt}{0pt}
+    c
+    \strty@pd{-1}{-1}{2.3333pt}{0pt} l
+        \strty@pd{-1}{-1}{2.3333pt-\strty@mult\strty@cd{2.3333}pt}{0pt}
+        \strty@pd{-1}{0}{0pt}{-\strty@mult\strty@cd{2.3333}pt}
+        \strty@p{-1}{0}
+    c
+        \strty@pd{-1}{0}{0pt}{\strty@mult\strty@cd{2.3333}pt}
+        \strty@pd{-1}{1}{2.3333pt-\strty@mult\strty@cd{2.3333}pt}{0pt}
+        \strty@pd{-1}{1}{2.3333pt}{0pt}
+    c
+    s
+    Q
+}{\textstyle\int}{-2pt}{2.3333pt}{\mkern-7mu}
+
+\strty@extensible{strty@bthint@sym}{
+    q
+    1 1 0 rg 1 1 0 RG
+    1 j 1 J
+    2 w
+    \strty@p{-1}{0} m
+        \strty@p{-1}{.5}
+        \strty@pd{-1}{1}{2pt}{0pt}
+        \strty@pd{-1}{1}{4pt}{0pt}
+    c
+    \strty@pd{1}{1}{-4pt}{0pt} l
+        \strty@pd{1}{1}{-2pt}{0pt}
+        \strty@p{1}{.5}
+        \strty@p{1}{0}
+    c
+    S
+    Q
+}{
+    q
+    1 1 0 rg 1 1 0 RG
+    1 j 1 J
+    2.1 w
+    \strty@p{-1}{0} m
+        \strty@p{-1}{-.5}
+        \strty@pd{0}{-.75}{-2pt}{0pt}
+    v
+    \strty@pd{0}{-1.5}{4pt}{0pt} l
+    \strty@p{1}{0} m
+        \strty@p{1}{-.5}
+        \strty@pd{0}{-.75}{2pt}{0pt}
+    v
+    \strty@pd{0}{-1.5}{-4pt}{0pt} l
+    S
+    2 w
+    \strty@p{-1}{0} m
+        \strty@p{-1}{-.5}
+        \strty@pd{0}{-.75}{-2pt}{0pt}
+    v
+    \strty@pd{0}{-1.5}{4pt}{0pt} l
+    \strty@p{1}{0} m
+        \strty@p{1}{-.5}
+        \strty@pd{0}{-.75}{2pt}{0pt}
+    v
+    \strty@pd{0}{-1.5}{-4pt}{0pt} l
+    S
+    Q
+}{\displaystyle\int}{-2pt}{4pt}{\mkern-10mu}
+
+\strty@extensible{strty@dtriint@sym}{}{
+    1 j 1 J
+    .5 w
+    \strty@p{0}{1} m
+    \strty@p{-1}{-1} l
+    \strty@p{1}{-1} l
+    h
+    S
+}{\displaystyle\int}{-2pt}{3pt}{\mkern-10mu}
+
+\strty@extensible{strty@ttriint@sym}{}{
+    1 j 1 J
+    .5 w
+    \strty@p{0}{1} m
+    \strty@p{-1}{-1} l
+    \strty@p{1}{-1} l
+    h
+    S
+}{\textstyle\int}{-2pt}{2pt}{\mkern-7mu}
+
+\strty@createoplims\strty@doint@sym{0mu}{-12mu}{12mu}{-15mu}
+\strty@createoplims\strty@toint@sym{0mu}{-7mu}{7mu}{-7mu}
+\strty@createoplims\strty@dlcaint@sym{0mu}{-12mu}{12mu}{-15mu}
+\strty@createoplims\strty@tlcaint@sym{0mu}{-7mu}{7mu}{-7mu}
+\strty@createoplims\strty@dsqint@sym{0mu}{-12mu}{12mu}{-15mu}
+\strty@createoplims\strty@tsqint@sym{0mu}{-7mu}{7mu}{-7mu}
+\strty@createoplims\strty@drsqint@sym{0mu}{-12mu}{12mu}{-15mu}
+\strty@createoplims\strty@trsqint@sym{0mu}{-7mu}{7mu}{-7mu}
+\strty@createoplims\strty@dtriint@sym{0mu}{-12mu}{12mu}{-15mu}
+\strty@createoplims\strty@ttriint@sym{0mu}{-7mu}{7mu}{-7mu}
+
+\def\strtyoint#1#2#3{%
+    \mathchoice%
+        {\strty@doint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@toint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@toint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@toint@sym@nolim{#1}{#2}{#3}}%
+}
+
+\def\strtyointlimits#1#2#3{%
+    \mathchoice%
+        {\strty@doint@sym@lim{#1}{#2}{#3}}%
+        {\strty@toint@sym@lim{#1}{#2}{#3}}%
+        {\strty@toint@sym@lim{#1}{#2}{#3}}%
+        {\strty@toint@sym@lim{#1}{#2}{#3}}%
+}
+
+\def\strtylcaint#1#2#3{%
+    \mathchoice%
+        {\strty@dlcaint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@tlcaint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@tlcaint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@tlcaint@sym@nolim{#1}{#2}{#3}}%
+}
+
+\def\strtylcaintlimits#1#2#3{%
+    \mathchoice%
+        {\strty@dlcaint@sym@lim{#1}{#2}{#3}}%
+        {\strty@tlcaint@sym@lim{#1}{#2}{#3}}%
+        {\strty@tlcaint@sym@lim{#1}{#2}{#3}}%
+        {\strty@tlcaint@sym@lim{#1}{#2}{#3}}%
+}
+
+\def\strtysqint#1#2#3{%
+    \mathchoice%
+        {\strty@dsqint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@tsqint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@tsqint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@tsqint@sym@nolim{#1}{#2}{#3}}%
+}
+
+\def\strtysqintlimits#1#2#3{%
+    \mathchoice%
+        {\strty@dsqint@sym@lim{#1}{#2}{#3}}%
+        {\strty@tsqint@sym@lim{#1}{#2}{#3}}%
+        {\strty@tsqint@sym@lim{#1}{#2}{#3}}%
+        {\strty@tsqint@sym@lim{#1}{#2}{#3}}%
+}
+
+\def\strtyrsqint#1#2#3{%
+    \mathchoice%
+        {\strty@drsqint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@trsqint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@trsqint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@trsqint@sym@nolim{#1}{#2}{#3}}%
+}
+
+\def\strtyrsqintlimits#1#2#3{%
+    \mathchoice%
+        {\strty@drsqint@sym@lim{#1}{#2}{#3}}%
+        {\strty@trsqint@sym@lim{#1}{#2}{#3}}%
+        {\strty@trsqint@sym@lim{#1}{#2}{#3}}%
+        {\strty@trsqint@sym@lim{#1}{#2}{#3}}%
+}
+
+\def\strtytriint#1#2#3{%
+    \mathchoice%
+        {\strty@dtriint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@ttriint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@ttriint@sym@nolim{#1}{#2}{#3}}%
+        {\strty@ttriint@sym@nolim{#1}{#2}{#3}}%
+}
+
+\def\strtytriintlimits#1#2#3{%
+    \mathchoice%
+        {\strty@dtriint@sym@lim{#1}{#2}{#3}}%
+        {\strty@ttriint@sym@lim{#1}{#2}{#3}}%
+        {\strty@ttriint@sym@lim{#1}{#2}{#3}}%
+        {\strty@ttriint@sym@lim{#1}{#2}{#3}}%
+}
+
+\newbox\strty@pileft
+\newbox\strty@piright
+\bgroup
+\setbox0=\hbox{\vrule width0pt height0pt depth.125pt$\pi$}
+\setbox1=\hbox to2.7pt{\copy0\hss}
+\setbox2=\hbox to3pt{\hss\copy0}
+\pdfxform1
+\global\setbox\strty@pileft=\hbox{\pdfrefxform\pdflastxform}
+\pdfxform2
+\global\setbox\strty@piright=\hbox{\pdfrefxform\pdflastxform}
+\egroup
+
+\def\strty@pii#1{%
+    \hbox{%
+        \strty@setpttrans%
+        \copy\strty@pileft%
+        \strty@repeatit{#1}{%
+            \hbox to1.2pt{\pdfliteral{
+                \strty@p{-.1}{4.3} m
+                \strty@p{1.3}{4.3} l
+                \strty@p{1.3}{3.73} l
+                \strty@p{0.725}{3.73} l
+                    \strty@p{0.75}{1.5}
+                    \strty@p{.8}{1}
+                    \strty@p{.9}{.175}
+                c
+                    \strty@p{.9}{\strty@add{-\strty@mult\strty@cd{.3}}{.175}}
+                    \strty@p{\strty@add{\strty@mult\strty@cd{.3}}{.6}}{-.125}
+                    \strty@p{.6}{-.125}
+                c
+                    \strty@p{\strty@add{-\strty@mult\strty@cd{.3}}{.6}}{-.125}
+                    \strty@p{.3}{\strty@add{-\strty@mult\strty@cd{.3}}{.175}}
+                    \strty@p{.3}{.175}
+                c
+                    \strty@p{.4}{1}
+                    \strty@p{.45}{1.5}
+                    \strty@p{0.475}{3.73}
+                c
+                \strty@p{-.1}{3.73} l
+                h
+                f
+            }\hfil}%
+        }%
+        \copy\strty@piright%
+    }%
+}
+
+\def\pii#1{%
+    \ifnum#1=1 %
+        \tau%
+    \else%
+        \ifnum#1=2 %
+            \pi%
+        \else%
+            \strty@pii{\numexpr#1-2\relax}%
+        \fi%
+    \fi%
+}
+

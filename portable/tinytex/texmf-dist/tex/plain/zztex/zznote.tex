@@ -1,0 +1,522 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Notes Facilities
+%
+% Synopsis:  This module defines various blocks that produce "notes", such
+%            as footnotes.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   28 September 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Footnotes
+%                       ---------
+
+
+\defineblock{\footnote}{\endfootnote}{\true}{}
+
+% The footnote parameters are used at two different times: when the 
+% \footnote macro appears, and when the page is output.
+
+% The \referencing parameter takes the following values:
+%   0:  Produce neither a reference nor an intro number.
+%   1:  Produce an intro number, but no reference.
+%   2:  Produce both a reference and an intro number.
+
+%~block footnote
+% \aboveskip = glue                     % Space b/b above first footnote line.
+% \setflag \abutting = flag             % True if note abutts previous one.
+% \bodyfont = {...}                     % Font for footnote text.
+% \def \comptextformat {...}            % Composite number text formatter.
+% \internoteskip = glue                 % Extra space between footnotes.
+% \leftindent = glue                    % Left indentation.
+% \height = dimen                       % Maximum height on page.
+% \interlinepenalty = penalty           % Penalty between footnote lines.
+% \def \noteintroformat {...}           % Footnote intro formatter.
+% \def \noterefformat {...}             % Footnote reference formatter.
+% \parindent = dimen                    % Paragraph indent.
+% \parrag = dimen                       % Paragraph raggedness.
+% \parskip = glue                       % Paragraph skip.
+% \referencing = integer                % How the footnote is referenced.
+% \rightindent = glue                   % Right indentation.
+% \rulecolor = {...}                    % Color of rule.
+% \rulewidth = dimen                    % Width of rule.
+% \ruleheight = dimen                   % Height of rule.
+% \ruleshift = dimen                    % Horizontal shift of rule.
+% \ruleskip = dimen                     % Space b/b below rule.
+% \def \spilloverride {...}             % Override parameters on spillover.
+% \textcolor = {...}                    % Color of text.
+%~end
+
+\defineskip{\internoteskip}{0pt}
+\definecount{\referencing}{0}
+
+\defineinsert{\zfninsert}
+
+
+\def \footnote {%                                       {text}
+  \blockcantbein{\footnote}{\footnote}%
+  \beginblockscope{footnote}%
+  \global\increment \footnotedepth
+  \setflag \abutting = \false                           %~default with
+  \referencing = 2                                      %~default with
+  \interlinepenalty = \breakworse                       %~default hard
+  \rulecolor = {black}%                                 %~default soft
+  \ruleshift = 0pt                                      %~default soft
+  \def \spilloverride {}%                               %~default soft
+  \textcolor = {black}%                                 %~default soft
+  \processdesign{\footnote}{}%
+  \if \posp{\referencing}%
+    \global\increment \footnotenumber
+    \setcomptext{\footnotecomptext}%
+  \else
+    \footnotecomptext = {???}%
+  \fi
+  \settaginfo{\the\footnotecomptext}{???}%
+  \if \andp{\hmodep}{\eqlp{\referencing}{2}}%
+    {\edef \zsf {\spacefactor=\the\spacefactor}%
+     \/%
+     \if \DVIWindoinuse \colorspecial{ifview color push rgb 1 0 1}\fi
+     \noterefformat
+     \if \DVIWindoinuse \colorspecial{ifview color pop}\fi
+     \zsf}%
+  \fi
+  \footnoteinsert}
+
+\def \footnoteinsert {%
+  \the\bodyfont
+  \global\count\zfninsert = 1000
+  \global\dimen\zfninsert = \height
+  \global\skip\zfninsert = \aboveskip
+  \global\advance \skip\zfninsert by -\internoteskip
+  \global\advance \skip\zfninsert by -\ht\strutbox      % of footnote text.
+  \insert \zfninsert \bgroup
+    \zpushvcontext
+    \color{\the\textcolor}%
+    \setindentation{\leftindent}{\rightindent}%
+    \setparrag{\parrag}%
+    \parfillskip = \normalparfillskip
+    \spaceskip = 0pt \xspaceskip = 0pt
+    \splittopskip = \ht\strutbox
+    \advance \splittopskip by \internoteskip
+    \splitmaxdepth = \dp\strutbox
+    \floatingpenalty = 20000\relax      % Reference on same page as note.
+    \if \posp{\referencing}%
+      \noteintroformat
+    \else
+      \indent
+    \fi
+    \vbox to \splittopskip{}%           % Strut in first line.
+    \bgroup
+      \aftergroup\endfootnote
+      \let \znext}                      % Eat open brace of footnote text.
+                                        % Absorb footnote text.
+                                        % \bgroup matches close brace.
+
+\def \endfootnote {%
+    \if \hmodep \strut \fi              % Strut in last line.
+    \endgraf
+    \unskip
+    \endcolor
+    \zpopvcontext
+  \egroup % \insert
+  \global\decrement \footnotedepth
+  \endblockscope{footnote}}
+
+% This macro is invoked by the output routine to format footnotes.
+
+\def \zfootnoteformat #1{%                              {body-depth}
+  \beginblockscope{footnote}%
+  \ruleshift = 0pt
+  \def \spilloverride {}%
+  % We used to do the \processdesign here, but that does a \processwith
+  % that can end up processing some other block's pending \with. Oops.
+  \footnotedesign \relax                % \processdesign{\footnote}{}
+  \if \notp{\emptydefp{\spilloverride}}%
+    \setbox \zboxa = \vtop{\unvcopy \zfninsert}%
+    \if \dimzerop{\ht\zboxa}\spilloverride \fi
+  \fi
+  \vskip \skip\zfninsert
+  \vskip -#1\relax
+  \if \andp{\dimposp{\ruleheight}}{\dimposp{\rulewidth}}%
+    \the\bodyfont
+    \tdimena = \ruleskip
+    \advance \tdimena by -\ht\strutbox
+    \advance \tdimena by -\internoteskip
+    \vskip -\tdimena
+    \vskip -\ruleheight
+    \nointerlineskip
+    \noindent \hspace{\ruleshift}%
+    \color{\the\rulecolor}\rule{height \ruleheight depth 0pt width \rulewidth}%
+    \endcolor\par
+    \vskip \tdimena
+  \fi
+  \unvbox \zfninsert
+  \endblockscope{footnote}}
+
+%                       Endnote
+%                       -------
+
+
+\defineblock{\endnote}{\endendnote}{\true}{}
+
+% The endnote parameters are used at two different times: when the 
+% \endnote command appears, and when the \endnotes command is used
+% to typeset the notes.
+
+%~block endnote
+% \setflag \abutting = flag             % True if note abutts previous one.
+% \def \comptextformat {...}            % Composite number text formatter.
+% \endnoteclass = integer               % Class of endnote.
+% \def \noterefformat {...}             % Footnote reference formatter.
+% \referencing = integer                % How the endnote is referenced.
+%~end
+
+\definecount{\endnoteclass}{0}
+\definetoks{\zendtoks}
+
+
+\def \endnote {%                                        {text}
+  \blockcantbein{\endnote}{\endnote}%
+  \beginblockscope{endnote}%
+  \global\increment \endnotedepth
+  \setflag \abutting = \false                           %~default with
+  \endnoteclass = 0                                     %~default with
+  \referencing = 2                                      %~default with
+  \processdesign{\endnote}{}%
+  \global\increment \endnotenumber
+  \setcomptext{\endnotecomptext}%
+  \if \andp{\hmodep}{\eqlp{\referencing}{2}}%
+    {\edef \zsf {\spacefactor = \the\spacefactor}%
+     \/%
+     \if \DVIWindoinuse \colorspecial{ifview color push rgb 1 0 1}\fi
+     \noterefformat
+     \if \DVIWindoinuse \colorspecial{ifview color pop}\fi
+     \zsf}%
+  \fi
+  \afterassignment \endendnote
+  \zendtoks =}
+
+\def \endendnote {%
+  \edef \zendtext {\the\zendtoks}%
+  \edef \znext {\noexpand\xref{end}{\noexpand\folio}{\the\endnotecomptext}
+                              {\expandafter\zdefof \meaning\zendtext\zmark}
+                              {\the\divisionname,\the\endnoteclass}}%
+  \znext
+  \global\decrement \endnotedepth
+  \endblockscope{endnote}}
+
+%                       Endnotes
+%                       --------
+
+
+\defineblock{\endnotes}{\endendnotes}{\false}{}
+
+%~block endnotes
+% \setflag \abutting = flag             % True if note abutts previous one.
+% \def \comptextformat {...}            % Composite number text formatter.
+% \endnoteclass = integer               % Class of endnote.
+% \def \noterefformat {...}             % Footnote reference formatter.
+% \referencing = integer                % How the endnote is referenced.
+%~end
+
+\definecount{\endnotepage}{0}
+\definetoks{\zenddivlist}
+\definetoks{\zenddiv}
+\definecount{\zendclass}{0}
+
+\def \endnotes #1{%                             {division-list}
+  \blockcantbein{\endnotes}{\endnotes}%
+  \blockmustbein{\endnotes}{\list}%
+  \beginblockscope{endnotes}%
+  \global\increment \endnotesdepth
+  \endnoteclass = 0                                     %~default with
+  \processdesign{\endnote}{}%                           % Use endnote block's design.
+  \global\increment \endnotesnumber
+  \zenddivlist = {#1}%
+  \zxloadcomp{\xrefloadendmode}%
+  \endendnotes}
+
+\def \endendnotes {%
+  \endgraf
+  \fakepar
+  \setlist \zendadjlist = {}%
+  \global\decrement \endnotesdepth
+  \endblockscope{endnotes}}
+
+% This macro is called for each endnote entry in the cross-reference file.
+
+\long\def \xrefend #1#2#3#4{%
+  \ifnum \xrefmode=\xrefloadendmode
+    \xrefendb{#1}{#2}{#3}{#4}%
+  \fi}
+
+\long\def \xrefendb #1#2#3#4{%          {page}{number}{text}{division,class}
+  \def \znext ##1,##2,##3\zmark{%
+    \zenddiv={##1}\zendclass=##2}%
+  \znext #4,0,\zmark \relax
+  \if \eqlp{\zendclass}{\endnoteclass}%
+    \edef \znext {\noexpand\inclusionlist\noexpand\zendtest
+                                         {\the\zenddiv}{\the\zenddivlist}}%
+    \znext
+    \if \zendtest
+      \setbox \zboxa = \hbox{\zendclass=0#1}%
+      \endnotepage = \if \dimzerop{\wd\zboxa}#1\else 0 \fi
+      \let \xrefmode = \xrefrunmode
+      \zchkendadj{#2}%
+      \item{#2}#3\par
+      \let \xrefmode = \xrefloadendmode
+    \fi
+  \fi}
+
+% This macro allows the compositor to noninvasively adjust pages between
+% endnotes.
+
+\setlist \zendadjlist = {}
+
+\long\def \endnotesadjustment #1#2{%                    {division.number}{commands}
+  \append{{#1}{#2}}{\zendadjlist}}
+
+\long\def \zchkendadj #1{%                              {number}
+  \maplist{\zchkendadjb{#1}##1}{\zendadjlist}}
+
+\long\def \zchkendadjb #1#2#3{%                 {number}{division.number}{commands}
+  \stringeql{\znext}{\the\zenddiv.#1}{#2}%
+  \if \znext #3\relax \fi}
+
+%                       Margin Notes
+%                       ------ -----
+
+
+\defineblock{\marginnote}{\endmarginnote}{\true}{}
+
+%~block marginnote Type
+% \def \beginformat {...}               % Beginning of text formatter.
+% \bodyfont = {...}                     % Font for note text.
+% \def \comptextformat {...}            % Composite number text formatter.
+% \def \endformat {...}                 % End of text formatter.
+% \leftindent = glue                    % Left indentation.
+% \margingutter = dimen                 % Gutter for note in right margin.
+% \def \noteintroformat {...}           % Note intro formatter.
+% \def \noterefformat {...}             % Note reference formatter.
+% \parindent = dimen                    % Paragraph indent.
+% \parrag = dimen                       % Paragraph raggedness.
+% \parskip = glue                       % Paragraph skip.
+% \position = {...}                     % Position (see below).
+% \referencing = integer                % How the margin note is referenced.
+% \rightindent = glue                   % Right indentation.
+% \textcolor = {...}                    % Color of text.
+% \vshift = dimen                       % Vertical shift for note.
+% \width = dimen                        % Width of text in box.
+%~end
+
+\definedimen{\margingutter}{0pt}
+\definecount{\marginnotepage}{0}
+
+\definecount{\zdivmncounter}{0}
+\definedimen{\zmnshift}{0pt}
+\definetoks{\zmntoks}
+\definebox{\zmnbox}
+\definedimen{\zmnprevdepth}{0pt}
+
+
+\def \marginnote #1{%                                   {type}
+  \blockcantbein{\marginnote}{\marginnote}%
+  \beginblockscope{marginnote}%
+  \global\increment \marginnotedepth
+  \global\increment \zdivmncounter
+  \whichpage{\marginnotepage}{zM:\the\divisionname-\the\zdivmncounter}%
+  \def \beginformat {}%                                 %~default soft
+  \def \endformat {}%                                   %~default soft
+  \leftindent = 0pt                                     %~default soft
+  \referencing = 0                                      %~default soft
+  \rightindent = 0pt                                    %~default soft
+  \textcolor = {black}%                                 %~default soft
+  \vshift = 0pt                                         %~default soft
+  \processdesign{\marginnote}{#1}%
+  \zparsemnpos{\the\position}%
+  \if \posp{\referencing}%
+    \global\increment \marginnotenumber
+    \setcomptext{\marginnotecomptext}%
+  \else
+    \marginnotecomptext = {???}%
+  \fi
+  \settaginfo{\the\marginnotecomptext}{???}%
+  \if \andp{\hmodep}{\eqlp{\referencing}{2}}%
+    {\edef \zsf {\spacefactor=\the\spacefactor}%
+     \/%
+     \if \DVIWindoinuse \colorspecial{ifview color push rgb 1 0 1}\fi
+     \noterefformat
+     \if \DVIWindoinuse \colorspecial{ifview color pop}\fi
+     \zsf}%
+  \fi
+  \afterassignment \endmarginnote
+  \zmntoks =}
+
+\def \endmarginnote {%
+  \setbox \zmnbox = \vtop{%
+    \zpushvcontext
+    \color{\the\textcolor}%
+    \the\bodyfont
+    \setindentation{\leftindent}{\rightindent}%
+    \settextwidth{\width}
+    \setparrag{\parrag}%
+    \beginformat
+    \if \posp{\referencing}\noteintroformat \fi
+    \the\zmntoks
+    \endgraf
+    \endformat
+    \endcolor
+    \zpopvcontext}%
+  \marginnoteformat
+  \global\decrement \marginnotedepth
+  \endblockscope{marginnote}}
+
+\def \marginnoteformat {%
+  \if \vmodep
+    \zmnprevdepth = \prevdepth
+    \nointerlineskip
+  \else
+    \vadjust
+  \fi
+  \bgroup
+    \moveright \zmnshift \vtop to 0pt{%
+      \vskip \vshift
+      \box \zmnbox
+      \vss
+      \tagpageonly{\uniquetag{zM}{\the\zdivmncounter}}}%
+  \egroup
+  \if \vmodep \prevdepth = \zmnprevdepth \fi}
+
+% This macro sets up variables that specify the position of a margin note
+% according to the \position design parameter:
+%
+%   \ifevenpage         Use next position only on even page.
+%   \ifoddpage          Use next position only on odd page.
+%   \leftmargin         Shift note to left margin.
+%   \outsidemargin      Shift note to outside margin.
+%   \rightmargin        Shift note to right margin.
+
+\definecount{\zmnhpos}{0}
+
+\def \zparsemnpos #1{%                                 {options...}
+  \global\zmnhpos = 0
+  {\def \ifevenpage   ##1{\if \evenp{\marginnotepage}##1\fi}%
+   \def \ifoddpage    ##1{\if \oddp{\marginnotepage}##1\fi}%
+   \def \leftmargin   {\global\zmnhpos=1\relax}%
+   \def \outsidemargin{\ifevenpage{\leftmargin}\ifoddpage{\rightmargin}}%
+   \def \rightmargin  {\global\zmnhpos=2\relax}%
+   #1\relax}%
+  \ifcase \zmnhpos
+    \error{nomnpos}
+          {No horizontal position has been specified for a margin note}%
+  \or
+    \if \evenp{\marginnotepage}%
+      \zmnshift = -\evenlefttextmargin
+    \else
+      \zmnshift = -\oddlefttextmargin
+    \fi
+  \or
+    \calculate \zmnshift = {\textmeasure,+,\margingutter}%
+  \fi}
+
+% This macro is invoked at the beginning of each division.
+
+\def \zmndivinit {%
+  \global\zdivmncounter = 0\relax}
+
+%                       Proof Notes
+%                       ----- -----
+
+
+\defineblock{\proofnote}{\endproofnote}{\true}{}
+
+%~block proofnote
+% \bodyfont = {...}                     % Font for note text.
+% \evenshift = dimen                    % Horizontal shift for even pages.
+% \oddshift = dimen                     % Horizontal shift for odd pages.
+% \textcolor = {...}                    % Color of note.
+% \vshift = dimen                       % Vertical shift for note.
+% \width = dimen                        % Width of note.
+%~end
+
+\definedimen{\evenshift}{0pt}
+\definedimen{\oddshift}{0pt}
+
+\definecount{\zdivpncounter}{0}
+\definecount{\zpnpage}{0}
+
+
+\def \proofnote {%                                      {text}
+  \blockcantbein{\proofnote}{\proofnote}%
+  \beginblockscope{proofnote}%
+  \global\increment \proofnotedepth
+  \global\increment \zdivpncounter
+  \whichpage{\zpnpage}{zP:\the\divisionname-\the\zdivpncounter}%
+  \parindent = 0pt
+  \parskip = 2pt
+  \textcolor = {black}%                                 %~default soft
+  \vshift = 0pt                                         %~default soft
+  \processdesign{\proofnote}{}%
+  \afterassignment \endproofnote
+  \zmntoks =}
+
+\def \endproofnote {%
+  \zcalcpnshift
+  \setbox \zmnbox = \vtop{%
+    \zpushvcontext
+    \color{\the\textcolor}%
+    \the\bodyfont
+    \settextwidth{\width}
+    \setparrag{.4\width}%
+    \def \endpartext {}%                % Prevent end-of-paragraph text.
+    \the\zmntoks
+    \endgraf
+    \endcolor
+    \zpopvcontext}%
+  \proofnoteformat
+  \long\edef \znext {\noexpand\todo{.Proof note: \the\zmntoks}}%
+  \znext
+  \global\decrement \proofnotedepth
+  \endblockscope{proofnote}}
+
+\def \proofnoteformat {%
+  \if \vmodep
+    \zmnprevdepth = \prevdepth
+    \nointerlineskip
+  \else
+    \vadjust
+  \fi
+  \bgroup
+    \moveright \zmnshift \vtop to 0pt{%
+      \vskip -\parskip
+      \vskip \vshift
+      \box \zmnbox
+      \vss
+      \tagpageonly{\uniquetag{zP}{\the\zdivpncounter}}}%
+  \egroup
+  \if \vmodep \prevdepth = \zmnprevdepth \fi}
+
+\def \zcalcpnshift {%
+  \if \evenp{\zpnpage}%
+    \if \negp{\evenshift}%
+      \zmnshift = \evenshift
+    \else
+      \calculate \zmnshift = {\textmeasure,+,\evenshift}%
+    \fi
+  \else
+    \if \negp{\oddshift}%
+      \zmnshift = \oddshift
+    \else
+      \calculate \zmnshift = {\textmeasure,+,\oddshift}%
+    \fi
+  \fi}
+
+% This macro is invoked at the beginning of each division.
+
+\def \zpndivinit {%
+  \global\zdivpncounter = 0\relax}

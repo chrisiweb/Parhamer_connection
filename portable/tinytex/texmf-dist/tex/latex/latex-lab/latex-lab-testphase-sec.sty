@@ -1,0 +1,554 @@
+%%
+%% This is file `latex-lab-testphase-sec.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-sec.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-sec.dtx (C) Copyright 2022-2025 LaTeX Project
+\def\ltlabsecdate{2025-10-20}
+\def\ltlabsecversion{0.84k}
+\ProvidesExplPackage {latex-lab-testphase-sec} {\ltlabsecdate} {\ltlabsecversion}
+  {Code related to the tagging of sectioning commands}
+\tl_set:Nn  \l__tag_para_tag_default_tl { \UseStructureName {para/textblock} }
+\tl_set:Nn  \l__tag_para_main_tag_tl    { \UseStructureName {para/semantic} }
+\seq_new:N   \g__tag_sec_stack_seq
+\seq_gpush:Nn\g__tag_sec_stack_seq {{Document}{-100}{2}}
+\cs_new:Npn \__tag_get_data_current_Sect:
+ {
+   \exp_last_unbraced:Ne\use_iii:nnn{\seq_item:Nn\g__tag_sec_stack_seq{1}}
+ }
+\bool_new:N     \l__tag_sec_Sect_bool
+\bool_set_true:N\l__tag_sec_Sect_bool
+\cs_new_protected:Npn\__tag_sec_begin:nn #1 #2 %#1 level #2 keyval
+  {
+    \tag_struct_begin:n
+      {
+         tag= \UseStructureName{sec/#1}
+        ,#2
+      }
+    \seq_gpush:Ne \g__tag_sec_stack_seq
+      {{\g__tag_struct_tag_tl}{\int_eval:n{#1}}{\g__tag_struct_stack_current_tl}}
+  }
+\cs_generate_variant:Nn \__tag_sec_begin:nn {en}
+\msg_new:nnn { tag } {wrong-sect-nesting}
+  {
+    The~structure~#1~can~not~be~closed.\\
+    It~is~not~equal~to~the~current~structure~#2~on~the~main~stack
+  }
+
+\cs_new_protected:Npn\__tag_sec_end:n #1 % #1 level
+  {
+    \seq_get:NN \g__tag_sec_stack_seq \l__tag_tmpa_tl
+    \int_compare:nNnT {#1}<{\exp_last_unbraced:NV\use_ii:nnn\l__tag_tmpa_tl+1}
+      {
+        \seq_get:NN\g__tag_struct_tag_stack_seq \l__tag_tmpb_tl
+        \exp_args:Nee
+          \tl_if_eq:nnTF
+            {\exp_last_unbraced:NV\use_i:nnn\l__tag_tmpa_tl}
+            {\exp_last_unbraced:NV\use_i:nn\l__tag_tmpb_tl}
+            {
+              \seq_gpop:NN \g__tag_sec_stack_seq \l__tag_tmpa_tl
+              \tag_struct_end:
+              \__tag_sec_end:n {#1}
+            }
+            {
+              \msg_warning:nnee {tag}{wrong-sect-nesting}
+               { \exp_last_unbraced:NV\use_i:nnn \l__tag_tmpa_tl }
+               { \exp_last_unbraced:NV\use_i:nn \l__tag_tmpb_tl }
+            }
+      }
+  }
+
+\cs_new_protected:Npn\__tag_sec_restore_para:
+ {
+   \UseTaggingSocket {para/restore}
+   \if_int_compare:w \tex_currentgrouptype:D =14        % semi-simple group
+     \group_insert_after:N \__tag_sec_restore_para:
+   \else:
+       \if_int_compare:w \tex_currentgrouptype:D =\c_one_int  % simple group
+         \group_insert_after:N \__tag_sec_restore_para:
+       \fi:
+   \fi:
+ }
+\cs_new_protected:Npn \__tag_sec_title_split:
+  {
+    \tag_mc_end:
+    \tag_struct_end:
+    \__tag_gincr_para_end_int:
+    \bool_if:NF\l__tag_para_flattened_bool
+      {\UseTaggingSocket{para/semantic/end}{}}
+    \__tag_sec_restore_para:
+    \UseTaggingSocket{para/begin}
+  }
+\cs_new_protected:Npn \__tag_sec_title_begin:nn #1 #2 %level, title
+  {
+    \tag_struct_begin:n{tag=\UseStructureName{sec/#1/title},title={#2}}
+    \bool_set_true:N\l__tag_para_flattened_bool
+    \tl_set:Nn\l__tag_para_tag_tl {\UseStructureName{sec/#1/titleline}}
+  }
+
+\cs_new_protected:Npn \__tag_sec_title_end:
+  {
+    \tag_struct_end: %P = Hn
+    \UseTaggingSocket{para/restore}
+  }
+\cs_new_protected:Npn \__tag_set_title_hang:nNnn #1 #2 #3 #4
+  %#1 level,
+  %#2 boolean: nonumber? (will be later \l__head_nonumber_bool)
+  %#3 formated number /hang space
+  %#4 title
+  {
+    \tagstructbegin{tag=\UseStructureName{sec/#1/title},title-o={#4}}
+    \cs_if_exist_use:N \__tag_gincr_para_begin_int:
+    \bool_if:NF #2
+     { \tagstructbegin{tag=\UseStructureName{sec/#1/number}} }
+    \setbox\@tempboxa\hbox{{#3}}
+    \bool_set_false:N \l__tag_para_bool
+    \hangindent \wd\@tempboxa\noindent
+    \bool_set_true:N \l__tag_para_bool
+    \bool_if:NTF #2
+     {
+       \box\@tempboxa
+     }
+     {
+       \tagmcbegin{}
+       \tag_mc_reset_box:N\@tempboxa
+       \box\@tempboxa
+       \tagmcend
+       \tagstructend
+     }
+   \tagmcbegin{}
+  }
+\cs_new_protected:Npn \__tag_sec_title_runin_number:nNn #1 #2 #3 %#1 level, #2 boolean no number, #3 content
+  {
+    \bool_if:NTF #2
+    { #3 }
+    {
+      \tag_mc_end_push:
+      \tag_struct_begin:n{tag=\UseStructureName{sec/#1/number}}
+      \tag_mc_begin:n{}
+      #3
+      \tag_mc_end:
+      \tag_struct_end:
+      \tag_mc_begin_pop:n{}
+    }
+  }
+\hook_gput_code:nnn
+  {tagpdf/finish/before}
+  {tagpdf/sec}
+  {\AssignTaggingSocketPlug{sec/end}{kernel}\UseTaggingSocket{sec/end}{-10}}
+\hook_gset_rule:nnnn {tagpdf/finish/before}{tagpdf/sec}{before}{tagpdf}
+\AddToHook{cmd/frontmatter/before}{\par\UseTaggingSocket{sec/end}{-10}}
+\AddToHook{cmd/mainmatter/before} {\par\UseTaggingSocket{sec/end}{-10}}
+\AddToHook{cmd/backmatter/before} {\par\UseTaggingSocket{sec/end}{-10}}
+\AddToHook{cmd/appendix/before}   {\par\UseTaggingSocket{sec/end}{-10}}
+\NewTaggingSocketPlug{sec/begin}{kernel}
+  {
+     \__tag_sec_begin:en #1
+  }
+\AssignTaggingSocketPlug{sec/begin}{kernel}
+\NewTaggingSocketPlug{sec/end}{kernel}
+  {
+     \__tag_sec_end:n {#1}
+  }
+\AssignTaggingSocketPlug{sec/end}{kernel}
+\NewTaggingSocketPlug{sec/title/begin}{kernel}
+ {
+   \__tag_sec_title_begin:nn #1
+ }
+\AssignTaggingSocketPlug{sec/title/begin}{kernel}
+
+\NewTaggingSocketPlug{sec/title/end}{kernel}
+ {
+   \__tag_sec_title_end:
+ }
+\AssignTaggingSocketPlug{sec/title/end}{kernel}
+\NewTaggingSocketPlug{sec/title/hang}{kernel}
+  {
+    \__tag_set_title_hang:nNnn #1
+  }
+\AssignTaggingSocketPlug{sec/title/hang}{kernel}
+\NewTaggingSocketPlug{sec/title/init}{kernel}
+ {
+   \tl_set:Ne\l__tag_para_tag_tl{\UseStructureName{sec/#1/title}}
+   \bool_set_true:N \l__tag_para_flattened_bool
+ }
+\AssignTaggingSocketPlug{sec/title/init}{kernel}
+\NewTaggingSocketPlug{sec/title/split}{kernel}
+ {
+   \__tag_sec_title_split:
+ }
+\AssignTaggingSocketPlug{sec/title/split}{kernel}
+\NewTaggingSocketPlug{sec/title/runin/number}{kernel}
+ {
+   \__tag_sec_title_runin_number:nNn #1 {#2}
+ }
+\AssignTaggingSocketPlug{sec/title/runin/number}{kernel}
+\NewTaggingSocketPlug{sec/title/number}{kernel}
+ {
+   \tag_mc_end_push:
+   \tag_struct_begin:n{tag=\UseStructureName{sec/#1/number}}
+   \tag_mc_begin:n{}
+     #2
+   \tag_mc_end:
+   \tag_struct_end:
+   \tag_mc_begin_pop:n{}
+ }
+\AssignTaggingSocketPlug{sec/title/number}{kernel}
+\AddToHook{class/after}
+ {
+  \@ifundefined{chapter}
+    {
+     \@ifundefined{part}{}
+      {
+        \RenewDocumentCommand\part{ s O{#3} m }
+         {
+           \if@noskipsec \leavevmode \fi
+           \par
+           \addvspace{4ex}%
+           \@afterindentfalse
+        % tagging start commands
+          \UseTaggingSocket{sec/end}{-1}
+          \UseTaggingSocket{sec/begin}{{-1}{tag=\UseStructureName{sec/-1}}}
+          \UseTaggingSocket{sec/title/begin}{{-1}{#2}}
+        % end tagging start commands
+           \bool_lazy_any:nT
+            {
+              { #1 }
+              {
+                \int_compare_p:nNn {\c@secnumdepth}<{-1}
+              }
+            }
+            {
+              \MakeLinkTarget[part]{}
+            }
+          \IfBooleanTF
+            {#1}
+            { \@spart {#3} }
+            { \@part [{#2}]{#3} }
+         \UseTaggingSocket{sec/title/end}
+         }
+       }
+    }
+    {
+     \RenewDocumentCommand\chapter{ s O{#3} m }
+      {
+        \if@openright\cleardoublepage\else\clearpage\fi
+        \thispagestyle{plain}%
+        \global\@topnum\z@
+        \@afterindentfalse
+        \UseTaggingSocket{sec/end}{0}
+        \UseTaggingSocket{sec/begin}{{0}{tag=\UseStructureName{sec/0}}}
+        \UseTaggingSocket{sec/title/begin}{{0}{#2}}
+        \bool_lazy_any:nT
+          {
+            { #1 }
+            {
+              \int_compare_p:nNn {\c@secnumdepth}<{0}
+            }
+            {
+              %in book target also needed in frontmatter
+              \bool_lazy_and_p:nn
+                { \cs_if_exist_p:c { @mainmattertrue } }
+                { ! \legacy_if_p:n { @mainmatter } }
+            }
+          }
+          {
+            \MakeLinkTarget[chapter]{}
+          }
+        \IfBooleanTF
+          {#1}
+          { \@schapter {#3} }
+          { \@chapter [{#2}]{#3} }
+        \UseTaggingSocket{sec/title/end}
+      }
+     \RenewDocumentCommand\part{ s O{#3} m }
+      {
+        \if@openright
+          \cleardoublepage
+        \else
+          \clearpage
+        \fi
+        \thispagestyle{plain}%
+        \if@twocolumn
+          \onecolumn
+          \@tempswatrue
+        \else
+          \@tempswafalse
+        \fi
+        \null\vfil
+       \UseTaggingSocket{sec/end}{-1}
+       \UseTaggingSocket{sec/begin}{{-1}{tag=\UseStructureName{sec/-1}}}
+       \UseTaggingSocket{sec/title/begin}{{-1}{#2}}
+        \bool_lazy_any:nT
+          {
+            { #1 }
+            {
+              \int_compare_p:nNn {\c@secnumdepth}<{-1}
+            }
+            {
+              %in book target also needed in frontmatter
+              \bool_lazy_and_p:nn
+                { \cs_if_exist_p:c { @mainmattertrue } }
+                { ! \legacy_if_p:n { @mainmatter } }
+            }
+          }
+          {
+            \MakeLinkTarget[part]{}
+          }
+        \IfBooleanTF
+          {#1}
+          { \@spart {#3} }
+          { \@part [{#2}]{#3} }
+        \UseTaggingSocket{sec/title/end}
+      }
+    }
+ }
+\def\hyper@nopatch@sectioning{}
+\bool_new:N\l__kernel_sec_nonumber_bool
+\cs_new_protected:Npn \@hyp@section@target@nnn #1 #2 #3 %#1 optarg #2 name/counter, #3 indent
+  {
+    \makebox[0pt][l]
+     {
+       \skip_set:Nn \@tempskipa {#3}
+       \dim_compare:nNnF {\@tempskipa}<{0pt}{\kern-\@tempskipa}
+       \MakeLinkTarget#1{#2}
+     }
+  }
+\cs_new_protected:Npn \@kernel@makecurrentHref #1 %#1 prefix
+  {
+    \int_gincr:N\g__kernel_target_int
+    \tl_gset:Ne \@currentHref {#1.\int_use:N\g__kernel_target_int}
+  }
+\AddToHook{package/hyperref/after}
+ {
+  \cs_set_eq:NN \@kernel@makecurrentHref \Hy@MakeCurrentHrefAuto
+ }
+
+\newcommand\@currentseclevel{-2}
+\def\@startsection#1#2#3#4#5#6{%
+  \def\@currentseclevel{#2}
+  \if@noskipsec \leavevmode \fi
+  \par
+  \@tempskipa #4\relax
+  \@afterindenttrue
+  \ifdim \@tempskipa <\z@
+    \@tempskipa -\@tempskipa \@afterindentfalse
+  \fi
+  \if@nobreak
+    \everypar{}%
+  \else
+    \addpenalty\@secpenalty\addvspace\@tempskipa
+  \fi
+  \UseTaggingSocket{sec/end}
+      {#2}
+  \UseTaggingSocket{sec/begin}
+      {
+        {#2}
+        {tag=\cs_if_exist_use:cF{g_tag_role_#1_tl}{Sect}}
+      }
+  \UseTaggingSocket{sec/title/init}{#2}
+  \@ifstar
+    {\@ssect{#3}{#4}{#5}{#6}}%
+    {\@dblarg{\@sect{#1}{#2}{#3}{#4}{#5}{#6}}}}
+\def\@sect#1#2#3#4#5#6[#7]#8{%
+  \ifnum #2>\c@secnumdepth
+    \bool_set_true:N\l__kernel_sec_nonumber_bool
+    \@kernel@makecurrentHref {#1*}
+    \def\@svsec{\NoCaseChange{\@hyp@section@target@nnn{*}{\@currentHref}{#3}}}
+  \else
+    \bool_set_false:N\l__kernel_sec_nonumber_bool
+    \LinkTargetOff
+    \refstepcounter{#1}%
+    \tl_gset:Ne\@currentHref{#1.\use:c{theH#1}}
+    \LinkTargetOn
+    \protected@edef\@svsec{\NoCaseChange{\@hyp@section@target@nnn{}{#1}{#3}}\@seccntformat{#1}\relax}%
+  \fi
+  \@tempskipa #5\relax
+  \ifdim \@tempskipa>\z@
+    \begingroup
+      #6{%
+         \NoCaseChange
+          {\UseTaggingSocket{sec/title/hang}
+             {{#2}\l__kernel_sec_nonumber_bool{\hskip #3\relax\@svsec}{#7}}
+             {\@hangfrom {\hskip #3\relax\@svsec}}}
+          \interlinepenalty \@M #8\@@par}%
+    \endgroup
+    \csname #1mark\endcsname{#7}%
+    \addcontentsline{toc}{#1}{%
+      \ifnum #2>\c@secnumdepth \else
+        \protect\numberline{\csname the#1\endcsname}%
+      \fi
+      #7}%
+  \else
+    \def\@svsechd{%
+      #6{\hskip #3\relax
+         \NoCaseChange{
+           \UseTaggingSocket{sec/title/runin/number}{{#2}\l__kernel_sec_nonumber_bool}{\@svsec}}
+        #8}%
+      \csname #1mark\endcsname{#7}%
+      \addcontentsline{toc}{#1}{%
+        \ifnum #2>\c@secnumdepth \else
+          \protect\numberline{\csname the#1\endcsname}%
+        \fi
+        #7}}%
+  \fi
+  \@xsect{#5}}
+\def\@ssect#1#2#3#4#5{%
+  \@tempskipa #3\relax
+  \ifdim \@tempskipa>\z@
+    \begingroup
+      #4{
+         \NoCaseChange
+          {
+            \UseTaggingSocket{sec/title/hang}
+             {
+               {\@currentseclevel}
+               \c_true_bool
+               {\hskip #1\relax\NoCaseChange{\@hyp@section@target@nnn{[section]}{}{#1}}}
+               {#5}
+             }
+             {\@hangfrom{\hskip #1\relax\NoCaseChange{\@hyp@section@target@nnn{[section]}{}{#1}}}}
+          }
+         \interlinepenalty \@M #5\@@par}%
+    \endgroup
+  \else
+    \@kernel@makecurrentHref{section*}
+    \def\@svsechd{#4{\hskip #1\relax\NoCaseChange{\@hyp@section@target@nnn{*}{\@currentHref}{#3}}\relax #5}}%
+  \fi
+  \@xsect{#3}}
+\def\@xsect#1{%
+  \@tempskipa #1\relax
+  \ifdim \@tempskipa>\z@
+    \par \nobreak
+    \vskip \@tempskipa
+    \UseTaggingSocket {para/restore}
+    \@afterheading
+  \else
+    \@nobreakfalse
+    \global\@noskipsectrue
+    \everypar{%
+      \if@noskipsec
+        \global\@noskipsecfalse
+       {\setbox\z@\lastbox}%
+        \clubpenalty\@M
+        \begingroup \@svsechd \endgroup
+        \unskip
+        \UseTaggingSocket{sec/title/split}
+        \@tempskipa #1\relax
+        \hskip -\@tempskipa
+      \else
+        \clubpenalty \@clubpenalty
+        \everypar{}%
+      \fi}%
+  \fi
+  \ignorespaces}
+\keys_define:nn{__tag / setup}
+ {
+   ,sec/end .code:n =
+      {
+        \par
+        \UseTaggingSocket{sec/end}{\int_eval:n{\cs_if_exist_use:c{toclevel@#1}+0}}
+      }
+   ,sec/end .value_required:n = true
+   ,sec/grouping .choice:,
+   ,sec/grouping / true .code:n =
+     {
+       \AssignTaggingSocketPlug{sec/begin}{kernel}
+       \AssignTaggingSocketPlug{sec/end}{kernel}
+     }
+   ,sec/grouping / false .code:n =
+     {
+       \AssignTaggingSocketPlug{sec/begin}{noop}
+       \AssignTaggingSocketPlug{sec/end}{noop}
+     }
+   ,sec/grouping .default:n = true
+ }
+\cs_if_free:NT \tag_tool:n
+ {
+   \cs_new_protected:Npn \tag_tool:n #1
+    {
+      \tag_if_active:T { \keys_set:nn {tag / tool}{#1} }
+    }
+   \cs_set_eq:NN\tagtool\tag_tool:n
+ }
+\keys_define:nn { tag / tool}
+  {
+    ,sec-start-part .code:n =
+      {
+        \UseTaggingSocket{sec/end}{-1}
+        \UseTaggingSocket{sec/begin}{{-1}{tag=\UseStructureName{sec/-1}}}
+        \UseTaggingSocket{sec/title/begin}{{-1}{#1}}
+      }
+    ,sec-stop-part .code:n = {\UseTaggingSocket{sec/title/end}}
+    ,sec-start-chapter .code:n =
+     {
+        \UseTaggingSocket{sec/end}{0}
+        \UseTaggingSocket{sec/begin}{{0}{tag=\UseStructureName{sec/0}}}
+        \UseTaggingSocket{sec/title/begin}{{0}{#1}}
+     }
+    ,sec-stop-chapter .meta:n = { sec-stop-part}
+    ,sec-start .code:n = % #1 is a name like "section"
+      {
+        \UseTaggingSocket{sec/end}  {\int_eval:n{\cs_if_exist_use:c{toclevel@#1}+0}}
+        \UseTaggingSocket{sec/begin}
+          {
+            {\int_eval:n{\cs_if_exist_use:c{toclevel@#1}+0}}
+            {tag=\cs_if_exist_use:cF{g_tag_role_#1_tl}{Sect}}
+          }
+        \tl_set:Nn\l_@@_para_tag_tl{#1}
+      }
+    ,sec-start .value_required:n = true
+    ,sec-split-para .code:n = {\UseTaggingsocket{sec/title/split}}
+    ,restore-para .code:n = {\UseTaggingSocket{para/restore}}%
+    ,sec-stop .code:n =
+      {
+        \par
+        \UseTaggingSocket{sec/end}{\int_eval:n{\cs_if_exist_use:c{toclevel@#1}+0}}
+      }
+    ,sec-stop .value_required:n = true
+    ,sec-add-grouping .choice:,
+    ,sec-add-grouping / true .code:n =
+     {
+       \AssignTaggingSocketPlug{sec/begin}{kernel}
+       \AssignTaggingSocketPlug{sec/end}{kernel}
+     }
+    ,sec-add-grouping / false .code:n =
+     {
+       \AssignTaggingSocketPlug{sec/begin}{noop}
+       \AssignTaggingSocketPlug{sec/end}{noop}
+     }
+    ,sec-add-grouping .default:n = true
+  }
+
+\endinput
+%%
+%% End of file `latex-lab-testphase-sec.sty'.

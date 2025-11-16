@@ -1,0 +1,77 @@
+%% $Id: pst-spinner.tex 469 2017-05-23 05:47:28Z herbert $
+%% Package `pst-spinner.tex'
+%%
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   dessiner les triple fidget spinner
+%%
+\let\PSTSPINNERLoaded\endinput
+% Requires PSTricks, pst-xkey, pst-node  packages
+\ifx\PSTricksLoaded\endinput\else\input pstricks.tex\fi
+\ifx\PSTXKeyLoaded\endinput\else\input pst-xkey.tex \fi
+\ifx\PSTnodeLoaded\endinput\else\input pst-node.tex\fi
+%
+\def\fileversion{1.02}
+\let\pstspinnerFV\fileversion
+\def\filedate{2017/05/23}
+\message{`PST' v\fileversion, \filedate}
+
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+\pst@addfams{pst-spinner}
+%% prologue for postcript
+\pstheader{pst-spinner.pro}%
+%
+\define@key[psset]{pst-spinner}{R}[3.9]{\def\pst@spinner@R{#1 }} % rayon de cercle circonscrit au spinner
+\define@key[psset]{pst-spinner}{rotation}[0]{\def\pst@spinner@rotation{#1 }} % angle de rotation
+%% couleurs definies par l'utilisateur
+\definecolor{honeydew}{rgb}{0.94 1 0.94}
+\define@key[psset]{pst-spinner}{color0}[honeydew]{\pst@getcolor{#1}\pscolor}
+\define@key[psset]{pst-spinner}{color1}[red]{\pst@getcolor{#1}\pscolora}
+\define@key[psset]{pst-spinner}{color2}[green]{\pst@getcolor{#1}\pscolorb}
+\define@key[psset]{pst-spinner}{color3}[blue]{\pst@getcolor{#1}\pscolorc}
+\define@key[psset]{pst-spinner}{colorMask}[honeydew]{\pst@getcolor{#1}\pscolorMask}
+\define@boolkey[psset]{pst-spinner}[Pst@]{mask}[true]{} % cache du roulement à billes du centre
+\define@boolkey[psset]{pst-spinner}[Pst@]{customize}[true]{} % personnaliser le fidget
+\define@boolkey[psset]{pst-spinner}[Pst@]{customizeMask}[true]{} % personnaliser le capuchon de roulement central
+\define@key[psset]{pst-spinner}{image}[]{\edef\psk@spinner@image{#1}} % chemin des dessins
+%
+\psset[pst-spinner]{R=3.9,rotation=0,color0=honeydew,color1=red,color2=green,
+  color3=blue!75,colorMask=honeydew,mask,customize=false,customizeMask=false,
+  image={}}
+%
+\def\psFidgetSpinner{\def\pst@par{}\pst@object{psFidgetSpinner}}
+\def\psFidgetSpinner@i{\@ifnextchar(\psFidgetSpinner@ii{\psFidgetSpinner@ii(0,0)}}
+\def\psFidgetSpinner@ii(#1){%
+  \pst@getcoor{#1}\pst@tempA
+  \begin@SpecialObj
+  \addto@pscode{
+    tx@spinnerDict begin 
+    \pst@tempA translate
+    /cm  {\pst@number\psunit mul} bind def
+    /R1 \pst@spinner@R\space cm def
+    /color0 {\pst@usecolor\pscolor } def
+    /color1 {\pst@usecolor\pscolora } def
+    /color2 {\pst@usecolor\pscolorb } def
+    /color3 {\pst@usecolor\pscolorc } def
+    /colorMask {\pst@usecolor\pscolorMask} def
+    /spinnerROT \pst@spinner@rotation def
+    /ifPst@customize \ifPst@customize true \else false \fi def
+    /spinnerImage { (\psk@spinner@image) run } def
+    /spinnerFillColor { \pst@usecolor\psfillcolor } def
+    /spinnerLineColor { \pst@usecolor\pslinecolor } def
+    /spinnerLW \pst@number\pslinewidth\space def
+    /ifPst@mask \ifPst@mask true \else false \fi def
+    /ifPst@customizeMask \ifPst@customizeMask true \else false \fi def
+    makeSpinner 
+    end
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces}
+%
+\catcode`\@=\PstAtCode\relax
+\endinput 

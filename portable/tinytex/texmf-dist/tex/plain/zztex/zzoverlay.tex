@@ -1,0 +1,100 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Page Overlay Facilities
+%
+% Synopsis:  This file provides the ability to overlay text and rules
+%            on each page.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   29 March 2006
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Overlay & Proof Identification
+%                       ------- - ----- --------------
+
+
+\setflag \zoverlayset = \false
+\definetoks{\zoverlay}
+\zoverlay = {blind}
+\definetoks{\zproofid}
+\zproofid = {}
+
+\def \setpageoverlay #1{%                                       {name}
+  \global\setflag \zoverlayset = \true
+  \global\zoverlay = {#1}}
+
+\def \proofidentification #1{%                                  {text}
+  \zproofid = {#1}}
+
+\def \zproofidfile {%
+  \immediate\openout \zwritea = \jobname.zzq\relax
+  \immediate\write \zwritea {\the\zproofid}%
+  \immediate\closeout \zwritea}
+
+%                       Builtin Overlays
+%                       ------- --------
+
+
+\definedimen{\zoverlaythickness}{.4pt}
+
+
+\def \pageoverlayblind {}
+
+\def \pageoverlaytrimbox {%
+  \smashbox{%
+    \vbox to \trimheight{%
+      \topcornermarks{\trimwidth}{.5\trimheight}{\zoverlaythickness}%
+      \vss
+      \bottomcornermarks{\trimwidth}{.5\trimheight}{\zoverlaythickness}}}%
+  \zpagelengthmarks
+  \zslugline}
+
+\def \pageoverlaytrimmarks {%
+  \smashbox{%
+    \vbox to \trimheight{%
+      \topcornermarks{\trimwidth}{.75pc}{\zoverlaythickness}%
+      \vss
+      \bottomcornermarks{\trimwidth}{.75pc}{\zoverlaythickness}}}%
+  \zpagelengthmarks
+  \zslugline}
+
+%                       Page Length Marks
+%                       ---- ------ -----
+
+
+\def \zpagelengthmarks {%
+  \smashbox{%
+    \calculate \tdimena = {\headmargin,+,\typeareaheight,-,\footerheight}%
+    \vskip \tdimena
+    \hbox to \trimwidth{%
+      \llap{\vrule height \zoverlaythickness width .75pc}\hfil
+      \rlap{\vrule height \zoverlaythickness width .75pc}}}}
+
+%                       Slug Line
+%                       ---- ----
+
+
+\definedimen{\zslugindent}{.25in}
+
+
+\def \zslugline {%
+  \if \notp{\emptytoksp{\zproofid}}%
+    \kern \trimheight
+    \if \dimgtrp{\trimheight}{10.75in}\kern -.25in \fi
+    \kern -8pt
+    \hbox to \trimwidth{%
+      \hspace{\zslugindent}%
+      \zannofont
+      \the\zproofid \quad
+      \number\year/\number\month/\number\day\space \formattime \quad
+      p. \folio \hspace{5pt}%
+      \if \notp{\emptytoksp{\divisionname}}(\the\divisionname)\fi
+      \hfill
+      \inicompositor, \iniinitials \quad
+      \ZzTeX\ \ZzTeXversion
+      \hspace{\zslugindent}}%
+  \fi}

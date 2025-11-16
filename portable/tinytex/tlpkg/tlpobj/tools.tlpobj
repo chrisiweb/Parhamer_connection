@@ -1,6 +1,6 @@
 name tools
 category Package
-revision 75470
+revision 76708
 catalogue latex-tools
 shortdesc The LaTeX standard tools bundle
 longdesc A collection of (variously) simple tools provided as part of
@@ -9,12 +9,12 @@ longdesc afterpage, array, bm, calc, dcolumn, delarray, enumerate,
 longdesc fileerr, fontsmpl, ftnright, hhline, indentfirst, layout,
 longdesc longtable, multicol, rawfonts, shellesc, showkeys, somedefs,
 longdesc tabularx, theorem, trace, varioref, verbatim, xr, and xspace.
-containersize 47552
-containerchecksum 74536120b8dbf98f615513b8e98e9a83586cb26d296b201de8b6329eaae1607d106aa3bedd7d196db38d70c79b7a2aa6ae68603dc148d2bfc4d08ce37373f8e8
-doccontainersize 6259912
-doccontainerchecksum faf46956525b6e47dae860acdab5a3e5d50d35fd1c2cde4dd09b3a044dc737ce3b6f52d0ca267b64af01638d5be76261b646e1bdc3d4da3261ad47b1077f1e98
-srccontainersize 245276
-srccontainerchecksum 0aec5a7f001772a503c0d94923f8aff367f0bf424f95b3f6a9606d640958b5026f219fbbf9159d48251ed9d7ca34c04ec9c010a7586efbb56eb82b565981afc1
+containersize 47548
+containerchecksum 83d87be518e6634c4b62bc5683c2c3618999c92b234f66c74ef836552348a186dc8dd8969885b8562bfc579bf2b871f0e2474c3848981a743fe2a247dd2cee42
+doccontainersize 6352332
+doccontainerchecksum 0ce154729a3f53a4cce1f6bdcd13e8ac23938211e5064a0b2faeadccecc7f39a907d72773a371a1e1ede345e57a4695d00e777a7b1ad0bd2b4f09d6daa97f61f
+srccontainersize 245628
+srccontainerchecksum eaa7decc178012499c163fa0ac8346a075477daf5b9f928129bba93cd1e13c2195e94d9e69aa38154fbe3b076eba6fe04dcc99ef5adb68713df7b8d812314f50
 runfiles size=137
  texmf-dist/tex/latex/tools/.tex
  texmf-dist/tex/latex/tools/afterpage.sty
@@ -70,4 +70,3 @@ runfiles size=137
 catalogue-ctan /macros/latex/required/tools
 catalogue-license lppl1.3c
 catalogue-topics collection
-catalogue-version Patch level 1

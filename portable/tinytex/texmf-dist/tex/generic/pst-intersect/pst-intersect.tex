@@ -1,0 +1,315 @@
+%%
+%% This is file `pst-intersect.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% pst-intersect.dtx  (with options: `texfile')
+%% 
+%% This is a generated file.
+%% 
+%% Project: pst-intersect
+%% Version: 0.4 (2014/03/16)
+%% 
+%% Copyright (C) 2007-2014 by Christoph Bersch <usenet@bersch.net>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%% 
+%% This work has the LPPL maintenance status "maintained".
+%% 
+%% The current maintainer of this work is Christoph Bersch.
+%% 
+%% This work consists of the files pst-intersect.dtx and pst-intersect.ins
+%% and the derived files
+%%     pst-intersect.sty, pst-intersect.tex, pst-intersect.pro.
+%% 
+\csname PSTintersectLoaded\endcsname
+\let\PSTintersectLoaded\endinput
+
+\ifx\PSTricksLoaded\endinput\else\input pstricks.tex \fi
+\ifx\PSTXKeyLoaded\endinput\else \input pst-xkey.tex \fi
+\ifx\PSTnodesLoaded\endinput\else\input pst-node.tex \fi
+\ifx\PSTfuncLoaded\endinput\else \input pst-func.tex \fi
+
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+
+\pst@addfams{intersect}
+\pstheader{pst-intersect.pro}
+
+\def\pst@intersectdict{tx@IntersectDict begin }
+\def\PIT@dict#1{\pst@intersectdict #1 end}
+\def\PIT@Verb#1{\pst@Verb{\PIT@dict{#1} }}%
+\define@key[psset]{intersect}{tstart}{%
+  \pst@checknum{#1}\PIT@key@tstart
+}
+\define@key[psset]{intersect}{tstop}{%
+  \pst@checknum{#1}\PIT@key@tstop
+}
+\define@key[psset]{intersect}{istart}{%
+  \pst@checknum{#1}\PIT@key@istart
+}
+\define@key[psset]{intersect}{istop}{%
+  \pst@checknum{#1}\PIT@key@istop
+}
+\define@key[psset]{intersect}{name}{%
+  \def\PIT@key@name{#1}%
+}%
+\newif\PIT@saveintersections
+\define@boolkey[psset]{intersect}[PIT@]{saveintersections}[true]{}
+\newif\PIT@addintersections
+\define@boolkey[psset]{intersect}[PIT@]{addintersections}[true]{}
+
+\psset[intersect]{%
+  tstart=-1,
+  tstop=-1,
+  istart=-1,
+  istop=-1,
+  name={},
+  saveintersections,
+  addintersections=false
+}%
+\def\PIT@use@pscode{%
+  \pstverb{%
+    \pst@dict
+    \tx@STP
+    \pst@newpath
+    \psk@origin
+    \psk@swapaxes
+    \pst@code
+    end
+    count /ocount exch def
+  }%
+  \gdef\pst@code{}%
+}%
+\let\PIT@pst@stroke@orig\pst@stroke
+\def\PIT@save@path{%
+  \PIT@pst@stroke@orig
+  \addto@pscode{%
+    clear mark
+    \pst@intersectdict GetFullPath end
+    counttomark 1 add -1 roll pop count }%
+}%
+\def\PIT@name@default{@tmp}%
+\def\PIT@name#1{PIT@#1}%
+\def\PIT@checkname#1{%
+  \ifx\@empty#1\@empty
+    \@pstrickserr{Unexpected empty argument!}\@ehpb
+  \fi
+}%
+\def\pssavebezier{\pst@object{pssavebezier}}
+\def\pssavebezier@i#1{%
+  \begin@OpenObj
+    \PIT@checkname{#1}%
+    \addto@pscode{ /\PIT@name{#1} }%
+    \pst@getcoors[\pssavebezier@ii%]
+}%
+\def\pssavebezier@ii{%
+  \addto@pscode{%
+    counttomark 20 gt { counttomark 20 sub { pop } repeat } if
+    counttomark 2 idiv 1 sub
+    \psk@plotpoints\space exch
+    \txFunc@BezierCurve
+    \ifshowpoints \txFunc@BezierShowPoints \else pop \fi
+    tx@FuncDict begin Points aload pop end
+  }%
+  \let\use@pscode\PIT@use@pscode
+  \end@OpenObj
+  \PIT@Verb{%
+    [ count 1 sub 1 roll ] ArrayToPointArray def
+  }%
+\ignorespaces}%
+\def\pssavepath{\pst@object{pssavepath}}%
+\long\def\pssavepath@i#1#2{%
+  \begin@SpecialObj
+    \PIT@checkname{#1}%
+    \let\pst@stroke\PIT@save@path
+    \let\use@pscode\PIT@use@pscode
+    \pscustom{#2}%
+    \PIT@Verb{%
+      /\PIT@name{#1}
+      [ 3 -1 roll 2 add 2 roll ] def }%
+  \end@SpecialObj
+}%
+\def\pstracecurve{\pst@object{pstracecurve}}%
+\def\pstracecurve@i#1{%
+  \addbefore@par{plotpoints=200}%
+  \begin@OpenObj
+   \@ifnextchar\bgroup
+     {\PIT@traceintersection{#1}}%
+     {\PIT@tracecurve{#1}}%
+}%
+\def\PIT@tracecurve#1{%
+  \PIT@checkname{#1}%
+  \addto@pscode{%
+    \pst@intersectdict
+    /\PIT@name{#1} currentdict exch known not {
+      (You haven't defined the curve '#1') ==
+    } if
+    \PIT@name{#1} \PIT@key@tstart\space\PIT@key@tstop\space % [curve] tstart tstop
+    {\psk@plotpoints exch
+      \txFunc@BezierCurve
+      \ifshowpoints \txFunc@BezierShowPoints \else pop \fi
+    }
+    TraceCurveOrPath
+    end
+  }%
+  %\showpointsfalse
+  \end@OpenObj
+}%
+\def\PIT@traceintersection#1#2{%
+  \PIT@checkname{#2}%
+  \addto@pscode{%
+    \pst@intersectdict
+    \ifx\\#1\\%
+    /\PIT@name{\PIT@name@default}
+    \else
+    /\PIT@name{#1}
+    \fi
+    dup currentdict exch known not {
+      \ifx\\#1\\%
+      (You haven't defined an intersection!) ==
+      \else
+      (You haven't defined the intersection '#1') ==
+      \fi
+    } if
+    load
+    dup dup type /dicttype eq exch /\PIT@name{#2} known and not {
+      (You haven't defined the intersection '#2') ==
+    } if
+    dup /\PIT@name{#2} get
+    exch /\PIT@name{#2}@t get
+    dup length \PIT@key@istart\space ge 0 \PIT@key@istart\space lt and {
+      dup \PIT@key@istart\space cvi 1 sub get
+    } {
+      \PIT@key@tstart
+    } ifelse
+    exch % [curve] t_istart|tstart [ts]
+    dup length \PIT@key@istop\space ge 0 \PIT@key@istop\space lt and {
+      \PIT@key@istop\space cvi 1 sub get
+    } {
+      pop \PIT@key@tstop
+    } ifelse % [curve] tstart tstop
+    {\psk@plotpoints exch
+      \txFunc@BezierCurve
+      \ifshowpoints \txFunc@BezierShowPoints \else pop \fi
+    }
+    TraceCurveOrPath
+    end
+  }%
+  %\showpointsfalse
+  \end@OpenObj
+}%
+\def\psintersect{\pst@object{psintersect}}
+\def\psintersect@i#1#2{%
+  \PIT@checkname{#1}%
+  \PIT@checkname{#2}%
+  \begin@SpecialObj
+  \def\PIT@@name{%
+    \ifx\PIT@key@name\@empty
+      \PIT@name{\PIT@name@default}
+    \else
+      \PIT@name{\PIT@key@name}
+    \fi}%
+  \PIT@Verb{%
+    currentdict /\PIT@name{#1} known not {
+      (You haven't defined the curve or path '#1') ==
+    } if
+    currentdict /\PIT@name{#2} known not {
+      (You haven't defined the curve or path '#2') ==
+    } if
+    \PIT@name{#1} \PIT@name{#2}
+    \PIT@name{#1} IsPath {
+      \PIT@name{#2} IsPath {
+        IntersectPaths
+      }{
+        IntersectPathCurve
+      } ifelse
+    }{
+      \PIT@name{#2} IsPath {
+        IntersectCurvePath
+      }{
+        IntersectBeziers
+        4 copy LoadIntersectionPoints 5 1 roll
+      } ifelse
+    } ifelse
+    /\PIT@name{#1} /\PIT@name{#2} /\PIT@@name
+    \ifPIT@addintersections true \else false \fi
+    SaveIntersection
+  }%
+  \ifPIT@saveintersections
+    \pst@Verb{%
+      \pst@intersectdict
+        \PIT@@name\space /Points get
+        ArrayToPointArray
+      end
+      dup length 1 1 3 -1 roll {
+        2 copy 1 sub get
+        \ifPst@saveNodeCoors
+          \pst@intersectdict
+          2 copy aload pop \tx@UserCoor 3 -1 roll
+          20 string cvs (N-\PIT@key@name) exch strcat dup
+          (.y) strcat cvn exch (.x) strcat cvn
+          end
+          4 -1 roll def exch def
+        \fi
+        cvx
+        false 3 -1 roll (N@\PIT@key@name) exch 20 string cvs
+        \pst@intersectdict strcat end cvn
+        tx@NodeDict begin
+          10 {InitPnode} /NodeScale {} def NewNode
+        end
+      } for
+      pop
+    }%
+  \fi
+  \ifshowpoints
+    \addto@pscode{%
+      \pst@intersectdict
+        [ \PIT@@name\space /Points get aload pop
+      end
+    }%
+    \psdots@ii
+  \else
+    \end@SpecialObj
+  \fi
+}%
+\def\psGetIsectCenter#1#2#3{%
+  \pst@intersectdict
+  \ifx\\#2\\%
+    \PIT@name{#1} /Points get dup #3 1 sub 2 mul get exch #3 2 mul 1 sub get
+  \else
+    \PIT@name{#1} /\PIT@name{#2@t} get #3 1 sub get
+    \PIT@name{#1} /\PIT@name{#2} get
+    dup IsPath {
+      PreparePath dup length 1 sub
+      3 -1 roll dup dup
+      cvi sub 4 1 roll
+      cvi sub get
+    } if
+    PointArrayToArray
+    tx@FuncDict begin 2 dict begin
+      dup length 2 idiv 1 sub /BezierType exch def /Points exch def GetBezierCoor
+    end end
+  \fi
+  end
+  \tx@UserCoor /I-#1#3.y exch def /I-#1#3.x exch def
+}%
+\def\psGetCurvePoint#1#2{%
+  \pst@intersectdict
+  currentdict /\PIT@name{#1} known not {
+    (You haven't defined the curve or path '#1') ==
+  } if
+  #2 \PIT@name{#1} GetCurvePoint \tx@UserCoor
+  end
+  /I-#1.y exch def /I-#1.x exch def
+}%
+\catcode`\@=\PstAtCode\relax
+\endinput
+%%
+%% End of file `pst-intersect.tex'.

@@ -1,0 +1,266 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Tabbing Facilities
+%
+% Synopsis:  This module contains the definition of the block that is
+%            used to format text with tab stops.
+%
+% Authors:   Paul C. Anagnostopoulos
+% Created:   27 May 2016
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Tabbing Block
+%                       ------- -----
+
+
+\defineblock{\tabbing}{\endtabbing}{\false}{}
+\resetinvcontext{\tabbing}
+
+%~block tabbing Type
+% \abovepenalty = integer               % Penalty above text.
+% \aboveskip = glue                     % Space b/b above text.
+% \setflag \autocallout = boolean       % Automatically number lines?
+% \def \beginformat {...}               % Beginning of text formatter.
+% \belowpenalty = integer               % Penalty below text.
+% \belowskip = glue                     % Space b/b below text.
+% \bodyfont = {font}                    % Body font.
+% \def \calloutformat ##1{...}          % Callout formatter.
+% \calloutnumber = integer              % Number of first callout.
+% \def \callouttext {...}               % Callout text or \arg.
+% \defaulttabwidth = dimen              % Default repeating tab width.
+% \def \endformat {...}                 % End of text formatter.
+% \leftindent = glue                    % Left indentation.
+% \rightindent = glue                   % Right indentation.
+% \tabbinggapskip = glue                % Standard tabbing gap.
+% \textcolor = {...}                    % Color of text.
+% \width = dimen                        % Line width.
+%~end
+
+\defineskip{\tabbinggapskip}{0pt}
+
+\def \tabbing #1{%                                         {type}
+  \blockcantbein{\tabbing}{\tabbing}%
+  \beginblockscope{tabbing}%
+  \global\increment \tabbingdepth
+  \abovepenalty = \breakgood                            %~default hard
+  \setflag \autocallout = \false                        %~default soft
+  \def \beginformat {}%                                 %~default soft
+  \belowpenalty = \breakgood                            %~default hard
+  \calloutnumber = 1                                    %~default with
+  \def \callouttext {\number\calloutnumber}%            %~default soft
+  \defaulttabwidth = \mindimen                          %~default soft
+  \def \endformat {}%                                   %~default soft
+  \tabbinggapskip = \enclosingbaselineskip              %~default soft
+  \textcolor = {}%                                      %~default soft
+  \parindent = 0pt
+  \parrag = 0pt
+  \parskip = 0pt
+  \processdesign{\tabbing}{#1}%
+  \global\increment \tabbingnumber
+  \tabbingformat
+  \def \zarg {\arg}%
+  \if \tokeqlp{\callouttext}{\zarg}%
+    \defineatsigncommand @##{\ztbngatcallout}%
+  \else
+    \defineatsigncommand @##{\ztbngatcallout{\callouttext}}%
+  \fi
+  \if \emptytoksp{\textcolor}%          % Must have a group around \ztbnginit.
+    \bgroup
+  \else
+    \color{\the\textcolor}%
+  \fi
+    \ztbnginit
+    \ztbngstartline}
+
+\def \endtabbing {%
+    \ztbngfinal
+  \if \emptytoksp{\textcolor}%
+    \egroup % \tabbing group
+  \else
+    \endcolor
+  \fi
+  \futurelet\nexttoken \zendtabbing}
+
+\def \zendtabbing {%
+  \endtabbingformat
+  \global\decrement \tabbingdepth
+  \endblockscope{tabbing}%
+  \parnext}
+
+\def \tabbingformat {%
+  \endgraf
+  \the\bodyfont
+  \bbskipabove{\abovepenalty}{\aboveskip}%
+  \alterindentation{\leftindent}{\rightindent}%
+  \settextwidth{\width}%
+  \beginformat}
+
+\def \endtabbingformat {%
+  \endformat
+  \bbskipbelowblockpar{\nexttoken}{\belowpenalty}{\belowskip}}
+
+%~ Use this command in between lines in a |\tabbing| block to
+%~ perform a vertical adjustment between those two lines. For example,
+%~
+%~   \adjusttabbing{\fullpagebreak}
+
+\long\def \adjusttabbing #1{%                           {commands}
+  \ztbngadjust{#1}}
+
+%                       Initialize and Finalize
+%                       ---------- --- --------
+
+
+\definecount{\ztbngstopcount}{0}
+\definecount{\ztbngstopindex}{0}
+
+\definebox{\ztbngline}
+\definebox{\ztbngfragment}
+
+
+\def \ztbnginit {%
+  \let \par = \ztbngshouldntbepar
+  \def \nl {\ztbngfinishline{\false}}%
+  \defineatsigncommand @.{\ztbngatsetstop}%
+  \defineatsigncommand @>{\ztbngattab}%
+  \defineatsigncommand @C{\ztbngatclear}%
+  \defineatsigncommand @D{\ztbngatdiscard}%
+  \ztbngsetdefaultstops{\defaulttabwidth}}
+
+\def \ztbngsetdefaultstops #1{%                         {width}
+  \global\ztbngstopcount = 0
+  \def \ztbngstop {0pt}%
+  \if \dimgtrp{#1}{0pt}%
+    \tdimena = 0pt
+    \loop
+      \global\increment \ztbngstopcount
+      \advance \tdimena by #1\relax
+      \withname\edef {\ztbngstop\romannumeral\ztbngstopcount}{\the\tdimena}%
+    \if \dimlssp{\tdimena}{\hsize}%
+    \repeat
+  \fi}
+
+\def \ztbngfinal {%
+  \ztbngfinishline{\true}}
+
+%                       Build Lines
+%                       ----- -----
+
+
+\def \ztbngstartline {%
+  \ztbngstopindex = 0
+  \setbox\ztbngline = \hbox{}%
+  \global\setflag \ztbngdiscardp = \false
+  \settaginfo{\number\calloutnumber}{???title???}%
+  \ztbngstartfragment}
+
+\def \ztbngstartfragment {%
+  \setbox \ztbngfragment = \hbox\bgroup
+    \ignorespaces}
+
+\def \ztbngfinishfragment {%
+  \egroup % \ztbngfragment box
+  \setbox\ztbngline = \hbox{%
+    \unhbox\ztbngline
+    \tdimena = \name{\ztbngstop\romannumeral\ztbngstopindex}%
+    \hskip \tdimena
+    \tdimenb = \hsize
+    \advance \tdimenb by -\tdimena
+    \hbox to \tdimenb{\copy\ztbngfragment \hfil}%
+    \hskip -\tdimenb
+    \hskip -\tdimena}}
+
+\def \ztbngfinishline #1{%                              {end-of-block?}
+  \ztbngfinishfragment
+  \if \notp{\ztbngdiscardp}%
+    \if \orp{\posp{\ztbngstopindex}}{\dimposp{\wd\ztbngfragment}}%
+      \noindent
+        \if \autocallout
+          \llap{\calloutformat{\the\calloutnumber}}%
+          \increment \calloutnumber
+        \fi
+        \box\ztbngline
+      \endgraf
+    \else\if \notp{#1}%
+      \vspace{\tabbinggapskip}%
+    \fi\fi
+  \fi
+  \if #1\let \znext = \relax \else \let \znext = \ztbngstartline \fi
+  \znext}
+
+%                       At-sign Commands
+%                       ------- --------
+
+
+% @#{callout}text...
+
+\def \ztbngatcallout #1{%                               {callout}
+  \ztbngfinishfragment
+  \if \andp{\zerop{\ztbngstopindex}}{\dimzerop{\wd\ztbngfragment}}
+    \setbox\ztbngfragment = \hbox\bgroup
+      \llap{\calloutformat{#1}}%
+    \ztbngfinishfragment
+  \else
+    \error{badtabcallout}{Callout command (\noexpand@##) must appear
+                          at the beginning of the line}%
+  \fi
+  \increment \calloutnumber
+  \ztbngstartfragment}
+
+% text@.more text...
+
+\def \ztbngatsetstop {%
+  \ztbngfinishfragment
+  \tdimena = \name{\ztbngstop\romannumeral\ztbngstopindex}%
+  \advance \tdimena by \wd\ztbngfragment
+  \increment \ztbngstopindex
+  \if \gtrp{\ztbngstopindex}{\ztbngstopcount}%
+    \withname\edef {\ztbngstop\romannumeral\ztbngstopindex}{\the\tdimena}%
+    \increment \ztbngstopcount
+  \else
+    \error{badtabstop}{There is already a tab stop}%
+  \fi
+  \ztbngstartfragment}
+
+% text@>more text...
+
+\def \ztbngattab {%
+  \ztbngfinishfragment
+  \if \lssp{\ztbngstopindex}{\ztbngstopcount}%
+    \increment \ztbngstopindex
+  \else
+    \warning{toomanytabs}{Too many tabs on line; extra tabs ignored}%
+  \fi
+  \ztbngstartfragment}
+
+% @Ctext...\nl
+
+\def \ztbngatclear {%
+  \if \zerop{\ztbngstopindex}%
+    \global\ztbngstopcount = 0\relax
+  \else
+    \error{badtabclear}{Tabs must be cleared at the beginning of the line}%
+  \fi}
+
+% text@D\nl
+
+\def \ztbngatdiscard {%
+  \global\setflag \ztbngdiscardp = \true \relax}
+
+%                       Adjustment
+%                       ----------
+
+
+\long\def \ztbngadjust #1{%                             {commands}
+  \ztbngfinishfragment
+  \if \andp{\zerop{\ztbngstopindex}}{\dimzerop{\wd\ztbngfragment}}
+    #1%
+  \else
+    \error{badtabadjust}{The \noexpand\adjusttabbing command must appear
+                         in between lines}%
+  \fi
+  \ztbngstartfragment}

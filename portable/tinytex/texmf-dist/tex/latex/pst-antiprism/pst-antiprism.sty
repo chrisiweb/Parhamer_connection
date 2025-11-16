@@ -1,0 +1,20 @@
+%% $Id: pst-antiprism.sty 730 2018-02-13 17:50:37Z herbert $
+
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory CTAN:/macros/latex/base/lppl.txt.
+%
+\ProvidesPackage{pst-antiprism.tex}[2018/02/12 package wrapper for PSTricks pst-antiprism.tex]
+%
+\RequirePackage{pstricks}
+\RequirePackage{pst-solides3d}
+%
+\input{pst-antiprism}
+\ProvidesFile{pst-antiprism.tex}
+  [\filedate\space v\fileversion\space `PST-antiprism.tex']
+\IfFileExists{pst-antiprism.pro}{%
+  \ProvidesFile{pst-antiprism.pro}
+    [2018/02/12  PostScript prologue file (ml,hv)]
+    \@addtofilelist{pst-antiprism.pro}}{}%
+\endinput
+%% End of file `pst-antiprism.tex.sty'.

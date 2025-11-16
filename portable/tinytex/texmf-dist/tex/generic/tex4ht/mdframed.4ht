@@ -1,0 +1,55 @@
+% mdframed.4ht (2025-06-29-13:34), generated from tex4ht-4ht.tex
+% Copyright 2017-2025 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2025-06-29-13:34}
+
+
+\NewConfigure{mdframed}{2}
+\NewConfigure{mdframedstyle}{1}
+\NewConfigure{mdframetitle}{2}
+\newcount\mdf:env:cnt
+\def\mdf:id{mdframed-\the\mdf:env:cnt}
+\def\:tempa#1{\global\advance\mdf:env:cnt by1\relax\a:mdframed\a:mdframedstyle%
+    \ifdefempty{\mdf@frametitle}{}{\mdfframedtitleenv{\mdf@frametitle}\a:mdframetitle\mdf@@frametitle@use\b:mdframetitle}\let\mdf@frametitle\@empty%
+}
+\HLet\mdf@trivlist\:tempa
+
+\def\:tempa{\b:mdframed}
+\HLet\endmdf@trivlist\:tempa
+
+% disable frame drawing, it can be supported using CSS
+\HLet\detected@mdf@put@frame\relax%
+
+\append:def\mdf@@ignorelastdescenders{\let\orig:unskip\unskip\def\unskip{\let\unskip\orig:unskip}}%
+\HLet\mdf@lrbox\:gobble
+\HLet\endmdf@lrbox\relax
+% disable compilation error caused by Mdframed's patch for Amsthm:
+\AtBeginDocument{%
+  \let\mdf@patchamsthm\relax%
+}
+\def\thempfootnote{{\@alph\c@mpfootnote}}
+\def\mdf@footnoteinput{%
+  \def\@mpfn{mpfootnote}\def\thempfn{\thempfootnote}\c@mpfootnote\z@
+    \let\@footnotetext\@mpfootnotetext
+    \@minipagerestore
+    \@setminipage
+}
+
+\Hinput{mdframed}
+\endinput
+

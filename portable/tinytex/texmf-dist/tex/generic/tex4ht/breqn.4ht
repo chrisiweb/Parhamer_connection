@@ -1,0 +1,77 @@
+% breqn.4ht (2022-04-25-13:36), generated from tex4ht-4ht.tex
+% Copyright 2021 TeX Users Group
+% Copyright 2009-2022 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2022-04-25-13:36}
+
+\renewenvironment{dmath*}[1][]{\[}{\]}
+\renewenvironment{dmath}[1][]{\begin{equation}}{\end{equation}}
+\renewenvironment{dsuspend}{}{\par}
+
+% enumerate equation for \begin{dseries}
+\def\@dseries[#1]{%
+  \if\eq@hasNumber%
+    \refstepcounter{equation}%
+  \fi
+  \begingroup%
+   \a:equation%
+   \ignorespaces%
+}
+
+
+% mimic the equatio environment
+\def\end@dseries{%
+  \b:equation
+  \if\eq@hasNumber%
+  (\arabic{equation})%
+  \fi%
+\c:equation%
+}
+
+% this macro prints spurious equation number to the document, so we just reset it
+\def\grp@finish{%
+  \setbox\GRP@wholebox\vbox{%
+    \let\breqn@elt\eqgrp@elt
+    \the\GRP@queue
+  }%
+  \unvbox\GRP@wholebox
+}
+
+% the \EQ@displayinfo is used by other commands, it isn't useful in the HTML conversion
+\def\eq@nulldisplay{%
+  \xdef\EQ@displayinfo{%
+    \relax}%
+}
+
+%% commands
+% fix wrong handling of fonts in \condition
+\newcommand\:condition@a[2][\conditionpunct]{%
+  \unpenalty\unskip\unpenalty\unskip % BRM Added
+  \mbox{#1}%
+  \hskip\conditionsep
+  \ \if@tempswa\mbox{#2}\else\mbox{$\textmath@setup #2$}\fi
+  \endgroup
+}
+
+\HLet\condition@a\:condition@a
+
+
+\Hinput{breqn}
+\endinput
+
+

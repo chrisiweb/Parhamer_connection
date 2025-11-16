@@ -32,7 +32,7 @@
 %% and covered by LPPL is defined by the unpacking scripts (with
 %% extension |.ins|) which are part of the distribution.
 %%
-\ProvidesLanguage{nil}[2025/10/01 v25.13 Nil language]
+\ProvidesLanguage{nil}[2025/11/09 v25.15 Nil language]
 \LdfInit{nil}{datenil}
 \ifx\l@nil\@undefined
   \newlanguage\l@nil

@@ -1,0 +1,12 @@
+%% $Id: pst-mirror.sty 248 2021-09-14 08:57:11Z herbert $
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-mirror}[2014/02/17 package wrapper for 
+  pst-mirror.tex (hv)]
+\input{pst-mirror.tex}
+\ProvidesFile{pst-mirror.tex}
+  [\filedate\space v\fileversion\space `pst-mirror' (ml,hv)]
+\IfFileExists{pst-mirror.pro}{%
+   \ProvidesFile{pst-mirror.pro}[2014/02/17 v. 1.1,  PostScript prologue file]
+   \@addtofilelist{pst-mirror.pro}}{}%
+\endinput
+

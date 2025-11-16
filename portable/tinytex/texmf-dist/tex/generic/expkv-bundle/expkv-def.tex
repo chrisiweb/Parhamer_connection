@@ -1,0 +1,928 @@
+%%
+%% This is file `expkv-def.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% expkv-def.dtx  (with options: `tex')
+%% 
+%% ----------------------------------------------------------------
+%% expkv-bundle -- an expandable key=val implementation and friends
+%% E-mail: jspratte@yahoo.de
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
+%% ----------------------------------------------------------------
+%% 
+%% Copyright (C) 2020-2024 Jonathan P. Spratte
+%% 
+%% This  work may be  distributed and/or  modified under  the conditions  of the
+%% LaTeX Project Public License (LPPL),  either version 1.3c  of this license or
+%% (at your option) any later version.  The latest version of this license is in
+%% the file:
+%% 
+%%   http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%%   Jonathan P. Spratte.
+%% 
+%% This work consists of the files  expkv-bundle.ins
+%%                                  expkv.dtx
+%%                                  expkv-cs.dtx
+%%                                  expkv-def.dtx
+%%                                  expkv-opt.dtx
+%%                                  expkv-pop.dtx
+%% and the derived files            expkv.sty
+%%                                  expkv.tex
+%%                                  t-expkv.tex
+%%                                  expkv-cs.sty
+%%                                  expkv-cs.tex
+%%                                  t-expkv-cs.tex
+%%                                  expkv-def.sty
+%%                                  expkv-def.tex
+%%                                  t-expkv-def.tex
+%%                                  expkv-opt.sty
+%%                                  expkv-pop.sty
+%%                                  expkv-pop.tex
+%%                                  t-expkv-pop.tex
+%% 
+%% as well as any documentation files shipped with it.
+%% 
+\input expkv-pop
+\expandafter\ifx\csname ekvdVersion\endcsname\relax
+\else
+  \expandafter\endinput
+\fi
+\def\ekvdVersion{1.1}
+\def\ekvdDate{2024-12-16}
+\csname ekvd@tmp\endcsname
+\expandafter\chardef\csname ekvd@tmp\endcsname=\catcode`\@
+\catcode`\@=11
+\protected\long\def\ekvd@ifprimitive#1%
+  {%
+    \begingroup
+      \edef\ekvd@tmpa{\string #1}%
+      \edef\ekvd@tmpb{\meaning#1}%
+      \expandafter
+    \endgroup
+    \ifx\ekvd@tmpa\ekvd@tmpb
+      \ekv@fi@firstoftwo
+    \fi
+    \@secondoftwo
+  }
+\protected\def\ekvd@clear@prefixes
+  {%
+    \let\ekvd@long\ekv@empty
+    \let\ekvd@prot\ekv@empty
+    \let\ekvd@ifalso\@secondoftwo
+    \let\ekvd@do@new\@gobbletwo
+  }
+\ekvd@clear@prefixes
+\ekvpNewParser{ekvd@definekeys}
+\ekvpDefNoValuePrefix{ekvd@definekeys}
+  {\let\ekvd@ifnoarg\@firstoftwo}
+  {\let\ekvd@ifnoarg\@secondoftwo}
+\ekvpDefPrefixLet{ekvd@definekeys}{long}     \ekvd@long\long     \ekv@empty
+\ekvpDefPrefixLet{ekvd@definekeys}{protected}\ekvd@prot\protected\ekv@empty
+\ekvpDefPrefixLet{ekvd@definekeys}{protect}  \ekvd@prot\protected\ekv@empty
+\ekvpDefPrefixLet{ekvd@definekeys}{also}\ekvd@ifalso\@firstoftwo\@secondoftwo
+\ekvpDefPrefixLet{ekvd@definekeys}{new}\ekvd@do@new\ekvd@assert@new\@gobbletwo
+\ekvpDefAutoPrefix{ekvd@definekeys}{\edef\ekvd@cur{\detokenize{#3}}}{}
+\protected\edef\ekvdefinekeys#1%
+  {%
+    \ekv@unexpanded{\def\ekvd@set}{#1}%
+    \ekv@unexpanded{\ekvpParse@unsafe@auto\ekvp@@p@ekvd@definekeys}%
+    \ekv@unexpanded\expandafter{\csname\ekvp@@p@ekvd@definekeys{ppa}\endcsname}%
+  }
+\protected\def\ekvd@def@type#1#2%
+  {%
+    \ekv@exparg{\ekvpDefType{ekvd@definekeys}{#1}}
+      {%
+        \expandafter\expandafter\csname ekvd@th@#1\endcsname
+          \detokenize{##1}\ekv@stop{##2}{##3}%
+      }%
+    \long\expandafter\def\csname ekvd@th@#1\endcsname##1\ekv@stop##2##3{#2}%
+  }
+\protected\long\def\ekvd@def@type@fwd#1#2%
+  {\ekvpDefType{ekvd@definekeys}{#1}{\ekv@exparg{#2}{\detokenize{##1}}{##3}}}
+\ekvd@def@type{set}
+  {\ekvd@ifnoarg{\ekvd@type@set{#1}{#1}}{\ekvd@type@set{#1}{#3}}}
+\protected\def\ekvd@type@set#1#2%
+  {%
+    \ekvd@assert@not@long
+    \ekvd@assert@not@protected
+    \ekvd@do@new{NoVal}{#1}%
+    \ekv@ifempty{#2}%
+      {\ekvd@err@missing@definition}%
+      {%
+        \ekvd@ifalso
+          {%
+            \ekv@expargtwice{\ekvd@add@noval{#1}}%
+              {\ekvchangeset{#2}}%
+              \ekvd@assert@not@protected@also
+          }%
+          {\ekv@expargtwice{\ekvdefNoVal\ekvd@set{#1}}{\ekvchangeset{#2}}}%
+      }%
+  }
+\ekvd@def@type@fwd{noval}{\ekvd@type@noval\def}
+\ekvd@def@type@fwd{enoval}{\ekvd@type@noval\edef}
+\protected\long\def\ekvd@type@noval#1#2#3%
+  {%
+    \ekvd@do@new{NoVal}{#2}%
+    \ekvd@assert@arg
+    \ekvd@assert@not@long
+    \ekvd@prot#1\ekvd@tmp{#3}%
+    \ekvd@ifalso
+      {\ekv@exparg{\ekvd@add@noval{#2}}\ekvd@tmp{}}%
+      {\ekvletNoVal\ekvd@set{#2}\ekvd@tmp}%
+  }
+\ekvd@def@type@fwd{code}{\ekvd@type@code\def}
+\ekvd@def@type@fwd{ecode}{\ekvd@type@code\edef}
+\protected\long\def\ekvd@type@code#1#2#3%
+  {%
+    \ekvd@do@new{}{#2}%
+    \ekvd@assert@arg
+    \ekvd@prot\ekvd@long#1\ekvd@tmp##1{#3}%
+    \ekvd@ifalso
+      {\ekv@exparg{\ekvd@add@val{#2}}{\ekvd@tmp{##1}}{}}%
+      {\ekvlet\ekvd@set{#2}\ekvd@tmp}%
+  }
+\ekvd@def@type@fwd{default}{\ekvd@type@default{\ekv@unexpanded\expandafter}{}}
+\ekvd@def@type@fwd{odefault}
+  {\ekvd@type@default{\ekv@unexpanded\expandafter\expandafter\expandafter}{}}
+\ekvpLet{ekvd@definekeys}{type}{qdefault}{odefault}
+\ekvd@def@type@fwd{fdefault}
+  {\ekvd@type@default{\ekv@unexpanded\expandafter}{\romannumeral`\^^@}}
+\protected\long\def\ekvd@type@default#1#2#3#4%
+  {%
+    \ekvd@assert@arg
+    \ekvd@do@new{NoVal}{#3}%
+    \ekvd@assert@not@long
+    \ekvifdefined\ekvd@set{#3}%
+      {%
+        \ekvd@prot\edef\ekvd@tmp
+          {#1{#2\csname\ekv@name\ekvd@set{#3}\endcsname{#4}}}%
+        \ekvd@ifalso
+          {\ekv@exparg{\ekvd@add@noval{#3}}\ekvd@tmp{}}%
+          {\ekvletNoVal\ekvd@set{#3}\ekvd@tmp}%
+      }%
+      {\ekvd@err@undefined@key{#3}}%
+  }
+\ekvd@def@type{edefault}
+  {%
+    \ekvd@assert@arg
+    \ekvd@do@new{NoVal}{#1}%
+    \ekvd@assert@not@long
+    \ekvifdefined\ekvd@set{#1}%
+      {%
+        \ekvd@prot\edef\ekvd@tmp
+          {%
+            \ekv@unexpanded\ekv@expanded
+              {{\csname\ekv@name\ekvd@set{#1}\endcsname{#3}}}%
+          }%
+        \ekvd@ifalso
+          {\ekv@exparg{\ekvd@add@noval{#1}}\ekvd@tmp{}}%
+          {\ekvletNoVal\ekvd@set{#1}\ekvd@tmp}%
+      }%
+      {\ekvd@err@undefined@key{#1}}%
+  }
+\ekvd@def@type@fwd{initial}{\ekvd@type@initial\@firstofone}
+\ekvd@def@type@fwd{oinitial}{\ekvd@type@initial\ekv@exparg}
+\ekvd@def@type@fwd{einitial}{\ekvd@type@initial\ekv@expandedarg}
+\ekvd@def@type@fwd{finitial}{\ekvd@type@initial\ekv@fexparg}
+\long\def\ekvd@type@initial#1#2#3%
+  {%
+    \ekvd@assert@not@new
+    \ekvd@assert@not@also
+    \ekvd@assert@not@long
+    \ekvd@assert@not@protected
+    \ekvd@ifnoarg
+      {%
+        \ekvifdefinedNoVal\ekvd@set{#2}%
+          {\csname\ekv@name\ekvd@set{#2}N\endcsname}%
+          {\ekvd@err@undefined@noval{#2}}%
+      }%
+      {%
+        \ekvifdefined\ekvd@set{#2}%
+          {#1{\csname\ekv@name\ekvd@set{#2}\endcsname}{#3}}%
+          {\ekvd@err@undefined@key{#2}}%
+      }%
+  }
+\ekvd@def@type@fwd{bool}{\ekvd@type@bool{}\iftrue\iffalse}
+\ekvd@def@type@fwd{gbool}{\ekvd@type@bool\global\iftrue\iffalse}
+\ekvd@def@type@fwd{boolTF}{\ekvd@type@bool{}\@firstoftwo\@secondoftwo}
+\ekvd@def@type@fwd{gboolTF}{\ekvd@type@bool\global\@firstoftwo\@secondoftwo}
+\ekvd@def@type@fwd{invbool}{\ekvd@type@bool{}\iffalse\iftrue}
+\ekvd@def@type@fwd{ginvbool}{\ekvd@type@bool\global\iffalse\iftrue}
+\ekvd@def@type@fwd{invboolTF}{\ekvd@type@bool{}\@secondoftwo\@firstoftwo}
+\ekvd@def@type@fwd{ginvboolTF}{\ekvd@type@bool\global\@secondoftwo\@firstoftwo}
+\protected\def\ekvd@type@bool#1#2#3#4#5%
+  {%
+    \ekvd@do@new{}{#4}%
+    \ekvd@do@new{NoVal}{#4}%
+    \ekvd@assert@filledarg{#5}%
+    \ekvd@newlet#5#3%
+    \ekvd@type@choice{#4}%
+    \protected\ekvdefNoVal\ekvd@set{#4}{#1\let#5#2}%
+    \protected\expandafter\def
+      \csname\ekvd@choice@name\ekvd@set{#4}{true}\endcsname
+      {#1\let#5#2}%
+    \protected\expandafter\def
+      \csname\ekvd@choice@name\ekvd@set{#4}{false}\endcsname
+      {#1\let#5#3}%
+  }
+\ekvd@def@type{boolpair}
+  {\ekvd@assert@twoargs{#3}\ekvd@type@boolpair{}\iftrue\iffalse{#1}#3}
+\ekvd@def@type{gboolpair}
+  {\ekvd@assert@twoargs{#3}\ekvd@type@boolpair\global\iftrue\iffalse{#1}#3}
+\ekvd@def@type{boolpairTF}
+  {\ekvd@assert@twoargs{#3}\ekvd@type@boolpair{}\@firstoftwo\@secondoftwo{#1}#3}
+\ekvd@def@type{gboolpairTF}
+  {%
+    \ekvd@assert@twoargs{#3}%
+    \ekvd@type@boolpair\global\@firstoftwo\@secondoftwo{#1}#3%
+  }
+\protected\def\ekvd@type@boolpair#1#2#3#4#5#6%
+  {%
+    \ekvd@do@new{}{#4}%
+    \ekvd@do@new{NoVal}{#4}%
+    \ekvd@newlet#5#3%
+    \ekvd@newlet#6#2%
+    \ekvd@type@choice{#4}%
+    \protected\ekvdefNoVal\ekvd@set{#4}{#1\let#5#2#1\let#6#3}%
+    \protected\expandafter\def
+      \csname\ekvd@choice@name\ekvd@set{#4}{true}\endcsname
+      {#1\let#5#2#1\let#6#3}%
+    \protected\expandafter\def
+      \csname\ekvd@choice@name\ekvd@set{#4}{false}\endcsname
+      {#1\let#5#3#1\let#6#2}%
+  }
+\ekvd@def@type@fwd{data}
+  {\ekvd@type@data\@secondoftwo\edef{####2}{\ekv@unexpanded{##1}}}
+\ekvd@def@type@fwd{edata}
+  {%
+    \ekvd@type@data\@secondoftwo\edef
+      {####2}{\ekv@unexpanded\ekv@expanded{{##1}}}%
+  }
+\ekvd@def@type@fwd{gdata}
+  {\ekvd@type@data\@secondoftwo\xdef{####2}{\ekv@unexpanded{##1}}}
+\ekvd@def@type@fwd{xdata}
+  {%
+    \ekvd@type@data\@secondoftwo\xdef
+      {####2}{\ekv@unexpanded\ekv@expanded{{##1}}}%
+  }
+\ekvd@def@type@fwd{dataT}{\ekvd@type@data\@gobble\edef{}{\ekv@unexpanded{##1}}}
+\ekvd@def@type@fwd{edataT}
+  {\ekvd@type@data\@gobble\edef{}{\ekv@unexpanded\ekv@expanded{{##1}}}}
+\ekvd@def@type@fwd{gdataT}{\ekvd@type@data\@gobble\xdef{}{\ekv@unexpanded{##1}}}
+\ekvd@def@type@fwd{xdataT}
+  {\ekvd@type@data\@gobble\xdef{}{\ekv@unexpanded\ekv@expanded{{##1}}}}
+\protected\def\ekvd@type@data#1#2#3#4#5#6%
+  {%
+    \ekvd@do@new{}{#5}%
+    \ekvd@assert@filledarg{#6}%
+    \ekvd@newlet#6#1%
+    \ekvd@ifalso
+      {%
+        \let\ekvd@prot\protected
+        \ekvd@add@val{#5}{\long#2#6####1#3{####1{#4}}}{}%
+      }%
+      {%
+        \protected\ekvd@long\ekvdef\ekvd@set{#5}%
+          {\long#2#6####1#3{####1{#4}}}%
+      }%
+  }
+\ekvd@def@type@fwd{box}{\ekvd@type@box{}}
+\ekvd@def@type@fwd{gbox}{\ekvd@type@box\global}
+\protected\def\ekvd@type@box#1#2#3%
+  {%
+    \ekvd@do@new{}{#2}%
+    \ekvd@assert@filledarg{#3}%
+    \ekvd@newreg#3{box}%
+    \ekvd@ifalso
+      {%
+        \let\ekvd@prot\protected
+        \ekvd@add@val{#2}{#1\setbox#3=\hbox{\begingroup##1\endgroup}}{}%
+      }%
+      {%
+        \protected\ekvd@long\ekvdef\ekvd@set{#2}%
+          {#1\setbox#3=\hbox{\begingroup##1\endgroup}}%
+      }%
+  }
+\ekvd@def@type@fwd{toks}{\ekvd@type@toks{}}
+\ekvd@def@type@fwd{gtoks}{\ekvd@type@toks\global}
+\protected\def\ekvd@type@toks#1#2#3%
+  {%
+    \ekvd@do@new{}{#2}%
+    \ekvd@assert@filledarg{#3}%
+    \ekvd@newreg#3{toks}%
+    \ekvd@ifalso
+      {%
+        \let\ekvd@prot\protected
+        \ekvd@add@val{#2}{#1#3={##1}}{}%
+      }%
+      {\protected\ekvd@long\ekvdef\ekvd@set{#2}{#1#3={##1}}}%
+  }
+\ekvd@ifprimitive\toksapp
+  {%
+    \ekvd@def@type@fwd{apptoks}{\ekvd@type@preapptoks\toksapp}
+    \ekvd@def@type@fwd{gapptoks}{\ekvd@type@preapptoks\gtoksapp}
+    \ekvd@def@type@fwd{pretoks}{\ekvd@type@preapptoks\tokspre}
+    \ekvd@def@type@fwd{gpretoks}{\ekvd@type@preapptoks\gtokspre}
+    \protected\def\ekvd@type@preapptoks#1#2#3%
+      {%
+        \ekvd@do@new{}{#2}%
+        \ekvd@assert@filledarg{#3}%
+        \ekvd@newreg#3{toks}%
+        \ekvd@ifalso
+          {%
+            \let\ekvd@prot\protected
+            \ekvd@add@val{#2}{#1#3{##1}}{}%
+          }%
+          {\protected\ekvd@long\ekvdef\ekvd@set{#2}{#1#3{##1}}}%
+      }
+  }
+  {%
+    \ekvd@def@type@fwd{apptoks}{\ekvd@type@apptoks{}}
+    \ekvd@def@type@fwd{gapptoks}{\ekvd@type@apptoks\global}
+    \protected\def\ekvd@type@apptoks#1#2#3%
+      {%
+        \ekvd@do@new{}{#2}%
+        \ekvd@assert@filledarg{#3}%
+        \ekvd@newreg#3{toks}%
+        \ekvd@ifalso
+          {%
+            \let\ekvd@prot\protected
+            \ekvd@add@val{#2}{#1#3=\expandafter{\the#3##1}}{}%
+          }%
+          {%
+            \protected\ekvd@long\ekvdef\ekvd@set{#2}%
+              {#1#3=\expandafter{\the#3##1}}%
+          }%
+      }
+    \ekvd@def@type@fwd{pretoks}{\ekvd@type@pretoks{}}
+    \ekvd@def@type@fwd{gpretoks}{\ekvd@type@pretoks\global}
+    \newtoks\ekvd@toks
+    \protected\def\ekvd@type@pretoks#1#2#3%
+      {%
+        \ekvd@do@new{}{#2}%
+        \ekvd@assert@filledarg{#3}%
+        \ekvd@newreg#3{toks}%
+        \ekvd@ifalso
+          {%
+            \let\ekvd@prot\protected
+            \ekvd@add@val{#2}%
+              {#1#3=\ekv@expanded{{\ekv@unexpanded{##1}\the#3}}}%
+              {}%
+          }%
+          {%
+            \protected\ekvd@long\ekvdef\ekvd@set{#2}%
+              {#1#3=\ekv@expanded{{\ekv@unexpanded{##1}\the#3}}}%
+          }%
+      }
+  }
+\ekvd@def@type@fwd {int}{\ekvd@type@register{count}{}{}}
+\ekvd@def@type@fwd{eint}{\ekvd@type@register{count}{}\numexpr}
+\ekvd@def@type@fwd{gint}{\ekvd@type@register{count}\global{}}
+\ekvd@def@type@fwd{xint}{\ekvd@type@register{count}\global\numexpr}
+\ekvd@def@type@fwd {dimen}{\ekvd@type@register{dimen}{}{}}
+\ekvd@def@type@fwd{edimen}{\ekvd@type@register{dimen}{}\dimexpr}
+\ekvd@def@type@fwd{gdimen}{\ekvd@type@register{dimen}\global{}}
+\ekvd@def@type@fwd{xdimen}{\ekvd@type@register{dimen}\global\dimexpr}
+\ekvd@def@type@fwd {skip}{\ekvd@type@register{skip}{}{}}
+\ekvd@def@type@fwd{eskip}{\ekvd@type@register{skip}{}\glueexpr}
+\ekvd@def@type@fwd{gskip}{\ekvd@type@register{skip}\global{}}
+\ekvd@def@type@fwd{xskip}{\ekvd@type@register{skip}\global\glueexpr}
+\protected\def\ekvd@type@register#1#2#3#4#5%
+  {%
+    \ekvd@do@new{}{#4}%
+    \ekvd@assert@filledarg{#5}%
+    \ekvd@newreg#5{#1}%
+    \ekvd@ifalso
+      {%
+        \let\ekvd@prot\protected
+        \ekvd@add@val{#4}{#2#5=#3##1\relax}{}%
+      }%
+      {\protected\ekvd@long\ekvdef\ekvd@set{#4}{#2#5=#3##1\relax}}%
+  }
+\ekvd@def@type@fwd{store}{\ekvd@type@store\edef{\ekv@unexpanded{##1}}}
+\ekvd@def@type@fwd{gstore}{\ekvd@type@store\xdef{\ekv@unexpanded{##1}}}
+\ekvd@def@type@fwd{estore}
+  {\ekvd@type@store\edef{\ekv@unexpanded\ekv@expanded{{##1}}}}
+\ekvd@def@type@fwd{xstore}
+  {\ekvd@type@store\xdef{\ekv@unexpanded\ekv@expanded{{##1}}}}
+\protected\def\ekvd@type@store#1#2#3#4%
+  {%
+    \ekvd@do@new{}{#3}%
+    \ekvd@assert@filledarg{#4}%
+    \ekvd@newlet#4\ekv@empty
+    \ekvd@ifalso
+      {%
+        \let\ekvd@prot\protected
+        \ekvd@add@val{#3}{#1#4{#2}}{}%
+      }%
+      {\protected\ekvd@long\ekvdef\ekvd@set{#3}{#1#4{#2}}}%
+  }
+\ekvd@def@type@fwd{meta}
+  {\ekvd@type@meta{}{##1}\ekvd@add@val{{##1}}{}\ekv@exparg}
+\ekvd@def@type@fwd{nmeta}
+  {%
+    \ekvd@assert@not@long
+    \ekvd@type@meta
+      {NoVal}{}\ekvd@add@noval{}\ekvd@assert@not@long@also\ekv@expargtwice
+  }
+\protected\long\def\ekvd@type@meta#1#2#3#4#5#6#7#8%
+  {%
+    \ekvd@do@new{#1}{#7}%
+    \ekvd@assert@filledarg{#8}%
+    #6{\ekvd@prot\ekvd@long\def\ekvd@tmp#2}{\ekvmorekv{#8}}%
+    \ekvd@ifalso
+      {\ekv@exparg{#3{#7}}{\ekvd@tmp#4}{#5}}%
+      {\csname ekvlet#1\endcsname\ekvd@set{#7}\ekvd@tmp}%
+  }
+\ekvd@def@type@fwd{smeta}{\ekvd@type@smeta{}{##1}\ekvd@add@val{{##1}}{}}
+\ekvd@def@type@fwd{snmeta}
+  {%
+    \ekvd@assert@not@long
+    \ekvd@type@smeta{NoVal}{}\ekvd@add@noval{}\ekvd@assert@not@long@also
+  }
+\protected\long\def\ekvd@type@smeta#1#2#3#4#5#6#7%
+  {%
+    \ekvd@do@new{#1}{#6}%
+    \ekvd@assert@twoargs{#7}%
+    \ekvd@type@smeta@#7{#2}%
+    \ekvd@ifalso
+      {\ekv@exparg{#3{#6}}{\ekvd@tmp#4}{#5}}%
+      {\csname ekvlet#1\endcsname\ekvd@set{#6}\ekvd@tmp}%
+  }
+\protected\long\def\ekvd@type@smeta@#1#2#3%
+  {\ekvd@prot\ekvd@long\ekv@expargtwice{\def\ekvd@tmp#3}{\ekvset{#1}{#2}}}
+\ekvd@def@type{alias}
+  {%
+    \ekvd@assert@arg
+    \ekvd@assert@not@protected
+    \ekvd@assert@not@long
+    \ekvd@assert@not@also
+    \ekvifdefined\ekvd@set{#3}{\ekvd@do@new{}{#1}}{}%
+    \ekvifdefinedNoVal\ekvd@set{#3}{\ekvd@do@new{NoVal}{#1}}{}%
+    \ekvpAssertTF
+      {\ekvifdefined\ekvd@set{#3}\@firstoftwo{\ekvifdefinedNoVal\ekvd@set{#3}}}%
+      {undefined key `#3'}%
+    \ekvifdefined\ekvd@set{#3}{\ekvletkv\ekvd@set{#1}\ekvd@set{#3}}{}%
+    \ekvifdefinedNoVal\ekvd@set{#3}{\ekvletkvNoVal\ekvd@set{#1}\ekvd@set{#3}}{}%
+  }
+\protected\def\ekvd@type@choice#1%
+  {%
+    \ekvd@assert@not@long
+    \ekv@expargtwice{\ekvd@prot\def\ekvd@tmp##1}%
+      {%
+        \expandafter\expandafter\expandafter
+        \ekvd@h@choice
+        \expandafter\expandafter\expandafter
+          {\expandafter\ekvd@choice@name\expandafter{\ekvd@set}{#1}{##1}}%
+      }%
+    \ekvd@ifalso
+      {%
+        \ekvd@assert@val{#1}%
+        \ekvd@if@not@already@choice{#1}%
+          {%
+            \ekv@exparg
+              {%
+                \expandafter\ekvd@add@aux
+                  \csname\ekv@name\ekvd@set{#1}\endcsname{{##1}}{#1}%
+              }%
+              {\ekvd@tmp{##1}}%
+              {\ekvd@long\ekvdef}\ekvd@assert@not@long@also
+          }%
+      }%
+      {\ekvlet\ekvd@set{#1}\ekvd@tmp}%
+  }
+\ekvpNewParser{ekvd@populate@choice}
+\ekvpValueAlwaysRequired{ekvd@populate@choice}
+\ekvpDefType{ekvd@populate@choice}{protect}
+  {\ekvd@populate@choice\protected{#1}{#3}}
+\ekvpDefType{ekvd@populate@choice}{unprotect}{\ekvd@populate@choice{}{#1}{#3}}
+\ekvpDefNoType{ekvd@populate@choice}         {\ekvd@populate@choice{}{#1}{#3}}
+\ekvpLet{ekvd@populate@choice}{type}{protected}{protect}
+\ekvpLet{ekvd@populate@choice}{type}{unprotected}{unprotect}
+\protected\long\def\ekvd@populate@choice#1#2#3%
+  {%
+    #1\expandafter\edef
+        \csname\ekvd@choice@name\ekvd@set\ekvd@set@choice{#2}\endcsname
+      {\ekv@unexpanded{#3}}%
+  }
+\ekvd@def@type{choice}
+  {%
+    \ekvd@do@new{}{#1}%
+    \ekvd@assert@arg
+    \ekvd@type@choice{#1}%
+    \def\ekvd@set@choice{#1}%
+    \ekvpParse@unsafe\ekvp@@p@ekvd@populate@choice{#3}%
+  }
+\ekvd@def@type@fwd{choice-store}
+  {\ekvd@type@choicespecial\ekvd@populate@choicestore}
+\ekvd@def@type@fwd{choice-enum}
+  {\ekvd@type@choicespecial\ekvd@populate@choiceenum}
+\protected\long\def\ekvd@type@choicespecial#1#2#3%
+  {%
+    \ekvd@do@new{}{#2}%
+    \ekvd@assert@twoargs{#3}%
+    \ekvd@type@choice{#2}%
+    \def\ekvd@set@choice{#2}%
+    #1#3%
+  }
+\protected\long\def\ekvd@populate@choicestore#1%
+  {%
+    \ekvd@newlet#1\ekv@empty
+    \ekvparse{\ekvd@populate@choicestore@k#1}{\ekvd@populate@choicestore@kv#1}%
+  }
+\protected\long\def\ekvd@populate@choicestore@kv#1#2#3%
+  {%
+    \protected\expandafter\edef
+      \csname\ekvd@choice@name\ekvd@set\ekvd@set@choice{#2}\endcsname
+      {\ekv@unexpanded{\edef#1{\ekv@unexpanded{#3}}}}%
+  }
+\ekv@exparg{\protected\long\def\ekvd@populate@choicestore@k#1#2}%
+  {\ekvd@populate@choicestore@kv{#1}{#2}{#2}}
+\protected\long\def\ekvd@populate@choiceenum#1%
+  {%
+    \ekvd@newreg#1{count}%
+    \def\ekvd@tmp{0}%
+    \ekvcsvloop{\ekvd@populate@choiceenum@#1}%
+  }
+\protected\long\def\ekvd@populate@choiceenum@#1#2%
+  {%
+    \protected\expandafter\edef
+      \csname\ekvd@choice@name\ekvd@set\ekvd@set@choice{#2}\endcsname
+      {#1=\@firstofone{\ekvd@tmp} }%
+    \edef\ekvd@tmp{\the\numexpr\ekvd@tmp+1\relax}%
+  }
+\ekvd@def@type{choice-aliases}
+  {%
+    \ekvd@assert@arg
+    \ekvd@assert@not@protected
+    \ekvd@assert@not@long
+    \ekvd@assert@not@also
+    \ekvd@assert@already@choice{#1}%
+    \ekvparse\ekvd@err@missing@value{\ekvd@t@choicealias{#1}}{#3}%
+  }
+\protected\long\def\ekvd@t@choicealias#1#2#3%
+  {%
+    \ifx\ekvd@do@new\ekvd@assert@new
+      \ekv@fi@firstofone
+    \fi
+    \@gobble
+      {%
+        \ekv@ifdefined{\ekvd@choice@name\ekvd@set{#1}{#2}}%
+          {\ekvd@err@not@new@choice{#2}\ekv@gobbleto@stop}%
+          {}%
+      }%
+    \ekv@ifdefined{\ekvd@choice@name\ekvd@set{#1}{#3}}%
+      {%
+        \expandafter\let
+          \csname\ekvd@choice@name\ekvd@set{#1}{#2}\expandafter\endcsname
+          \csname\ekvd@choice@name\ekvd@set{#1}{#3}\endcsname
+      }%
+      {\ekvd@err@undefined@choice{#1}{#3}}%
+    \@gobble\ekv@stop
+  }
+\ekvd@def@type{unknown-choice}
+  {%
+    \ekvd@do@new@for@name{\ekvd@unknown@choice@name\ekvd@set{#1}}%
+    \ekvd@assert@arg
+    \ekvd@assert@not@long
+    \ekvd@assert@not@also
+    \ekvd@prot\expandafter
+    \def\csname\ekvd@unknown@choice@name\ekvd@set{#1}\endcsname##1{#3}%
+  }
+\ekvd@def@type{unknown}
+  {%
+    \ekv@ifdefined{ekvd@type@unknown@\detokenize{#1}}%
+      {\csname ekvd@type@unknown@\detokenize{#1}\endcsname{#3}}%
+      \ekvd@err@misused@unknown
+  }
+\protected\long\def\ekvd@type@unknown@noval#1%
+  {%
+    \ekvd@do@new@for@name{\ekv@name\ekvd@set{}uN}%
+    \ekvd@assert@arg
+    \ekvd@assert@not@also
+    \ekvd@prot\ekvd@long\ekvdefunknownNoVal\ekvd@set{#1}%
+  }
+\protected\long\def\ekvd@type@unknown@code#1%
+  {%
+    \ekvd@do@new@for@name{\ekv@name\ekvd@set{}u}%
+    \ekvd@assert@arg
+    \ekvd@assert@not@also
+    \begingroup
+      \def\ekvd@tmp##1##2##3{#1}%
+      \ekv@exparg
+      {%
+        \endgroup
+        \ekvd@prot\ekvd@long\ekvdefunknown\ekvd@set
+      }%
+      {\ekvd@tmp{##2}{##1}{##3}}%
+  }
+\protected\edef\ekvd@type@unknown@redirect#1%
+  {%
+    \expandafter\noexpand\csname ekvd@type@unknown@redirect-code\endcsname{#1}%
+    \expandafter\noexpand\csname ekvd@type@unknown@redirect-noval\endcsname{#1}%
+  }
+\protected\expandafter\def\csname ekvd@type@unknown@redirect-code\endcsname#1%
+  {%
+    \ekvd@do@new@for@name{\ekv@name\ekvd@set{}u}%
+    \ekvd@assert@arg
+    \ekvd@assert@not@also
+    \ekvd@assert@not@protected
+    \expandafter\ekvredirectunknown\expandafter{\ekvd@set}{#1}%
+  }
+\protected\expandafter\def\csname ekvd@type@unknown@redirect-noval\endcsname#1%
+  {%
+    \ekvd@do@new@for@name{\ekv@name\ekvd@set{}uN}%
+    \ekvd@assert@arg
+    \ekvd@assert@not@also
+    \ekvd@assert@not@protected
+    \expandafter\ekvredirectunknownNoVal\expandafter{\ekvd@set}{#1}%
+  }
+\def\ekvd@h@choice#1%
+  {%
+    \expandafter\ekvd@h@choice@
+      \csname\ifcsname#1\endcsname#1\else relax\fi\endcsname
+      {#1}%
+  }
+\def\ekvd@h@choice@#1#2%
+  {%
+    \ifx#1\relax
+      \ekvd@err@choice@invalid{#2}%
+      \expandafter\@gobble
+    \fi
+    #1%
+  }
+\protected\long\def\ekvd@add@val#1#2#3%
+  {%
+    \ekvd@assert@val{#1}%
+    \expandafter\ekvd@add@aux\csname\ekv@name\ekvd@set{#1}\endcsname{{##1}}%
+      {#1}{#2}{\ekvd@long\ekvdef}{#3}%
+  }
+\protected\long\def\ekvd@add@noval#1#2#3%
+  {%
+    \ekvd@assert@noval{#1}%
+    \expandafter\ekvd@add@aux\csname\ekv@name\ekvd@set{#1}N\endcsname{}%
+      {#1}{#2}\ekvdefNoVal{#3}%
+  }
+\protected\long\def\ekvd@add@aux#1#2%
+  {%
+    \ekvd@extract@prefixes#1%
+    \expandafter\ekvd@add@aux@\expandafter{#1#2}%
+  }
+\protected\long\def\ekvd@add@aux@#1#2#3#4#5%
+  {%
+    #5%
+    \ekvd@prot#4\ekvd@set{#2}{#1#3}%
+    \ekvd@clear@prefixes
+  }
+\protected\def\ekvd@extract@prefixes#1%
+  {%
+    \expandafter\ekvd@extract@prefixes@\meaning#1\ekvd@stop
+  }
+\protected\def\ekvd@extract@prefixes@#1#2#3%
+  {%
+    \protected\def\ekvd@extract@prefixes@##1#1##2\ekvd@stop
+      {%
+        \ekvd@extract@prefixes@long
+          ##1\ekvd@mark\@firstofone#2\ekvd@mark\@gobble\ekvd@stop
+          {\let\ekvd@long\long}%
+        \ekvd@extract@prefixes@prot
+          ##1\ekvd@mark\@firstofone#3\ekvd@mark\@gobble\ekvd@stop
+          {\let\ekvd@prot\protected}%
+      }%
+    \protected\def\ekvd@extract@prefixes@long##1#2##2\ekvd@mark##3##4\ekvd@stop
+      {##3}%
+    \protected\def\ekvd@extract@prefixes@prot##1#3##2\ekvd@mark##3##4\ekvd@stop
+      {##3}%
+  }
+\begingroup
+\edef\ekvd@tmp
+  {%
+    \endgroup
+    \ekvd@extract@prefixes@
+      {\detokenize{macro:}}%
+      {\string\long}%
+      {\string\protected}%
+  }
+\ekvd@tmp
+\protected\def\ekvd@newlet#1#2%
+  {%
+    \ifdefined#1%
+      \ifx#1\relax\ekv@fi@gobble\fi\@firstofone
+      \ekv@fi@gobble
+    \fi
+    \@firstofone{\let#1#2}%
+  }
+\protected\def\ekvd@newreg#1#2%
+  {%
+    \ifdefined#1%
+      \ifx#1\relax\ekv@fi@gobble\fi\@firstofone
+      \ekv@fi@gobble
+    \fi
+    \@firstofone{\csname new#2\endcsname#1}%
+  }
+\long\def\ekvd@assert@twoargs#1%
+  {\ekvd@ifnottwoargs{#1}{\ekvd@err@missing@definition\ekvpGobbleT}{}}
+\long\def\ekvd@ifnottwoargs#1%
+  {%
+    \ekvd@ifempty@gtwo#1\ekv@ifempty@B
+      \ekv@ifempty@false\ekv@ifempty@A\ekv@ifempty@B\@firstoftwo
+  }
+\long\def\ekvd@ifempty@gtwo#1#2{\ekv@ifempty@\ekv@ifempty@A}
+\protected\def\ekvd@assert@val#1%
+  {%
+    \ekvifdefined\ekvd@set{#1}%
+      {\expandafter\ekvd@assert@val@\csname\ekv@name\ekvd@set{#1}\endcsname}%
+      {%
+        \ekvifdefinedNoVal\ekvd@set{#1}%
+          \ekvd@err@add@val@on@noval
+          {\ekvd@err@undefined@key{#1}}%
+        \ekvpGobbleT
+      }%
+  }
+\protected\def\ekvd@assert@val@#1%
+  {%
+    \expandafter\ekvd@extract@args\meaning#1\ekvd@stop
+    \unless\ifx\ekvd@extracted@args\ekvd@one@arg@string
+      \ekvd@err@unsupported@arg
+      \expandafter\ekvpGobbleT
+    \fi
+  }%
+\protected\def\ekvd@assert@noval#1%
+  {%
+    \ekvifdefinedNoVal\ekvd@set{#1}%
+      {\expandafter\ekvd@assert@noval@\csname\ekv@name\ekvd@set{#1}N\endcsname}%
+      {%
+        \ekvifdefined\ekvd@set{#1}%
+          \ekvd@err@add@noval@on@val
+          {\ekvd@err@undefined@key{#1}}%
+        \ekvpGobbleT
+      }%
+  }
+\protected\def\ekvd@assert@noval@#1%
+  {%
+    \expandafter\ekvd@extract@args\meaning#1\ekvd@stop
+    \unless\ifx\ekvd@extracted@args\ekv@empty
+      \ekvd@err@unsupported@arg
+      \expandafter\ekvpGobbleT
+    \fi
+  }
+\protected\def\ekvd@extract@args#1%
+  {%
+    \protected\def\ekvd@extract@args##1#1##2->##3\ekvd@stop
+      {\def\ekvd@extracted@args{##2}}%
+  }
+\expandafter\ekvd@extract@args\expandafter{\detokenize{macro:}}
+\edef\ekvd@one@arg@string{\string#1}
+\def\ekvd@assert@arg{\ekvd@ifnoarg{\ekvd@err@missing@definition\ekvpGobbleT}{}}
+\let\ekvd@ifnoarg\@secondoftwo
+\long\def\ekvd@assert@filledarg#1%
+  {\ekvd@ifnoarg@or@empty{#1}{\ekvd@err@missing@definition\ekvpGobbleT}{}}
+\long\def\ekvd@ifnoarg@or@empty#1%
+  {%
+    \ekvd@ifnoarg
+      \@firstoftwo
+      {\ekv@ifempty{#1}}%
+  }
+\def\ekvd@assert@not@long{\ifx\ekvd@long\long\ekvd@err@no@prefix{long}\fi}
+\def\ekvd@assert@not@protected
+  {\ifx\ekvd@prot\protected\ekvd@err@no@prefix{protected}\fi}
+\def\ekvd@assert@not@also{\ekvd@ifalso{\ekvd@err@no@prefix{also}}{}}
+\def\ekvd@assert@not@long@also
+  {\ifx\ekvd@long\long\ekvd@err@no@prefix@also{long}\fi}
+\def\ekvd@assert@not@protected@also
+  {\ifx\ekvd@prot\protected\ekvd@err@no@prefix@also{protected}\fi}
+\def\ekvd@assert@new#1#2%
+  {%
+    \csname ekvifdefined#1\endcsname\ekvd@set{#2}%
+      {\ekvd@err@not@new\ekvpGobbleT}%
+      {}%
+  }
+\def\ekvd@assert@not@new
+  {\ifx\ekvd@do@new\ekvd@assert@new\ekvd@err@no@prefix{new}\fi}
+\def\ekvd@do@new@for@name#1%
+  {%
+    \ifx\ekvd@do@new\ekvd@assert@new
+      \ekv@fi@firstofone
+    \fi
+    \@gobble{\ekv@ifdefined{#1}{\ekvd@err@not@new\ekvpGobbleT}{}}%
+  }
+\protected\def\ekvd@if@not@already@choice#1%
+  {%
+    \ekvifdefined\ekvd@set{#1}%
+      {%
+        \expandafter
+        \ekvd@if@not@already@choice@a
+          \csname\ekv@name\ekvd@set{#1}\endcsname
+          {}\ekvd@h@choice\ekvd@stop
+      }%
+      {\@firstofone}%
+  }
+\protected\def\ekvd@if@not@already@choice@a
+  {%
+    \expandafter\ekvd@if@not@already@choice@b
+  }
+\long\protected\def\ekvd@if@not@already@choice@b#1\ekvd@h@choice#2\ekvd@stop
+  {%
+    \ekv@ifempty{#2}\@firstofone\@gobble
+  }
+\long\def\ekvd@assert@already@choice#1%
+  {\ekvd@if@not@already@choice{#1}{\ekvd@err@not@choice\ekvpGobbleT}}
+\long\def\ekvd@ifspace#1%
+  {%
+    \ekvd@ifspace@#1 \ekv@ifempty@B
+      \ekv@ifempty@false\ekv@ifempty@A\ekv@ifempty@B\@firstoftwo
+  }
+\long\def\ekvd@ifspace@#1 % keep this space
+  {%
+    \ekv@ifempty@\ekv@ifempty@A
+  }
+\protected\long\def\ekvd@errm#1{\errmessage{expkv-def Error: #1}}
+\protected\def\ekvd@err@missing@definition
+  {\ekvd@errm{Missing definition for key `\ekvd@cur'}}
+\protected\def\ekvd@err@missing@type
+  {\ekvd@errm{Missing type prefix for key `\ekvd@cur'}}
+\protected\def\ekvd@err@undefined@prefix#1%
+  {%
+    \ekvd@errm
+      {%
+        Undefined prefix `\ekv@unexpanded{#1}' found while processing
+        `\ekvd@cur'%
+      }%
+  }
+\protected\def\ekvd@err@undefined@key#1%
+  {%
+    \ekvd@errm
+      {Undefined key `\ekv@unexpanded{#1}' found while processing `\ekvd@cur'}%
+  }
+\protected\def\ekvd@err@undefined@noval#1%
+  {%
+    \ekvd@errm
+      {%
+        Undefined NoVal key `\ekv@unexpanded{#1}' found while processing
+        `\ekvd@cur'%
+      }%
+  }
+\protected\def\ekvd@err@no@prefix#1%
+  {\ekvd@errm{prefix `#1' not accepted in `\ekvd@cur'}}
+\protected\def\ekvd@err@no@prefix@also#1%
+  {\ekvd@errm{`\ekvd@cur' not allowed with a `#1' key}}
+\protected\def\ekvd@err@add@val@on@noval
+  {\ekvd@errm{`\ekvd@cur' not allowed with a NoVal key}}
+\protected\def\ekvd@err@add@noval@on@val
+  {\ekvd@errm{`\ekvd@cur' not allowed with a value taking key}}
+\protected\def\ekvd@err@unsupported@arg
+  {%
+    \ekvd@errm
+      {%
+        Existing key-macro has the unsupported argument string
+        `\ekvd@extracted@args' for key `\ekvd@cur'%
+      }%
+  }
+\protected\def\ekvd@err@not@new
+  {\ekvd@errm{The key for `\ekvd@cur' is already defined}}
+\protected\def\ekvd@err@not@new@choice#1%
+  {\ekvd@errm{The choice `\detokenize{#1}' is already defined for `\ekvd@cur'}}
+\protected\def\ekvd@err@misused@unknown
+  {\ekvd@errm{Misuse of the unknown type found while processing `\ekvd@cur'}}
+\protected\long\def\ekvd@err@not@choice
+  {\ekvd@errm{The key for `\ekvd@cur' is not an existing choice key}}
+\protected\long\def\ekvd@err@missing@value#1%
+  {\ekvd@errm{Missing value for `#1' in `\ekvd@cur'}}
+\protected\long\def\ekvd@err@undefined@choice#1#2%
+  {%
+    \ekvd@errm
+      {Undefined choice `#2' for key `#1' found while processing `\ekvd@cur'}%
+  }
+\def\ekvd@err@choice@invalid#1%
+  {%
+    \ekvd@err@choice@invalid@#1%
+  }
+\begingroup
+\catcode40=8
+\catcode41=8
+\@firstofone{\endgroup
+\def\ekvd@choice@name#1#2#3%
+  {%
+    ekvd#1(#2)\detokenize{#3}%
+  }
+\def\ekvd@unknown@choice@name#1#2%
+  {%
+    ekvd:u:#1(#2)%
+  }
+\def\ekvd@err@choice@invalid@ ekvd#1(#2)\detokenize#3%
+  {%
+    \ekv@ifdefined{\ekvd@unknown@choice@name{#1}{#2}}%
+      {\csname\ekvd@unknown@choice@name{#1}{#2}\endcsname{#3}}%
+      {\ekvd@err{invalid choice `#3' for `#2' in set `#1'}}%
+  }
+}
+\ekv@exparg{\long\def\ekvd@err#1}{\ekverr{expkv-def}{#1}}
+\catcode`\@=\ekvd@tmp
+%% 
+%%
+%% End of file `expkv-def.tex'.

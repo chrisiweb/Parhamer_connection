@@ -1,4 +1,4 @@
-# texlive.profile written on Fri Oct 24 03:25:31 2025 UTC
+# texlive.profile written on Sat Nov 15 03:29:45 2025 UTC
 # It will NOT be updated and reflects only the
 # installation profile at installation time.
 selected_scheme scheme-infraonly

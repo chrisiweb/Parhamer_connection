@@ -1,0 +1,57 @@
+% xr-hooks.4ht (2025-08-01-14:51), generated from tex4ht-4ht.tex
+% Copyright 2020-2025 TeX Users Group
+% Copyright 2009-2025 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <https://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2025-08-01-14:51}
+
+\ExplSyntaxOn
+% detect )F[number]F- using l3regex
+\regex_new:N \l_xref_filename
+\regex_set:Nn \l_xref_filename {F\d+F}
+% save all filenames declared in the xref file
+\def\:extract:filename:from:xref#1#2#3{%
+  \regex_if_match:NnTF \l_xref_filename {#1}{%
+   \filename@parse{#2}
+   \expandafter\xdef\csname xr:dir:\filename@base\endcsname{\:tempa}
+}{}
+}
+\def\:declare:xref:files#1#2{
+  \begingroup
+    % we need to find filenames of cutfiles
+    % we will use \filename@parse again, so we need to save the directory name
+    \edef\:tempa{#2}%
+    \def\:CrossWord##1##2##3{\:extract:filename:from:xref{##1}{##2}{\:tempa}}%
+    \catcode`\:=11% : is not letter at this moment
+    \InputIfFileExists{#1.xref}{}{}% load saved cross-references
+    \endgroup
+}
+
+\ExplSyntaxOff
+
+\:AtEndOfPackage{\let\XR:\XR@
+  \def\XR@[#1][#2]#3{%
+    % save directory for the linked file
+    \filename@parse{#3}%
+    % \filename@base is filename, \filename@area directory
+    \expandafter\xdef\csname xr:dir:\filename@base\endcsname{\filename@area}%
+    \:declare:xref:files{\filename@area\filename@base}{\filename@area}% declare directory for cut files
+    \Configure{AtBeginDocument}{\XR:[#1][#2]{#3}}{}%
+  }%
+}
+
+

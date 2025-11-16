@@ -1,0 +1,12 @@
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-turtle}[2018/12/13 package wrapper for pst-turtle.tex (hv)]
+\RequirePackage{pst-xkey}
+%
+\input{pst-turtle.tex}
+\ProvidesFile{pst-turtle.tex}
+  [\filedate\space v\fileversion\space `PST-turtle' (hv)]
+\IfFileExists{pst-turtle.pro}{%
+  \ProvidesFile{pst-turtle.pro}[2019/05/17 v. 0.01,  PostScript prologue file (hv)]
+\@addtofilelist{pst-turtle.pro}}{}%
+\endinput
+%% $Id: pst-turtle.sty 1064 2019-05-19 09:17:21Z herbert $

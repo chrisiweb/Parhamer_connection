@@ -1,0 +1,28 @@
+% ____________________________________
+
+%               calcfrac
+%                 v0.2
+%              28/10/2023
+
+%          TeX & LaTeX package
+% ____________________________________
+
+% Author  : TeXpérimental
+% Email   : texperimental@mailo.fr
+% Licence : Released under the LaTeX Project Public License v1.3c or
+%           later, see http://www.latex-project.org/lppl.txt
+% Status  : maintained
+
+\input calcfrac.tex
+\ProvidesPackage{\calcfracname}[\calcfracdate\space\calcfracver\space Calcul d'expressions avec fractions]
+\def\cfdisp#1#2#3{%
+	\ensuremath
+		{%
+		\ifnum#11=-1 -\fi
+		\ifnum#3=1
+			#2%
+		\else
+			\frac{#2}{#3}%
+		\fi
+		}%
+}

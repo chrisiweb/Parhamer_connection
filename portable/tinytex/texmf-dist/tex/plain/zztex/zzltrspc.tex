@@ -1,0 +1,111 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    Letterspacing Facility
+%
+% Synopsis:  This module provides a fairly comprehensive letterspacing
+%            facility for ZzTeX.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   10 July 1997
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Letterspacing Commands
+%                       ------------- --------
+
+
+\defineskip{\zlspamount}{0pt}
+\defineskip{\zlspace}{0pt}
+
+
+\def \letterspace #1#2{%                        {amount[,space]}{text}
+  {\zlspparse #1,,\zmark
+   \zletterspace{#2}}}
+
+\def \eletterspace #1#2{%                       {amount[,space]}{text}
+  \edef \znext {\noexpand\letterspace{#1}{#2}}%
+  \znext}
+
+\def \zlspparse #1,#2,#3\zmark{%
+  \zlspamount = #1\relax
+  \if \emptyargp{#2}%
+    \measurespacewidth{\zlspace}%
+    \advance \zlspace by \zlspamount
+  \else
+    \zlspace = #2\relax
+  \fi}
+
+% These commands can be used in letterspaced text, but must do nothing
+% when letterspacing is not in progress.
+
+\let \lsp = \relax
+\let \nolsp = \relax
+\def \lspspace {\space}%
+\def \zlspoff {\relax}%
+\def \lspoff {\zlspoff}%
+\def \zlspon {\relax}%
+\def \lspon {\zlspon}%
+
+%                       Letterspacing Engine
+%                       ------------- ------
+
+
+\def \zletterspace #1{%                                 {text}
+  \def \lsp {\nobreak\hskip \zlspamount}%
+  \def \lspspace {\hskip \zlspace}%
+  \def \zzlspoff {\zlspoff}%
+  \def \zzlspon {\zlspon}%
+  \setflag \zlsping = \true
+  \let \zlspprev = \relax
+  \setflag \zlspprevchar = \false
+  \let \zmark = \relax
+  {\zlspa #1\zmark}}
+
+\def \zlspa {\futurelet\zlspcur \zlspb}
+
+\def \zlspb {%
+  \let \znext = \zlspc
+  \if \tokeqlp{\zlspcur}{\zmark}%
+    \let \znext = \relax
+  \else\if \cateqlp{\noexpand\zlspcur}{\zspacetoken}%
+    \if \zlsping \aftergroup\lspspace \else \aftergroup\space \fi
+  \else\if \cateqlp{\noexpand\zlspcur}{\bgroup}%
+    \aftergroup{%
+  \else\if \cateqlp{\noexpand\zlspcur}{\egroup}%
+    \aftergroup}%
+  \else\if \tokeqlp{\zlspcur}{\zzlspoff}%
+    \setflag \zlsping = \false
+  \else\if \tokeqlp{\zlspcur}{\zzlspon}%
+    \setflag \zlsping = \true
+  \else
+    \let \znext = \zlspd
+  \fi\fi\fi\fi\fi\fi
+  \znext}
+
+\def \zlspc {%                                  Discard current token.
+  \let \zlspprev = \zlspcur
+  \setflag \zlspprevchar = \false
+  \afterassignment\zlspa \let\zlspcur = }
+
+\long\def \zlspd #1{%                           Process current token.
+  \let \zlspprev = \zlspcur
+  \if \cateqlp{\noexpand#1}{\relax}%
+    \setflag \zlspprevchar = \false
+    \aftergroup#1%
+  \else\if \cateqlp{\noexpand#1}{\noexpand~}%
+    \setflag \zlspprevchar = \false
+    \if \zlsping \aftergroup\lspspace \else \aftergroup\space \fi
+  \else\if \orp{\andp{\codeeqlp{\zlspprev}{-}}{\codeeqlp{\zlspcur}{-}}}
+               {\orp{\andp{\codeeqlp{\zlspprev}{`}}{\codeeqlp{\zlspcur}{`}}}
+                    {\andp{\codeeqlp{\zlspprev}{'}}{\codeeqlp{\zlspcur}{'}}}}%
+    \setflag \zlspprevchar = \true
+    \aftergroup#1%
+  \else
+    \if \andp{\zlspprevchar}{\zlsping}\aftergroup\lsp \fi
+    \setflag \zlspprevchar = \true
+    \aftergroup#1%
+  \fi\fi\fi
+  \zlspa}

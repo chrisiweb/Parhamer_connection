@@ -99,7 +99,11 @@
 \AddBabelHook{babel-fontspec}{beforestart}{\bbl@ckeckstdfonts}
 \DisableBabelHook{babel-fontspec}
 \@onlypreamble\babelfont
-\newcommand\babelfont[2][]{%  1=langs/scripts 2=fam
+\ifx\NewDocumentCommand\@undefined\else % Not plain
+  \NewDocumentCommand\babelfont{O{}mO{}mO{}}{%
+    \bbl@bblfont@o[#1]{#2}[#3,#5]{#4}}
+\fi
+\newcommand\bbl@bblfont@o[2][]{%  1=langs/scripts 2=fam
   \ifx\fontspec\@undefined
     \usepackage{fontspec}%
   \fi

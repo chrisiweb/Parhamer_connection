@@ -1,0 +1,1650 @@
+%%
+%% This is file `collargs.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% collargs.dtx  (with options: `plain')
+%% 
+%%
+%% This file is a part of CollArgs, a TeX package providing a command which can
+%% determine the argument scope of any command whose argument structure
+%% conforms to xparse's argument specification, available at
+%% https://ctan.org/pkg/advice and https://github.com/sasozivanovic/advice.
+%%
+%% Copyright (c) 2023- Saso Zivanovic <saso.zivanovic@guest.arnes.si>
+%%                     (Sa\v{s}o \v{Z}ivanovi\'{c})
+%%
+%% This work may be distributed and/or modified under the conditions of the
+%% LaTeX Project Public License, either version 1.3c of this license or (at
+%% your option) any later version.  The latest version of this license is in
+%% https://www.latex-project.org/lppl.txt and version 1.3c or later is part of
+%% all distributions of LaTeX version 2008 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%% The Current Maintainer of this work is Saso Zivanovic.
+%%
+%% The files belonging to this work and covered by LPPL are listed in
+%% (<texmf>/doc/generic/collargs/)FILES.
+\input pgfkeys
+\input etoolbox-generic
+\edef\resetatcatcode{\catcode`\noexpand\@\the\catcode`\@\relax}
+\catcode`\@11\relax
+\ifdefined\luatexversion
+\else
+  \def\toksapp{\toks@cs@or@num\@toksapp}
+  \def\gtoksapp{\toks@cs@or@num\@gtoksapp}
+  \def\etoksapp{\toks@cs@or@num\@etoksapp}
+  \def\xtoksapp{\toks@cs@or@num\@xtoksapp}
+  \def\toks@cs@or@num#1#2#{%
+    \ifnum-2>-1#2
+      \expandafter\toks@cs@or@num@num
+    \fi
+    \toks@cs@or@num@cs{#1}{#2}%
+  }
+  \def\toks@cs@or@num@cs#1#2{#1{#2}}
+  \def\toks@cs@or@num@num\toks@cs@or@num@cs#1#2{#1{\toks#2 }}
+  \long\def\@toksapp#1#2{#1\expandafter{\the#1#2}}%
+  \long\def\@etoksapp#1#2{#1\expandafter{\expanded{\the#1#2}}}%
+  \long\def\@gtoksapp#1#2{\global#1\expandafter{\the#1#2}}%
+  \long\def\@xtoksapp#1#2{\global#1\expandafter{\expanded{\the#1#2}}}%
+\fi
+\protected\def\CollectArguments{%
+  \pgf@keys@utilifnextchar[\CollectArguments@i{\CollectArgumentsRaw{}}%]
+}
+\def\CollectArguments@i[#1]{\CollectArgumentsRaw{\collargsSet{#1}}}
+\protected\def\CollectArgumentsRaw#1#2#3{%
+  \begingroup
+  \global\let\ifcollargs@last@verbatim\ifcollargs@verbatim
+  \global\let\ifcollargs@last@verbatimbraces\ifcollargs@verbatimbraces
+  \global\collargs@double@fixfalse
+  \collargs@verbatim@wrap{#1}%
+  \collargs@init@grabspaces
+  \def\collargs@next{#3}%
+  \ifcollargsClearArgs
+    \global\collargsArgs{}%
+  \fi
+  \collargs@#2.%
+}
+\def\collargsSet#1{\pgfqkeys{/collargs}{#1}}
+\def\collargs@cs@cases#1{\collargs@cs@cases@i#1\collargs@cs@cases@end}
+\let\collargs@cs@cases@end\relax
+\def\collargs@cs@cases@i{\futurelet\collargs@temp\collargs@cs@cases@ii}
+\def\collargs@cs@cases@ii#1#2\collargs@cs@cases@end{%
+  \ifcat\noexpand\collargs@temp\relax
+    \ifx\relax#2\relax
+      \expandafter\expandafter\expandafter\@firstofthree
+    \else
+      \expandafter\expandafter\expandafter\@secondofthree
+    \fi
+  \else
+    \expandafter\@thirdofthree
+  \fi
+}
+\def\@firstofthree#1#2#3{#1}
+\def\@secondofthree#1#2#3{#2}
+\def\@thirdofthree#1#2#3{#3}
+\collargsSet{
+  caller/.code={\collargsCaller{#1}},
+}
+\def\collargsCaller#1{%
+  \collargs@cs@cases{#1}{%
+    \let\collargs@temp\collargs@caller@cs
+  }{%
+    \let\collargs@temp\collargs@caller@csandmore
+  }{%
+    \let\collargs@temp\collargs@caller@env
+  }%
+  \collargs@temp{#1}%
+}
+\def\collargs@caller@cs#1{%
+  \def\collargs@caller{#1}%
+}
+\def\collargs@caller@csandmore#1{%
+  \begingroup
+  \escapechar -1
+  \expandafter\endgroup
+  \expandafter\def\expandafter\collargs@caller\expandafter{%
+    \csname\string#1\endcsname
+  }%
+}
+\def\collargs@caller@env#1{%
+  \expandafter\def\expandafter\collargs@caller\expandafter{%
+    \csname
+    #1%
+    \endcsname
+  }%
+}
+\collargsCaller\CollectArguments
+\newif\ifcollargs@verbatim
+\newif\ifcollargs@verbatimbraces
+\collargsSet{
+  verbatim/.code={\let\collargs@apply@verbatim\collargsVerbatim},
+  verb/.code={\let\collargs@apply@verbatim\collargsVerb},
+  no verbatim/.code={\let\collargs@apply@verbatim\collargsNoVerbatim},
+}
+\def\collargs@verbatim@wrap#1{%
+  \let\collargs@apply@verbatim\relax
+  #1%
+  \collargs@apply@verbatim
+}
+\collargsSet{
+  fix from verbatim/.code={\collargsFixFromVerbatim},
+  fix from verb/.code={\collargsFixFromVerb},
+  fix from no verbatim/.code={\collargsFixFromNoVerbatim},
+}
+\def\collargsFixFromNoVerbatim{%
+  \global\collargs@fix@requestedtrue
+  \global\let\ifcollargs@last@verbatim\iffalse
+}
+\def\collargsFixFromVerbatim{%
+  \global\collargs@fix@requestedtrue
+  \global\let\ifcollargs@last@verbatim\iftrue
+  \global\let\ifcollargs@last@verbatimbraces\iftrue
+}
+\def\collargsFixFromVerb{%
+  \global\collargs@fix@requestedtrue
+  \global\let\ifcollargs@last@verbatim\iftrue
+  \global\let\ifcollargs@last@verbatimbraces\iffalse
+}
+\collargsSet{
+  braces/.code={\collargsBraces{#1}}%
+}
+\collargsSet{
+  environment/.estore in=\collargs@b@envname
+}
+\def\collargsEnvironment#1{\edef\collargs@b@envname{#1}}
+\collargsEnvironment{}
+\collargsSet{
+  begin tag/.is if=collargsBeginTag,
+  end tag/.is if=collargsEndTag,
+  tags/.style={begin tag=#1, end tag=#1},
+  tags/.default=true,
+}
+\newif\ifcollargsBeginTag
+\newif\ifcollargsEndTag
+\collargsSet{
+  ignore nesting/.is if=collargsIgnoreNesting,
+}
+\newif\ifcollargsIgnoreNesting
+\collargsSet{
+  ignore other tags/.is if=collargsIgnoreOtherTags,
+}
+\newif\ifcollargsIgnoreOtherTags
+\collargsSet{
+  append preprocessor/.code={\collargsAppendPreprocessor{#1}},
+  prepend preprocessor/.code={\collargsPrependPreprocessor{#1}},
+  append postprocessor/.code={\collargsAppendPostprocessor{#1}},
+  prepend postprocessor/.code={\collargsPrependPostprocessor{#1}},
+}
+\def\collargsAppendPreprocessor#1{\appto\collargs@preprocess@arg{#1}}
+\def\collargsPrependPreprocessor#1{\preto\collargs@preprocess@arg{#1}}
+\def\collargsAppendPostprocessor#1{\appto\collargs@postprocess@arg{#1}}
+\def\collargsPrependPostprocessor#1{\preto\collargs@postprocess@arg{#1}}
+\def\collargs@preprocess@arg{}
+\def\collargs@postprocess@arg{}
+\collargsSet{
+  clear preprocessors/.code={\collargsClearPreprocessors},
+  clear postprocessors/.code={\collargsClearPostprocessors},
+}
+\def\collargsClearPreprocessors{\def\collargs@preprocess@arg{}}%
+\def\collargsClearPostprocessors{\def\collargs@postprocess@arg{}}%
+\collargsSet{
+  append expandable preprocessor/.code={\collargsAppendExpandablePreprocessor{#1}},
+  prepend expandable preprocessor/.code={\collargsPrependExpandablePreprocessor{#1}},
+  append expandable postprocessor/.code={\collargsAppendExpandablePostprocessor{#1}},
+  prepend expandable postprocessor/.code={\collargsPrependExpandablePostprocessor{#1}},
+}
+\def\collargsAppendExpandablePreprocessor#1{%
+  \appto\collargs@preprocess@arg{%
+    \collargsArg\expandafter{\expanded{#1}}%
+  }%
+}
+\def\collargsPrependExpandablePreprocessor#1{%
+  \preto\collargs@preprocess@arg{%
+    \collargsArg\expandafter{\expanded{#1}}%
+  }%
+}
+\def\collargsAppendExpandablePostprocessor#1{%
+  \appto\collargs@postprocess@arg{%
+    \collargsArg\expandafter{\expanded{#1}}%
+  }%
+}
+\def\collargsPrependExpandablePostprocessor#1{%
+  \preto\collargs@postprocess@arg{%
+    \collargsArg\expandafter{\expanded{#1}}%
+  }%
+}
+\collargsSet{%
+  no delimiters/.is if=collargsNoDelimiters,
+}
+\newif\ifcollargsNoDelimiters
+\collargsSet{%
+  clear args/.is if=collargsClearArgs,
+}
+\newif\ifcollargsClearArgs
+\collargsClearArgstrue
+\collargsSet{%
+  return/.is choice,
+  return/braced/.code=\collargsReturnBraced,
+  return/plain/.code=\collargsReturnPlain,
+  return/no/.code=\collargsReturnNo,
+}
+\def\collargsReturnBraced{\def\collargsReturn{0}}
+\def\collargsReturnPlain{\def\collargsReturn{1}}
+\def\collargsReturnNo{\def\collargsReturn{2}}
+\collargsReturnBraced
+\collargsSet{%
+  alias/.code 2 args=\collargsAlias{#1}{#2}%
+}
+\def\collargsAlias#1#2{%
+  \csdef{collargs@#1}{\collargs@@@#2}%
+}
+\def\collargs@{%
+  \begingroup
+  \collargs@@@
+}
+\def\collargs@@@#1{%
+  \collargs@in@{#1}{&+!>.}%
+  \ifcollargs@in@
+    \expandafter\collargs@@@iii
+  \else
+    \expandafter\collargs@@@i
+  \fi
+  #1%
+}
+\def\collargs@@@i#1.{%
+  \collargs@fix{\collargs@@@ii#1.}%
+}
+\def\collargs@@@ii{%
+  \global\collargs@fix@requestedfalse
+  \global\let\ifcollargs@last@verbatim\ifcollargs@verbatim
+  \global\let\ifcollargs@last@verbatimbraces\ifcollargs@verbatimbraces
+  \collargs@@@iii
+}
+\def\collargs@@@iii#1{%
+  \ifcsname collargs@#1\endcsname
+    \csname collargs@#1\expandafter\endcsname
+  \else
+    \collargs@error@badtype{#1}%
+  \fi
+}
+\def\collargs@error@badtype#1#2.{%
+  \PackageError{collargs}{Unknown xparse argument type or modifier "#1"
+    for "\expandafter\string\collargs@caller\space"}{}%
+  \endgroup
+}
+\csdef{collargs@&}{%
+  \futurelet\collargs@temp\collargs@amp@i
+}
+\def\collargs@amp@i{%
+  \ifx\collargs@temp&%
+    \expandafter\collargs@amp@raw
+  \else
+    \expandafter\collargs@amp@set
+  \fi
+}
+\def\collargs@amp@raw#1#2{%
+  \collargs@verbatim@wrap{#2}%
+  \collargs@@@
+}
+\def\collargs@amp@set#1{%
+  \collargs@verbatim@wrap{\collargsSet{#1}}%
+  \collargs@@@
+}
+\csdef{collargs@+}{%
+  \collargs@longtrue
+  \collargs@@@
+}
+\newif\ifcollargs@long
+\csdef{collargs@>}#1{\collargs@@@}
+\csdef{collargs@!}{%
+  \collargs@grabspacesfalse
+  \collargs@@@
+}
+\newtoks\collargsArgs
+\newtoks\collargsArg
+\csdef{collargs@.}{%
+  \endgroup
+  \expanded{%
+    \endgroup
+    \noexpand\collargs@fix{%
+      \expandonce\collargs@next
+        \ifcase\collargsReturn\space
+          {\the\collargsArgs}%
+        \or
+          \the\collargsArgs
+        \fi
+      \collargs@spaces
+    }%
+  }%
+}
+\long\def\collargs@appendarg#1{%
+  \collargsArg={#1}%
+  \ifcollargs@double@fix
+    \collargs@cancel@double@fix
+  \fi
+  \collargs@preprocess@arg
+  \ifcollargsNoDelimiters
+  \else
+    \collargs@process@arg
+  \fi
+  \collargs@postprocess@arg
+  \xtoksapp\collargsArgs{\collargs@grabbed@spaces\the\collargsArg}%
+  \collargs@init@grabspaces
+  \endgroup
+}
+\def\collargs@wrap#1{%
+  \appto\collargs@process@arg{%
+    \long\def\collargs@temp##1{#1}%
+    \expandafter\expandafter\expandafter\collargsArg
+    \expandafter\expandafter\expandafter{%
+      \expandafter\collargs@temp\expandafter{\the\collargsArg}%
+    }%
+  }%
+}
+\def\collargs@process@arg{}
+\def\collargs@defcollector#1#{%
+  \ifcollargs@long\long\fi
+  \expandafter\def\collargs@caller#1%
+}
+\def\collargs@defusecollector#1#{%
+  \afterassignment\collargs@caller
+  \ifcollargs@long\long\fi
+  \expandafter\def\collargs@caller#1%
+}
+\def\collargs@letusecollector#1{%
+  \expandafter\let\collargs@caller#1%
+  \collargs@caller
+}
+\newif\ifcollargs@grabspaces
+\collargs@grabspacestrue
+\def\collargs@init@grabspaces{%
+  \gdef\collargs@gs@state{0}%
+  \gdef\collargs@spaces{}%
+  \gdef\collargs@otherspaces{}%
+}
+\def\collargs@grabspaces#1{%
+  \edef\collargs@gs@next{\unexpanded{#1}}%
+  \ifnum\collargs@gs@state=0
+    \gdef\collargs@gs@state{1}%
+    \expandafter\collargs@gs@i
+  \else
+    \expandafter\collargs@gs@next
+  \fi
+}
+\def\collargs@gs@i{%
+  \futurelet\collargs@temp\collargs@gs@g
+}
+\def\collargs@gs@g{%
+  \ifcat\noexpand\collargs@temp\bgroup
+    \expandafter\collargs@gs@next
+  \else
+    \ifcat\noexpand\collargs@temp\egroup
+      \expandafter\expandafter\expandafter\collargs@gs@next
+    \else
+      \expandafter\expandafter\expandafter\collargs@gs@ii
+    \fi
+  \fi
+}
+\def\collargs@gs@ii{%
+  \ifcollargs@verbatim
+    \expandafter\collargs@gos@iii
+  \else
+    \expandafter\collargs@gs@iii
+  \fi
+}
+\def\collargs@gs@iii{%
+  \expandafter\ifx\space\collargs@temp
+    \expandafter\collargs@gs@iv
+  \else
+    \expandafter\collargs@gs@next
+  \fi
+}
+\expandafter\def\expandafter\collargs@gs@iv\space{%
+  \gappto\collargs@spaces{ }%
+  \xappto\collargs@otherspaces{\collargs@otherspace}%
+  \collargs@gs@i
+}
+\begingroup\catcode`\ =12\relax\gdef\collargs@otherspace{ }\endgroup
+\def\collargs@gos@iii#1{%
+  \ifnum\collargs@cc{#1}=10
+    \expandafter\collargs@gos@iv
+  \else
+    \ifnum\collargs@cc{#1}=5
+      \expandafter\expandafter\expandafter\collargs@gos@v
+    \else
+      \expandafter\expandafter\expandafter\collargs@gs@next
+    \fi
+  \fi
+  #1%
+}
+\def\collargs@gos@iv#1{%
+  \gappto\collargs@otherspaces{#1}%
+  \gdef\collargs@spaces{ }%
+  \collargs@gs@i
+}
+\def\collargs@gos@v{%
+  \ifnum\collargs@gs@state=2
+    \expandafter\collargs@gs@next
+  \else
+    \expandafter\collargs@gs@vi
+  \fi
+}
+\def\collargs@gs@vi#1{%
+  \gdef\collargs@gs@state{2}%
+  \gappto\collargs@otherspaces{#1}%
+  \gdef\collargs@spaces{ }%
+  \collargs@gs@i
+}
+\def\collargs@maybegrabspaces{%
+  \ifcollargs@grabspaces
+    \expandafter\collargs@grabspaces
+  \else
+    \expandafter\@firstofone
+  \fi
+}
+\def\collargs@grabbed@spaces{%
+  \ifcollargs@verbatim
+    \collargs@otherspaces
+  \else
+    \collargs@spaces
+  \fi
+}
+\def\collargs@reinsert@spaces#1{%
+  \expanded{%
+    \unexpanded{%
+      \collargs@init@grabspaces
+      #1%
+    }%
+    \collargs@grabbed@spaces
+  }%
+}
+\long\def\collargs@ifnextcat#1#2#3{%
+  \let\pgf@keys@utilreserved@d=#1%
+  \def\pgf@keys@utilreserved@a{#2}%
+  \def\pgf@keys@utilreserved@b{#3}%
+  \futurelet\pgf@keys@utillet@token\collargs@ifncat}
+\def\collargs@ifncat{%
+  \ifx\pgf@keys@utillet@token\pgf@keys@utilsptoken
+    \let\pgf@keys@utilreserved@c\collargsxifnch
+  \else
+    \ifcat\noexpand\pgf@keys@utillet@token\pgf@keys@utilreserved@d
+      \let\pgf@keys@utilreserved@c\pgf@keys@utilreserved@a
+    \else
+      \let\pgf@keys@utilreserved@c\pgf@keys@utilreserved@b
+    \fi
+  \fi
+  \pgf@keys@utilreserved@c}
+{%
+  \def\:{\collargs@xifncat}
+  \expandafter\gdef\: {\futurelet\pgf@keys@utillet@token\collargs@ifncat}
+}
+\def\collargs@forrange#1#2{%
+  \expanded{%
+     \noexpand\collargs@forrange@i{\number#1}{\number#2}%
+   }%
+ }
+\def\collargs@forrange@i#1#2{%
+  \ifnum#1>#2 %
+    \expandafter\@gobble
+  \else
+    \expandafter\@firstofone
+  \fi
+  {%
+    \collargs@do{#1}%
+    \expandafter\collargs@forrange@i\expandafter{\number\numexpr#1+1\relax}{#2}%
+  }%
+}
+\def\collargs@forranges{\forcsvlist\collarg@forrange@i}
+\def\collarg@forrange@i#1{\collarg@forrange@ii#1-}
+\def\collarg@forrange@ii#1-#2-{\collargs@forrange{#1}{#2}}
+\begingroup
+\catcode`\%=12
+\gdef\collargs@percentchar{%}
+\endgroup
+\def\collargs@l#1.{%
+  \collargs@reinsert@spaces{\collargs@l@i#1.}%
+}
+\def\collargs@l@i{%
+  \global\collargs@fix@requestedtrue
+  \ifcollargs@verbatimbraces
+    \expandafter\collargs@l@verb
+  \else
+    \expandafter\collargs@l@ii
+  \fi
+}
+\def\collargs@l@ii#1.{%
+  \collargs@defusecollector##1##{%
+    \collargs@appendarg{##1}%
+    \collargs@#1.%
+  }%
+}
+\def\collargs@l@verb#1.{%
+  \expandafter\collargs@defusecollector
+  \expandafter##\expandafter1\collargs@other@bgroup{%
+    \collargs@appendarg{##1}%
+    \expanded{%
+      \noexpand\collargs@\unexpanded{#1.}%
+      \collargs@other@bgroup
+    }%
+  }%
+}
+\def\collargs@u{%
+  \ifcollargs@verbatim
+    \expandafter\collargs@u@verb
+  \else
+    \expandafter\collargs@u@i
+  \fi
+}
+\def\collargs@u@verb#1{%
+  \expandafter\collargs@u@i\expandafter{\detokenize\expandafter{\string#1}}%
+}
+\def\collargs@u@i#1#2.{%
+  \collargs@reinsert@spaces{\collargs@u@ii{#1}#2.}%
+}
+\def\collargs@u@ii#1#2.{%
+  \collargs@defusecollector##1#1{%
+    \collargs@wrap{####1#1}%
+    \expandafter\collargs@appendarg\expandafter{##1}%
+    \collargs@#2.%
+  }%
+  \collargs@empty
+}
+\def\collargs@empty{}
+\def\collargs@r{%
+  \ifcollargs@verbatim
+    \expandafter\collargs@r@verb
+  \else
+    \expandafter\collargs@r@i
+  \fi
+}
+\def\collargs@r@verb#1#2{%
+  \expandafter\collargs@r@i\detokenize{#1#2}%
+}
+\def\collargs@r@i#1#2#3.{%
+  \collargs@defcollector#1{%
+    \collargs@defusecollector####1#2{%
+      \collargs@wrap{#1########1#2}%
+      \expandafter\collargs@appendarg\expandafter{####1}%
+      \collargs@#3.%
+    }%
+    \collargs@empty
+  }%
+  \collargs@grabspaces\collargs@caller
+}
+\def\collargs@R#1#2#3{\collargs@r#1#2}
+\def\collargs@d{%
+  \ifcollargs@verbatim
+    \expandafter\collargs@d@verb
+  \else
+    \expandafter\collargs@d@i
+  \fi
+}
+\def\collargs@d@verb#1#2{%
+  \expandafter\collargs@d@i\detokenize{#1#2}%
+}
+\def\collargs@d@i#1#2#3.{%
+  \def\collargs@d@noopt{%
+    \global\collargs@fix@requestedtrue
+    \endgroup
+    \collargs@#3.%
+  }%
+  \collargs@defcollector#1{%
+    \collargs@defusecollector####1#2{%
+      \collargs@wrap{#1########1#2}%
+      \expandafter\collargs@appendarg\expandafter{####1}%
+      \collargs@#3.%
+    }%
+    \collargs@empty
+  }%
+  \def\collargs@d@ii{%
+    \ifx#1\collargs@temp
+      \expandafter\collargs@caller
+    \else
+      \expandafter\collargs@d@noopt
+    \fi
+  }%
+  \collargs@maybegrabspaces{\futurelet\collargs@temp\collargs@d@ii}%
+}
+\def\collargs@D#1#2#3{\collargs@d#1#2}
+\def\collargs@o{\collargs@d[]}
+\def\collargs@O#1{\collargs@d[]}
+\def\collargs@t{%
+  \ifcollargs@verbatim
+    \expandafter\collargs@t@verb
+  \else
+    \expandafter\collargs@t@i
+  \fi
+}
+\def\collargs@t@space{ }
+\def\collargs@t@verb#1{%
+  \let\collargs@t@space\collargs@otherspace
+  \expandafter\collargs@t@i\expandafter{\detokenize{#1}}%
+}
+\def\collargs@t@i#1{%
+  \expandafter\ifx\space#1%
+    \expandafter\collargs@t@s
+  \else
+    \expandafter\collargs@t@I\expandafter#1%
+  \fi
+}
+\def\collargs@t@s#1.{%
+  \collargs@grabspaces{%
+    \ifcollargs@grabspaces
+      \collargs@appendarg{}%
+    \else
+      \expanded{%
+        \noexpand\collargs@init@grabspaces
+        \noexpand\collargs@appendarg{\collargs@grabbed@spaces}%
+      }%
+    \fi
+    \collargs@#1.%
+  }%
+}
+\def\collargs@t@I#1#2.{%
+  \def\collargs@t@noopt{%
+    \global\collargs@fix@requestedtrue
+    \endgroup
+    \collargs@#2.%
+  }%
+  \def\collargs@t@opt##1{%
+    \collargs@appendarg{#1}%
+    \collargs@#2.%
+  }%
+  \def\collargs@t@ii{%
+    \ifx#1\collargs@temp
+      \expandafter\collargs@t@opt
+    \else
+      \expandafter\collargs@t@noopt
+    \fi
+  }%
+  \collargs@maybegrabspaces{\futurelet\collargs@temp\collargs@t@ii}%
+}
+\def\collargs@t@opt@space{%
+  \expanded{\noexpand\collargs@t@opt{\space}\expandafter}\romannumeral-0%
+}%
+\def\collargs@s{\collargs@t*}
+\def\collargs@m{%
+  \ifcollargs@verbatim
+    \expandafter\collargs@m@verb
+  \else
+    \expandafter\collargs@m@i
+  \fi
+}
+\def\collargs@m@i#1.{%
+  \collargs@grabspaces{\collargs@m@checkforgroup#1.}%
+}
+\def\collargs@m@checkforgroup#1.{%
+  \edef\collargs@action{\unexpanded{\collargs@m@checkforgroup@i#1.}}%
+  \futurelet\collargs@token\collargs@action
+}
+\def\collargs@m@checkforgroup@i{%
+  \ifcat\noexpand\collargs@token\bgroup
+    \expandafter\collargs@m@group
+  \else
+    \expandafter\collargs@m@token
+  \fi
+}
+\def\collargs@m@group#1.{%
+  \collargs@defusecollector##1{%
+    \collargs@wrap{{####1}}%
+    \collargs@appendarg{##1}%
+    \collargs@#1.%
+  }%
+}
+\def\collargs@m@token#1.{%
+  \collargs@defusecollector##1{%
+    \collargs@appendarg{##1}%
+    \collargs@#1.%
+  }%
+}
+\def\collargs@m@verb#1.{%
+  \collargs@grabspaces{\collargs@m@verb@checkforgroup#1.}%
+}
+\def\collargs@m@verb@checkforgroup{%
+  \ifcollargs@verbatimbraces
+    \expandafter\collargs@m@verb@checkforgroup@i
+  \else
+    \expandafter\collargs@m@checkforgroup
+  \fi
+}
+\def\collargs@m@verb@checkforgroup@i#1.{%
+  \def\collargs@m@verb@checkforgroup@ii{\collargs@m@verb@checkforgroup@iii#1.}%
+  \futurelet\collargs@temp\collargs@m@verb@checkforgroup@ii
+}
+\def\collargs@m@verb@checkforgroup@iii#1.{%
+  \expandafter\ifx\collargs@other@bgroup\collargs@temp
+    \expandafter\collargs@m@verb@group
+  \else
+    \expandafter\ifx\collargs@other@egroup\collargs@temp
+      \expandafter\expandafter\expandafter\collargs@m@verb@egrouperror
+    \else
+      \expandafter\expandafter\expandafter\collargs@m@v@token
+    \fi
+  \fi
+  #1.%
+}
+\def\collargs@m@verb@egrouperror#1.{%
+  \PackageError{collargs}{%
+    Argument of \expandafter\string\collargs@caller\space has an extra
+    \iffalse{\else\string}}{}%
+}
+\def\collargs@m@v@token#1.#2{%
+  \ifnum\collargs@cc{#2}=0
+    \expandafter\collargs@m@v@token@cs
+  \else
+    \expandafter\collargs@m@token
+  \fi
+  #1.#2%
+}
+\def\collargs@m@v@token@cs#1.#2#3{%
+  \ifnum\collargs@cc{#3}=11
+    \expandafter\collargs@m@v@token@cs@letter
+  \else
+    \expandafter\collargs@m@v@token@cs@nonletter
+  \fi
+  #1.#2#3%
+}
+\def\collargs@m@v@token@cs@nonletter#1.#2#3{%
+  \collargs@appendarg{#2#3}%
+  \collargs@#1.%
+}
+\def\collargs@m@v@token@cs@letter#1.#2{%
+  \collargsArg{#2}%
+  \def\collargs@tempa{#1}%
+  \collargs@m@v@token@cs@letter@i
+}
+\def\collargs@m@v@token@cs@letter@i#1{%
+  \ifnum\collargs@cc{#1}=11
+    \toksapp\collargsArg{#1}%
+    \expandafter\collargs@m@v@token@cs@letter@i
+  \else
+    \expandafter\collargs@m@v@token@cs@letter@ii\expandafter#1%
+  \fi
+}
+\def\collargs@m@v@token@cs@letter@ii{%
+  \expanded{%
+    \unexpanded{%
+      \expandafter\collargs@appendarg\expandafter{\the\collargsArg}%
+    }%
+    \noexpand\collargs@\expandonce\collargs@tempa.%
+  }%
+}
+\def\collargs@m@verb@group#1.#2{%
+  \let\collargs@begintag\collargs@other@bgroup
+  \let\collargs@endtag\collargs@other@egroup
+  \def\collargs@tagarg{}%
+  \def\collargs@commandatend{\collargs@m@verb@group@i#1.}%
+  \collargs@readContent
+}
+\def\collargs@m@verb@group@i{%
+  \edef\collargs@temp{%
+    \collargs@other@bgroup\unexpanded{##1}\collargs@other@egroup}%
+  \expandafter\collargs@wrap\expandafter{\collargs@temp}%
+  \expandafter\collargs@appendarg\expandafter{\the\collargsArg}%
+  \collargs@
+}
+\def\collargs@g{%
+  \def\collargs@m@token{%
+    \global\collargs@fix@requestedtrue
+    \endgroup
+    \collargs@
+  }%
+  \let\collargs@m@v@token\collargs@m@token
+  \collargs@m
+}
+\def\collargs@G#1{\collargs@g}
+\def\collargs@v#1.{%
+  \begingroup
+  \collargsBraces{{}}%
+  \collargsVerbatim
+  \collargs@grabspaces{\collargs@v@i#1.}%
+}
+\def\collargs@v@i#1.#2{%
+  \expandafter\ifx\collargs@other@bgroup#2%
+    \let\collargs@begintag\collargs@other@bgroup
+    \let\collargs@endtag\collargs@other@egroup
+    \def\collargs@tagarg{}%
+    \def\collargs@commandatend{%
+      \edef\collargs@temp{%
+        \collargs@other@bgroup\unexpanded{####1}\collargs@other@egroup}%
+      \expandafter\collargs@wrap\expandafter{\collargs@temp}%
+      \expandafter\collargs@appendarg\expandafter{\the\collargsArg}%
+      \endgroup
+      \collargs@#1.%
+    }%
+    \expandafter\collargs@readContent
+  \else
+    \collargs@defcollector##1#2{%
+      \collargs@wrap{#2####1#2}%
+      \collargs@appendarg{##1}%
+      \endgroup
+      \collargs@#1.%
+    }%
+    \expandafter\collargs@caller
+  \fi
+}
+\def\collargs@b{%
+  \collargs@ifnextcat\bgroup\collargs@bg\collargs@bi
+}
+\def\collargs@bg#1{%
+  \edef\collargs@b@envname{#1}%
+  \collargs@bi
+}
+\def\collargs@bi#1.{%
+  \ifcollargs@verbatim
+    \edef\collargs@b@envname{\detokenize\expandafter{\collargs@b@envname}}%
+  \fi
+  \collargs@bi@defCPTbeginend
+  \edef\collargs@tagarg{%
+    \ifcollargs@verbatimbraces
+    \else
+      \ifcollargsIgnoreOtherTags
+        \collargs@b@envname
+      \fi
+    \fi
+  }%
+  \def\collargs@commandatend{%
+    \collargs@biii
+    #1.%
+  }%
+  \collargs@reinsert@spaces\collargs@readContent
+}
+\def\collargs@bi@defCPTbeginend{%
+  \edef\collargs@begintag{%
+    \ifcollargs@verbatim
+      \expandafter\expandafter\expandafter\string
+    \else
+      \expandafter\expandafter\expandafter\noexpand
+    \fi
+    \csname
+      \collargs@b@envname
+    \endcsname
+  }%
+  \edef\collargs@endtag{%
+    \ifcollargs@verbatim
+      \expandafter\expandafter\expandafter\string
+    \else
+      \expandafter\expandafter\expandafter\noexpand
+    \fi
+    \csname
+      end%
+      \collargs@b@envname
+    \endcsname
+  }%
+}
+\def\collargs@biii{%
+  \collargs@b@def@wrapper
+  \expandafter\collargs@appendarg\expandafter{\the\collargsArg}%
+  \collargs@
+}
+\def\collargs@b@def@wrapper{%
+  \edef\collargs@temp{%
+    \ifcollargsBeginTag
+      \expandonce\collargs@begintag
+    \fi
+    ####1%
+    \ifcollargsEndTag
+      \expandonce\collargs@endtag
+    \fi
+  }%
+  \expandafter\collargs@wrap\expandafter{\collargs@temp}%
+}
+\def\collargs@readContent{%
+  \ifcollargs@long\long\fi
+  \collargs@CPT@def\collargs@gobbleOneB\collargs@begintag{%
+    \toks0\expandafter{##1}%
+    \futurelet\collargs@temp\collargs@gobbleOneB@i
+  }%
+  \ifcollargs@long\long\fi
+  \collargs@CPT@def\collargs@gobbleUntilE\collargs@endtag{%
+    \expandafter\toksapp\expandafter0\expandafter{##1}%
+    \collargs@gobbleUntilE@i
+  }%
+  \collargs@begins=0\relax
+  \collargsArg{}%
+  \toks0{}%
+  \collargs@letusecollector\collargs@gobbleUntilE
+  \collargs@empty
+}
+\newcount\collargs@begins
+\def\collargs@CPT@def#1#2{%
+  \expandafter\def\expandafter#1%
+  \expandafter##\expandafter1#2%
+}
+\def\collargs@qend{\collargs@qend}
+\def\collargs@gobbleOneB@i{%
+  \def\collargs@begins@increment{1}%
+  \ifx\collargs@qend\collargs@temp
+    \def\collargs@begins@increment{-1}%
+    \expandafter\collargs@gobbleOneB@v
+  \else
+    \etoksapp0{\expandonce\collargs@begintag}%
+    \expandafter\collargs@gobbleOneB@ii
+  \fi
+}%
+\def\collargs@gobbleOneB@ii{%
+  \expandafter\ifx\expandafter\relax\collargs@tagarg\relax
+    \expandafter\collargs@gobbleOneB@vi
+  \else
+    \expandafter\collargs@gobbleOneB@iii
+  \fi
+}
+\def\collargs@gobbleOneB@iii{%
+  \collargs@grabspaces{%
+    \collargs@letusecollector\collargs@gobbleOneB@iv
+  }%
+}
+\def\collargs@gobbleOneB@iv#1{%
+  \def\collargs@temp{#1}%
+  \ifx\collargs@temp\collargs@tagarg
+  \else
+    \def\collargs@begins@increment{0}%
+  \fi
+  \etoksapp0{\collargs@grabbed@spaces\unexpanded{{#1}}}%
+  \collargs@init@grabspaces
+  \collargs@gobbleOneB@vi
+}
+\def\collargs@gobbleOneB@v#1{\collargs@gobbleOneB@vi}
+\def\collargs@gobbleOneB@vi{%
+  \etoksapp\collargsArg{\the\toks0}%
+  \advance\collargs@begins\collargs@begins@increment\relax
+  \ifnum\collargs@begins@increment=-1
+  \else
+    \expandafter\collargs@gobbleOneB\expandafter\collargs@empty
+  \fi
+}
+\def\collargs@gobbleUntilE@i{%
+  \expandafter\ifx\expandafter\relax\collargs@tagarg\relax
+    \expandafter\collargs@gobbleUntilE@iv
+  \else
+    \expandafter\collargs@gobbleUntilE@ii
+  \fi
+}
+\def\collargs@gobbleUntilE@ii{%
+  \collargs@grabspaces{%
+    \collargs@letusecollector\collargs@gobbleUntilE@iii
+  }%
+}
+\def\collargs@gobbleUntilE@iii#1{%
+  \etoksapp0{\collargs@grabbed@spaces}%
+  \collargs@init@grabspaces
+  \def\collargs@tempa{#1}%
+  \ifx\collargs@tempa\collargs@tagarg
+    \expandafter\collargs@gobbleUntilE@iv
+  \else
+    \expandafter\toksapp\expandafter0\expandafter{\collargs@endtag{#1}}%
+    \expandafter\collargs@letusecollector\expandafter\collargs@gobbleUntilE
+  \fi
+}
+\def\collargs@gobbleUntilE@iv{%
+  \ifcollargsIgnoreNesting
+    \expandafter\collargsArg\expandafter{\the\toks0}%
+    \expandafter\collargs@commandatend
+  \else
+    \expandafter\collargs@gobbleUntilE@v
+  \fi
+}
+\def\collargs@gobbleUntilE@v{%
+  \expanded{%
+    \noexpand\collargs@letusecollector\noexpand\collargs@gobbleOneB
+    \noexpand\collargs@empty
+    \the\toks0
+    \expandonce\collargs@begintag
+    \noexpand\collargs@qend
+  }%
+  \ifnum\collargs@begins<0
+    \expandafter\collargs@commandatend
+  \else
+    \etoksapp\collargsArg{%
+      \expandonce\collargs@endtag
+      \expandafter\ifx\expandafter\relax\collargs@tagarg\relax\else{%
+          \expandonce\collargs@tagarg}\fi
+    }%
+    \toks0={}%
+    \expandafter\collargs@letusecollector\expandafter\collargs@gobbleUntilE
+    \expandafter\collargs@empty
+  \fi
+}
+\def\collargs@e{%
+  \global\collargs@fix@requestedtrue
+  \begingroup
+  \ifcollargs@verbatim
+    \expandafter\collargs@e@verbatim
+  \else
+    \expandafter\collargs@e@i
+  \fi
+}
+\def\collargs@e@verbatim#1{%
+  \expandafter\collargs@e@i\expandafter{\detokenize{#1}}%
+}
+\def\collargs@e@i#1{\collargs@e@ii#1.}
+\def\collargs@e@ii#1.#2.{%
+  \collargs@grabspaces{\collargs@e@iii#1.#2.}%
+}
+\def\collargs@e@iii#1.#2.{%
+  \def\collargs@e@iv{\collargs@e@v#1.#2.}%
+  \futurelet\collargs@temp\collargs@e@iv
+}
+\def\collargs@e@v{%
+  \ifcat\noexpand\collargs@temp\bgroup\relax
+    \let\collargs@marshal\collargs@e@z
+  \else
+    \ifcat\noexpand\collargs@temp\egroup\relax
+      \let\collargs@marshal\collargs@e@z
+    \else
+      \let\collargs@marshal\collargs@e@vi
+    \fi
+  \fi
+  \collargs@marshal
+}
+\newif\ifcollargs@in@
+\def\collargs@in@#1#2{%
+ \def\collargs@in@@##1#1##2##3\collargs@in@@{%
+   \ifx\collargs@in@##2\global\collargs@in@false\else\global\collargs@in@true\fi
+ }%
+ {\collargs@in@@#2#1\collargs@in@\collargs@in@@}%
+}
+\def\collargs@e@vi#1.#2.#3{%
+  \collargs@in@{#3}{#1}%
+  \ifcollargs@in@
+    \expandafter\collargs@e@vii
+  \else
+    \expandafter\collargs@e@z
+  \fi
+  #1.#2.#3%
+}
+\def\collargs@e@vii#1.#2.#3{%
+  \let\collargs@real@appendarg\collargs@appendarg
+  \def\collargs@appendarg##1{\collargsArg{##1}}%
+  \def\collargs@{\collargs@e@viii#1.#3}%
+  \collargs@m#2.%
+}
+\def\collargs@e@viii#1.#2#3.{%
+  \collargs@wrap{#2##1}%
+  \def\collargs@e@ix##1#2{\collargs@e@x##1}%
+  \collargs@e@ix#1.#3.%
+}
+\def\collargs@e@x{%
+  \expandafter\collargs@real@appendarg\expandafter{\the\collargsArg}%
+  \begingroup
+  \collargs@e@ii
+}
+\def\collargs@e@z#1.{\endgroup\endgroup\collargs@}
+\def\collargs@E#1#2{\collargs@e{#1}}
+\let\collargs@NoVerbatimAfterNoVerbatim\relax
+\def\collargs@VerbAfterNoVerbatim{%
+  \collargs@verbatimtrue
+  \collargs@verbatimbracesfalse
+  \collargs@make@verbatim
+  \collargs@after{Verb}%
+}
+\def\collargs@VerbatimAfterNoVerbatim{%
+  \collargs@verbatimtrue
+  \collargs@verbatimbracestrue
+  \collargs@make@verbatim
+  \collargs@after{Verbatim}%
+}
+\def\collargs@NoVerbatimAfterVerb{%
+  \collargs@verbatimfalse
+  \collargs@verbatimbracesfalse
+  \collargs@make@other@groups
+  \collargs@make@no@verbatim
+  \collargs@after{NoVerbatim}%
+}
+\def\collargs@VerbAfterVerb{%
+  \collargs@make@other@groups
+}
+\def\collargs@VerbatimAfterVerb{%
+  \collargs@verbatimbracestrue
+  \collargs@make@other@groups
+  \def\collargs@do##1{\catcode##1=12 }%
+  \collargs@bgroups
+  \collargs@egroups
+  \collargs@after{Verbatim}%
+}%
+\let\collargs@NoVerbatimAfterVerbatim\collargs@NoVerbatimAfterVerb
+\def\collargs@VerbAfterVerbatim{%
+  \collargs@verbatimbracesfalse
+  \collargs@make@other@groups
+  \def\collargs@do##1{\catcode##1=1 }%
+  \collargs@bgroups
+  \def\collargs@do##1{\catcode##1=2 }%
+  \collargs@egroups
+  \collargs@after{Verb}%
+}%
+\let\collargs@VerbatimAfterVerbatim\collargs@VerbAfterVerb
+\def\collargs@after#1{%
+  \letcs\collargsVerbatim{collargs@VerbatimAfter#1}%
+  \letcs\collargsVerb{collargs@VerbAfter#1}%
+  \letcs\collargsNoVerbatim{collargs@NoVerbatimAfter#1}%
+}
+\collargs@after{NoVerbatim}
+\def\collargs@bgroups{}%
+\def\collargs@egroups{}%
+\ifdefined\luatexversion
+  \def\collargs@cc#1{%
+    \directlua{tex.sprint(tex.getcatcode(\collargs@catcodetable@original,
+      \the\numexpr\expandafter`\csname#1\endcsname\relax))}%
+  }
+\else
+  \def\collargs@cc#1{%
+    \ifcsname collargs@cc@\the\numexpr\expandafter`\csname#1\endcsname\endcsname
+      \csname collargs@cc@\the\numexpr\expandafter`\csname#1\endcsname\endcsname
+    \else
+      12%
+    \fi
+  }
+\fi
+\def\collargsBraces#1{%
+  \expandafter\collargs@braces@i\detokenize{#1}\relax
+}
+\def\collargs@braces@i#1#2#3\relax{%
+  \def\collargs@make@other@groups{%
+    \def\collargs@other@bgroup{#1}%
+    \def\collargs@other@egroup{#2}%
+  }%
+}
+\def\collargs@make@other@groups{}
+\ifdefined\luatexversion
+  \ifdefined\collargs@catcodetable@verbatim\else
+    \chardef\collargs@catcodetable@verbatim=4242
+  \fi
+  \chardef\collargs@catcodetable@atletter=%
+    \number\numexpr\collargs@catcodetable@verbatim+1\relax
+  \chardef\collargs@catcodetable@initex=%
+    \number\numexpr\collargs@catcodetable@verbatim+2\relax
+    \initcatcodetable\collargs@catcodetable@initex
+  \savecatcodetable\collargs@catcodetable@atletter
+  \begingroup
+  \@firstofone{%
+    \catcodetable\collargs@catcodetable@initex
+    \catcode`\\=12
+    \catcode13=12
+    \catcode0=12
+    \catcode32=12
+    \catcode`\%=12
+    \catcode127=12
+    \def\collargs@do#1{\catcode#1=12 }%
+    \collargs@forrange{`\a}{`\z}%
+    \collargs@forrange{`\A}{`\Z}%
+    \savecatcodetable\collargs@catcodetable@verbatim
+    \endgroup
+  }%
+\fi
+\collargsSet{
+  verbatim ranges/.store in=\collargs@verbatim@ranges,
+}
+\def\collargsVerbatimRanges#1{\def\collargs@verbatim@ranges{#1}}
+\def\collargs@verbatim@ranges{0-255}
+\ifdefined\luatexversion
+  \def\collargs@make@verbatim{%
+    \directlua{%
+      for from, to in string.gmatch(
+        "\luaescapestring{\collargs@verbatim@ranges}",
+        "(\collargs@percentchar d+)-(\collargs@percentchar d+)"
+      ) do
+        for char = tex.round(from), tex.round(to) do
+          catcode = tex.catcode[char]
+          if catcode == 1 then
+            tex.sprint(
+              \number\collargs@catcodetable@atletter,
+              "\noexpand\\collargs@make@verbatim@bgroup{" .. char .. "}")
+          elseif catcode == 2 then
+            tex.sprint(
+              \number\collargs@catcodetable@atletter,
+              "\noexpand\\collargs@make@verbatim@egroup{" .. char .. "}")
+          elseif catcode == 14 then
+            tex.sprint(
+              \number\collargs@catcodetable@atletter,
+              "\noexpand\\collargs@make@verbatim@comment{" .. char .. "}")
+          end
+        end
+      end
+    }%
+    \edef\collargs@catcodetable@original{\the\catcodetable}%
+    \catcodetable\collargs@catcodetable@verbatim
+    \ifcollargs@verbatimbraces
+    \else
+      \def\collargs@do##1{\catcode##1=1\relax}%
+      \collargs@bgroups
+      \def\collargs@do##1{\catcode##1=2\relax}%
+      \collargs@egroups
+    \fi
+  }
+\else
+  \def\collargs@make@verbatim{%
+    \ifdefempty\collargs@make@other@groups{}{%
+      \collargs@make@other@groups
+      \def\collargs@make@other@groups{}%
+      \let\collargs@make@other@bgroup\@gobble
+      \let\collargs@make@other@egroup\@gobble
+    }%
+    \gdef\collargs@comments{}%
+    \let\collargs@do\collargs@make@verbatim@char
+    \expandafter\collargs@forranges\expandafter{\collargs@verbatim@ranges}%
+  }
+  \def\collargs@make@verbatim@char#1{%
+    \ifnum\catcode#1=12
+    \else
+      \csedef{collargs@cc@#1}{\the\catcode#1}%
+    \fi
+    \ifnum\catcode#1=1
+      \collargs@make@verbatim@bgroup{#1}%
+    \else
+      \ifnum\catcode#1=2
+        \collargs@make@verbatim@egroup{#1}%
+      \else
+        \ifnum\catcode#1=14
+          \collargs@make@verbatim@comment{#1}%
+        \fi
+        \ifnum\catcode#1=12
+        \else
+          \catcode#1=12\relax
+        \fi
+      \fi
+    \fi
+  }
+\fi
+\def\collargs@make@verbatim@bgroup#1{%
+  \ifcollargs@verbatimbraces
+    \catcode#1=12\relax
+  \fi
+  \appto\collargs@bgroups{\collargs@do{#1}}%
+  \collargs@make@other@bgroup{#1}%
+}
+\def\collargs@make@other@bgroup#1{%
+  \collargs@make@char\collargs@other@bgroup{#1}{12}%
+  \let\collargs@make@other@bgroup\@gobble
+}
+\def\collargs@make@verbatim@egroup#1{%
+  \ifcollargs@verbatimbraces
+    \catcode#1=12\relax
+  \fi
+  \appto\collargs@egroups{\collargs@do{#1}}%
+  \collargs@make@other@egroup{#1}%
+}
+\def\collargs@make@other@egroup#1{%
+  \collargs@make@char\collargs@other@egroup{#1}{12}%
+  \let\collargs@make@other@egroup\@gobble
+}
+\def\collargs@make@verbatim@comment#1{%
+  \gappto\collargs@comments{\collargs@do{#1}}%
+}
+\ifdefined\luatexversion
+  \def\collargs@make@no@verbatim{%
+    \catcodetable\collargs@catcodetable@original\relax
+  }%
+\else
+\def\collargs@make@no@verbatim{%
+  \let\collargs@do\collargs@make@no@verbatim@char
+  \expandafter\collargs@forranges\expandafter{\collargs@verbatim@ranges}%
+}
+\fi
+\def\collargs@make@no@verbatim@char#1{%
+  \ifcsname collargs@cc@#1\endcsname
+    \catcode#1=\csname collargs@cc@#1\endcsname\relax
+  \fi
+}
+\newif\ifcollargs@fix@requested
+\long\def\collargs@fix#1{%
+  \edef\collargs@fix@next{\unexpanded{#1}}%
+  \ifcollargs@fix@requested
+    \letcs\collargs@action{collargs@fix@%
+      \ifcollargs@last@verbatim
+        \ifcollargs@last@verbatimbraces V\else v\fi
+      \else
+        N%
+      \fi
+      to%
+      \ifcollargs@verbatim
+        \ifcollargs@verbatimbraces V\else v\fi
+      \else
+        N%
+      \fi
+    }%
+  \else
+    \let\collargs@action\collargs@fix@next
+  \fi
+  \collargs@action
+}
+\def\collargs@fix@NtoN{\collargs@fix@next}
+\let\collargs@fix@vtov\collargs@fix@NtoN
+\let\collargs@fix@VtoV\collargs@fix@NtoN
+\def\collargs@fix@Ntov{%
+  \futurelet\collargs@temp\collargs@fix@cc@to@other@ii
+}
+\def\collargs@fix@cc@to@other@ii{%
+  \ifcat\noexpand\collargs@temp\bgroup
+    \let\collargs@action\collargs@fix@next
+  \else
+    \ifcat\noexpand\collargs@temp\egroup
+      \let\collargs@action\collargs@fix@next
+    \else
+      \let\collargs@action\collargs@fix@NtoV
+    \fi
+  \fi
+  \collargs@action
+}
+\def\collargs@fix@NtoV{%
+  \ifcollargs@double@fix
+    \ifcollargs@in@second@fix
+      \expandafter\expandafter\expandafter\collargs@fix@NtoV@secondfix
+    \else
+      \expandafter\expandafter\expandafter\collargs@fix@NtoV@onemore
+    \fi
+  \else
+    \expandafter\collargs@fix@NtoV@singlefix
+  \fi
+}
+\def\collargs@fix@NtoV@singlefix{%
+  \expandafter\collargs@fix@next\string
+}
+\def\collargs@fix@NtoV@onemore#1{%
+  \collargs@do@one@more@fix{%
+    \expandafter\collargs@fix@next\string#1%
+  }%
+}
+\def\collargs@fix@NtoV@secondfix{%
+  \if\noexpand\collargs@temp\relax
+    \expandafter\collargs@fix@NtoV@secondfix@i
+  \else
+    \expandafter\collargs@fix@NtoV@singlefix
+  \fi
+}
+\def\collargs@fix@NtoV@secondfix@i#1{%
+  \gdef\collargs@double@fix@cs@ii{#1}%
+  \collargs@fix@NtoV@singlefix#1%
+}
+\def\collargs@fix@vtoN{%
+  \futurelet\collargs@token\collargs@fix@vtoN@i
+}
+\def\collargs@fix@vtoN@i{%
+  \ifcat\noexpand\collargs@token\bgroup
+    \expandafter\collargs@fix@next
+  \else
+    \ifcat\noexpand\collargs@token\egroup
+      \expandafter\expandafter\expandafter\collargs@fix@next
+    \else
+      \expandafter\expandafter\expandafter\collargs@fix@VtoN
+    \fi
+  \fi
+}
+\def\collargs@fix@vtoV{%
+  \futurelet\collargs@token\collargs@fix@vtoV@i
+}
+\def\collargs@fix@vtoV@i{%
+  \ifcat\noexpand\collargs@token\bgroup
+    \expandafter\collargs@fix@NtoV
+  \else
+    \ifcat\noexpand\collargs@token\egroup
+      \expandafter\expandafter\expandafter\collargs@fix@NtoV
+    \else
+      \expandafter\expandafter\expandafter\collargs@fix@next
+    \fi
+  \fi
+}
+\def\collargs@fix@catcode@of@braces@fromverbatim#1{%
+  \ifnum\catcode`#1=1
+    \expandafter\collargs@fix@VtoN
+    \expandafter#1%
+  \else
+    \ifnum\catcode`#1=2
+      \expandafter\expandafter\expandafter\collargs@fix@cc@VtoN
+      \expandafter\expandafter\expandafter#1%
+    \else
+      \expandafter\expandafter\expandafter\collargs@fix@next
+    \fi
+  \fi
+}
+\def\collargs@fix@VtoN#1{%
+  \ifnum\catcode`#1=0
+    \expandafter\collargs@fix@VtoN@escape
+  \else
+    \ifnum\catcode`#1=14
+      \expandafter\expandafter\expandafter\collargs@fix@VtoN@comment
+    \else
+      \expandafter\expandafter\expandafter\collargs@fix@VtoN@token
+    \fi
+  \fi
+  #1%
+}
+\def\collargs@fix@VtoN@token#1{%
+  \collargs@insert@char\collargs@fix@next{`#1}{\the\catcode`#1}%
+}
+\def\collargs@defcommentstripper#1#2{%
+  \def#1##1{%
+    \begingroup%
+    \escapechar=`\\%
+    \catcode\endlinechar=\active%
+    \def\collargs@do####1{\catcode####1=12 }%
+    \collargs@comments
+    \csname\string#1\endcsname%
+  }%
+  \begingroup%
+  \escapechar=`\\%
+  \lccode`\~=\endlinechar%
+  \lowercase{%
+    \expandafter\endgroup
+    \expandafter\def\csname\string#1\endcsname##1~%
+  }{%
+    \endgroup#2%
+  }%
+}
+\collargs@defcommentstripper\collargs@fix@VtoN@comment{%
+  \collargs@fix@next
+}
+\let\collargs@defcommentstripper\relax
+\def\collargs@fix@VtoN@escape#1{%
+  \ifcollargs@double@fix
+    \expandafter\collargs@fix@VtoN@escape@d
+  \else
+    \expandafter\collargs@fix@VtoN@escape@i
+  \fi
+}
+\def\collargs@fix@VtoN@escape@i{%
+  \begingroup
+  \catcode`\\=12
+  \catcode`\{=12
+  \catcode`\}=12
+  \catcode`\ =12
+  \collargs@fix@VtoN@escape@ii
+}
+\def\collargs@fix@VtoN@escape@ii#1{%
+  \endgroup
+  \def\collargs@csname{#1}%
+  \ifnum\catcode`#1=11
+    \expandafter\collargs@fix@VtoN@escape@iii
+  \else
+    \ifnum\catcode`#1=10
+      \expandafter\expandafter\expandafter\collargs@fix@VtoN@escape@s
+    \else
+      \expandafter\expandafter\expandafter\collargs@fix@VtoN@escape@z@i
+    \fi
+  \fi
+}
+\def\collargs@fix@VtoN@escape@iii{%
+  \futurelet\collargs@temp\collargs@fix@VtoN@escape@iv
+}
+\def\collargs@fix@VtoN@escape@iv{%
+  \ifcat\noexpand\collargs@temp\bgroup
+    \let\collargs@action\collargs@fix@VtoN@escape@z
+  \else
+    \ifcat\noexpand\collargs@temp\egroup
+      \let\collargs@action\collargs@fix@VtoN@escape@z
+    \else
+      \expandafter\ifx\space\collargs@temp
+        \let\collargs@action\collargs@fix@VtoN@escape@s
+      \else
+        \let\collargs@action\collargs@fix@VtoN@escape@v
+      \fi
+    \fi
+  \fi
+  \collargs@action
+}
+\def\collargs@fix@VtoN@escape@v#1{%
+  \ifcat\noexpand#1a%
+    \appto\collargs@csname{#1}%
+    \expandafter\collargs@fix@VtoN@escape@iii
+  \else
+    \expandafter\collargs@fix@VtoN@escape@z\expandafter#1%
+  \fi
+}
+\def\collargs@fix@VtoN@escape@s{%
+  \futurelet\collargs@temp\collargs@fix@VtoN@escape@s@i
+}
+\def\collargs@fix@VtoN@escape@s@i{%
+  \expandafter\ifx\space\collargs@temp
+    \expandafter\collargs@fix@VtoN@escape@s@ii
+  \else
+    \expandafter\collargs@fix@VtoN@escape@z
+  \fi
+}
+\def\collargs@fix@VtoN@escape@s@ii{%
+  \expandafter\collargs@fix@VtoN@escape@z\romannumeral-0%
+}
+\def\collargs@fix@VtoN@escape@z@i{%
+  \collargs@fix@VtoN@escape@z@maybe@undefine@cs@begin
+  \collargs@fix@VtoN@escape@z@ii
+}%
+\def\collargs@fix@VtoN@escape@z@maybe@undefine@cs@begin{%
+  \ifcsname\collargs@csname\endcsname
+    \@tempswatrue
+  \else
+    \@tempswafalse
+  \fi
+}
+\def\collargs@fix@VtoN@escape@z@maybe@undefine@cs@end{%
+  \if@tempswa
+  \else
+    \cslet{\collargs@csname}\collargs@undefined
+  \fi
+}
+\def\collargs@fix@VtoN@escape@z@ii{%
+  \expandafter\collargs@fix@VtoN@escape@z@maybe@undefine@cs@end
+  \expandafter\collargs@fix@next\csname\collargs@csname\endcsname
+}
+\def\collargs@fix@VtoN@escape@z{%
+  \collargs@if@one@more@fix{%
+    \collargs@do@one@more@fix\collargs@fix@VtoN@escape@z@i
+  }{%
+    \collargs@fix@VtoN@escape@z@maybe@undefine@cs@begin
+    \xdef\collargs@double@fix@cs@i{\expandonce{\csname\collargs@csname\endcsname}}%
+    \collargs@fix@VtoN@escape@z@maybe@undefine@cs@end
+    \global\collargs@double@fixtrue
+    \collargs@fix@VtoN@escape@z@ii
+  }%
+}
+\def\collargs@fix@VtoN@escape@d{%
+  \ifcollargs@in@second@fix
+    \expandafter\collargs@fix@VtoN@escape@d@i
+      \expandafter\collargs@double@fix@cs@ii
+  \else
+    \expandafter\collargs@fix@VtoN@escape@d@i
+      \expandafter\collargs@double@fix@cs@i
+  \fi
+}
+\def\collargs@fix@VtoN@escape@d@i#1{%
+  \expandafter\expandafter\expandafter\collargs@fix@VtoN@escape@d@ii
+    \expandafter\string#1\relax
+}
+\def\collargs@fix@VtoN@escape@d@ii#1#2\relax{%
+  \def\collargs@csname{#2}%
+  \def\collargs@fix@VtoN@escape@d@iii#2{%
+    \collargs@fix@VtoN@escape@z
+  }%
+  \collargs@fix@VtoN@escape@d@iii
+}
+\newif\ifcollargs@double@fix
+\newif\ifcollargs@in@second@fix
+\def\collargs@if@one@more@fix{%
+  \ifcollargs@double@fix
+    \ifcollargs@in@second@fix
+      \expandafter\expandafter\expandafter\@secondoftwo
+    \else
+      \expandafter\expandafter\expandafter\@firstoftwo
+    \fi
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
+\def\collargs@do@one@more@fix#1{%
+  \begingroup
+  \collargs@in@second@fixtrue
+  \collargs@fix{%
+    \endgroup
+    #1%
+  }%
+}
+\def\collargs@cancel@double@fix{%
+  \global\collargs@double@fixfalse
+  \begingroup
+  \collargs@process@arg
+  \edef\collargs@temp{\the\collargsArg}%
+  \edef\collargs@tempa{\expandafter\string\collargs@double@fix@cs@i}%
+  \ifx\collargs@temp\collargs@tempa
+    \global\collargs@fix@requestedtrue
+  \fi
+  \endgroup
+}
+\ifdefined\luatexversion
+  \def\collargs@insert@char#1#2#3{%
+    \edef\collargs@temp{\unexpanded{#1}}%
+    \expandafter\collargs@temp\directlua{%
+      tex.cprint(\number#3,string.char(\number#2))}%
+  }%
+  \def\collargs@make@char#1#2#3{%
+    \edef#1{\directlua{tex.cprint(\number#3,string.char(\number#2))}}%
+  }%
+\else
+  \ifdefined\XeTeXversion
+    \def\collargs@insert@char#1#2#3{%
+      \edef\collargs@temp{\unexpanded{#1}}%
+      \expandafter\collargs@temp\Ucharcat #2 #3
+    }%
+    \def\collargs@make@char#1#2#3{%
+      \edef#1{\Ucharcat#2 #3}%
+    }%
+  \else
+    \begingroup
+    \catcode`\^^@=1  \csgdef{collargs@charofcat@1}{%
+      \noexpand\expandafter^^@\iffalse}\fi}
+    \catcode`\^^@=2  \csgdef{collargs@charofcat@2}{\iffalse{\fi^^@}
+    \catcode`\^^@=3  \csgdef{collargs@charofcat@3}{^^@}
+    \catcode`\^^@=4  \csgdef{collargs@charofcat@4}{^^@}
+                     \csgdef{collargs@charofcat@5}{\par}
+    \catcode`\^^@=6  \csxdef{collargs@charofcat@6}{\unexpanded{^^@}}
+    \catcode`\^^@=7  \csgdef{collargs@charofcat@7}{^^@}
+    \catcode`\^^@=8  \csgdef{collargs@charofcat@8}{^^@}
+                     \csgdef{collargs@charofcat@10}{\noexpand\space}
+    \catcode`\^^@=11 \csgdef{collargs@charofcat@11}{^^@}
+    \catcode`\^^@=12 \csgdef{collargs@charofcat@12}{^^@}
+    \catcode`\^^@=13 \csgdef{collargs@charofcat@13}{^^@}
+    \endgroup
+    \def\collargs@insert@char#1#2#3{%
+      \begingroup
+      \lccode`\^^@=#2\relax
+      \def\collargs@temp{\endgroup#1}%
+      \expandafter\lowercase\expandafter{%
+        \expandafter\expandafter\expandafter\collargs@temp
+        \romannumeral-`0\csname collargs@charofcat@\the\numexpr#3\relax\endcsname
+      }%
+    }
+    \def\collargs@make@char#1#2#3{%
+      \begingroup
+      \lccode`\^^@=#2\relax
+      \edef\collargs@temp{%
+        \csname collargs@charofcat@\the\numexpr#3\relax\endcsname}%
+      \expandafter\lowercase\expandafter{%
+        \expandafter\def\expandafter\collargs@temp\expandafter{\collargs@temp}%
+      }%
+      \expandafter\endgroup
+      \expandafter\def\expandafter#1\expandafter{\collargs@temp}%
+    }
+  \fi
+\fi
+\resetatcatcode
+\endinput
+%%
+%% End of file `collargs.tex'.

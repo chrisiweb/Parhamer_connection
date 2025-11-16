@@ -1,0 +1,289 @@
+%%
+%% This is file `latex-lab-testphase-tikz.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-tikz.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-tikz.dtx (C) Copyright 2025 LaTeX Project
+\def\ltlabtikzdate{2025-09-27}
+\def\ltlabtikzversion{0.80d}
+
+\ProvidesExplPackage {latex-lab-testphase-tikz} {\ltlabtikzdate} {\ltlabtikzversion}
+  {Code related to the tagging of tikz pictures}
+\NewTaggingSocket{tikz/picture/init}{1}
+\NewTaggingSocket{tikz/picture/begin}{0}
+\NewTaggingSocket{tikz/picture/end}{0}
+\NewSocket{tagsupport/tikz/picture/text/begin}{0}
+\NewSocket{tagsupport/tikz/picture/text/end}{0}
+%%
+\NewTaggingSocketPlug{tikz/picture/init}{default}
+  {
+    \keys_set_known:nn { tikz / tagging } {#1}
+  }
+\AssignTaggingSocketPlug{tikz/picture/init}{default}
+\NewTaggingSocketPlug{tikz/picture/begin}{text}
+  {
+   \ifvmode
+    {
+     \if@inlabel \leavevmode \else \tag_socket_use:n{para/begin}\fi
+    }
+   \fi
+   \tag_mc_end_push:
+   \tagmcbegin{artifact}
+   \def\pgfsys@begin@text
+    {
+      \tag_resume:n{\tikz/picture}
+      \tag_socket_use:n{tikz/picture/text/begin}
+    }
+   \def\pgfsys@end@text
+    {
+      \tag_socket_use:n{tikz/picture/text/end}
+      \tag_suspend:n{\tikzpicture}
+    }
+  }
+\NewTaggingSocketPlug{tikz/picture/end}{text}
+  {
+   \tagmcend
+   \tag_mc_begin_pop:n{}
+  }
+\NewTaggingSocketPlug{tikz/picture/begin}{alt}
+  {
+    \ifvmode
+     {
+      \if@inlabel \leavevmode \else \tag_socket_use:n{para/begin}\fi
+     }
+    \fi
+    \tag_mc_end_push:
+    \tag_struct_begin:n
+     {
+      tag=Figure,
+      alt=\l__tikz_tagging_alt_tl
+     }
+    \pgfrememberpicturepositiononpagetrue
+    \tag_mc_begin:n{tag=Figure}
+  }
+
+\NewTaggingSocketPlug{tikz/picture/end}{alt}
+  {
+   \tag_mc_end:
+   \cs_set:Npn\pgfqpoint##1##2
+    {
+      \tl_set:Ne\l_tmpa_tl
+       {
+         \dim_to_decimal_in_bp:n {##1+ \pgf@picminx}
+         \c_space_tl
+         \dim_to_decimal_in_bp:n {##2+ \pgf@picminy}
+         \c_space_tl
+         \dim_to_decimal_in_bp:n {##1+ \pgf@picmaxx}
+         \c_space_tl
+         \dim_to_decimal_in_bp:n {##2+ \pgf@picmaxx}
+       }
+    }
+   \cs_if_exist:cT { pgf@sys@pdf@mark@pos@pgfid\the\pgf@picture@serial@count }
+    {
+      \use:c { pgf@sys@pdf@mark@pos@pgfid\the\pgf@picture@serial@count }
+      \tag_struct_gput:ene
+        {\tag_get:n{struct_num}}
+        {attribute}
+        {
+          /O /Layout /BBox~
+          [
+            \l_tmpa_tl
+          ]
+        }
+     }
+   \tag_struct_end:
+   \tag_mc_begin_pop:n{}
+  }
+\NewTaggingSocketPlug{tikz/picture/begin}{actualtext}
+  {
+   \ifvmode
+    {
+     \if@inlabel \leavevmode \else \tag_socket_use:n{para/begin}\fi
+    }
+   \fi
+   \tag_mc_end_push:
+   \tag_struct_begin:n{tag=Span,actualtext=\l__tikz_tagging_actualtext_tl}
+   \tag_mc_begin:n{}
+  }
+
+\NewTaggingSocketPlug{tikz/picture/end}{actualtext}
+  {
+   \tag_mc_end:
+   \tag_struct_end:
+   \tag_mc_begin_pop:n{}
+  }
+\NewTaggingSocketPlug{tikz/picture/begin}{artifact}
+  {
+    \ifvmode
+     {
+      \if@inlabel \leavevmode \else \tag_socket_use:n{para/begin}\fi
+     }
+    \fi
+    \tag_mc_end_push:
+    \tag_mc_begin:n{artifact}
+  }
+
+\NewTaggingSocketPlug{tikz/picture/end}{artifact}
+  {
+    \tag_mc_end:
+    \tag_mc_begin_pop:n{}
+  }
+\AssignTaggingSocketPlug{tikz/picture/begin}{text}
+\AssignTaggingSocketPlug{tikz/picture/end}{text}
+\NewTaggingSocketPlug{tikz/picture/text/begin}{default}
+  {
+   \tag_mc_end:
+   \tag_mc_begin:n{}
+  }
+\NewTaggingSocketPlug{tikz/picture/text/end}{default}
+  {
+   \tag_mc_end:
+   \tag_mc_begin:n{artifact}
+  }
+\AssignTaggingSocketPlug{tikz/picture/text/begin}{default}
+\AssignTaggingSocketPlug{tikz/picture/text/end}{default}
+\AddToHook{package/tikz/after}
+ {
+   \AddToHookWithArguments{cmd/tikz@picture/before}
+     {
+       \tag_socket_use:nn{tikz/picture/init}{#1}
+       \tag_socket_use:n {tikz/picture/begin}
+       \tag_suspend:n{\tikzpicture}
+     }
+   \AddToHook{cmd/endpgfpicture/after}
+     {
+       \tag_resume:n{\tikzpicture}
+       \tag_socket_use:n{tikz/picture/end}
+     }
+  }
+\tl_new:N  \l__tikz_tagging_alt_tl
+\tl_set:Nn \l__tikz_tagging_alt_tl {Alternative~text~missing!}
+\tl_new:N  \l__tikz_tagging_actualtext_tl
+
+\keys_define:nn { tikz / tagging }
+  {
+    alt        .code:n =
+     {
+       \tl_set:Ne\l__tikz_tagging_alt_tl {\text_purify:n{#1}}
+       \AssignTaggingSocketPlug{tikz/picture/begin}{alt}
+       \AssignTaggingSocketPlug{tikz/picture/end}{alt}
+       \def\pgfsys@begin@text{}
+       \def\pgfsys@end@text{}
+     },
+    actualtext .code:n =
+     {
+       \tl_set:Ne\l__tikz_tagging_actualtext_tl {\text_purify:n{#1}}
+       \AssignTaggingSocketPlug{tikz/picture/begin}{actualtext}
+       \AssignTaggingSocketPlug{tikz/picture/end}{actualtext}
+       \def\pgfsys@begin@text{}
+       \def\pgfsys@end@text{}
+     },
+    artifact   .code:n =
+     {
+       \AssignTaggingSocketPlug{tikz/picture/begin}{artifact}
+       \AssignTaggingSocketPlug{tikz/picture/end}{artifact}
+       \def\pgfsys@begin@text{}
+       \def\pgfsys@end@text{}
+     },
+    tagging-setup .multichoice:,
+    tagging-setup / text .code:n =
+     {
+       \AssignTaggingSocketPlug{tikz/picture/begin}{text}
+       \AssignTaggingSocketPlug{tikz/picture/end}{text}
+     },
+    tagging-setup / unknown .code:n=
+      {
+        \keys_set:nn { tag/graphic }{#1}
+      }
+  }
+\AddToHook{package/tikz/after}
+  {
+   \tikzset
+     {
+      alt/.code=
+       {
+         \tl_set:Ne\l__tikz_tagging_alt_tl {\text_purify:n{#1}}
+         \AssignTaggingSocketPlug{tikz/picture/begin}{alt}
+         \AssignTaggingSocketPlug{tikz/picture/end}{alt}
+         \def\pgfsys@begin@text{}
+         \def\pgfsys@end@text{}
+       },
+      actualtext/.code=
+       {
+         \tl_set:Ne \l__tikz_tagging_actualtext_tl {\text_purify:n{#1}}
+         \AssignTaggingSocketPlug{tikz/picture/begin}{actualtext}
+         \AssignTaggingSocketPlug{tikz/picture/end}{actualtext}
+         \def\pgfsys@begin@text{}
+         \def\pgfsys@end@text{}
+       },
+      artifact/.code=
+       {
+         \AssignTaggingSocketPlug{tikz/picture/begin}{artifact}
+         \AssignTaggingSocketPlug{tikz/picture/end}{artifact}
+         \def\pgfsys@begin@text{}
+         \def\pgfsys@end@text{}
+       }
+     }
+   \tikzset
+     {
+       tagging-setup/.is~choice,
+       tagging-setup/text/.code =
+        {
+          \AssignTaggingSocketPlug{tikz/picture/begin}{text}
+          \AssignTaggingSocketPlug{tikz/picture/end}{text}
+        },
+       tagging-setup/alt/.code =
+        {
+          \AssignTaggingSocketPlug{tikz/picture/begin}{alt}
+          \AssignTaggingSocketPlug{tikz/picture/end}{alt}
+          \def\pgfsys@begin@text{}
+          \def\pgfsys@end@text{}
+        },
+       tagging-setup/actualtext/.code =
+        {
+           \AssignTaggingSocketPlug{tikz/picture/begin}{actualtext}
+           \AssignTaggingSocketPlug{tikz/picture/end}{actualtext}
+           \def\pgfsys@begin@text{}
+           \def\pgfsys@end@text{}
+        },
+       tagging-setup/artifact/.code =
+        {
+          \AssignTaggingSocketPlug{tikz/picture/begin}{artifact}
+          \AssignTaggingSocketPlug{tikz/picture/end}{artifact}
+          \def\pgfsys@begin@text{}
+          \def\pgfsys@end@text{}
+        },
+     }
+ }
+\endinput
+%%
+%% End of file `latex-lab-testphase-tikz.sty'.

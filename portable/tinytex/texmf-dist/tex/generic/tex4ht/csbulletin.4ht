@@ -1,0 +1,45 @@
+% csbulletin.4ht (2022-09-20-13:52), generated from tex4ht-4ht.tex
+% Copyright 2022 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2022-09-20-13:52}
+
+\def\author#1{\def\auth@r{#1}%
+       \def\@author{#1}%
+       \setbox\authb@x=\hbox{#1}
+       \global\autkn@wntrue%
+}
+
+\def\title#1{\def\t@tle{#1}\def\@title{#1}}
+
+\renewcommand\maketitle[1][\z@]{%
+   \begingroup%
+     \def\footnote##1{\footnotemark%
+       \xdef\ZW@f@@tmark{\c@footnote}%
+       \gdef\ZW@f@@tnote{\footnotetext[\ZW@f@@tmark]{##1}}%
+       \gdef\ZW@footnote{\aftergroup\ZW@f@@tnote}%
+       \aftergroup\ZW@footnote}%
+     \parindent\z@%
+     \a:ttl\t@tle\b:ttl%
+   \endgroup\def\and{\a:and}%
+      \@@line{\ifautkn@wn\a:author\@author\b:author\fi}%
+  \thispagestyle{csbuldoi}\ClanekToc%
+  \@afterindentfalse \@afterheading}
+
+\Hinput{csbulletin}
+\endinput
+

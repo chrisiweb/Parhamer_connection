@@ -3,35 +3,14 @@
 ./:
 fonts
 ls-R
-luatex-cache
 tex
 web2c
 xdvi
 
 ./fonts:
-cache
-conf
 map
 pk
 tfm
-
-./fonts/cache:
-235bb00028ac7016c5aa04d2116826bf-x64.cache-9
-394180e6a61b09b0c73305e0a6fc2dca-x64.cache-9
-4fd295241a6881223fe7e0c9b2813998-x64.cache-9
-528ebc87373b2083c59ac721f8b5c074-x64.cache-9
-82aaee221f55735e2241dab55c4a2b3e-x64.cache-9
-CACHEDIR.TAG
-d031bbba323fd9e5b47e0ee5a0353f11-x64.cache-9
-readme.txt
-
-./fonts/conf:
-conf.d
-fonts.conf
-fonts.dtd
-
-./fonts/conf/conf.d:
-51-local.conf
 
 ./fonts/map:
 dvipdfmx
@@ -64,38 +43,8 @@ pdftex_dl14.map
 pdftex_ndl14.map
 
 ./fonts/pk:
-ljfour
-
-./fonts/pk/ljfour:
-jknappen
-public
-
-./fonts/pk/ljfour/jknappen:
-ec
-
-./fonts/pk/ljfour/jknappen/ec:
-
-./fonts/pk/ljfour/public:
-wasy
-
-./fonts/pk/ljfour/public/wasy:
-wasy10.720pk
 
 ./fonts/tfm:
-
-./luatex-cache:
-generic
-
-./luatex-cache/generic:
-fonts
-names
-
-./luatex-cache/generic/fonts:
-otl
-
-./luatex-cache/generic/fonts/otl:
-
-./luatex-cache/generic/names:
 
 ./tex:
 context
@@ -123,7 +72,6 @@ tex
 tlmgr-commands.log
 tlmgr.log
 updmap.log
-xetex
 
 ./web2c/luahbtex:
 luahbtex.fmt
@@ -148,6 +96,8 @@ etex.fmt
 etex.log
 latex.fmt
 latex.log
+mptopdf.fmt
+mptopdf.log
 pdfetex.fmt
 pdfetex.log
 pdflatex.fmt
@@ -159,10 +109,7 @@ pdftex.log
 tex.fmt
 tex.log
 
-./web2c/xetex:
-xelatex.fmt
-xelatex.log
-xetex.fmt
-xetex.log
-
 ./xdvi:
+
+./fonts/pk/ljfour/public/wasy:
+wasy10.720pk

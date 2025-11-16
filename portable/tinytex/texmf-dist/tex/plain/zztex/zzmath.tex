@@ -1,0 +1,1919 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Mathematics Facilities
+%
+% Synopsis:  This file provides the mathematics facilities of
+%            ZzTeX.  All of the Plain TeX math stuff is included.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   14 November 1990
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Math Version
+%                       ---- -------
+
+
+\definecount{\zmathver}{0}
+
+
+\def \mathversion #1{%
+  \global\zmathver = #1\relax
+  \input zzmathv#1\relax}
+
+%                       Alternate Math Fonts
+%                       --------- ---- -----
+
+
+\outer\def \ComputerModernmathfonts {%
+  \input zzcmmath\relax}
+
+\outer\def \Lucidamathfonts #1{%                        {arrows?}
+  \setflag \zusemar = #1\relax
+  \input zzlucida\relax}
+
+\outer\def \MathTimefonts {%
+  \input zzmtime\relax}
+
+%                       Spacing
+%                       -------
+
+
+% Note major uses of each kind of space:
+%   thin:   around large operators; after punctuation
+%   medium: around binary operators
+%   thick:  around relational operators
+
+\def \setmathspaces #1#2#3{%                            {thin}{medium}{thick}
+  \global\thinmuskip = #1\relax
+  \global\medmuskip = #2\relax
+  \global\thickmuskip = #3\relax}
+
+\def \mthickspace {\mkern 2\thinmuskip}
+
+\def \mthinspace {\mkern \thinmuskip}
+\def \mnegthinspace {\mkern -\thinmuskip}
+
+\def \mspace #1{\mkern #1\relax}%                       {mu}
+
+% Math mode \, \; \! are in ZZHMODE.
+
+\def \setTeXmathspaces {%
+  \setmathspaces{3mu}{4mu plus 2mu minus 4mu}{5mu plus 5mu}}
+
+%                       Character Definition
+%                       --------- ----------
+
+
+% These are the math character classes:
+
+\chardef \classord     = 0      % An ordinary symbol (\alpha). %^math_class
+\chardef \classlargeop = 1      % A large operator (\sum).. %^math_class
+\chardef \classbinop   = 2      % A binary operator (+). %^math_class
+\chardef \classrel     = 3      % A relation (=). %^math_class
+\chardef \classopen    = 4      % An opening fence ([). %^math_class
+\chardef \classclose   = 5      % A closing fence (]). %^math_class
+\chardef \classpunc    = 6      % A punctuation character (,). %^math_class
+\chardef \classvarfam  = 7      % A character that varies with \fam (\Gamma). %^math_class
+\chardef \classactive  = 8      % An active character ('). %^math_class
+
+
+\def \definemathaccent #1#2#3#4{%         {name}{class}{family}{hex-code}
+  {\zcalcmathcode{#2}{#3}{#4}%
+   \xdef #1{\mathaccent \the\tcounta\relax}}%
+  \ignorespaces}
+
+\def \definemathchar #1#2#3#4{%         {name}{class}{family}{hex-code}
+  {\zcalcmathcode{#2}{#3}{#4}%
+   \zdefmathch#1\zmark
+   \if \znext
+     \global\mathcode #1= \tcounta
+   \else
+     \global\mathchardef #1= \tcounta
+   \fi}%
+  \ignorespaces}
+
+\def \definemathdelimiter #1#2#3#4#5#6{% {name}{class}{fam1}{hex1}{fam2}{hex2}
+  {\zcalcmathcode{#2}{#3}{#4}%
+   \multiply \tcounta by 16
+   \advance \tcounta by #5
+   \multiply \tcounta by 256
+   \advance \tcounta by "#6\relax
+   \zdefmathch#1\zmark
+   \if \znext
+     \global\delcode #1= \tcounta
+   \else
+     \xdef #1{\delimiter\the\tcounta\relax}%
+   \fi}%
+  \ignorespaces}
+
+\def \definemathjoinedsymbol #1#2#3#4#5{% {name}{atom}{char1}{char2}{sep}
+  \gdef #1{#2{{#3}\mspace{#5mu}{#4}}}}
+
+\def \definemathlabeledarrow #1#2#3#4{%         {name}{atom}{label}{arrow}
+  \gdef #1{#2{\mathop{#4}\limits^{#3}}}}
+
+\def \definemathstackedsymbol #1#2#3#4#5{% {name}{atom}{char1}{char2}{sep}
+  \gdef #1{#2{\mathpalette\zstksym{{#3}{#4}{#5}}}}}
+
+
+\def \zcalcmathcode #1#2#3{%                    {class}{family}{hex-code}
+  \tcounta = #1
+  \multiply \tcounta by 16
+  \advance \tcounta by #2
+  \multiply \tcounta by 256
+  \advance \tcounta by "#3\relax}
+
+\def \zdefmathch #1#2\zmark{%
+  \setflag\znext = {\if `\noexpand#1\true \else \false \fi}}
+
+\definedimen{\muwidth}{0pt}
+
+\def \zstksym #1#2{%                            {style}{{char1}{char2}{sep}} 
+  \zstksymb #1#2}
+
+\def \zstksymb #1#2#3#4{%                       {style}{char1}{char2}{sep}
+  \vcenter{\baselineskip = 0pt
+           \lineskiplimit = -\maxdimen
+           \setbox \zboxa = \hbox{$#1\mkern 1mu$}%
+           \muwidth = \wd\zboxa
+           \ialign{\hfil ##\hfil\cr
+                   \raise #4\muwidth \hbox{$#1#2$}\cr
+                   $#1#3$\cr}}}
+
+%                       Character Styles
+%                       --------- ------
+
+
+\definecount{\zmstyfam}{0}
+
+
+\def \setmathdigitstyle #1{%                                    {style}
+  {\tcounta = "\the\classvarfam0
+   \advance \tcounta by \name{#1fam}%
+   \multiply \tcounta by 256
+   \advance \tcounta by `\0%
+   \tcountb = `0
+   \loop
+     \global\mathcode \tcountb = \tcounta
+     \increment \tcounta
+     \increment \tcountb
+   \if \lssp{\tcountb}{`\:}\repeat}}
+
+\def \setmathletterstyle #1{%                           {\style}
+  {\tcounta = "\the\classvarfam0
+   \advance \tcounta by \name{#1fam}%
+   \multiply \tcounta by 256
+   \advance \tcounta by `\A%
+   \tcountb = `A
+   \loop
+     \global\mathcode \tcountb = \tcounta
+     \increment \tcounta
+     \increment \tcountb
+   \if \lssp{\tcountb}{`\[}\repeat
+   \advance \tcounta by 6
+   \tcountb = `\a
+   \loop
+     \global\mathcode \tcountb = \tcounta
+     \increment \tcounta
+     \increment \tcountb
+   \if \lssp{\tcountb}{`\{}\repeat}%
+  \if \zcommonencoding
+    \def \znext {#1}%
+    \def \zit {\it}%
+    \if \tokeqlp{\znext}{\zit}\setstyleskewchar{#1}{7}\fi
+  \fi}
+
+\def \setmathucgreekstyle #1{%                                  {style}
+  {\zmstyfam = \name{#1fam}%
+\definemathchar \Alpha   \classvarfam \rmfam    {41}
+\definemathchar \Beta    \classvarfam \rmfam    {42}
+\definemathchar \Gamma   \classvarfam \zmstyfam {00}
+\definemathchar \Delta   \classvarfam \zmstyfam {01}
+\definemathchar \Epsilon \classvarfam \rmfam    {45}
+\definemathchar \Zeta    \classvarfam \rmfam    {5A}
+\definemathchar \Eta     \classvarfam \rmfam    {48}
+\definemathchar \Theta   \classvarfam \zmstyfam {02}
+\definemathchar \Iota    \classvarfam \rmfam    {49}
+\definemathchar \Kappa   \classvarfam \rmfam    {4B}
+\definemathchar \Lambda  \classvarfam \zmstyfam {03}
+\definemathchar \Mu      \classvarfam \rmfam    {4D}
+\definemathchar \Nu      \classvarfam \rmfam    {4E}
+\definemathchar \Xi      \classvarfam \zmstyfam {04}
+\definemathchar \Omicron \classvarfam \rmfam    {4F}
+\definemathchar \Pi      \classvarfam \zmstyfam {05}
+\definemathchar \Rho     \classvarfam \rmfam    {50}
+\definemathchar \Sigma   \classvarfam \zmstyfam {06}
+\definemathchar \Tau     \classvarfam \rmfam    {54}
+\definemathchar \Upsilon \classvarfam \zmstyfam {07}
+\definemathchar \Phi     \classvarfam \zmstyfam {08}
+\definemathchar \Chi     \classvarfam \rmfam    {58}
+\definemathchar \Psi     \classvarfam \zmstyfam {09}
+\definemathchar \Omega   \classvarfam \zmstyfam {0A}}}
+
+\def \zmtextstyle {\rm}
+\def \zmtextfam   {\rmfam}
+
+\def \setmathtextstyle #1{%                                     {style}
+  \gdef \zmtextstyle {#1}%
+  \xdef \zmtextfam   {\name{#1fam}}}
+
+\def \zmfunstyle {\rm}
+
+\def \setmathfunctionstyle #1{%                                 {style}
+  \gdef \zmfunstyle {#1}}
+
+\def \zmvarstyle {\it}
+
+\def \setmathmvarstyle #1{%                                     {style}
+  \gdef \zmvarstyle {#1}}
+
+\def \setmathpunctuationstyle #1{%                              {style}
+  {\zmstyfam = \name{#1fam}%
+   \definemathchar {`.} \classord  \zmstyfam {2E}
+   \definemathchar {`,} \classpunc \zmstyfam {2C}
+   \definemathchar {`;} \classpunc \zmstyfam {3B}}}
+
+%                       Characters
+%                       ----------
+
+
+\let \zmchar = \definemathchar
+
+
+% Letters:
+
+% INITEX does the following for each letter:
+%
+% \definemathchar{letter}{\classvarfam}{\mit}{xx}
+%
+% This can be changed using the \setmathletterstyle command above.
+
+
+% Figures (digits):
+
+% INITEX does the following for each digit:
+%
+% \definemathchar{digit}{\classvarfam}{\rm}{xx}
+%
+% This can be changed using the \setmathdigitstyle command above.
+
+
+% Uppercase Greek letters:
+
+% This can be changed using the \setmathucgreekstyle command above.
+
+\setmathucgreekstyle{\rm}
+
+
+% Lowercase Greek letters:
+
+\zmchar \alpha                  \classord \mitfam {0B}
+\zmchar \beta                   \classord \mitfam {0C}
+\zmchar \gamma                  \classord \mitfam {0D}
+\zmchar \delta                  \classord \mitfam {0E}
+\zmchar \epsilon                \classord \mitfam {0F}
+\zmchar \zeta                   \classord \mitfam {10}
+\zmchar \eta                    \classord \mitfam {11}
+\zmchar \theta                  \classord \mitfam {12}
+\zmchar \iota                   \classord \mitfam {13}
+\zmchar \kappa                  \classord \mitfam {14}
+\zmchar \lambda                 \classord \mitfam {15}
+\zmchar \mu                     \classord \mitfam {16}
+\zmchar \nu                     \classord \mitfam {17}
+\zmchar \xi                     \classord \mitfam {18}
+\zmchar \omicron                \classord \mitfam {6F}
+\zmchar \pi                     \classord \mitfam {19}
+\zmchar \rho                    \classord \mitfam {1A}
+\zmchar \sigma                  \classord \mitfam {1B}
+\zmchar \tau                    \classord \mitfam {1C}
+\zmchar \upsilon                \classord \mitfam {1D}
+\zmchar \phi                    \classord \mitfam {1E}
+\zmchar \chi                    \classord \mitfam {1F}
+\zmchar \psi                    \classord \mitfam {20}
+\zmchar \omega                  \classord \mitfam {21}
+
+\zmchar \varepsilon             \classord \mitfam {22}
+\zmchar \vartheta               \classord \mitfam {23}
+\zmchar \varpi                  \classord \mitfam {24}
+\zmchar \varrho                 \classord \mitfam {25}
+\zmchar \varsigma               \classord \mitfam {26}
+\zmchar \varphi                 \classord \mitfam {27}
+
+
+% Ordinary symbols:
+
+\zmchar {`.}                    \classord \rmfam  {2E}
+\zmchar {`/}                    \classord \mitfam {3D}
+\zmchar \zmbackslash            \classord \msyfam {6E}
+\zmchar {`|}                    \classord \msyfam {6A}
+\zmchar \aleph                  \classord \msyfam {40}
+\zmchar \bot                    \classord \msyfam {3F}
+\zmchar \clubsuit               \classord \msyfam {7C}
+\zmchar \diamondsuit            \classord \msyfam {7D}
+\zmchar \ell                    \classord \mitfam {60}
+\zmchar \emptyset               \classord \msyfam {3B}
+\zmchar \exists                 \classord \msyfam {39}
+\zmchar \flat                   \classord \mitfam {5B}
+\zmchar \forall                 \classord \msyfam {38}
+\zmchar \heartsuit              \classord \msyfam {7E}
+\zmchar \Im                     \classord \msyfam {3D}
+\zmchar \imath                  \classord \mitfam {7B}
+\zmchar \infinity               \classord \msyfam {31}
+\let    \infty =                \infinity
+\zmchar \jmath                  \classord \mitfam {7C}
+\zmchar \nabla                  \classord \msyfam {72}
+\zmchar \natural                \classord \mitfam {5C}
+\zmchar \neg                    \classord \msyfam {3A}
+\let    \lnot =                 \neg
+\zmchar \partial                \classord \mitfam {40}
+\zmchar \prime                  \classord \msyfam {30}
+\zmchar \Re                     \classord \msyfam {3C}
+\zmchar \sharp                  \classord \mitfam {5D}
+\zmchar \spadesuit              \classord \msyfam {7F}
+\zmchar \surd                   \classord \msyfam {70}
+\zmchar \top                    \classord \msyfam {3E}
+\zmchar \triangle               \classord \msyfam {34}
+\zmchar \wp                     \classord \mitfam {7D}
+
+
+% Large operations:
+
+\zmchar \bigcap                 \classlargeop \mexfam {54}
+\zmchar \bigcup                 \classlargeop \mexfam {53}
+\zmchar \bigodot                \classlargeop \mexfam {4A}
+\zmchar \bigoplus               \classlargeop \mexfam {4C}
+\zmchar \bigotimes              \classlargeop \mexfam {4E}
+\zmchar \bigsqcup               \classlargeop \mexfam {46}
+\zmchar \biguplus               \classlargeop \mexfam {55}
+\zmchar \bigvee                 \classlargeop \mexfam {57}
+\zmchar \bigwedge               \classlargeop \mexfam {56}
+\zmchar \coprod                 \classlargeop \mexfam {60}
+\zmchar \intop                  \classlargeop \mexfam {52}
+\zmchar \ointop                 \classlargeop \mexfam {48}
+\zmchar \prod                   \classlargeop \mexfam {51}
+\zmchar \smallint               \classlargeop \msyfam {73}
+\zmchar \sum                    \classlargeop \mexfam {50}
+
+
+% Binary operations:
+
+\zmchar {`*}                    \classbinop \msyfam {03}
+\zmchar {`+}                    \classbinop \rmfam  {2B}
+\zmchar {`-}                    \classbinop \msyfam {00}
+\zmchar \amalg                  \classbinop \msyfam {71}
+\zmchar \ast                    \classbinop \msyfam {03}
+\zmchar \bigcirc                \classbinop \msyfam {0D}
+\zmchar \bigtriangledown        \classbinop \msyfam {35}
+\zmchar \bigtriangleup          \classbinop \msyfam {34}
+\zmchar \zmbullet               \classbinop \msyfam {0F}
+\zmchar \cap                    \classbinop \msyfam {5C}
+\zmchar \cdot                   \classbinop \msyfam {01}
+\zmchar \circ                   \classbinop \msyfam {0E}
+\let    \compose =              \circ
+\zmchar \cup                    \classbinop \msyfam {5B}
+\zmchar \zmdagger               \classbinop \msyfam {79}
+\zmchar \zmddagger              \classbinop \msyfam {7A}
+\zmchar \diamond                \classbinop \msyfam {05}
+\zmchar \div                    \classbinop \msyfam {04}
+\zmchar \mp                     \classbinop \msyfam {07}
+\zmchar \odot                   \classbinop \msyfam {0C}
+\zmchar \ominus                 \classbinop \msyfam {09}
+\zmchar \oplus                  \classbinop \msyfam {08}
+\zmchar \oslash                 \classbinop \msyfam {0B}
+\zmchar \otimes                 \classbinop \msyfam {0A}
+\zmchar \pm                     \classbinop \msyfam {06}
+\zmchar \setminus               \classbinop \msyfam {6E}
+\zmchar \sqcap                  \classbinop \msyfam {75}
+\zmchar \sqcup                  \classbinop \msyfam {74}
+\zmchar \star                   \classbinop \mitfam {3F}
+\zmchar \times                  \classbinop \msyfam {02}
+\let    \cross =                \times
+\zmchar \triangleleft           \classbinop \mitfam {2F}
+\zmchar \triangleright          \classbinop \mitfam {2E}
+\zmchar \uplus                  \classbinop \msyfam {5D}
+\zmchar \vee                    \classbinop \msyfam {5F}
+\let    \lor =                  \vee
+\zmchar \wedge                  \classbinop \msyfam {5E}
+\let    \land =                 \wedge
+\zmchar \wr                     \classbinop \msyfam {6F}
+
+
+% Relations:
+
+\zmchar {`:}                    \classrel \rmfam {3A}
+\zmchar {`<}                    \classrel \mitfam {3C}
+\zmchar {`=}                    \classrel \rmfam  {3D}
+\zmchar {`>}                    \classrel \mitfam {3E}
+\zmchar \approx                 \classrel \msyfam {19}
+\zmchar \asymp                  \classrel \msyfam {10}
+\zmchar \dashv                  \classrel \msyfam {61}
+\zmchar \equiv                  \classrel \msyfam {11}
+\zmchar \frown                  \classrel \mitfam {5F}
+\zmchar \geq                    \classrel \msyfam {15}
+\let \ge =                      \geq
+\let \gets =                    \leftarrow
+\zmchar \gg                     \classrel \msyfam {1D}
+\zmchar \in                     \classrel \msyfam {32}
+\zmchar \Leftarrow              \classrel \msyfam {28}
+\zmchar \leftarrow              \classrel \msyfam {20}
+\zmchar \leftharpoondown        \classrel \mitfam {29}
+\zmchar \leftharpoonup          \classrel \mitfam {28}
+\zmchar \Leftrightarrow         \classrel \msyfam {2C}
+\zmchar \leftrightarrow         \classrel \msyfam {24}
+\zmchar \leq                    \classrel \msyfam {14}
+\let \le =                      \leq
+\zmchar \lhook                  \classrel \mitfam {2C}
+\zmchar \ll                     \classrel \msyfam {1C}
+\zmchar \mapstochar             \classrel \msyfam {37}
+\zmchar \mid                    \classrel \msyfam {6A}
+\let \given = \mid
+\zmchar \nearrow                \classrel \msyfam {25}
+\zmchar \ni                     \classrel \msyfam {33}
+\zmchar \not                    \classrel \msyfam {36}
+\zmchar \nwarrow                \classrel \msyfam {2D}
+\let \owns =                    \ni
+\zmchar \parallel               \classrel \msyfam {6B}
+\zmchar \perp                   \classrel \msyfam {3F}
+\zmchar \prec                   \classrel \msyfam {1E}
+\zmchar \preceq                 \classrel \msyfam {16}
+\zmchar \propto                 \classrel \msyfam {2F}
+\zmchar \rhook                  \classrel \mitfam {2D}
+\zmchar \Rightarrow             \classrel \msyfam {29}
+\zmchar \rightarrow             \classrel \msyfam {21}
+\zmchar \rightharpoondown       \classrel \mitfam {2B}
+\zmchar \rightharpoonup         \classrel \mitfam {2A}
+\zmchar \searrow                \classrel \msyfam {26}
+\zmchar \sim                    \classrel \msyfam {18}
+\zmchar \simeq                  \classrel \msyfam {27}
+\zmchar \smile                  \classrel \mitfam {5E}
+\zmchar \subset                 \classrel \msyfam {1A}
+\zmchar \subseteq               \classrel \msyfam {12}
+\zmchar \succ                   \classrel \msyfam {1F}
+\zmchar \succeq                 \classrel \msyfam {17}
+\zmchar \supset                 \classrel \msyfam {1B}
+\zmchar \supseteq               \classrel \msyfam {13}
+\zmchar \swarrow                \classrel \msyfam {2E}
+\zmchar \sqsubseteq             \classrel \msyfam {76}
+\zmchar \sqsupseteq             \classrel \msyfam {77}
+\let \to =                      \rightarrow
+\zmchar \vdash                  \classrel \msyfam {60}
+
+
+% Openers:
+
+\zmchar {`(}                    \classopen \rmfam {28}
+\zmchar {`[}                    \classopen \rmfam {5B}
+\zmchar {`\{}                   \classopen \msyfam {66}
+
+
+% Closers:
+
+\zmchar {`!}                    \classclose \rmfam {21}
+\zmchar {`)}                    \classclose \rmfam {29}
+\zmchar {`?}                    \classclose \rmfam {3F}
+\zmchar {`]}                    \classclose \rmfam {5D}
+\zmchar {`\}}                   \classclose \msyfam {67}
+
+
+% Punctuation:
+
+\zmchar {`,}                    \classpunc \rmfam {2C}
+\zmchar {`;}                    \classpunc \rmfam {3B}
+\zmchar \cdotp                  \classpunc \msyfam {01}
+\zmchar \maps                   \classpunc \rmfam {3A}
+\let    \colon =                \maps
+\zmchar \ldotp                  \classpunc \mitfam {3A}
+
+
+% Active characters:
+
+\zmchar {` }                    \classactive \rmfam {00}
+\zmchar {`'}                    \classactive \rmfam {00}
+
+{\catcode`\' = \catactive
+\gdef '{^\bgroup \zmprima}
+} % \catcode
+
+\def \zmprima {\prime \futurelet\znext \zmprimb}
+\def \zmprimb {%
+  \if \tokeqlp{\znext}{'}%
+    \let \znext = \zmprimc
+  \else \if \tokeqlp{\znext}{^}%
+    \let \znext = \zmprimd
+  \else
+    \let \znext = \egroup
+  \fi\fi
+  \znext}
+\def \zmprimc #1{\zmprima}
+\def \zmprimd #1#2{#2\egroup}
+
+%                       Delimiters
+%                       ----------
+
+% IniTeX does the following for each character:
+%
+%   \delcode`x = -1
+
+\definemathdelimiter{`(}{\classord}{\rmfam}{28}{\mexfam}{00}
+\definemathdelimiter{`)}{\classord}{\rmfam}{29}{\mexfam}{01}
+\definemathdelimiter{`/}{\classord}{\rmfam}{2F}{\mexfam}{0E}
+\definemathdelimiter{`<}{\classord}{\msyfam}{68}{\mexfam}{0A}
+\definemathdelimiter{`>}{\classord}{\msyfam}{69}{\mexfam}{0B}
+\definemathdelimiter{`[}{\classord}{\rmfam}{5B}{\mexfam}{02}
+\definemathdelimiter{`]}{\classord}{\rmfam}{5D}{\mexfam}{03}
+\definemathdelimiter{`|}{\classord}{\msyfam}{6A}{\mexfam}{0C}
+
+\definemathdelimiter{\Arrowvert}{\classord}{\mexfam}{3D}{\rmfam}{00}
+\definemathdelimiter{\arrowvert}{\classord}{\mexfam}{3C}{\rmfam}{00}
+\definemathdelimiter{\bracevert}{\classord}{\mexfam}{3E}{\rmfam}{00}
+\definemathdelimiter{\Downarrow}{\classrel}{\msyfam}{2B}{\mexfam}{7F}
+\definemathdelimiter{\downarrow}{\classrel}{\msyfam}{23}{\mexfam}{79}
+\definemathdelimiter{\langle}{\classopen}{\msyfam}{68}{\mexfam}{0A}
+\definemathdelimiter{\lceil}{\classopen}{\msyfam}{64}{\mexfam}{06}
+\definemathdelimiter{\lfloor}{\classopen}{\msyfam}{62}{\mexfam}{04}
+\definemathdelimiter{\lgroup}{\classopen}{\rmfam}{00}{\mexfam}{3A}
+\definemathdelimiter{\lmoustache}{\classopen}{\rmfam}{00}{\mexfam}{40}
+\definemathdelimiter{\rangle}{\classclose}{\msyfam}{69}{\mexfam}{0B}
+\definemathdelimiter{\rceil}{\classclose}{\msyfam}{65}{\mexfam}{07}
+\definemathdelimiter{\rfloor}{\classclose}{\msyfam}{63}{\mexfam}{05}
+\definemathdelimiter{\rgroup}{\classclose}{\rmfam}{00}{\mexfam}{3B}
+\definemathdelimiter{\rmoustache}{\classclose}{\rmfam}{00}{\mexfam}{41}
+\definemathdelimiter{\Uparrow}{\classrel}{\msyfam}{2A}{\mexfam}{7E}
+\definemathdelimiter{\uparrow}{\classrel}{\msyfam}{22}{\mexfam}{78}
+\definemathdelimiter{\Updownarrow}{\classrel}{\msyfam}{6D}{\mexfam}{77}
+\definemathdelimiter{\updownarrow}{\classrel}{\msyfam}{6C}{\mexfam}{3F}
+\definemathdelimiter{\Vert}{\classord}{\msyfam}{6B}{\mexfam}{0D}
+\definemathdelimiter{\vert}{\classord}{\msyfam}{6A}{\mexfam}{0C}
+\definemathdelimiter{\zmbackslash}{\classord}{\msyfam}{6E}{\mexfam}{0F}
+\definemathdelimiter{\zmlbrace}{\classopen}{\msyfam}{66}{\mexfam}{08}
+\definemathdelimiter{\zmrbrace}{\classclose}{\msyfam}{67}{\mexfam}{09}
+
+%                       Accents
+%                       -------
+
+
+\definemathaccent{\acute}{\classvarfam}{\rmfam}{13}
+\definemathaccent{\bar}{\classvarfam}{\rmfam}{16}
+\definemathaccent{\breve}{\classvarfam}{\rmfam}{15}
+\definemathaccent{\check}{\classvarfam}{\rmfam}{14}
+\definemathaccent{\ddot}{\classvarfam}{\rmfam}{7F}
+\definemathaccent{\dot}{\classvarfam}{\rmfam}{5F}
+\definemathaccent{\grave}{\classvarfam}{\rmfam}{12}
+\definemathaccent{\zmhat}{\classvarfam}{\rmfam}{5E}
+\definemathaccent{\zmtilde}{\classvarfam}{\rmfam}{7E}
+\definemathaccent{\ring}{\classvarfam}{\rmfam}{17}
+\definemathaccent{\widetilde}{\classord}{\mexfam}{65}
+\definemathaccent{\widehat}{\classord}{\mexfam}{62}
+\definemathaccent{\vec}{\classord}{\mitfam}{7E}
+
+\def \widebar #1{%                              {math} %~ Wide bar accent. %^math_accent
+  \mathpalette\zwidebar{#1}}
+
+\def \zwidebar #1#2{%                           {style}{math}
+  \rlap{\measuretextwidth{\tdimena}{$#1#2$}%
+        \kern .2\tdimena
+        $\overline{\vphantom{#1#2}\kern .6\tdimena}$}%
+  #2}
+
+%                       Defined Characters
+%                       ------- ----------
+
+
+\def \angle {%
+  {\vbox{\ialign{$\scriptstyle##$\cr
+                 \not \mathrel{\mkern 14mu}\cr
+                 \noalign{\nointerlineskip}%
+                 \mkern 2.5mu \leaders \hrule height .34pt \hfill
+                   \mkern 2.5mu\cr}}}}
+
+\definemathjoinedsymbol{\bowtie}{\mathrel}{\triangleright}{\triangleleft}{-3}
+
+\definemathstackedsymbol{\cong}{\mathrel}{\sim}{=}{6}
+
+\def \degree {^\circ}
+
+\let \degrees = \degree
+
+\def \defeq{%
+  \mathrel{\mathop{=}\limits^{\mathscriptscriptstyle{\roman{def}}}}}
+
+\definemathstackedsymbol{\Deltaeq}{\mathrel}{\mathscriptscriptstyle{\Delta}}{=}{9}
+
+\definemathstackedsymbol{\doteq}{\mathrel}{.}{=}{9}
+
+\definemathstackedsymbol{\gel}{\mathrel}{\zge}{<}{11}
+
+\definemathstackedsymbol{\zge}{\mathrel}{>}{=}{7.5}
+
+\definemathstackedsymbol{\gl}{\mathrel}{>}{<}{5.5}
+
+\def \hbar {\mathord{h \llap{$\mathchar"16 \mkern 3.5mu$}}}
+
+\definemathjoinedsymbol{\hookleftarrow}{\mathrel}{\leftarrow}{\rhook}{-3}
+
+\definemathjoinedsymbol{\hookrightarrow}{\mathrel}{\lhook}{\rightarrow}{-3}
+
+\def \int {\intop\nolimits}
+
+\def \iint {\zint2}
+
+\def \iiint {\zint3}
+
+\def \iiiint {\zint4}
+
+\def \idotsint {\zint0}
+
+\def \zint #1{%
+  \mkern -9mu \mathchoice{\mkern -5mu}{}{}{}%
+  \mathop{%
+    \mkern 9mu \mathchoice{\mkern 5mu}{}{}{}%
+    \intop
+    \ifcase #1%
+      \mkern -4mu \cdots \mkern -4mu
+    \or \relax \or
+      \zintkern
+    \or
+       \zintkern \intop \zintkern
+   \or
+       \zintkern \intop \zintkern \intop \zintkern
+    \fi}%
+    \intop\nolimits}
+
+\def \zintkern {\mkern -8mu \mathchoice{\mkern -3mu}{}{}{}}
+
+\let \join = \bowtie
+
+\definemathstackedsymbol{\leftrightarrows}{\mathrel}{\leftarrow}{\rightarrow}{6}
+
+\definemathstackedsymbol{\leftrightharpoons}{\mathrel}{\leftharpoonup}{\rightharpoondown}{4}
+
+\definemathstackedsymbol{\ltgt}{\mathrel}{<}{>}{5.5}
+
+\definemathjoinedsymbol{\Longleftarrow}{\mathrel}{\Leftarrow}{\Relbar}{-3}
+
+\definemathjoinedsymbol{\longleftarrow}{\mathrel}{\leftarrow}{\relbar}{-3}
+
+\definemathjoinedsymbol{\Longleftrightarrow}{\mathrel}{\Leftarrow}{\Rightarrow}{-3}
+\let \iff = \Longleftrightarrow
+
+\definemathjoinedsymbol{\longleftrightarrow}{\mathrel}{\leftarrow}{\rightarrow}{-3}
+
+\def \longmapsto {\mapstochar \longrightarrow}
+
+\definemathjoinedsymbol{\Longrightarrow}{\mathrel}{\Relbar}{\Rightarrow}{-3}
+
+\definemathjoinedsymbol{\longrightarrow}{\mathrel}{\relbar}{\rightarrow}{-3}
+
+\definemathjoinedsymbol{\longrightleftarrow}{\mathrel}{\rightarrow}{\leftarrow}{-3}
+
+\def \oint {\ointop\nolimits}
+
+\def \mapsto {\mapstochar \rightarrow}
+
+\definemathjoinedsymbol{\models}{\mathrel}{|}{=}{-3}
+
+\def \neq {\not=}
+\let \ne = \neq
+
+\def \nexists {\mathord{\raise .2ex \hbox{$\not\mkern 1.5mu$}\exists}}
+
+\def \notin {\not\in}
+\let \nin = \notin
+
+\def \nparallel {\mathrel{\not\mkern 2mu\parallel}}
+
+\definemathstackedsymbol{\rightleftarrows}{\mathrel}{\rightarrow}{\leftarrow}{6}
+
+\definemathstackedsymbol{\rightleftharpoons}{\mathrel}{\rightharpoonup}{\leftharpoondown}{4}
+
+\definemathjoinedsymbol{\semijoin}{\mathrel}{\triangleright}{<}{-4}
+
+%                       Functions
+%                       ---------
+
+
+\def \definemathfunction #1#2#3{%               {\name}{text}{limits}
+  \def #1{\mathop{\zmfunstyle #2}#3}}
+
+\definemathfunction{\ad}{ad}{\nolimits}                 % adjoint
+\definemathfunction{\Ai}{Ai}{\nolimits}                 % Airy function
+\definemathfunction{\arccos}{arccos}{\nolimits}         % arc cosine
+\definemathfunction{\arccosh}{arccosh}{\nolimits}       % hyperbolic arc cosine
+\definemathfunction{\arccot}{arccot}{\nolimits}         % arc cotangent
+\definemathfunction{\arcsec}{arcsec}{\nolimits}         % arc secant
+\definemathfunction{\arcsin}{arcsin}{\nolimits}         % arc sine
+\definemathfunction{\arctan}{arctan}{\nolimits}         % arc tangent
+\definemathfunction{\arg}{arg}{\nolimits}               % argument
+\definemathfunction{\argmax}{arg\,max}{\displaylimits}  % argument maximum
+\definemathfunction{\argmin}{arg\,min}{\displaylimits}  % argument maximum
+\definemathfunction{\Bd}{Bd}{\nolimits}                 % Bound
+\definemathfunction{\cl}{cl}{\nolimits}                 % closure
+\definemathfunction{\codim}{codim}{\nolimits}           % co-dimension
+\definemathfunction{\coker}{coker}{\nolimits}           % cokernel
+\definemathfunction{\conj}{conj}{\nolimits}             % conjugate
+\definemathfunction{\cos}{cos}{\nolimits}               % cosine
+\definemathfunction{\cosec}{cos}{\nolimits}             % cosecant
+\definemathfunction{\cosh}{cosh}{\nolimits}             % hyperbolic cosine
+\definemathfunction{\cot}{cot}{\nolimits}               % cotangent
+\definemathfunction{\coth}{coth}{\nolimits}             % hyperbolic cotangent
+\definemathfunction{\csc}{csc}{\nolimits}               % cosecant
+\definemathfunction{\csch}{csch}{\nolimits}             % hyperbolic cosecant
+\definemathfunction{\curl}{curl}{\nolimits}             % curl
+\definemathfunction{\deg}{deg}{\nolimits}               % degree
+\definemathfunction{\det}{det}{\displaylimits}          % determinant
+\definemathfunction{\diag}{diag}{\nolimits}             % diagonal
+\definemathfunction{\dim}{dim}{\nolimits}               % dimension
+\definemathfunction{\dist}{dist}{\nolimits}             % distance
+\definemathfunction{\erf}{erf}{\nolimits}               % error function
+\definemathfunction{\erfc}{erfc}{\nolimits}             % error function comp.
+\definemathfunction{\exp}{exp}{\nolimits}               % exponential
+\definemathfunction{\gcd}{gcd}{\displaylimits}          % greatest common div.
+\definemathfunction{\GL}{GL}{\nolimits}                 % General Linear
+\definemathfunction{\glb}{glb}{\nolimits}               % greatest lower bound
+\definemathfunction{\gr}{gr}{\nolimits}                 % group
+\definemathfunction{\grad}{grad}{\nolimits}             % gradient
+\definemathfunction{\hom}{hom}{\nolimits}               % homology
+\definemathfunction{\id}{id}{\nolimits}                 % identity
+\definemathfunction{\inf}{inf}{\displaylimits}          % infinum
+\definemathfunction{\injlim}{inj\,lim}{\displaylimits}  % injected limit
+\definemathfunction{\ker}{ker}{\nolimits}               % kernel
+\definemathfunction{\lcm}{lcm}{\displaylimits}          % least common mult.
+\definemathfunction{\length}{length}{\nolimits}         % length
+\definemathfunction{\lg}{lg}{\nolimits}                 % natural logarithm
+\definemathfunction{\lim}{lim}{\displaylimits}          % limit
+\definemathfunction{\liminf}{lim\,inf}{\displaylimits}  % limit infinum
+\definemathfunction{\limsup}{lim\,sup}{\displaylimits}  % limit supremum
+\definemathfunction{\ln}{ln}{\nolimits}                 % natural logarithm
+\definemathfunction{\Log}{Log}{\nolimits}               % principal logarithm
+\definemathfunction{\log}{log}{\nolimits}               % logarithm
+\definemathfunction{\lub}{lub}{\nolimits}               % least upper bound
+\definemathfunction{\max}{max}{\displaylimits}          % maximum
+\definemathfunction{\min}{min}{\displaylimits}          % minimum
+\definemathfunction{\mod}{mod}{\nolimits}               % modulus
+\definemathfunction{\Pr}{Pr}{\displaylimits}            % Probability
+\definemathfunction{\Prob}{Prob}{\displaylimits}        % Probability
+\definemathfunction{\projlim}{proj\,lim}{\displaylimits}% projected limit
+\definemathfunction{\rank}{rank}{\nolimits}             % rank
+\definemathfunction{\sec}{sec}{\nolimits}               % secant
+\definemathfunction{\sech}{sech}{\nolimits}             % hyperbolic secant
+\definemathfunction{\sgn}{sgn}{\nolimits}               % sign
+\definemathfunction{\sign}{sign}{\nolimits}             % sign
+\definemathfunction{\sin}{sin}{\nolimits}               % sine
+\definemathfunction{\sinc}{sinc}{\nolimits}             % cardinal sine
+\definemathfunction{\sinh}{sinh}{\nolimits}             % hyperbolic sine
+\definemathfunction{\SL}{SL}{\nolimits}                 % Special Linear
+\definemathfunction{\sup}{sup}{\displaylimits}          % supremum
+\definemathfunction{\Szg}{Sz(g)}{\nolimits}             % Suzuki group
+\definemathfunction{\tan}{tan}{\nolimits}               % tangent
+\definemathfunction{\tanh}{tanh}{\nolimits}             % hyperbolic tangent
+\definemathfunction{\tr}{tr}{\nolimits}                 % trace
+\definemathfunction{\trace}{trace}{\nolimits}           % trace
+\definemathfunction{\wstar}{w*}{\nolimits}              % weak star
+
+
+% For the occasional one-timer:
+
+\def \mathfunction #1{\mathop{\rm #1}\nolimits}
+
+\let \mfun = \mathfunction
+
+%                       Display/Text/Script Styles
+%                       ------------------- ------
+
+
+\def \mathdisplaystyle #1{{\displaystyle #1}}%          {subequation}
+\def \mathtextstyle #1{{\textstyle #1}}
+\def \mathscriptstyle #1{{\scriptstyle #1}}
+\def \mathscriptscriptstyle #1{{\scriptscriptstyle #1}}
+
+\def \mathpalette #1#2{%                                {\macro}{text}
+  \mathchoice{#1\displaystyle{#2}}%
+             {#1\textstyle{#2}}%
+             {#1\scriptstyle{#2}}%
+             {#1\scriptscriptstyle{#2}}}
+
+\def \mtext #1{%
+  {\mathchoice{\hbox{\zmtextstyle #1}}
+              {\hbox{\zmtextstyle #1}}
+              {\hbox{\the\scriptfont\zmtextfam #1}}
+              {\hbox{\the\scriptscriptfont\zmtextfam #1}}}}
+
+\everymath = {\let\text=\mtext}%
+
+% This is specifically designed to work in math or in text.
+
+\def \mvar #1{{\zmvarstyle #1\if \textmodep \/\fi}}%    {text}
+
+%                       General Tools
+%                       ------- -----
+
+
+\def \aboverule #1{\above #1\relax}%                    {rule-height}
+
+\def \abs #1{\left|#1\right|}%                          {expression}
+
+\def \big #1{{\hbox{$\left#1\vbox to 8.5pt{}\right.\zmnosp$}}}
+\def \Big #1{{\hbox{$\left#1\vbox to 11.5pt{}\right.\zmnosp$}}}
+\def \bigg #1{{\hbox{$\left#1\vbox to 14.5pt{}\right.\zmnosp$}}}
+\def \Bigg #1{{\hbox{$\left#1\vbox to 17.5pt{}\right.\zmnosp$}}}
+\def \zmnosp {\nulldelimiterspace = 0pt}
+
+\def \bigl {\mathopen\big}
+\def \Bigl {\mathopen\Big}
+\def \bigm {\mathrel\big}
+\def \Bigm {\mathrel\Big}
+\def \bigr {\mathclose\big}
+\def \Bigr {\mathclose\Big}
+\def \biggl {\mathopen\bigg}
+\def \Biggl {\mathopen\Bigg}
+\def \biggm {\mathrel\bigg}
+\def \Biggm {\mathrel\Bigg}
+\def \biggr {\mathclose\bigg}
+\def \Biggr {\mathclose\Bigg}
+
+\def \binomial #1#2{{{#1} \atopwithdelims() {#2}}}
+
+\let \binom = \binomial
+
+\def \bmod {\mathbin{\rm mod}}
+
+\def \bordermatrix #1{%
+  {\setbox \zboxa = \hbox{\mex B}%
+   \tdimena = \wd\zboxa
+   \setbox \zboxa = \vbox{%
+     \def \cr {\crcr \noalign{\kern 0pt \global\let \cr = \completerow}}%
+     \ialign{$##$\hfil \kern 2pt \kern \tdimena&
+               \thinspace \hfil $##$\hfil&&
+               \quad \hfil $##$\hfil \crcr
+             \omit \strut \hfil \crcr
+             \noalign{\kern -\baselineskip}%
+             #1\crcr
+             \omit \strut \cr}}%
+   \setbox \zboxc = \vbox{%
+     \unvcopy \zboxa \global\setbox \zboxb = \lastbox}%
+   \setbox \zboxc = \hbox{%
+     \unhbox \zboxb \unskip \global\setbox \zboxb = \lastbox}%
+   \setbox \zboxc = \hbox{%
+     $\kern \wd\zboxb \kern -\tdimena \left(\kern -\wd\zboxb
+     \global\setbox \zboxb = \vbox{\box\zboxb \kern 8pt}%
+     \vcenter{\kern -\ht\zboxb \unvbox\zboxa \kern -\baselineskip}\,%
+     \right)$}%
+   \null\;\vbox{\kern \ht\zboxb \box\zboxc}}}
+
+\def \brace {\atopwithdelims\{\}}
+
+\def \bracematrix #1{%                                          {row...}
+  \left\{ \matrix{#1} \right\}}
+
+\def \brack {\atopwithdelims[]}
+
+\def \bracketmatrix #1{%                                        {row...}
+  \left[ \matrix{#1} \right]}
+
+\def \bracketmatrixfl #1{%                                      {row...}
+  \left[ \matrixfl{#1} \right]}
+
+\def \bracketmatrixfr #1{%                                      {row...}
+  \left[ \matrixfr{#1} \right]}
+
+\def \cases #1{%                                                {row...}
+  \left\{ \,%
+  \vcenter{\matrixbaselines
+    \ialign{$##$\hfil&
+            \quad {\rm ##}\hfil \crcr
+            #1\crcr}}%
+  \right.}
+
+% This version of \cases has math in both columns.
+
+\def \mcases #1{%                                               {row...}
+  \left\{ \,%
+  \vcenter{\matrixbaselines
+    \ialign{$##$\hfil&
+            \quad $##$\hfil \crcr
+            #1\crcr}}%
+  \right.}
+
+\def \cdots {\mathinner{\cdotp\cdotp\cdotp}}
+
+\def \ddots {%
+  \if \newdots
+    \vbox{\baselineskip = 4pt \lineskiplimit = 0pt
+          \hbox{.}
+          \hbox{\kern .4em .}
+          \hbox{\kern .8em .}}%
+  \else
+    \mathinner{\mkern 1mu \raise 7pt \vbox{\kern 7pt \hbox{.}}%
+               \mkern 2mu \raise 4pt \hbox{.}%
+               \mkern 2mu \raise 1pt \hbox{.}%
+               \mkern 1mu}%
+  \fi}
+
+\def \detmatrix #1{%                                          {row...}
+  \left| \matrix{#1} \right|}
+
+\def \displayfrac #1#2{%                        {numerator}{denominator}
+  {\displaystyle \frac{#1}{#2}}}
+
+\def \displaylines #1{%                                 {row...}
+  \openup \jot
+  \global\setflag \zdtop = \true
+  \everycr = {\noalign{\if \zdtop
+                         \vskip -\lineskiplimit
+                         \vskip \normallineskiplimit
+                         \global\setflag \zdtop = \false
+                       \else
+                         \penalty \interdisplaylinepenalty
+                       \fi}}%
+  \halign{\hbox to \displaywidth{$\tabskip = 0pt \everycr = {}%
+                                  \hfil \displaystyle ##\hfil$}\cr
+          #1\crcr}}
+
+\def \eqalign #1{%                                      {row...}
+  \vcenter{%
+    \ialign{&\mathstrut \hfil $\displaystyle ##{}$&
+            $\displaystyle {}##$\hfil\cr
+            #1\crcr}}}
+
+\def \equalfill {%
+  $\mathord =\mkern -6mu
+   \cleaders \hbox{$\mkern -2mu \mathord =\mkern -2mu$}\hfill
+   \mkern -6mu \mathord =$}
+
+% All other fraction macros should use \frac.
+
+\def \frac #1#2{%                               {numerator}{denominator}
+  {{\mskip\fracbarhang #1\mskip\fracbarhang} \over
+   {\mskip\fracbarhang #2\mskip\fracbarhang}}}
+
+\def \fromunder #1{%                                    {math}
+  \mathrel{\mathop{\longleftarrow}\limits^{#1}}}
+
+\def \hphantom {%
+  \setflag \zhphant = \true
+  \setflag \zvphant = \false
+  \zphanta}
+
+\def \joinrel {\mathrel{\mkern -3mu}}
+
+\def \largefrac #1#2{%                          {numerator}{denominator}
+  {\mathchoice{\mathdisplaystyle{\frac{#1}{#2}}}
+              {\mathdisplaystyle{\frac{#1}{#2}}}
+              {\mathtextstyle{\frac{#1}{#2}}}
+              {\mathscriptstyle{\frac{#1}{#2}}}}}
+
+\def \ldots {\mathinner{\ldotp\ldotp\ldotp}}
+
+\def \leftarrowfill      {\zleftarrowfill{\textstyle}}
+\def \leftrightarrowfill {\zleftrightarrowfill{\textstyle}}
+\def \rightarrowfill     {\zrightarrowfill{\textstyle}}
+\def \Rightarrowfill     {\zRightarrowfill{\textstyle}}
+
+\def \zleftarrowfill #1{%                               {style}
+  \setbox\zboxa = \hbox{$#1-$}%
+  \ht\zboxa = 0pt
+  $#1\mathord\leftarrow \mkern -6mu
+   \cleaders \hbox{$#1\mkern -2mu \copy\zboxa \mkern -2mu$}\hfill
+   \mkern -6mu \box\zboxa$}
+
+\def \zleftrightarrowfill #1{%                          {style}
+  \setbox\zboxa = \hbox{$#1-$}%
+  \ht\zboxa = 0pt
+  $#1\mathord\leftarrow \mkern -6mu
+   \cleaders \hbox{$#1\mkern -2mu \box\zboxa \mkern -2mu$}\hfill
+   \mkern -6mu \mathord\rightarrow$}
+
+\def \zRightarrowfill #1{%                              {style}
+  \setbox\zboxa = \hbox{$#1=$}%
+  \ht\zboxa = 0pt
+  $#1\copy\zboxa \mkern -6mu
+   \cleaders \hbox{$#1\mkern -2mu \box\zboxa \mkern -2mu$}\hfill
+   \mkern -6mu \mathord\Rightarrow$}
+
+\def \zrightarrowfill #1{%                              {style}
+  \setbox\zboxa = \hbox{$#1-$}%
+  \ht\zboxa = 0pt
+  $#1\copy\zboxa \mkern -6mu
+   \cleaders \hbox{$#1\mkern -2mu \box\zboxa \mkern -2mu$}\hfill
+   \mkern -6mu \mathord\rightarrow$}
+
+\let \leqalignno = \eqalignno
+
+\def \mathstrut {\vphantom(}
+
+\def \matrix #1{%                                               {row...}
+  \null\nonscript\,%
+  \vcenter{\matrixbaselines
+    \ialign{\hfil $##$\hfil&& \quad \hfil $##$\hfil \crcr
+            \mathstrut\crcr
+            \noalign{\kern -\baselineskip}%
+            #1\crcr
+            \mathstrut\crcr
+            \noalign{\kern -\baselineskip}}}%
+  \nonscript\,}
+
+\let \adjustmatrix = \noalign
+
+\def \matrixfl #1{%                                             {row...}
+  \null\nonscript\,%
+  \vcenter{\matrixbaselines
+    \ialign{$##$\hfil && \quad $##$\hfil \crcr
+            \mathstrut\crcr
+            \noalign{\kern -\baselineskip}%
+            #1\crcr
+            \mathstrut\crcr
+            \noalign{\kern -\baselineskip}}}%
+  \nonscript\,}
+
+\def \matrixfr #1{%                                             {row...}
+  \null\nonscript\,%
+  \vcenter{\matrixbaselines
+    \ialign{\hfil $##$&& \quad \hfil $##$\crcr
+            \mathstrut\crcr
+            \noalign{\kern -\baselineskip}%
+            #1\crcr
+            \mathstrut\crcr
+            \noalign{\kern -\baselineskip}}}%
+  \nonscript\,}
+
+\def \matrixbaselines {%
+  \baselineskip = \the\matrixspread\normalbaselineskip
+  \lineskiplimit = \normallineskiplimit
+  \lineskip = \normallineskip}
+
+\def \ontopof #1#2{{{#1} \atop {#2}}}%          {numerator}{denominator}
+
+\def \openup {\afterassignment\zopenup \tdimena=}
+
+\def \zopenup {%
+  \advance \baselineskip by \tdimena
+  \advance \lineskiplimit by \tdimena
+  \advance \lineskip by \tdimena}
+
+\def \overbrace #1{%
+  \mathop{%
+    \vbox{\ialign{##\cr
+                  \noalign{\kern 3pt}%
+                  \downbracefill\cr
+                  \noalign{\kern 3pt \nointerlineskip}%
+                  $\hfil \displaystyle{#1}\hfil$\cr}}}\limits}
+
+\def \overleftarrow      {\mathpalette\zoverleftarrow}
+\def \overleftrightarrow {\mathpalette\zoverleftrightarrow}
+\def \overRightarrow     {\mathpalette\zoverRightarrow}
+\def \overrightarrow     {\mathpalette\zoverrightarrow}
+
+\def \zoverleftarrow #1#2{%                             {style}{math}
+  \vbox{\ialign{##\cr
+                \zleftarrowfill{\scriptscriptstyle}\cr
+                \noalign{\nointerlineskip}%
+                $\hfil #1#2\hfil$\crcr}}}
+
+\def \zoverleftrightarrow #1#2{%                             {style}{math}
+  \vbox{\ialign{##\cr
+                \zleftrightarrowfill{\scriptscriptstyle}\cr
+                \noalign{\nointerlineskip}%
+                $\hfil #1#2\hfil$\crcr}}}
+
+\def \zoverRightarrow #1#2{%                             {style}{math}
+  \vbox{\ialign{##\cr
+                \zRightarrowfill{\scriptscriptstyle}\cr
+                \noalign{\nointerlineskip}%
+                $\hfil #1#2\hfil$\crcr}}}
+
+\def \zoverrightarrow #1#2{%                             {style}{math}
+  \vbox{\ialign{##\cr
+                \zrightarrowfill{\scriptscriptstyle}\cr
+                \noalign{\nointerlineskip}%
+                $\hfil #1#2\hfil$\crcr}}}
+
+\def \overset #1#2{
+  \mathbin{\mathop{#2}\limits^{#1}}}
+
+\def \parenmatrix #1{%                                          {row...}
+  \left( \matrix{#1} \right)}
+
+\let \pmatrix = \parenmatrix
+
+\def \parenmatrixfl #1{%                                        {row...}
+  \left( \matrixfl{#1} \right)}
+
+\def \parenmatrixfr #1{%                                        {row...}
+  \left( \matrixfr{#1} \right)}
+
+\def \phantom {%
+  \setflag \zhphant = \true
+  \setflag \zvphant = \true
+  \zphanta}
+
+\def \zphanta {%
+  \if \mathmodep
+    \def \znext {\mathpalette\zphantb}%
+  \else
+    \let \znext = \zphantc
+  \fi
+  \znext}
+\def \zphantb #1#2{%
+  \setbox \zboxa = \hbox{$#1{#2}$}%
+  \zphantd}
+\def \zphantc #1{%
+  \setbox \zboxa = \hbox{#1}%
+  \zphantd}
+\def \zphantd {%
+  \setbox \zboxb = \hbox{}%
+  \if \zhphant \wd\zboxb = \wd\zboxa \fi
+  \if \zvphant \ht\zboxb = \ht\zboxa \dp\zboxb = \dp\zboxa \fi
+  \box \zboxb}
+
+\def \plainTeXmathdisplay {%
+  \global\everydisplay = {}}
+
+\def \pmod #1{\allowbreak \,({\rm mod}\,#1)}
+
+\def \Relbar {\mathrel =}
+\def \relbar {\mathrel{\smash -}}
+
+\definebox{\zrootbox}
+
+\def \nthroot #1{%                                      {n}
+  \setbox\zrootbox = \hbox{$\scriptscriptstyle{#1}$}%
+  \mathpalette\zroot}
+
+\def \zroot #1#2{%                                      {\style}{radicand}
+  \setbox\zboxa = \hbox{$#1\sqrt{#2}$}%
+  \tdimena = \ht\zboxa
+  \advance \tdimena by -\dp\zboxa
+  \mkern 5mu \raise .6\tdimena \copy\zrootbox \mkern -10mu \box\zboxa}
+
+\def \skew #1#2#3{%                             {amount}{accent}{char}
+  {\zmuskipa = #1mu
+   \divide \zmuskipa by 2
+   \mkern \zmuskipa
+   #2{\mkern -\zmuskipa{#3}\mkern \zmuskipa}%
+   \mkern -\zmuskipa}{}}
+
+\def \smallfrac #1#2{%                          {numerator}{denominator}
+  {\mathchoice{\mathtextstyle{\frac{#1}{#2}}}
+              {\mathscriptstyle{\frac{#1}{#2}}}
+              {\mathscriptscriptstyle{\frac{#1}{#2}}}
+              {\mathscriptscriptstyle{\frac{#1}{#2}}}}}
+
+\def \smash {%
+  \relax
+  \if \mathmodep
+    \def \znext {\mathpalette\zsmasha}%
+  \else
+    \let \znext = \zsmashb
+  \fi
+  \znext}
+
+\def \zsmasha #1#2{%
+  \setbox \zboxa = \hbox{$#1{#2}$}%
+  \zsmashc}
+\def \zsmashb #1{%
+  \setbox \zboxa = \hbox{#1}%
+  \zsmashc}
+\def \zsmashc {%
+  \ht\zboxa = 0pt
+  \dp\zboxa = 0pt
+  \box \zboxa}
+
+\def \sqrt {\radical"270370 }
+
+\let \sub = _
+\let \super = ^
+
+\def \Tounder #1{%                                              {math}
+  \mathrel{\mathop{\Longrightarrow}\limits^{#1}}}
+
+\def \tounder #1{%                                              {math}
+  \mathrel{\mathop{\longrightarrow}\limits^{#1}}}
+
+\def \underbrace #1{%                                           {text}
+  \mathop{%
+    \vtop{\ialign{##\cr
+                  $\hfil \displaystyle{#1}\hfil$\cr
+                  \noalign{\kern 3pt \nointerlineskip}%
+                  \upbracefill\cr
+                  \noalign{\kern 3pt}}}}\limits}
+
+\def \underset #1#2{
+  \mathbin{\mathop{#2}\limits_{#1}}}
+
+\def \unit #1{%                                         {text}
+  \if \mathmodep
+    {\nonscript\,\mtext{#1}}%
+  \else
+    \,#1%
+  \fi}
+
+\def \vdots {%
+  \if \newdots
+    \vbox{\baselineskip = 4pt \lineskiplimit = 0pt
+          \hbox{.}
+          \hbox{.}
+          \hbox{.}}%
+  \else
+    \vbox{\baselineskip = 4pt \lineskiplimit = 0pt
+          \kern 6pt
+          \hbox{.}
+          \hbox{.}
+          \hbox{.}}%
+  \fi}
+
+\def \vphantom {%
+  \setflag \zhphant = \false
+  \setflag \zvphant = \true
+  \zphanta}
+
+%                       Block Matrices
+%                       ----- --------
+
+
+\def \blockmatrix #1{%                                  {rows}
+  \zblockmatrix{\false}{#1}}
+
+\def \blockmatrixvr #1{%                                {rows}
+  \zblockmatrix{\true}{#1}}
+
+\def \zblockmatrix #1#2{%                               {verticals?}{rows}
+  \left[
+  \vcenter{%
+    \defineatsigncommand @R{\colrule}%
+    \defineatsigncommand @N{\nocolrule}%
+    \offinterlineskip
+    \tdimena = \ht\strutbox \advance \tdimena by .2ex
+    \tdimenb = \dp\strutbox \advance \tdimenb by .4ex
+    \setbox \strutbox \hbox{\vrule width 0pt height \tdimena depth \tdimenb}%
+    \ialign{\hfil \strut \thirdspace $##$\thirdspace \hfil&&
+              \hspace{.35em}%
+              \vrule \if #1\colrule \else \nocolrule \fi
+              ##\relax
+              \hspace{.35em}&
+            \hfil \strut \thirdspace $##$\thirdspace \hfil\crcr
+            #2\crcr}}%
+  \right]}
+
+\def \rowrule {%
+  \noalign{%
+    \vskip .5ex
+    \hrule height .1ex\relax
+    \vskip .7ex}}
+
+\def \colrule {%
+  width .1ex }
+
+%                       Math Displays
+%                       ---- --------
+
+
+\defineblock{\mathdisplay}{\endmathdisplay}{\true}{}
+
+%~block mathdisplay
+% \abovepenalty = integer       % Penalty above display.
+% \aboveskip = glue             % Visual space above display.
+% \belowpenalty = integer       % Penalty below display.
+% \belowskip = glue             % Visual space below display.
+% \bodyfont = {...}             % Font for display.
+% \def \comptextformat {...}    % Composite number text formatter.
+% \diagramdiagarrowstyle = {...} % Style for diagonal arrows in diagrams.
+% \diagramgutter = dimen        % Gutter between diagram columns.
+% \diagraminterrowskip = glue   % Interrowskip for diagrams.
+% \diagramminarrow = dimen      % Minimum length of arrow in diagram.
+% \hfuzz = dimen                % Overhang allowed at end of line.
+% \interrowskip = glue          % Extra visual space between equations.
+% \leftindent = dimen           % Left indentation for \alignleft.
+% \matrixspread = {decimal}     % Spread factor for matrices.
+% \def \numberformat {...}      % Equation number formatter.
+% \position = {...}             % Positioning options.
+% \rightindent = dimen          % Right indentation for \alignright.
+% \textcolor = {...}            % Color of text.
+%~end
+
+\definetoks{\diagramdiagarrowstyle}
+\definedimen{\diagramgutter}{0pt}
+\defineskip{\diagraminterrowskip}{0pt}
+\definedimen{\diagramminarrow}{0pt}
+
+% Positioning options are:
+%   \alignleft          Left aligned, with \leftindent.
+%   \alignright         Right aligned, with \rightindent.
+%   \center             Centered.
+%   \numberleft         Equation number on left.
+%   \numberright        Equation number on right.
+
+% These parameters are calculated:
+
+\definetoks{\mathdisplayeqno}           % Text following \eqno marker.
+\definecount{\mathdisplayprevgraf}{-1}  % Previous display's ending \prevgraf.
+\definecount{\mathdisplayprevpenalty}{0}% Previous display's \belowpenalty.
+\defineskip{\mathdisplayprevskip}{0pt}  % Previous display's \belowskip.
+
+\declareeverypar{\global\mathdisplayprevgraf=-1}
+\zdeclareeveryvcontext{\zsavevcontext{\mathdisplayprevgraf=-1}}
+
+%~ This marker specifies that the following text is the equation number
+%~ for the math display.
+
+\definemarker{\eqno}
+
+
+\everydisplay = {\mathdisplay}
+
+\def \mathdisplay #1$${%                                equation $$
+  \advance \displayindent by \leftskip
+  \advance \displaywidth by -\leftskip
+  \advance \displaywidth by -\rightskip
+  % \beginblockscope is unnecessary.
+  \global\increment \mathdisplaydepth
+  \abovepenalty = 5000                          %~default hard
+  \belowpenalty = \breakallowed                 %~default hard
+  \hfuzz = 1pt                                  %~default hard
+  \leftindent = 0pt                             %~default soft
+  \matrixspread = {1.0}                         %~default soft
+  \rightindent = 0pt                            %~default soft
+  \textcolor = {}%                              %~default soft
+  \processdesign{\mathdisplay}{}%
+  % \mathdisplaynumber is incremented by \eqno, if appropriate.
+  \if \eqlp{\prevgraf}{\mathdisplayprevgraf}%
+    \aboveskip = -\belowskip
+    \advance \aboveskip by \interrowskip
+  \fi
+  \let \text = \mtext
+  \zmdparams
+  \settaginfo{}{}%                              % No tag info so far.
+  \if \notp{\emptytoksp{\textcolor}}\color{\the\textcolor}\fi
+  \mathdisplayformat{#1}%
+  \endmathdisplay}
+
+\def \endmathdisplay {%
+  \global\mathdisplayprevgraf = \prevgraf
+  \global\advance \mathdisplayprevgraf by 3
+  \global\mathdisplayprevpenalty = \belowpenalty
+  \global\mathdisplayprevskip = \belowskip
+  \global\decrement \mathdisplaydepth
+  \if \notp{\emptytoksp{\textcolor}}\endcolor \fi%
+  % \endblockscope is unnecessary.
+  $$}
+
+\definecount{\zmdhpos}{0}
+
+\def \zmdparams {%
+  \abovedisplayskip = \aboveskip
+  \abovedisplayshortskip = \aboveskip
+  \belowdisplayskip = \belowskip
+  \belowdisplayshortskip = \belowskip
+  \predisplaypenalty = \abovepenalty
+  \postdisplaypenalty = \belowpenalty
+  \zmdhpos = 0
+  \let \center = \relax
+  \def \alignleft {\zmdhpos = 1}%
+  \def \alignright {\zmdhpos = 2}%
+  \setflag \zmdnumleft = \false
+  \def \numberleft {\setflag \zmdnumleft = \true}%
+  \let \numberright = \relax
+  \the\position}
+
+\def \mathdisplayformat #1{%                            {display}
+  \the\bodyfont
+  \zmdparse#1\eqno\eqno\zmark
+  {\lineskiplimit = \maxdimen           % Force \interrowskip between
+   \lineskip = \interrowskip            % each row of multi-line display.
+   \ifcase \zmdhpos
+     \if \zmdnumleft                    % Centered display.
+       \hbox to \displaywidth {%
+         \rlap{\hspace{-1\leftskip}\zmdeqno}%
+         \hfil $\displaystyle \zmdeq$\hfil}%
+     \else
+       \hbox to \displaywidth {%
+         \hfil $\displaystyle \zmdeq$\hfil
+         \llap{\zmdeqno\hspace{-1\rightskip}}}%
+     \fi
+   \or
+     \if \zmdnumleft                    % Left-aligned display.
+       \hbox to \displaywidth {%
+         \hbox to \leftindent{\hspace{-1\leftskip}\zmdeqno\hss}%
+         $\displaystyle \zmdeq$\hfil}%
+     \else
+       \hbox to \displaywidth{%
+         \kern \leftindent $\displaystyle \zmdeq$\hfil
+         \llap{\zmdeqno\hspace{-1\rightskip}}}%
+     \fi
+   \or
+     \if \zmdnumleft                    % Right-aligned display.
+       \hbox to \displaywidth {%
+         \rlap{\hspace{-1\leftskip}\zmdeqno}%
+         \hfil $\displaystyle \zmdeq$\kern \rightindent}%
+     \else
+       \hbox to \displaywidth{%
+         \hfil $\displaystyle \zmdeq$%
+         \hbox to \rightindent{\hss\zmdeqno\hspace{-1\rightskip}}}%
+     \fi
+   \fi}}
+
+\def \zmdparse #1\eqno#2\eqno#3\zmark{% equation\eqno number\eqno ???\zmark
+  \def \zmdeq {#1}%
+  \if \andp{\emptyargp{#2}}{\emptyargp{#3}}%
+    \let \zmdeqno = \relax
+  \else
+    \def \zmdeqno {\zmdformeqno#2\tag\tag\zmark}%
+  \fi}
+
+% This macro is invoked to format equation numbers in both positions:
+% at the end of the display and at the end of \eqaligned rows.
+
+\def \zmdformeqno #1\tag#2\tag#3\zmark{%        number\tag{xxx}\tag ???\zmark
+  \if \emptyargp{#1}%
+    \global\increment \mathdisplaynumber
+    \mathdisplayeqno = \expandafter{\number\mathdisplaynumber}%
+    \setcomptext{\mathdisplaycomptext}%
+  \else
+    \zmdexpliciteqno #1 \zmark
+  \fi
+  \settaginfo{\the\mathdisplaycomptext}{???}%
+  \hbox{\numberformat}%
+  \if \notp{\emptyargp{#3}}\zmdtageqno#2\zmark \fi}
+
+\def \zmdexpliciteqno #1#2 #3\zmark{%
+  \if \codeeqlp{#1}{!}%
+    \mathdisplayeqno = {#2}%
+    \mathdisplaycomptext = {#2}%
+  \else\if \codeeqlp{#1}{+}%
+    \global\increment \mathdisplaynumber
+    \mathdisplayeqno = \expandafter{\number\mathdisplaynumber #2}%
+    \setcomptext{\mathdisplaycomptext}%
+  \else\if \codeeqlp{#1}{,}%
+    \mathdisplayeqno = \expandafter{\number\mathdisplaynumber #2}%
+    \setcomptext{\mathdisplaycomptext}%
+  \else\if \codeeqlp{#1}{:}%
+    \global\increment \mathdisplaynumber
+    \mathdisplayeqno = {#2}%
+    \setcomptext{\mathdisplaycomptext}%
+  \else\if \codeeqlp{#1}{=}%
+    \zmdseteqno #2\zmark
+    \setcomptext{\mathdisplaycomptext}%
+  \else\if \codeeqlp{#1}{>}%
+    \zmdrefeqno #2;;\zmark
+%%%    \mathdisplayeqno = {\ref{#2}}%
+%%%    \mathdisplaycomptext = {\ref{#2}}%
+  \else
+    \mathdisplayeqno = {#1#2}%
+    \setcomptext{\mathdisplaycomptext}%
+  \fi\fi\fi\fi\fi\fi}
+
+\def \zmdseteqno #1;#2\zmark{%
+  \global\mathdisplaynumber = #1\relax
+  \mathdisplayeqno = \expandafter{\number\mathdisplaynumber #2}}
+
+\def \zmdrefeqno #1;#2;#3\zmark{%
+  \if \emptyargp{#2}%
+    \mathdisplayeqno = {\ref{#1}}%
+    \mathdisplaycomptext = {\ref{#1}}%
+  \else
+    \mathdisplayeqno = {\ref{#1}\,#2}%
+    \mathdisplaycomptext = {\ref{#1}\,#2}%
+  \fi}
+
+\def \zmdtageqno #1#2\zmark{%
+  \def \znext { }%
+  \if \znext#2\tag{#1}\else \tag{#1#2}\fi}
+
+\def \setmathdisplaynumber #1{%
+  \global\mathdisplaynumber = #1\relax
+  \global\decrement \mathdisplaynumber}
+
+%~ This modifier for |$$| is used when the display is the first thing
+%~ after a head, the first thing in a list item, the first thing in
+%~ a float, etc. It eliminates the vertical space above the display.
+
+\def \immediatemathdisplay {%                           %^modifier
+  \with{\abovepenalty = \breaknever
+        \aboveskip = 0pt}}
+
+%                       Aligned Equations
+%                       ------- ---------
+
+
+% This tool can only be used inside a math display.
+
+
+\defineskip{\zeqaltabskip}{0pt}
+\definedimen{\zeqnoshift}{0pt}
+
+\def \eqaligned #1{%                                    {rows...}
+  \vcenter{%
+    \zeqalinit
+    \halign to \tdimena {%
+      \hfil $\displaystyle ##{}$\tabskip = 0pt&
+      $\displaystyle {}##$\hfil \tabskip = \zeqaltabskip&
+      \relax \zeqaleqno ##\zmark% \relax prevents expansion of \zeqaleqno.
+        \tabskip = \if \zmdnumleft \displaywidth \else 0pt \fi \cr
+      #1\crcr}}}
+
+\def \eqalignedpairs #1{%                               {rows...}
+  \vcenter{%
+    \zeqalinit
+    \halign to \tdimena {%
+      \hfil $\displaystyle ##{}$\tabskip = 0pt&
+      $\displaystyle {}##$\hfil&
+      \hfil $\displaystyle ##{}$&
+      $\displaystyle {}##$\hfil \tabskip = \zeqaltabskip&
+      \relax \zeqaleqno ##\zmark% \relax prevents expansion of \zeqaleqno.
+        \tabskip = \if \zmdnumleft \displaywidth \else 0pt \fi \cr
+      #1\crcr}}}
+
+\def \eqalignedtriples #1{%                             {rows...}
+  \vcenter{%
+    \zeqalinit
+    \halign to \tdimena {%
+      \hfil $\displaystyle ##{}$\tabskip = 0pt&
+      $\displaystyle {}##$\hfil&
+      \hfil $\displaystyle ##{}$&
+      $\displaystyle {}##$\hfil&
+      \hfil $\displaystyle ##{}$&
+      $\displaystyle {}##$\hfil \tabskip = \zeqaltabskip&
+      \relax \zeqaleqno ##\zmark% \relax prevents expansion of \zeqaleqno.
+        \tabskip = \if \zmdnumleft \displaywidth \else 0pt \fi \cr
+      #1\crcr}}}
+
+\def \eqalignedquadruples #1{%                             {rows...}
+  \vcenter{%
+    \zeqalinit
+    \halign to \tdimena {%
+      \hfil $\displaystyle ##{}$\tabskip = 0pt&
+      $\displaystyle {}##$\hfil&
+      \hfil $\displaystyle ##{}$&
+      $\displaystyle {}##$\hfil&
+      \hfil $\displaystyle ##{}$&
+      $\displaystyle {}##$\hfil&
+      \hfil $\displaystyle ##{}$&
+      $\displaystyle {}##$\hfil \tabskip = \zeqaltabskip&
+      \relax \zeqaleqno ##\zmark% \relax prevents expansion of \zeqaleqno.
+        \tabskip = \if \zmdnumleft \displaywidth \else 0pt \fi \cr
+      #1\crcr}}}
+
+\def \zeqalinit {%
+  \def \eqno {&\relax}% \relax prevents expansion of stuff after \eqno.
+  \tdimena = \displaywidth
+  \advance \tdimena by -\leftindent
+  \advance \tdimena by -\rightindent
+  \zeqaltabskip = \if \eqlp{\zmdhpos}{2}0pt \else \centerindent \fi
+  \if \zmdnumleft
+    \zeqnoshift = \leftskip \advance \zeqnoshift by \leftindent
+  \else
+    \zeqnoshift = \rightskip \advance \zeqnoshift by \rightindent
+  \fi
+  \tabskip = \if \eqlp{\zmdhpos}{1}0pt \else \centerindent \fi}
+
+\def \zeqaleqno \relax#1\zmark{%        \relax [\eqno [text]][\tag]\zmark
+  \if \zmdnumleft
+    \kern -\displaywidth
+    \rlap{\zmdformeqno#1\tag\tag\zmark}%
+  \else
+    \llap{\zmdformeqno#1\tag\tag\zmark \hspace{-\zeqnoshift}}%
+  \fi}
+
+\let \adjustmathdisplay = \noalign
+
+%                       Diagrams
+%                       --------
+
+
+% This tool can only be used inside a math display.
+
+
+\def \diagram #1{%                                      {rows...}
+  \zdiagcmds
+  \null\,%
+  \vcenter{%
+    \lineskip = \diagraminterrowskip
+    \lineskiplimit = \lineskip
+    \tabskip = -\diagramgutter
+    \halign{%
+      &\kern \diagramgutter \hfil $\displaystyle ##$\hfil \tabskip = 0pt \cr
+      #1\crcr}}%
+  \,}
+
+\def \zdiagcmds {%
+  \defineatsigncommand @>##1>##2>{\zdiagra{##1}{##2}}%
+  \defineatsigncommand @<##1<##2<{\zdiagla{##1}{##2}}%
+  \defineatsigncommand @X##1X##2X{\zdiaglra{##1}{##2}}%
+  \defineatsigncommand @=##1=##2={\zdiaghb{##1}{##2}}%
+  \defineatsigncommand @V##1V##2V{%
+    \zdiagva{c}{}{\hbox}{\big\downarrow}{##1}{##2}}%
+  \defineatsigncommand @A##1A##2A{%
+    \zdiagva{c}{}{\hbox}{\big\uparrow}{##1}{##2}}%
+  \defineatsigncommand @|##1|##2|{%
+    \zdiagva{c}{}{\hbox}{\big|}{##1}{##2}}%
+  \defineatsigncommand @H##1|##2|{%
+    \zdiagva{c}{}{\hbox}{\big\Vert}{##1}{##2}}%
+  \defineatsigncommand @1##11##21##31{%
+    \zdiagva{##1}{l}{r}{\the\diagramdiagarrowstyle \mathchar "7025}{##2}{##3}}%
+  \defineatsigncommand @3##13##23##33{%
+    \zdiagva{##1}{l}{r}{\the\diagramdiagarrowstyle \mathchar "7026}{##2}{##3}}%
+  \defineatsigncommand @5##15##25##35{%
+    \zdiagva{##1}{r}{l}{\the\diagramdiagarrowstyle \mathchar "702E}{##2}{##3}}%
+  \defineatsigncommand @7##17##27##37{%
+    \zdiagva{##1}{r}{l}{\the\diagramdiagarrowstyle \mathchar "702D}{##2}{##3}}%
+  \defineatsigncommand @"##1"##2"{\zdiagwd{##1}{##2}}}
+
+\def \zdiagra #1#2{%
+  {\setbox \zboxa = \hbox{$\scriptstyle \;{#1}\;\;\;$}%
+   \setbox \zboxb = \hbox{$\scriptstyle \;{#2}\;\;\;$}%
+   \setbox \zboxc = \hbox{$#2$}%
+   \tdimena = \diagramminarrow
+   \if \dimgtrp{\wd\zboxa}{\tdimena}\tdimena = \wd\zboxa \fi
+   \if \dimgtrp{\wd\zboxb}{\tdimena}\tdimena = \wd\zboxb \fi
+   \mathrel{\mathop{\hbox to \tdimena {\rightarrowfill}}%
+              \limits^{#1}\if \dimposp{\wd\zboxc}_{#2}\fi}}}
+
+\def \zdiagla #1#2{%
+  {\setbox \zboxa = \hbox{$\scriptstyle \;\;\;{#1}\;$}%
+   \setbox \zboxb = \hbox{$\scriptstyle \;\;\;{#2}\;$}%
+   \setbox \zboxc = \hbox{$#2$}%
+   \tdimena = \diagramminarrow
+   \if \dimgtrp{\wd\zboxa}{\tdimena}\tdimena = \wd\zboxa \fi
+   \if \dimgtrp{\wd\zboxb}{\tdimena}\tdimena = \wd\zboxb \fi
+   \mathrel{\mathop{\hbox to \tdimena {\leftarrowfill}}%
+              \limits^{#1}\if \dimposp{\wd\zboxc}_{#2}\fi}}}
+
+\def \zdiaglra #1#2{%
+  {\setbox \zboxa = \hbox{$\scriptstyle \;\;\;{#1}\;\;\;$}%
+   \setbox \zboxb = \hbox{$\scriptstyle \;\;\;{#2}\;\;\;$}%
+   \setbox \zboxc = \hbox{$#2$}%
+   \tdimena = \diagramminarrow
+   \if \dimgtrp{\wd\zboxa}{\tdimena}\tdimena = \wd\zboxa \fi
+   \if \dimgtrp{\wd\zboxb}{\tdimena}\tdimena = \wd\zboxb \fi
+   \mathrel{\mathop{\hbox to \tdimena {\leftrightarrowfill}}%
+              \limits^{#1}\if \dimposp{\wd\zboxc}_{#2}\fi}}}
+
+\def \zdiaghb #1#2{%
+  {\setbox \zboxa = \hbox{$\scriptstyle \;{#1}\;$}%
+   \setbox \zboxb = \hbox{$\scriptstyle \;{#2}\;$}%
+   \setbox \zboxc = \hbox{$#2$}%
+   \tdimena = \diagramminarrow
+   \if \dimgtrp{\wd\zboxa}{\tdimena}\tdimena = \wd\zboxa \fi
+   \if \dimgtrp{\wd\zboxb}{\tdimena}\tdimena = \wd\zboxb \fi
+   \mathrel{\mathop{\hbox to \tdimena {\equalfill}}%
+              \limits^{#1}\if \dimposp{\wd\zboxc}_{#2}\fi}}}
+
+\def \zdiagva #1#2#3#4#5#6{%            {centering}{h-overlap}{t-overlap}
+                           %            {arrow}{left-label}{right-label}
+  \if \codeeqlp{#1}{h}%
+    \if \codeeqlp{#2}{l}%
+      \llap{$\scriptstyle{#5}\mkern 2mu{#4}$}%
+      \rlap{$\mkern 2mu \scriptstyle #6$}%
+    \else
+      \llap{$\scriptstyle{#5}\mkern 2mu$}%
+      \rlap{${#4}\mkern 2mu \scriptstyle{#6}$}%
+    \fi
+  \else\if \codeeqlp{#1}{t}%
+    \if \codeeqlp{#3}{l}%
+      \llap{$\scriptstyle{#5}\mkern 2mu{#4}$}
+      \rlap{$\mkern 2mu \scriptstyle #6$}%
+    \else
+      \llap{$\scriptstyle{#5}\mkern 2mu$}
+      \rlap{${#4}\mkern 2mu \scriptstyle #6$}%
+    \fi
+  \else
+    \llap{$\scriptstyle{#5}\mkern 2mu$}{#4}%
+    \rlap{$\mkern 2mu \scriptstyle #6$}%
+  \fi\fi}
+
+\def \zdiagwd #1#2{%
+  \setbox \zboxa = \hbox{$\scriptstyle #2$}%
+  \hbox to \wd\zboxa {\hfil $\scriptstyle #1$\hfil}}
+
+%                       Enunciation Definition
+%                       ----------- ----------
+
+
+\setlist \zenuntypelist = {}
+
+
+\def \defineenunciationtype #1#2{%                      {type}{association}  
+  \if \emptyargp{#2}%
+    \if \withname\undefinedp{\enunciation#1number}%
+      \withname\definecount{\enunciation#1number}{0}%
+      \withname\declaresnapitem{\enunciation#1number}%
+    \fi
+  \else
+    \defineenunciationtype{#2}{}%
+    \edef \znext {%
+      \global\withname\let{\enunciation#1number}=\name{\enunciation#2number}}%
+    \znext
+  \fi
+  \append{#1}{\zenuntypelist}}
+
+%~ Use this command to define a new type of enunciation.
+
+\def \defineenunciation #1#2#3{%                {type}{association}{design}
+  \defineenunciationtype{#1}{#2}%
+  \withname\def {\enunciation#1design}{#3}}
+
+
+% This is deprecated in favor of \defineenunciation.
+
+\def \defineenunciationtypedesign #1#2#3{%      {type}{assocation}{design}
+  \defineenunciationtype{#1}{#2}%
+  \withname\def {\enunciation#1design}{#3}}
+
+\def \resetenunciationnumbers {%
+  \maplist{\global\name{\enunciation##1number}=0\relax}{\zenuntypelist}}
+
+%                       Enunciation Block
+%                       ----------- -----
+
+
+\defineblock{\enunciation}{\endenunciation}{\false}{}
+
+%~block enunciation Type
+% \abovepenalty = integer               % Penalty above block
+% \aboveskip = glue                     % Space b/b above block.
+% \setflag \allowclubline = flag        % True if club allowed below.
+% \setflag \allownesting = flag         % True if blocks can be nested.
+% \attribution = {...}                  % Attribution text (no longer used).
+% \setflag \attributionarg = flag       % True if \enunciation takes attribution argument.
+% \autoqed = {,,,}                      % Automatic QED at end.
+% \belowpenalty = integer               % Penalty below block.
+% \belowskip = glue                     % Space b/b below block.
+% \bodyfont = {...}                     % Font for text.
+% \def \comptextformat {...}            % Composite number text formatter.
+% \continue = integer                   % Continued or continuation.
+% \difficulty = integer                 % Level of difficulty.
+% \def \endformat {...}                 % End of enunciation formatter.
+% \def \labelformat ##1{...}            % Enunciation label formatter.
+% \leftindent = glue                    % Left indentation.
+% \parindent = dimen                    % Paragraph indent.
+% \parrag = dimen                       % Paragraph raggedness.
+% \parskip = glue                       % Paragraph skip.
+% \rightindent = glue                   % Right indentation.
+% \width = dimen                        % Width of text.
+%~end
+
+\definetoks{\attribution}
+\definecount{\attributiontype}{0}       % 0: none; 1: attribution; 2: new title
+\definetoks{\autoqed}
+
+\setflag \zautoqeddone = \false
+
+
+\def \enunciation #1{%                                  {type}{optional-attribution}
+  \beginblockscope{enunciation}%
+  \global\increment \enunciationdepth
+  \abovepenalty = \breakgood                    %~default hard
+  \setflag \allowclubline = \false              %~default soft
+  \setflag \allownesting = \false               %~default soft
+  \attribution = {}%                            %~default with
+  \setflag \attributionarg = \false             %~default soft
+  \autoqed = {}%                                %~default soft
+  \belowpenalty = \breakgood                    %~default hard
+  \continue = 0                                 %~default with
+  \setflag \continuation = \false               % Deprecated
+  \difficulty = 0                               %~default with
+  \def \endformat {}%                           %~default soft
+  \processdesign{\enunciation}{#1}%
+  \zsetcontinue                                 % Handle old \continuation.
+  \if \andp{\notp{\allownesting}}{\gtrp{\enunciationdepth}{1}}%
+    \error{blkcantnest}
+          {An enunciation cannot be nested inside itself}%
+  \fi
+  \if \attributionarg
+    \let \znext = \enunciationarg
+  \else
+    \let \znext = \enunciationb
+  \fi
+  \znext{#1}}
+
+\def \enunciationarg #1#2{%                             {type}{attribution}
+  \if \notp{\emptyargp{#2}}\attribution = {#2}\fi
+  \enunciationb{#1}}
+
+\def \enunciationb #1{%                                 {type}
+  \attributiontype = 0\relax
+  \global\setflag \zautoqeddone = \false
+  \if \notp{\emptytoksp{\attribution}}%
+    \expandafter\zparseenunattr \the\attribution \zmark
+  \fi
+  \if \notp{\continuationp}%
+    \global\withname\increment{\enunciation#1number}%
+  \fi
+  \global\withname\enunciationnumber{\enunciation#1number}%
+  \setcomptext{\enunciationcomptext}%
+  \enunciationformat
+  \settaginfo{\the\enunciationcomptext}{???}%
+  \ignorespaces}
+
+\def \endenunciation {%
+  \futurelet\nexttoken \zendenunciation}
+
+\def \zendenunciation {%
+  \endenunciationformat
+  \global\decrement \enunciationdepth
+  \endblockscope{enunciation}%
+  \parnext}
+
+\def \enunciationformat {%
+  \endgraf
+  \the\bodyfont
+  \bbskipabove{\abovepenalty}{\aboveskip}%
+  \alterindentation{\leftindent}{\rightindent}%
+  \settextwidth{\width}%
+  \setparrag{\parrag}%
+  \expandafter\labelformat\expandafter{\the\attribution}%
+  \if \notp{\allowclubline}\overrideclubpenalty{\breaknever}\fi}
+
+\def \endenunciationformat{%
+  \if \notp{\zautoqeddone}\the\autoqed \fi
+  \endgraf
+  \endformat
+  \bbskipbelowblockpar{\nexttoken}{\belowpenalty}{\belowskip}}
+
+%~ This marker indicates that the enunciation title completely
+%~ replaces the default title.
+
+\definemarker{\title}
+
+\def \zparseenunattr #1#2\zmark{%
+  \def \znext {#1}%
+  \def \ztitle {\title}%
+  \if \tokeqlp{\znext}{\ztitle}%
+    \attribution = {#2}%
+    \attributiontype = 2\relax
+  \else
+    \attributiontype = 1\relax
+  \fi}
+
+%~ This command is used in enunciation design macros to select the
+%~ title format based on the |\enunciation| *attribution* argument.
+
+\long\def \attributiontypecase #1#2#3{%         {format1}{format2}{format3}
+  \ifcase \attributiontype
+    #1% no attribution
+  \or
+    #2% normal attribution
+  \or
+    #3% title override
+  \fi}%
+
+%                       QED Definition
+%                       --- ----------
+
+
+%~ This command defines an end-of-enunciation dingbat for use
+%~ with enunciations. 
+
+\def \defineeoedingbat #1#2#3{%                         {name}{text}{space}
+  \withname\gdef {#1dingbat}{#2}%
+  \gdef #1{\zformateoe{#2}#3\zmark}%
+  \withname\gdef {\no\expandafter\discardtok\string#1}{%
+    \global\setflag \zautoqeddone = \true}}
+
+\def \zformateoe #1#2#3\zmark{%
+  {\def \znext {#2}%
+   \def \zfr {\flushright}%
+   \if \tokeqlp{\znext}{\zfr}%
+     \if \vmodep
+       \rightline{#1}%
+     \else\if \mathmodep
+       \hskip #3{#1}%
+     \else
+       \hskip #3\retain \nobreak \hfill {#1}%
+     \fi\fi
+   \else
+     \if \vmodep
+       \rightline{#1}%
+     \else\if \mathmodep
+       \hskip #2#3{#1}%
+     \else
+       \unskip \hskip #2#3\hskip 0pt plus -1fill \retain \nobreak \hfill {#1}%
+     \fi\fi
+   \fi
+   \global\setflag \zautoqeddone = \true}}
+
+
+%~ This command is deprecated in favor of |\defineeoedingbat|.
+
+\def \defineqed #1#2#3#4{%                      {\name}{text}{space}{min-space}
+  \withname\gdef {#1dingbat}{#2}%
+  \gdef #1{\zformatqed{#2}{#3}{#4}}%
+  \withname\gdef{\no\expandafter\discardtok\string#1}{%
+    \global\setflag \zautoqeddone = \true}}
+
+\def \zformatqed #1#2#3{%                       {text}{space}{min-space}
+  {\def \znext {#2}%
+   \def \zfr {\flushright}%
+   \if \tokeqlp{\znext}{\zfr}%
+     \hspace{#3}\retain \nobreak \hfill {#1}%
+   \else
+     \if \vmodep
+       \noindent #1\par
+     \else
+       \hspace{#2}{#1}%
+     \fi
+   \fi
+   \global\setflag \zautoqeddone = \true}}

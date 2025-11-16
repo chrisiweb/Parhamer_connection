@@ -1,0 +1,37 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{eoldef}
+
+\input{eoldef}
+
+\endinput
+
+eoldef.tex, version 1.1
+
+eoldef: define commands which absorb the whole source line as arguments.
+
+Usage: \eoldef <control sequence> <parameter text> { <replacement text> }
+defines a control sequence whose argument is delimited by the end of a
+source code line.
+
+For instance, `\eoldef\test#1:#2{}` and
+
+    \test abc:def
+
+will give `#1` = `abc`, `#2` = `def`.
+
+`\eolgdef` is the `\global` variant to `\eoldef`.
+
+Like `\verb|...|`, `\eoldef`'d commands may generally not be used as part of
+another command's argument as it changes catcodes.
+However, if you must use it in environments where catcodes are frozen, you
+may follow the command with a braced argument, eg. `\test{#1:#2}` using the
+previous example.
+
+This package may be used in LaTeX by `\usepackage{eoldef}`, or in plain TeX
+and other formats by `\input{eoldef}`.
+
+Copyright (C) 2025 plante
+This package is released under the LaTeX Project Public License (LPPL) 1.3c.
+
+See the documentation for usage examples and caveats.
+See file `eoldef.tex` for source code.

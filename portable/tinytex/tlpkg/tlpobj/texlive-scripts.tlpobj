@@ -1,6 +1,6 @@
 name texlive-scripts
 category TLCore
-revision 76620
+revision 76853
 shortdesc TeX Live infrastructure programs
 longdesc Includes install-tl, tl-portable, rungs, etc.; not needed for
 longdesc tlmgr to run but still ours. Not included in tlcritical.
@@ -8,10 +8,10 @@ depend texlive-scripts.ARCH
 depend texlive.infra
 execute addMap mathpple.map
 postaction shortcut type=menu name="TeX Live command-line"   cmd=TEXDIR/tlpkg/installer/tl-cmd.bat
-containersize 115028
-containerchecksum ee318f7e6cdbc8b9036b74644fdbf6c670c40b13fb9ecc2a8bb3742127d49280ccd5ac0db02428546313c752b822c47a9be1600687a9b6870b7f186b48375274
-doccontainersize 454564
-doccontainerchecksum a2f63ca4f5d5df0488b103e82d62f7bd387a2305d4de88dd330c520f01fc4cbb31caa3cb6505a971da16071387077746918509ecacd2a2d3ad03efc4f5fd32e2
+containersize 115052
+containerchecksum 18cc15dc209bb023e482034e83634570148a766c92a2f203805dd2856ba6639d0ca5d74413a4f3e02c252dd2af982d7d33b91e65f04b1b3027e7e7e79dcde85c
+doccontainersize 454880
+doccontainerchecksum 99711ab2de043c9130601da226a21ed8ac494507eca587ffd6b49a76ab22f173704fd0bbafd17303b21efd2938d9bea166b70b4602017f7e30c85c0e69429da8
 runfiles size=164
  install-tl
  texmf-dist/dvips/tetex/config.builtin35

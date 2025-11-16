@@ -1,0 +1,15 @@
+%% S. Lurp --- STRETCHY --- MIT License
+\expandafter\def\csname strty @ catcode\endcsname{\the\catcode`@}
+\catcode`@=11
+
+\def\stretchyversion{0.1}
+\def\stretchyauthor{S. Lurp}
+\def\stretchyemail{slurper04@gmail.com}
+
+\input strty-utils
+\input strty-logo
+\input strty-repeatedsyms
+\input strty-stretchedsyms
+
+\catcode`@=\csname strty @ catcode\endcsname\relax
+

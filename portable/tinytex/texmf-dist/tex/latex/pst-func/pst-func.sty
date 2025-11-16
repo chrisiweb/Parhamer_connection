@@ -1,0 +1,18 @@
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-func}[2021/10/30 package wrapper for pst-func.tex (hv)]
+\RequirePackage{pst-plot}
+\RequirePackage{pst-math}
+\RequirePackage{pst-tools}
+\RequirePackage{pstricks-add}
+\RequirePackage{pst-xkey}
+\RequirePackage{iftex}
+\ifluatex \RequirePackage{luacode} \fi
+%
+\input{pst-func.tex}
+\ProvidesFile{pst-func.tex}
+  [\filedate\space v\fileversion\space `PST-func' (hv)]
+\IfFileExists{pst-func.pro}{%
+  \ProvidesFile{pst-func.pro}[2023/04/04 v. 0.20,  PostScript prologue file (hv)]
+  \@addtofilelist{pst-func.pro}}{}%
+\endinput
+%% $Id: pst-func.sty 698 2023-04-14 10:19:52Z herbert $

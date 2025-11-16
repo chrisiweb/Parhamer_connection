@@ -1,0 +1,925 @@
+% This is file texdimens.tex, part of texdimens package, which
+% is distributed under the LPPL 1.3c. Copyright (c) 2021 Jean-François Burnol
+% 2021/11/17 v1.1
+\edef\texdimensendinput{\endlinechar\the\endlinechar%
+\catcode`\noexpand _=\the\catcode`\_%
+\catcode`\noexpand @=\the\catcode`\@\relax\noexpand\endinput}%
+\endlinechar13\relax%
+% only for using \p@ (also \z@ now) of Plain. Check if \p@, \z@ exists?
+\catcode`\_=11 \catcode`\@=11
+% so tempted to do \input xintkernel.sty to have some utilities...
+% not even a \@gobble in Plain...
+\def\texdimenfirstofone#1{#1}%
+\def\texdimengobtilminus#1-{}%
+\def\texdimenzerominusfork #10-#2#3\krof {#2}%
+%
+% \texdimenuu, \texdimenuudown, \texdimenuuup
+% ===========================================
+%
+% Mathematics
+% -----------
+%
+% In the entire discussion here, "uu" stands for some core unit,
+% or some unit corresponding to an internal dimension > 1pt.
+%
+% Main question at the origin of this file was:
+%     Is T sp attainable from unit "uu"?.
+%     If not, what is largest dimension < Tsp which is?
+%
+% Here we suppose T>0. TeX parsing of D uu is equivalent to:
+%
+% D uu --> N = round(D * 65536) --> T = trunc (N * phi)
+%
+% phi>1 is the conversion factor associated to "uu"
+% psi=1/phi, psi<1. Define U(N, phi) = trunc (N * phi)
+%
+%     U(N,phi) is thus the strictly increasing sequence,
+%     indexed by non-negative integers, of non-negative
+%     attainable dimensions. (in sp unit)
+%
+% T>0, then:
+%
+%     U(N)<= T <  U(N+1)    iff    N = ceil((T+1)psi) - 1
+%     U(M)<  T <= U(M+1)    iff    M = ceil(T psi)    - 1
+%
+% In other words:
+%
+% - the largest attainable dimension not exceeding T sp
+%   is obtained via the integer "Zd = ceil((T+1)psi) - 1 = N",
+%   (i.e. find D with Zd=round(65536 D) then "D uu" is "down"
+%    approximation)
+%
+% - the smallest attainable dimension at least equal to T sp
+%   is obtained from the integer "Zu = ceil(T psi) = M + 1"
+%
+% - the two "Z"'s are either equal (i.e. T is attained) or Zu=Zd+1.
+%
+% \texdimenUU macros use round((T+0.5)*psi)
+% -----------------------------------------
+%
+% case1:  M = N, i.e. Zd<Zu, i.e. T is not attainable:
+%         M=N=Zd < T psi < (T+1) psi <= N+1=Zu
+%
+%         Then clearly R = round((T+0.5)psi) is either Zd or Zu.
+%         We will not know which one before computing trunc(R phi)
+%         and check if it is < T or > T.
+%
+%         As will be explained later trunc(R phi) can be computed very
+%         easily by hijacking TeX's handling of dimensions, no \numexpr
+%         chains is needed.
+%
+% case2:  M = N - 1, i.e. T = Zd = Zu is attained:
+%         T psi <= N < (T+1) psi, T = trunc(N phi)
+%
+%         Let v=(T+0.5)psi. As v = T psi + 0.5 psi it is < N+0.5
+%         And as v = (T+1)psi - 0.5psi it is > N - 0.5.
+%         So R = round(v) = N.
+%
+% We thus have the initial observation which was at the core of this
+% package initial release:
+%
+% - compute R = round((T+0.5) psi)
+%
+%   - if T is attained, then T = trunc(R * phi)
+%
+%   - if T is not attained then either { Zd = R and Zu = R+1 }  or
+%     {Zd = R-1 and Zu = R}.
+%
+% How do we check if R = Zd or Zu? We need to evaluate trunc(R phi) and
+% compare it with T. This trunc(R phi) can be computed the following way:
+%
+% - obtain D pt from \the\dimexpr R sp. Knuth's algorithm guarantees
+%   that R = round(D * 65536)
+%
+% - then D uu where uu is the unit with conversion factor phi is
+%   converted by TeX into "trunc(R phi) sp", i.e.  trunc(R phi) =
+%   \number\dimexpr Duu\relax, where D pt = \the\dimexpr Rsp\relax.
+%
+% Conclusion:
+%
+% 1. the macro \texdimenuu does the one-liner R=round((T+0.5) psi)
+%    then \the\dimexpr Rsp\relax gives "Dpt", the "pt" is removed,
+%    we have a decimal D such that "Duu" does what one wants.
+%
+% 2. to get Zd (resp. Zu) one can use the D obtained in 1. and check
+%    if "D uu" is at most (or at least) the user input dimension.
+%
+% For units with conversion factor phi>2, a simplification is possible.
+% In that case let X = round(T psi) (it has the advantage compared to
+% R that we can apply the formula without checking the sign of T).
+%
+% Going back to our earlier analyis, now with psi < 0.5 (1uu>2pt)
+%
+% case1: T is not attainable
+%        M=N=Zd < T psi < (T+1) psi <= N+1=Zu
+%        As Zd < T psi < Zu, we have round(T psi) = Zd or Zu
+%
+% case2: T is attained, i.e. T psi <= N < (T+1) psi.
+%        As psi<0.5, and T psi + psi > N, we have T psi > N - 0.5.
+%        And T psi <= N so N = round(T psi).
+%
+% So, for psi < 0.5, the X=round(T psi) can play the same role as
+% R=round((T+0.5)psi). If T is attained, we get the decimal D from this
+% X and if T is not attained we know that X is either Zd or Zu.
+%
+% The computations of X and Y=trunc(X phi) can be done independently of
+% sign of T.  But the final test has to be changed to Y < T if T < 0 and
+% then one must replace X by X+1. So we must filter out the sign of the
+% input.
+%
+% Going back to the 1<phi<2 case, psi>0.5, then it would be slightly
+% less costly to compute X = round(T psi) than R = round((T + 0.5) psi),
+% but if we then realize that trunc(X phi) < T we do not yet know if
+% trunc((X+1) phi) = T or is > T, i.e. we don't know if Zd =X or X+1,
+% and we can not tell yet if T is attained or not.
+%
+% In contrast if we find out that trunc(R phi)<T, we then know for sure
+% that Zd=R, Zu=R+1 and that T is not attained.
+%
+% Problems with \maxdimen in the obtention of Zu and Zd
+% -----------------------------------------------------
+%
+% Obtaining R = round((T+0.5)psi) has no risk of overflow.
+% But checking as described above which one of Zd or Zu (or both)
+% is R goes via a test computation which will cause overflow
+% if by bad luck R = Zu and Zu will give rise to a decimal D
+% such that D uu > \maxdimen.
+%
+% For T=\maxdimen (or very close) this is what happens for the units
+% "dd", "nc", and "in".
+%
+% Besides, it turns out that this test which is done to decide whether
+% R=Zu or R=Zd, and on which the initial implementation of the macros
+% "up" and "down" was done at 0.9 gamma release is a bit costly.
+%
+% At 1.0 release, all the "up" and "down" macros were re-implemented
+% via a more stubborn usage of the ceil() based formulae for Zd and Zu.
+% This made all usable even with \maxdimen input and besided, proved
+% on average slightly faster.
+%
+% Overcoming the ceil() stumbling block for \texdimenUU{up,down}
+% --------------------------------------------------------------
+%
+% I will in what follows refer to trunc(), floor() or ceil() only for
+% positive arguments, obtained as ratios x/y or sometimes as a numexpr
+% "scaling" operation" x*y/z which uses temporarily use doubled
+% precision.
+%
+% As \numexpr's x/y is round(x/y), with rounding away from zero, we have
+% access to floor(t) for t>=0 as round(t+0.5)-1 and for t>0 also as
+% round(t-0.5). The former may cause overflow as it involves
+% (2x+y)/(2y) but the latter (2x-y)/(2y) will not overflow if x comes
+% from a dimension as 2x<2**31 then.
+%
+% ceil(t) is more complex as it is floor(t)+1 only for t not an integer.
+% Let's explain how to overcome the challenge for Zd and the "in" unit,
+% i.e. a conversion factor of 7227/100.
+%
+% We want Zd = ceil((T+1)*100/7227) - 1, with T assumed positive.
+%
+% Let T = k*7227 + r with 0<= r < 7227, 0<=k, and r>0 if k=0.
+%
+% (T+1)*100/7227 becomes 100*k + (r+1)*100/7227 and thus
+%
+% Zd = 100 * k + ceil(x) - 1
+%
+% with  x = n*100/7227, and n = 1+r, so 0<n<=7227
+%
+% Here we have a nice situation 0 < x <= 100. Then:
+%
+% ceil(x) = 100 - floor(100 - x)
+%         = 100 - (round(100 - x + 0.5) - 1)
+%         = 101 - round(100 * (1 - n/7227) + 0.5)
+%         = 101 - round((200 * (7227 - n) + 7227)/14454)
+%
+% We can thus achieve the computation of Zd = ceil((T+1)*100/7227) - 1
+% for T>0 without overflow in \numexpr this way:
+%
+%     k = floor(T/7227) = round(T/7227 - 0.5)
+%                       = round((2*T - 7227) / 14454)  (T>0 used here)
+%
+%     r = T - 7227 * k  = T modulo 7227
+%
+%     Zd = 100 * k + 100 - round( (201*7227 - 200*(r+1))/14454 )
+%
+% Everything here is computable within \numexpr and has absolutely no
+% potential overflow problem at all. The same analysis can be done for
+% Zu = ceil(T*100/7227) and for all core TeX units. See the comments
+% below for all obtained formulae and some additional details.
+%
+{\catcode`p 12\catcode`t 12
+ \csname expandafter\endcsname\gdef\csname texdimenstrippt\endcsname#1pt{#1}}%
+%
+% pt
+%
+\def\texdimenpt#1{\expandafter\texdimenstrippt\the\dimexpr#1\relax}%
+%
+% bp 7227/7200 = 803/800
+%
+\def\texdimenbp#1{\expandafter\texdimenstrippt\the\dimexpr\numexpr(%
+                  \expandafter\texdimen_bpnddd_signcheck
+                  \the\numexpr2*\dimexpr#1\relax\relax)*400/803sp\relax}%
+\def\texdimen_bpnddd_signcheck#1{\texdimengobtilminus#1-1+#1}%
+%
+% nd 685/642
+%
+\def\texdimennd#1{\expandafter\texdimenstrippt\the\dimexpr\numexpr(%
+                  \expandafter\texdimen_bpnddd_signcheck
+                  \the\numexpr2*\dimexpr#1\relax\relax)*321/685sp\relax}%
+%
+% dd 1238/1157
+%
+\def\texdimendd#1{\expandafter\texdimenstrippt\the\dimexpr\numexpr(%
+                  \expandafter\texdimen_bpnddd_signcheck
+                  \the\numexpr2*\dimexpr#1\relax\relax)*1157/2476sp\relax}%
+%
+% mm 7227/2540 phi now >2, use from here on the X = round(T psi) approach
+%
+\def\texdimenmm#1{\expandafter\texdimenstrippt\the\dimexpr(#1)*2540/7227\relax}%
+%
+% pc 12/1
+%
+\def\texdimenpc#1{\expandafter\texdimenstrippt\the\dimexpr(#1)/12\relax}%
+%
+% nc 1370/107
+%
+\def\texdimennc#1{\expandafter\texdimenstrippt\the\dimexpr(#1)*107/1370\relax}%
+%
+% cc 14856/1157
+%
+\def\texdimencc#1{\expandafter\texdimenstrippt\the\dimexpr(#1)*1157/14856\relax}%
+%
+% cm 7227/254
+%
+\def\texdimencm#1{\expandafter\texdimenstrippt\the\dimexpr(#1)*254/7227\relax}%
+%
+% in 7227/100
+%
+\def\texdimenin#1{\expandafter\texdimenstrippt\the\dimexpr(#1)*100/7227\relax}%
+%
+% "up and down macros"
+% --------------------
+%
+% The notation <u/v> means u/v in numexpr, which does rounding
+% away from zero. It is essential that the argument be >-0.5 else <x+1>
+% not same as <x>+1. All formulae are overflow free.
+%
+% The comments are for T > 0.
+%
+% Roughly such an approach works for phi = a/b > 1, such that:
+%
+%     a*(2b+1)<2**31 if a is odd, <2**32 if a is even
+%
+% This is true for all core units with quite some margin, the one with
+% largest a*b being phi=7227/2540 for "mm".
+%
+% Note: for a unit such as "ex" or "em" where morally b=65536=2**16,
+% this limits to a<=16383 if a is odd and to a<=32766 if a is even.
+% Thus the general \texdimenwithunit{dim1}{dim2} (which for dim2<1pt
+% computes basically an "up" value) can *not imitate fully* this scheme.
+%
+% The macros and formulas in the comments were obtained from a template
+% (see file generateupdownmacros.py at the project repository),
+% and we could actually combine them into a generic macro handling
+% general a/b (assuming above bounds are verified).
+% But for the the sake of efficiency, this is "rolled-out" here unit per unit.
+%
+\def\texdimenuudownup_zero#1;{\z@\relax}%
+\def\texdimenuudownup_neg#1-{-#1}%
+% bp 803/800
+% T = 803 k + r
+% Zd = 800 k + 800 - <(1284003 - 1600 r)/1606>
+\def\texdimenbpdown#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenbpdown_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenbpdown_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                        \krof \texdimenbpdown_b#1}%
+\def\texdimenbpdown_b#1;{\expandafter\texdimenbpdown_c\the\numexpr(2*#1-803)/1606;#1;}%
+\def\texdimenbpdown_c#1;#2;{\expandafter\texdimenbpdown_d\the\numexpr#2-803*#1;#1;}%
+\def\texdimenbpdown_d#1;#2;{\numexpr800*#2+800-(1284003-1600*#1)/1606sp\relax}%
+% Zu = 800 k + 800 + 1 - <(1285603 - 1600 r)/1606>
+\def\texdimenbpup#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenbpup_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenbpup_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                      \krof \texdimenbpup_b#1}%
+\def\texdimenbpup_b#1;{\expandafter\texdimenbpup_c\the\numexpr(2*#1-803)/1606;#1;}%
+\def\texdimenbpup_c#1;#2;{\expandafter\texdimenbpup_d\the\numexpr#2-803*#1;#1;}%
+\def\texdimenbpup_d#1;#2;{\numexpr800*#2+801-(1285603-1600*#1)/1606sp\relax}%
+% nd 685/642
+% T = 685 k + r
+% Zd = 642 k + 642 - <(878941 - 1284 r)/1370>
+\def\texdimennddown#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimennddown_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimennddown_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                        \krof \texdimennddown_b#1}%
+\def\texdimennddown_b#1;{\expandafter\texdimennddown_c\the\numexpr(2*#1-685)/1370;#1;}%
+\def\texdimennddown_c#1;#2;{\expandafter\texdimennddown_d\the\numexpr#2-685*#1;#1;}%
+\def\texdimennddown_d#1;#2;{\numexpr642*#2+642-(878941-1284*#1)/1370sp\relax}%
+% Zu = 642 k + 642 + 1 - <(880225 - 1284 r)/1370>
+\def\texdimenndup#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenndup_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenndup_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                      \krof \texdimenndup_b#1}%
+\def\texdimenndup_b#1;{\expandafter\texdimenndup_c\the\numexpr(2*#1-685)/1370;#1;}%
+\def\texdimenndup_c#1;#2;{\expandafter\texdimenndup_d\the\numexpr#2-685*#1;#1;}%
+\def\texdimenndup_d#1;#2;{\numexpr642*#2+643-(880225-1284*#1)/1370sp\relax}%
+% dd 1238/1157
+% T = 1238 k + r
+% Zd = 1157 k + 1157 - <(1431828 - 1157 r)/1238>
+\def\texdimendddown#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimendddown_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimendddown_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                        \krof \texdimendddown_b#1}%
+\def\texdimendddown_b#1;{\expandafter\texdimendddown_c\the\numexpr(#1-619)/1238;#1;}%
+\def\texdimendddown_c#1;#2;{\expandafter\texdimendddown_d\the\numexpr#2-1238*#1;#1;}%
+\def\texdimendddown_d#1;#2;{\numexpr1157*#2+1157-(1431828-1157*#1)/1238sp\relax}%
+% Zu = 1157 k + 1157 + 1 - <(1432985 - 1157 r)/1238>
+\def\texdimenddup#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenddup_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenddup_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                      \krof \texdimenddup_b#1}%
+\def\texdimenddup_b#1;{\expandafter\texdimenddup_c\the\numexpr(#1-619)/1238;#1;}%
+\def\texdimenddup_c#1;#2;{\expandafter\texdimenddup_d\the\numexpr#2-1238*#1;#1;}%
+\def\texdimenddup_d#1;#2;{\numexpr1157*#2+1158-(1432985-1157*#1)/1238sp\relax}%
+% mm 7227/2540
+% T = 7227 k + r
+% Zd = 2540 k + 2540 - <(36715307 - 5080 r)/14454>
+\def\texdimenmmdown#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenmmdown_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenmmdown_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                        \krof \texdimenmmdown_b#1}%
+\def\texdimenmmdown_b#1;{\expandafter\texdimenmmdown_c\the\numexpr(2*#1-7227)/14454;#1;}%
+\def\texdimenmmdown_c#1;#2;{\expandafter\texdimenmmdown_d\the\numexpr#2-7227*#1;#1;}%
+\def\texdimenmmdown_d#1;#2;{\numexpr2540*#2+2540-(36715307-5080*#1)/14454sp\relax}%
+% Zu = 2540 k + 2540 + 1 - <(36720387 - 5080 r)/14454>
+\def\texdimenmmup#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenmmup_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenmmup_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                      \krof \texdimenmmup_b#1}%
+\def\texdimenmmup_b#1;{\expandafter\texdimenmmup_c\the\numexpr(2*#1-7227)/14454;#1;}%
+\def\texdimenmmup_c#1;#2;{\expandafter\texdimenmmup_d\the\numexpr#2-7227*#1;#1;}%
+\def\texdimenmmup_d#1;#2;{\numexpr2540*#2+2541-(36720387-5080*#1)/14454sp\relax}%
+% pc 12/1
+% T = 12 k + r
+% Zd = 1 k + 1 - <(17 - 1 r)/12>
+\def\texdimenpcdown#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenpcdown_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenpcdown_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                        \krof \texdimenpcdown_b#1}%
+\def\texdimenpcdown_b#1;{\expandafter\texdimenpcdown_c\the\numexpr(#1-6)/12;#1;}%
+\def\texdimenpcdown_c#1;#2;{\expandafter\texdimenpcdown_d\the\numexpr#2-12*#1;#1;}%
+\def\texdimenpcdown_d#1;#2;{\numexpr#2+1-(17-#1)/12sp\relax}%
+% Zu = 1 k + 1 + 1 - <(18 - 1 r)/12>
+\def\texdimenpcup#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenpcup_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenpcup_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                      \krof \texdimenpcup_b#1}%
+\def\texdimenpcup_b#1;{\expandafter\texdimenpcup_c\the\numexpr(#1-6)/12;#1;}%
+\def\texdimenpcup_c#1;#2;{\expandafter\texdimenpcup_d\the\numexpr#2-12*#1;#1;}%
+\def\texdimenpcup_d#1;#2;{\numexpr#2+2-(18-#1)/12sp\relax}%
+% nc 1370/107
+% T = 1370 k + r
+% Zd = 107 k + 107 - <(147168 - 107 r)/1370>
+\def\texdimenncdown#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenncdown_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenncdown_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                        \krof \texdimenncdown_b#1}%
+\def\texdimenncdown_b#1;{\expandafter\texdimenncdown_c\the\numexpr(#1-685)/1370;#1;}%
+\def\texdimenncdown_c#1;#2;{\expandafter\texdimenncdown_d\the\numexpr#2-1370*#1;#1;}%
+\def\texdimenncdown_d#1;#2;{\numexpr107*#2+107-(147168-107*#1)/1370sp\relax}%
+% Zu = 107 k + 107 + 1 - <(147275 - 107 r)/1370>
+\def\texdimenncup#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenncup_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenncup_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                      \krof \texdimenncup_b#1}%
+\def\texdimenncup_b#1;{\expandafter\texdimenncup_c\the\numexpr(#1-685)/1370;#1;}%
+\def\texdimenncup_c#1;#2;{\expandafter\texdimenncup_d\the\numexpr#2-1370*#1;#1;}%
+\def\texdimenncup_d#1;#2;{\numexpr107*#2+108-(147275-107*#1)/1370sp\relax}%
+% cc 14856/1157
+% T = 14856 k + r
+% Zd = 1157 k + 1157 - <(17194663 - 1157 r)/14856>
+\def\texdimenccdown#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenccdown_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenccdown_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                        \krof \texdimenccdown_b#1}%
+\def\texdimenccdown_b#1;{\expandafter\texdimenccdown_c\the\numexpr(#1-7428)/14856;#1;}%
+\def\texdimenccdown_c#1;#2;{\expandafter\texdimenccdown_d\the\numexpr#2-14856*#1;#1;}%
+\def\texdimenccdown_d#1;#2;{\numexpr1157*#2+1157-(17194663-1157*#1)/14856sp\relax}%
+% Zu = 1157 k + 1157 + 1 - <(17195820 - 1157 r)/14856>
+\def\texdimenccup#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenccup_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenccup_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                      \krof \texdimenccup_b#1}%
+\def\texdimenccup_b#1;{\expandafter\texdimenccup_c\the\numexpr(#1-7428)/14856;#1;}%
+\def\texdimenccup_c#1;#2;{\expandafter\texdimenccup_d\the\numexpr#2-14856*#1;#1;}%
+\def\texdimenccup_d#1;#2;{\numexpr1157*#2+1158-(17195820-1157*#1)/14856sp\relax}%
+% cm 7227/254
+% T = 7227 k + r
+% Zd = 254 k + 254 - <(3678035 - 508 r)/14454>
+\def\texdimencmdown#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimencmdown_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimencmdown_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                        \krof \texdimencmdown_b#1}%
+\def\texdimencmdown_b#1;{\expandafter\texdimencmdown_c\the\numexpr(2*#1-7227)/14454;#1;}%
+\def\texdimencmdown_c#1;#2;{\expandafter\texdimencmdown_d\the\numexpr#2-7227*#1;#1;}%
+\def\texdimencmdown_d#1;#2;{\numexpr254*#2+254-(3678035-508*#1)/14454sp\relax}%
+% Zu = 254 k + 254 + 1 - <(3678543 - 508 r)/14454>
+\def\texdimencmup#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimencmup_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimencmup_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                      \krof \texdimencmup_b#1}%
+\def\texdimencmup_b#1;{\expandafter\texdimencmup_c\the\numexpr(2*#1-7227)/14454;#1;}%
+\def\texdimencmup_c#1;#2;{\expandafter\texdimencmup_d\the\numexpr#2-7227*#1;#1;}%
+\def\texdimencmup_d#1;#2;{\numexpr254*#2+255-(3678543-508*#1)/14454sp\relax}%
+% in 7227/100
+% T = 7227 k + r
+% Zd = 100 k + 100 - <(1452427 - 200 r)/14454>
+\def\texdimenindown#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenindown_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenindown_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                        \krof \texdimenindown_b#1}%
+\def\texdimenindown_b#1;{\expandafter\texdimenindown_c\the\numexpr(2*#1-7227)/14454;#1;}%
+\def\texdimenindown_c#1;#2;{\expandafter\texdimenindown_d\the\numexpr#2-7227*#1;#1;}%
+\def\texdimenindown_d#1;#2;{\numexpr#200+100-(1452427-2*#100)/14454sp\relax}%
+% Zu = 100 k + 100 + 1 - <(1452627 - 200 r)/14454>
+\def\texdimeninup#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimeninup_a\the\numexpr\dimexpr#1;%
+}%
+\def\texdimeninup_a#1{\texdimenzerominusfork
+                        #1-\texdimenuudownup_zero
+                        0#1\texdimenuudownup_neg
+                         0-{}%
+                      \krof \texdimeninup_b#1}%
+\def\texdimeninup_b#1;{\expandafter\texdimeninup_c\the\numexpr(2*#1-7227)/14454;#1;}%
+\def\texdimeninup_c#1;#2;{\expandafter\texdimeninup_d\the\numexpr#2-7227*#1;#1;}%
+\def\texdimeninup_d#1;#2;{\numexpr#200+101-(1452627-2*#100)/14454sp\relax}%
+%
+% "both in and cm"
+% ================
+%
+% Mathematics
+% -----------
+%
+% Let a and b be two non-negative integers such that U = floor(a 7227/100) = 
+% floor(b 7227/254).  It can be proven that a=50k, b=127k for some integer k.
+% The proof is left to reader.  So U = floor(7227 k /2) for some k.
+%
+% Let's now find the largest such U <= T. So U = floor(k 7227/2)<= T which is
+% equivalent (as k is integer) to k 7227/2 <= T + 1/2, i.e.
+%
+%     kmax = floor((2T+1)/7227)
+%
+% If we used for x>0 the formula floor(x)=round(x-1/2)=<x-1/2> we would end
+% up basically with some 4T hence overflow problems even in \numexpr.
+% Here I used <.> to denote rounding in the sense of \numexpr. It is not
+% 1-periodical due to how negative inputs are handled, but here x-1/2>-1/2.
+%
+% The following lemma holds: let T be a non-negative integer then
+%
+%     floor((2T+1)/7227) = <(2T - 3612)/7227>
+%
+% So we can compute this k, hence get a=50k, b=127k, all within \numexpr and
+% avoiding overflow.
+%
+% Implementation
+% --------------
+%
+% Regarding the output in pt or sp, we seem to need floor(k 7227/2).
+% The computation of floor(k 7227/2) as <(7227 k - 1)/2> would require to
+% check if k==0 so we do it rather as <(7227 k + 1)/2> - 1.  No overflow
+% can arise as k = 297147 for \maxdimen, and then 7227 k = 2**31 - 2279 and
+% there is ample room for 7227k+1 using \numexpr.
+%
+% But this step, as well as initial step to get kmax will require to separate
+% handling of negative input from positive one.
+%
+% Alternative
+% -----------
+%
+% For non-negative T we can compute U = ((T+1)/7227)*7227. If U <= T keep it,
+% else if U > T, replace it by U - 3614. This is alternative road to the maximal
+% floor(k 7227/2) at most equal to T.
+%
+\def\texdimenbothincm#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenboth_a
+    \the\numexpr\dimexpr#1\relax\relax-3612)/7227)*127sp\relax}%
+\def\texdimenbothcmin#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenboth_a
+    \the\numexpr\dimexpr#1\relax\relax-3612)/7227)*50sp\relax}%
+\def\texdimenboth_a#1{\texdimengobtilminus#1\texdimenboth_neg-\numexpr((2*#1}%
+\def\texdimenboth_neg-\numexpr((2*-{-\numexpr((2*}%
+%
+\def\texdimenbothincmsp#1{\number
+    \expandafter\texdimenbothsp_a\the\numexpr\dimexpr#1\relax\relax
+     -3612)/7227)*7227+1)/2-1\relax}%
+\def\texdimenbothincmpt#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenbothsp_a\the\numexpr\dimexpr#1\relax\relax
+     -3612)/7227)*7227+1)/2-1sp\relax}%
+\def\texdimenbothsp_a#1{\texdimengobtilminus#1\texdimenbothsp_neg-\numexpr(((2*#1}%
+\def\texdimenbothsp_neg-\numexpr(((2*-{-\numexpr(((2*}%
+%
+\let\texdimenbothcminpt\texdimenbothincmpt
+\let\texdimenbothcminsp\texdimenbothincmsp
+%
+% "both mm and bp"
+% ================
+%
+% Mathematics and Algorithm
+% -------------------------
+%
+% We start from a dimension expressed in sp unit, "T sp". Assume T positive.
+% We know how to get largest "X sp <= T sp" which is exactly expressible
+% in mm unit
+% i.e. can be written X=trunc(a 7227/2540) for some non-negative integer a.
+% We want to achieve X=trunc(b 803/800) for some b.
+%
+%    Only the congruence of X modulo 803 matters for this.
+%    It turns out that the mod 803 impossible values are 267, 535, 802.
+%    As pointed out by Ruixi Zhang on the package repo issue #10,
+%    when a<--a+2540, X increases by 7227=9*803 hence the value
+%    modulo 803 does not change. Thus only "a modulo 2540" matters
+%    to check if X(a) is attainable with bp unit. Ruixi Zhang found by
+%    brute force that there are modulo 2540 nine excluded a-values
+%
+% Rather than checking if "a mod. 2540" avoids the 9 Ruixi Zhang values
+% or if "X mod. 803" avoids  267, 535, 802, we will simply basically
+% check if X sp = \texdimenbp{X sp}bp, as this approach is probably
+% about the same cost or even less than computing "X mod. 803" and
+% correspondingly branching.
+%
+% The key is that if "a" is bad, then "a-1" is automatically good as
+% pointed out by R.Z. on #10, which can be seen without knowing the 9
+% bad congruences, simply by noticing that a<--a-1 modifies X either to
+% X-2 or X-3, so if X was bad certainly the new one is not.
+%
+% Once "a" has gotten its final value, we apply "\the\dimexpr a sp
+% = D pt" trick to recover the D such that "D mm" gives rise to the found
+% dimension.  We go via this "Dmm" intermediary also to express the final
+% result as "X sp", because anyhow the "X" we worked with and had in
+% our token stream has to be recomputed if a<--a-1, so lets always
+% recompute it from final "a", and this goes via "D mm" (but see
+% the paragraph MEMO for alternative for this trunc(a 7227/2540) step).
+%
+% I will copy here the style I used for bothincm expansion triggering
+% via an already positioned \dimexpr waiting to output final result.
+\def\texdimenbothbpmm#1{\expandafter\texdimenstrippt\the\dimexpr
+                        \expandafter\texdimenbothbpmm_fork\the\numexpr\dimexpr#1;}%
+\def\texdimenbothbpmm_fork#1{\texdimenzerominusfork
+                             #1-\texdimenbothbpmm_zero
+                             0#1\texdimenbothbpmm_neg
+                             0-\texdimenbothbpmm_a
+                             \krof#1}%
+% because this is *inside* a pre-positioned \dimexpr, we don't have
+% to worry about zero output ending up as -0.0
+\def\texdimenbothbpmm_neg-{-\texdimenbothbpmm_a}%
+\def\texdimenbothbpmm_zero#1;{\z@\relax}%
+% now, find X sp <= T sp maximal and expressible in mm unit
+% it will be X=trunc(a 7227/2540), we first get a candidate for "a"
+\def\texdimenbothbpmm_a#1;%
+    {\expandafter\texdimenbothbpmm_b\the\numexpr#1*2540/7227;#1;}%
+% we get in a single line the X from this candidate, hijacking TeX's
+% built-in *7227/2540... the "MEMO" above explains one could do this
+% purely within \numexpr, working around its division rounds, and
+% avoiding overflow, but I suspect this would be more costly.
+\def\texdimenbothbpmm_b#1;{\expandafter\texdimenbothbpmm_c
+    \the\numexpr\dimexpr\expandafter\texdimenstrippt\the\dimexpr#1spmm;#1;}%
+% now we have X;a;T;
+\def\texdimenbothbpmm_c#1;#2;#3;{%
+% If X>T, our candidate "a=#2" must be decreased by 1 and we go to _ca
+% The original #3 is not needed anymore
+    \ifnum#1>#3 \expandafter\texdimenbothbpmm_ca\fi
+% Else we decide whether it is "a" or "a-1" we must use. I preferred
+% to induce a re-grabbing cost here, rather than have \texdimenbothbpmm_ca
+% re-grab its arguments from \texdimenbothbpmm_d replacement text.
+    \texdimenbothbpmm_d#1;#2;%
+}%
+% Here, dynamically at the time of the concluding \dimexpr, we
+% check if X sp is expressible in bp unit and then use "a" or "a-1"
+% accordingly
+\def\texdimenbothbpmm_d#1;#2;{#2sp%
+    \ifnum\dimexpr
+    \expandafter\texdimenstrippt\the\dimexpr\numexpr(2*#1+1)*400/803spbp=#1
+    \else-1sp\fi
+% and a \relax to stop the concluding \dimexpr
+    \relax
+}%
+% Here we must decrease "a=#2" by 1, recompute X=#1, then loop
+% back to \texdimenbothbpmm_d. Hesitation between forcing a
+% re-grab or doing it in one step with the subtraction of 1 done twice
+\def\texdimenbothbpmm_ca\texdimenbothbpmm_d#1;#2;%
+   {\expandafter\texdimenbothbpmm_cb\the\numexpr#2-1;}%
+\def\texdimenbothbpmm_cb#1;{%
+    \expandafter\texdimenbothbpmm_d
+    \the\numexpr\dimexpr\expandafter\texdimenstrippt\the\dimexpr#1spmm;#1;%
+}%
+% done...
+% now the lazy way for \texdimenbothmmbp
+\def\texdimenbothmmbp#1{\expandafter\texdimenstrippt\the\dimexpr
+    \expandafter\texdimenbothmmbp_a\the\numexpr\dimexpr\texdimenbothbpmm{#1}mm;}%
+% If zero at this stage, we will correctly get 0.0 in the end
+\def\texdimenbothmmbp_a#1#2;{\numexpr(2*#1#2+\texdimengobtilminus#1-1)*400/803sp\relax}%
+% \texdimenbothbpmmpt and its alias \texdimenbothmmbppt
+\def\texdimenbothbpmmpt#1{\texdimenpt{\texdimenbothbpmm{#1}mm}}%
+\let\texdimenbothmmbppt\texdimenbothbpmmpt
+% \texdimenbothbpmmsp and its alias \texdimenbothmmbpsp
+\def\texdimenbothbpmmsp#1{\the\numexpr\dimexpr\texdimenbothbpmm{#1}mm\relax\relax}%
+\let\texdimenbothmmbpsp\texdimenbothbpmmsp
+%
+% \texdimenwithunit
+% =================
+%
+% Mathematics
+% -----------
+%
+% The ex and em units are handled by TeX as if multiplying by a
+% conversion factor f/65536 (here f sp = 1ex resp. = 1em).
+%
+% In particular, for any decimal D, input "D em" is handled the exact
+% same way as input "D\dimexpr 1em\relax"; this is not
+% the case for the core units except for pt and pc (and sp), whose
+% conversion factors are the sole ones with a power of 2 denominator
+% (respectively 1, 1, and 65536).  The further difference is that
+% for the core units apart from sp, the conversion factor is >1.
+%
+% We assume for this discussion T is non-negative.
+% If f/65536 > 1, the analysis is as above : some dimensions T sp
+% are not attainable as D uu, but the formula
+%     N=round((2T+1)*32768/f)
+% will give a suitable decimal D via \the\dimexpr N sp\relax.
+% (if T=0, we get N=0 as 32768/f<0.5)
+% This D will let TeX convert D uu into T sp, if the dimension
+% is attainable else it will be a closest match
+% either from above or below (not necessarily nearest overall).
+%
+% If f/65536=1, attention that above formula would give N=1 for
+% T=0 (was bug #4).
+%
+% If f/65536<1, all dimensions Tsp are attainable as D uu. Indeed
+% D uu is parsed by TeX via N=round(D*65536), then T=trunc(N*phi),
+% with phi=f/65536. Starting from T we need to find an N such that
+% T/phi <= N< (T+1)/phi.
+%
+% This is equivalent to ceil(T/phi)<= N < ceil((T+1)/phi)
+%
+% Now obsolete remark: let v=(T+0.5)/phi. As its
+% distance to the extremities is 0.5/phi>0.5, (phi>1) its rounding M
+% to an integer verifies automatically T/phi < M < (T+1)/phi, so
+% is a valid candidate. This was used at 0.99 release.
+% (it is funny that N=round((2T+1)*32768/f) works for all f>0
+%  *except* f=65536).
+%
+% The 1.0 release chooses to implement the ceil(T/phi) formula rather as
+% it is closer to naive expectation "dim1/dim2" of a division.
+%
+% It is not obvious to compute this ceil(T/phi) without overflow.
+%
+% Implementation
+% --------------
+%
+% \texdimenwithunit{dim1}{dim2}
+%
+% First done at 0.99, then refactored at 1.0:
+% - to add support for dim2<0pt
+% - to handle differently the dim2<1pt case and make the output
+%   closer to mathematical dim1/dim2
+%
+% To handle dim2<0pt, we simply simultaneously do
+% dim1<-- (-dim1) and dim2<-- (-dim2).
+%
+% dim2=0pt is not intercepted and will cause division by zero low-level
+% error.  Code comments below were not adjusted and handle only
+% dim2>0pt.
+%
+% We first get f from dim2 and branch according to whether f>65536,
+% or f<=65536.
+% We will also need to check the sign of T (dim1=T sp).
+% f>65536: we compute round((2T+1)*32768/f)
+% f=65536: merged with f<65536 branch (as it works and avoids checking for it)
+% f<65536: 0.99 release used the round((2T+1)*32768/f) formula
+%          (it is funny that it works for all f except for f=65536)
+%
+%          But the output then diverges noticeably from mathematical
+%          dim1/dim2 "=" T*65536/f, the more so the smaller the dim2.
+%          See issue #16 and also the discussion at #13.
+%
+%          1.0 release thus opted for the ceil(T*65536/f) formula, as it is the
+%          smallest allowable choice, hence the closest to naive dim1/dim2.
+%
+%          To avoid arithmetic overflow issues we first do the euclidean
+%          division T = k f + r, 0<= r < f, 0<= k
+%
+%          The final result in "sp" unit would be k*65536 + C with
+%          C = ceil(r * 65536/f).
+%
+%          We don't do this k*65536 explicitly as it may overflow and is
+%          anyhow unneeded: the output will be the integer k concatenated with
+%          the decimal E given by TeX from \the\dimexpr C sp, i.e. such that
+%          E pt = C sp, with C = ceil(r*65536/f).
+%
+%          As r is at most f-1, r*65536/f is at most 65536-65536/f, and as
+%          65536>=f (we use this branch also for f=65536), C<=65535. Hence
+%          E is never 1.0 but always "0.<some digits>"
+%
+%          To compute the Euclidean quotient k in \numexpr we use there
+%          <(2T-f)/(2f)> i.e. round((2T-f)/2f) = trunc(T/f)
+%          as we are careful to never have T=0 in-there...
+%
+%          Computing C = ceil(r * 65536/f) in \numexpr is the delicate
+%          part, as r can be as large as f-1 hence 65535 and 65535*65536 would
+%          overflow.  Let's try anyhow to see how to compute ceil() with round():
+%
+%          C = 65536 - floor(65536 * (1 - r/f))
+%            = 65536 - round(65536*(f-r)/f - 0.5) (as r<f so no "round(-0.5)=-1")
+%            = 65536 - <(2*65536*(f-r) - f)/(2f)>
+%
+%          Here the problem is with small r, and large f, and naive implementation
+%          of this formula can overflow...
+%          Let's thus retreat to eTeX scaling operation <r*65536/f> as it
+%          operates with temporary double precision.
+%
+%          R=round(r*65536/f)=<r*65536/f> is either C-1 or C
+%          Let x = mathematical exact r*65536/f:
+%          - if R < x,  C=R+1.
+%          - if R >= x, C=R.
+%
+%          C=ceil(r*65536/f) is the smallest integer such that
+%          trunc(C*f/65536)>=r, or more precisely (as f<=65536) the
+%          smallest integer with trunc(C*f/65536)=r. So trunc(R*f/65536)
+%          will be either r (then R=C), or r-1, then R=C-1.
+%
+%          Method from release 1.0: let's TeX compute P=trunc(R*f/65536) itself!
+%          Via P sp = E <f sp> where E is a decimal such that E pt = R sp.
+%          So
+%          - if P>=r (it is then equal to r in fact) then C=R
+%          - if P<r (it is then equal to r-1), then C=R+1.
+%
+%          New method: overflow-free pure \numexpr way to get the sign of R-x.
+%
+%          Write R=4*S+t, with say S=<R/4>=round(R/4), so t=-2,-1,0,+1.
+%
+%          Then R*f-65536*r = 4*(S*f-16384*r)+t*f
+%
+%          We know that R<=C<65536, so <R/4> <= 16384 and 16384*f
+%          is at worst 2**(14+16)=\maxdimen+1 but we will be in \numexpr,
+%          so no overflow!
+%          And r<f<=65536 so also 16384*r can not overflow.
+%          As |R - r*65536/f|<= 0.5, then |R*f-65536*r|<= f/2, so
+%          4*|S*f-16384*r| <= 2.5*f is very far from overflow risk
+%
+%              T>0, 0<f<=65536
+%              k = <(2*T-f)/(2*f)>
+%              r = T - k*f
+%              R=<r*65536/f>
+%              S=<R/4>
+%              t=R-4*S
+%
+%              IF: 4*(S*f-16384*r)+t*f < 0 THEN C=R+1 ELSE C=R.
+%
+%              Ept=\the\dimexpr Csp, E=0.d...d
+%
+%              End expansion with the contatenation k.d...d
+%
+\def\texdimenwithunit#1#2{\expandafter\texdimenwithunit_i
+% no premultiplication of dim1 by 2 as was done for technical
+% reasons when dim2<1pt branch used round((2T+1)*32768/f)
+    \the\numexpr\dimexpr#2\expandafter;\the\numexpr\dimexpr#1;%
+}%
+\def\texdimenwithunit_i#1{%
+     \texdimengobtilminus#1\texdimenwithunit_switchsigns-%
+     \texdimenwithunit_j#1%
+}%
+\def\texdimenwithunit_switchsigns-\texdimenwithunit_j-#1;#2%
+{%
+% due to \texdimenwithunit_Bneg we can not simply prefix dim1
+% with -, as -0 is bad there. So let's check also if #2 is 0
+    \texdimenzerominusfork
+      #2-\texdimenwithunit_Bzero % also used in \texdimenwithunit_B
+      0#2\texdimenwithunit_j     % abusive shortcut
+       0-{\texdimenwithunit_ic#2}%
+    \krof
+    #1;%
+}%
+\def\texdimenwithunit_ic#1#2;{\texdimenwithunit_j#2;-#1}%
+\def\texdimenwithunit_j#1;#2{%
+        \ifnum#1>\p@\texdimenwithunit_A\fi
+        \texdimenwithunit_B#2#1;%
+}%
+% unit>1pt, handle this as for bp.
+% Attention it would be wrong for unit=1pt!
+\def\texdimenwithunit_A\fi\texdimenwithunit_B#1#2;#3;{\fi
+    \expandafter\texdimenstrippt
+    \the\dimexpr\numexpr(2*#1#3+\texdimengobtilminus#1-1)*32768/#2sp\relax
+    % - fine if dim1>0, <0, or =0
+    % - with *\p@ better but an early doubled dim2 would complicate 1pt
+    % test and not sure if doing \p@/(2*#2) here advantageous
+}%
+% unit<=1pt.
+% if dim1<0, simply negate result for dim1>0 as it can not possibly be 0.0
+% Indeed T*65536/f will be at least 1 so its ceil also (in fact ceil
+% will even be at least 2 if f<65536).
+% The dim1=0 case must get filtered out due to way of calculating the
+% "ceil" in \numexpr
+\def\texdimenwithunit_B#1{\texdimenzerominusfork
+                           #1-\texdimenwithunit_Bzero
+                           0#1\texdimenwithunit_Bneg
+                            0-\texdimenwithunit_Ba
+                          \krof#1}%
+\def\texdimenwithunit_Bzero#1;#2;{0.0}%
+\def\texdimenwithunit_Ba#1#2;#3;{%
+    % no overflow possible from 2*#1#3 in \numexpr
+    \expanded{\expandafter\texdimenwithunit_Bb
+              \the\numexpr(2*#1#3-#2)/(2*#2);#1#3;#2;}%
+}%
+% I could have inserted \expanded\bgroup in \texdimenwithunit_B
+% but then needed to modify _Bzero (used also by \texdimenwithunit_switchsigns)
+% so easiest is to simply defined Bneg explicitly here rather than
+% insisting on deriving it from _Ba
+\def\texdimenwithunit_Bneg-#1;#2;{%
+    \expanded{-\expandafter\texdimenwithunit_Bb
+               \the\numexpr(2*#2-#1)/(2*#1);#2;#1;}%
+}%
+% now k;T;f;. Get the remainder r=T-k*f, and abandon k in the token stream.
+% the earlier \expanded maintains f-expandability
+\def\texdimenwithunit_Bb#1;#2;#3;{%
+    #1\expandafter\texdimenwithunit_Bc\the\numexpr#2-#1*#3;#3;%
+}%
+% now r;f;. Get R=<r*65536/f>
+\def\texdimenwithunit_Bc#1;#2;{%
+    \expandafter\texdimenwithunit_Bd\the\numexpr #1*\p@/#2;#1;#2;%
+}%
+% R;r;f; Is 4*(S*f-16384*r)+t*f < 0 ? with S=<R/4>, t=R-4S
+\def\texdimenwithunit_Bd#1;#2;#3;{%
+    \expandafter\texdimenwithunitstripzeroandpt
+    \the\dimexpr\numexpr#1%
+    \ifnum\numexpr 4*((#1/4)*#3-16384*#2)<\numexpr(4*(#1/4)-#1)*#3\relax
+     +1\fi sp\relax
+}%
+{\catcode`P12\catcode`T12\lowercase{\gdef\texdimenwithunitstripzeroandpt0#1PT}{#1}}%
+\texdimensendinput

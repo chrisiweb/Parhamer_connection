@@ -1,0 +1,48 @@
+% ctexart-hooks.4ht (2022-06-14-13:41), generated from tex4ht-4ht.tex
+% Copyright 2022 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2022-06-14-13:41}
+
+\ExplSyntaxOn
+
+% prevent multiple execution of this file
+\ifdefined\l_save_engine_str\endinput\fi
+\str_new:N \l_save_engine_str
+% stop processing if the engine is pdftex, we want to change processing only for LuaTeX
+\def\l_save_engine_str{pdftex}
+\str_if_eq:NNTF \c_sys_engine_str\l_save_engine_str{\ExplSyntaxOff\endinput}{}
+
+% the luatexja package causes fatal error
+\:dontusepackage{luatexja}
+
+% fix compilation errors
+\AddToHook{package/ctexhook/after}{
+  % don't let ctex to insert any files
+  \cs_set:Npn \ctex_file_input:n #1{}
+  % define some macros that are declared in the input files, and which are needed in the class
+  \cs_set:Npn \ctex_add_to_selectfont:n #1{}
+  \dim_new:N \ccwd
+  \skip_new:N \l__ctex_ccglue_skip
+  \cs_set_protected:Npn \ctex_update_em_unit:
+  { \dim_set:Nn \ccwd { \f@size \p@ } }
+  \cs_set_protected:Npn \ctex_update_ccglue: {}
+}
+
+\ExplSyntaxOff
+\endinput
+

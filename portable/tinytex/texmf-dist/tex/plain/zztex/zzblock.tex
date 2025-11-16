@@ -1,0 +1,327 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Blocks
+%
+% Synopsis:  This module provides facilities for defining and creating
+%            element blocks.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   23 August 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Block Definition
+%                       ----- ----------
+
+
+\setlist \zblocklist = {}
+
+\def \defineblock #1#2#3#4{%            {\name}{\endname}{snap?}{redefine}
+  \if \emptyargp{#4}%
+    \withname\definecount{#1depth}{0}%
+    \withname\definecount{#1number}{0}%
+    \withname\definetoks{#1comptext}%
+    \withname\gdef{#1varinit}{}%
+    \if #3\withname\declaresnapitem{#1number}\fi
+    \append{#1}{\zblocklist}%
+  \fi}
+
+\def \resetinvcontext #1{%                              {\name}
+  \zdeclareeveryvcontext{\zblockvcontext{#1}}}
+
+\def \zblockvcontext #1{%                               {\name}
+  \zsavevcontext{\name{#1depth}=\the\name{#1depth}%
+                 \name{#1number}=\the\name{#1number}%
+                 \name{#1comptext}={\the\name{#1comptext}}}%
+  \global\name{#1depth}= 0\relax
+  \global\name{#1number}= 0\relax}
+
+%                       Block Utilities
+%                       ----- ---------
+
+
+\defineskip{\enclosingbaselineskip}{0pt}
+\defineskip{\enclosingleftss}{0pt}
+\definedimen{\enclosingparindent}{0pt}
+\definedimen{\enclosingparrag}{0pt}
+\defineskip{\enclosingparskip}{0pt}
+\defineskip{\enclosingrightss}{0pt}
+
+
+\def \beginblockscope #1{%
+  \begingroup
+    \zpushblock{#1}%
+    \enclosingbaselineskip = \baselineskip
+    \enclosingleftss = \leftskip
+    \tdimena = \leftskip
+    \advance \enclosingleftss by -\tdimena
+    \enclosingparindent = \parindent
+    \enclosingparrag = \parrag
+    \enclosingparskip = \parskip
+    \enclosingrightss = \rightskip
+    \tdimena = \rightskip
+    \advance \enclosingrightss by -\tdimena}
+
+\def \endblockscope #1{%
+  \zpopblock{#1}%
+  \endgroup}
+
+\def \processdesign #1#2{%                              {\block}{type etc.}
+  \zprocessvariant{#1}%
+  \resetnumber = {}%
+  \if \definedp{#1#2design}%
+    \name{#1#2design}\relax             % \relax terminates numbers and such.
+  \else
+    \error{nodesign}{No design has been defined for the `\string#1#2' block}%
+  \fi
+  \zprocesswith
+  {\globaldefs = 1 \the\resetnumber}}
+
+\def \inblockp #1{%                                     {\block-name}
+  \if \posp{\name{#1depth}}\true \else \false \fi}
+
+\def \setcomptext #1{%                          {\xxxcomptext}
+  \edef \znext {\comptextformat}%
+  #1= \expandafter{\znext}}%
+
+\def \blockmustbein #1#2{%                      {\inner}{\outer}
+  \if \zerop{\name{#2depth}}%
+    \error{blkmustnest}{A `\string#1' must be nested in a `\string#2'}%
+  \fi}
+
+\def \blockcantbein #1#2{%                      {\inner}{\outer}
+  \if \posp{\name{#2depth}}%
+    \error{blkcantnest}
+          {A `\string#1' cannot be nested inside a `\string#2'}%
+  \fi}
+
+\def \closeifinblock #1#2{%                     {\block}{\endblock}
+  \if \inblockp{#1}#2\fi}
+
+%                       Block Stack
+%                       ----- -----
+
+
+\setlist \zblockstack = {}
+\setlist \zlinestack = {}
+
+\def \zpushblock #1{%
+  \push{#1}{\zblockstack}%
+  \edef \znext {\noexpand\push{\the\inputlineno}}%
+  \znext{\zlinestack}}
+
+\def \zpopblock #1{%
+  \pop{\zblk}{\zblockstack}%
+  \pop{\zline}{\zlinestack}%
+  \stringeql{\znext}{\zblk}{#1}%
+  \if \notp{\znext}%
+    \error{blkinvnest}{The `\string\end#1' command does not match the
+                       `\zblk' block that was started on line \zline}%
+  \fi}
+
+\def \zemptyblockstackp {\emptylistp{\zblockstack}}
+
+%                       Block Variants
+%                       ----- --------
+
+
+\def \definevariant #1#2#3{% {\block}{\style}{\modifier0,\modifier1,...}
+  \if \emptyargp{#3}%
+    \error{varmod}{Between 1 and 8 modifier commands must be specified}%
+  \fi
+  \withname\definecount{#2variant}{0}%
+  \withname\xdef{#1varinit}{\name{#1varinit}\name{#2variant}=0}%
+  {\tcounta = 0
+   \zdefvarpre #2#3,\zmark
+   \if \gtrp{\tcounta}{8}%
+     \error{varmod}{Between 1 and 8 modifier commands must be specified}%
+   \fi
+   \ztoksa = \expandaftertwice{\name{\zvarcase\lcromannumeral\tcounta}}%
+   \edef \znext {\global\let \name{#2varcase}=\the\ztoksa}%
+   \znext}}
+
+\def \zdefvarpre #1#2,#3\zmark{%        \style\modifier,\modifier,...,\zmark
+  \xdef #2{\noexpand\variant{\name{#1variant}=\the\tcounta}}%
+  \increment \tcounta
+  \if \notp{\emptyargp{#3}}\zdefvarpre #1#3\zmark \fi}
+
+\gdef \zvariant {}                      % Holds \stylevariant assignments.
+
+\def \variant #1{%                      {\stylevariant assignment}
+  {\ztoksa = \expandafter{\zvariant}%
+   \ztoksb = {#1}%
+   \xdef \zvariant {\the\ztoksa \the\ztoksb}}%
+  \ignorespaces}
+
+\def \zprocessvariant #1{%              {\block}
+  \name{#1varinit}%
+  \zvariant \relax                      % \relax terminates numbers and such.
+  \gdef \zvariant {}}
+
+\def \varcase #1{%                      \style
+  \name{#1varcase}#1}
+
+\long\def \zvarcasei #1#2{%                             \style {var1 code}
+  \ifcase \name{#1variant}#2\else\zbadvar\fi\relax}
+\long\def \zvarcaseii #1#2#3{%                          \style {var1 code}{var2 code}
+  \ifcase \name{#1variant}#2\or#3\else\zbadvar\fi\relax}
+\long\def \zvarcaseiii #1#2#3#4{%
+  \ifcase \name{#1variant}#2\or#3\or#4\else\zbadvar\fi\relax}
+\long\def \zvarcaseiv #1#2#3#4#5{%
+  \ifcase \name{#1variant}#2\or#3\or#4\or#5\else\zbadvar\fi\relax}
+\long\def \zvarcasev #1#2#3#4#5#6{%
+  \ifcase \name{#1variant}#2\or#3\or#4\or#5\or#6\else\zbadvar\fi\relax}
+\long\def \zvarcasevi #1#2#3#4#5#6#7{%
+  \ifcase \name{#1variant}#2\or#3\or#4\or#5\or#6\or#7\else\zbadvar\fi\relax}
+\long\def \zvarcasevii #1#2#3#4#5#6#7#8{%
+  \ifcase \name{#1variant}#2\or#3\or#4\or#5\or#6\or#7\or#8\else\zbadvar\fi\relax}
+\long\def \zvarcaseviii #1#2#3#4#5#6#7#8#9{%
+  \ifcase\name{#1variant}#2\or#3\or#4\or#5\or#6\or#7\or#8\or#9\else\zbadvar\fi\relax}
+
+\def \setvariant #1{%                   \modifier
+  #1%
+  \zvariant \relax
+  \gdef \zvariant {}}
+
+\def \zbadvar {%
+  \zzerror{Invalid value for variant}}
+
+%                       Block Options
+%                       ----- -------
+
+
+\gdef \zwith {}                                 % Holds \with parameters.
+
+
+%~ The |\with| modifier can be used to modify specific design
+%~ parameters for the following block. It only makes sense
+%~ preceding block commands. Sometimes it is used with parameters
+%~ that are specifically intended for |\with|:
+%~   \with{\itemnumber=4} \list{number}
+%~ Other times it is used with a parameter that needs to be
+%~ changed for one particular block.
+%~   \with{\advance\belowskip by -8pt} \float{figure}
+%~ Again, be careful to use |\with| only on block commands.
+
+\long\def \with #1{%                            {parameter-assignments} %^modifier
+  {\ztoksa = \expandafter{\zwith}%
+   \ztoksb = {#1}%
+   \xdef \zwith {\the\ztoksa \the\ztoksb}}%
+  \ignorespaces}
+
+\def \zprocesswith {%
+  \zwith \relax                                 % \relax terminates numbers and such.
+  \gdef \zwith {}}
+
+%~ This block modifier forces a page break above the block.
+
+\def \breakabove {%                                     %^modifier
+  \with{\abovepenalty=\breakalways}}
+
+%~ This block modifier forces a page break below the block.
+
+\def \breakbelow {%                                     %^modifier
+  \with{\belowpenalty=\breakalways}}
+
+%                       Common Design Parameters
+%                       ------ ------ ----------
+
+
+% These design parameters are used by a variety of ZZTeX's blocks, so
+% they are defined here.
+
+% Integer parameters:
+
+\definecount{\abovepenalty}{0}          % Penalty above block.
+\definecount{\authorlevel}{0}           % Author ToC entry level.
+\definecount{\belowpenalty}{0}          % Penalty below block.
+\definecount{\continue}{0}              % Block is continued (bit 0) and/or continuation (bit 1).
+\definecount{\difficulty}{0}            % Level of difficulty of the block.
+
+% Flag parameters:
+
+\setflag \allowbreaks = \false          % Allow page breaks in block?
+\setflag \allowintoc = \false           % Allow section in ToC?
+
+% Dimension parameters:
+
+\definedimen{\height}{0pt}              % Height of text.
+\definedimen{\ruleshift}{0pt}           % Horizontal shift for rule.
+\definedimen{\ruleheight}{0pt}          % Height (thickness) of rule.
+\definedimen{\rulewidth}{0pt}           % Width of rule.
+\definedimen{\topadjust}{\mindimen}     % Adjustment for head at top of page.
+\definedimen{\vshift}{0pt}              % Vertical shift.
+\definedimen{\width}{0pt}               % Width of text.
+
+% Skip (glue) parameters:
+
+\defineskip{\aboveskip}{0pt}            % Base/base skip above block.
+\defineskip{\belowskip}{0pt}            % Base/base skip below block.
+\defineskip{\columngutter}{0pt}         % Width of gutter between columns.
+\defineskip{\interrowskip}{0pt}         % Extra space between rows.
+\defineskip{\leftindent}{0pt}           % Left indentation glue.
+\defineskip{\numbersink}{0pt}           % Sinkage to section number, or 
+\defineskip{\numberskip}{0pt}           % Space b/b to section number.
+\defineskip{\parhang}{0pt}              % Hanging indent for paragraph.
+\defineskip{\rightindent}{0pt}          % Right indentation glue.
+\defineskip{\ruleskip}{0pt}             % Vskip for rule.
+\defineskip{\textsink}{0pt}             % Vsink for text.
+\defineskip{\textskip}{0pt}             % Base/base skip for text.
+\defineskip{\titlesink}{0pt}            % Sinkage to section title, or  
+\defineskip{\titleskip}{0pt}            % Space b/b to section title.
+
+% Token list parameters:
+
+\definetoks{\authortext}                % Part/chapter author text.
+\definetoks{\bodyfont}                  % Font for body of block.
+\definetoks{\divisions}                 % List of division names.
+\definetoks{\numberfont}                % Font for block number.
+\definetoks{\numberwordfont}            % Font for block word like "chapter".
+\definetoks{\openertext}                % Part/chapter opener text.
+\definetoks{\position}                  % Position of the block.
+\definetoks{\resetnumber}               % List of sequence numbers to reset.
+\definetoks{\rulecolor}                 % Color of a rule.
+\definetoks{\runners}                   % Running head/foot macros.
+\definetoks{\style}                     % Heading style.
+\definetoks{\textcolor}                 % Color of text.
+\definetoks{\titlefont}                 % Font for title.
+
+% Macro parameters:
+
+\def \numberformat #1{}                 % {code} %~ Formatter for block number.
+\def \paging {}                         % {code} %~ Page control commands.
+\def \providemark #1{}                  % {code} %~ Provide marks for the block.
+\def \titleformat {}                    % {code} %~ Formatter for title.
+
+%                       The \continue Parameter
+%                       --- --------- ---------
+
+
+% The \continue parameter is set as follows:
+%   0: neither continued nor continuation
+%   1: continued
+%   2: continuation
+%   3: both continuation and continued
+
+
+\def \continuedp {\oddp{\continue}}
+
+\def \continuationp {\gtrp{\continue}{1}}
+
+\def \zsetcontinue {%
+  \if \andp{\zerop{\continue}}{\continuation}%
+    \continue = 2\relax
+  \fi}
+
+%                       Break Element
+%                       ----- -------
+
+
+\long\def \breakelement #1{%
+  \global\setflag \zinpar = {\hmodep}%
+  \if \zinpar \flushendpar \fi
+  #1%
+  \if \zinpar \noindent \ignorespaces \fi}

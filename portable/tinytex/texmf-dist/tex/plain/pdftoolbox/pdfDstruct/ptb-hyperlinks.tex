@@ -1,0 +1,59 @@
+\input ptb-utils
+\_checkloaded{hyperlinks}
+
+\def\linkborder#1{%
+    \ifx^#1^%
+        /C [\default@border] /Border [0 0 \default@border@wd]%
+    \else\ifcsname #1@border\endcsname%
+        \_xp\ifx\csname #1@border\endcsname\empty%
+            /Border [0 0 0]%
+        \else%
+            /C [\csname #1@border\endcsname] /Border [0 0 \csname #1@border@wd\endcsname]%
+        \fi%
+    \fi\fi%
+}
+
+\def\createbordertype#1#2#3{%
+    \_xp\def\csname #1@border\endcsname{#2}%
+    \_xp\def\csname #1@border@wd\endcsname{#3}%
+}
+
+\def\anchorheight{1.5em} % Raise anchor since it should be at top of line
+\def\_anchor[#1]#2{\vbox to\z@{\kern-\anchorheight\pdfdest name{#1:#2} xyz\relax\vss}}
+\def\anchor{\_ifnextchar[ {\_anchor}{\_anchor[]}}
+
+\def\@anchorbuf{0pt}
+\def\@anchorwbuf{1pt}
+\def\_gotoanchor[#1]#2#3{{%
+    \setbox0=\hbox{#3}%
+    \quitvmode%
+    \pdfstartlink height \dimexpr\ht0 + \@anchorbuf\relax depth \dimexpr\dp0 + \@anchorbuf\relax
+        attr {\linkborder{#1}} goto name{#1:#2}\relax{\kern\@anchorwbuf\relax#3\kern\@anchorwbuf\relax}\pdfendlink%
+}}
+
+\def\gotoanchor{\_ifnextchar[ {\_gotoanchor}{\_gotoanchor[]}}
+
+\def\_url#1#2{%
+    \pdfstartlink user{
+        /Subtype /Link
+        \linkborder{url}
+        /A <<
+            /Type /Action
+            /S /URI
+            /URI (#1)
+        >>
+    }%
+    #2%
+    \pdfendlink{}%
+    \egroup%
+}
+
+\def\url{%
+    \bgroup%
+    \catcode`~=12 \catcode`_=12 \catcode`\%=12 %
+    \_url%
+}
+
+\createbordertype{default}{1 0 0}{0.6}
+\createbordertype{url}{1 0 0}{0.6}
+

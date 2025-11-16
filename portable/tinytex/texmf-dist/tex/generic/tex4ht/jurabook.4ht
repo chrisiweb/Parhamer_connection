@@ -1,0 +1,85 @@
+% jurabook.4ht (2024-05-28-12:45), generated from tex4ht-4ht.tex
+% Copyright 2024 TeX Users Group
+% Copyright 2009-2024 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2024-05-28-12:45}
+
+\let\no@subthreesection\subthreesection
+\Def:Section\subthreesection{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thesubthreesection \fi}{#1}
+\let\no:subthreesection\subthreesection
+\def\subthreesection{\rdef:sec{subthreesection}}
+
+\let\no@subfoursection\subfoursection
+\Def:Section\subfoursection{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thesubfoursection \fi}{#1}
+\let\no:subfoursection\subfoursection
+\def\subfoursection{\rdef:sec{subfoursection}}
+
+\let\no@subfivesection\subfivesection
+\Def:Section\subfivesection{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thesubfivesection \fi}{#1}
+\let\no:subfivesection\subfivesection
+\def\subfivesection{\rdef:sec{subfivesection}}
+
+\let\no@subsixsection\subsixsection
+\Def:Section\subsixsection{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thesubsixsection \fi}{#1}
+\let\no:subsixsection\subsixsection
+\def\subsixsection{\rdef:sec{subsixsection}}
+
+
+\let\no@subsevensection\subsevensection
+\Def:Section\subsevensection{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thesubsevensection \fi}{#1}
+\let\no:subsevensection\subsevensection
+\def\subsevensection{\rdef:sec{subsevensection}}
+
+
+\let\no@subeightsection\subeightsection
+\Def:Section\subeightsection{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thesubeightsection \fi}{#1}
+\let\no:subeightsection\subeightsection
+\def\subeightsection{\rdef:sec{subeightsection}}
+
+\NewConfigure{tableofcontents*}[1]{%
+   \def\:tempa{#1}\ifx\empty\:tempa
+      \ifx \au:StartSec\:UnDef \else \gdef\:StartSec{\au:StartSec}\fi
+   \else
+      \edef\auto:toc{#1}%
+         \ifx \au:StartSec\:UnDef
+            \let\au:StartSec\:StartSec
+            \def\:StartSec{\:tableofcontents
+               \global\let\auto:toc\:UnDef \global\let\:StartSec\au:StartSec\:StartSec}%
+            \append:def\tableofcontents{\gdef\:StartSec{\au:StartSec}}%
+   \fi  \fi
+}
+
+\Configure{tableofcontents*}{part,chapter,section,subsection,subsubsection,subthreesection,subfoursection,subfivesection,subsixsection,subsevensection,subeightsection}
+
+ \renewcommand{\@makefntext}[1]{%
+   \stepcounter{totalfootnotes}%
+   \renewcommand{\baselinestretch}{\@ne}% (nur) dieses hinzugefuegt fuer einzeilige Ausgabe
+   \parindent 1em%
+   \noindent%
+   \@infootnotetrue%
+   \hb@xt@1.8em{\hss\@makefnmark}#1%
+ \@infootnotefalse}
+
+\Hinput{jurabook}
+

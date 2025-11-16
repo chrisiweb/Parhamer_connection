@@ -1,0 +1,82 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% lua-ul.4ht (2024-10-03-13:41), generated from tex4ht-4ht.tex
+% Copyright 2024 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2024-10-03-13:41}
+
+\def\lua:ul:get:xcolorcss#1#2{%
+   \expandafter\extractcolorspec\expandafter{#1}{\tsf:color}%
+   \expandafter\convertcolorspec\tsf:color{HTML}\tsf:color%
+   \edef#2{\#\tsf:color}%
+}
+
+\ExplSyntaxOn
+
+\NewConfigure{highLight}{2}
+\NewDocumentCommand \:highLight {O{\l__luaul_highlight_color_tl} +m} {
+  \group_begin:
+  \lua:ul:get:xcolorcss{#1}\:highLightColor%
+  \a:highLight#2\b:highLight%
+  \group_end:
+}
+
+\HLet\highLight\:highLight
+
+\NewConfigure{strikeThrough}{2}
+\NewDocumentCommand \:strikeThrough {o +m} {
+    \group_begin:
+    \IfValueTF {#1} {
+      \lua:ul:get:xcolorcss{#1}\:strikeThroughColor%
+    }{\def\:strikeThroughColor{inherit}}
+    \a:strikeThrough#2\b:strikeThrough
+    \group_end:
+  }
+
+\HLet\strikeThrough\:strikeThrough
+
+\NewConfigure{underLine}{2}
+\NewDocumentCommand \:underLine {o +m} {
+  \group_begin:
+  \IfValueTF {#1} {
+    \__luaul_parse_generic_keys:n {
+      #1
+    }
+  }{}
+  \bool_if:NTF \l__luaul_color_set_bool {
+    % the \l__luaul_current_color_tl contains color in a format suitable for \convertcolorspec,
+    % so we cannot use \lua:ul:get:xcolorcss here
+    \expandafter\convertcolorspec\l__luaul_current_color_tl{HTML}\:tempa
+    \edef\:underLineColor{\#\:tempa}%
+  }{\def\:underLineColor{inherit}}
+  \a:underLine#2\b:underLine
+  \group_end:
+}
+
+\HLet\underLine\:underLine
+
+
+\bool_if:NT \l__luaul_soulnames_bool {
+    \cs_set_eq:NN \textul \underLine     \cs_set_eq:NN \ul \textul
+    \cs_set_eq:NN \textst \strikeThrough \cs_set_eq:NN \st \textst
+    \cs_set_eq:NN \texthl \highLight     \cs_set_eq:NN \hl \texthl
+}
+
+\ExplSyntaxOff
+\Hinput{lua-ul}
+\endinput
+

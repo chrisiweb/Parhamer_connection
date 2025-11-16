@@ -1,0 +1,38 @@
+% booklet.tex  ... re-orders PDF pages and collets them for booklet printing 
+
+% This macro is used as an example in the book
+% Petr Olsak: Typograficky system TeX, pages 102, 103.
+
+% Usage: change the first definition \def\document{your-document}
+% without PDF extension and process: pdftex booklet.
+% Then use duplex printing over the short side.
+
+\ifx\document\undefined
+   \def\document {navrh-rozpoctu} % Name of processed document without suffix
+\fi
+\nopagenumbers % we need no pagenumbers
+\pdfpagewidth=297mm \pdfpageheight=210mm % sheet = format A4 landscape
+\pdfhorigin=0pt \pdfvorigin=0pt          % Knuth's origin-point shifted
+\def\pageswidth{width.5\pdfpagewidth}    % page width = 1/2 of sheet width 
+
+\pdfximage \pageswidth {\document.pdf}   % First page is read in order to
+\mathchardef\firstpage=\pdflastximage    % detect \pdflastximagepages
+
+\def\putpage#1{% put the page number #1 into sheet
+   \ifnum#1>\pdflastximagepages \hbox{\vrule\pageswidth}\else % empty page
+      \ifnum#1=1 \pdfrefximage\firstpage                   % first page   
+      \else \pdfximage \pageswidth page#1 {\document.pdf}% % normal page
+            \pdfrefximage\pdflastximage
+      \fi\fi}
+
+\newcount\aL \newcount\aR \newcount\bL \newcount\bR
+\aL=\pdflastximagepages
+\advance\aL by3 \divide\aL by4 \multiply\aL by4  % rounding to 4N up 
+\aR=1  \bL=2 \bR=\aL \advance\bR by-1            % little calculations
+\loop
+   \hbox{\putpage\aL \putpage\aR}\vfil\break     % faceside of the sheet
+   \hbox{\putpage\bL \putpage\bR}\vfil\break     % underside of the sheet
+   \advance\aR by2  \advance\aL by-2
+   \advance\bR by-2 \advance\bL by2
+   \ifnum \aL>\aR \repeat
+\end

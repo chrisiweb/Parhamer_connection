@@ -1,0 +1,133 @@
+%%
+%% This is file `pst-shell.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-shell'
+%%
+%% Manuel Luque <manuel.luque27@gmail.com> (France)
+%% Herbert Voss <hvoss@tug.org> (Germany)
+%%
+%% December 27, 2016
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-shell' is a PSTricks package to create sea shell
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\csname PSTSHELLLoaded\endcsname
+\let\PSTSHELLLoaded\endinput
+% Requires PSTricks, ps-solides3d, pst-xkey packages
+\ifx\PSTricksLoaded\endinput\else\input pstricks.tex\fi
+\ifx\PSTGradLoaded\endinput \else\input pst-solides3d.tex\fi
+%\ifx\PSTXKeyLoaded\endinput \else\input pst-xkey.tex \fi
+\def\fileversion{0.03}
+\def\filedate{2016/12/27}
+\message{`PST' v\fileversion, \filedate}
+
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+\pst@addfams{pst-shell}
+% 14 paramétres
+% D, A,\alpha,\beta,\mu,\Omega,\phi, b, L, P, W1, W2,N
+% JORGE PICADO
+\define@key[psset]{pst-shell}{D}[1]{\def\pst@shell@D{#1 }} % sens de l'enroulement
+\define@key[psset]{pst-shell}{A}[25]{\def\pst@shell@A{#1 }} % r(\theta=0)
+\define@key[psset]{pst-shell}{alpha}[83]{\def\pst@shell@alpha{#1 }} %
+\define@key[psset]{pst-shell}{beta}[42]{\def\pst@shell@beta{#1 }} %
+\define@key[psset]{pst-shell}{mu}[10]{\def\pst@shell@mu{#1 }} %
+\define@key[psset]{pst-shell}{Omega}[30]{\def\pst@shell@Omega{#1 }} %
+\define@key[psset]{pst-shell}{phi}[70]{\def\pst@shell@phi{#1 }} %
+\define@key[psset]{pst-shell}{a}[12]{\def\pst@shell@a{#1 }} %
+\define@key[psset]{pst-shell}{b}[20]{\def\pst@shell@b{#1 }} %
+\define@key[psset]{pst-shell}{L}[1]{\def\pst@shell@L{#1 }} %
+\define@key[psset]{pst-shell}{P}[1]{\def\pst@shell@P{#1 }} %
+\define@key[psset]{pst-shell}{W1}[1]{\def\pst@shell@Wi{#1 }} %
+\define@key[psset]{pst-shell}{W2}[1]{\def\pst@shell@Wii{#1 }}
+\define@key[psset]{pst-shell}{N}[0]{\def\pst@shell@N{#1 }}
+\define@boolkey[psset]{pst-shell}[Pst@]{writedata}[true]{}
+%%%
+\psset[pst-shell]{D=1,A=25,alpha=83,beta=42,mu=10,Omega=30,phi=70,a=12,b=20,L=1,P=1,W1=1,W2=1,N=0,
+                  writedata=false}
+%
+\pstheader{pst-shell.pro}
+%
+\def\pst@shell@variables{
+  /shell@D \pst@shell@D def
+  /shell@A \pst@shell@A def 
+  /shell@alpha \pst@shell@alpha def
+  /shell@beta \pst@shell@beta def
+  /shell@mu \pst@shell@mu def
+  /shell@Omega \pst@shell@Omega def
+  /shell@phi \pst@shell@phi def
+  /shell@a \pst@shell@a def
+  /shell@b \pst@shell@b def
+  /shell@L \pst@shell@L def
+  /shell@P \pst@shell@P def
+  /shell@Wi \pst@shell@Wi def
+  /shell@Wii \pst@shell@Wii def
+  /shell@N \pst@shell@N def
+}
+%
+\newpsstyle[pst-shell]{Achatina}%
+  {D=1,A=109,alpha=86.6,beta=8.5,mu=0,Omega=0,phi=0,a=32,b=48,L=0,P=0,W1=1,W2=1,N=0}
+\newpsstyle[pst-shell]{Ammonite}%
+  {alpha=83,beta=90,phi=1,mu=1,Omega=1,A=2.5,a=1,b=0.9,L=0.5,W1=100,W2=20,P=10,N=15}
+\newpsstyle[pst-shell]{Argonauta}%
+  {alpha=80,beta=90,phi=0,mu=0,Omega=0,A=2,a=2,b=1.5,L=0.3,W1=150,W2=20,P=5,N=30}%
+\newpsstyle[pst-shell]{Codakia}%
+  {alpha=37,beta=90,phi=0,mu=1,Omega=1,A=10500,a=10000,b=10500,L=0,W1=0,W2=0,P=0,N=0}
+\newpsstyle[pst-shell]{Conus}%
+  {D=1,A=7,alpha=87,beta=7,mu=0,Omega=0,phi=78,a=4.3,b=1,L=0,P=0,W1=0,W2=0,N=0}
+\newpsstyle[pst-shell]{Epiteonium}%
+  {D=1,A=9.5,alpha=85.9,beta=9,mu=0,Omega=0,phi=81,a=2.1,b=1.6,L=1.3,P=-60,W1=200,W2=20,N=8.3}
+\newpsstyle[pst-shell]{Escalaria}%
+  {alpha=86,beta=10,phi=45,mu=5,Omega=1,A=90,a=20,b=20,L=14,W1=180,W2=0.4,P=40,N=180}
+\newpsstyle[pst-shell]{Helcion}%
+  {alpha=18,beta=90,phi=0,mu=0,Omega=-40,A=450,a=400,b=310,L=0,W1=0,W2=0,P=0,N=0}
+\newpsstyle[pst-shell]{Lyria}%
+  {D=1,A=50,alpha=83.9,beta=-19,mu=1,Omega=-2,phi=45,a=40,b=14,L=4,P=0,W1=6,W2=27,N=8}
+\newpsstyle[pst-shell]{Natalina}%
+  {alpha=80,beta=40,phi=55,mu=10,Omega=30,A=25,a=12,b=16,L=0,W1=0,W2=0,P=0,N=0}
+\newpsstyle[pst-shell]{Nautilus}%
+  {D=-1,A=2,alpha=80,beta=90,mu=0,Omega=0,phi=0,a=2,b=1.5,L=0,P=0,W1=0,W2=0,N=0}
+\newpsstyle[pst-shell]{Oxystele}%
+  {D=1,A=47,alpha=84.9,beta=7,mu=0,Omega=0,phi=-36,a=40,b=19,L=0,P=0,W1=1,W2=1,N=0}
+\newpsstyle[pst-shell]{Planorbis}%
+  {alpha=84,beta=85,phi=10,mu=45,Omega=5,A=45,a=20,b=30,L=0,W1=0,W2=0,P=0,N=0}
+\newpsstyle[pst-shell]{Tonna}%
+  {D=1,A=70,alpha=82.4,beta=0,mu=10,Omega=0,phi=0,a=58,b=50,L=0,P=0,W1=1,W2=1,N=0}
+\newpsstyle[pst-shell]{Turritella}%
+  {D=1,A=22.2,alpha=88.9,beta=4,mu=1,Omega=-2,phi=55,a=1.3,b=1.5,L=0,P=0,W1=0,W2=0,N=0}
+%
+%[alpha=86, beta=10, phi=-45, mu=5, Omega=1, A=90, a=20, b=20, L=14, P=40, W1=180, W2=.4, N=180]
+%Escalária Preciosa (forma de saca-rolhas, [2, p. 53])
+%
+% Mollusc  ¦ ,°  ¦ ,°¦ ,°¦ µ, ¦ ,°¦smin ¦smax ¦ A   ¦ a  ¦ b    ¦ P  ¦ W1 ¦ W2 ¦ N  ¦ L 
+%+---------+------+----+----+----+----+-----+-----+-----+----+------+----+----+----+----+---+
+%Codakia   ¦ 37   ¦ 90 ¦ 0  ¦ 1  ¦ 1  ¦-180 ¦ 180 ¦10500¦10000¦10500¦ 0  ¦ 0  ¦ 0  ¦ 0  ¦ 0 
+\def\psShell{\pst@object{psShell}}
+\def\psShell@i{\@ifnextchar(\psShell@ii{\psShell@ii(0,0,0)}}
+\def\psShell@ii(#1){%
+  \begin@SpecialObj
+  \if$\pst@solides@file$  % no data file
+    \addto@pscode{ tx@ShellDict begin \pst@shell@variables }%
+    \defFunction{pst@coquillage}(uu,vu){xShell}{yShell}{zShell}
+    \psSolid[object=surfaceparametree,function=pst@coquillage](#1)
+    \showpointsfalse
+    \addto@pscode{ end }% of tx@ShellDict %
+  \else
+    \ifPst@writedata
+      \psSolid[action=writesolid](#1)%
+    \else
+      \psSolid[object=datfile](#1)%
+    \fi
+  \fi
+  \end@SpecialObj
+  \ignorespaces}%
+%
+\catcode`\@=\TheAtCode\relax
+%
+\endinput 

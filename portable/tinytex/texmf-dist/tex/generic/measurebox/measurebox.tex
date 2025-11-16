@@ -1,0 +1,238 @@
+\expandafter\edef\csname mb @ catcode\endcsname{\the\catcode`_}
+\input ptb-utils
+
+\_checkloaded{measurebox}
+
+\input ptb-colors
+\input ptb-key-value
+\input ptb-fonts
+\input ptb-arrays
+
+\def\measureboxversion{1.0}
+\def\measureboxauthor{S. Lurp}
+\def\measureboxemail{slurper04@gmail.com}
+
+\def\mbnodp#1{\vbox{\offinterlineskip\hbox{#1}\null}}
+
+\def\mbscalebox#1#2{{
+    \setbox0=\hbox{#2}%
+    \hbox to#1\wd0{\vrule width\z@ height#1\ht0 depth#1\dp0%
+        \pdfliteral{q #1 0 0 #1 0 0 cm}%
+        \rlap{\copy0}%
+        \pdfliteral{Q}%
+        \hfil%
+    }%
+}}
+
+\newdimen\mbwd
+\newdimen\mbht
+\newdimen\mbdp
+
+\def\mblblscale{2pt}
+\def\_measureh{%
+    \keyexists{dash}\_check\lastkeys%
+    \pdfliteral{%
+        q
+        \_pttrans
+        \_stroke\space w
+        \unless\ifx\_check\_nul [\_dash] 0 d\fi\space
+        \expanded{\noexpand\_getcolor{}{\_color}}
+        0 \_nopt{\_b} m
+        \_nopt{\mbwd} \_nopt{\_b} l
+        0 \_nopt{\_e} m
+        \_nopt{\mbwd} \_nopt{\_e} l
+        \_nopt{\_x} \_nopt{\_b} m
+        \_nopt{\_x} \_nopt{\_e} l
+        S
+        Q
+    }%
+    \keyexists{label}\_check\lastkeys%
+    \unless\ifx\_check\_nul%
+        \keyexists{noprint}\_check\lastkeys%
+        \ifx\_check\_nul%
+            \setbox0=\vbox{\offinterlineskip%
+                \hbox{{\setscale{\mblblscale}\expanded{\noexpand\_setcolor{}{\_color}}\_label}}\null}%
+            \rlap{\vbox to\z@{%
+                \vss%
+                \moveright\dimexpr\_x+.5pt\relax\copy0%
+                \kern.5\dimexpr\_e+\_b-\ht0\relax%
+            }}%
+        \fi%
+        \keyexists{legend}\_check\lastkeys%
+        \unless\ifx\_check\_nul%
+            \expanded{\noexpand\appendarray{mbhts}{{\_label}{\the\dimexpr\_b\relax}{\the\dimexpr\_e\relax}}}%
+        \fi%
+    \fi%
+}
+
+\def\measureh#1{%
+    \mapkeys{%
+        b={%
+            name=_b,
+            default=-\the\mbdp%
+        },
+        e={%
+            name=_e,
+            required%
+        },
+        x={%
+            name=_x,
+            default=\the\dimexpr.5\mbwd\relax,
+            definition=\edef%
+        },
+        stroke={%
+            name=_stroke,
+            default=.01%
+        },
+        label={%
+            name=_label%
+        },
+        color={%
+            name=_color,
+            default=black%
+        },
+        dash={%
+            name=_dash%
+        },
+        legend,%
+        noprint%
+    }{#1}%
+    \_measureh%
+}
+\def\_measurew{%
+    \keyexists{dash}{\_check}\lastkeys%
+    \pdfliteral{%
+        q
+        \_pttrans
+        \_stroke\space w
+        \expanded{\noexpand\_getcolor{}{\_color}}
+        \unless\ifx\_check\_nul [\_dash] 0 d\fi\space
+        \_nopt{\_b} \_nopt{\mbht} m
+        \_nopt{\_b} -\_nopt{\mbdp} l
+        \_nopt{\_e} \_nopt{\mbht} m
+        \_nopt{\_e} -\_nopt{\mbdp} l
+        \_nopt{\_b} \_nopt{\_y} m
+        \_nopt{\_e} \_nopt{\_y} l
+        S
+        Q
+    }%
+    \keyexists{label}\_check\lastkeys%
+    \unless\ifx\_check\_nul%
+        \keyexists{noprint}\_check\lastkeys%
+        \ifx\_check\_nul%
+            \setbox0=\hbox{{\setscale{\mblblscale}\expanded{\noexpand\_setcolor{}{\_color}}\_label}}%
+            \rlap{\vbox to\z@{%
+                \vss%
+                \moveright\_b\hbox to\dimexpr\_b+\_e\relax{\hss\copy0\hss}%
+                \kern\dimexpr\_y+.5pt\relax%
+            }}%
+        \fi%
+        \keyexists{legend}\_check\lastkeys%
+        \unless\ifx\_check\_nul%
+            \expanded{\noexpand\appendarray{mbwds}{{\_label}{\the\dimexpr\_b\relax}{\the\dimexpr\_e\relax}}}%
+        \fi%
+    \fi%
+}
+
+\def\measurew#1{%
+    \mapkeys{%
+        b={%
+            name=_b,
+            default=0pt%
+        },
+        e={%
+            name=_e,
+            required%
+        },
+        y={%
+            name=_y,
+            default=\the\dimexpr.5\dimexpr\mbht-\mbdp\relax\relax,
+            definition=\edef%
+        },
+        stroke={%
+            name=_stroke,
+            default=.1%
+        },
+        label={%
+            name=_label%
+        },
+        color={%
+            name=_color,
+            default=black%
+        },
+        dash={%
+            name=_dash%
+        },
+        legend,%
+        noprint%
+    }{#1}%
+    \_measurew%
+}
+
+\def\mbstrokewd{.2}
+\def\mbdashwd{1.5pt}
+\def\mbscale{1}
+\definecolor{mbcolor}{rgb}{0 0 0}
+
+\def\measurebox#1#2{{%
+    \createarray{mbwds}%
+    \createarray{mbhts}%
+    \setbox0=\hbox{#1}%
+    \mbwd=\wd0 \mbht=\ht0 \mbdp=\dp0%
+    \setbox1=\hbox to\wd0{%
+        \rlap{#1}%
+        \pdfliteral{
+            q
+            \_pttrans
+            [\_nopt\mbdashwd] 0 d
+            \mbstrokewd\space w
+            \_getcolor{}{mbcolor}
+            0 -\_nopt{\dp0} \_nopt{\wd0} \_nopt{\dp0+\ht0} re
+            S
+            Q
+        }%
+        \globalsetters%
+        \rlap{#2}%
+        \localsetters%
+        \hfil%
+    }%
+    \setbox2=\vbox{%
+        \setscale{5pt}%
+        \baselineskip=\z@
+        \lineskiplimit=\maxdimen
+        \lineskip=2pt
+        \def\_X##1{\__X##1}%
+        \def\__X##1##2##3{##1&##2&##3&\the\dimexpr##3-##2\relax\cr}%
+        \let\_arr_index=\_X%
+        \edef\___X{%
+            \arr@mbwds%
+        }%
+        \tabskip=3pt\halign{&##\hfil\crcr
+            {\bf Name}&{\bf Start}&{\bf End}&{\bf Difference}\crcr\noalign{\kern2pt\hrule\kern2pt}%
+            \___X%
+            \crcr%
+        }%
+    }%
+    \setbox3=\vbox{%
+        \setscale{5pt}%
+        \baselineskip=\z@
+        \lineskiplimit=\maxdimen
+        \lineskip=2pt
+        \def\_X##1{\__X##1}%
+        \def\__X##1##2##3{##1&##2&##3&\the\dimexpr##3-##2\relax\cr}%
+        \let\_arr_index=\_X%
+        \edef\___X{%
+            \arr@mbhts%
+        }%
+        \tabskip=3pt\halign{&##\hfil\crcr
+            {\bf Name}&{\bf Start}&{\bf End}&{\bf Difference}\crcr\noalign{\kern2pt\hrule\kern2pt}%
+            \___X%
+            \crcr%
+        }%
+    }%
+    \vbox{%
+    \openup1\jot\tabskip=3pt\halign{&\hfil##\cr
+    \mbscalebox{\mbscale}{\box1}&\box3\cr\box2\cr}}%
+}}
+
+\catcode`_=\csname mb @ catcode\endcsname\relax

@@ -1,0 +1,191 @@
+% beamer.4ht (2022-10-04-13:07), generated from tex4ht-4ht.tex
+% Copyright 2003-2009 Eitan M. Gurari
+% Copyright 2009-2022 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2022-10-04-13:07}
+
+\NewConfigure{titlepage}{2}
+\NewConfigure{title}{2}
+\NewConfigure{author}{2}
+\NewConfigure{institute}{2}
+\NewConfigure{date}{2}
+\NewConfigure{titlegraphic}{2}
+\NewConfigure{andtitle}{1}
+\NewConfigure{inst}{2}
+
+\let\o:@section:\@section
+\def\@section[#1]#2{%
+   \expandafter\global\expandafter\sl:toks\expandafter
+   {\the\sl:toks\leavevmode \o:@section:[#1]{#2}%
+    \add:toc{section}{\thesection}{\secname}}%
+   \expandafter\ifx\csname a:sec@slide\endcsname\relax
+   \expandafter\ifx\csname b:sec@slide\endcsname\relax
+       \the\sl:toks \global\sl:toks={}%
+\fi\fi
+%
+}
+
+\let\o:untitledsubsection:\untitledsubsection
+\def\untitledsubsection#1{%
+   \expandafter\global\expandafter\sl:toks\expandafter
+   {\the\sl:toks\leavevmode \o:untitledsubsection:}%
+   \expandafter\ifx\csname a:sec@slide\endcsname\relax
+   \expandafter\ifx\csname b:sec@slide\endcsname\relax
+       \the\sl:toks \global\sl:toks={}%
+\fi\fi
+%
+}
+
+\newtoks\sl:toks
+\NewConfigure{sec@slide}{2}
+
+\def\tableofcontents{\futurelet\:temp\:TOC}
+\def\:TOC{\ifx [\:temp \expandafter\:TableOfContents
+          \else \:TableOfContents[toc]\fi}
+
+\pend:defI\alert{\a:alert}
+\append:defI\alert{\b:alert}
+\NewConfigure{alert}{2}
+\pend:defI\structure{\a:structure}
+\append:defI\structure{\b:structure}
+\NewConfigure{structure}{2}
+\NewConfigure{sectionshadedintoc}{2}
+\NewConfigure{sectionintoc}{2}
+\NewConfigure{subsectionshadedintoc}{2}
+\NewConfigure{subsectionintoc}{2}
+
+
+\ifx \beamer@version\:UnDef
+   
+   \ifx \insertinstituteshort\:UnDef
+      \append:def\beamer@andtitle{\a:andtitle}
+\def\beamer@insttitle#1{\a:inst$\sp{#1}$\b:inst}
+\def\beamer@instinst#1{\a:inst$\sp{#1}$\b:inst\ignorespaces}
+\pend:def\titlepage{%
+   \a:titlepage
+   \pend:def\inserttitle{\a:title}%
+   \append:def\inserttitle{\b:title}%
+   \pend:def\insertauthor{\a:author}%
+   \append:def\insertauthor{\b:author}%
+   \pend:def\insertinstitute{\a:institute}%
+   \append:def\insertinstitute{\b:institute}%
+   \pend:def\insertdate{\a:date}%
+   \append:def\insertdate{\b:date}%
+   \pend:def\inserttitlegraphic{\a:titlegraphic}%
+   \append:def\inserttitlegraphic{\b:titlegraphic}%
+}
+\append:def\titlepage{\b:titlepage}
+\let\o:@subsection:\@subsection
+\def\@subsection[#1]#2{%
+   \expandafter\global\expandafter\sl:toks\expandafter
+   {\the\sl:toks\leavevmode \o:@subsection:[#1]{#2}%
+    \add:toc{subsection}{\thesection.\thesubsection}{#2}}%
+   \expandafter\ifx\csname a:sec@slide\endcsname\relax
+   \expandafter\ifx\csname b:sec@slide\endcsname\relax
+       \the\sl:toks \global\sl:toks={}%
+\fi\fi
+%
+}
+\let\be:frameslide\frameslide
+\def\frameslide{\a:sec@slide\the\sl:toks\b:sec@slide
+   \global\sl:toks={}\be:frameslide}
+
+   \else
+      \append:def\andtitle{\a:andtitle}
+\def\insttitle#1{\a:inst$\sp{#1}$\b:inst}
+\def\instinst#1{\a:inst$\sp{#1}$\b:inst\ignorespaces}
+\pend:def\titlepage{%
+   \a:titlepage
+   \pend:def\inserttitletitle{\a:title}%
+   \append:def\inserttitletitle{\b:title}%
+   \pend:def\insertauthortitle{\a:author}%
+   \append:def\insertauthortitle{\b:author}%
+   \pend:def\insertinstitute{\a:institute}%
+   \append:def\insertinstitute{\b:institute}%
+   \pend:def\insertdate{\a:date}%
+   \append:def\insertdate{\b:date}%
+   \pend:def\inserttitlegraphic{\a:titlegraphic}%
+   \append:def\inserttitlegraphic{\b:titlegraphic}%
+}
+\append:def\titlepage{\b:titlepage}
+\let\o:subsection:\subsection
+\def\subsection#1{%
+   \expandafter\global\expandafter\sl:toks\expandafter
+   {\the\sl:toks\leavevmode \o:subsection:{#1}%
+    \add:toc{subsection}{\thesection.\thesubsection}{#1}}%
+   \expandafter\ifx\csname a:sec@slide\endcsname\relax
+   \expandafter\ifx\csname b:sec@slide\endcsname\relax
+       \the\sl:toks \global\sl:toks={}%
+\fi\fi
+%
+}
+\pend:def\slide{\a:sec@slide\the\sl:toks\b:sec@slide
+   \global\sl:toks={}}
+
+   \fi
+\else
+   
+\fi
+\let\Hy@EveryPageAnchor\relax
+\def\pgf@trimright@final{0pt}
+\def\pgf@trimleft@final{0pt}
+\let\origEndP\EndP
+\AtBeginDocument{\def\EndP{\let\EndP\origEndP}\SaveEndP}
+
+
+\NewConfigure{frame}{2}
+\NewConfigure{frametitle}{2}
+\AddToHook{env/beamer@frameslide/before}{\RecallEndP\a:frame\beamer@autobreakfalse}
+\AddToHook{env/beamer@frameslide/after}{\b:frame}
+
+\long\def\:temp[#1]#2{%
+\a:frametitle%
+\o:beamer@@frametitle:[#1]{#2}%
+\b:frametitle%
+}
+
+\HLet\beamer@@frametitle\:temp
+% Beamer redefines \emph, it is necessary to insert hooks again
+\NewConfigure{emph}{2}
+\pend:defI\emph{\a:emph}%
+\append:defI\emph{\b:emph}%
+
+\HLet\framebreak\relax
+\HLet\beamer@@spacingcover\relax
+\NewConfigure{beamerbiblatex}{3}
+\@ifpackageloaded{biblatex}{
+  \pend:defI\beamer@biblabeltemplate{%
+    \ifdefined\end:itm\end:itm\fi%
+    \gdef\end:itm{\c:beamerbiblatex}%
+    \a:beamerbiblatex%
+  }
+  \append:defI\beamer@biblabeltemplate{\b:beamerbiblatex}
+  \AfterPreamble{%
+    \def\bibConfigure{%
+      \ConfigureList{thebibliography}%
+      {\PushMacro\end:itm\let\end:itm=\empty}%
+      {\end:itm\PopMacro\end:itm\global\let\end:itm\end:itm}{}{}%
+    }
+  }
+}
+{}
+
+
+\Hinput{beamer}
+\endinput
+

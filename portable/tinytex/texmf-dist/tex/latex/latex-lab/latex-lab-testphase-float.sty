@@ -1,0 +1,379 @@
+%%
+%% This is file `latex-lab-testphase-float.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-float.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-float.dtx (C) Copyright 2023 LaTeX Project
+\def\ltlabfloatdate{2025-10-17}
+\def\ltlabfloatversion{0.81l}
+\ProvidesExplPackage {latex-lab-testphase-float} {\ltlabfloatdate} {\ltlabfloatversion}
+  {Code related to the tagging of floats}
+\prop_new:N \g__tag_float_sect_prop
+\seq_new:N  \g__tag_float_types_seq
+\seq_gput_right:Nn \g__tag_float_types_seq {figure}
+\seq_gput_right:Nn \g__tag_float_types_seq {table}
+\tl_new:N\@current@float@struct
+\int_new:N\g__tag_float_int
+\bool_new:N       \g__tag_float_sect_bool
+\bool_gset_true:N  \g__tag_float_sect_bool
+\cs_new_protected:Npn \__tag_float_init:
+ {
+   \int_gincr:N \g__tag_float_int
+   \tl_set:Ne \@current@float@struct { \int_use:N \g__tag_float_int}
+ }
+\cs_new_protected:Npn\__tag_float_init_collect:
+  {
+    \bool_if:NT\g__tag_float_sect_bool
+      {
+        \seq_map_inline:Nn\g__tag_float_types_seq
+          {
+            \tag_struct_begin:n{tag=##1s,stash}
+            \prop_gput:Nne\g__tag_float_sect_prop {##1-struct}{\int_use:N\c@g__tag_struct_abs_int}
+            \tag_struct_end:
+          }
+      }
+  }
+\cs_new_protected:Npn \__tag_float_stop_sect:
+  {
+    \bool_if:NT\g__tag_float_sect_bool
+     {
+      \seq_map_inline:Nn\g__tag_float_types_seq
+        {
+          \prop_get:NnNT\g__tag_float_sect_prop{##1-used}\l__tag_tmpa_tl
+            {
+              \exp_args:Ne
+              \tag_struct_use_num:n{\prop_item:Nn\g__tag_float_sect_prop{##1-struct}}
+              \prop_gremove:Nn \g__tag_float_sect_prop{##1-used}
+            }
+        }
+     }
+  }
+
+\keys_define:nn { tag / tool}
+ {
+   flush-floats .code:n =
+     {
+       \keys_set:nn {tag / tool} {sec-stop=#1}
+       \__tag_float_stop_sect:
+       \__tag_float_init_collect:
+     },
+   flush-float .default:n = Document
+ }
+\AddToHook{begindocument/end}[latex-lab/float]
+  {\__tag_float_init_collect:}
+\AddToHook{tagpdf/finish/before}[latex-lab/float]
+  {\par\__tag_sec_end:n{-10}\__tag_float_stop_sect:}
+\DeclareHookRule{tagpdf/finish/before}{latex-lab/float}{before}{tagpdf}
+\keys_define:nn { tag / tool}
+  {
+   split-float .code:n =
+    {
+      \UseTaggingSocket{float/end}
+      \__tag_float_init:
+      \UseTaggingSocket{float/begin}
+      \MakeLinkTarget*{floatstructure.\@current@float@struct}
+    }
+ }
+\socket_if_exist:nF {tagsupport/float/begin}
+  {
+    \NewTaggingSocket{float/hmode/begin}{0}
+    \NewTaggingSocket{float/hmode/end}{0}
+    \NewTaggingSocket{float/begin}{0}
+    \NewTaggingSocket{float/end}{0}
+  }
+\NewTaggingSocketPlug{float/hmode/begin}{default}
+  {
+    \__tag_float_stop_par:
+  }
+\AssignTaggingSocketPlug{float/hmode/begin}{default}
+\NewTaggingSocketPlug{float/hmode/end}{default}
+  {
+    \__tag_float_start_par:
+  }
+\AssignTaggingSocketPlug{float/hmode/end}{default}
+\NewTaggingSocketPlug{float/begin}{default}
+  {
+    \__tag_float_begin:
+  }
+\AssignTaggingSocketPlug{float/begin}{default}
+\NewTaggingSocketPlug{float/end}{default}
+  {
+    \__tag_float_end:
+  }
+\AssignTaggingSocketPlug{float/end}{default}
+\cs_new_protected:Npn \__tag_float_stop_par:
+  {
+    \tag_mc_end:
+    \bool_if:NF \g__tag_float_sect_bool
+     {
+      \tag_struct_end:
+     }
+  }
+\cs_new_protected:Npn \__tag_float_start_par:
+  {
+    \bool_if:NF \g__tag_float_sect_bool
+     {
+      \tag_struct_begin:n{tag=text}%
+     }
+   \tag_mc_begin:n{tag=P}
+  }
+\cs_new_protected:Npn \__tag_float_begin:
+ {%
+  \bool_if:NTF\g__tag_float_sect_bool
+   {
+     \exp_args:Ne
+     \tag_struct_begin:n{tag=float,parent=0\prop_item:No\g__tag_float_sect_prop{\@captype-struct}}%
+     \prop_gput:Nee \g__tag_float_sect_prop {\@captype-used}{true}
+   }
+   {
+     \tag_struct_begin:n{tag=float}
+   }
+     \tl_set:Ne\@current@float@struct{\tag_get:n{struct_num}}%
+     \typeout{Float structure: \@current@float@struct}
+ }
+
+\cs_new_protected:Npn\__tag_float_end:{\tag_struct_end:} %end Aside
+
+\ExplSyntaxOff
+\def\@xfloat #1[#2]{%
+  \@nodocument
+  \def \@captype {#1}%
+   \def \@fps {#2}%
+   \@onelevel@sanitize \@fps
+   \def \reserved@b {!}%
+   \ifx \reserved@b \@fps
+     \@fpsadddefault
+   \else
+     \ifx \@fps \@empty
+       \@fpsadddefault
+     \fi
+   \fi
+   \ifhmode
+     \@bsphack
+     \UseTaggingSocket{float/hmode/begin}%
+     \@floatpenalty -\@Mii
+   \else
+     \@floatpenalty-\@Miii
+   \fi
+  \ifinner
+     \@parmoderr\@floatpenalty\z@
+  \else
+    \@next\@currbox\@freelist
+      {%
+       \@tempcnta \sixt@@n
+       \expandafter \@tfor \expandafter \reserved@a
+         \expandafter :\expandafter =\@fps
+         \do
+          {%
+           \if \reserved@a h%
+             \ifodd \@tempcnta
+             \else
+               \advance \@tempcnta \@ne
+             \fi
+           \else\if \reserved@a t%
+             \@setfpsbit \tw@
+           \else\if \reserved@a b%
+             \@setfpsbit 4%
+           \else\if \reserved@a p%
+             \@setfpsbit 8%
+           \else\if \reserved@a !%
+             \ifnum \@tempcnta>15
+               \advance\@tempcnta -\sixt@@n\relax
+             \fi
+           \else
+             \@latex@error{Unknown float option `\reserved@a'}%
+             {Option `\reserved@a' ignored and `p' used.}%
+             \@setfpsbit 8%
+           \fi\fi\fi\fi\fi
+           }%
+       \@tempcntb \csname ftype@\@captype \endcsname
+       \multiply \@tempcntb \@xxxii
+       \advance \@tempcnta \@tempcntb
+       \global \count\@currbox \@tempcnta
+       }%
+    \@fltovf
+  \fi
+  \csname __tag_float_init:\endcsname
+  \UseTaggingSocket{float/begin}%
+  \global \setbox\@currbox
+    \color@vbox
+      \normalcolor
+      \vbox \bgroup
+        \hsize\columnwidth
+        \@parboxrestore
+        \@floatboxreset
+        \MakeLinkTarget*{\@captype.struct.\@current@float@struct}%
+}%
+\def\end@float{%
+  \@endfloatbox
+  \UseTaggingSocket{float/end}%
+  \ifnum\@floatpenalty <\z@
+    \@largefloatcheck
+    \@cons\@currlist\@currbox
+    \ifnum\@floatpenalty <-\@Mii
+      \penalty -\@Miv
+      \@tempdima\prevdepth
+      \vbox{}%
+      \prevdepth\@tempdima
+      \penalty\@floatpenalty
+    \else
+      \vadjust{\penalty -\@Miv \vbox{}\penalty\@floatpenalty}\@Esphack
+      \UseTaggingSocket{float/hmode/end}%
+    \fi
+  \fi
+}
+\def\end@dblfloat{%
+  \if@twocolumn
+    \@endfloatbox
+    \UseTaggingSocket{float/end}%
+    \ifnum\@floatpenalty <\z@
+      \@largefloatcheck
+      \global\dp\@currbox1sp %
+      \@cons\@currlist\@currbox
+      \ifnum\@floatpenalty <-\@Mii
+        \penalty -\@Miv
+        \@tempdima\prevdepth
+        \vbox{}%
+        \prevdepth\@tempdima
+        \penalty\@floatpenalty
+      \else
+        \vadjust{\penalty -\@Miv \vbox{}\penalty\@floatpenalty}\@Esphack
+        \UseTaggingSocket{float/hmode/end}%
+      \fi
+    \fi
+  \else
+    \end@float
+  \fi
+}%
+\ExplSyntaxOn
+\def\hyper@nopatch@caption{}
+\socket_if_exist:nF {tagsupport/caption/begin}
+ {
+  \NewTaggingSocket{caption/begin}{1}
+  \NewTaggingSocket{caption/end}{0}
+  \NewTaggingSocket{caption/label/begin}{0}
+  \NewTaggingSocket{caption/label/end}{0}
+ }
+\socket_if_exist:nF {tagsupport/para/begin}
+ {
+   \NewTaggingSocket{para/begin}{0}
+   \NewTaggingSocket{para/end}{0}
+ }
+\NewSocket{caption/label}{1}
+\NewSocketPlug{caption/label}{kernel}
+ {
+   #1:~
+ }
+\AssignSocketPlug{caption/label}{kernel}
+\NewTaggingSocketPlug{caption/begin}{default}
+  {
+     \tl_if_empty:eTF {#1}
+      {
+        \tag_struct_begin:n{tag=Caption,firstkid}
+      }
+      {
+        \tag_struct_begin:n{tag=Caption,parent=#1,firstkid}
+      }
+     \bool_set_true:N \l__tag_para_flattened_bool
+  }
+\AssignTaggingSocketPlug{caption/begin}{default}
+\NewTaggingSocketPlug{caption/end}{default}
+  {
+    \tag_struct_end:
+  }
+\AssignTaggingSocketPlug{caption/end}{default}
+\NewTaggingSocketPlug{caption/label/begin}{default}
+  {
+     \tagpdfparaOff
+     \tag_struct_begin:n{tag=Lbl}
+     \tag_mc_begin:n{}
+  }
+\AssignTaggingSocketPlug{caption/label/begin}{default}
+\NewTaggingSocketPlug{caption/label/end}{default}
+  {
+    \tag_mc_end:
+    \tag_struct_end:
+    \tagpdfparaOn
+  }
+\AssignTaggingSocketPlug{caption/label/end}{default}
+\def\caption{%
+   \ifx\@captype\@undefined
+     \@latex@error{\noexpand\caption\c_space_tl outside~float}\@ehd
+     \expandafter\@gobble
+   \else
+     \tl_if_empty:NTF\@current@float@struct
+      {
+        \refstepcounter\@captype
+      }
+      {
+        \@kernel@refstepcounter\@captype
+        \xdef\@currentHref{\@captype.struct.\@current@float@struct}%
+      }
+     \expandafter\@firstofone
+   \fi
+   {\@dblarg{\@caption\@captype}}%
+}
+\NewHookWithArguments{cmd/@makecaption/before}{2}
+\AddToHook{begindocument}
+  {
+    \long\def\@makecaption#1#2{%
+      \UseHookWithArguments{cmd/@makecaption/before}{2}{#1}{#2}%
+      \vskip\abovecaptionskip
+      \SuspendTagging{\@makecaption}
+      \sbox\@tempboxa{\UseSocket{caption/label}{#1}#2}%
+      \ResumeTagging{\@makecaption}
+      \UseTaggingSocket{caption/begin}{\@current@float@struct}
+      \ifdim \wd\@tempboxa >\hsize
+      \UseTaggingSocket{caption/label/begin}
+      \UseSocket{caption/label}{#1}
+      \UseTaggingSocket{caption/label/end}
+      \UseTaggingSocket{para/begin}
+          #2
+      \par
+      \else
+          \global \@minipagefalse
+        \hb@xt@\hsize{\hfil
+         \UseTaggingSocket{caption/label/begin}
+         \UseSocket{caption/label}{#1}
+         \UseTaggingSocket{caption/label/end}
+         \UseTaggingSocket{para/begin}
+          #2
+         \UseTaggingSocket{para/end}
+         \hfil}%
+       \fi
+      \UseTaggingSocket{caption/end}
+      \vskip\belowcaptionskip}
+  }
+
+\endinput
+%%
+%% End of file `latex-lab-testphase-float.sty'.

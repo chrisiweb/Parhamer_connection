@@ -1,0 +1,95 @@
+% eoldef.tex, version 1.1
+
+% Copyright (C) 2025 plante
+% This file is released under the LaTeX Project Public License (LPPL) 1.3c.
+
+% eoldef: define commands which absorb the whole source line as arguments.
+
+% Usage: \eoldef <control sequence> <parameter text> { <replacement text> }
+%   defines a control sequence whose argument is delimited by the end of a
+%   source code line.
+
+% For instance, \eoldef\test#1:#2{} and
+%   \test abc:def
+% will give #1 = abc, #2 = def.
+
+% \eolgdef is the \global variant to \eoldef.
+
+% Like \verb|...|, \eoldef'd commands may generally not be used as part of
+% another command's argument as it changes catcodes.
+% However, if you must use it in environments where catcodes are frozen, you
+% may follow the command with a braced argument, eg. \test{#1:#2} using the
+% previous example.
+
+% This package may be used in LaTeX by `\usepackage{eoldef}`, or in plain TeX
+% and other formats by `\input{eoldef}`.
+
+
+
+\ifdefined\eoldef
+	\expandafter\endinput
+\fi
+\edef\next{\catcode`\noexpand\@=\the\catcode`\@\space}
+\catcode`\@=11
+
+\protected\def\eoldef#1#2#{%
+	\protected\edef#1{%
+		\noexpand\eolarg \csname eoldef@\string#1\endcsname
+	}%
+	\long \expandafter\def \csname eoldef@\string#1\endcsname#2\@nil
+}
+\protected\def\eolgdef#1#2#{%
+	\protected\xdef#1{%
+		\noexpand\eolarg \csname eoldef@\string#1\endcsname
+	}%
+	\long \expandafter\gdef \csname eoldef@\string#1\endcsname#2\@nil
+}
+
+\protected\def\eolarg#1{%
+	\let\eolarg@command= #1%
+	\ifnum \iffalse{\fi `}=\z@ \fi
+	\begingroup
+		\catcode`\ =\thr@@
+		\futurelet\eolarg@temp\eolargA
+}
+\def\eolargA{%
+		\expandafter\endgroup
+	\ifcat\bgroup \noexpand\eolarg@temp
+		\expandafter\eolargB
+	\else
+		\expandafter\eolargC
+	\fi
+}
+\def\eolargB#1{%
+	\ifnum`{=\z@ }\fi
+	\eolarg@command#1\@nil
+}
+\def\eolargC{%
+	\begingroup
+		\endlinechar=`\^^M
+		\catcode`\^^M=12
+		\futurelet\eolarg@temp\eolargD
+}
+\begingroup
+	\lccode`+=`\^^M
+	\lccode`$=`\ %
+\lowercase{
+\endgroup
+	\def\eolargD{%
+		\ifx\eolarg@temp$%
+			\expandafter\eolargE
+		\else
+			\expandafter\eolargF
+		\fi
+	}
+	\def\eolargE${\eolargF}
+	\def\eolargF#1+{%
+		\endgroup
+		\ifnum`{=\z@ }\fi
+		\eolarg@command#1\@nil
+	}
+}
+
+\next
+
+\endinput

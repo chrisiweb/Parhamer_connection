@@ -1,0 +1,13 @@
+%% $Id: pst-solarsystem.sty 863 2024-02-02 08:21:27Z herbert $
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-solarsystem}[2024/02/02 package wrapper for
+  pst-solarsystem.tex]
+\input{pst-solarsystem.tex}
+\IfFileExists{pst-solarsystem.pro}{%
+  \ProvidesFile{pst-solarsystem.pro}
+    [2012/01/01 v. 0.12,  PostScript prologue file]
+    \@addtofilelist{pst-ssolarystem.pro}}{}%
+\ProvidesFile{pst-sysolarstem.tex}
+  [\filedate\space v\fileversion\space `PST-solarsysteme']
+\endinput
+%% End of file `pst-sysolarstem.sty' 

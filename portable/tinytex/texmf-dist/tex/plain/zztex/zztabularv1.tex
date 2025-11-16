@@ -1,0 +1,465 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Tabular Facilities
+%
+% Synopsis:  This module contains all the facilities for producing
+%            tabular material.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   1990
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Tabular Block
+%                       ------- -----
+
+
+\let \tabularcomptext = \relax
+\let \tabulardepth = \relax
+\let \tabularnumber = \relax
+
+
+\defineblock{\tabular}{\endtabular}{\false}{}
+
+%~obsolete-block tabular Type
+% \abovepenalty = integer
+% \aboveskip = glue
+% \setflag \allowbreaks = boolean
+% \belowpenalty = integer
+% \belowskip = glue
+% \bodyfont = {...}
+% \colheadaboveskip = glue
+% \colheadbelowskip = glue
+% \colheadfont = {...}
+% \colsubheadfont = {...}
+% \columngutter = glue
+% \cutinheadaboveskip = glue
+% \cutinheadbelowskip = glue
+% \cutinheadfont = {...}
+% \interrowskip = glue
+% \leftindent = glue
+% \parhang = dimen
+% \parrag = dimen
+% \rightindent = glue
+% \rulecolwidth = dimen
+% \spannerheadfont = {...}
+% \spannerruleaboveskip = dimen
+% \spannerrulebelowskip = dimen
+% \spannerruleheight = dimen
+% \def \tabnoteformat ##1{...}
+% \tabrulecolor = {color}%
+% \tabruleheight = dimen
+% \width = dimen
+%~end
+
+\defineskip{\colheadaboveskip}{0pt}
+\let \headaboveskip = \colheadaboveskip
+\let \headbelowskip = \colheadbelowskip
+\definetoks{\colsubheadfont}
+\defineskip{\cutinheadaboveskip}{0pt}
+\defineskip{\cutinheadbelowskip}{0pt}
+\definetoks{\cutinheadfont}
+
+
+\definecount{\tabularcolcount}{0}               % Number of columns in table.
+\definebox{\rowstrutbox}                        % Strut for table rows.
+
+
+\def \tabular #1#2{%                            {type}{template}
+  \endgraf
+  \beginblockscope{tabular}%
+  \global\increment \tabulardepth
+  \abovepenalty = \breakgood                    %~default hard
+  \belowpenalty = \breakbetter                  %~default hard
+  \tabrulecolor = {black}%                      %~default soft
+  \processdesign{\tabular}{#1}%
+  \global\increment \tabularnumber
+  \iffalse{\fi                                  % Must be done with master
+    \tabularcolcount = 0                        % counter > 0, to hide inner
+    \ztabcols #2&\zmark                         % \set and &.
+    \let \set = \span
+  \iffalse}\fi
+  \tabularformat
+  \fakepar
+  \nointerlineskip                              % We assume this below.
+  \if \notp{\allowbreaks}\vtop \fi \bgroup
+    \offinterlineskip
+    \everycr = {}%
+    \tabskip = \leftskip
+    \halign \if \dimneqlp{\width}{\naturalwidth}to \width \fi \bgroup
+      #2\tabskip = \rightskip \cr}
+
+\def \endtabular {%
+      \crcr
+    \egroup % \halign
+    \if \posp{\prevdepth}\kern -\interrowskip \fi % If last line has strut.
+  \egroup % \vtop
+  \prevdepth = \dp\strutbox             % So row strut depth won't shine thru.
+  \futurelet\nexttoken \zendtabular}
+
+\def \zendtabular {%
+  \endtabularformat
+  \global\decrement \tabulardepth
+  \endblockscope{tabular}%
+  \parnext}
+
+\def \tabularformat {%
+  \endgraf
+  \the\bodyfont
+  \tdimena = \dp\strutbox
+  \advance \tdimena by \interrowskip
+  \setbox \rowstrutbox = \hbox{\vrule height \ht\strutbox depth \tdimena
+                                      width 0pt}%
+  \advance \aboveskip by \baselineskip          % Compensate for absence
+  \advance \aboveskip by -\prevdepth            % of interlineskip above
+  \advance \aboveskip by -\ht\rowstrutbox       % first row of tabular.
+  \bbskipabove{\abovepenalty}{\aboveskip}%
+  \alterindentation{\leftindent}{\rightindent}}
+
+\def \endtabularformat{%
+  \bbskipbelowblockpar{\nexttoken}{\belowpenalty}{\belowskip}}
+
+\def \ztabcols #1&#2\zmark{%
+  \increment \tabularcolcount
+  \if \notp{\emptyargp{#2}}\ztabcols #2\zmark \fi}
+
+%                       Template Facilities
+%                       -------- ----------
+
+
+% The following macros are used to construct the tabular template.
+% They are all used with the \set macro.
+
+\def \centercol {%
+  \hfil ##\rowstrut \hfil \tabskip=\columngutter}
+
+\def \centernumbercol #1{%                                      {template}
+  \hfil \znumcell{#1}{##}\rowstrut \hfil \tabskip=\columngutter}
+
+\let \colgutter = \tabskip
+
+\def \customcol #1#2{%                                          {left}{right}
+  #1\relax##\rowstrut #2\relax \tabskip=\columngutter}
+
+\def \customrulecol #1{%                                        {width}
+  \color{\the\tabrulecolor}%
+  \vrule width #1 ##%
+  \endcolor \tabskip=\columngutter}
+
+\def \emptycol #1{%                                             {width}
+  ##\rowstrut \hspace{#1}\tabskip=\columngutter}
+
+\def \leftcol {%
+  ##\rowstrut \hfil \tabskip=\columngutter}
+
+\def \leftnumbercol #1{%                                        {template}
+  \znumcell{#1}{##}\rowstrut \hfil \tabskip=\columngutter}
+
+\def \parcol #1{%                                               {width}
+  \vtop{\zpushvcontext
+        \zinitparcell{#1}{\parhang}%
+        \strut ##%
+        \if \hmodep \rowstrut \par \fi
+        \zpopvcontext}%
+  \tabskip=\columngutter}
+
+\def \rightcol {%
+  \hfil ##\rowstrut \tabskip=\columngutter}
+
+\def \rightnumbercol #1{%                                       {template}
+  \hfil \znumcell{#1}{##}\rowstrut \tabskip=\columngutter}
+
+\def \rulecol {%
+  \color{\the\tabrulecolor}%
+  \vrule width \rulecolwidth ##%
+  \endcolor \tabskip=\columngutter}
+
+%                       Cell Facilities
+%                       ---- ----------
+
+
+% The following macros help with tabular entries (cells).
+
+\def \0{\phantom{0}}
+
+\def \centercell #1{%                                   {text}
+  \omit
+  \hfil #1\rowstrut \hfil}
+
+\def \centerhead #1{%                                   {heading}
+  \centercell{\the\colheadfont #1}}
+
+\def \centernumbercell #1#2{%                           {template}{text}
+  \omit
+  \hfil \znumcell{#1}{#2}\rowstrut \hfil}
+
+\def \centersubhead #1{%                                {heading}
+  \centercell{\the\colsubheadfont #1}}
+
+\def \customspannerrule #1#2{%                          {columns}{height}
+  \multispan{#1}%
+  \rowstrut
+  \ruleleaders{\hrule height #2 depth 0pt}}
+
+\def \customspannerruleabut #1#2{%                      {columns}{height}
+  \multispan{#1}%
+  \ruleleaders{\hrule height #2 depth 0pt}}
+
+\def \cutinhead #1{%                                    {heading}
+  \multispan{\tabularcolcount}%
+  \leftcell{\the\cutinheadfont #1}}
+
+\def \cutinpar #1#2{%                                   {width}{text}
+  \multispan{\tabularcolcount}%
+  \parhang = 0pt \parcell{#1}{#2}}
+
+\zremovePlaindef \hideskip
+\defineskip{\hideskip}{-1000pt plus 1fill}
+
+\def \hidewidth {\hskip \hideskip}
+
+\def \leftcell #1{%                                    {text}
+  \omit
+  #1\rowstrut \hfil}
+
+\def \lefthead #1{%                                     {heading}
+  \leftcell{\the\colheadfont #1}}
+
+\def \leftnumbercell #1#2{%                             {template}{text}
+  \omit
+  \znumcell{#1}{#2}\rowstrut \hfil}
+
+\def \leftsubhead #1{%                                  {heading}
+  \leftcell{\the\colsubheadfont #1}}
+
+\def \multispan #1{%                                    {columns}
+  \omit
+  \tcounta =#1\relax
+  \loop \ifnum \tcounta > 1 \zspan \repeat
+  \let \omit = \relax % In case the next thing is a \leftcell or whatever.
+  \ignorespaces}
+
+\def \zspan{\span\omit \decrement \tcounta}
+
+\def \nocolrule {%
+  width 0pt }
+
+\def \parcell #1#2{%                                    {width}{text}
+  \omit
+  \vtop{\zpushvcontext
+        \zinitparcell{#1}{\parhang}%
+        \strut #2%
+        \if \hmodep \rowstrut \par \fi
+        \zpopvcontext}}
+
+\def \rightcell #1{%                                    {text}
+  \omit
+  \hfil #1\rowstrut}
+
+\def \righthead #1{%                                    {heading}
+  \rightcell{\the\colheadfont #1}}
+
+\def \rightnumbercell #1#2{%                            {template}{text}
+  \omit
+  \hfil \znumcell{#1}{#2}\rowstrut}
+
+\def \rightsubhead #1{%                                 {heading}
+  \rightcell{\the\colsubheadfont #1}}
+
+\def \rowstrut {\unhcopy \rowstrutbox}
+
+\def \spannerhead #1#2{%                                {columns}{heading}
+  \multispan{#1}%
+  \centercell{\the\spannerheadfont #2}}
+
+\def \spannerrule #1{%                                  {columns}
+  \multispan{#1}%
+  \rowstrut
+  \ruleleaders{\hrule height \spannerruleheight depth 0pt}}
+
+\def \spannerruleabut #1{%                               {columns}
+  \multispan{#1}%
+  \ruleleaders{\hrule height \spannerruleheight depth 0pt}}
+
+\def \spannerruleabutbelow #1{%                          {columns}
+  \multispan{#1}%
+  \vrule height \ht\rowstrutbox depth 0pt width 0pt\relax
+  \ruleleaders{\hrule height \spannerruleheight depth 0pt}}
+
+\def \tabnote #1{%                                      {note-mark}
+  {\tabnoteformat{#1}}}
+
+\def \znumcell #1#2{%                                   {template}{text}
+  \if \emptyargp{#2}%
+    \relax
+  \else
+    \znumcella{#1}{#2}%
+  \fi}
+
+\def \znumcella #1#2{%                                  {template}{text}
+  {\ztoksa = {}\ztoksb = {}%
+   \setflag \znumpt = \false
+   \znumcellb #1\zmark
+   \setbox\zboxa = \hbox{\the\ztoksa}%
+   \tdimena = \wd\zboxa
+   \setbox\zboxa = \hbox{\the\ztoksb}%
+   \tdimenb = \wd\zboxa
+   \setflag \ztempt = \znumpt
+   \ztoksa = {}\ztoksb = {}%
+   \setflag \znumpt = \false
+   \znumcellb #2\zmark
+   \if \ztempt % Template had a decimal point.
+     \if \znumpt
+       \hbox to \tdimena{\hss \the\ztoksa}%
+       \the\decimalpoint
+       \hbox to \tdimenb{\the\ztoksb \hss}%
+     \else
+       \setbox\zboxa = \hbox{\the\decimalpoint}%
+       \hbox to \tdimena{\hss \the\ztoksa}%
+       \kern \wd\zboxa \kern \tdimenb
+     \fi
+   \else % Template had no decimal point.
+     \if \znumpt
+       \error{celldecpt}{Tabular template did not specify a decimal point}%
+     \else
+       \hbox to \tdimena{\hss \the\ztoksa}%
+     \fi
+   \fi}}
+
+\def \znumcellb #1#2\zmark{%                            t1 trest \zmark
+  \if \codeeqlp{\noexpand#1}{\the\decimalpoint}%
+    \setflag \znumpt = \true
+  \else
+    \if \znumpt
+      \ztoksb = \expandafter{\the\ztoksb #1}%
+    \else
+      \ztoksa = \expandafter{\the\ztoksa #1}%
+    \fi
+  \fi
+  \if \emptyargp{#2}%
+    \let \znext = \relax
+  \else
+    \def \znext {\znumcellb #2\zmark}%
+  \fi
+  \znext}
+
+%                       Inter-Row Facilities
+%                       --------- ----------
+
+
+% The following macros perform various actions in between rows.
+
+\def \adjusttab #1{%
+  \if \notp{\vmodep}%
+    \error{badrowcmd}{The \string\adjusttab command cannot be used in a table row}%
+  \fi
+  \noalign{#1}}
+
+\def \customtabrule #1{%                                {height}
+  \multispan{\tabularcolcount}%
+  \rowstrut 
+  \color{\the\tabrulecolor}%
+  \ruleleaders{\hrule height #1 depth 0pt}%
+  \endcolor
+  \cr}
+
+\def \customtabruleabut #1{%
+  \multispan{\tabularcolcount}%
+  \color{\the\tabrulecolor}%
+  \ruleleaders{\hrule height #1 depth 0pt}%
+  \endcolor
+  \cr}
+
+\def \customtabruleabutbelow #1{%
+  \multispan{\tabularcolcount}%
+  \vrule height \ht\rowstrutbox depth 0pt width 0pt\relax
+  \color{\the\tabrulecolor}%
+  \ruleleaders{\hrule height #1 depth 0pt}%
+  \endcolor
+  \cr}
+
+\def \nointerrowskip {\tabvspace{-\interrowskip}}
+
+\def \skipabovecolhead {%
+  \tabbbskip{\colheadaboveskip}}
+
+\def \skipbelowcolhead {%
+  \tabbbskip{\colheadbelowskip}}
+
+\def \skipabovespannerrule {%
+  \tabbbskip{\spannerruleaboveskip}}
+
+\def \skipbelowspannerrule {%
+  \tabbbskip{\spannerrulebelowskip}}
+
+\def \skipabovecutinhead {%
+  \tabbbskip{\cutinheadaboveskip}}
+
+\def \skipbelowcutinhead {%
+  \tabbbskip{\cutinheadbelowskip}}
+
+\def \tabbbskip #1{%                                    {glue}
+  \adjusttab{\zskipa = #1\relax
+             \advance \zskipa by -\ht\rowstrutbox
+             \advance \zskipa by -\dp\rowstrutbox
+             \vskip \zskipa}}
+
+\def \tabrule {%
+  \multispan{\tabularcolcount}%
+  \rowstrut
+  \color{\the\tabrulecolor}%
+  \ruleleaders{\hrule height \tabruleheight depth 0pt}%
+  \endcolor
+  \cr}
+
+\def \tabruleabut {%
+  \multispan{\tabularcolcount}%
+  \color{\the\tabrulecolor}%
+  \ruleleaders{\hrule height \tabruleheight depth 0pt}%
+  \endcolor
+  \cr}
+
+\def \tabruleabutbelow {%
+  \multispan{\tabularcolcount}%
+  \vrule height \ht\rowstrutbox depth 0pt width 0pt\relax
+  \color{\the\tabrulecolor}%
+  \ruleleaders{\hrule height \tabruleheight depth 0pt}%
+  \endcolor
+  \cr}
+
+\def \tabvspace #1{\adjusttab{\vskip #1}}%              {glue}
+
+%                       Alignment Utilities
+%                       --------- ---------
+
+
+\let \completerow = \cr
+
+\def \ialign {\everycr = {}\tabskip = 0pt \halign}
+
+\def \oalign #1{%                                       {row...}
+  \ensurepar
+  \vtop{\baselineskip = 0pt
+        \lineskip = .25ex
+        \ialign{##\cr #1\crcr}}}
+
+\def \ooalign {%
+  \lineskiplimit = -\maxdimen
+  \oalign}
+
+\def \ozalign {%
+  \lineskiplimit = 0pt\relax
+  \oalign}
+
+\def \zinitparcell #1#2{%                               {width}{hang}
+  \baselineskip = \normalbaselineskip
+  \lineskiplimit = 0pt \lineskip = 0pt
+  \setindentation{0pt}{0pt}%
+  \settextwidth{#1}%
+  \setparrag{\parrag}%
+  \leftskip = #2
+  \parindent = -#2
+  \parfillskip = \normalparfillskip}

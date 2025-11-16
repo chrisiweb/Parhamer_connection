@@ -1,0 +1,140 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Lucida Math Font Support
+%
+% Synopsis:  This module contains various definitions and redefinitions
+%            necessary to use the Lucida math fonts.
+%
+% Note:      This module assumes the user is generating PostScript output.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   27 June 1992
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Type Styles
+%                       ---- ------
+
+\setstyleskewchar{\msy}{"7F}
+\setstyleskewchar{\msy}{"30}
+
+%                       Redefine Math Characters
+%                       -------- ---- ----------
+
+
+\zmchar \Gamma                  \classvarfam \mexfam {D0}
+\zmchar \Delta                  \classvarfam \mexfam {D1}
+\zmchar \Theta                  \classvarfam \mexfam {D2}
+\zmchar \Lambda                 \classvarfam \mexfam {D3}
+\zmchar \Xi                     \classvarfam \mexfam {D4}
+\zmchar \Pi                     \classvarfam \mexfam {D5}
+\zmchar \Sigma                  \classvarfam \mexfam {D6}
+\zmchar \Upsilon                \classvarfam \mexfam {D7}
+\zmchar \Phi                    \classvarfam \mexfam {D8}
+\zmchar \Psi                    \classvarfam \mexfam {D9}
+\zmchar \Omega                  \classvarfam \mexfam {DA}
+
+\zmchar {`=}                    \classrel    \msyfam {83}
+\zmchar {`+}                    \classbinop  \msyfam {82}
+
+\definemathdelimiter {`/}       \classord    \mitfam {3D} \mexfam {0E}
+
+\zmchar {`(}                    \classopen   \mitfam {84}
+\definemathdelimiter {`(}       \classord    \mitfam {84} \mexfam {00}
+\zmchar {`)}                    \classclose  \mitfam {85}
+\definemathdelimiter {`)}       \classord    \mitfam {85} \mexfam {01}
+
+\zmchar {`[}                    \classopen   \mitfam {86}
+\definemathdelimiter {`[}       \classord    \mitfam {86} \mexfam {02}
+\zmchar {`]}                    \classclose  \mitfam {87}
+\definemathdelimiter {`]}       \classord    \mitfam {87} \mexfam {03}
+
+\zmchar \angle                  \classord    \msyfam {8B}
+\zmchar \bowtie                 \classrel    \mitfam {F6}
+\zmchar \cong                   \classrel    \msyfam {9B}
+\zmchar \doteq                  \classrel    \msyfam {C9}
+\zmchar \models                 \classrel    \msyfam {EE}
+
+  \if \zusemar
+\zmchar \hbar                   \classord   \mitfam {9D}
+\zmchar \hookleftarrow          \classrel   \marfam {3C}
+\zmchar \hookrightarrow         \classrel   \marfam {3E}
+\zmchar \leftrightharpoons      \classrel   \marfam {79}
+\zmchar \mapsto                 \classrel   \marfam {2C}
+\zmchar \neq                    \classrel   \marfam {94}
+\zmchar \rightleftharpoons      \classrel   \marfam {7A}
+  \fi
+
+%                       New Math Characters
+%                       --- ---- ----------
+
+
+  \if \zusemar
+\zmchar \notapprox              \classrel  \marfam {98}
+\zmchar \notasymp               \classrel  \marfam {F3}
+\zmchar \notcong                \classrel  \marfam {99}
+\zmchar \noteq                  \classrel  \marfam {94}
+\zmchar \notequiv               \classrel  \marfam {95}
+\zmchar \notgeq                 \classrel  \marfam {9D}
+\zmchar \notgreater             \classrel  \marfam {9B}
+\zmchar \notin                  \classrel  \marfam {1D}
+\zmchar \notleq                 \classrel  \marfam {9C}
+\zmchar \notless                \classrel  \marfam {9A}
+\zmchar \notmid                 \classrel  \marfam {F6}
+\zmchar \notmodels              \classrel  \marfam {F9}
+\zmchar \notni                  \classrel  \marfam {1F}
+\zmchar \notparallel            \classrel  \marfam {F7}
+\zmchar \notprec                \classrel  \marfam {E5}
+\zmchar \notpreceq              \classrel  \marfam {E7}
+\zmchar \notsim                 \classrel  \marfam {96}
+\zmchar \notsimeq               \classrel  \marfam {97}
+\zmchar \notsqsubseteq          \classrel  \marfam {D4}
+\zmchar \notsqsupseteq          \classrel  \marfam {D5}
+\zmchar \notsubset              \classrel  \marfam {C6}
+\zmchar \notsubseteq            \classrel  \marfam {C8}
+\zmchar \notsucc                \classrel  \marfam {E6}
+\zmchar \notsucceq              \classrel  \marfam {E8}
+\zmchar \notsupset              \classrel  \marfam {C7}
+\zmchar \notsupseteq            \classrel  \marfam {C9}
+\zmchar \notvdash               \classrel  \marfam {F8}
+  \fi
+
+%                       Redefine General Tools
+%                       -------- ------- -----
+
+
+\def \big #1{{\hbox{$\left#1\vbox to 8.2pt{}\right.\zmnosp$}}}
+\def \Big #1{{\hbox{$\left#1\vbox to 10.8pt{}\right.\zmnosp$}}}
+\def \bigg #1{{\hbox{$\left#1\vbox to 13.42pt{}\right.\zmnosp$}}}
+\def \Bigg #1{{\hbox{$\left#1\vbox to 16.03pt{}\right.\zmnosp$}}}
+\def \biggg #1{{\hbox{$\left#1\vbox to 17.72pt{}\right.\zmnosp$}}}
+\def \Biggg #1{{\hbox{$\left#1\vbox to 21.25pt{}\right.\zmnosp$}}}
+
+\def \bigggl {\mathopen\biggg}
+\def \Bigggl {\mathopen\Biggg}
+\def \bigggr {\mathclose\biggg}
+\def \Bigggr {\mathclose\Biggg}
+
+\def \joinrel {\mathrel{\mkern -4mu}}
+
+\def \mathstrut {\vphantom{f}}
+
+\def \matrix #1{%
+  \null\nonscript\,%
+  \vcenter{\normalbaselines
+           \ialign{\hfil $##$\hfil&& \quad \hfil $##$\hfil \crcr
+                   \mathstrut\crcr
+                   \noalign{\kern -0.9\baselineskip}%
+                   #1\crcr
+                   \mathstrut\crcr
+                   \noalign{\kern -0.9\baselineskip}}}%
+  \nonscript\,}
+
+\def \zroot #1#2{%                                      {\style}{radicand}
+  \setbox\zboxa = \hbox{$#1\sqrt{#2}$}%
+  \tdimena = \ht\zboxa
+  \advance \tdimena by -\dp\zboxa
+  \mkern 5mu \raise .6\tdimena \copy\zrootbox \mkern -8mu \box\zboxa}

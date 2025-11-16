@@ -1,0 +1,1034 @@
+%%
+%% This is file `expkv-cs.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% expkv-cs.dtx  (with options: `tex')
+%% 
+%% ----------------------------------------------------------------
+%% expkv-bundle -- an expandable key=val implementation and friends
+%% E-mail: jspratte@yahoo.de
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
+%% ----------------------------------------------------------------
+%% 
+%% Copyright (C) 2020-2024 Jonathan P. Spratte
+%% 
+%% This  work may be  distributed and/or  modified under  the conditions  of the
+%% LaTeX Project Public License (LPPL),  either version 1.3c  of this license or
+%% (at your option) any later version.  The latest version of this license is in
+%% the file:
+%% 
+%%   http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%%   Jonathan P. Spratte.
+%% 
+%% This work consists of the files  expkv-bundle.ins
+%%                                  expkv.dtx
+%%                                  expkv-cs.dtx
+%%                                  expkv-def.dtx
+%%                                  expkv-opt.dtx
+%%                                  expkv-pop.dtx
+%% and the derived files            expkv.sty
+%%                                  expkv.tex
+%%                                  t-expkv.tex
+%%                                  expkv-cs.sty
+%%                                  expkv-cs.tex
+%%                                  t-expkv-cs.tex
+%%                                  expkv-def.sty
+%%                                  expkv-def.tex
+%%                                  t-expkv-def.tex
+%%                                  expkv-opt.sty
+%%                                  expkv-pop.sty
+%%                                  expkv-pop.tex
+%%                                  t-expkv-pop.tex
+%% 
+%% as well as any documentation files shipped with it.
+%% 
+\input expkv-pop
+\expandafter\ifx\csname ekvcVersion\endcsname\relax
+\else
+  \expandafter\endinput
+\fi
+\def\ekvcVersion{1.4}
+\def\ekvcDate{2024-12-16}
+\csname ekvc@tmp\endcsname
+\expandafter\chardef\csname ekvc@tmp\endcsname=\catcode`\@
+\catcode`\@=11
+\edef\ekvc@tripledots{\detokenize{...}}
+\newcount\ekvc@keycount
+\let\ekvc@long\ekv@empty
+\let\ekvc@any@long\ekv@empty
+\long\def\ekvc@ifdefined#1%
+  {%
+    \ifdefined#1%
+      \ifx\relax#1%
+        \ekv@fi@gobble
+      \fi
+      \@firstofone
+      \ekv@fi@firstoftwo
+    \fi
+    \@secondoftwo
+  }
+\def\ekvc@ekvset@pre@expander#1%
+  {%
+    \expandafter\ekvc@ekvset@pre@expander@a\ekvset{#1}\ekvc@stop\ekvc@stop
+  }
+\def\ekvc@ekvset@pre@expander@a
+  {%
+    \expandafter\ekvc@ekvset@pre@expander@b
+  }
+\def\ekvc@ekvset@pre@expander@b#1\ekvc@stop#2\ekvc@stop
+  {%
+    \ekv@unexpanded\expandafter{\ekv@alignsafe}%
+    \ekv@unexpanded{#1}##1\ekv@unexpanded{#2}%
+    \ekv@unexpanded\expandafter{\ekv@endalignsafe}%
+  }
+\protected\long\def\ekvcSplitAndUse#1#2%
+  {%
+    \let\ekvc@helpers@needed\@firstoftwo
+    \ekvc@ifdefined#1%
+      {\ekvc@err@already@defined#1}%
+      {\ekvcSplitAndUse@#1{}{#2}}%
+  }
+\protected\long\def\ekvcSplitAndUse@#1#2#3%
+  {%
+    \edef\ekvc@set{\string#1}%
+    \ekvc@SetupSplitKeys{#3}%
+    \ekvc@helpers@needed
+      {%
+        \ekvc@any@long\edef#1##1%
+          {%
+            \expandafter\ekvc@ekvset@pre@expander\expandafter{\ekvc@set}%
+            \ekv@unexpanded\expandafter
+              {\csname ekvc@split@\the\ekvc@keycount\endcsname}%
+            \ekv@unexpanded\expandafter{\ekvc@initials{}#2}%
+          }%
+      }%
+      {%
+        \ekvc@any@long\edef#1##1%
+          {%
+            \expandafter\ekvc@ekvset@pre@expander\expandafter{\ekvc@set}%
+            \ekv@unexpanded{#2}%
+            \ekv@unexpanded\expandafter{\ekvc@initials}%
+          }%
+      }%
+  }
+\protected\long\def\ekvcSplitAndForward#1#2#3%
+  {%
+    \let\ekvc@helpers@needed\@firstoftwo
+    \ekvc@ifdefined#1%
+      {\ekvc@err@already@defined#1}%
+      {\ekvcSplitAndUse@#1{{#2}}{#3}}%
+  }
+\protected\long\def\ekvcSplit#1#2#3%
+  {%
+    \let\ekvc@helpers@needed\@secondoftwo
+    \ekvc@ifdefined#1%
+      {\ekvc@err@already@defined#1}%
+      {%
+        \expandafter
+        \ekvcSplitAndUse@\expandafter#1\csname ekvc@\string#1\endcsname{#2}%
+        \ifnum\ekvc@keycount<1
+          \ekvc@any@long\expandafter\def\csname ekvc@\string#1\endcsname{#3}%
+        \else
+          \ifnum\ekvc@keycount>9
+            \ekvc@err@toomany{#1}%
+            \let#1\ekvc@undefined
+          \else
+            \ekvcSplit@build@argspec
+            \ekvc@any@long\expandafter
+            \def\csname ekvc@\string#1\expandafter\endcsname\ekvc@tmp{#3}%
+          \fi
+        \fi
+      }%
+  }
+\protected\def\ekvcSplit@build@argspec
+  {%
+    \begingroup
+      \edef\ekvc@tmp
+        {\endgroup\def\ekv@unexpanded{\ekvc@tmp}{\ekvcSplit@build@argspec@{1}}}%
+    \ekvc@tmp
+  }
+\def\ekvcSplit@build@argspec@#1%
+  {%
+    \ifnum#1>\ekvc@keycount
+      \ekv@fi@gobble
+    \fi
+    \@firstofone
+      {%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@#1\endcsname####}#1%
+        \expandafter\ekvcSplit@build@argspec@\expandafter{\the\numexpr#1+1}%
+      }%
+  }
+\protected\long\def\ekvc@SetupSplitKeys
+  {%
+    \ekvc@keycount=\ekv@zero
+    \let\ekvc@any@long\ekv@empty
+    \let\ekvc@initials\ekv@empty
+    \ekvpParse@unsafe\ekvp@@p@ekvc@setup@splitkeys
+  }
+\ekvpNewParser{ekvc@setup@splitkeys}
+\ekvpDefType{ekvc@setup@splitkeys}{short}
+  {%
+    \let\ekvc@long\ekv@empty
+    \expandafter\ekvc@SetupSplitKeys@a\detokenize{#1}\ekv@stop{#3}%
+  }
+\ekvpDefType{ekvc@setup@splitkeys}{long}
+  {%
+    \let\ekvc@long\long
+    \let\ekvc@any@long\long
+    \expandafter\ekvc@SetupSplitKeys@a\detokenize{#1}\ekv@stop{#3}%
+  }
+\ekvpDefNoType{ekvc@setup@splitkeys}
+  {%
+    \let\ekvc@long\ekv@empty
+    \expandafter\ekvc@SetupSplitKeys@a\detokenize{#1}\ekv@stop{#3}%
+  }
+\ekvpDefNoValue{ekvc@setup@splitkeys}
+  {%
+    \begingroup
+      \edef\ekvc@tmp{\detokenize{#1}}%
+      \expandafter
+    \endgroup
+    \ifx\ekvc@tripledots\ekvc@tmp
+      \advance\ekvc@keycount1
+      \begingroup\expandafter\endgroup
+      \expandafter\ekvc@SetupSplitKeys@unknown
+        \csname ekvc@splitmark@\the\ekvc@keycount\endcsname
+      \let\ekvc@any@long\long
+    \else
+      \ekvc@err@value@required{#1}%
+    \fi
+  }
+\protected\long\def\ekvc@SetupSplitKeys@a
+  {%
+    \advance\ekvc@keycount1
+    \begingroup\expandafter\endgroup
+    \expandafter\ekvc@SetupSplitKeys@b
+      \csname ekvc@splitmark@\the\ekvc@keycount\endcsname
+  }
+\protected\long\def\ekvc@SetupSplitKeys@b#1#2\ekv@stop#3%
+  {%
+    \long\def\ekvc@tmp##1##2#1##3{##2#1{##1}}%
+    \ifx\ekvc@long\long
+    \else
+      \expandafter\let\csname ekvc@\ekvc@set(#2)\endcsname\ekvc@tmp
+      \edef\ekvc@tmp##1%
+        {%
+          \ekv@unexpanded\expandafter{\csname ekvc@\ekvc@set(#2)\endcsname}%
+          {##1}%
+        }%
+    \fi
+    \ekvlet\ekvc@set{#2}\ekvc@tmp
+    \edef\ekvc@initials{\ekv@unexpanded\expandafter{\ekvc@initials#1{#3}}}%
+    \ekvc@helpers@needed
+      {\expandafter\ekvc@setup@splitmacro\expandafter{\the\ekvc@keycount}}%
+      {}%
+  }
+\protected\long\def\ekvc@SetupSplitKeys@unknown#1%
+  {%
+    \long\def\ekvc@tmp##1##2##3##4#1##5{##4#1{##5, {##3} = {##1} }}%
+    \ekvletunknown\ekvc@set\ekvc@tmp
+    \long\def\ekvc@tmp##1##2##3#1##4{##3#1{##4, {##2} }}%
+    \ekvletunknownNoVal\ekvc@set\ekvc@tmp
+    \edef\ekvc@initials{\ekv@unexpanded\expandafter{\ekvc@initials#1{}}}%
+    \ekvc@helpers@needed
+      {\expandafter\ekvc@setup@splitmacro\expandafter{\the\ekvc@keycount}}%
+      {}%
+  }
+\protected\def\ekvc@defarggobbler#1{\def\ekvc@tmp##1#1##2##{##1#1}}
+\begingroup
+\edef\ekvc@tmp
+  {%
+    \long\gdef\ekv@unexpanded\expandafter{\csname ekvc@split@1\endcsname}%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@1\endcsname}##1%
+        ##2##3%
+      {##3{##1}##2}%
+    \long\gdef\ekv@unexpanded\expandafter{\csname ekvc@split@2\endcsname}%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@1\endcsname}##1%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@2\endcsname}##2%
+        ##3##4%
+      {##4{##1}{##2}##3}%
+    \long\gdef\ekv@unexpanded\expandafter{\csname ekvc@split@3\endcsname}%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@1\endcsname}##1%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@2\endcsname}##2%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@3\endcsname}##3%
+        ##4##5%
+      {##5{##1}{##2}{##3}##4}%
+    \long\gdef\ekv@unexpanded\expandafter{\csname ekvc@split@4\endcsname}%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@1\endcsname}##1%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@2\endcsname}##2%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@3\endcsname}##3%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@4\endcsname}##4%
+        ##5##6%
+      {##6{##1}{##2}{##3}{##4}##5}%
+    \long\gdef\ekv@unexpanded\expandafter{\csname ekvc@split@5\endcsname}%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@1\endcsname}##1%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@2\endcsname}##2%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@3\endcsname}##3%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@4\endcsname}##4%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@5\endcsname}##5%
+        ##6##7%
+      {##7{##1}{##2}{##3}{##4}{##5}##6}%
+    \long\gdef\ekv@unexpanded\expandafter{\csname ekvc@split@6\endcsname}%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@1\endcsname}##1%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@2\endcsname}##2%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@3\endcsname}##3%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@4\endcsname}##4%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@5\endcsname}##5%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@6\endcsname}##6%
+        ##7##8%
+      {##8{##1}{##2}{##3}{##4}{##5}{##6}##7}%
+    \long\gdef\ekv@unexpanded\expandafter{\csname ekvc@split@7\endcsname}%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@1\endcsname}##1%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@2\endcsname}##2%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@3\endcsname}##3%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@4\endcsname}##4%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@5\endcsname}##5%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@6\endcsname}##6%
+        \ekv@unexpanded\expandafter{\csname ekvc@splitmark@7\endcsname}##7%
+        ##8##9%
+      {##9{##1}{##2}{##3}{##4}{##5}{##6}{##7}##8}%
+  }
+\ekvc@tmp
+\endgroup
+\protected\def\ekvc@setup@splitmacro#1%
+  {%
+    \ekv@ifdefined{ekvc@split@#1}{}%
+      {%
+        \begingroup
+          \def\ekvc@tmp##1%
+            {%
+              \ekv@unexpanded\expandafter
+                {\csname ekvc@splitmark@\the\numexpr#1-##1\relax\endcsname}%
+            }%
+          \edef\ekvc@tmp
+            {%
+              \long\gdef
+                \ekv@unexpanded\expandafter{\csname ekvc@split@#1\endcsname}%
+                  ####1%
+                  \ekvc@tmp{6}####2%
+                  \ekvc@tmp{5}####3%
+                  \ekvc@tmp{4}####4%
+                  \ekvc@tmp{3}####5%
+                  \ekvc@tmp{2}####6%
+                  \ekvc@tmp{1}####7%
+                  \ekvc@tmp{0}####8%
+                  ####9%
+                {%
+                  \ekv@unexpanded\expandafter
+                    {\csname ekvc@split@\the\numexpr#1-7\relax\endcsname}%
+                  ####1{{####2}{####3}{####4}{####5}{####6}{####7}{####8}####9}%
+                }%
+            }%
+          \ekvc@tmp
+        \endgroup
+      }%
+  }
+\protected\long\def\ekvcHashAndUse#1#2%
+  {%
+    \let\ekvc@helpers@needed\@firstoftwo
+    \ekvc@ifdefined#1%
+      {\ekvc@err@already@defined#1}%
+      {\ekvcHashAndUse@#1{}{#2}}%
+  }
+\protected\long\def\ekvcHashAndUse@#1#2#3%
+  {%
+    \edef\ekvc@set{\string#1}%
+    \ekvc@SetupHashKeys{#3}%
+    \ekvc@helpers@needed
+      {%
+        \ekvc@any@long\edef#1##1%
+          {%
+            \expandafter\ekvc@ekvset@pre@expander\expandafter{\ekvc@set}%
+            \ekv@unexpanded{\ekvc@hash@pack@argument}%
+            \ekv@unexpanded\expandafter{\ekvc@initials\ekvc@stop#2}%
+          }%
+      }%
+      {%
+        \ekvc@any@long\edef#1##1%
+          {%
+            \expandafter\ekvc@ekvset@pre@expander\expandafter{\ekvc@set}%
+            \ekv@unexpanded{#2}%
+            \ekv@unexpanded\expandafter{\ekvc@initials\ekvc@stop}%
+          }%
+      }%
+  }
+\protected\long\def\ekvcHashAndForward#1#2#3%
+  {%
+    \let\ekvc@helpers@needed\@firstoftwo
+    \ekvc@ifdefined#1%
+      {\ekvc@err@already@defined#1}%
+      {\ekvcHashAndUse@#1{{#2}}{#3}}%
+  }
+\protected\long\def\ekvcHash#1#2#3%
+  {%
+    \let\ekvc@helpers@needed\@secondoftwo
+    \ekvc@ifdefined#1%
+      {\ekvc@err@already@defined#1}%
+      {%
+        \expandafter
+        \ekvcHashAndUse@\expandafter#1\csname ekvc@\string#1\endcsname{#2}%
+        \ekvc@any@long\expandafter\def\csname ekvc@\string#1\endcsname
+            ##1\ekvc@stop
+          {#3}%
+      }%
+  }
+\long\def\ekvc@hash@pack@argument#1\ekvc@stop#2{#2{#1}}
+\protected\long\def\ekvc@SetupHashKeys
+  {%
+    \let\ekvc@any@long\ekv@empty
+    \let\ekvc@initials\ekv@empty
+    \ekvpParse@unsafe\ekvp@@p@ekvc@setup@hashkeys
+  }
+\ekvpNewParser{ekvc@setup@hashkeys}
+\ekvpDefType{ekvc@setup@hashkeys}{short}
+  {%
+    \let\ekvc@long\ekv@empty
+    \expandafter\ekvc@SetupHashKeys@a\detokenize{#1}\ekv@stop{#3}%
+  }
+\ekvpDefType{ekvc@setup@hashkeys}{long}
+  {%
+    \let\ekvc@long\long
+    \let\ekvc@any@long\long
+    \expandafter\ekvc@SetupHashKeys@a\detokenize{#1}\ekv@stop{#3}%
+  }
+\ekvpDefNoType{ekvc@setup@hashkeys}
+  {%
+    \let\ekvc@long\ekv@empty
+    \expandafter\ekvc@SetupHashKeys@a\detokenize{#1}\ekv@stop{#3}%
+  }
+\ekvpDefNoValue{ekvc@setup@hashkeys}
+  {%
+    \begingroup
+      \edef\ekvc@tmp{\detokenize{#1}}%
+      \expandafter
+    \endgroup
+    \ifx\ekvc@tripledots\ekvc@tmp
+      \ekvc@SetupHashKeys@unknown
+      \let\ekvc@any@long\long
+    \else
+      \ekvc@err@value@required{#1}%
+    \fi
+  }
+\protected\long\def\ekvc@SetupHashKeys@a#1\ekv@stop
+  {%
+    \begingroup\expandafter\endgroup
+    \expandafter\ekvc@SetupHashKeys@b\csname ekvc@hashmark@#1\endcsname{#1}%
+  }
+\protected\long\def\ekvc@SetupHashKeys@b#1#2#3%
+  {%
+    \long\def\ekvc@tmp##1##2#1##3{##2#1{##1}}%
+    \ifx\ekvc@long\long
+    \else
+      \expandafter\let\csname ekvc@\ekvc@set(#2)\endcsname\ekvc@tmp
+      \edef\ekvc@tmp##1%
+        {%
+          \ekv@unexpanded\expandafter{\csname ekvc@\ekvc@set(#2)\endcsname}%
+          {##1}%
+        }%
+    \fi
+    \ekvlet\ekvc@set{#2}\ekvc@tmp
+    \edef\ekvc@initials{\ekv@unexpanded\expandafter{\ekvc@initials#1{#3}}}%
+    \ekvc@setup@hashmacro{#2}%
+  }
+\def\ekvc@SetupHashKeys@unknown#1%
+  {%
+    \protected\def\ekvc@SetupHashKeys@unknown
+      {%
+        \ekvletunknown\ekvc@set\ekvc@hash@unknown@kv
+        \ekvletunknownNoVal\ekvc@set\ekvc@hash@unknown@k
+        \edef\ekvc@initials{\ekv@unexpanded\expandafter{\ekvc@initials#1{}}}%
+        \ekvc@setup@hashmacro{...}%
+      }%
+    \long\def\ekvc@hash@unknown@kv##1##2##3##4#1##5{##4#1{##5, {##3} = {##1} }}%
+    \long\def\ekvc@hash@unknown@k##1##2##3#1##4{##3#1{##4, {##2} }}%
+  }
+\begingroup\expandafter\endgroup
+\expandafter\ekvc@SetupHashKeys@unknown
+  \csname ekvc@hashmark@\ekvc@tripledots\endcsname
+\protected\def\ekvc@setup@hashmacro#1%
+  {%
+    \ekv@ifdefined{ekvc@fasthash@#1}{}%
+      {%
+        \begingroup
+          \edef\ekvc@tmp
+            {%
+              \long\gdef
+                \ekv@unexpanded\expandafter{\csname ekvc@fasthash@#1\endcsname}%
+                  ####1%
+                  \ekv@unexpanded\expandafter
+                    {\csname ekvc@hashmark@#1\endcsname}%
+                  ####2####3\ekv@unexpanded{\ekvc@stop}%
+                {####2}%
+              \long\gdef
+                \ekv@unexpanded\expandafter{\csname ekvc@safehash@#1\endcsname}%
+                  ####1%
+                {%
+                  \ekv@unexpanded\expandafter
+                    {\csname ekvc@@safehash@#1\endcsname}%
+                  ####1\ekv@unexpanded{\ekvc@mark}{}%
+                  \ekv@unexpanded\expandafter
+                    {%
+                      \csname ekvc@hashmark@#1\endcsname{}%
+                      \ekvc@mark{\ekvc@err@missing@hash{#1}}\ekvc@stop
+                    }%
+                }%
+              \long\gdef
+                \ekv@unexpanded\expandafter
+                  {\csname ekvc@@safehash@#1\endcsname}%
+                  ####1%
+                  \ekv@unexpanded\expandafter
+                    {\csname ekvc@hashmark@#1\endcsname}%
+                  ####2####3\ekv@unexpanded{\ekvc@mark}####4####5%
+                  \ekv@unexpanded{\ekvc@stop}%
+                {%
+                  ####4{####2}%
+                }%
+              \long\gdef\ekv@unexpanded\expandafter
+                {\csname ekvc@fastsplithash@#1\endcsname}%
+                  ####1%
+                  \ekv@unexpanded\expandafter
+                    {\csname ekvc@hashmark@#1\endcsname}%
+                  ####2####3\ekv@unexpanded{\ekvc@stop}####4%
+                {%
+                  ####4{####2}%
+                }%
+              \long\gdef\ekv@unexpanded\expandafter
+                {\csname ekvc@safesplithash@#1\endcsname}####1%
+                {%
+                  \ekv@unexpanded\expandafter
+                    {\csname ekvc@@safesplithash@#1\endcsname}%
+                  ####1\ekv@unexpanded{\ekvc@mark\ekvc@safe@after@hash}%
+                  \ekv@unexpanded\expandafter
+                    {%
+                      \csname ekvc@hashmark@#1\endcsname{}%
+                      \ekvc@mark
+                      {\ekvc@err@missing@hash{#1}\ekvc@safe@after@hash}%
+                      \ekvc@stop
+                    }%
+                }%
+              \long\gdef\ekv@unexpanded\expandafter
+                {\csname ekvc@@safesplithash@#1\endcsname}%
+                  ####1%
+                  \ekv@unexpanded\expandafter
+                    {\csname ekvc@hashmark@#1\endcsname}%
+                  ####2####3\ekv@unexpanded{\ekvc@mark}####4####5%
+                  \ekv@unexpanded{\ekvc@stop}%
+                {%
+                  ####4{####2}%
+                }%
+            }%
+          \ekvc@tmp
+        \endgroup
+      }%
+  }
+\long\def\ekvcValue#1%
+  {%
+    \ekv@unexpanded
+    \expandafter\ekvcValue@\detokenize{#1}\ekvc@stop
+  }
+\def\ekvcValue@#1\ekvc@stop
+  {%
+    \ekv@ifdefined{ekvc@safehash@#1}%
+      {\csname ekvc@safehash@#1\endcsname}%
+      {\ekvc@err@unknown@hash{#1}\@firstoftwo{{}}}%
+  }
+\long\def\ekvcValueFast#1#2%
+  {\csname ekvc@fasthash@\detokenize{#1}\endcsname#2\ekvc@stop}
+\long\def\ekvcValueSplit#1%
+  {\expandafter\ekvcValueSplit@\detokenize{#1}\ekvc@stop}
+\def\ekvcValueSplit@#1\ekvc@stop
+  {%
+    \ekv@ifdefined{ekvc@safesplithash@#1}%
+      {\csname ekvc@safesplithash@#1\endcsname}%
+      {\ekvc@err@unknown@hash{#1}\ekvcValueSplit@recover}%
+  }
+\long\def\ekvcValueSplit@recover#1#2{#2{}}
+\long\def\ekvc@safe@after@hash#1#2%
+  {%
+    #2{#1}%
+  }
+\long\def\ekvcValueSplitFast#1#2%
+  {\csname ekvc@fastsplithash@\detokenize{#1}\endcsname#2\ekvc@stop}
+\long\def\ekvc@safehash@#1{\ekvc@err@empty@hash{}}
+\long\def\ekvc@fasthash@#1\ekvc@stop{\ekvc@err@empty@hash}
+\long\def\ekvc@safesplithash@#1#2{\ekvc@err@empty@hash#2{}}
+\long\def\ekvc@fastsplithash@#1\ekvc@stop#2{\ekvc@err@empty@hash#2{}}
+\ekvpNewParser{ekvc@setup@secondary}
+\ekvpValueAlwaysRequired{ekvc@setup@secondary}
+\protected\long\def\ekvcSecondaryKeys#1%
+  {%
+    \edef\ekvc@set{\string#1}%
+    \let\ekvc@long\ekv@empty
+    \ekvpParse@unsafe\ekvp@@p@ekvc@setup@secondary
+  }
+\protected\long\def\ekvcChange#1%
+  {%
+    \ekvifdefinedset{\string#1}%
+      {%
+        \ekvc@ifdefined#1%
+          {\ekvc@change#1}%
+          {\ekvc@err@no@key@macro#1\@gobble}%
+      }%
+      {\ekvc@err@no@key@macro#1\@gobble}%
+  }
+\protected\def\ekvc@change#1%
+  {\expandafter\ekvc@change@a\meaning#1\ekv@stop#1}
+\def\ekvc@change@a#1%
+  {%
+    \protected\def\ekvc@change@a##1#1##2->##3\ekv@stop
+      {%
+        \ekvc@change@iflong{##1}%
+          {\ekvc@change@b{}}%
+          {\ekvc@change@b{\long}}%
+      }%
+  }
+\expandafter\ekvc@change@a\expandafter{\detokenize{macro:}}
+\protected\def\ekvc@change@b#1#2%
+  {\expandafter\ekvc@change@c\expandafter{#2\ekvc@stop}{#1}#2}
+\ekv@exparg{\protected\long\def\ekvc@change@c#1#2#3#4}%
+  {%
+    \expandafter\iffalse\expandafter{\expandafter{\expandafter\fi
+      \ekvset{\string#3}{#4}%
+      \ekvc@change@d{#2}{#3}%
+      #1%
+    }}%
+  }
+\protected\def\ekvc@change@d#1#2%
+  {#1\edef#2##1{\expandafter\ekvc@change@e\iffalse}\fi}
+\long\def\ekvc@change@e#1\ekvc@stop
+  {\ekv@unexpanded{#1}##1\ekv@unexpanded\expandafter{\iffalse}\fi}
+\def\ekvc@change@iflong#1%
+  {%
+    \protected\def\ekvc@change@iflong##1%
+      {\expandafter\ekv@ifempty\expandafter{\ekvc@change@iflong@##1#1}}%
+    \def\ekvc@change@iflong@##1#1{}
+  }
+\expandafter\ekvc@change@iflong\expandafter{\string\long}
+\long\def\ekvcPass#1#2%
+  {%
+    \ekvifdefined{\string#1}{#2}%
+      {\csname\ekv@name{\string#1}{#2}\endcsname}%
+      {\ekvc@err@unknown@key@or@macro{#1}{#2}\@gobble}%
+  }
+\ekvpDefPrefixLet{ekvc@setup@secondary}{long}\ekvc@long\long\ekv@empty
+\ekvpDefType{ekvc@setup@secondary}{meta}
+  {\ekvc@type@meta\ekv@exparg\ekvc@long{##1}\ekvlet{#1}{#3}}
+\ekvpDefType{ekvc@setup@secondary}{nmeta}
+  {\ekvc@assert@not@long\ekvc@type@meta\ekv@expargtwice{}{}\ekvletNoVal{#1}{#3}}
+\protected\long\def\ekvc@type@meta#1#2#3#4#5#6%
+  {%
+    #1\ekvc@type@meta@{\ekvmorekv{#6}}{#2}{#3}%
+    #4\ekvc@set{#5}\ekvc@tmp
+  }
+\protected\long\def\ekvc@type@meta@#1#2#3{#2\def\ekvc@tmp#3{#1}}
+\ekvpDefType{ekvc@setup@secondary}{alias}
+  {%
+    \ekvc@assert@not@long
+    \ekvc@assert@k@or@p@defined{#3}%
+    \ekvifdefined\ekvc@set{#3}{\ekvletkv\ekvc@set{#1}\ekvc@set{#3}}{}%
+    \ekvifdefinedNoVal\ekvc@set{#3}{\ekvletkvNoVal\ekvc@set{#1}\ekvc@set{#3}}{}%
+  }
+\ekvpDefType{ekvc@setup@secondary}{default}
+  {%
+    \ekvc@assert@defined{#1}%
+    \ekvc@assert@not@long
+    \edef\ekvc@tmp
+      {%
+        \ekv@unexpanded\expandafter
+          {\csname\ekv@name\ekvc@set{#1}\endcsname{#3}}%
+      }%
+    \ekvletNoVal\ekvc@set{#1}\ekvc@tmp
+  }
+\def\ekvc@enum@name#1#2#3{ekvc#1(#2)#3}
+\ekvpDefType{ekvc@setup@secondary}{enum}
+  {\ekvpAssertTwoValues{#3}\ekvc@type@enum{#1}#3}
+\ekvpDefType{ekvc@setup@secondary}{choice}
+  {\ekvpAssertTwoValues{#3}\ekvc@type@choice{#1}#3}
+\protected\long\def\ekvc@type@enum@or@choice#1#2%
+  {%
+    \ekvc@assert@defined{#2}%
+    \ekvc@long\edef\ekvc@tmp##1%
+      {%
+        \ekv@unexpanded{\expandafter\ekvc@h@enum\detokenize}{##1}%
+        \ekv@unexpanded{\ekvc@stop}%
+        {\ekvc@set}{#1}%
+      }%
+    \ekvlet\ekvc@set{#1}\ekvc@tmp
+  }
+\protected\long\def\ekvc@type@enum#1#2%
+  {%
+    \ekvc@type@enum@or@choice{#1}{#2}%
+    \def\ekvc@tmp{0}%
+    \expandafter\ekvcsvloop\expandafter
+      {\expandafter\ekvc@type@enum@\csname\ekv@name\ekvc@set{#2}\endcsname{#1}}%
+  }
+\ekv@exparg{\protected\long\def\ekvc@type@enum@#1#2#3}%
+  {%
+    \expandafter\expandafter\expandafter\edef\expandafter
+        \csname\ekvc@enum@name\ekvc@set{#2}{\detokenize{#3}}\endcsname
+      {\ekv@unexpanded{#1}{\ekvc@tmp}}%
+    \edef\ekvc@tmp{\the\numexpr\ekvc@tmp+1\relax}%
+  }
+\protected\long\def\ekvc@type@choice#1#2%
+  {%
+    \ekvc@type@enum@or@choice{#1}{#2}%
+    \ekv@exparg
+      {%
+        \expandafter\ekvparse\expandafter
+          {%
+            \expandafter\ekvc@type@choice@k
+              \csname\ekv@name\ekvc@set{#2}\endcsname{#1}%
+          }%
+      }%
+      {%
+        \expandafter\ekvc@type@choice@p
+          \csname\ekv@name\ekvc@set{#2}\endcsname{#1}%
+      }%
+  }
+\ekv@exparg{\protected\long\def\ekvc@type@choice@p#1#2#3#4}%
+  {%
+    \expandafter\expandafter\expandafter\edef\expandafter
+        \csname\ekvc@enum@name\ekvc@set{#2}{\detokenize{#3}}\endcsname
+      {\ekv@unexpanded{#1{#4}}}%
+  }
+\protected\long\def\ekvc@type@choice@k#1#2#3{\ekvc@type@choice@p#1{#2}{#3}{#3}}
+\ekv@if@lastnamedcs
+  {%
+    \ekv@exparg{\def\ekvc@h@enum#1\ekvc@stop#2#3}%
+      {%
+        \expandafter\ifcsname\ekvc@enum@name{#2}{#3}{#1}\endcsname
+          \expandafter\ekvc@h@enum@\lastnamedcs
+        \fi
+        \ekvc@err@unknown@enum{#2}{#3}{#1}%
+      }
+    \def\ekvc@h@enum@#1\fi\ekvc@err@unknown@enum#2#3#4%
+      {%
+        \fi
+        \ifx#1\relax
+          \ekvc@err@unknown@enum{#2}{#3}{#4}%
+          \expandafter\@gobble
+        \fi
+        #1%
+      }
+  }
+  {%
+    \def\ekvc@h@enum#1%
+      {%
+        \def\ekvc@h@enum##1\ekvc@stop##2##3%
+          {%
+            \expandafter\ekvc@h@enum@
+              \csname\ifcsname#1\endcsname#1\else relax\fi\endcsname
+              {##2}{##3}{##1}%
+          }%
+      }
+    \expandafter\ekvc@h@enum\expandafter{\ekvc@enum@name{#2}{#3}{#1}}
+    \def\ekvc@h@enum@#1#2#3#4%
+      {%
+        \ifx#1\relax
+          \ekvc@err@unknown@enum{#2}{#3}{#4}%
+          \expandafter\@gobble
+        \fi
+        #1%
+      }
+  }
+\let\ekvc@enum@name\ekvc@undefined
+\ekvpDefType{ekvc@setup@secondary}{aggregate}
+  {%
+    \let\ekvc@type@aggregate@ifexpanded\@secondoftwo
+    \ekvc@type@aggregate{#1}{#3}%
+  }
+\ekvpDefType{ekvc@setup@secondary}{e-aggregate}
+  {%
+    \let\ekvc@type@aggregate@ifexpanded\@firstoftwo
+    \ekvc@type@aggregate{#1}{#3}%
+  }
+\protected\long\def\ekvc@type@aggregate#1#2%
+  {%
+    \ekvc@assert@not@long
+    \ekvpAssertTwoValues{#2}%
+    \ekvc@type@aggregate@a
+      \ekvc@type@aggregate@long\ekvc@type@aggregate@short
+      {#1}#2%
+  }
+\protected\long\def\ekvc@type@aggregate@a#1#2#3#4#5%
+  {%
+    \ekvc@assert@defined{#4}%
+    \def\ekvc@type@aggregate@tmp##1##2{#5}%
+    \begingroup\expandafter\endgroup
+    \expandafter\ekvc@type@aggregate@b
+      \csname\ekv@name\ekvc@set{#4}\expandafter\endcsname
+      \csname ekvc@\ekvc@set(#4)\endcsname
+      #1#2%
+      {#3}%
+  }
+\protected\long\def\ekvc@type@aggregate@b#1#2#3#4%
+  {%
+    \ekvc@type@aggregate@check@long#1#2%
+      {#3#1}%
+      {#4#2}%
+  }
+\protected\long\def\ekvc@type@aggregate@check@long#1#2%
+  {\expandafter\ekvc@type@aggregate@check@long@a\detokenize{#2}\ekv@stop#1}
+\protected\long\def\ekvc@type@aggregate@check@long@a#1\ekv@stop#2%
+  {%
+    \def\ekvc@type@aggregate@check@long@@##1#1{}%
+    \expandafter\ekvc@type@aggregate@check@long@b\meaning#2\ekv@stop{#1}%
+  }
+\protected\def\ekvc@type@aggregate@check@long@b#1\ekv@stop#2%
+  {\expandafter\ekv@ifempty\expandafter{\ekvc@type@aggregate@check@long@@#1#2}}
+\protected\long\def\ekvc@type@aggregate@long#1%
+  {%
+    \begingroup\expandafter\endgroup\expandafter
+    \ekvc@type@aggregate@long@
+      \csname\ekvc@extract@mark#1\expandafter\endcsname
+      \expandafter{\ekvc@type@aggregate@tmp{##3}{##1}}%
+  }
+\protected\long\def\ekvc@type@aggregate@long@#1#2#3%
+  {%
+    \ekvc@type@aggregate@ifexpanded
+      {%
+        \long\def\ekvc@type@aggregate@tmp##1##2#1##3%
+          {\ekv@expanded{\ekv@unexpanded{##2#1}{#2}}}%
+      }%
+      {\long\def\ekvc@type@aggregate@tmp##1##2#1##3{##2#1{#2}}}%
+    \ekvlet\ekvc@set{#3}\ekvc@type@aggregate@tmp
+  }
+\protected\long\def\ekvc@type@aggregate@short#1#2%
+  {%
+    \begingroup\expandafter\endgroup\expandafter
+    \ekvc@type@aggregate@short@
+      \csname\ekvc@extract@mark#1\expandafter\endcsname
+      \csname ekvc@\ekvc@set(#2)\expandafter\endcsname
+      \expandafter{\ekvc@type@aggregate@tmp{##3}{##1}}%
+      {#2}%
+  }
+\protected\long\def\ekvc@type@aggregate@short@#1#2#3#4%
+  {%
+    \ekvdef\ekvc@set{#4}{#2{##1}}%
+    \ekvc@type@aggregate@ifexpanded
+      {\long\def#2##1##2#1##3{\ekv@expanded{\ekv@unexpanded{##2#1}{#3}}}}%
+      {\long\def#2##1##2#1##3{##2#1{#3}}}%
+  }
+\ekvpDefType{ekvc@setup@secondary}{process}
+  {%
+    \ekvpAssertTwoValues{#3}%
+    \ifx\ekvc@long\long
+      \ekv@fi@firstoftwo
+    \fi
+    \@secondoftwo
+      {%
+        \ekvc@type@aggregate@a
+          \ekvc@type@process@long\ekvc@type@process@long
+      }%
+      {%
+        \ekvc@type@aggregate@a
+          \ekvc@type@process@short\ekvc@type@process@short
+      }%
+      {#1}#3%
+  }
+\protected\long\def\ekvc@type@process@long#1%
+  {%
+    \begingroup\expandafter\endgroup\expandafter
+    \ekvc@type@process@long@
+      \csname\ekvc@extract@mark#1\expandafter\endcsname
+      \expandafter{\ekvc@type@aggregate@tmp{##3}{##1}}%
+  }
+\protected\long\def\ekvc@type@process@long@#1#2#3%
+  {%
+    \long\def\ekvc@type@aggregate@tmp##1##2#1##3{#2##2#1{##3}}%
+    \ekvlet\ekvc@set{#3}\ekvc@type@aggregate@tmp
+  }
+\protected\long\def\ekvc@type@process@short#1#2%
+  {%
+    \begingroup\expandafter\endgroup\expandafter
+    \ekvc@type@process@short@
+      \csname\ekvc@extract@mark#1\expandafter\endcsname
+      \csname ekvc@\ekvc@set(#2)\expandafter\endcsname
+      \expandafter{\ekvc@type@aggregate@tmp{##3}{##1}}%
+      {#2}%
+  }
+\protected\long\def\ekvc@type@process@short@#1#2#3#4%
+  {%
+    \ekvdef\ekvc@set{#4}{#2{##1}}%
+    \long\def#2##1##2#1##3{#3##2#1{##3}}%
+  }
+\ekvpDefType{ekvc@setup@secondary}{flag-bool}
+  {%
+    \ekvc@assert@not@long
+    \ekvpAssertOneValue{#3}%
+    \ifdefined#3\else\ekvcFlagNew#3\fi
+    \ekvdef\ekvc@set{#1}%
+      {%
+        \ekv@ifdefined{ekvc@flag@set@##1}%
+          {%
+            \csname ekvc@flag@set@##1\expandafter\endcsname
+              \ekvcFlagHeight#3\ekv@stop#3%
+          }%
+          {\ekvc@err@invalid@bool{##1}}%
+      }%
+  }
+\protected\def\ekvc@type@flag#1#2#3%
+  {%
+    \ekvc@assert@not@long
+    \ekvpAssertOneValue{#3}%
+    \ifdefined#3\else\ekvcFlagNew#3\fi
+    \ekv@exparg{\ekvdefNoVal\ekvc@set{#2}}{#1#3}%
+  }
+\ekvpDefType{ekvc@setup@secondary}{flag-true}
+  {\ekvc@type@flag\ekvcFlagSetTrue{#1}{#3}}
+\ekvpDefType{ekvc@setup@secondary}{flag-false}
+  {\ekvc@type@flag\ekvcFlagSetFalse{#1}{#3}}
+\ekvpDefType{ekvc@setup@secondary}{flag-raise}
+  {\ekvc@type@flag\ekvcFlagRaise{#1}{#3}}
+\def\ekvc@flag@name{ekvcf\string}
+\def\ekvc@flag@namescheme#1#2{ekvch#2#1}
+\let\ekvcFlagHeight\number
+\protected\def\ekvcFlagNew#1%
+  {%
+    \edef#1%
+      {%
+        \ekv@unexpanded{\ekvc@flag@height}%
+          \ekv@unexpanded\expandafter{\csname\ekvc@flag@name#1\endcsname}%
+      }%
+    \ekv@expargtwice
+      {\expandafter\def\csname\ekvc@flag@name#1\endcsname##1}%
+      {\expandafter\ekvc@flag@namescheme\expandafter{\string#1}{##1}}%
+  }
+\def\ekvc@flag@height#1%
+  {%
+    \ifcsname#10\endcsname
+      \ekvc@flag@height@1\ekv@stop#1%
+    \fi
+    \@firstofone{0} % leave this space
+  }
+\def\ekvc@flag@height@#1\ekv@stop#2\fi\@firstofone#3%
+  {%
+    \fi
+    \ifcsname#2{#1}\endcsname
+      \expandafter\ekvc@flag@height@\the\numexpr#1+1\relax\ekv@stop#2%
+    \fi
+    \@firstofone{#1}%
+  }
+\ekv@exparg{\def\ekvcFlagRaise#1}%
+  {%
+    \expandafter\expandafter\expandafter\@gobble\expandafter
+      \csname\ekvc@flag@namescheme{\string#1}{\ekvcFlagHeight#1}\endcsname
+  }
+\def\ekvcFlagSetTrue#1%
+  {\expandafter\ekvc@flag@set@true\ekvcFlagHeight#1\ekv@stop#1}
+\def\ekvcFlagSetFalse#1%
+  {\expandafter\ekvc@flag@set@false\ekvcFlagHeight#1\ekv@stop#1}
+\def\ekvc@flag@set@true#1%
+  {%
+    \def\ekvc@flag@set@true##1\ekv@stop##2%
+      {%
+        \ifodd##1
+          \ekv@fi@gobble
+        \fi
+        \@firstofone{\expandafter\@gobble\csname#1\endcsname}%
+      }%
+    \def\ekvc@flag@set@false##1\ekv@stop##2%
+      {%
+        \ifodd##1
+          \ekv@fi@firstofone
+        \fi
+        \@gobble{\expandafter\@gobble\csname#1\endcsname}%
+      }%
+  }
+\expandafter\ekvc@flag@set@true\expandafter
+  {\ekvc@flag@namescheme{\string#2}{#1}}
+\def\ekvcFlagIf#1%
+  {%
+    \ifodd#1%
+      \ekv@fi@firstoftwo
+    \fi
+    \@secondoftwo
+  }
+\ekv@exparg{\def\ekvcFlagIfRaised#1}%
+  {%
+    \expandafter\ifcsname\ekvc@flag@namescheme{\string#1}0\endcsname
+      \ekv@fi@firstoftwo
+    \fi
+    \@secondoftwo
+  }
+\protected\def\ekvcFlagReset#1%
+  {\expandafter\ekvc@flag@reset\csname\ekvc@flag@name#1\endcsname{}}
+\protected\def\ekvcFlagResetGlobal#1%
+  {\expandafter\ekvc@flag@reset\csname\ekvc@flag@name#1\endcsname\global}
+\protected\def\ekvc@flag@reset#1#2%
+  {%
+    \ifcsname#10\endcsname
+      #2\expandafter\let\csname#10\endcsname\ekvc@undefined
+      \ekvc@flag@reset@1\ekv@stop#1{#2}%
+    \fi
+  }
+\protected\def\ekvc@flag@reset@#1\ekv@stop#2#3\fi
+  {%
+    \fi
+    \ifcsname#2{#1}\endcsname
+      #3\expandafter\let\csname#2{#1}\endcsname\ekvc@undefined
+      \expandafter\ekvc@flag@reset@\the\numexpr#1+1\relax\ekv@stop#2{#3}%
+    \fi
+  }
+\def\ekvcFlagGetHeight#1%
+  {\expandafter\ekvc@flag@get@height@single\ekvcFlagHeight#1\ekv@stop}
+\long\def\ekvc@flag@get@height@single#1\ekv@stop#2{#2{#1}}
+\def\ekvcFlagGetHeights#1%
+  {%
+    \ekvc@flag@get@heights#1\ekv@stop{}%
+  }
+\def\ekvc@flag@get@heights#1%
+  {%
+    \ekv@gobbleto@stop#1\ekvc@flag@get@heights@done\ekv@stop
+    \expandafter\ekvc@flag@get@heights@\ekvcFlagHeight#1\ekv@stop
+  }
+\def\ekvc@flag@get@heights@#1\ekv@stop#2\ekv@stop#3%
+  {\ekvc@flag@get@heights#2\ekv@stop{#3{#1}}}
+\long\def\ekvc@flag@get@heights@done
+    \ekv@stop
+    \expandafter\ekvc@flag@get@heights@\ekvcFlagHeight\ekv@stop\ekv@stop#1#2%
+  {#2{#1}}
+\def\ekvc@extract@mark#1{\expandafter\ekvc@extract@mark@\meaning#1\ekv@stop}
+\begingroup
+\lccode`;=`#
+\lccode`/=`\\
+\lowercase{\endgroup
+\def\ekvc@extract@mark@#1:#2/#3 ;#4\ekv@stop{#3}%
+}
+\ekv@exparg{\def\ekvc@assert@not@long}%
+  {\ekvpAssertIfNot{\ifx\ekvc@long\long}{`long' not accepted}}
+\long\def\ekvc@assert@defined#1%
+  {\ekvpAssertTF{\ekvifdefined\ekvc@set{#1}}{undefined key `#1'}}
+\long\def\ekvc@assert@k@or@p@defined#1%
+  {%
+    \ekvpAssertTF
+      {\ekvifdefined\ekvc@set{#1}\@firstoftwo{\ekvifdefinedNoVal\ekvc@set{#1}}}%
+      {undefined key `#1'}%
+  }
+\protected\long\def\ekvc@errm#1{\errmessage{expkv-cs Error: #1}}
+\protected\long\def\ekvc@err@toomany#1%
+  {\ekvc@errm{Too many keys for macro `\string#1'}}
+\protected\long\def\ekvc@err@value@required#1%
+  {\ekvc@errm{Missing value for key `\ekv@unexpanded{#1}'}}
+\protected\long\def\ekvc@err@already@defined#1%
+  {\ekvc@errm{Macro `\string#1' already defined}}
+\protected\long\def\ekvc@err@no@key@macro#1%
+  {\ekvc@errm{\string#1 is no key=val macro}}
+\ekv@exparg{\long\def\ekvc@err#1}{\ekverr{expkv-cs}{#1}}
+\long\def\ekvc@err@unknown@hash#1{\ekvc@err{unknown hash `#1'}}
+\long\def\ekvc@err@missing@hash#1{\ekvc@err{hash `#1' not found}}
+\long\def\ekvc@err@empty@hash{\ekvc@err{empty hash}}
+\def\ekvc@err@invalid@bool#1{\ekvc@err{invalid boolean value `#1'}}
+\long\def\ekvc@err@unknown@key@or@macro#1#2%
+  {\ekvc@err{unknown key `#2' for #1}}
+\def\ekvc@err@unknown@enum#1#2#3%
+  {\ekvc@err{unknown choice `#3' for `#2' in #1}}
+\catcode`\@=\ekvc@tmp
+%% 
+%%
+%% End of file `expkv-cs.tex'.

@@ -1,0 +1,44 @@
+%%
+%% This is file `tagpdf-ns-latex-lab.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-namespace.dtx  (with options: `ns-latex-lab')
+%% 
+%% File: latex-lab-namespace.dtx
+%%
+%% \ProvidesExplFile {tagpdf-ns-latex-lab.def} {2023-09-04} {0.8}
+%% {latex} {https://www.latex-project.org/ns/lab/2022}{}
+title,        Title,    pdf2,
+part,         Title,    pdf2,
+section,      H1,       pdf2,
+subsection,   H2,       pdf2,
+subsubsection,H3,       pdf2,
+paragraph,    H4,       pdf2,
+subparagraph, H5,       pdf2,
+list,         L,        pdf2,
+itemize,      L,        pdf2,
+enumerate,    L,        pdf2,
+description,  L,        pdf2,
+quote,        BlockQuote,pdf,
+quotation,    BlockQuote,pdf,
+verbatim,     Code,     pdf,  % overwritten by block
+item,         LI,       pdf2,
+itemlabel,    Lbl,      pdf2,
+itembody,     LBody,    pdf2,
+footnote,     FENote,   pdf2,
+footnotemark, Lbl,      pdf2,
+footnotelabel,Lbl,      pdf2,
+text-unit,    Part,     pdf2,
+text,         P,        pdf2,
+section-number, Span,     pdf2,
+theorem-like, Sect,     pdf2,
+verbatim,     Code,     pdf,
+codeline,     Sub,      pdf2,
+float,        Aside,    pdf2,
+figures,      Sect,     pdf2,
+tables,       Sect,     pdf2,
+%% 
+%%
+%% End of file `tagpdf-ns-latex-lab.def'.

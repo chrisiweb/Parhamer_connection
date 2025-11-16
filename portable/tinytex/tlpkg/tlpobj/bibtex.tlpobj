@@ -1,6 +1,6 @@
 name bibtex
 category Package
-revision 76524
+revision 76790
 shortdesc Process bibliographies (bib files) for LaTeX or other formats
 longdesc BibTeX allows the user to store his citation data in generic
 longdesc form, while printing citations in a document in the form
@@ -15,10 +15,10 @@ longdesc (independently developed) biber program, used with the BibLaTeX
 longdesc package to typeset its output.
 depend bibtex.ARCH
 depend kpathsea
-containersize 14880
-containerchecksum c58d8b394b92e7bb837f6f25c18d65d83edbc5d1754276bad82027add0240eea06f0b1f56d21dc7a97fe36ed591fee96de108f9d64e559dcdb51e6c4fd786c49
-doccontainersize 399564
-doccontainerchecksum 2c3cc508dd54911c79389fba8a63f9efcffd638e48d20340cce021a4060c7c808ae688c6aa4a369e9c650afb4008a6b978819f1540669df38feba30bb4580361
+containersize 14888
+containerchecksum 0ce7dca227ba69b46224c7412237c3eeda1c43c432839c26f7c1aeb9cf7a32d31f0275d0c7346f31dd38ca58899c273607931e0850a1b46d10ee945670e12f6a
+doccontainersize 399560
+doccontainerchecksum d6c8f6e9bd0ce4701355593defbc31f593147026c92c268ceb1d1fe15ea12e6d1d3f7f1b121532159f4caaa3eea8adb7c17ff89585b1f84f773721178d0aaeca
 runfiles size=51
  texmf-dist/bibtex/bib/base/xampl.bib
  texmf-dist/bibtex/bst/base/abbrv.bst
@@ -37,5 +37,5 @@ catalogue-contact-repository https://tug.org/svn/texlive/trunk/Build/source/texk
 catalogue-contact-support https://lists.tug.org/tex-k
 catalogue-ctan /biblio/bibtex/base
 catalogue-license knuth
-catalogue-topics biblio
+catalogue-topics biblio bibtex-doc bibtex-supp
 catalogue-version 0.99e

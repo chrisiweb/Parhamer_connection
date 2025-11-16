@@ -1,0 +1,1602 @@
+%***********************************************************************
+\def\crfnmName{crossrefenum}
+\def\crfnmShortDesc{Smart typesetting of enumerated cross-references for various TeX formats}
+\def\crfnmAuthor{Bastien Dumont}
+\def\crfnmDate{2025/08/07}
+\def\crfnmVersion{1.2}
+%
+% Copyright 2022-2025 by Bastien Dumont (bastien.dumont@posteo.net)
+%
+% crossrefenum.tex is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% crossrefenum.tex is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with crossrefenum.tex.  If not, see https://www.gnu.org/licenses/.
+%
+%***********************************************************************
+
+
+
+% Terminology:
+%   – A simple reference is a reference by only one criterion (e.g. “page” or “note”).
+%      A double reference is a reference by two criteria (e.g. “page and note”),
+%      so has two subtypes: the primary and the secondary subtypes.
+%      Their labelling as primary and secondary is independant from their printed order :
+%      the primary subtype corresponds to the wider typographical unit,
+%      in which the secondary subtype is contained (so for “page and note”,
+%      the primary subtype is “page” and the secondary is “note”).
+%   – A single reference is a reference to one location (e.g. “p. 1”)
+%      A range is a reference to a span of text delimited by two single references (e.g. “pp. 1–5”).
+%   – An enumeration is a group containing a sequence of one or more references enclosed in groups.
+
+% Format-specific implementation notes:
+%   – In ConTeXt, the argument of \expanded cannot contain parameters:
+%      hence the ugly bridges of \expandafter that unfortunately cannot be
+%      replaced with a combination of \expanded and \noexpand.
+
+% How to add support for a new format:
+%  – Add a macro expanding to the name of the format at the beginning
+%     of the section “Initialization: Format-specific”;
+%  – Add a case in all blocks beginning with \crfnm@case[\fmtname]
+%     to setup the macros defined there with the required format-specific code.
+
+
+% OUTLINE
+%
+% Initialization
+%   Catcodes
+%   Programming macros
+%   Format-specific
+%   Auxiliary file
+%   Constants
+%   Conditionals
+%   Auxiliary macros related to the data structure of \crossrefenum
+%   Default configuration
+%
+% \crossrefenum
+%   Public macro with optional arguments
+%   Main private macro
+%   Processing the individual references in the enumeration
+
+%%% Initialization: Catcodes %%%
+
+\newcount\crfnmOriginalCatcodeAt
+% We can't write "crfnm@" here since the catcode
+% of @ has not been redefined yet.
+\crfnmOriginalCatcodeAt=\catcode`\@
+\catcode`\@=11
+
+%%% Initialization: Programming macros %%%
+
+% \crfnm@case is a standard case statement.
+% #1 is the string or the purely expandable macro to be tested.
+% #2 is a sequence of tests of the form:
+%   value: token or group used if #1 is equal to value
+% The sequence ends with \crfnm@endCases.
+% In the groups to be executed, arguments in a macro definition
+% have to be doubled.
+% If all tests fails, does nothing and prints a warning on the terminal.
+
+\def\crfnm@case[#1] #2\crfnm@endCases{%
+  \begingroup
+  \edef\crfnm@comparandum{#1}%
+  \crfnm@@case #2%
+    \crfnm@comparandum: {%
+      \crfnm@warn{%
+          All tests failed in \unexpanded{\crfnm@case[#1]
+          #2 \crfnm@endCases}, doing nothing%
+      }%
+    }
+  \crfnm@endCases
+}
+
+\def\crfnm@@case #1: #2{%
+  \edef\crfnm@comparans{#1}%
+  \ifx\crfnm@comparans\crfnm@comparandum
+    \def\crfnm@todo{\endgroup #2\crfnm@gobbleNextCases}%
+  \else
+    \def\crfnm@todo{\expandafter\crfnm@@case\crfnm@gobbleSpaces}%
+  \fi
+  \crfnm@todo
+}
+
+\def\crfnm@gobbleSpaces#1{#1}
+
+\def\crfnm@gobbleNextCases #1\crfnm@endCases{}
+
+\def\crfnm@newCsnameAlias[#1]#2{%
+  % #1 is a control sequence (e.g. \mymacro).
+  % #2 is a cs name corresponding to an already defined
+  % control sequence (e.g. mappedto\tobereplaced).
+  \expandafter\let\expandafter#1\csname #2\endcsname
+}
+
+\def\crfnm@capitalize#1{%
+  \expandafter\crfnm@uppercaseFirstLetter #1%
+}
+
+\def\crfnm@uppercaseFirstLetter#1{%
+  % \uppercase, \lowercase and \crfnm@case
+  % are not purely expandable
+  \ifx#1aA%
+  \else\ifx#1bB%
+  \else\ifx#1cC%
+  \else\ifx#1dD%
+  \else\ifx#1eE%
+  \else\ifx#1fF%
+  \else\ifx#1gG%
+  \else\ifx#1hH%
+  \else\ifx#1iI%
+  \else\ifx#1jJ%
+  \else\ifx#1kK%
+  \else\ifx#1lL%
+  \else\ifx#1mM%
+  \else\ifx#1nN%
+  \else\ifx#1oO%
+  \else\ifx#1pP%
+  \else\ifx#1qQ%
+  \else\ifx#1rR%
+  \else\ifx#1sS%
+  \else\ifx#1tT%
+  \else\ifx#1uU%
+  \else\ifx#1vV%
+  \else\ifx#1wW%
+  \else\ifx#1xX%
+  \else\ifx#1yY%
+  \else\ifx#1zZ%
+  % In forks, the first argument of \crossrefenum is \crfnm@secondarySubtype,
+  % so it is already capitalized.
+  \else #1%
+  \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+}
+
+\def\crfnm@ifequal[#1][#2]#3#4{%
+  \edef\crfnm@comparans{#1}%
+  \edef\crfnm@comparandum{#2}%
+  \ifx\crfnm@comparans\crfnm@comparandum #3\else #4\fi
+}
+
+\def\crfnm@loopOverArgs #1with #2{%
+  \crfnm@loopOver@args[#2]#1\crfnm@end
+}
+
+\def\crfnm@loopOver@args[#1]#2{%
+  % #1 is the macro with one argument
+  % to be called with #2
+  \edef\crfnm@arg{#2}%
+  \ifx\crfnm@arg\crfnm@end
+    \def\crfnm@todo{}%
+  \else
+    #1{#2}%
+    \def\crfnm@todo{\crfnm@loopOver@args[#1]}%    
+  \fi
+  \crfnm@todo  
+}
+
+\def\crfnm@ifIsOneOf[#1][#2]#3#4{%
+  % #1 expands to a string, #2 expands to a list
+  \crfnm@foundfalse
+  \def\crfnm@setIfFound ##1{%
+    \edef\crfnm@itemSearched{#1}%
+    \edef\crfnm@toBeTested{##1}%
+    \ifx\crfnm@toBeTested\crfnm@itemSearched
+      \crfnm@foundtrue
+    \fi
+  }%
+  \expandafter\crfnm@loopOverArgs #2with \crfnm@setIfFound
+  \ifcrfnm@found
+    \def\crfnm@todo{#3}%
+  \else
+    \def\crfnm@todo{#4}%
+  \fi
+  \crfnm@todo
+}
+
+%%% Initialization: Format-specific %%%
+
+% \fmtname changes between MKIV and LMTX in ConTeXt,
+% so we use the value of \contextformat (to which \fmtname
+% is made let-equal in ConTeXt).
+% See https://source.contextgarden.net/tex/context/base/mkiv/context.mkiv?search=%5Cfmtname#l49
+\edef\crfnm@context{\csname contextformat\endcsname}
+\def\crfnm@latex{LaTeX2e}
+\def\crfnm@optex{OpTeX}
+
+% Supported types
+\crfnm@case[\fmtname]
+  \crfnm@context: {
+    \def\crfnm@supportedTypes{{\crfnm@page}{\crfnm@note}{\crfnm@line}{\crfnm@pagenote}{\crfnm@pageline}}
+  }
+  \crfnm@latex: {
+    \def\crfnm@supportedTypes{{\crfnm@page}{\crfnm@note}{\crfnm@edpage}{\crfnm@edline}{\crfnm@pagenote}{\crfnm@edpageline}}
+  }
+\crfnm@endCases
+
+% The following format-specific instructions are necessary to get
+% the raw page number, which is used in comparisons.
+% The raw page number must be unique (e.g. absolute page number).
+% It must be possible to get it via a purely expandable macro.
+\crfnm@case[\fmtname]
+  \crfnm@context: {
+    % Since I have not found any ConTeXt macro to get the raw values,
+    % we look directly in the auxiliary file from the second pass on.
+    \directlua{
+      ordered_ref_data = structures.lists.collected
+      arbitrary_ref_data = structures.references.collected
+      function get_raw_ref_number(label, type)
+        found = false
+        if arbitrary_ref_data then
+          for _, ref_data in pairs(arbitrary_ref_data) do
+            if ref_data[label] then
+              label_data = ref_data[label]
+              for _, data_part in pairs(label_data) do
+                if data_part[type] then
+                  found = true
+                  tex.print(data_part[type])
+                end
+              end
+            end
+          end
+        end
+        if not(found) and ordered_ref_data then
+          for i = 1, \luaescapestring{\utfchar{0x0023}ordered_ref_data} do
+            if ordered_ref_data[i].references.reference == label then
+              found = true
+              tex.print(ordered_ref_data[i].references[type])
+            end
+          end
+        end
+        if not(found) then tex.print(0) end
+      end
+    }
+  }
+  \crfnm@latex: {
+    % If you use nameref (e.g. through hyperref),
+    % please make sure to load it before this code
+    %  so that it does not erase our redefinition of \label.
+    % More details here:
+    % https://comp.text.tex.narkive.com/PI1P2Nlt/hyperref-and-redefining-label-ref-and-pageref-again
+    \RequirePackage[abspage]{zref}
+    \zref@setdefault{0}
+    \let\crfnm@label@beforezref\label
+    \def\label##1{%
+      \crfnm@label@beforezref{##1}%
+      \zref@labelbyprops{##1}{abspage, default}%
+    }
+  }
+\crfnm@endCases
+
+% Macros for getting raw reference numbers.
+% They must be purely expandable.
+\crfnm@case[\fmtname]
+  \crfnm@context: {
+    \def\crfnm@getPageNumber##1{\directlua{get_raw_ref_number('##1', 'realpage')}}
+    \def\crfnm@getNoteNumber##1{\directlua{get_raw_ref_number('##1', 'order')}}
+    \def\crfnm@getLineNumber##1{\directlua{get_raw_ref_number('lr:b:##1', 'linenumber')}}
+  }
+  \crfnm@latex: {
+    \def\crfnm@getPageNumber##1{\zref@extract{##1}{abspage}}
+    \def\crfnm@getNoteNumber##1{\zref@extract{##1}{default}}
+    \def\crfnm@getEdpageNumber##1{\xpageref{##1}}
+    \def\crfnm@getEdlineNumber##1{\xlineref{##1}}
+  }
+\crfnm@endCases
+
+% Macros for typesetting the references.
+\crfnm@case[\fmtname]
+  \crfnm@context: {
+    \def\crfnm@PageRef##1{\at[##1]}
+    \def\crfnm@NoteRef##1{\in[##1]}
+    \def\crfnm@LineRef##1{\in[lr:b:##1]}
+  }
+  \crfnm@latex: {
+    \def\crfnm@PageRef##1{\pageref{##1}}
+    \def\crfnm@NoteRef##1{\ref{##1}}
+    \def\crfnm@EdpageRef##1{\edpageref{##1}}
+    \def\crfnm@EdlineRef##1{\edlineref{##1}}
+  }
+\crfnm@endCases
+
+% Formatting macros
+\crfnm@case[\fmtname]
+  \crfnm@context: {
+    \let\crfnmSuperscript\high
+    \let\crfnmSubscript\low
+  }
+  \crfnm@latex: {
+    \let\crfnmSuperscript\textsuperscript
+    \let\crfnmSubscript\textsubscript
+  }
+\crfnm@endCases
+
+% Issue warnings
+% \crfnm@warn@newPassNeeded is needed only for those format
+% that may not reprocess the TeX file automatically
+% when the auxiliary file changed.
+\crfnm@case[\fmtname]
+  \crfnm@latex: {
+    \let\crfnm@warn@newPassNeeded\@latex@warning@no@line
+  }
+  \fmtname: {\let\crfnm@warn@newPassNeeded\relax}
+\crfnm@endCases
+
+
+%%% Initialization: Auxiliary file %%%
+
+% Configure the auxiliary file.
+\crfnm@case[\fmtname]
+  \crfnm@context: {
+    \definedataset[printedRefsNb]
+  }
+  \crfnm@latex: {
+    \let\crfnm@auxfile\@auxout
+  }
+\crfnm@endCases
+
+% Initialize the counter used in the auxiliary file
+% to identify the informations associated with each
+% call to \crossrefenum
+\newcount\crfnm@ienum
+\crfnm@ienum=0
+% In double references, we need to count separately
+% the number of typeset references (after collapsing)
+% for each part. To do this, we divide by 2 the maximum value
+% that a counter can have and we use the result
+% as the start of the index for \crfnm@ienum when used
+% on the secondary subtype of a double reference.
+% As a consequence, it is not possible to use \crossrefenum
+% more than 2^30/2 times in the same document.
+\newcount\crfnm@ienum@secondaryOfDouble
+\crfnm@ienum@secondaryOfDouble=0
+\def\crfnm@secondaryOfDouble@istart{536870912} % = 2^30/2
+% This counter is used to register the total number
+% of typeset references for every invocation of \crossrefenum
+% (for a simple reference) or for each part of a double reference.
+\newcount\crfnm@printedRefsNb
+\crfnm@printedRefsNb=0
+
+%%% Initialization: Constants %%%
+
+% Keywords and parameter values
+\def\crfnm@empty{}
+\def\crfnm@always{always}
+\def\crfnm@yes{yes}
+\def\crfnm@plural{pl}
+\def\crfnm@first{first}
+\def\crfnm@singleFirst{singlefirst}
+\def\crfnm@end{crfnm@end}
+\def\crfnm@labelRangeSep{ to }
+\def\crfnm@withPrefix{withprefix}
+\def\crfnm@enumend{crfnm@enumend}
+\def\crfnm@normal{normal}
+\def\crfnm@crossrefenum@secondArg@possibleValues{{withprefix}{noprefix}{yes}{no}}
+
+% Reference types
+% Reledmac \pstartref is not supported, since users know if two consecutive references
+% are in the same paragraph or not. They can alternate between direct use of \pstartref
+% and \crossrefenum for lines and/or pages.
+% \annotationref is not supported because I don't have any experience of it.
+\def\crfnm@page{Page}
+\def\crfnm@note{Note}
+\def\crfnm@line{Line}
+\def\crfnm@edpage{Edpage}
+\def\crfnm@edline{Edline}
+\def\crfnm@pagenote{Pagenote}
+\def\crfnm@pageline{Pageline}
+\def\crfnm@edpageline{Edpageline}
+\let\crfnm@PagenotePrimary\crfnm@page
+\let\crfnm@PagenoteSecondary\crfnm@note
+\let\crfnm@PagelinePrimary\crfnm@page
+\let\crfnm@PagelineSecondary\crfnm@line
+\let\crfnm@EdpagelinePrimary\crfnm@edpage
+\let\crfnm@EdpagelineSecondary\crfnm@edline
+
+%%% Initialization: Conditionals %%%
+
+\newif\ifcrfnm@found
+\newif\ifcrfnm@enumIsFinished
+\newif\ifcrfnm@simulated
+\newif\ifcrfnm@areSingleAndRange
+\newif\ifcrfnm@isFirstToken
+\newif\ifcrfnm@singleFirst
+
+
+%%% Initialization: Auxiliary macros related to the data structure of \crossrefenum %%%
+
+% Trivial low-level macros
+
+\def\crfnm@appendToToks#1#2{#1=\expandafter{\the#1#2}}
+\expandafter\def\expandafter\crfnm@gobspace\space{}
+\def\crfnm@lettok#1#2{\let#1= #2}
+\crfnm@lettok\crfnm@space{ }
+\def\crfnm@gobbleFirst#1{}
+
+% Lists of groups
+
+\def\crfnm@ifIsList[#1]#2#3{%
+  \expandafter\futurelet\expandafter\crfnm@nextToken
+  \expandafter\crfnm@ifIsBgroup #1\endofcheck{#2}{#3}%
+}
+
+\def\crfnm@ifIsBgroup#1\endofcheck#2#3{%
+  % \crfnm@nextToken is the first token in the #1 of \crfnm@ifIsList.
+  % All the #1 of \crfnm@ifIsList is stored here in #1 and discarded.
+  \ifx\crfnm@nextToken\bgroup #2\else #3\fi
+}
+
+\def\crfnm@newListFrom[#1][#2] -> #3{%
+  % #1 is either a list or a reference.
+  % #2 is the reference appended to #1.
+  % #3 is the control sequence which the resulting list will be bound to.
+  \crfnm@ifIsList[#1]{%
+    \edef#3{#1{#2}}%
+  }{%
+    \edef#3{{#1}{#2}}%
+  }%
+}
+\def\crfnm@addToList[#1][#2]{\crfnm@newListFrom[#1][#2] -> #1}
+\def\crfnm@declareType[#1][#2]{%
+  % #1 is "simple" or "double", #2 is the type
+  \expandafter\crfnm@addToList\expandafter[\csname crfnm@#1RefTypes\endcsname][#2]%
+  \crfnm@addToList[\crfnm@supportedTypes][#2]%
+}
+
+\def\crfnm@replaceFirstInList[#1]#2{%
+  % #1 is a token, #2 is a list of tokens
+  {#1}\crfnm@gobbleFirst #2%
+}
+
+% crossrefenum-specific
+
+\edef\crfnm@simpleRefTypes{{\crfnm@page}{\crfnm@note}{\crfnm@line}{\crfnm@edpage}{\crfnm@edline}}
+\edef\crfnm@doubleRefTypes{{\crfnm@pagenote}{\crfnm@pageline}{\crfnm@edpageline}}
+\edef\crfnm@customizableDefaultConfig{{Collapsable}{EnumDelim}{EnumDelimInSecond}{BeforeLastInEnum}{BeforeLastInSecond}{RangeSep}}
+\edef\crfnm@customizableDefaultDoubleConfig{{Collapsable}{EnumDelim}{BeforeLastInEnum}{RangeSep}{SubtypesSep}{PrintFirstPrefix}{GroupSubtypes}{Order}}
+\edef\crfnm@customizableDefaultSecondaryOfDoubleConfig{{Collapsable}{NumberingContinuousAcrossDocument}{PrintPrefixInSecond}{FormatInSecond}}
+
+\newif\ifcrfnm@isDoubleRef
+\def\crfnm@ifIsDoubleRef#1#2{\ifcrfnm@isDoubleRef #1\else #2\fi}
+
+\def\crfnm@ifIsRange#1#2#3{%
+  \expandafter\crfnm@ifIs\crfnm@labelRangeSep @in {#1} {#2} {#3}%
+}
+
+\def\crfnm@ifIs#1@in #2#3#4{%
+  \def\crfnm@ifIsIn##1#1##2\@nil{%
+    \def\crfnm@afterSubstring{##2}%
+    \ifx\crfnm@afterSubstring\crfnm@empty #4\else #3\fi
+  }%
+  \expandafter\crfnm@ifIsIn#2#1\@nil
+}
+
+\def\crfnm@enumid#1{%
+  \crfnm@ifIsSecondaryOfDouble[ienum: #1]{%
+    secondaryofdouble@%
+    \romannumeral\numexpr #1-\crfnm@secondaryOfDouble@istart\relax
+    @\romannumeral\the\crfnm@ienum@secondaryOfDouble
+  }{%
+    \romannumeral #1%
+  }%
+}
+
+\def\crfnm@currEnumId{\crfnm@enumid{\the\crfnm@ienum}}
+
+\def\crfnm@ifIsSecondaryOfDouble[ienum: #1]#2#3{%
+  \ifnum #1 > \crfnm@secondaryOfDouble@istart
+    #2%
+  \else
+    #3%
+  \fi
+}
+
+\def\crfnm@setIfIsDoubleRef{%
+  \crfnm@ifIsOneOf[\crfnm@refType][\crfnm@doubleRefTypes]{%
+    \crfnm@isDoubleReftrue
+  }{%
+    \crfnm@isDoubleReffalse
+  }%
+}
+
+
+
+%%% Initialization: Key-value configuration interface %%%
+
+\expandafter\ifx\csname crfnmNoKV\endcsname\relax
+
+\crfnm@case[\fmtname]
+  \crfnm@context: {\usemodule[expkv-def]}
+  \crfnm@latex: {\usepackage{expkv-def}}
+  \fmtname: {\input{expkv-def}}
+\crfnm@endCases
+
+\def\crfnmsetup[#1]#2{%
+  % #1 = a reference type or "default"
+  \ekvdefinekeys{crfnm@type@#1}{
+    code sg = \expandafter\def\csname crfnm\crfnm@capitalize #1\endcsname{##1},
+    code pl = \expandafter\def\csname crfnm\crfnm@capitalize #1s\endcsname{##1},
+    code delimiter = \expandafter\def\csname crfnm\crfnm@capitalize #1EnumDelim\endcsname{##1},
+    code before last reference = \expandafter\def\csname crfnm\crfnm@capitalize #1BeforeLastInEnum\endcsname{##1},
+    code range separator = \expandafter\def\csname crfnm\crfnm@capitalize #1RangeSep\endcsname{##1},
+    code collapsable? = \expandafter\def\csname crfnm\crfnm@capitalize #1Collapsable\endcsname{##1},
+    code subtypes separator = \expandafter\def\csname crfnm\crfnm@capitalize #1SubtypesSep\endcsname{##1},
+    code print prefix of first subtype = \expandafter\def\csname crfnm\crfnm@capitalize #1PrintFirstPrefix\endcsname{##1},
+    code formatting when second subtype = \expandafter\def\csname crfnm\crfnm@capitalize #1FormatInSecond\endcsname####1{##1{####1}},
+    code print prefix when second subtype? = \expandafter\def\csname crfnm\crfnm@capitalize #1PrintPrefixInSecond\endcsname{##1},
+    code delimiter when second subtype = \expandafter\def\csname crfnm\crfnm@capitalize #1EnumDelimInSecond\endcsname{##1},
+    code before last reference when second subtype = \expandafter\def\csname crfnm\crfnm@capitalize #1BeforeLastInSecond\endcsname{##1},
+    code group subtypes? = \expandafter\def\csname crfnm\crfnm@capitalize #1GroupSubtypes\endcsname{##1},
+    code continuous numbering? = \expandafter\def\csname crfnm\crfnm@capitalize #1NumberingContinuousAcrossDocument\endcsname{##1},
+    code order = \expandafter\def\csname crfnm\crfnm@capitalize #1Order\endcsname{##1}
+  }%
+  \ekvset{crfnm@type@#1}{#2}%
+}
+
+\fi
+
+%%% Initialization: Default configuration %%%
+
+% Prefixes
+\def\crfnmPage{p.~}
+\def\crfnmPages{pp.~}
+\def\crfnmNote{n.~}
+\def\crfnmNotes{nn.~}
+\def\crfnmLine{l. }
+\def\crfnmLines{ll.}
+\let\crfnmEdpage\crfnmPage
+\let\crfnmEdpages\crfnmPages
+\def\crfnmEdline{l.~}
+\def\crfnmEdlines{ll.~}
+
+% Macros with typed and default variants
+\def\crfnmDefaultCollapsable{yes}
+\def\crfnmNoteCollapsable{no}
+\def\crfnmDefaultNumberingContinuousAcrossDocument{yes}
+\def\crfnmDefaultEnumDelim{, }
+\let\crfnmDefaultEnumDelimInSecond\crfnmDefaultEnumDelim
+\def\crfnmDefaultBeforeLastInEnum{ and }
+\let\crfnmDefaultBeforeLastInSecond\crfnmDefaultBeforeLastInEnum
+\def\crfnmDefaultRangeSep{–}
+\def\crfnmDefaultSubtypesSep{, }
+\def\crfnmDefaultPrintFirstPrefix{always}
+\def\crfnmDefaultFormatInSecond#1{#1}
+\def\crfnmDefaultPrintPrefixInSecond{yes}
+\def\crfnmDefaultGroupSubtypes{no}
+\let\crfnmDefaultOrder\crfnm@normal
+
+%%% \crossrefenum %%%
+
+%%% \crossrefenum: Public macro with optional arguments %%%
+
+\crfnm@case[\fmtname]
+  \crfnm@context: {
+    \unexpanded\def\crossrefenum{\crfnm@crossrefenum}
+  }
+  \crfnm@latex: {
+    \protected\def\crossrefenum{\crfnm@crossrefenum}
+  }
+\crfnm@endCases
+
+% \crossrefenum has two optional arguments.
+% See the definition of \crfnm@enum below for the recognized values.
+
+\def\crfnm@firstArg@default{page}
+\def\crfnm@secondArg@default{withprefix}
+
+\def\crfnm@crossrefenum{%
+  \futurelet\crfnm@nextToken\crfnm@setEnumMacro
+}
+
+\def\crfnm@setEnumMacro{%
+  \ifx\crfnm@nextToken [%
+    \def\crfnm@todo{\crfnm@setArgAndContinue[first]}%
+  \else
+    \def\crfnm@todo{%
+      \expandafter\expandafter\expandafter\crfnm@enum
+      \expandafter\expandafter\expandafter
+      % The following line break must be commented out.
+      [\expandafter\crfnm@firstArg@default\expandafter]%
+      \expandafter[\crfnm@secondArg@default]%
+    }%
+  \fi
+  \crfnm@todo
+}
+
+\def\crfnm@setArgAndContinue[#1][#2]{%
+  % #1 is "first" or "second"
+  % #2 is one of the optional arguments
+  % passed to the main macro
+  \def\crfnm@argPos{#1}%
+  \def\crfnm@argValue{#2}%
+  \futurelet\crfnm@nextToken\crfnm@set@argAndContinue
+}
+
+\def\crfnm@set@argAndContinue{%
+  \ifx\crfnm@argPos\crfnm@first
+    \ifx\crfnm@nextToken [%
+      \edef\crfnm@firstArg{[\crfnm@argValue]}%
+      \def\crfnm@todo{\crfnm@setArgAndContinue[second]}%
+    \else
+      \crfnm@ifIsOneOf[\crfnm@argValue][\crfnm@crossrefenum@secondArg@possibleValues]{%
+        \def\crfnm@todo{%
+          \crfnm@enum[\crfnm@firstArg@default][\crfnm@argValue]%
+        }%
+      }{%
+        \def\crfnm@todo{%
+          \crfnm@enum[\crfnm@argValue][\crfnm@secondArg@default]%
+        }%
+      }%
+    \fi
+  \else
+    \def\crfnm@todo{%
+      \expandafter\crfnm@enum\crfnm@firstArg[\crfnm@argValue]%
+    }%
+  \fi
+  \crfnm@todo
+}
+
+%%% \crossrefenum: Main private macro %%%
+
+\def\crfnm@enum[#1][#2]#3{%
+  % #1 = reference type
+  % #2 = withprefix / noprefix or yes / no
+  % #3 = the enumeration
+  {%
+    % Initializes the environment for this invocation,
+    % then passes the enumeration to the parsing
+    % and formatting macro \crfnm@formatEnum
+    % through \crfnm@getAndProcessList.
+    \global\advance\crfnm@ienum by 1
+    % The reference type is capitalized so that it can be used
+    % to refer to macro names typed in camelCase
+    % (e.g. in \crfnm@initializeCsnames).
+    \edef\crfnm@refType{\crfnm@capitalize{#1}}%
+    \crfnm@ifIsOneOf[\crfnm@refType][\crfnm@supportedTypes]{}{%
+      \errmessage{crossrefenum: Unsupported type
+      #1 for format \fmtname{}.}
+    }%
+    \crfnm@setIfIsDoubleRef
+    \crfnm@applyDefaultConfigIfUndefined
+    \crfnm@initializeCsnames
+    \edef\crfnm@hasPrefix{#2}%
+    \ifx\crfnm@hasPrefix\crfnm@withPrefix
+      \let\crfnm@hasPrefix\crfnm@yes
+    \fi
+    \crfnm@enumIsFinishedfalse
+    \crfnm@isFirstTokentrue
+    \crfnm@ifIsSecondaryOfDouble[ienum: \the\crfnm@ienum]{%
+      \global\advance\crfnm@ienum@secondaryOfDouble by 1
+    }{}%
+    % We get the number of references typeset for the current
+    % invocation of \crossrefenum in the last compilation to know
+    % whether to use the singular or plural form of the prefix.
+    \edef\crfnm@printedRefsNb@previousPass{%
+      \crfnm@getPrintedRefsNb@previousPass
+    }%
+    \edef\crfnm@thearg{#3}%
+    \ifx\crfnm@thearg\crfnm@empty\else
+      \expandafter\crfnm@getAndProcessList\expandafter{\crfnm@thearg}%
+    \fi
+  }%
+}
+
+\def\crfnm@applyDefaultConfigIfUndefined{%
+  \def\crfnm@applyToThisType{\crfnm@applyDefaultMacroToType[\crfnm@refType]}%
+  \crfnm@ifIsDoubleRef{%
+    \expandafter\crfnm@loopOverArgs \crfnm@customizableDefaultDoubleConfig with \crfnm@applyToThisType
+    \crfnm@setSubtypesOrder
+    \def\crfnm@applyToPrimarySubtype{\crfnm@applyDefaultMacroToType[\csname crfnm@\crfnm@refType Primary\endcsname]}%
+    \expandafter\crfnm@loopOverArgs \crfnm@customizableDefaultConfig with \crfnm@applyToPrimarySubtype
+    \def\crfnm@applyToSecondarySubtype{\crfnm@applyDefaultMacroToType[\csname crfnm@\crfnm@refType Secondary\endcsname]}%
+    \expandafter\crfnm@loopOverArgs \crfnm@customizableDefaultSecondaryOfDoubleConfig with \crfnm@applyToSecondarySubtype
+  }{%
+    \expandafter\crfnm@loopOverArgs \crfnm@customizableDefaultConfig with \crfnm@applyToThisType
+  }%
+}
+
+\def\crfnm@applyDefaultMacroToType[#1]#2{%
+  % #1 = type, #2 = csname without "crfnmDefault"
+  % \csname crfnm#1#2\endcsname is the csname for this type
+  \expandafter\ifx\csname crfnm#1#2\endcsname\relax
+    % The csname must be generated before it is passed
+    % to \let in \crfnm@newCsnameAlias
+    \expandafter\crfnm@newCsnameAlias\expandafter[\csname crfnm#1#2\endcsname]
+    {crfnmDefault#2}%
+  \fi
+}
+
+\def\crfnm@initializeCsnames{%
+  \crfnm@newCsnameAlias[\crfnm@rangeSep]{crfnm\crfnm@refType RangeSep}%
+  \crfnm@ifIsDoubleRef{%
+    \crfnm@newCsnameAlias[\crfnm@doubleRefOrder]{crfnm\crfnm@refType Order}%
+    \crfnm@newCsnameAlias[\crfnm@firstSubtype]{crfnm@\crfnm@refType First}%
+    \crfnm@newCsnameAlias[\crfnm@secondSubtype]{crfnm@\crfnm@refType Second}%
+    \crfnm@newCsnameAlias[\crfnm@primarySubtype]{crfnm@\crfnm@refType Primary}%
+    \crfnm@newCsnameAlias[\crfnm@secondarySubtype]{crfnm@\crfnm@refType Secondary}%
+    \crfnm@newCsnameAlias[\crfnm@getRawValuePrimary]{crfnm@get\crfnm@primarySubtype Number}%
+    \crfnm@newCsnameAlias[\crfnm@getRawValueSecondary]{crfnm@get\crfnm@secondarySubtype Number}%
+    \crfnm@newCsnameAlias[\crfnm@primaryCollapsable]{crfnm\crfnm@primarySubtype Collapsable}%
+    \crfnm@newCsnameAlias[\crfnm@secondaryCollapsable]{crfnm\crfnm@secondarySubtype Collapsable}%
+    \crfnm@newCsnameAlias[\crfnm@secondaryNumberingContinuous]{crfnm\crfnm@secondarySubtype NumberingContinuousAcrossDocument}%
+    \crfnm@newCsnameAlias[\crfnm@enumDelim]{crfnm\crfnm@refType EnumDelim}%
+    \crfnm@newCsnameAlias[\crfnm@beforeLastInEnum]{crfnm\crfnm@refType BeforeLastInEnum}%
+    \crfnm@newCsnameAlias[\crfnm@separatorBetweenSubtypes]{crfnm\crfnm@refType SubtypesSep}%
+    \crfnm@newCsnameAlias[\crfnm@formatSecondary]{crfnm\crfnm@secondarySubtype FormatInSecond}%
+    \crfnm@newCsnameAlias[\crfnm@printFirstPrefix]{crfnm\crfnm@refType PrintFirstPrefix}%
+    \crfnm@newCsnameAlias[\crfnm@isSecondaryPrefixPrinted]{crfnm\crfnm@secondarySubtype PrintPrefixInSecond}%
+    \crfnm@newCsnameAlias[\crfnm@groupSubtypes]{crfnm\crfnm@refType GroupSubtypes}%
+  }{%
+    \crfnm@ifIsSecondaryOfDouble[ienum: \the\crfnm@ienum]{%
+      \crfnm@newCsnameAlias[\crfnm@enumDelim]{crfnm\crfnm@refType EnumDelimInSecond}%
+      \crfnm@newCsnameAlias[\crfnm@beforeLastInEnum]{crfnm\crfnm@refType BeforeLastInSecond}%
+    }{%
+      \crfnm@newCsnameAlias[\crfnm@enumDelim]{crfnm\crfnm@refType EnumDelim}%
+      \crfnm@newCsnameAlias[\crfnm@beforeLastInEnum]{crfnm\crfnm@refType BeforeLastInEnum}%
+    }%
+    \crfnm@newCsnameAlias[\crfnm@collapsable]{crfnm\crfnm@refType Collapsable}%
+    \crfnm@newCsnameAlias[\crfnm@getRawValue]{crfnm@get\crfnm@refType Number}%
+    \crfnm@newCsnameAlias[\crfnm@typesetSingleRef]{crfnm@\crfnm@refType Ref}%
+  }%
+}
+
+\def\crfnm@setSubtypesOrder{%
+  \crfnm@newCsnameAlias[\crfnm@thisTypePrimary]{crfnm@\crfnm@refType Primary}%
+  \crfnm@newCsnameAlias[\crfnm@thisTypePrimary]{crfnm@\crfnm@refType Primary}%
+  \expandafter\ifx\csname crfnm\crfnm@refType Order\endcsname\crfnm@normal
+    \expandafter\let\csname crfnm@\crfnm@refType First\endcsname%
+      \crfnm@thisTypePrimary
+    \expandafter\let\csname crfnm@\crfnm@refType Second\endcsname%
+      \crfnm@thisTypeSecondary
+  \else
+    \expandafter\let\csname crfnm@\crfnm@refType First\endcsname%
+      \crfnm@thisTypeSecondary
+    \expandafter\let\csname crfnm@\crfnm@refType Second\endcsname%
+      \crfnm@thisTypePrimary
+  \fi
+}
+
+\def\crfnm@ifIsInverted#1#2{%
+  \ifx\crfnm@doubleRefOrder\crfnm@normal #2\else #1\fi
+}
+
+% Get the number of the parts of the current enumeration
+% in the preceding pass from the auxiliary file.
+% The macro must be purely expandable and return a number.
+\crfnm@case[\fmtname]
+  \crfnm@context: {
+    \def\crfnm@getPrintedRefsNb@previousPass{%
+      \directlua{
+        registeredValue = '\datasetvariable{printedRefsNb}{\crfnm@currEnumId}{value}'
+        if registeredValue == '' then tex.print(0) else tex.print(registeredValue) end
+      }%
+    }
+  }
+  \fmtname: {
+    \def\crfnm@getPrintedRefsNb@previousPass{%
+      \expandafter
+      \ifx\csname crfnm@printedrefsnb@\crfnm@currEnumId\endcsname\relax
+        0
+      \else
+        \csname crfnm@printedrefsnb@\crfnm@currEnumId\endcsname
+      \fi
+    }
+  }
+\crfnm@endCases
+
+% If the last argument of \crossrefenum is a list of groups,
+% pass it directly to \crfnm@formatEnum.
+% Else, it is a comma-delimited list of strings (with optional leading spaces)
+% to be transformed to a list of groups suitable for \crfnm@formatEnum.
+\def\crfnm@getAndProcessList#1{%
+  \crfnm@getListDispatcher #1\crfnm@enumend
+}
+
+\def\crfnm@getListDispatcher{\futurelet\crfnm@nexttok\crfnm@getList@dispatcher}
+\def\crfnm@getList@dispatcher{%
+  \ifx\crfnm@nexttok\bgroup
+    \expandafter\crfnm@formatEnum
+  \else
+    \expandafter\crfnm@commaListToGroups
+  \fi
+}
+
+\newtoks\crfnm@listAsGroups
+\def\crfnm@commaListToGroups#1\crfnm@enumend{%
+  \crfnm@listAsGroups={}%
+  \crfnm@commaList@toGroups#1,\crfnm@end,%
+}
+\def\crfnm@commaList@toGroups#1,{%
+  \edef\crfnm@thearg{#1}%
+  \ifx\crfnm@thearg\crfnm@end
+    \def\crfnm@todo{%
+      \expandafter\crfnm@formatEnum\the\crfnm@listAsGroups\crfnm@enumend
+    }%
+  \else
+    \crfnm@appendToToks\crfnm@listAsGroups{{#1}}%
+    \def\crfnm@todo{\futurelet\crfnm@nexttok\crfnm@nextItemToGroup}%
+  \fi
+  \crfnm@todo
+}
+\def\crfnm@nextItemToGroup{%
+  \ifx\crfnm@nexttok\crfnm@space
+    \def\crfnm@todo{\expandafter\crfnm@commaList@toGroups\crfnm@gobspace}%
+  \else
+    \let\crfnm@todo\crfnm@commaList@toGroups
+  \fi
+  \crfnm@todo
+}
+
+
+%%% \crossrefenum: Processing the individual references in the enumeration %%%
+
+\def\crfnm@formatEnum#1{%
+  % #1 is a string consisting of either:
+  %  * <label>
+  %  * <label1> to <label2>
+  %  * \crfnm@enumend
+  \crfnm@ifIsBeginOfEnum{%
+    \crfnm@setCurrentRef{#1}%
+    % We typeset the prefix at the beginning of the enumeration
+    % for simple references for it appears once at the beginning of the enumeration.
+    % For double references, it is typeset at the beginning
+    % of every part of the enumeration.
+    \crfnm@ifIsDoubleRef{}{\crfnm@typesetPrefix}%
+  }{%
+    \crfnm@triggerWarnings{#1}%
+    \crfnm@advanceInEnumWith{#1}%
+    % The following macro compares the current reference
+    % with the preceding one and either merges them
+    % or typesets the preceding reference.
+    \crfnm@combine
+  }%
+  \crfnm@ifIsEndOfEnum{%
+    \ifnum\crfnm@printedRefsNb@previousPass=\the\crfnm@printedRefsNb\relax\else
+      \crfnm@warn@newPassNeeded{%
+        crossrefenum changed some enumerations.
+        Rerun to get all prefixes right.%
+      }%
+    \fi
+    \crfnm@registerPrintedRefsNb
+    \crfnm@ifIsDoubleRef{\global\crfnm@ienum@secondaryOfDouble=0}{}%
+  }{%
+    \expandafter\crfnm@formatEnum
+  }%
+}
+
+\def\crfnm@setCurrentRef#1{%
+  \crfnm@ifIsDoubleRef{%
+    \edef\crfnm@currentPrimary{#1}%
+    \edef\crfnm@currentSecondary{#1}%
+  }{%
+    \edef\crfnm@current{#1}%
+  }%
+}
+
+\def\crfnm@ifIsBeginOfEnum#1#2{%
+  \edef\crfnm@csnameCurrent{%
+    crfnm@current\ifcrfnm@isDoubleRef Primary\fi%
+  }%
+  \expandafter\ifx\csname\crfnm@csnameCurrent\endcsname\relax
+    #1%
+  \else
+    #2%
+  \fi
+}
+
+\def\crfnm@typesetPrefix{%
+  \ifx\crfnm@hasPrefix\crfnm@yes
+    \crfnm@ifIsDoubleRef{%
+      \crfnm@ifIsInverted{%
+        \crfnm@typeset@@prefix[sg]%
+      }{%
+        \ifx\crfnm@printFirstPrefix\crfnm@always
+          \crfnm@typeset@@prefix[sg]%
+        \else
+          \ifcrfnm@isFirstToken\crfnm@typeset@prefix\fi
+        \fi
+      }%
+    }{%
+      \crfnm@typeset@prefix
+    }%
+  \fi
+}
+
+\def\crfnm@typeset@prefix{%
+  \ifnum\crfnm@printedRefsNb@previousPass>1
+    \crfnm@typeset@@prefix[pl]%
+  \else
+    \crfnm@typeset@@prefix[sg]%
+  \fi
+}
+
+\def\crfnm@typeset@@prefix[#1]{%
+  \def\crfnm@prefixform{#1}%
+  \csname crfnm%
+    \crfnm@ifIsDoubleRef{%
+      \crfnm@ifIsInverted{\crfnm@secondSubtype}{\crfnm@firstSubtype}%
+    }{%
+      \crfnm@refType
+    }%
+    \ifx\crfnm@prefixform\crfnm@plural s\fi
+  \endcsname
+}
+
+\def\crfnm@triggerWarnings#1{%
+  % Raises the “undefined label” or “references have changed” warnings
+  % even if the label doesn't get used in this pass, thus causing a new
+  % pass to be performed.
+  % Works in LaTeX because warnings are sent via \immediate\write.
+  % It should also work in ConTeXt because it writes the logs through
+  % a Lua call, not \write.
+  \edef\crfnm@tested{#1}%
+  \ifx\crfnm@tested\crfnm@enumend\else
+    \setbox0=\hbox{\crfnm@simulateTypesetting{#1}}%
+  \fi
+}
+
+\def\crfnm@simulateTypesetting#1{%
+  \crfnm@simulatedtrue
+  \crfnm@ifIsDoubleRef{%
+    % We can't use \crfnm@typesetdouble here, for it would result
+    % in nested calls to \setbox0.
+    % Nevertheless we have to test for both subtypes,
+    % since the value of each of them may change
+    % while that of the other remains the same.
+    \let\crfnm@realRefType\crfnm@refType%
+    \crfnm@isDoubleReffalse
+    \edef\crfnm@refType{\crfnm@primarySubtype}%
+    \crfnm@initializeCsnames
+    \crfnm@wrapInDisplayMacro{#1}%
+    \edef\crfnm@refType{\crfnm@secondarySubtype}%
+    \crfnm@initializeCsnames
+    \crfnm@wrapInDisplayMacro{#1}%
+    \let\crfnm@refType\crfnm@realRefType
+    \crfnm@isDoubleReftrue
+    \crfnm@initializeCsnames
+  }{%
+    \crfnm@wrapInDisplayMacro{#1}%
+  }%
+  \crfnm@simulatedfalse
+}
+
+\def\crfnm@advanceInEnumWith#1{%
+  \crfnm@ifIsDoubleRef{%
+    \let\crfnm@precedingPrimary\crfnm@currentPrimary
+    \let\crfnm@precedingSecondary\crfnm@currentSecondary
+    \edef\crfnm@currentPrimary{#1}%
+    \edef\crfnm@currentSecondary{#1}%
+  }{%
+    \let\crfnm@preceding\crfnm@current
+    \edef\crfnm@current{#1}%
+  }%
+}
+
+\def\crfnm@combine{%
+  \crfnm@ifIsEndOfEnum{%
+    \crfnm@enumIsFinishedtrue
+    \ifcrfnm@isFirstToken\else\crfnm@beforeLastInEnum\fi
+    \crfnm@typesetPrecedingRef
+  }{%
+    \crfnm@compareTypes
+    \ifcrfnm@areSingleAndRange
+      \crfnm@combineSingleAndRange
+    \else
+      \edef\crfnm@maybeRange{\csname crfnm@current\crfnm@ifIsDoubleRef{Primary}{}\endcsname}%
+      \crfnm@ifIsRange\crfnm@maybeRange{%
+        \crfnm@combineRanges
+      }{%
+        \crfnm@combineSingles
+      }%
+    \fi
+  }%
+}
+
+\def\crfnm@ifIsEndOfEnum#1#2{%
+  \edef\crfnm@currentInEnum{%
+    \crfnm@ifIsDoubleRef{%
+      \crfnm@currentPrimary
+    }{%
+      \crfnm@current
+    }%
+  }%
+  \ifx\crfnm@currentInEnum\crfnm@enumend
+    #1%
+  \else
+    #2%
+  \fi
+}
+
+% Write the number of the parts of the current enumeration
+% to the auxiliary file.
+\def\crfnm@registerPrintedRefsNb{%
+  \crfnm@case[\fmtname]
+    \crfnm@context: {%
+      \ifx\fmtname\crfnm@context
+        \setdataset[printedRefsNb][\crfnm@currEnumId][value={\the\crfnm@printedRefsNb}]%
+      \fi
+    }
+    \fmtname: {%
+      \immediate\write\crfnm@auxfile{%
+        \gdef\expandafter\noexpand\csname crfnm@printedrefsnb@\crfnm@currEnumId\endcsname
+        {\the\crfnm@printedRefsNb}%
+      }%
+    }
+  \crfnm@endCases
+}
+
+\def\crfnm@typesetPrecedingRef{%
+  \crfnm@ifIsDoubleRef{%
+    \crfnm@typesetDoubleRef{\crfnm@precedingPrimary}{\crfnm@precedingSecondary}%
+  }{%
+    \crfnm@wrapInDisplayMacro{\crfnm@preceding}%
+  }%
+}
+
+\def\crfnm@compareTypes{%
+  \crfnm@setPossibleRangeCs
+  \crfnm@ifIsRange{\crfnm@possibleRange@preceding}{%
+    \crfnm@ifIsRange{\crfnm@possibleRange@current}{%
+      \crfnm@areSingleAndRangefalse
+    }{%
+      \crfnm@areSingleAndRangetrue
+    }%
+  }{%
+    \crfnm@ifIsRange{\crfnm@possibleRange@current}{%
+      \crfnm@areSingleAndRangetrue
+    }{%
+      \crfnm@areSingleAndRangefalse
+    }%
+  }%
+}
+
+\def\crfnm@setPossibleRangeCs{%
+  % We use the secondary subtype, since it can become a range
+  % as an effect of \crfnm@combineSingles while the primary subtype
+  % keeps being a single; the reverse can't be true.
+  \crfnm@newCsnameAlias[\crfnm@possibleRange@preceding]{crfnm@preceding\ifcrfnm@isDoubleRef Secondary\fi}%
+  \crfnm@newCsnameAlias[\crfnm@possibleRange@current]{crfnm@current\ifcrfnm@isDoubleRef Secondary\fi}%
+}
+
+\def\crfnm@combineSingles{%
+  \crfnm@ifIsDoubleRef{%
+    \crfnm@combine@singles@double
+  }{%
+    \crfnm@combine@singles@simple
+  }%
+}
+
+\def\crfnm@combine@singles@double{%
+  \edef\crfnm@raw@precedingPrimary{\crfnm@getRawValuePrimary\crfnm@precedingPrimary}%
+  \edef\crfnm@raw@currentPrimary{\crfnm@getRawValuePrimary\crfnm@currentPrimary}%
+  \crfnm@ifequal[\crfnm@raw@precedingPrimary][\crfnm@raw@currentPrimary]{%
+    \edef\crfnm@currentPrimary{\crfnm@precedingPrimary}%
+    \crfnm@newListFrom[\crfnm@precedingSecondary][\crfnm@currentSecondary] -> \crfnm@currentSecondary
+  }{%
+    \crfnm@typesetPrecedingRange
+  }%
+}
+
+\def\crfnm@combine@singles@simple{%
+  \edef\crfnm@raw@preceding{\crfnm@getRawValue\crfnm@preceding}%
+  \edef\crfnm@raw@current{\crfnm@getRawValue\crfnm@current}%
+  \crfnm@ifequal[\crfnm@raw@preceding][\crfnm@raw@current]{%
+    %Do nothing, so discard \crfnm@preceding.
+  }{%
+    \crfnm@ifConsecutiveCollapsable[\crfnm@raw@preceding][\crfnm@raw@current]{%
+      \edef\crfnm@current{\crfnm@preceding\crfnm@labelRangeSep\crfnm@current}%
+    }{%
+      \ifcrfnm@isFirstToken\else
+        \crfnm@enumDelim
+      \fi
+      \crfnm@wrapInDisplayMacro{\crfnm@preceding}%
+    }%
+  }%
+}
+
+\def\crfnm@combineRanges{%
+  \crfnm@ifIsDoubleRef{%
+    \crfnm@combine@ranges@doubles
+  }{%
+    \crfnm@combine@ranges@simples
+  }%
+}
+
+\def\crfnm@getLabelInRange@begin[#1]{%
+  \expandafter\crfnm@get@labelInRange@begin\expandafter[#1]%
+}
+\def\crfnm@getLabelInRange@end[#1]{%
+  \expandafter\crfnm@get@labelInRange@end\expandafter[#1]%
+}
+\expandafter\def\expandafter\crfnm@get@labelInRange@begin\expandafter[\expandafter#\expandafter1\crfnm@labelRangeSep#2]{#1}%
+\expandafter\def\expandafter\crfnm@get@labelInRange@end\expandafter[\expandafter#\expandafter1\crfnm@labelRangeSep#2]{#2}%
+
+\def\crfnm@combine@ranges@simples{%
+  \edef\crfnm@precedingBegin{\crfnm@getLabelInRange@begin[\crfnm@preceding]}%
+  \edef\crfnm@precedingEnd{\crfnm@getLabelInRange@end[\crfnm@preceding]}%
+  \edef\crfnm@currentBegin{\crfnm@getLabelInRange@begin[\crfnm@current]}%
+  \edef\crfnm@currentEnd{\crfnm@getLabelInRange@end[\crfnm@current]}%
+  \edef\crfnm@raw@precedingBegin{\crfnm@getRawValue\crfnm@precedingBegin}%
+  \edef\crfnm@raw@precedingEnd{\crfnm@getRawValue\crfnm@precedingEnd}%
+  \edef\crfnm@raw@currentBegin{\crfnm@getRawValue\crfnm@currentBegin}%
+  \edef\crfnm@raw@currentEnd{\crfnm@getRawValue\crfnm@currentEnd}%
+  \def\crfnm@mergeRanges{%
+    \edef\crfnm@current{\crfnm@precedingBegin\crfnm@labelRangeSep\crfnm@currentEnd}%
+  }%
+  \crfnm@ifequal[\crfnm@raw@precedingEnd][\crfnm@raw@currentBegin]{%
+    \crfnm@mergeRanges
+  }{%
+    \crfnm@ifConsecutiveCollapsable[\crfnm@raw@precedingEnd][\crfnm@raw@currentBegin]{%
+      \crfnm@mergeRanges
+    }{%
+      \ifcrfnm@isFirstToken\else\crfnm@enumDelim\fi
+      \crfnm@wrapInDisplayMacro{\crfnm@preceding}%
+    }%
+  }%
+}
+
+\def\crfnm@combine@ranges@doubles{%
+  % \crfnm@<pre/cur>Secondary are identical with \crfnm@<pre/cur>Primary
+  % at the beginning and at the end of this macro
+  % because the secondary value may not be an enumeration
+  % at either ends of a range.
+  % That is why we don't use them in our comparisons here.
+  % Note: when the lineation is not continuous, we cannot handle
+  % properly the case where the end of the first range is on the last
+  % line of a page and the beginning of the second range is on the
+  % first line of the following page. This is because we cannot know
+  % if a given line is the last on the page.
+  \edef\crfnm@precedingBegin{\crfnm@getLabelInRange@begin[\crfnm@precedingPrimary]}%
+  \edef\crfnm@precedingEnd{\crfnm@getLabelInRange@end[\crfnm@precedingPrimary]}%
+  \edef\crfnm@currentBegin{\crfnm@getLabelInRange@begin[\crfnm@currentPrimary]}%
+  \edef\crfnm@currentEnd{\crfnm@getLabelInRange@end[\crfnm@currentPrimary]}%
+  \edef\crfnm@primarySubtype@precedingEnd{\crfnm@getRawValuePrimary\crfnm@precedingEnd}%
+  \edef\crfnm@primarySubtype@currentBegin{\crfnm@getRawValuePrimary\crfnm@currentBegin}%
+  \edef\crfnm@secondarySubtype@precedingEnd{\crfnm@getRawValueSecondary\crfnm@precedingEnd}%
+  \edef\crfnm@secondarySubtype@currentBegin{\crfnm@getRawValueSecondary\crfnm@currentBegin}%
+  \crfnm@ifequal[\crfnm@primarySubtype@precedingEnd][\crfnm@primarySubtype@currentBegin]{%
+    \crfnm@ifequal[\crfnm@secondarySubtype@precedingEnd][\crfnm@secondarySubtype@currentBegin]{%
+      \crfnm@mergeRanges
+    }{%
+      \crfnm@ifConsecutiveCollapsable[secondary]%
+        [\crfnm@secondarySubtype@precedingEnd][\crfnm@secondarySubtype@currentBegin]
+      {%
+        \crfnm@mergeRanges
+      }{%
+        \edef\crfnm@primarySubtype@precedingBegin{\crfnm@getRawValuePrimary\crfnm@precedingBegin}%
+        \edef\crfnm@primarySubtype@currentEnd{\crfnm@getRawValuePrimary\crfnm@currentEnd}%
+        \crfnm@ifequal[\crfnm@primarySubtype@precedingBegin][\crfnm@primarySubtype@currentEnd]{%
+          % Two discountinuous ranges of the secondary subtype on the same page.
+          \crfnm@newListFrom[\crfnm@precedingSecondary][\crfnm@currentSecondary] -> \crfnm@currentSecondary
+        }{%
+          \crfnm@typesetPrecedingRange
+        }%
+      }%
+    }%
+  }{%
+    \ifx\crfnm@secondaryNumberingContinuous\crfnm@yes
+      % It would make no sense to test for identical line numbers here.
+      \crfnm@ifConsecutiveCollapsable[primary]%
+        [\crfnm@primarySubtype@precedingEnd][\crfnm@primarySubtype@currentBegin]
+      {%
+        \crfnm@ifConsecutiveCollapsable[secondary]%
+          [\crfnm@secondarySubtype@precedingEnd][\crfnm@secondarySubtype@currentBegin]
+        {%
+          \crfnm@mergeRanges
+        }{%
+          \crfnm@typesetPrecedingRange
+        }%
+      }{%
+        \crfnm@typesetPrecedingRange
+      }%
+    \else
+      \crfnm@typesetPrecedingRange
+    \fi
+  }%
+}
+
+\def\crfnm@mergeRanges{%
+  \edef\crfnm@currentPrimary{\crfnm@precedingBegin\crfnm@labelRangeSep\crfnm@currentEnd}%
+  \let\crfnm@currentSecondary\crfnm@currentPrimary
+}
+
+\def\crfnm@combineSingleAndRange{%
+  \crfnm@setPossibleRangeCs
+  \crfnm@ifIsRange{\crfnm@possibleRange@current}{%
+    \crfnm@combine@singleAndRange[singlefirst]%
+  }{%
+    \crfnm@combine@singleAndRange[reversed]%
+  }%
+}
+
+\def\crfnm@typesetPrecedingRange{%
+  \ifcrfnm@isFirstToken\else
+    \crfnm@enumDelim
+  \fi
+  \crfnm@typesetDoubleRef{\crfnm@precedingPrimary}{\crfnm@precedingSecondary}%
+}%
+
+\def\crfnm@combine@singleAndRange[#1]{%
+  \crfnm@setIfIsSingleFirst[#1]%
+  \crfnm@ifIsDoubleRef{%
+    \crfnm@combine@single@and@range@double
+  }{%
+    \ifcrfnm@singleFirst
+      \let\crfnm@single\crfnm@preceding
+      \let\crfnm@range\crfnm@current
+    \else
+      \let\crfnm@single\crfnm@current
+      \let\crfnm@range\crfnm@preceding
+    \fi
+    \crfnm@combine@single@and@range@simple
+  }%
+}
+
+\def\crfnm@setIfIsSingleFirst[#1]{%
+  \def\crfnm@singlePos{#1}% expected: singlefirst or reversed
+  \ifx\crfnm@singlePos\crfnm@singleFirst
+    \crfnm@singleFirsttrue
+  \else
+    \crfnm@singleFirstfalse
+  \fi
+}
+
+\def\crfnm@combine@single@and@range@simple{%
+  \edef\crfnm@begin@range{\crfnm@getLabelInRange@begin[\crfnm@range]}%
+  \edef\crfnm@end@range{\crfnm@getLabelInRange@end[\crfnm@range]}%
+  \edef\crfnm@raw@single{\crfnm@getRawValue\crfnm@single}%
+  \edef\crfnm@raw@begin@range{\crfnm@getRawValue\crfnm@begin@range}%
+  \edef\crfnm@raw@end@range{\crfnm@getRawValue\crfnm@end@range}%
+  \ifcrfnm@singleFirst
+    \crfnm@ifAreEqualOrConsecutiveCollapsable[][\crfnm@raw@single][\crfnm@raw@begin@range]{%
+      \edef\crfnm@current{%
+        \crfnm@newRangeWithReplacement[change: \crfnm@current, with: \crfnm@preceding, at: beg]%
+      }%
+    }{%
+      \crfnm@typesetInEnum{\crfnm@preceding}%
+    }%
+  \else
+    \crfnm@ifequal[\crfnm@raw@end@range][\crfnm@raw@single]{%
+      \edef\crfnm@current{\crfnm@preceding}%
+    }{%
+      \crfnm@ifConsecutiveCollapsable[\crfnm@raw@end@range][\crfnm@raw@single]{%
+        \edef\crfnm@current{%
+          \crfnm@newRangeWithReplacement[change: \crfnm@preceding, with: \crfnm@current, at: end]%
+        }%
+      }{%
+        \crfnm@typesetInEnum{\crfnm@preceding}%
+      }%
+    }%
+  \fi
+}
+
+\def\crfnm@combine@single@and@range@double{%
+  \ifcrfnm@singleFirst
+    \edef\crfnm@currentBegin{\crfnm@getLabelInRange@begin[\crfnm@currentPrimary]}%
+    \edef\crfnm@primaryRawValue@preceding{\crfnm@getRawValuePrimary\crfnm@precedingPrimary}%
+    \edef\crfnm@primaryRawValue@current{\crfnm@getRawValuePrimary\crfnm@currentBegin}%
+    \edef\crfnm@secondaryRawValue@preceding{\crfnm@getRawValueSecondary\crfnm@precedingSecondary}%
+    \edef\crfnm@secondaryRawValue@current{\crfnm@getRawValueSecondary\crfnm@currentBegin}%
+    \let\crfnm@typesetPreceding\crfnm@typesetPrecedingRef
+    \def\crfnm@rangeRoot{crfnm@current}%
+    \def\crfnm@singleRoot{crfnm@preceding}%
+  \else
+    \edef\crfnm@precedingEnd{\crfnm@getLabelInRange@end[\crfnm@precedingPrimary]}%
+    \edef\crfnm@primaryRawValue@preceding{\crfnm@getRawValuePrimary\crfnm@precedingEnd}%
+    \edef\crfnm@primaryRawValue@current{\crfnm@getRawValuePrimary\crfnm@currentPrimary}%
+    \edef\crfnm@secondaryRawValue@preceding{\crfnm@getRawValueSecondary\crfnm@precedingEnd}%
+    \edef\crfnm@secondaryRawValue@current{\crfnm@getRawValueSecondary\crfnm@currentSecondary}%
+    \let\crfnm@typesetPreceding\crfnm@typesetPrecedingRange
+    \def\crfnm@rangeRoot{crfnm@preceding}%
+    \def\crfnm@singleRoot{crfnm@current}%
+  \fi
+  \crfnm@ifequal[\crfnm@primaryRawValue@current][\crfnm@primaryRawValue@preceding]{%
+    \crfnm@ifAreEqualOrConsecutiveCollapsable[secondary]%
+      [\crfnm@secondaryRawValue@current][\crfnm@secondaryRawValue@preceding]%
+    {%
+      \crfnm@mergeSingleAndRangeDouble
+    }{%
+      \crfnm@typesetPreceding
+    }%
+  }{%
+    \crfnm@ifConsecutiveCollapsable[secondary]%
+      [\crfnm@secondaryRawValue@current][\crfnm@secondaryRawValue@preceding]%
+    {%
+      \crfnm@mergeSingleAndRangeDouble
+    }{%
+      \crfnm@typesetPreceding
+    }%
+  }%
+}
+
+\def\crfnm@mergeSingleAndRangeDouble{%
+  \edef\crfnm@changedBoundary{\ifcrfnm@singleFirst beg\else end\fi}%
+  \crfnm@mergeSingleAndRangeDouble@subtype
+    [changeRoot: \crfnm@rangeRoot, withRoot: \crfnm@singleRoot, at: \crfnm@changedBoundary][Primary]%
+  \crfnm@mergeSingleAndRangeDouble@subtype
+    [changeRoot: \crfnm@rangeRoot, withRoot: \crfnm@singleRoot, at: \crfnm@changedBoundary][Secondary]%
+}
+
+\def\crfnm@mergeSingleAndRangeDouble@subtype[changeRoot: #1, withRoot: #2, at: #3][#4]{%
+  \edef\crfnm@rangeToBeChanged{\csname #1#4\endcsname}%
+  \edef\crfnm@singleForChange{\csname #2#4\endcsname}%
+  \expandafter\edef\csname crfnm@current#4\endcsname{%
+    \crfnm@newRangeWithReplacement
+      [change: \crfnm@rangeToBeChanged, with: \crfnm@singleForChange, at: #3]%
+  }%
+}
+
+\def\crfnm@ifAreEqualOrConsecutiveCollapsable[#1][#2][#3]#4#5{%
+  % #1 is “primary”, “secondary” or empty (for simple types).
+  \crfnm@ifequal[#2][#3]{#4}{%
+    \crfnm@ifConsecutiveCollapsable[#1][#2][#3]{#4}{#5}%
+  }%
+}
+
+\def\crfnm@ifConsecutiveCollapsable[#1]{%
+  % If the current reference has a double type, this macro must carry a first argument
+  % indicating if the current subtype is “primary”, “secondary”.
+  % With a simple type, it may be missing or empty.
+  % The other two arguments are the raw reference values to be compared.
+  % The comparison itself is performed by \crfnm@if@consecutiveCollapsable,
+  % which takes the type indication as a mandatory argument.
+  % The following code here simply sets the type if it is not provided by the user.
+  \crfnm@ifIsOneOf[#1][{{primary}{secondary}{}}]{%
+    \def\crfnm@macroWithParam{\crfnm@if@consecutiveCollapsable[#1]}%
+  }{%
+    \def\crfnm@macroWithParam{\crfnm@if@consecutiveCollapsable[][#1]}%
+  }%
+  \crfnm@macroWithParam
+}
+
+\def\crfnm@if@consecutiveCollapsable[#1][#2][#3]#4#5{%
+  % #1 is “primary”, “secondary” or empty (for simple types).
+  % #2 and #3 are the raw numbers for the first and the second references.
+  \crfnm@newCsnameAlias[\crfnm@thisTypeCollapsable]{crfnm@\crfnm@ifIsDoubleRef{#1C}{c}ollapsable}%
+  \crfnm@newCsnameAlias[\crfnm@testedType]{crfnm@\crfnm@ifIsDoubleRef{#1Subtype}{refType}}%
+  \ifx\crfnm@thisTypeCollapsable\crfnm@yes
+    \crfnm@ifSimpleOrPrimaryType{% Uses \crfnm@testedType
+      \crfnm@ifAreConsecutive[#2][#3]{#4}{#5}%
+    }{%
+      \ifx\crfnm@secondaryNumberingContinuous\crfnm@yes
+        \crfnm@ifAreConsecutive[#2][#3]{#4}{#5}%
+      \else #5\fi
+    }%
+  \else #5\fi
+}
+
+\def\crfnm@ifSimpleOrPrimaryType#1#2{%
+  \crfnm@ifIsOneOf[\crfnm@testedType][\crfnm@simpleRefTypes]{#1}{%
+    \ifx\crfnm@testedType\crfnm@primarySubtype #1\else #2\fi
+  }%
+}
+
+\def\crfnm@ifAreConsecutive[#1][#2]#3#4{%
+  \ifnum\numexpr#1+1\relax=#2 #3\else #4\fi
+}
+
+\def\crfnm@newRangeWithReplacement[change: #1, with: #2, at: #3#4]{%
+  % #3#4 is “beg” or “end” (we test only the first letter).
+  % This macro must be purely expandable.
+  \ifx #3b%
+    #2 to \crfnm@getLabelInRange@end[#1]%
+  \else
+    \crfnm@getLabelInRange@begin[#1] to #2%
+  \fi
+}
+
+\def\crfnm@typesetInEnum#1{%
+  \ifcrfnm@isFirstToken\else\crfnm@enumDelim\fi
+  \crfnm@wrapInDisplayMacro{#1}%
+}
+
+\def\crfnm@wrapInDisplayMacro#1{%
+  \crfnm@countInPrintedRefs
+  \crfnm@wrapRangeOrSingle{#1}%
+  \crfnm@isFirstTokenfalse
+}
+
+\def\crfnm@countInPrintedRefs{%
+  \ifcrfnm@simulated\else
+   % Since the incrementation is local,
+   % \crfnm@printedRefsNb will be automatically reset to 0
+   % at the end of the current invocation of \crossrefenum.
+    \advance\crfnm@printedRefsNb by 1
+  \fi
+}
+
+\def\crfnm@wrapRangeOrSingle#1{%
+  \edef\crfnm@toBeWrapped{#1}%
+  \crfnm@ifIsRange{\crfnm@toBeWrapped}{%
+    \crfnm@wrapRange{\crfnm@toBeWrapped}%
+  }{%
+    \crfnm@ifIsDoubleRef{%
+      % We are in the primary part of a double type,
+      % since the secondary one is handled by \crfnm@fork
+      % like a simple type.
+      \crfnm@newCsnameAlias[\crfnm@typesetSingleRef]{crfnm@\crfnm@primarySubtype Ref}%
+    }{}%
+    \crfnm@typesetSingleRef{\crfnm@toBeWrapped}%
+  }%
+}
+
+\def\crfnm@wrapRange#1{%
+  \expandafter\crfnm@wrap@range\expandafter[#1]%
+}
+
+\expandafter\def\expandafter\crfnm@wrap@range\expandafter[\expandafter#\expandafter1\crfnm@labelRangeSep#2]{%
+  \crfnm@typesetRange{#1}{#2}%
+}
+
+\def\crfnm@typesetRange#1#2{%
+  \edef\crfnm@refTypeForRange{%
+    \crfnm@ifIsDoubleRef{\crfnm@primarySubtype}{\crfnm@refType}%
+  }%
+  \edef\crfnm@beginRangeToTypeset{#1}%
+  \edef\crfnm@endRangeToTypeset{#2}%
+  \crfnm@typeset@range{\crfnm@beginRangeToTypeset}{\crfnm@endRangeToTypeset}[%
+    cs to get the raw reference number: crfnm@get\crfnm@refTypeForRange Number,
+    cs to print the reference: crfnm@\crfnm@refTypeForRange Ref%
+  ]%
+}
+
+\def\crfnm@typeset@range#1#2[%
+  cs to get the raw reference number: #3,
+  cs to print the reference: #4%
+  ]{%
+  % #1 and #2 are the labels
+  \def\crfnm@getCountCsname{#3}%
+  \edef\crfnm@firstNumber{\csname\crfnm@getCountCsname\endcsname{#1}}%
+  \edef\crfnm@secondNumber{\csname\crfnm@getCountCsname\endcsname{#2}}%
+  \def\crfnm@typeset{\expandafter\csname #4\endcsname}%
+  \ifx\crfnm@firstNumber\crfnm@secondNumber
+    \crfnm@typeset{#1}%
+  \else
+    \crfnm@countInPrintedRefs
+    \crfnm@typeset{#1}\crfnm@rangeSep\crfnm@typeset{#2}%
+  \fi
+}
+
+\def\crfnm@typesetDoubleRef#1#2{%
+  % #1 is a label
+  % #2 is a list of labels to be passed to \crossrefenum
+  \crfnm@ifIsInverted{%
+    \crfnm@typesetDoubleRef@inverted{#1}{#2}%
+  }{%
+    \crfnm@typesetDoubleRef@normal{#1}{#2}%
+  }%
+}
+
+\def\crfnm@typesetDoubleRef@normal#1#2{%
+  \ifx\crfnm@groupSubtypes\crfnm@yes
+    \crfnm@typesetDoubleRef@normal@grouped{#1}{#2}%
+  \else
+    \crfnm@typesetDoubleRef@normal@split{#1}{#2}%
+  \fi
+}
+
+\def\crfnm@typesetDoubleRef@normal@grouped#1#2{%
+  \crfnm@typesetPrefix
+  \crfnm@wrapInDisplayMacro{#1}%
+  \crfnm@separatorBetweenSubtypes
+  \crfnm@formatSecondary{%
+    \crfnm@fork{%
+      \crfnm@ifIsList[#2]{%
+        \edef\crfnm@enumOfSecondary{#2}%
+      }{%
+        \edef\crfnm@enumOfSecondary{{#2}}%
+      }%
+      \crfnm@enum[\crfnm@secondarySubtype][\crfnm@isSecondaryPrefixPrinted]{\crfnm@enumOfSecondary}%
+    }%
+  }%
+}
+
+\def\crfnm@typesetDoubleRef@normal@split#1#2{%
+  \edef\crfnm@labelForPrimary{#1}%
+  \crfnm@ifIsRange\crfnm@labelForPrimary{%
+    \crfnm@typesetDoubleRef@normal@split@range{#1}{#2}%
+  }{%
+    \crfnm@typesetDoubleRef@normal@split@single{#1}{#2}%
+  }%
+}
+
+\def\crfnm@typesetDoubleRef@normal@split@range#1#2{%
+  \edef\crfnm@labelForPrimary{#1}%
+  \edef\crfnm@beginRangeLabel{%
+    \crfnm@getLabelInRange@begin[\crfnm@labelForPrimary]%
+  }%
+  \edef\crfnm@endRangeLabel{%
+    \crfnm@getLabelInRange@end[\crfnm@labelForPrimary]%
+  }%
+  \edef\crfnm@beginPrimaryRaw{\crfnm@getRawValuePrimary\crfnm@beginRangeLabel}%
+  \edef\crfnm@endPrimaryRaw{\crfnm@getRawValuePrimary\crfnm@endRangeLabel}%
+  \ifx\crfnm@beginPrimaryRaw\crfnm@endPrimaryRaw
+    \edef\crfnm@labelsForSecondary{#2}%
+    \crfnm@typesetDoubleRef@normal@grouped{\crfnm@beginRangeLabel}{#2}%
+  \else
+    \crfnm@ifIsList[#2]{%
+      \edef\crfnm@allSecondaryLabels{#2}%
+    }{%
+      \edef\crfnm@allSecondaryLabels{{#2}}%
+    }%
+    \edef\crfnm@labelsForSecondary{%
+      \crfnm@replaceFirstInList[\crfnm@endRangeLabel]{\crfnm@allSecondaryLabels}%
+    }%
+    \crfnm@typesetPrefix
+    \crfnm@wrapInDisplayMacro{\crfnm@beginRangeLabel}%
+    \crfnm@separatorBetweenSubtypes
+    \crfnm@formatSecondary{%
+      \crfnm@fork{%
+        \crfnm@enum[\crfnm@secondarySubtype][\crfnm@isSecondaryPrefixPrinted]{%
+          {\crfnm@beginRangeLabel}%
+        }%
+      }%
+    }%
+    \crfnm@rangeSep
+    \crfnm@wrapInDisplayMacro{\crfnm@endRangeLabel}%
+    \crfnm@separatorBetweenSubtypes
+    \crfnm@formatSecondary{%
+      \crfnm@fork{%
+        \crfnm@enum[\crfnm@secondarySubtype][\crfnm@isSecondaryPrefixPrinted]{\crfnm@labelsForSecondary}%
+      }%
+    }%
+  \fi
+}
+
+\def\crfnm@typesetDoubleRef@normal@split@single#1#2{%
+  \crfnm@typesetDoubleRef@normal@grouped{#1}{#2}%
+}
+
+\def\crfnm@typesetDoubleRef@inverted#1#2{%
+  \crfnm@formatSecondary{%
+    \crfnm@fork{%
+      \crfnm@ifIsList[#2]{%
+        \edef\crfnm@enumOfSecondary{#2}%
+      }{%
+        \edef\crfnm@enumOfSecondary{{#2}}%
+      }%
+      \crfnm@enum[\crfnm@secondarySubtype][withprefix]{\crfnm@enumOfSecondary}%
+    }%
+  }%
+  \crfnm@separatorBetweenSubtypes
+  \crfnm@typesetPrefix
+  \crfnm@wrapInDisplayMacro{#1}%
+}
+
+\def\crfnm@fork#1{%
+  \crfnm@saveState
+  \global\advance\crfnm@ienum by \crfnm@secondaryOfDouble@istart
+  \global\advance\crfnm@ienum by -1
+  \crfnm@printedRefsNb=0
+  #1%
+  \crfnm@restoreState
+}
+
+\def\crfnm@saveState{%
+  \edef\crfnm@parentIenum{\the\crfnm@ienum}%
+  \edef\crfnm@parentPrintedRefsNb{\the\crfnm@printedRefsNb}%
+  \let\crfnm@parentCurrentPrimary\crfnm@currentPrimary
+  \let\crfnm@parentCurrentSecondary\crfnm@currentSecondary
+  \let\crfnm@parentPrecedingPrimary\crfnm@precedingPrimary
+  \let\crfnm@parentPrecedingSecondary\crfnm@precedingSecondary
+  \let\crfnm@parentRefType\crfnm@refType
+}
+
+\def\crfnm@restoreState{%
+  \crfnm@isDoubleReftrue
+  \global\crfnm@ienum=\crfnm@parentIenum
+  \crfnm@printedRefsNb=\crfnm@parentPrintedRefsNb
+  \let\crfnm@currentPrimary\crfnm@parentCurrentPrimary
+  \let\crfnm@currentSecondary\crfnm@parentCurrentSecondary
+  \let\crfnm@precedingPrimary\crfnm@parentPrecedingPrimary
+  \let\crfnm@precedingSecondary\crfnm@parentPrecedingSecondary
+  \let\crfnm@refType\crfnm@parentRefType
+}
+
+\catcode`\@=\crfnmOriginalCatcodeAt
+

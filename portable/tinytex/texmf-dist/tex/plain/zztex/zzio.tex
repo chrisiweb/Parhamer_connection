@@ -1,0 +1,84 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX I/O Facilities
+%
+% Synopsis:
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   9 September 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Terminal & Log I/O
+%                       -------- - --- ---
+
+% \message writes to the terminal and the log file, without newlines.
+% This macro adds a newline feature:
+
+\def \messagenl #1{%                                    {text}
+  {\newlinechar = `\_%
+   \message{#1}}}
+
+% This macro writes a line to the log file, with a newline at the end.
+
+\def \writelog {\immediate\write -1}
+
+% \ask combines a prompt using \messagenl with a read from the terminal.
+
+\def \ask #1#2{%                                {\result-macro}{question}
+  {\messagenl{_#2}%
+   \endlinechar = -1
+   \global\read 16 to #1}}
+
+%                       Including Files
+%                       --------- -----
+
+
+\def \include #1{%                                      {file}
+  {\checkfile{\zifile}{#1}%
+   \if \zifile
+     \gdef \znext {\input #1\relax}%
+   \else
+     \warning{noinclfile}{File `#1' does not exist}%
+     \ask{\newfile}{Enter a new file name, or a period (.) to skip it.}%
+     \stringeql{\znext}{\newfile}{.}%
+     \if \znext
+       \xdef \znext {}%
+     \else
+       \xdef \znext {\noexpand\include{\newfile}}%
+     \fi
+   \fi}%
+  \znext
+  \endgraf}
+
+\def \zportionid {}
+
+\def \includeportion #1#2{%                             {file}{portion-id}
+  \gdef \zportionid {#2}%
+  \include{#1}%
+  \gdef \zportionid {}}
+
+\def \portion #1{%                                      {portion-id}
+  \stringeql{\znext}{#1}{\zportionid}%
+  \if \znext}
+
+\let \endportion = \fi
+
+\def \includeifexists #1{%                              {file}
+  \checkfile{\zifile}{#1}%
+  \if \zifile
+    \input #1\relax
+    \endgraf
+  \fi}
+
+%                       Utilities
+%                       ---------
+
+
+\def \checkfile #1#2{%                          {\result-flag}{file}
+  \openin \zreada #2\relax
+  \setflag #1= {\notp{\eofp{\zreada}}}%
+  \closein \zreada}

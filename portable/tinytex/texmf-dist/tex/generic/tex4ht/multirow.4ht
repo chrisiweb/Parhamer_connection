@@ -1,0 +1,61 @@
+% multirow.4ht (2021-06-20-09:36), generated from tex4ht-4ht.tex
+% Copyright 2004-2009 Eitan M. Gurari
+% Copyright 2009-2021 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2021-06-20-09:36}
+
+ \def\@xmultirow[#1]#2[#3]#4[#5]#6{%
+  \expandafter\multirow@piii#3\relax\end%
+  \multirow@dima=#2\ht\@arstrutbox
+  \advance\multirow@dima#2\dp\@arstrutbox
+  \ifdim#2pt<\z@\multirow@dima=-\multirow@dima\fi
+  \advance\multirow@dima \multirow@cntb\bigstrutjot
+  \if*#4\multirow@vbox{#1}{}{\hbox{\strut#6\strut}}%
+  \else \if=#4\multirow@setcolwidth{#6}%
+    \multirow@vbox{#1}{\hsize\multirow@colwidth\@parboxrestore}{\strut#6\strut\par}%
+  \else \multirow@vbox{#1}{\hsize#4\@parboxrestore}{\strut#6\strut\par}%
+  \fi \fi
+  \ifdim#2pt>\z@
+    \if#1t\relax\multirow@dima=\ht0\else
+      \multirow@dima=\ht\@arstrutbox
+      \ifmultirow@prefixt \advance\multirow@dima\bigstrutjot\fi
+      \if#1b\relax \advance\multirow@dima\dp\@arstrutbox
+        \ifmultirow@prefixb \advance\multirow@dima\bigstrutjot\fi
+      \fi
+    \fi
+  \else
+    \if#1b\relax\else
+      \advance\multirow@dima-\dp\@arstrutbox
+      \ifmultirow@prefixb \advance\multirow@dima-\bigstrutjot\fi
+      \if#1t\relax\advance\multirow@dima-\ht\@arstrutbox
+        \ifmultirow@prefixt \advance\multirow@dima-\bigstrutjot\fi
+        \advance\multirow@dima\ht0
+      \fi
+    \fi
+  \fi
+  \advance\multirow@dima#5\relax
+  \leavevmode\a:multirow
+  \setbox0\vtop{\vskip-\multirow@dima\box0\vss}\dp0=\z@
+  \ifmultirowdebug{\showboxdepth=5 \showboxbreadth=10 \showbox0}\fi
+  \box0\b:multirow
+}
+\NewConfigure{multirow}{2}
+
+\Hinput{multirow}
+\endinput
+

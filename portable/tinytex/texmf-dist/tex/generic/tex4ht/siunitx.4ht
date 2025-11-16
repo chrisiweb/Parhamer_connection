@@ -1,0 +1,53 @@
+% siunitx.4ht (2024-01-21-13:28), generated from tex4ht-4ht.tex
+% Copyright 2021-2024 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2024-01-21-13:28}
+
+\RequirePackage{color}
+
+\ExplSyntaxOn
+\cs_set_protected:Npn \__siunitx_angle_arc_print_auxv_fourht:w
+  #1 \q_nil #2 \q_nil #3 \q_nil #4 \q_nil #5 \q_nil #6 \q_stop
+{\bgroup\siunitx_print_number:n {#1#2#3#4#5}\egroup}
+
+\HLet\__siunitx_angle_arc_print_auxv:w\__siunitx_angle_arc_print_auxv_fourht:w
+
+
+\cs_set_protected:Npn \__siunitx_angle_arc_print_auxvi_fourht:n #1
+{
+  % we need to define these commands here
+  \def\degree{\ht:special{t4ht@+&{35}x2218;}x}
+  \def\arcminute{\prime}
+  \def\arcsecond{\prime\prime}
+  \ensuremath{\NoFonts\sp{#1}\EndNoFonts}
+}
+
+\HLet\__siunitx_angle_arc_print_auxvi:n\__siunitx_angle_arc_print_auxvi_fourht:n
+
+% https://tex.stackexchange.com/q/707485/2891
+\bool_set_false:N \l__siunitx_number_tight_bool
+
+% disable S columns for tables
+% https://tex.stackexchange.com/q/707485/2891
+\cs_set_protected:Npn \siunitx_cell_begin:w {}
+\cs_set_protected:Npn \siunitx_cell_end: {}
+
+\ExplSyntaxOff
+\Hinput{siunitx}
+\endinput
+

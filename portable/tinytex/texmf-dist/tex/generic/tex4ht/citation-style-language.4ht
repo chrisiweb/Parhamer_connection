@@ -1,0 +1,41 @@
+% citation-style-language.4ht (2023-11-20-14:31), generated from tex4ht-4ht.tex
+% Copyright 2023 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2023-11-20-14:31}
+
+\ExplSyntaxOn
+% add links to bibliography around citations
+\cs_set:Npn \__csl_print_citation:N #1
+{
+  \bool_if:NT \l__csl_regression_test_bool
+  { \tl_show:N #1 }
+  \bool_if:NTF \l__csl_note_bool
+  { \footnote {\a:cite\cIteLink{X\l__csl_cite_keys_tl}{bk-\l__csl_citation_id_tl}#1\EndcIteLink\b:cite} }
+  {\a:cite\cIteLink{X\l__csl_cite_keys_tl}{bk-\l__csl_citation_id_tl}#1\EndcIteLink\b:cite}
+}
+\ExplSyntaxOff
+
+% fix problems with \bibitem in the bibliography
+\def\setb:anc#1{\def\bib:anc{\def\bib:anc{#1}\ifx \bib:anc\empty \else%
+  \a:bibitem{}{\a:bibanchor#1}\b:bibitem\fi \gdef\bib:anc{}}%
+  \def\AnchorLabel{\bib:anc}%
+}
+
+\Hinput{citation-style-language}
+\endinput
+

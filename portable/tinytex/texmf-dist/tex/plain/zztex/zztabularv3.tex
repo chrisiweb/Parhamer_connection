@@ -1,0 +1,771 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Tabular Facilities, version 3
+%
+% Synopsis:  This module contains all the facilities for producing
+%            tabular material. This is the third major version.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   4 June 2004
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Tabular Block
+%                       ------- -----
+
+
+\defineblock{\tabular}{\endtabular}{\false}{}
+
+%~block tabular Type
+% \abovepenalty = integer               % Penalty above text.
+% \aboveskip = glue                     % Space b/b above text.
+% \belowpenalty = integer               % Penalty below text.
+% \belowskip = glue                     % Space b/b below text.
+% \bodyfont = {font}                    % Body font.
+% \columngutter = glue                  % Width of column gutter.
+% \colheadbelowskip = dimen             % Space b/b below column heads.
+% \colheadcolor = {color}               % Color of Column heads.
+% \colheadfont = {font}                 % Column head font.
+% \interrowskip = dimen                 % Extra space between rows.
+% \leftindent = glue                    % Left indentation.
+% \parhang = dimen                      % Paragraph column hang.
+% \parrag = dimen                       % Paragraph raggedness.
+% \parskip = skip                       % Paragraph skip.
+% \rightindent = glue                   % Right indentation.
+% \rulecolcolor = {color}               % Color of table rules.
+% \rulecolwidth = dimen                 % Width of column rules.
+% \sideheadaboveskip = dimen            % Space b/b above side heads.
+% \sideheadbelowskip = dimen            % Space b/b below side heads.
+% \sideheadcolor = {color}              % Color of side heads.
+% \sideheadfont = {font}                % Side head font.
+% \spannerheadcolor = {color}           % Color of spanner heads.
+% \spannerheadfont = {font}             % Spanner head font.
+% \spannerruleaboveskip = dimen         % Space b/b above spanner rules.
+% \spannerrulebelowskip = dimen         % Space b/b below spanner rules.
+% \spannerrulecolor = {color}           % Color of spanner rules.
+% \spannerruleheight = dimen            % Spanner rule thickness.
+% \style = {...}                        % Style description.
+% \tabbottomruleaboveskip = dimen       % Space b/b above bottom rules.
+% \tabheadrulebelowskip = dimen         % Space b/b below head rules.
+% \def \tabnoteformat ##1{...}          % Format of table note references.
+% \tabrulecolor = {color}               % Color of table rules.
+% \tabruleheight = dimen                % Table rule thickness.
+% \tabtoprulebelowskip = dimen          % Space b/b below top rules.
+% \width = dimen                        % Width of tabular material.
+%~end
+
+\defineskip{\colheadbelowskip}{0pt}
+\definetoks{\colheadcolor}
+\definetoks{\colheadfont}
+\definetoks{\rulecolcolor}
+\definedimen{\rulecolwidth}{0pt}
+\definedimen{\sideheadaboveskip}{0pt}
+\definedimen{\sideheadbelowskip}{0pt}
+\definetoks{\sideheadcolor}
+\definetoks{\sideheadfont}
+\definetoks{\spannerheadcolor}
+\definetoks{\spannerheadfont}
+\definedimen{\spannerruleaboveskip}{0pt}
+\definedimen{\spannerrulebelowskip}{0pt}
+\definetoks{\spannerrulecolor}
+\definedimen{\spannerruleheight}{0pt}
+\definedimen{\tabbottomruleaboveskip}{0pt}
+\definedimen{\tabheadrulebelowskip}{0pt}
+\definetoks{\tabrulecolor}
+\definedimen{\tabruleheight}{0pt}
+\definedimen{\tabtoprulebelowskip}{0pt}
+
+
+\def \tabular #1#2{%                            {type}{template}
+  \endgraf
+  \beginblockscope{tabular}%
+  \global\increment \tabulardepth
+  \abovepenalty = \breakgood                    %~default hard
+  \belowpenalty = \breakbetter                  %~default hard
+  \processdesign{\tabular}{#1}%
+  \global\increment \tabularnumber
+  \zsetuptabular{#2}%
+  \tabularformat
+  \defineatsigncommand @A{\adjustcolrule}%
+  \defineatsigncommand @C{\closeuprows}%
+  \defineatsigncommand @N{\nocolrule}%
+  \defineatsigncommand @S{\skipabovespannerrule}%
+  \defineatsigncommand @T{\skipbelowspannerrule}%
+  \offinterlineskip
+  \nobreak
+  \tabskip=\leftskip
+  \halign \if \dimneqlp{\width}{\naturalwidth}to \width \fi \bgroup
+    \span\the\zpreamble \tabskip=\rightskip \cr}
+
+\def \endtabular {%
+    \crcr
+  \egroup % \halign
+  \if \posp{\prevdepth}%                % Does the last line have a strut?
+    \kern -.5\interrowskip              % Yes, eliminate extra depth from
+    \prevdepth = \dp\strutbox           % \interrowskip.
+  \else
+    \prevdepth = \tabruleheight         % No, compensate for bottom rule.
+  \fi
+  \futurelet\nexttoken \zendtabular}
+
+\def \zendtabular {%
+  \endtabularformat
+  \global\decrement \tabulardepth
+  \endblockscope{tabular}%
+  \parnext}
+
+\def \tabularformat {%
+  \bbskipabove{\abovepenalty}{\aboveskip}%
+  \fakepar                                      % This empty paragraph allows
+  \hbox{}%                                      % the \bbskipabove to work.
+  \kern
+    \if \dimzerop{\tabtoprulebelowskip}-\ht\zrowstrut \else -\tabruleheight \fi
+  \alterindentation{\leftindent}{\rightindent}}
+
+\def \endtabularformat{%
+  \bbskipbelowblockpar{\nexttoken}{\belowpenalty}{\belowskip}}
+
+\def \adjustcolumngutter #1{%                   {amount} %^tabular
+  \with{\advance\columngutter by #1}}
+
+\def \adjustinterrowskip #1{%                   {amount} %^tabular
+  \with{\advance\interrowskip by #1}}
+
+%                       Set Up Tabular
+%                       --- -- -------
+
+
+\definecount{\tabcolcount}{0}           % Number of columns in table.
+\definetoks{\zpreamble}                 % Preamble for \halign.
+\definetoks{\ztabspacerow}              % Special row for vertical spacing.
+\definebox{\zrowstrut}                  % Strut for table rows.
+\definebox{\zparcelltopstrut}           % Strut for first line of par cell.
+\definebox{\zparcellbotstrut}           % Strut for last line of par cell.
+
+\def \zsetuptabular #1{%                                {template}
+  \zanaltemplate{#1}%
+  \the\bodyfont
+  \calculate \tdimena = {\interrowskip,/,2,+,\ht\strutbox}%
+  \calculate \tdimenb = {\interrowskip,/,2,+,\dp\strutbox}%
+  \setbox \zrowstrut = \hbox{\vrule width 0pt
+                                    height \tdimena depth \tdimenb}%
+  \setbox \zparcelltopstrut = \hbox{\vrule width 0pt
+                                           height \tdimena depth 0pt}%
+  \setbox \zparcellbotstrut = \hbox{\vrule width 0pt
+                                           height 0pt depth \tdimenb}%
+  \global\zprevrowclass = \zrcpream
+  \global\zcurrowclass = \zrcpream
+  \gdef \zcolrulegate {}%
+  \global\setflag \zcolrulesenabled = \false
+  \everycr = {\noalign{\ztabcr}}}
+
+%                       Analyze Template
+%                       ------- --------
+
+
+\defineskip{\zpendgutter}{0pt}
+
+
+\def \zanaltemplate #1{%                                {template}
+  \setbox\zboxa = \hbox{%
+    \defineatsigncommand @!{\zcustomrulecol}%
+    \defineatsigncommand @>{\zgutterspec}%
+    \defineatsigncommand @c{\zcentercol}%
+    \defineatsigncommand @C{\zcenternumbercol}%
+    \defineatsigncommand @e{\zemptycol}%
+    \defineatsigncommand @l{\zleftcol}%
+    \defineatsigncommand @L{\zleftnumbercol}%
+    \defineatsigncommand @p{\zparcol}%
+    \defineatsigncommand @r{\zrightcol}%
+    \defineatsigncommand @R{\zrightnumbercol}%
+    \defineatsigncommand @s{\zspecialcol}%
+    \defineatsigncommand @|{\zrulecol}%
+    \global\tabcolcount = 0
+    \global\zpreamble = {}%
+    \global\ztabspacerow = {}%
+    #1}%
+  \tabcolcount = \tabcolcount
+  \zpreamble = \zpreamble
+  \ztabspacerow = \ztabspacerow}
+
+\def \zcentercol {%
+  \zstartcol{\false}%
+  \zappendpreamble{\hfil ##\rowstrut \hfil}}
+
+\def \zcenternumbercol #1{%
+  \zstartcol{\false}%
+  \zmeasuredanumber #1..\zmark
+  \edef \znext {%
+    \noexpand\zappendpreamble{%
+      \hfil \noexpand\zsetnumbercell{\the\tdimena}{\the\tdimenb}{####}\hfil}}%
+  \znext}
+
+\def \zcustomrulecol #1#2{%                             {color}{width}
+  \if \dimeqlp{\zpendgutter}{\mindimen}\zpendgutter = .5\columngutter \fi
+  \zstartcol{\true}%
+  \zappendpreamble{\zsetcolrule{#1}{#2}{##}}%
+  \zpendgutter = .5\columngutter}
+
+\def \zemptycol #1{%                                    {width}
+  \zstartcol{\false}%
+  \zappendpreamble{##\rowstrut \hspace{#1}}}
+
+\def \zgutterspec #1{%                                  {width}
+  \zparsegutterspec #1*\zmark}
+
+\def \zparsegutterspec #1*#2\zmark{%
+  \zpendgutter = #1\relax
+  \if \notp{\emptyargp{#2}}%
+    \advance \zpendgutter by \columngutter
+    \advance \zpendgutter by -1\columngutter
+  \fi}
+
+\def \zleftcol {%
+  \zstartcol{\false}%
+  \zappendpreamble{##\rowstrut \hfil}}
+
+\def \zleftnumbercol #1{%
+  \zstartcol{\false}%
+  \zmeasuredanumber #1..\zmark
+  \edef \znext {%
+    \noexpand\zappendpreamble{%
+      \noexpand\zsetnumbercell{\the\tdimena}{\the\tdimenb}{####}\hfil}}%
+  \znext}
+
+\def \zparcol #1{%                                      {width}
+  \zstartcol{\false}%
+  \zappendpreamble{\zsetparcol{#1}{##}}}
+
+\def \zrightcol {%
+  \zstartcol{\false}%
+  \zappendpreamble{\hfil ##\rowstrut}}
+
+\def \zrightnumbercol #1{%
+  \zstartcol{\false}%
+  \zmeasuredanumber #1..\zmark
+  \edef \znext {%
+    \noexpand\zappendpreamble{%
+      \hfil \noexpand\zsetnumbercell{\the\tdimena}{\the\tdimenb}{####}}}%
+  \znext}
+
+\def \zrulecol {%
+  \if \dimeqlp{\zpendgutter}{\mindimen}\zpendgutter = .5\columngutter\relax \fi
+  \zstartcol{\true}%
+  \zappendpreamble{\zsetcolrule{}{}{##}}%
+  \zpendgutter = .5\columngutter\relax}
+
+\def \zspecialcol #1{%                                  {template}
+  \zstartcol{\false}%
+  \zappendpreamble{#1\rowstrut}}
+
+\def \zstartcol #1{%                                    {rule-column?}
+  \if \posp{\tabcolcount}%
+    \if \dimeqlp{\zpendgutter}{\mindimen}\zpendgutter = \columngutter \fi
+    \edef \znext {\noexpand\zappendpreamble{\tabskip=\the\zpendgutter &}}%
+    \znext
+    \global\ztabspacerow = \expandafter{\the\ztabspacerow &}%
+  \fi
+  \global\increment \tabcolcount
+  \if \notp{#1}%
+    \global\ztabspacerow = \expandafter{\the\ztabspacerow
+                                        \omit \copy \ztabvspacebox}%
+  \fi
+  \zpendgutter = \mindimen}
+
+\def \zappendpreamble #1{%                                 {preamble stuff}
+  \global\zpreamble = \expandafter{\the\zpreamble #1}}
+
+%                       Preamble Helpers
+%                       -------- -------
+
+
+\def \zmeasuredanumber #1.#2.#3\zmark{%
+  \measuretextwidth{\tdimena}{#1}%
+  \measuretextwidth{\tdimenb}{.#2}%
+  \if \andp{\emptyargp{#2}}{\emptyargp{#3}}\tdimenb = 0pt\fi}
+
+\def \zsetcolrule #1#2#3{%                      {color}{width}{adjustment}
+  \if \emptyargp{#1}\color{\the\tabrulecolor}\else \color{#1}\fi
+  \vrule width \if \emptyargp{#2}\rulecolwidth \else #2\fi
+         \zcolrulegate #3%
+  \endcolor}
+
+\def \zsetnumbercell #1#2#3{%                   {pre-width}{post-width}{text}
+  \gdef \zcellstyle {}%
+  \zsplitdanumber #3..\zmark
+  \if \dimzerop{#2}%
+    \if \emptytoksp{\ztoksb}%
+      \hbox to #1{\hfil \the\ztoksa}%
+    \else
+      \error{celldecpt}{Template picture did not include a decimal point}%
+    \fi
+  \else
+    \hbox to #1{\hfil \the\ztoksa}%
+    \hbox to #2{\zcellstyle \the\ztoksb \hfil}%
+  \fi
+  \rowstrut}
+
+\long\def \zsetparcol #1#2{%                    {width}{text}
+  \vtop{%
+    \zpushvcontext
+    \baselineskip = \normalbaselineskip
+    \lineskiplimit = 0pt \lineskip = 0pt
+%%%    \setindentation{0pt}{0pt}%
+    \settextwidth{#1}%
+    \setparrag{\parrag}%
+    \leftskip = \parhang
+    \parindent = -\parhang
+    \parfillskip = \normalparfillskip
+    \unhcopy \zparcelltopstrut
+    #2%
+    \if \hmodep \unhcopy \zparcellbotstrut \par \fi
+    \zpopvcontext}}
+
+\def \zsplitdanumber #1.#2.#3\zmark{%
+  \ztoksa = {#1}%
+  \ztoksb = {.#2}%
+  \if \andp{\emptyargp{#2}}{\emptyargp{#3}}\ztoksb = {}\fi}
+
+%                       Row Class
+%                       --- -----
+
+
+\definecount{\zprevrowclass}{0}
+\definecount{\zcurrowclass}{0}
+
+\chardef \zrcpream  = 0
+\chardef \zrcdata   = 1
+\chardef \zrchead   = 2
+\chardef \zrcrule   = 3
+\chardef \zrcvspace = 4
+\chardef \zrcbbskip = 5
+
+\def \zsetrowclass #1{%
+  \if \gtrp{#1}{\zcurrowclass}\global\zcurrowclass = #1\relax \fi}
+
+\def \ztabcr {%
+  \global\zprevrowclass = \zcurrowclass
+  \global\zcurrowclass = \zrcdata
+  \global\setflag \zcolrulesenabled = \false}
+
+%                       Cell Facilities
+%                       ---- ----------
+
+
+%~ This command produces a phantom zero, which is useful for aligning
+%~ numbers when decimal-aligned columns are not being used.
+
+\def \0{\phantom{0}}                                    %^tabular
+
+\zremovePlaindef \hideskip
+\defineskip{\hideskip}{-1000pt plus 1fill}
+
+%~ This command "hides" the width of the cell from the column width calculation
+%~ process. The cell does not participate in determining the widest cell of
+%~ the column. If the cell is wider than the calculated column width, it will
+%~ stick into the left or right column gutter, depending on the position of the
+%~ |\hidewidth| command.
+
+\def \hidewidth {\hskip \hideskip}                      %^tabular
+
+%~ This command discards the templates for the specified number of columns and
+%~ creates one cell that spans them all. The content of the cell is specified
+%~ immediately following the command. This spanning cell has no template, so
+%~ you must include all the required commands in the cell text. This is usually done
+%~ using one of the cell override commands such as |\leftcell|.
+
+\def \multispan #1{%                                    {columns} %^tabular
+  \omit
+  \tcounta = #1%
+  \loop \ifnum \tcounta > 1 \zspan \repeat
+  \let \omit = \relax % In case the next thing is a \leftcell or whatever.
+  \ignorespaces}
+
+\def \zspan {\span\omit \decrement \tcounta}
+
+\def \rowstrut {%
+  \unhcopy \zrowstrut}
+
+\def \zcellstyle {}
+
+\def \setcellstyle #1{%
+  #1%
+  \gdef \zcellstyle {#1}%
+  \ignorespaces}
+
+%~ This command sets a table note reference, usually a lowercase
+%~ letter. The format of the reference is determined by the design.
+
+\def \tabnote #1{%                                      {note-mark} %^tabular
+  {\tabnoteformat{#1}}}
+
+%                       Cell Overrides
+%                       ---- ---------
+
+
+%~ This command overrides the template for the column and sets
+%~ a centered cell. It must appear immediately after the
+%~ ampersand (|&&|) that begins the cell.
+
+\def \centercell #1{%                                   {text} %^tabular
+  \omit
+  \hfil #1\rowstrut \hfil}
+
+%~ This command overrides the template for the column and sets
+%~ a flush left cell. It must appear immediately after the
+%~ ampersand (|&&|) that begins the cell.
+
+\def \leftcell #1{%                                     {text} %^tabular
+  \omit
+  #1\rowstrut \hfil}
+
+%~ This command overrides the template for the column and sets
+%~ a paragraph cell. It must appear immediately after the
+%~ ampersand (|&&|) that begins the cell.
+
+\def \parcell #1#2{%                                    {width}{text} %^tabular
+  \omit
+  \zsetparcol{#1}{#2}}
+
+%~ This command overrides the template for the column and sets
+%~ a flush right cell. It must appear immediately after the
+%~ ampersand (|&&|) that begins the cell.
+
+\def \rightcell #1{%                                    {text} %^tabular
+  \omit
+  \hfil #1\rowstrut}
+
+%                       Column Heads
+%                       ------ -----
+
+
+%~ This column head command produces a centered head.
+
+\def \centerhead #1{%                                   {heading} %^tabular
+  \centercell{%
+    \the\colheadfont \colortext{\the\colheadcolor}{#1}%
+    \zchkadjheads}}
+
+%~ This column head command produces a flush left head.
+
+\def \lefthead #1{%                                     {heading} %^tabular
+  \leftcell{%
+    \the\colheadfont \colortext{\the\colheadcolor}{#1}%
+    \zchkadjheads}}
+
+%~ This column head command produces a flush right head.
+
+\def \righthead #1{%                                    {heading} %^tabular
+  \rightcell{%
+    \the\colheadfont \colortext{\the\colheadcolor}{#1}%
+    \zchkadjheads}}
+
+%~ This command produces a spanner head that spans the specified
+%~ number of columns.
+
+\def \spannerhead #1#2{%                                {columns}{heading} %^tabular
+  \multispan{#1}%
+  \centercell{\the\spannerheadfont \colortext{\the\spannerheadcolor}{#2}}%
+  \zsetrowclass{\zrchead}}
+
+\def \zchkadjheads {%
+  \if \andp{\eqlp{\zprevrowclass}{\zrchead}}{\posp{\interrowskip}}%
+    \warning{adjheads}{Two adjacent rows of heads need to be closed up}%
+    \global\zprevrowclass = \zrcdata
+  \fi
+  \zsetrowclass{\zrchead}}
+
+%                       Side Heads
+%                       ---- -----
+
+%~ This command is a shorthand for producing a cut-in head that spans the
+%~ entire width of the table. It is equivalent to:
+%~
+%~ | \skipabovesidehead
+%~ | \sidehead{*all-columns*}{*heading*}\cr
+%~ | \skipbelowsidehead
+
+\def \cutinhead #1{%                                    {heading} %^tabular
+  \skipabovesidehead
+  \sidehead{\tabcolcount}{#1}\cr
+  \skipbelowsidehead}
+
+%~ This command produces a side head that spans the specified number of
+%~ columns. It is similar to |\spannerhead|. It is almost always the case that a
+%~ |\sidehead| row should be preceded by a |\skipabovesidehead| and followed by a
+%~ |\skipbelowsidehead|.
+
+\def \sidehead #1#2{%                                   {columns}{heading} %^tabular
+  \multispan{#1}%
+  \leftcell{\the\sideheadfont \colortext{\the\sideheadcolor}{#2}}}
+
+%                       Vertical Spacing
+%                       -------- -------
+
+
+%~ This command eliminates the inter-row space between two rows. It must be
+%~ used between two consective rows of table heads. Shorthand: |@C|.
+
+\def \closeuprows {%                                    %^tabular
+  \tabvspace{-\interrowskip}}
+
+%~ This command adds extra space between column heads and the first data row.
+%~ It must be used in tables that do not have head rules.
+
+\def \skipbelowcolhead {%                               %^tabular
+  \zchkbelowhead
+  \tabbbskip{\colheadbelowskip}}
+
+%~ This command produces the appropriate vertical space above
+%~ a spanner rule. Shorthand: |@S|. See also |\skipbelowspannerrule|.
+
+\def \skipabovespannerrule {%                           %^tabular
+  \tabbbskip{\spannerruleaboveskip}}
+
+%~ This command produces the appropriate vertical space below
+%~ a spanner rule. Shorthand: |@T|. See also |\skipabovespannerrule|.
+
+\def \skipbelowspannerrule {%                           %^tabular
+  \tabbbskip{\spannerrulebelowskip}}
+
+%~ This command produces the appropriate vertical space above
+%~ a side head. See also |\skipbelowsidehead|.
+
+\def \skipabovesidehead {%                              %^tabular
+  \tabbbskip{\sideheadaboveskip}}
+
+%~ This command produces the appropriate vertical space below
+%~ a side head. See also |\skiabovewsidehead|.
+
+\def \skipbelowsidehead {%                              %^tabular
+  \tabbbskip{\sideheadbelowskip}}
+
+%~ This command produces extra vertical space so that the base-to-base space
+%~ between the preceding and following rows is as specified.
+
+\def \tabbbskip #1{%                                    {amount} %^tabular
+  \ztabbbskip{#1,-,\dp\zrowstrut,-,\ht\zrowstrut}%
+  \the\ztabspacerow\cr}
+
+%~ This command produces extra vertical space between a row and a rule.
+%~ It must be used instead of |\tabbbskip| to obtain the desired results when
+%~ spacing above horizontal rules. See also |\tabbbskipbelowrule|.
+
+\def \tabbbskipaboverule #1{%                           {amount} %^tabular
+  \noalign{\nobreak}%
+  \ztabbbskip{#1,-,\dp\zrowstrut,-,\tabruleheight}%
+  \noalign{\if \zcolrulesenabled \zsuppresscolrules \fi}%
+  \the\ztabspacerow \if \zcolrulesenabled \zallowcolrules \fi\cr
+  \noalign{\nobreak}}
+
+%~ This command produces extra vertical space between a rule and a row.
+%~ It must be used instead of |\tabbbskip| to obtain the desired results when
+%~ spacing below horizontal rules. See also |\tabbbskipaboverule|.
+
+\def \tabbbskipbelowrule #1{%                           {amount} %^tabular
+  \ztabbbskip{#1,-,\ht\zrowstrut}%
+  \the\ztabspacerow\cr}
+
+%~ This command produces the specified amount of extra vertical space
+%~ between two rows of the table.
+
+\def \tabvspace #1{%                                    {amount} %^tabular
+  \noalign{%
+    \zsetrowclass{\zrcvspace}%
+    \zsetvspacebox{#1}}%
+  \the\ztabspacerow\cr}
+
+\def \ztabbbskip #1{%
+  \noalign{%
+    \zsetrowclass{\zrcbbskip}%
+    \if \eqlp{\zprevrowclass}{\zrcbbskip}%
+      \tdimena = 0pt\relax
+    \else
+      \calculate \tdimena = {#1}%
+    \fi
+    \zsetvspacebox{\tdimena}}}
+
+\definebox{\ztabvspacebox}
+\setbox \ztabvspacebox = \hbox{}%
+
+\def \zsetvspacebox #1{%
+  \if \dimnegp{#1}%
+    \vskip #1\relax
+    \dp\ztabvspacebox = 0pt
+  \else
+    \dp\ztabvspacebox = #1\relax
+  \fi}
+
+\def \zchkbelowhead {%
+  \noalign{%
+    \if \neqlp{\zprevrowclass}{\zrchead}%
+      \warning{needheads}{The previous row should be a row of column heads}%
+    \fi}}
+
+%                       Horizontal Rules
+%                       ---------- -----
+
+
+%~ This command produces a custom version of the partial table rule
+%~ (|\partialtabrule|). The color and thickness of the rules is specified
+%~ explicitly.
+
+\def \custompartialtabrule #1#2#3{%             {color}{thickness}{columns} %^tabular
+  \multispan{#3}%
+  \color{#1}%
+  \ruleleaders{\hrule height #2 depth 0pt}%
+  \endcolor}
+
+%~ This command produces a custom version of the table spanner rule
+%~ (|\spannerrule|). The color and thickness of the rules is specified
+%~ explicitly.
+
+\def \customspannerrule #1#2#3{%                {color}{thickness}{columns} %^tabular
+  \multispan{#3}%
+  \rowstrut
+  \color{#1}%
+  \ruleleaders{\hrule height #2 depth 0pt}%
+  \endcolor}
+
+%~ This command produces a custom version of the table rule
+%~ (|\tabrule|). The color and thickness of the rules is specified
+%~ explicitly.
+
+\def \customtabrule #1#2{%                              {color}{thickness} %^tabular
+  \multispan{\tabcolcount}%
+  \color{#1}%
+  \ruleleaders{\hrule height #2 depth 0pt}%
+  \endcolor\cr}
+
+%~ This command produces a table rule across the specified number of columns.
+%~ It is similar to |\spannerrule| but sets a rule of the same thickness
+%~ as |\tabrule|.
+
+\def \partialtabrule #1{%                                       {columns} %^tabular
+  \custompartialtabrule{\the\tabrulecolor}{\tabruleheight}{#1}}
+
+%~ This command produces a spanner rule across the specified number of columns.
+%~ The color and thickness of the rule are determined by the design. A row with
+%~ spanner rules is usually preceded and followed by |\skipabovespannerrule| and
+%~ |\skipbelowspannerrule|.
+
+\def \spannerrule #1{%                                          {columns} %^tabular
+  \customspannerrule{\the\spannerrulecolor}{\spannerruleheight}{#1}}
+
+%~ This command produces the standard bottom rule in a table. Which rules are
+%~ required is specified in the |\style| parameter of the |\tabular| design.
+%~ This command is not followed by |\cr|.
+
+\def \tabbottomrule {%                                          %^tabular
+  \tabbbskipaboverule{\tabbottomruleaboveskip}%
+  \tabrule}
+
+%~ This command produces the standard head rule in a table. Which rules are
+%~ required is specified in the |\style| parameter of the |\tabular| design.
+%~ This command is not followed by |\cr|.
+
+\def \tabheadrule {%                                            %^tabular
+  \zchkbelowhead
+  \tabbbskipaboverule{\colheadbelowskip}%
+  \tabrule
+  \tabbbskipbelowrule{\tabheadrulebelowskip}}
+
+%~ This command produces a table rule across the entire width of the table. The
+%~ color and thickness of the rule are determined by the design. This command
+%~ is not followed by |\cr|.
+
+\def \tabrule {%                                                %^tabular
+  \customtabrule{\the\tabrulecolor}{\tabruleheight}}
+
+%~ This command produces the standard top rule in a table. Which rules are
+%~ required is specified in the |\style| parameter of the |\tabular| design.
+%~ This command is not followed by |\cr|.
+
+\def \tabtoprule {%                                             %^tabular
+  \tabrule
+  \noalign{\nobreak}%
+  \tabbbskipbelowrule{\tabtoprulebelowskip}}
+
+%                       Vertical Rules
+%                       -------- -----
+
+
+%~ This command is used in the normally empty cell corresponding to a vertical
+%~ rule column. It adjusts the width, height, and/or depth of the rule in that
+%~ cell. To adjust one of those dimensions, specify the new dimension in
+%~ points, without the usual |pt|, in the appropriate argument position.
+%~ Omitted dimensions will have their standard values. You must specify both
+%~ commas and the semicolon. Shorthand: |@A*width*,*height*,*depth*;|
+
+\def \adjustcolrule #1,#2,#3;{%                         width,height,depth; %^tabular
+  \if \notp{\emptyargp{#1}}width #1pt\fi
+  \if \notp{\emptyargp{#2}}height #2pt\fi
+  \if \notp{\emptyargp{#3}}depth #3pt\fi\relax}
+
+%~ This command can be used between rows of a table to allow all vertical
+%~ rules. This is typically done after the column head portion of a table. If
+%~ |\allowcolrules| appears just before |\tabheadrule|, it is deferred until
+%~ after the vertical space above the horizontal rule, so that the vertical
+%~ rules recommence precisely at the horizontal rule. See also
+%~ |\suppresscolrules|.
+
+\def \allowcolrules {%                                  %^tabular
+  \noalign{%
+    \zallowcolrules
+    \global\setflag \zcolrulesenabled = \true}}
+
+\def \zallowcolrules {%
+  \gdef \zcolrulegate {}}
+
+%~ This command can be used between rows of a table to suppress all vertical
+%~ rules. This is typically done for the column head portion of a table.
+%~ See also |\allowcolrules|.
+
+\def \suppresscolrules {%                               %^tabular
+  \noalign{\zsuppresscolrules}}
+
+\def \zsuppresscolrules {%
+  \gdef \zcolrulegate {\nocolrule}}
+
+%~ This command is used in the normally empty cell corresponding to a vertical
+%~ rule column. It suppresses the vertical rule in that cell. Shorthand: |@N|.
+
+\def \nocolrule {%                                      %^tabular
+  width 0pt }
+
+%                       Inter-Row Facilities
+%                       --------- ----------
+
+
+%~ This command can be used between rows of a table to insert vertical material
+%~ that is independent of the rows themselves. It is rarely needed.
+
+\def \adjusttabular #1{%                                {commands} %^tabular
+  \noalign{#1}}
+
+\let \adjusttab = \adjusttabular
+
+%                       Low-Level Alignment Facilities
+%                       --------- --------- ----------
+
+
+\let \completerow = \cr
+
+\def \ialign {\everycr = {}\tabskip=0pt \halign}
+
+\def \oalign #1{%                                       {row...}
+  \ensurepar
+  \vtop{\baselineskip = 0pt
+        \lineskip = .25ex
+        \ialign{##\cr #1\crcr}}}
+
+\def \ooalign {%
+  \lineskiplimit = -\maxdimen
+  \oalign}
+
+\def \ozalign {%
+  \lineskiplimit = 0pt\relax
+  \oalign}

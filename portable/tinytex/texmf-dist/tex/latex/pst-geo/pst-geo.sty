@@ -1,0 +1,12 @@
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-geo}[2016/11/28 package wrapper for PSTricks pst-geo.tex (hv)]
+\input pst-geo.tex
+\ProvidesFile{pst-geo.tex}
+  [\filedate\space v\fileversion\space `PST-geo' (hv)]
+
+\IfFileExists{pst-geo.pro}{%
+  \ProvidesFile{pst-geo.pro}
+    [2016/12/07 v. 0.03,  PostScript prologue file (hv)]
+\@addtofilelist{pst-geo.pro}}{}%
+\endinput
+

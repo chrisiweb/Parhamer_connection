@@ -1,0 +1,70 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Merge Print
+%
+% Synopsis:  This module provides a simple merge print facility for ZzTeX.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   17 October 2000
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Merge Fields
+%                       ----- ------
+
+
+\setlist \zmrgfields = {}
+\definecount{\zmrgcount}{0}
+
+\def \mergefields #1{%
+  \commalist{\zmrgfields}{#1}%
+  \zmrgcount = 0
+  \maplist{\increment \zmrgcount
+           \withname\edef {\zmrgfmap:##1}{\the\zmrgcount}}
+          {\zmrgfields}}
+
+%                       Merge Text
+%                       ----- ----
+
+
+\definetoks{\zmrgtoks}
+
+\long\def \mergetext #1\endmergetext{%
+  \zmrgtoks = {#1}}
+
+%                       Merge Print
+%                       ----- -----
+
+
+\definecount{\zmrgi}{0}
+
+
+\def \mergeprint {%
+  \zmrgi = 0
+  \zmrgprinta}
+
+\def \zmrgprinta #1{%
+  \if \lssp{\zmrgi}{\zmrgcount}%
+    \increment \zmrgi
+    \withname\def {\zmrgvmap:\the\zmrgi}{#1}%
+    \let \znext = \zmrgprinta
+  \else
+    \let \znext = \zmrgprintb
+  \fi
+  \znext}
+
+\def \zmrgprintb {%
+  \freshpage{\short\floats\any}%
+  \the\zmrgtoks}
+
+%                       Merge a Field
+%                       ----- - -----
+
+
+\def \merge #1{%
+  \edef \tcounta {\name{\zmrgfmap:#1}}%
+  \edef \znext {\name{\zmrgvmap:\the\tcounta}}%
+  \znext}

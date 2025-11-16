@@ -34,13 +34,13 @@
 %% The list of all files belonging to the LaTeX `Tools Bundle' is
 %% given in the file `manifest.txt'.
 %% 
-%% Copyright 1996 1997 1998 1999 2002 2003 2004 2016 2017 2019 2021 2022 2023
+%% Copyright 1996 1997 1998 1999 2002 2003 2004 2016 2017 2019 2021 2022 2023 2025
 %% David Carlisle Frank Mittelbach
 %%
 %% Development of this package was commissioned by Y&Y Inc.
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{bm}
-          [2023/12/19 v1.2f Bold Symbol Support (DPC/FMi)]
+          [2025/10/21 v1.2g Bold Symbol Support (DPC/FMi)]
 \DeclareOption{nopmb}{\let\bm@pmb@\@firstofone}
 \DeclareOption{warn}{\def\bm@info{\PackageWarningNoLine{bm}}}
 \DeclareOption{info}{\def\bm@info#1{\PackageInfo{bm}{#1\@gobble}}}
@@ -424,6 +424,7 @@
  \bm@changefam{000}%
  \bm@xadd{\radical\the\count@\space}}%
 \edef\bm@mchar@{\meaning\mathchar}
+\edef\bm@char@{\meaning\char}
 \edef\bm@umchar@{\string\U\expandafter\@gobble\meaning\mathchar}
 \def\bm@mchar@test#1"#2"#3"#4"#5\@nil#6{%
   \xdef\meaning@{#1}%
@@ -434,12 +435,17 @@
     \ifx\meaning@\bm@umchar@
        \bm@umathchar{"#2}{"#3}{"#4}%
     \else
-      \ifx\bm@previous\@empty
-        \ifx\relax#6%
-          \gdef\bm@first{#6}%
+      \ifx\meaning@\bm@char@
+        \count@\mathcode"#2\relax
+        \bm@mathchar
+      \else
+        \ifx\bm@previous\@empty
+          \ifx\relax#6%
+            \gdef\bm@first{#6}%
+          \fi
         \fi
+        \bm@add{#6}%
       \fi
-      \bm@add{#6}%
     \fi
   \fi}
 \def\bm@changefam#1{%

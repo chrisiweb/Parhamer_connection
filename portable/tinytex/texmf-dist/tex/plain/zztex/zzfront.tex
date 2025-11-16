@@ -1,0 +1,247 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Front Matter Facilities
+%
+% Synopsis:  This file provides facilities for typesetting the front
+%            matter of a book.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   24 September 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Copyright Page
+%                       --------- ----
+
+
+\def \copyrightline #1#2{%                              {year}{publisher}
+  \noindent Copyright \copyright\ #1 by #2\par}
+
+\def \concisecopyrightline #1#2{%                       {year}{publisher}
+  \noindent \copyright\ #1 by #2\par}
+
+\def \superconcisecopyrightline #1#2{%                  {year}{publisher}
+  \noindent \copyright\ #1 #2\par}
+
+\def \copyrightnotice {%
+  All rights reserved.  No part of this publication may be reproduced,
+  stored in a retrieval system, or transmitted, in any form or by any
+  means, electronic, mechanical, photocopying, recording, or otherwise,
+  without the prior written permission of the publisher.}
+
+
+% We provide a standard text design for the Library of Congress
+% Cataloging-in-Publication data.
+
+\def \textcipdataidesign {%
+  \aboveskip = \noskip
+  \belowskip = \noskip
+  \bodyfont = {}%
+  \setflag \enabletabbing = \false
+  \leftindent = 0pt
+  \parindent = \enclosingparindent
+  \parrag = \enclosingparrag
+  \parskip = 0pt
+  \rightindent = 0pt
+  \setflag \verbatimlines = \true
+  \width = \naturalwidth}
+
+\def \textcipdataiidesign {%
+  \textcipdataidesign}
+
+%                       Table of Contents Entries
+%                       ----- -- -------- -------
+
+
+% This macro is used to write a ToC entry in the cross-reference file.
+
+\def \ztocentry #1#2#3#4{%              {number}{title}{level}{allow?}
+  {\ztoksa = {#2}%
+   \tcounta = #3\relax
+   \edef \znext {\noexpand\xref{toc}{\noexpand\folio}{#1}{\the\ztoksa}
+                                    {\the\divisionname,\the\tcounta,%
+                                     \the\difficulty,\if #41\else 0\fi}}% 
+   \znext}}
+
+% This is the public command for writing ToC entries.
+
+\def \tocentry #1#2#3{%                         {number}{title}{level}
+  \ztocentry{#1}{#2}{#3}{\true}}
+
+% This macro allows the compositor to adjust pages in the ToC.
+
+\setlist \ztocadjlist = {}
+
+\long\def \tocadjustment #1#2#3{%               {toc-type}{number}{commands}
+  \append{{#1}{#2}{#3}}{\ztocadjlist}}
+
+%                       Table of Contents Block
+%                       ----- -- -------- -----
+
+
+\defineblock{\toc}{\endtoc}{\false}{}
+
+%~block toc Type
+% \abovepenalty = integer               % Penalty above text.
+% \aboveskip = glue                     % Space b/b above text.
+% \belowpenalty = integer               % Penalty below text.
+% \belowskip = glue                     % Space b/b below text.
+% \bodyfont = {\size\style}             % Default font for body.
+% \divisions = {...}                    % List of divisions to include.
+% \foliofont = {\size\style}            % Default font for folio.
+% \leftindent = glue                    % Left indentation.
+% \levels = {...}                       % List of levels to include.
+% \setflag \minitoc = boolean           % Is this a miniToC?
+% \parindent = dimen                    % Paragraph indentation.
+% \parrag = dimen                       % Paragraph raggedness.
+% \parskip = glue                       % Paragraph skip.
+% \rightindent = glue                   % Right indentation.
+% \tocwidtha = dimen                    % General width a.
+% \tocwidthb = dimen                    % General width b.
+% \tocwidthc = dimen                    % General width c.
+% \width = dimen                        % Line width
+% \xreffile = {...}                     % Name of composite xref file to use.
+%~end
+
+\definetoks{\foliofont}
+\definetoks{\levels}
+\definedimen{\tocwidtha}{0pt}
+\definedimen{\tocwidthb}{0pt}
+\definedimen{\tocwidthc}{0pt}
+\definetoks{\xreffile}
+
+\definecount{\prevtocprimarylevel}{-1}          % Previous level >= 70.
+
+
+\def \toc #1{%                                          {type}
+  \beginblockscope{toc}%
+  \def \ztoctype {#1}%
+  \global\increment \tocdepth
+  \abovepenalty = \breaknever                   %~default hard
+  \belowpenalty = \breakbest                    %~default hard
+  \bodyfont = {}%                               %~default soft
+  \divisions = {\all}%                          %~default soft
+  \setflag \minitoc = \false                    %~default soft
+  \tocwidtha = 0pt                              %~default soft
+  \tocwidthb = 0pt                              %~default soft
+  \tocwidthc = 0pt                              %~default soft
+  \xreffile = {}%                               %~default hard
+  \processdesign{\toc}{#1}%
+  \global\increment \tocnumber
+  \commalist{\zlevlist}{\the\levels}%
+  \the\bodyfont
+  \tocformat
+  \endtoc}
+
+\def \endtoc {%
+  \endgraf
+  \endtocformat
+  \global\decrement \tocdepth
+  \endblockscope{toc}}
+
+\def \tocformat {%
+  \endgraf
+  \bbskipabove{\abovepenalty}{\aboveskip}%
+  \alterindentation{\leftindent}{\rightindent}%
+  \settextwidth{\width}%
+  \setparrag{\parrag}%
+  \zadjtitle = \if \minitoc \zadjtitleminitoc \else \zadjtitletoc \fi
+                            % \adjusttitle should adjust appropriate ToC.
+  \def \zadjloc {\toc}%
+  \if \emptytoksp{\xreffile}%
+    \zxloadcomp{\xrefloadtocmode}%
+  \else
+    \zxloadothercomp{\the\xreffile}{\xrefloadtocmode}%
+  \fi}
+
+\def \endtocformat {%
+  \fakepar                                      % In case the ToC is empty.
+  \setlist \ztocadjlist = {}%
+  \bbskipbelowblock{\belowpenalty}{\belowskip}}
+
+
+% The following macro is called for each entry in the cross-reference file.
+% Each entry must NOT be in a group.
+
+\def \xreftoc #1#2#3#4{%
+  \ifnum \xrefmode=\xrefloadtocmode
+    \xreftocb{#1}{#2}{#3}{#4}%
+  \fi}
+
+\definecount{\ztoclevel}{0}
+
+\def \xreftocb #1#2#3#4{%               {page}{number}{title}
+                        %               {division,level,difficulty,allow}
+  \def \znext ##1,##2,##3,##4,##5\zmark{%
+    \ztoksa={##1}\ztoclevel=##2\difficulty=##3\tcounta=##4\relax}%
+  \znext #4,1,\zmark%
+  \if \posp{\tcounta}%
+    \edef \znext {\noexpand\inclusionlist\noexpand\ztoctest
+                                         {\the\ztoksa}{\the\divisions}}%
+    \znext
+    \if \ztoctest
+      \ztesttoclev{\ztoclevel}%
+      \if \ztoctest
+        \zchktocadj{#2}{#3}%
+        \the\bodyfont
+        \name{\toc\ztoctype\romannumeral\ztoclevel format}{#1}{#2}{#3}%
+        \if \gtrp{\ztoclevel}{69}%
+          \prevtocprimarylevel = \ztoclevel     % Save ToC level.
+          \global\authortext = {}%              % Clear author text.
+        \fi
+      \fi
+    \fi
+  \fi}
+
+\def \ztesttoclev #1{%                                  {level}
+  \setflag \ztoctest = \false
+  \maplist{\ztesttoca{#1}##1-\zmark}{\zlevlist}}
+
+\def \ztesttoca #1#2-#3\zmark{%                         {n}low-high\zmark
+  \if \emptyargp{#3}%
+    \setflag \ztoctest = {\eqlp{#1}{#2}}%
+  \else
+    \ztesttocb{#1}{#2}#3%
+  \fi
+  \if \ztoctest \exitmaplist \fi}
+  
+\def \ztesttocb #1#2#3-{%                               {n}{low}high-
+  \setflag \ztoctest = {\andp{\notp{\lssp{#1}{#2}}}
+                             {\notp{\gtrp{#1}{#3}}}}}
+
+\long\def \zchktocadj #1#2{%                            {number}{title}  
+  \maplist{\zchktocadjb##1{#1}{#2}}{\ztocadjlist}}
+
+\long\def \zchktocadjb #1#2#3#4#5{%     {type}{number}{commands}{number}{title}
+  {\stringeql{\znext}{#1}{\ztoctype}%
+   \if \znext
+     \stringeql{\znext}{#2}{#4}%
+     \if \znext
+       #3\relax
+     \else
+       \def \tempa {#2}%                % Don't expand titles.
+       \def \tempb {#5}%
+       \if \tokeqlp{\tempa}{\tempb}%
+         #3\relax
+       \fi
+     \fi
+   \fi}}
+
+\def \bbskipabovetochead #1#2#3#4#5{%   {level}{penalty}{skip}{penalty}{skip} 
+  \if \eqlp{\prevtocprimarylevel}{#1}%
+    \bbskipabove{#2}{#3}%
+  \else
+    \bbskipabove{#4}{#5}%
+  \fi}
+
+\definetoks{\zdelaytoc}
+
+\def \delaytocformatter #1{%
+  \global\zdelaytoc = \expandafter{\the\zdelaytoc #1}}
+
+\def \dodelayedtocformatter {%
+  \the\zdelaytoc
+  \global\zdelaytoc = {}}

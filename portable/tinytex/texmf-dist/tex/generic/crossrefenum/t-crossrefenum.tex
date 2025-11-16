@@ -1,0 +1,22 @@
+%D \module
+%D   [     file=t-crossrefenum,
+%D      version=1.0, % May differ from crossrefenum.tex
+%D        title=\CONTEXT\ module for crossrefenum,
+%D     subtitle=Smart typesetting of enumerated cross-references for various TeX formats,
+%D       author=Bastien Dumont,
+%D         date=2022/11/11,
+%D          url=https://ctan.org/tex-archive/macros/generic/crossrefenum/tex/t-crossrefenum.tex,
+%D    copyright=Bastien Dumont,
+%D      license=GNU Public License v. 3.0 or higher]
+
+% This file cannot be loaded in main-test.tex for it would load the version of crossrefenum.tex
+% installed in the texmf tree.
+% As a consequence, it should not be changed to correct bugs or implement new features.
+
+\startmodule[crossrefenum]
+\unprotect
+
+\input crossrefenum.tex
+
+\protect
+\stopmodule

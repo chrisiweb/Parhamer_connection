@@ -1,0 +1,203 @@
+%%
+%% This is file `latex-lab-testphase-context.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-context.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-context.dtx (C) Copyright 2025 LaTeX Project
+\def\ltlabcontextdate{2025-10-09}
+\def\ltlabcontextversion{0.5b}
+
+\ProvidesExplPackage {latex-lab-testphase-context}
+                     {\ltlabcontextdate}
+                     {\ltlabcontextversion}
+  {Providing context for instance, etc.}
+\RequirePackage{latex-lab-testphase-block}
+\bool_new:N \g__context_debug_bool
+\cs_new_eq:NN \__context_debug:n \use_none:n
+\cs_new_eq:NN \__context_debug_typeout:n \use_none:n
+\cs_new_protected:Npn \context_debug_on:
+  {
+    \bool_gset_true:N \g__context_debug_bool
+    \__context_debug_gset:
+  }
+\cs_new_protected:Npn \context_debug_off:
+  {
+    \bool_gset_false:N \g__context_debug_bool
+    \__context_debug_gset:
+  }
+\cs_new_protected:Npn \__context_debug_gset:
+  {
+    \cs_gset_protected:Npx \__context_debug:n ##1
+      { \bool_if:NT \g__context_debug_bool {##1} }
+    \cs_gset_protected:Npx \__context_debug_typeout:n ##1
+      { \bool_if:NT \g__context_debug_bool { \typeout{[Context]~ ==>~ ##1} } }
+  }
+\cs_new_protected:Npn \DebugContextsOn  { \context_debug_on:  }
+\cs_new_protected:Npn \DebugContextsOff { \context_debug_off: }
+\DebugContextsOff
+\str_new:N \l_context_primary_str
+\cs_new_protected:Npn \SetPrimaryContext #1 {
+  \str_set:Ne \l_context_primary_str
+     { \tl_if_empty:nF { #1 }
+       { \cs_if_exist_use:cF
+         { g__context_primary_ \l_context_primary_str _ #1 _tl }
+         { \cs_if_exist_use:cF
+           { g__context_primary_ * _ #1 _tl }
+           { #1 }
+         }
+       }
+     }
+  \__context_debug_typeout:n{set~primary~ <-~ \l_context_primary_str }
+  \SetSecondaryContext {}
+}
+\cs_new_protected:Npn \DeclarePrimaryContextRule #1#2#3 {
+  \tl_gclear_new:c { g__context_primary_ #1 _ #2 _tl }
+  \tl_gset:cn      { g__context_primary_ #1 _ #2 _tl } {#3}
+}
+\str_new:N \l_context_secondary_str
+\cs_new_protected:Npn \SetSecondaryContext #1 {
+  \str_set:Ne \l_context_secondary_str
+     { \tl_if_empty:nF { #1 }
+       { \cs_if_exist_use:cF
+         { g__context_secondary_ \l_context_secondary_str _ #1 _tl }
+         { \cs_if_exist_use:cF
+           { g__context_secondary_ * _ #1 _tl }
+           { #1 }
+         }
+       }
+     }
+  \__context_debug_typeout:n{set~ secondary~ <-~ \l_context_secondary_str }
+}
+\cs_new_protected:Npn \DeclareSecondaryContextRule #1#2#3 {
+  \tl_gclear_new:c { g__context_secondary_ #1 _ #2 _tl }
+  \tl_gset:cn      { g__context_secondary_ #1 _ #2 _tl } {#3}
+}
+\def\@setfontsize#1#2#3{\@nomath#1%
+  \ifx\protect\@typeset@protect
+  \let\@currsize#1%
+  \begingroup
+    \escapechar\m@ne
+    \expandafter
+  \endgroup
+    \expandafter
+  \SetSecondaryContext
+    \expandafter {\string#1}%
+  \fi
+  \fontsize{#2}{#3}\selectfont
+}
+
+\DeclareSecondaryContextRule{*}{normalsize}{}
+\AddToHook{cmd/@float/before}{\SetPrimaryContext{float}}
+
+\cs_set_protected:Npn \__template_use_instance_aux:nn #1#2 {
+  \__template_debug:n { \str_if_empty:NF \l_context_primary_str
+                  { \__template_debug_typeout:n {primary~ context~ is~
+                                        '\l_context_primary_str' } } }
+  \__template_debug:n { \str_if_empty:NF \l_context_secondary_str
+                  { \__template_debug_typeout:n {secondary~ context~ is~
+                                        '\l_context_secondary_str' } } }
+  \tl_if_empty:NTF \l__context_secondary_tl
+     {
+       \str_if_empty:NTF \l_context_primary_str
+          {
+            \__template_if_instance_exist:nnTF { #1 } { #2 }
+              { \__template_use_existing_instance:nn { #1 } { #2 } }
+              { \msg_error:nnnn { template } { unknown-instance } {#1} {#2} }
+          }
+          {
+            \__template_if_instance_exist:nnTF { #1 } { #2 : \l_context_primary_str  }
+               { \__template_use_existing_instance:nn { #1 }
+                                              { #2 : \l_context_primary_str } }
+              {
+                \__template_if_instance_exist:nnTF { #1 } { #2 }
+                  { \__template_use_existing_instance:nn { #1 } { #2 } }
+                  { \msg_error:nnnn { template } { unknown-instance } {#1} {#2} }
+              }
+          }
+     }
+     {
+       \__template_if_instance_exist:nnTF { #1 }
+                                  { #2 : \l_context_primary_str
+                                       : \l_context_secondary_str  }
+         { \__template_use_existing_instance:nn { #1 }
+            { #2 : \l_context_primary_str : \l_context_secondary_str } }
+         {
+           \str_if_empty:NTF \l_context_primary_str
+              {
+                \__template_if_instance_exist:nnTF { #1 } { #2 }
+                  { \__template_use_existing_instance:nn { #1 } { #2 } }
+                  { \msg_error:nnnn { template } { unknown-instance } {#1} {#2} }
+              }
+              {
+                \__template_if_instance_exist:nnTF { #1 }
+                                           { #2 : \l_context_primary_str  }
+                  { \__template_use_existing_instance:nn { #1 }
+                                                  { #2 : \l_context_primary_str } }
+                  {
+                    \__template_if_instance_exist:nnTF { #1 } { #2 }
+                      { \__template_use_existing_instance:nn { #1 } { #2 } }
+                      { \msg_error:nnnn { template } { unknown-instance } {#1} {#2} }
+                  }
+              }
+         }
+     }
+}
+\cs_new_protected:Npn \__template_use_existing_instance:nn #1#2 {
+  \__template_debug_typeout:n{use~ '#1'~ instance:~ #2  \on@line }
+  \use:c { \c__template_instances_root_tl #1 / #2 }
+}
+\bool_new:N \g__template_debug_bool
+\cs_new_eq:NN \__template_debug:n \use_none:n
+\cs_new_eq:NN \__template_debug_typeout:n \use_none:n
+\cs_new_protected:Npn \template_debug_on:
+  {
+    \bool_gset_true:N \g__template_debug_bool
+    \__template_debug_gset:
+  }
+\cs_new_protected:Npn \template_debug_off:
+  {
+    \bool_gset_false:N \g__template_debug_bool
+    \__template_debug_gset:
+  }
+\cs_new_protected:Npn \__template_debug_gset:
+  {
+    \cs_gset_protected:Npx \__template_debug:n ##1
+      { \bool_if:NT \g__template_debug_bool {##1} }
+    \cs_gset_protected:Npx \__template_debug_typeout:n ##1
+      { \bool_if:NT \g__template_debug_bool { \typeout{[Template]~ ==>~ ##1} } }
+  }
+\cs_new_protected:Npn \DebugTemplatesOn  { \template_debug_on:  }
+\cs_new_protected:Npn \DebugTemplatesOff { \template_debug_off: }
+\DebugTemplatesOn
+\endinput
+%%
+%% End of file `latex-lab-testphase-context.sty'.

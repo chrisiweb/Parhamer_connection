@@ -530,18 +530,23 @@ end
 -- This table stores capture maps, numbered consecutively
 Babel.capture_maps = {}
 
+function Babel.esc_hex_to_char(h)
+  if tex.getcatcode(tonumber(h, 16)) ~= 11 and
+     tex.getcatcode(tonumber(h, 16)) ~= 12 then
+    return string.format([[\Uchar"%X ]], tonumber(h,16))
+  else
+    return unicode.utf8.char(tonumber(h, 16))
+  end
+end
+
 -- The following functions belong to the next macro
 function Babel.capture_func(key, cap)
   local ret = "[[" .. cap:gsub('{([0-9])}', "]]..m[%1]..[[") .. "]]"
   local cnt
   local u = unicode.utf8
+  ret = u.gsub(ret, '{(%x%x%x%x+)}', '\x01%1\x04')
   ret, cnt = ret:gsub('{([0-9])|([^|]+)|(.-)}', Babel.capture_func_map)
-  if cnt == 0 then
-    ret = u.gsub(ret, '{(%x%x%x%x+)}',
-          function (n)
-            return u.char(tonumber(n, 16))
-          end)
-  end
+  ret = u.gsub(ret, '\x01(%x%x%x%x+)\x04', Babel.esc_hex_to_char)
   ret = ret:gsub("%[%[%]%]%.%.", '')
   ret = ret:gsub("%.%.%[%[%]%]", '')
   return key .. [[=function(m) return ]] .. ret .. [[ end]]
@@ -554,11 +559,11 @@ end
 -- Handle the {n|abc|ABC} syntax in captures
 function Babel.capture_func_map(capno, from, to)
   local u = unicode.utf8
-  from = u.gsub(from, '{(%x%x%x%x+)}',
+  from = u.gsub(from, '\x01(%x%x%x%x+)\x04',
        function (n)
          return u.char(tonumber(n, 16))
        end)
-  to = u.gsub(to, '{(%x%x%x%x+)}',
+  to = u.gsub(to, '\x01(%x%x%x%x+)\x04',
        function (n)
          return u.char(tonumber(n, 16))
        end)

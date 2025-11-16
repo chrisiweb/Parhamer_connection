@@ -1,0 +1,352 @@
+% txi-zh.tex -- Chinese translations and font definitions for texinfo.tex.
+%
+% Copyright 1999-2022 Free Software Foundation, Inc.
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 3 of the license, or (at
+% your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%
+% Modified from txi-ja.tex by Wu XiangCheng
+
+\txisetlanguage{chinese}{2}{3}
+
+\plainnonfrenchspacing
+
+\gdef\putwordAppendix{附录}
+\gdef\putwordChapter{章}
+\gdef\putworderror{错误}
+\gdef\putwordfile{文件}
+\gdef\putwordin{在}
+\gdef\putwordIndexIsEmpty{（索引为空白）}
+\gdef\putwordIndexNonexistent{（索引不存在）}
+\gdef\putwordInfo{Info}
+\gdef\putwordInstanceVariableof{实例变量}
+\gdef\putwordMethodon{Method on}
+\gdef\putwordNoTitle{无题}
+\gdef\putwordof{之}
+\gdef\putwordon{在}
+\gdef\putwordpage{页}
+\gdef\putwordsection{节}
+\gdef\putwordSection{节}
+\gdef\putwordsee{见}
+\gdef\putwordSee{见}
+\gdef\putwordSeeAlso{也见}
+\gdef\putwordShortTOC{简要目录}
+\gdef\putwordTOC{目录}
+
+\gdef\putwordMJan{1月}
+\gdef\putwordMFeb{2月}
+\gdef\putwordMMar{3月}
+\gdef\putwordMApr{4月}
+\gdef\putwordMMay{5月}
+\gdef\putwordMJun{6月}
+\gdef\putwordMJul{7月}
+\gdef\putwordMAug{8月}
+\gdef\putwordMSep{9月}
+\gdef\putwordMOct{10月}
+\gdef\putwordMNov{11月}
+\gdef\putwordMDec{12月}
+
+\gdef\putwordDefmac{宏}
+\gdef\putwordDefspec{特殊形式}
+\gdef\putwordDefvar{变量}
+\gdef\putwordDefopt{选项}
+\gdef\putwordDeffunc{函数}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% produce yyyy 年 mm 月 dd 日
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\today{%
+  \number\year 年
+  \ \ifcase\month
+  \or\putwordMJan\or\putwordMFeb\or\putwordMMar\or\putwordMApr
+  \or\putwordMMay\or\putwordMJun\or\putwordMJul\or\putwordMAug
+  \or\putwordMSep\or\putwordMOct\or\putwordMNov\or\putwordMDec
+  \fi
+  \number\day 日}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fix Chinese chapter/section display
+% modify \chapmacro, \sectionheading, \xrefX, \Ynumbered
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\thischapterAppendix{%
+  \putwordAppendix{} \thischapternum\space\thischaptername}
+
+\def\thischapterChapter{%
+  第\ \thischapternum \putwordChapter{}\space\thischaptername}
+
+\def\thissectionDef{%
+  \putwordAppendix{} \thissectionnum\putwordSection{}\space\thissectionname}
+
+\def\putpageref#1{ \refx{#1-pg}\tie\putwordpage}
+
+\def\Ynumbered{%
+  \ifnum\secno=0
+    第\ \the\chapno\tie\putwordChapter
+  \else \ifnum\subsecno=0
+    \the\chapno.\the\secno\putwordSection
+  \else \ifnum\subsubsecno=0
+    \the\chapno.\the\secno.\the\subsecno\tie\putwordSection
+  \else
+    \the\chapno.\the\secno.\the\subsecno.\the\subsubsecno\tie\putwordSection
+  \fi\fi\fi
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chinese font definitions
+% font choice: 1. Noto Serif CJK 思源宋体 NotoSerifCJK-Regular.ttc
+%              2. AR PL UKai     文鼎悠楷 ukai.ttc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifx\txizhpackage\thisisundefined
+  \errmessage{Required CJK package is not found.
+  Used `texinfo-zh.tex' instead of `texinfo.tex'}
+\else
+  %
+  % For XeTeX
+  %
+  \ifx\XeTeXrevision\thisisundefined
+  \else
+    % Setting Chinese font instead of Chinese font
+    \def\setzhfont#1{%
+      \let\zhfont#1\let\zhpunctfont#1%
+      \let\zhextafont#1\let\zhextbfont#1%
+    }
+
+    % Definitions for a main text size of 11pt.  (The default in Texinfo.)
+    % Chinese font size is muliplied by 0.962216.
+    \let\definealphabetictextfontsizexi\definetextfontsizexi
+    \gdef\definetextfontsizexi{%
+      % Text fonts (11.2pt, magstep1).
+      \font\textmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 10.78pt
+      \font\textgtzzz"[ukai.ttc]:mapping=tex-text" at 10.78pt
+      \def\textmc{\setzhfont\textmczzz}
+      \def\textgt{\setzhfont\textgtzzz}
+
+      % Fonts for indices, footnotes, small examples (9pt).
+      \font\smallmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 8.66pt
+      \font\smallgtzzz"[ukai.ttc]:mapping=tex-text" at 8.66pt
+      \def\smallmc{\setzhfont\smallmczzz}
+      \def\smallgt{\setzhfont\smallgtzzz}
+
+      % Fonts for small examples (8pt).
+      \font\smallermczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 7.70pt
+      \font\smallergtzzz"[ukai.ttc]:mapping=tex-text" at 7.70pt
+      \def\smallermc{\setzhfont\smallermczzz}
+      \def\smallergt{\setzhfont\smallergtzzz}
+
+      % Fonts for title page (20.4pt):
+      \font\titlemczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 19.63pt
+      \font\titlegtzzz"[ukai.ttc]:mapping=tex-text" at 19.63pt
+      \def\titlemc{\setzhfont\titlemczzz}
+      \def\titlegt{\setzhfont\titlegtzzz}
+
+      % Chapter (and unnumbered) fonts (17.28pt).
+      \font\chapmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 16.63pt
+      \font\chapgtzzz"[ukai.ttc]:mapping=tex-text" at 16.63pt
+      \def\chapmc{\setzhfont\chapmczzz}
+      \def\chapgt{\setzhfont\chapgtzzz}
+
+      % Section fonts (14.4pt).
+      \font\secmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 13.86pt
+      \font\secgtzzz"[ukai.ttc]:mapping=tex-text" at 13.86pt
+      \def\secmc{\setzhfont\secmczzz}
+      \def\secgt{\setzhfont\secgtzzz}
+
+      % Subsection fonts (13.15pt).
+      \font\ssecmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 12.65pt
+      \font\ssecgtzzz"[ukai.ttc]:mapping=tex-text" at 12.65pt
+      \def\ssecmc{\setzhfont\ssecmczzz}
+      \def\ssecgt{\setzhfont\ssecgtzzz}
+
+      % Reduced fonts for @acro in text (10pt).
+      \font\reducedmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 9.62pt
+      \font\reducedgtzzz"[ukai.ttc]:mapping=tex-text" at 9.62pt
+      \def\reducedmc{\setzhfont\reducedmczzz}
+      \def\reducedgt{\setzhfont\reducedgtzzz}
+
+      % Fonts for short table of contents.
+      \font\shortcontmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 11.55pt
+      \font\shortcontgtzzz"[ukai.ttc]:mapping=tex-text" at 11.55pt
+      \def\shortcontmc{\setzhfont\shortcontmczzz}
+      \def\shortcontgt{\setzhfont\shortcontgtzzz}
+
+      \definealphabetictextfontsizexi
+    }
+
+    % Definitions for a main text size of 10pt.
+    % Chinese font size is muliplied by 0.962216.
+    \let\definealphabetictextfontsizex\definetextfontsizex
+    \gdef\definetextfontsizex{%
+      % Text fonts (10pt).
+      \font\textmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 9.62pt
+      \font\textgtzzz"[ukai.ttc]:mapping=tex-text" at 9.62pt
+      \def\textmc{\setzhfont\textmczzz}
+      \def\textgt{\setzhfont\textgtzzz}
+
+      % Fonts for indices, footnotes, small examples (9pt).
+      \font\smallmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 8.66pt
+      \font\smallgtzzz"[ukai.ttc]:mapping=tex-text" at 8.66pt
+      \def\smallmc{\setzhfont\smallmczzz}
+      \def\smallgt{\setzhfont\smallgtzzz}
+
+      % Fonts for small examples (8pt).
+      \font\smallermczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 7.70pt
+      \font\smallergtzzz"[ukai.ttc]:mapping=tex-text" at 7.70pt
+      \def\smallermc{\setzhfont\smallermczzz}
+      \def\smallergt{\setzhfont\smallergtzzz}
+
+      % Fonts for title page (20.4pt):
+      \font\titlemczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 19.63pt
+      \font\titlegtzzz"[ukai.ttc]:mapping=tex-text" at 19.63pt
+      \def\titlemc{\setzhfont\titlemczzz}
+      \def\titlegt{\setzhfont\titlegtzzz}
+
+      % Chapter fonts (14.4pt).
+      \font\chapmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 13.86pt
+      \font\chapgtzzz"[ukai.ttc]:mapping=tex-text" at 13.86pt
+      \def\chapmc{\setzhfont\chapmczzz}
+      \def\chapgt{\setzhfont\chapgtzzz}
+
+      % Section fonts (12pt).
+      \font\secmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 11.55pt
+      \font\secgtzzz"[ukai.ttc]:mapping=tex-text" at 11.55pt
+      \def\secmc{\setzhfont\secmczzz}
+      \def\secgt{\setzhfont\secgtzzz}
+
+      % Subsection fonts (10pt).
+      \font\ssecmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 9.62pt
+      \font\ssecgtzzz"[ukai.ttc]:mapping=tex-text" at 9.62pt
+      \def\ssecmc{\setzhfont\ssecmczzz}
+      \def\ssecgt{\setzhfont\ssecgtzzz}
+
+      % Reduced fonts for @acro in text (9pt).
+      \font\reducedmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 8.66pt
+      \font\reducedgtzzz"[ukai.ttc]:mapping=tex-text" at 8.66pt
+      \def\reducedmc{\setzhfont\reducedmczzz}
+      \def\reducedgt{\setzhfont\reducedgtzzz}
+
+      % Fonts for short table of contents.
+      \font\shortcontmczzz"[NotoSerifCJK-Regular.ttc:2]:mapping=tex-text" at 11.55pt
+      \font\shortcontgtzzz"[ukai.ttc]:mapping=tex-text" at 11.55pt
+      \def\shortcontmc{\setzhfont\shortcontmczzz}
+      \def\shortcontgt{\setzhfont\shortcontgtzzz}
+
+      \definealphabetictextfontsizex
+    }
+
+    % Chinese line break settings
+    \XeTeXlinebreaklocale "zh_CN"
+    \XeTeXlinebreakskip=0em plus 0.1em minus 0.01em
+    \XeTeXlinebreakpenalty=0
+
+    % For copy & paste Unicode characters (XeTeX 0.99995+)
+    \ifx\XeTeXgenerateactualtext\thisisundefined
+    \else
+      \XeTeXgenerateactualtext=1
+    \fi
+
+  \fi % XeTeX
+
+  \iftxinativeunicodecapable
+
+    % Sync fonts
+
+    \let\alphabeticrm\rm
+    \gdef\rm{\alphabeticrm\tenmc}
+
+    \let\alphabeticit\it
+    \gdef\it{\alphabeticit\tenmc}
+
+    \let\alphabeticsl\sl
+    \gdef\sl{\alphabeticsl\tengt}
+
+    \let\alphabeticbf\bf
+    \gdef\bf{\alphabeticbf\tengt}
+
+    \let\alphabetictt\tt
+    \gdef\tt{\alphabetictt\tengt}
+
+    % Add fonts
+
+    \let\alphabetictextfonts\textfonts
+    \gdef\textfonts{%
+      \alphabetictextfonts
+      \let\tenmc\textmc
+      \let\tengt\textgt
+    }
+
+    \let\alphabetictitlefonts\titlefonts
+    \gdef\titlefonts{%
+      \alphabetictitlefonts
+      \let\tenmc\titlemc
+      \let\tengt\titlegt
+    }
+
+    \let\alphabeticchapfonts\chapfonts
+    \gdef\chapfonts{%
+      \alphabeticchapfonts
+      \let\tenmc\chapmc
+      \let\tengt\chapgt
+    }
+
+    \let\alphabeticsecfonts\secfonts
+    \gdef\secfonts{%
+      \alphabeticsecfonts
+      \let\tenmc\secmc
+      \let\tengt\secgt
+    }
+
+    \let\alphabeticsubsecfonts\subsecfonts
+    \gdef\subsecfonts{%
+      \alphabeticsubsecfonts
+      \let\tenmc\ssecmc
+      \let\tengt\ssecgt
+    }
+
+    \global\let\subsubsecfonts\subsecfonts
+
+    \let\alphabeticreducedfonts\reducedfonts
+    \gdef\reducedfonts{%
+      \alphabeticreducedfonts
+      \let\tenmc\reducedmc
+      \let\tengt\reducedgt
+    }
+
+    \let\alphabeticsmallfonts\smallfonts
+    \gdef\smallfonts{%
+      \alphabeticsmallfonts
+      \let\tenmc\smallmc
+      \let\tengt\smallgt
+    }
+
+    \let\alphabeticsmallerfonts\smallerfonts
+    \gdef\smallerfonts{%
+      \alphabeticsmallerfonts
+      \let\tenmc\smallermc
+      \let\tengt\smallergt
+    }
+
+    \let\smallexamplefonts\smallfonts
+
+    % Reset fonts
+
+    \globaldefs = 1
+    \definetextfontsizexi
+    \globaldefs = 0
+
+  \fi % \iftxinativeunicodecapable
+
+\fi % \ifx\txizhpackage\thisisundefined

@@ -1,0 +1,336 @@
+\input ptb-utils
+
+\_checkloaded{colors}
+
+\def\_rgb_encode#1{#1 rg #1 RG}
+\def\_rgb_encodebg#1{#1 rg}
+\def\_rgb_encodefg#1{#1 RG}
+\def\_cmyk_encode#1{#1 k #1 K}
+\def\_cmyk_encodebg#1{#1 k}
+\def\_cmyk_encodefg#1{#1 K}
+
+\chardef\_colorstack=0
+\def\_pdfcolor_restore{\pdfcolorstack\_colorstack pop\relax}
+
+\def\_setcolor_code#1{\pdfcolorstack\_colorstack push{#1}\aftergroup\_pdfcolor_restore}
+
+%\def\_colorbg_set#1#2{\pdfcolorstack\_colorstack push{\csname _#1_encodebg\endcsname{#2}}\aftergroup\_pdfcolor_restore}
+%\def\_colorfg_set#1#2{\pdfcolorstack\_colorstack push{\csname _#1_encodefg\endcsname{#2}}\aftergroup\_pdfcolor_restore}
+\def\_color_set#1#2{\_setcolor_code{\csname _#1_encode\endcsname{#2}}}
+\def\_colorbg_set#1#2{\_setcolor_code{\csname _#1_encodebg\endcsname{#2}}}
+\def\_colorfg_set#1#2{\_setcolor_code{\csname _#1_encodefg\endcsname{#2}}}
+
+\def\_color_defined#1{\expanded{\noexpand\_color_set\csname c@#1\endcsname}}
+\def\_colorbg_defined#1{\expanded{\noexpand\_colorbg_set\csname c@#1\endcsname}}
+\def\_colorfg_defined#1{\expanded{\noexpand\_colorfg_set\csname c@#1\endcsname}}
+
+%\def\_color_set#1#2{\pdfcolorstack\_colorstack push{\csname _#1_encode\endcsname{#2}}\aftergroup\_pdfcolor_restore}
+%   \_color_get_code{rgb/cmyk}{code}{fg/bg/empty}
+\def\_color_get_code#1#2#3{\csname _#1_encode#3\endcsname{#2}}
+%   \_color_get_defined{color name}{fg/bg/empty}
+\def\_color_get_defined#1#2{\expanded{\noexpand\_color_get_code\csname c@#1\endcsname{#2}}}
+
+
+\def\__getcolorparam#1#2#3#4{%
+    \ifx^#3^%
+        \_afterfi{\expanded{\unexpanded{#1}{\_color_get_defined{#4}{#2}}}}%
+    \else%
+        \_afterfi{\expanded{\unexpanded{#1}{\_color_get_code{#3}{#4}{#2}}}}%
+    \fi
+}
+%   \_getcolorparam{\macro}{fg/bg/empty}... (... is of the form rgb{...}, etc, or {color name})
+\def\_getcolorparam#1#2#3#{\__getcolorparam{#1}{#2}{#3}}
+
+\def\___setcolor#1#2#3#4\relax{%
+    \ifx^#3^%
+        \csname _color#1_defined\endcsname{#2}%
+    \else%
+        \csname _color#1_set\endcsname{#2}{#3}%
+    \fi%
+}
+\def\__setcolor#1#2#{\___setcolor{#1}{#2}}
+%   \_setcolor{fg/bg/empty}{color name/color space{...}} -> sets the color
+\def\_setcolor#1#2{\expanded{\noexpand\__setcolor{#1}#2}{}\relax}
+
+\def\___getcolor#1#2#3#4;{%
+    \ifx^#3^%
+        \_color_get_defined{#2}{#1}%
+    \else%
+        \_color_get_code{#2}{#3}{#1}%
+    \fi%
+}
+\def\__getcolor#1#2#{\___getcolor{#1}{#2}}
+%   \_getcolor{fg/bg/empty}{color name/color space{...}} -> gets the color
+\def\_getcolor#1#2{\expanded{\noexpand\__getcolor{#1}#2}{};}
+
+
+%\def\_color#1#2{%
+%    \ifx^#1^%
+%        \_color_defined{#2}%
+%    \else%
+%        \_color_set{#1}{#2}%
+%    \fi%
+%}
+\def\color{\_getcolorparam\_setcolor_code{}}
+
+\def\_localcolor#1{%
+    \bgroup%
+    \_setcolor_code{#1}%
+    \let\_regU%
+}
+\def\localcolor{\_getcolorparam\_localcolor{}}
+
+\def\definecolor#1#2#3{\_xp\def\csname c@#1\endcsname{{#2}{#3}}}
+\def\letcolor#1#2{\_xp\edef\csname c@#1\endcsname{\csname c@#2\endcsname}}
+\def\definecolormacro#1#2#3{\definecolor{#1}{#2}{#3}\_xp\def\csname #1\endcsname##1{\localcolor{#1}{##1}}}
+
+\newbox\_colorbox
+\def\_endhighlightbox{\quitvmode\hbox to\wd\_colorbox{\_xp\localcolor\_regA{\vrule height\ht\_colorbox width\wd\_colorbox depth\dp\_colorbox}\hss\box\_colorbox}\egroup}
+\def\_highlightbox#1#2{\bgroup\def\_regA{#1{#2}}\setbox\_colorbox=\hbox\bgroup\aftergroup\_endhighlightbox\let\_regU}
+\def\highlightbox#1#{\_highlightbox{#1}}
+
+\def\bufferwidth{2pt}
+\def\bufferheight{2pt}
+\def\_bufferboxend{\hbox{\kern\bufferwidth\lower\dimexpr\bufferheight + \dp\_colorbox\relax\vbox{\kern\bufferheight\box\_colorbox\kern\bufferheight}\kern\bufferwidth}}
+\def\_bufferbox{\setbox\_colorbox=\hbox\bgroup\aftergroup\_bufferboxend\let\_regU}
+
+\def\framewidth{.3pt}
+\def\_frameboxend{\hbox{\vrule width\framewidth\lower\dimexpr \framewidth + \dp\_colorbox\relax\vbox{\hrule height\framewidth\box\_colorbox\hrule height\framewidth}\vrule width\framewidth\relax}}
+\def\_framebox{\setbox\_colorbox=\hbox\bgroup\aftergroup\_frameboxend\let\_regU}
+
+\def\_coloredbox#1#2{\highlightbox#1{#2}\bgroup\_bufferbox\bgroup\aftergroup\egroup\let\_regU}
+\def\coloredbox#1#{\_coloredbox{#1}}
+
+\def\_framecoloredbox#1#2{\quitvmode\_framebox\bgroup\_coloredbox{#1}{#2}\bgroup\aftergroup\egroup\let\_regU}
+\def\framecoloredbox#1#{\_framecoloredbox{#1}}
+
+\def\framebox{\_framebox\bgroup\_bufferbox\bgroup\aftergroup\egroup\let\_regU}
+
+\def\_pdf_pt_scale,{.996264 0 0 .996264 0 0 cm}
+
+\def\_curvedbox#1#2#3#4#5{%
+    #1 \_nopt{#2pt-#5pt} m
+    \_nopt{#1pt-#5pt} \_nopt{#2pt-#5pt} \_nopt{#1pt-#5pt} #2 v
+    \_nopt{#1pt-#5pt} \_nopt{#2pt+#4pt} l
+    \_nopt{#1pt-#5pt} \_nopt{#2pt+#4pt+#5pt} #1 \_nopt{#2pt+#4pt+#5pt} v
+    \_nopt{#1pt+#3pt} \_nopt{#2pt+#4pt+#5pt} l
+    \_nopt{#1pt+#3pt+#5pt} \_nopt{#2pt+#4pt+#5pt} \_nopt{#1pt+#3pt+#5pt} \_nopt{#2pt+#4pt} v
+    \_nopt{#1pt+#3pt+#5pt} #2 l
+    \_nopt{#1pt+#3pt+#5pt} \_nopt{#2pt-#5pt} \_nopt{#1pt+#3pt} \_nopt{#2pt-#5pt} v
+    #1 \_nopt{#2pt-#5pt} l
+}
+
+\def\_blcorner#1#2#3#4#5#6#7#8#9{%
+    \if.#9
+        \_nopt{#5} \_nopt{#2} m
+    \else
+        \_nopt{#8} \_nopt{#2} m
+    \fi
+    \if-#7
+        \if.#6
+            #1 \_nopt{#2} l
+            \_nopt{#3} \_nopt{#2} \_nopt{#3} #4 v
+        \else
+            \_nopt{#3} \_nopt{#2} l
+        \fi
+    \else
+        #1 \_nopt{#2} m
+        \if.#6
+            #1 \_nopt{#2} l
+            \_nopt{#3} \_nopt{#2} \_nopt{#3} #4 v
+        \else
+            \_nopt{#3} \_nopt{#2} m
+        \fi
+    \fi
+}
+
+\def\_tlcorner#1#2#3#4#5#6{%
+    \if-#6
+        \if.#5
+            \_nopt{#1} \_nopt{#2} l
+            \_nopt{#1} \_nopt{#3} #4 \_nopt{#3} v
+        \else
+            \_nopt{#1} \_nopt{#3} l
+        \fi
+    \else
+        \if.#5
+            \_nopt{#1} \_nopt{#2} m
+            \_nopt{#1} \_nopt{#3} #4 \_nopt{#3} v
+        \else
+            \_nopt{#1} \_nopt{#3} m
+        \fi
+    \fi
+}
+
+\def\_trcorner#1#2#3#4#5#6{%
+    \if-#6
+        \if.#5
+            \_nopt{#1} \_nopt{#2} l
+            \_nopt{#3} \_nopt{#2} \_nopt{#3} \_nopt{#4} v
+        \else
+            \_nopt{#3} \_nopt{#2} l
+        \fi
+    \else
+        \if.#5
+            \_nopt{#1} \_nopt{#2} m
+            \_nopt{#3} \_nopt{#2} \_nopt{#3} \_nopt{#4} v
+        \else
+            \_nopt{#3} \_nopt{#2} m
+        \fi
+    \fi
+}
+
+\def\_brcorner#1#2#3#4#5#6{%
+    \if-#6
+        \if.#5
+            \_nopt{#1} #2 l
+            \_nopt{#1} \_nopt{#3} \_nopt{#4} \_nopt{#3} v
+        \else
+            \_nopt{#1} \_nopt{#3} l
+        \fi
+    \else
+        \if.#5
+            \_nopt{#1} #2 m
+            \_nopt{#1} \_nopt{#3} \_nopt{#4} \_nopt{#3} v
+        \else
+            \_nopt{#1} \_nopt{#3} m
+        \fi
+    \fi
+}
+
+%   #1: origin x
+%   #2: origin y
+%   #3: width
+%   #4: height
+%   #5: curvature
+%   Note: #1...#4 do not take curvature into account
+\def\_curvedbox#1#2#3#4#5#6#7#8#9{%
+    \if.#6
+        #1 \_nopt{#2pt-#5pt} m
+        \_nopt{#1pt-#5pt} \_nopt{#2pt-#5pt} \_nopt{#1pt-#5pt} #2 v
+    \else
+        \_nopt{#1pt-#5pt} \_nopt{#2pt-#5pt} m
+    \fi
+    \if.#7
+        \_nopt{#1pt-#5pt} \_nopt{#2pt+#4pt} l
+        \_nopt{#1pt-#5pt} \_nopt{#2pt+#4pt+#5pt} #1 \_nopt{#2pt+#4pt+#5pt} v
+    \else
+        \_nopt{#1pt-#5pt} \_nopt{#2pt+#4pt+#5pt} l
+    \fi
+    \if.#8
+        \_nopt{#1pt+#3pt} \_nopt{#2pt+#4pt+#5pt} l
+        \_nopt{#1pt+#3pt+#5pt} \_nopt{#2pt+#4pt+#5pt} \_nopt{#1pt+#3pt+#5pt} \_nopt{#2pt+#4pt} v
+    \else
+        \_nopt{#1pt+#3pt+#5pt} \_nopt{#2pt+#4pt+#5pt} l
+    \fi
+    \if.#9
+        \_nopt{#1pt+#3pt+#5pt} #2 l
+        \_nopt{#1pt+#3pt+#5pt} \_nopt{#2pt-#5pt} \_nopt{#1pt+#3pt} \_nopt{#2pt-#5pt} v
+    \else
+        \_nopt{#1pt+#3pt+#5pt} \_nopt{#2pt-#5pt} l
+    \fi
+    %#1 \_nopt{#2pt-#5pt} l
+}
+
+\def\_curvedbox#1#2#3#4#5{%
+    \_blcorner{#1}{#2pt-#5pt}{#1pt-#5pt}{#2}{#1pt+#3pt}\_dotbl\_lineb{#1pt+#3pt+#5pt}\_dotbr\_space
+    \_tlcorner{#1pt-#5pt}{#2pt+#4pt}{#2pt+#4pt+#5pt}{#1}\_dottl\_linel\_space
+    \_trcorner{#1pt+#3pt}{#2pt+#4pt+#5pt}{#1pt+#3pt+#5pt}{#2pt+#4pt}\_dottr\_linet\_space
+    \_brcorner{#1pt+#3pt+#5pt}{#2}{#2pt-#5pt}{#1pt+#3pt}\_dotbr\_liner\_space
+}
+
+\def\_curvedboxbg#1#2#3#4#5{%
+    \_blcorner{#1}{#2pt-#5pt}{#1pt-#5pt}{#2}{#1pt+#3pt}\_dotbl-{#1pt+#3pt+#5pt}\_dotbr\_space
+    \_tlcorner{#1pt-#5pt}{#2pt+#4pt}{#2pt+#4pt+#5pt}{#1}\_dottl-\_space
+    \_trcorner{#1pt+#3pt}{#2pt+#4pt+#5pt}{#1pt+#3pt+#5pt}{#2pt+#4pt}\_dottr-\_space
+    \_brcorner{#1pt+#3pt+#5pt}{#2}{#2pt-#5pt}{#1pt+#3pt}\_dotbr-\_space
+}
+
+
+\def\_getdotsnlines#1#2#3#4#5#6#7#8\_nul{%
+    \edef\_lineb{#1}%
+    \edef\_dotbl{#2}%
+    \edef\_linel{#3}%
+    \edef\_dottl{#4}%
+    \edef\_linet{#5}%
+    \edef\_dottr{#6}%
+    \edef\_liner{#7}%
+    \edef\_dotbr{#8}%
+}
+
+\def\curvebuffer{4pt}
+\def\curvewidth{1pt}
+\def\_actual_curve_buf{\dimexpr\curvebuffer + \curvewidth\relax}
+\def\boxshadowcolor{rgb{.9 .9 .9}}
+\def\shadowxoff{3pt}
+\def\shadowyoff{-3pt}
+
+\long\def\curvedcolorbox#1#2#3#4{{%
+    \_xp\_getdotsnlines\expanded{#4}\_nul%
+    \setbox\_colorbox=\hbox{{#3}}%
+    \hbox{%
+        \lower\dimexpr\curvebuffer + \curvewidth + \dp\_colorbox\relax%
+        \vbox{%
+            \kern\_actual_curve_buf%
+            \hbox{%
+                \kern\_actual_curve_buf%
+                \pdfliteral{%
+                    q \_pdf_pt_scale,
+                    \_getcolor{}{\boxshadowcolor}
+                    \_nopt{\curvewidth} w
+                    \_curvedboxbg{\_nopt{\shadowxoff}}{\_nopt{-\dp\_colorbox+\shadowyoff}}{\_nopt{\wd\_colorbox}}{\_nopt{\ht\_colorbox+\dp\_colorbox}}{\_nopt{\curvebuffer}}\_space%#4
+                    b
+                    \_getcolor{bg}{#2}
+                    \_getcolor{fg}{#1}
+                    \_curvedboxbg{0}{\_nopt{-\dp\_colorbox}}{\_nopt{\wd\_colorbox}}{\_nopt{\ht\_colorbox+\dp\_colorbox}}{\_nopt{\curvebuffer}}\_space%#4
+                    W f
+                }%
+                \rlap{\copy\_colorbox}%
+                \pdfliteral{%
+                    Q
+                    q
+                    \_pdf_pt_scale,
+                    \_nopt{\curvewidth} w
+                    \_getcolor{fg}{#1}
+                    \_curvedbox{0}{\_nopt{-\dp\_colorbox}}{\_nopt{\wd\_colorbox}}{\_nopt{\ht\_colorbox+\dp\_colorbox}}{\_nopt{\curvebuffer}}\_space%#4
+                    S
+                    Q
+                }%
+                \kern\wd\_colorbox%
+                \kern\_actual_curve_buf%
+            }%
+            \kern\_actual_curve_buf%
+        }%
+    }%
+}}
+
+\def\_pagecolor#1{\pdfliteral page{#1 0 0 \_nopt{\pdfpagewidth} \_nopt{\pdfpageheight} re f}}
+\def\pagecolor{\_getcolorparam\_pagecolor{}}
+
+\def\pageborder#1#2#3{%
+    \pdfliteral page{%
+        q
+        \_pdf_pt_scale,
+        \_getcolor{bg}{#1} \_getcolor{fg}{#2}
+        #3 w
+        0 0 \_nopt{\pdfpagewidth} \_nopt{\pdfpageheight} re b
+        Q
+    }%
+}
+
+\def\fakeboldwidth{.4}
+\long\def\_fakebold[#1]#2{\pdfliteral{2 Tr #1 w}#2\pdfliteral{0 Tr}}
+\def\fakebold{\_ifnextchar[ {\_fakebold}{\_fakebold[\fakeboldwidth]}}
+\def\flip#1{{\setbox0=\hbox{#1}\kern\wd0\pdfsave\pdfliteral{-1 0 0 1 0 0 cm}\rlap{#1}\pdfrestore}}
+
+\definecolormacro{red}{rgb}{1 0 0}
+\definecolormacro{blue}{rgb}{0 0 1}
+\definecolormacro{green}{rgb}{0 1 0}
+\definecolormacro{yellow}{rgb}{1 1 0}
+\definecolormacro{orange}{rgb}{1 .4 0}
+\definecolormacro{purple}{rgb}{1 0 1}
+\definecolormacro{white}{rgb}{1 1 1}
+\definecolormacro{black}{rgb}{0 0 0}
+\definecolormacro{darkgreen}{rgb}{0 .7 0}
+\definecolormacro{grey}{rgb}{.5 .5 .5}
+

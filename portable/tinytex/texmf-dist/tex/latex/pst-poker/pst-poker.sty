@@ -1,0 +1,926 @@
+%% $Id: pst-poker.sty 1121 2025-07-08 14:49:15Z herbert $
+%%
+%    pst-poker.sty - LaTeX poker package
+%    Copyright (C) 2025  Herbert Voß <hvoss@tug.org> 
+%    poker2 is based on file poster.sty from
+%    Olaf Encke <olaf.encke@gmx.de> <http://www.encke.net/>
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU Lesser General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU Lesser General Public License
+%    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%
+%%%
+\NeedsTeXFormat{LaTeX2e}
+%
+%\RequirePackage{txfonts}
+\RequirePackage{pstricks,pst-blur,multido}
+\RequirePackage{graphicx}
+\RequirePackage[tiling]{pst-fill}
+
+\def\filedate{2025/07/09}
+\def\fileversion{0.04a}
+\ProvidesFile{pst-poker}[\filedate\ v\fileversion\ [LaTeX poker package (HV)]
+
+% basic definitions
+\pst@addfams{pst-poker}
+%\newlength\xyunit
+%\newlength\cprunit
+
+\newcommand\pkr@val{A}
+\newcommand\pkr@suit{\pspade}
+\newcommand\pkr@col{\crd@Colors}
+\newcommand\pkr@facecol{color}
+\newcommand\pkr@suitname{spade}
+\newcommand\pkr@shad{true}
+\newcommand\pkr@shadblur{true}
+%
+% create layout definitions and set defaults
+% card dimensions
+\newcommand{\pkr@cxl}{-1.5}
+\newcommand{\pkr@cxr}{1.5}
+\newcommand{\pkr@cyt}{4.2}
+\newcommand{\pkr@cyb}{0}
+% inner frame dimensions
+\newcommand{\pkr@fxl}{-0.75}
+\newcommand{\pkr@fxr}{0.75}
+\newcommand{\pkr@fyt}{3.45}
+\newcommand{\pkr@fyb}{0.75}
+% index sizes/positions
+\newcommand{\pkr@ph}{0.6}
+\newcommand{\pkr@pw}{0.6}
+\newcommand{\pkr@pvh}{0.7}
+\newcommand{\pkr@pvw}{0.6}
+\newcommand{\pkr@pxl}{-1.125}
+\newcommand{\pkr@pxr}{1.125}
+\newcommand{\pkr@pytv}{3.35}
+\newcommand{\pkr@pyts}{3.25}
+\newcommand{\pkr@pybs}{0.95}
+\newcommand{\pkr@pybv}{0.85}
+% symbol sizes/positions
+\newcommand{\pkr@sh}{0.4}
+\newcommand{\pkr@sw}{0.4}
+\newcommand{\pkr@sxl}{-0.4}
+\newcommand{\pkr@sxm}{0}
+\newcommand{\pkr@sxr}{0.4}
+\newcommand{\pkr@syt}{2.95}
+\newcommand{\pkr@sytiii}{2.6}
+\newcommand{\pkr@sytii}{2.4}
+\newcommand{\pkr@syti}{2.25}
+\newcommand{\pkr@sym}{1.9}
+\newcommand{\pkr@sybi}{1.95}
+\newcommand{\pkr@sybii}{1.8}
+\newcommand{\pkr@sybiii}{1.6}
+\newcommand{\pkr@syb}{1.25}
+% face symbol sizes/positions
+\newcommand{\pkr@ish}{0.4}
+\newcommand{\pkr@isw}{0.4}
+\newcommand{\pkr@isxl}{-0.5}
+\newcommand{\pkr@isxr}{0.5}
+\newcommand{\pkr@isyt}{2.95}
+\newcommand{\pkr@isyb}{1.25}
+% face size/position
+\newcommand{\pkr@ih}{2.4}
+\newcommand{\pkr@iw}{1.5}
+\newcommand{\pkr@iy}{0.9}
+% peek symbol sizes/positions
+\newcommand{\pkr@kh}{0.2}
+\newcommand{\pkr@kw}{0.35}
+\newcommand{\pkr@kxl}{-1.35}
+\newcommand{\pkr@kxr}{1.35}
+\newcommand{\pkr@kyt}{3.8}
+\newcommand{\pkr@kyb}{0.4}
+%
+\providecommand\crdback[1][]{}
+%
+% color definitions
+\colorlet{pkrwhite}{white}
+\colorlet{pkrblack}{black}
+\definecolor{pkrgray}{rgb}{0.4,0.4,0.4}
+\definecolor{pkrlgray}{rgb}{0.9,0.9,0.9}
+\definecolor{pkrddred}{rgb}{0.6,0,0}
+\definecolor{pkrdred}{rgb}{0.8,0,0}
+\definecolor{pkrdblue}{rgb}{0,0,0.6}
+\definecolor{pkrlblue}{rgb}{0.3,0.3,1}
+\definecolor{pkrllblue}{rgb}{0.9,0.95,1}
+\definecolor{pkrdgreen}{rgb}{0.3,0.6,0.3}
+\definecolor{pkrlgreen}{rgb}{0.7,0.9,0.7}
+\definecolor{pkrorange}{rgb}{1,0.8,0.5}
+\definecolor{pkrbeige}{rgb}{1,0.95,0.8}
+\definecolor{pkrlyellow}{rgb}{1,1,0.75}
+\colorlet{pkryellow}{pkrlyellow}
+\colorlet{pkrred}{red}
+\colorlet{pkrblue}{pkrllblue}
+\colorlet{pkrgreen}{green}
+%
+% initialize color variables
+\newcommand{\crd@Colors}{black}
+\newcommand{\crd@Colorh}{pkrdred}
+\newcommand{\crd@Colord}{pkrlblue}
+\newcommand{\crd@Colorc}{pkrdgreen}
+\newcommand{\colorbgname}{pkrbeige}
+\newcommand\colorbackname{pkrblue}
+%
+% initialize suit variables
+
+\@ifundefined{varclubsuit}{%
+  \def\re@DeclareMathSymbol#1#2#3#4{%
+    \let#1=\undefined
+    \DeclareMathSymbol{#1}{#2}{#3}{#4}}%
+  \DeclareSymbolFont{symbolsC}{U}{txsyc}{m}{n}%
+  \SetSymbolFont{symbolsC}{bold}{U}{txsyc}{bx}{n}%
+  \re@DeclareMathSymbol{\varclubsuit}{\mathord}{symbolsC}{112}%
+  \re@DeclareMathSymbol{\vardiamondsuit}{\mathord}{symbolsC}{113}%
+  \re@DeclareMathSymbol{\varheartsuit}{\mathord}{symbolsC}{114}%
+  \re@DeclareMathSymbol{\varspadesuit}{\mathord}{symbolsC}{115}%
+}{}
+\newcommand{\pspade}{\ensuremath{\spadesuit}}
+\newcommand{\pheart}{\ensuremath{\varheartsuit}}
+\newcommand{\pdiamond}{\ensuremath{\vardiamondsuit}}
+\newcommand{\pclub}{\ensuremath{\clubsuit}}
+%
+% Options
+% choose colorset
+% 2c: black and red suits
+% 4c: spade: black, heart: red, diamond: blue, club: green
+% gs: grayscale the red suits
+% bw: black/white only, red suits are outlined
+%
+\define@choicekey[psset]{pst-poker}{colorset}[\val\nr]{2c,4c,gs,bw}[2c]{%
+  \ifcase\nr\relax
+    \renewcommand{\crd@Colors}{black}%
+    \renewcommand{\crd@Colorh}{pkrdred}%
+    \renewcommand{\crd@Colord}{pkrdred}%
+    \renewcommand{\crd@Colorc}{black}%
+    \renewcommand{\pkr@facecol}{color}%
+    \renewcommand{\colorbgname}{pkrbeige}%
+    \renewcommand\colorbackname{pkrdblue}%
+    \renewcommand{\pheart}{\ensuremath{\varheartsuit}}%
+    \renewcommand{\pdiamond}{\ensuremath{\vardiamondsuit}}%
+  \or
+    \renewcommand{\crd@Colors}{black}%
+    \renewcommand{\crd@Colorh}{pkrdred}%
+    \renewcommand{\crd@Colord}{pkrlblue}%
+    \renewcommand{\crd@Colorc}{pkrdgreen}%
+    \renewcommand{\pkr@facecol}{color}%
+    \renewcommand{\colorbgname}{pkrbeige}%
+    \renewcommand\colorbackname{pkrdblue}%
+    \renewcommand{\pheart}{\ensuremath{\varheartsuit}}%
+    \renewcommand{\pdiamond}{\ensuremath{\vardiamondsuit}}%
+  \or
+    \renewcommand{\crd@Colors}{black}%
+    \renewcommand{\crd@Colorh}{pkrgray}%
+    \renewcommand{\crd@Colord}{pkrgray}%
+    \renewcommand{\crd@Colorc}{black}%
+    \renewcommand{\pkr@facecol}{color}%
+    \renewcommand{\colorbgname}{pkrlgray}%
+    \renewcommand\colorbackname{pkrgray}%
+    \renewcommand{\pheart}{\ensuremath{\varheartsuit}}%
+    \renewcommand{\pdiamond}{\ensuremath{\vardiamondsuit}}%
+  \or
+    \renewcommand{\crd@Colors}{black}%
+    \renewcommand{\crd@Colorh}{black}%
+    \renewcommand{\crd@Colord}{black}%
+    \renewcommand{\crd@Colorc}{black}%
+    \renewcommand{\pkr@facecol}{bw}%
+    \renewcommand{\colorbgname}{white}%
+    \renewcommand\colorbackname{black}%
+    \renewcommand{\pheart}{\ensuremath{\heartsuit}}%
+    \renewcommand{\pdiamond}{\ensuremath{\diamondsuit}}%
+  \fi
+}%
+% set width of big cards in cpr (cards per row)
+\define@key[psset]{pst-poker}{unit}[1cm]{%
+  \pssetlength\psunit{#1}%
+  \psxunit=\psunit
+  \psyunit=\psunit
+}%
+
+% wrapper to be redefined by inline style key
+\newcommand\pkr@icard[1][]{\pkr@drawisymbol{\pkr@val}{\pkr@suit}{\pkr@col}}
+%
+% \pkr@drawisymbol{value}{suit}{color}
+\newcommand{\pkr@drawisymbol}[3]{\textcolor{#3}{\sffamily#1#2}\,}
+
+% set style of inline cards
+\define@choicekey[psset]{pst-poker}{inline}[\val\nr]{symbol,boxed,card}[symbol]{%
+ \ifcase\nr\relax
+    \renewcommand\pkr@icard{\pkr@drawisymbol{\pkr@val}{\pkr@suit}{\pkr@col}}%
+  \or
+    \renewcommand\pkr@icard{\pkr@drawiboxedsymbol{\pkr@val}{\pkr@suit}{\pkr@col}}%
+  \or
+    \renewcommand\pkr@icard{\pkr@drawicard{\pkr@val}{\pkr@suit}{\pkr@col}}%
+  \fi
+}%
+% set number of corners for indices
+\define@choicekey[psset]{pst-poker}{corners}[\val\nr]{2,4}[4]{%
+ \ifcase\nr\relax
+   \pkr@restorelpips
+   \renewcommand{\pkr@drawrpips}{}%
+  \or
+   \pkr@restorelpips
+   \pkr@restorerpips
+  \fi
+}%
+% set peek indices
+\define@choicekey[psset]{pst-poker}{peek}[\val\nr]{left,right,both}[r]{%
+ \ifcase\nr\relax
+   \pkr@setlpeek
+  \or
+   \pkr@setrpeek
+  \or
+   \pkr@setlpeek
+   \pkr@setrpeek
+  \fi
+}%
+% set frame background color, user defined color possible
+\define@key[psset]{pst-poker}{framebg}[blue]{\def\colorbgname{pkr#1}}
+%
+% set frame background color, user defined color possible
+\define@key[psset]{pst-poker}{backcolor}[red]{\@namedef{colorbackname}{pkr#1}}
+%
+% set card index size
+\define@choicekey[psset]{pst-poker}{index}[\val\nr]{jumbo,regular}[regular]{%
+ \ifcase\nr\relax
+   \pkr@indexjumbo
+ \or
+   \pkr@indexregular
+ \fi
+}
+% set card shadow
+\define@choicekey[psset]{pst-poker}{crdshadow}[\val\nr]{blurred,solid,none}[blurred]{%
+ \ifcase\nr\relax
+   \def\pkr@shad{true}%
+   \def\pkr@shadblur{true}%
+ \or
+   \def\pkr@shad{true}%
+   \def\pkr@shadblur{false}%
+ \or
+   \def\pkr@shad{false}%
+   \def\pkr@shadblur{false}%
+ \else
+   \def\pkr@shad{true}%
+   \def\pkr@shadblur{true}%
+ \fi
+}%
+% card backs
+\define@choicekey[psset]{pst-poker}{back}[\val\nr]{simple,spades,suits,fournier}[suits]{%
+ \ifcase\nr\relax
+   \let\pkr@back\pkr@backsimple
+ \or
+   \let\pkr@back\pkr@backspades
+ \or
+   \let\pkr@back\pkr@backsuits
+% \or%
+%   \let\pkr@back\pkr@backfournier
+ \fi
+}%
+% internal cardsuit processing keys
+\define@choicekey[psset]{pst-poker}{cardsuit}[\val\nr]{spade,heart,diamond,club}{%
+ \ifcase\nr\relax%
+   \renewcommand{\pkr@suitname}{spade}%
+   \renewcommand{\pkr@suit}{\pspade}%
+   \renewcommand{\pkr@col}{\crd@Colors}%
+ \or%
+   \renewcommand{\pkr@suitname}{heart}%
+   \renewcommand{\pkr@suit}{\pheart}%
+   \renewcommand{\pkr@col}{\crd@Colorh}%
+ \or%
+   \renewcommand{\pkr@suitname}{diamond}%
+   \renewcommand{\pkr@suit}{\pdiamond}%
+   \renewcommand{\pkr@col}{\crd@Colord}%
+ \or%
+   \renewcommand{\pkr@suitname}{club}%
+   \renewcommand{\pkr@suit}{\pclub}%
+   \renewcommand{\pkr@col}{\crd@Colorc}%
+ \fi%
+}%
+% internal cardvalue processing
+\define@choicekey[psset]{pst-poker}{cardvalue}[\val\nr]{A,K,Q,J,10,9,8,7,6,5,4,3,2}{%
+ \ifcase\nr\relax
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@Asymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@Ksymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@Qsymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@Jsymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@tensymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@ninesymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@eigsymbols}%
+ \or
+   \renewcommand\pkr@val{#1}%
+   \renewcommand\pkr@drawsymbols{\pkr@sevsymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@sixsymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@fivesymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@foursymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@tresymbols}%
+ \or
+   \renewcommand{\pkr@val}{#1}%
+   \renewcommand{\pkr@drawsymbols}{\pkr@twosymbols}%
+ \fi
+}%
+% Produce warning for unknown options
+%
+% define inline symbols
+\newcommand\As{\icard{A}{\pspade}{\crd@Colors}}%
+\newcommand\Ah{\icard{A}{\pheart}{\crd@Colorh}}%
+\newcommand{\Ad}{\icard{A}{\pdiamond}{\crd@Colord}}%
+\newcommand\Ac{\icard{A}{\pclub}{\crd@Colorc}}%
+\newcommand{\Ks}{\icard{K}{\pspade}{\crd@Colors}}%
+\newcommand{\Kh}{\icard{K}{\pheart}{\crd@Colorh}}%
+\newcommand{\Kd}{\icard{K}{\pdiamond}{\crd@Colord}}%
+\newcommand{\Kc}{\icard{K}{\pclub}{\crd@Colorc}}%
+\newcommand{\Qs}{\icard{Q}{\pspade}{\crd@Colors}}%
+\newcommand{\Qh}{\icard{Q}{\pheart}{\crd@Colorh}}%
+\newcommand{\Qd}{\icard{Q}{\pdiamond}{\crd@Colord}}%
+\newcommand{\Qc}{\icard{Q}{\pclub}{\crd@Colorc}}%
+\newcommand{\Js}{\icard{J}{\pspade}{\crd@Colors}}%
+\newcommand{\Jh}{\icard{J}{\pheart}{\crd@Colorh}}%
+\newcommand{\Jd}{\icard{J}{\pdiamond}{\crd@Colord}}%
+\newcommand{\Jc}{\icard{J}{\pclub}{\crd@Colorc}}%
+\newcommand{\tens}{\icard{10}{\pspade}{\crd@Colors}}%
+\newcommand{\tenh}{\icard{10}{\pheart}{\crd@Colorh}}%
+\newcommand{\tend}{\icard{10}{\pdiamond}{\crd@Colord}}%
+\newcommand{\tenc}{\icard{10}{\pclub}{\crd@Colorc}}%
+\newcommand{\nines}{\icard{9}{\pspade}{\crd@Colors}}%
+\newcommand{\nineh}{\icard{9}{\pheart}{\crd@Colorh}}%
+\newcommand{\nined}{\icard{9}{\pdiamond}{\crd@Colord}}%
+\newcommand{\ninec}{\icard{9}{\pclub}{\crd@Colorc}}%
+\newcommand{\eigs}{\icard{8}{\pspade}{\crd@Colors}}%
+\newcommand{\eigh}{\icard{8}{\pheart}{\crd@Colorh}}%
+\newcommand{\eigd}{\icard{8}{\pdiamond}{\crd@Colord}}%
+\newcommand{\eigc}{\icard{8}{\pclub}{\crd@Colorc}}%
+\newcommand{\sevs}{\icard{7}{\pspade}{\crd@Colors}}%
+\newcommand{\sevh}{\icard{7}{\pheart}{\crd@Colorh}}%
+\newcommand{\sevd}{\icard{7}{\pdiamond}{\crd@Colord}}%
+\newcommand{\sevc}{\icard{7}{\pclub}{\crd@Colorc}}%
+\newcommand{\sixs}{\icard{6}{\pspade}{\crd@Colors}}%
+\newcommand{\sixh}{\icard{6}{\pheart}{\crd@Colorh}}%
+\newcommand{\sixd}{\icard{6}{\pdiamond}{\crd@Colord}}%
+\newcommand{\sixc}{\icard{6}{\pclub}{\crd@Colorc}}%
+\newcommand{\fives}{\icard{5}{\pspade}{\crd@Colors}}%
+\newcommand{\fiveh}{\icard{5}{\pheart}{\crd@Colorh}}%
+\newcommand{\fived}{\icard{5}{\pdiamond}{\crd@Colord}}%
+\newcommand{\fivec}{\icard{5}{\pclub}{\crd@Colorc}}%
+\newcommand{\fours}{\icard{4}{\pspade}{\crd@Colors}}%
+\newcommand{\fourh}{\icard{4}{\pheart}{\crd@Colorh}}%
+\newcommand{\fourd}{\icard{4}{\pdiamond}{\crd@Colord}}%
+\newcommand{\fourc}{\icard{4}{\pclub}{\crd@Colorc}}%
+\newcommand{\tres}{\icard{3}{\pspade}{\crd@Colors}}%
+\newcommand{\treh}{\icard{3}{\pheart}{\crd@Colorh}}%
+\newcommand{\tred}{\icard{3}{\pdiamond}{\crd@Colord}}%
+\newcommand{\trec}{\icard{3}{\pclub}{\crd@Colorc}}%
+\newcommand{\twos}{\icard{2}{\pspade}{\crd@Colors}}%
+\newcommand{\twoh}{\icard{2}{\pheart}{\crd@Colorh}}%
+\newcommand{\twod}{\icard{2}{\pdiamond}{\crd@Colord}}%
+\newcommand{\twoc}{\icard{2}{\pclub}{\crd@Colorc}}%
+%
+\renewcommand\crdback[1][]{\pkr@ibackframe[#1]}
+%
+% universal inline command
+%
+\newcommand\icard[3]{%
+  \renewcommand\pkr@val{#1}%
+  \renewcommand\pkr@suit{#2}%
+  \renewcommand\pkr@col{#3}%
+  \pkr@icard
+}%
+% \pkr@drawiboxedsymbol{value}{suit}{color}
+\newcommand\pkr@drawiboxedsymbol[3]{\psframebox[linewidth=0.4pt,framearc=0.25]{\textcolor{#3}{\sffamily #1 #2}\,}}
+%
+% \pkr@drawicard{value}{suit}{color}
+\newcommand{\pkr@drawicard}[3]{{%
+  \psset{unit=0.5ex}%
+  \pspicture(-1.7,1)(1.7,4.4)
+    \pkr@drawicardframe
+    \pkr@drawipips{#1}{#2}{#3}%
+  \endpspicture}%
+}%
+% draw inline card frame
+\newcommand\pkr@drawicardframe{\psframe[linewidth=0.4pt,framearc=0.25](-1.5,0)(1.5,4.2)}
+%
+% draw inline indices
+% \drawipips{value}{suit}{color}
+\newcommand{\pkr@drawipips}[3]{%
+  \rput[b](-0.4,2.2){\psscaleboxto(1.7,1.7){\textcolor{#3}{\sffamily #1}}}%
+  \rput[t](.4,2.0){\psscaleboxto(1.7,1.7){\textcolor{#3}{\sffamily #2}}}%
+}%
+%
+\newcommand\pkr@iback[1][]{\pkr@drawibackframe[#1]}
+
+\newcommand\pkr@drawibackframe[1][]{%
+ \psframe[linewidth=0.1pt,
+          hatchangle=45,
+          hatchsep=0.5,
+          hatchwidth=0.25,
+          fillstyle=crosshatch,
+          linecolor=black,
+          hatchcolor=\colorbackname,
+          framearc=0.25,#1](-1.5,0)(1.5,4.2)%
+}%
+%
+% big cards
+\newcommand\crdAs[1][]{\drawcard[cardvalue=A,cardsuit=spade,inline=card,#1]}%
+\newcommand\crdAh[1][]{\drawcard[cardvalue=A,cardsuit=heart,#1]}%
+\newcommand\crdAd[1][]{\drawcard[cardvalue=A,cardsuit=diamond,#1]}%
+\newcommand\crdAc[1][]{\drawcard[cardvalue=A,cardsuit=club,#1]}%
+\newcommand\crdKs[1][]{\psset[pst-poker]{cardvalue=K,cardsuit=spade}\drawcard}%
+\newcommand\crdKh[1][]{\psset[pst-poker]{cardvalue=K,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdKd[1][]{\psset[pst-poker]{cardvalue=K,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdKc[1][]{\psset[pst-poker]{cardvalue=K,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdQs[1][]{\psset[pst-poker]{cardvalue=Q,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdQh[1][]{\psset[pst-poker]{cardvalue=Q,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdQd[1][]{\psset[pst-poker]{cardvalue=Q,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdQc[1][]{\psset[pst-poker]{cardvalue=Q,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdJs[1][]{\psset[pst-poker]{cardvalue=J,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdJh[1][]{\psset[pst-poker]{cardvalue=J,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdJd[1][]{\psset[pst-poker]{cardvalue=J,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdJc[1][]{\psset[pst-poker]{cardvalue=J,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdtens[1][]{\psset[pst-poker]{cardvalue=10,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdtenh[1][]{\psset[pst-poker]{cardvalue=10,cardsuit=heart,#1}\drawcard[#1]}%
+\newcommand\crdtend[1][]{\psset[pst-poker]{cardvalue=10,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdtenc[1][]{\psset[pst-poker]{cardvalue=10,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdnines[1][]{\psset[pst-poker]{cardvalue=9,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdnineh[1][]{\psset[pst-poker]{cardvalue=9,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdnined[1][]{\psset[pst-poker]{cardvalue=9,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdninec[1][]{\psset[pst-poker]{cardvalue=9,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdeigs[1][]{\psset[pst-poker]{cardvalue=8,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdeigh[1][]{\psset[pst-poker]{cardvalue=8,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdeigd[1][]{\psset[pst-poker]{cardvalue=8,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdeigc[1][]{\psset[pst-poker]{cardvalue=8,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdsevs[1][]{\psset[pst-poker]{cardvalue=7,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdsevh[1][]{\psset[pst-poker]{cardvalue=7,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdsevd[1][]{\drawcard[cardvalue=7,cardsuit=diamond,#1]}%
+\newcommand\crdsevc[1][]{\psset[pst-poker]{cardvalue=7,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdsixs[1][]{\psset[pst-poker]{cardvalue=6,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdsixh[1][]{\psset[pst-poker]{cardvalue=6,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdsixd[1][]{\psset[pst-poker]{cardvalue=6,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdsixc[1][]{\psset[pst-poker]{cardvalue=6,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdfives[1][]{\psset[pst-poker]{cardvalue=5,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdfiveh[1][]{\psset[pst-poker]{cardvalue=5,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdfived[1][]{\psset[pst-poker]{cardvalue=5,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdfivec[1][]{\psset[pst-poker]{cardvalue=5,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdfours[1][]{\psset[pst-poker]{cardvalue=4,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdfourh[1][]{\psset[pst-poker]{cardvalue=4,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdfourd[1][]{\psset[pst-poker]{cardvalue=4,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdfourc[1][]{\psset[pst-poker]{cardvalue=4,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdtres[1][]{\psset[pst-poker]{cardvalue=3,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdtreh[1][]{\psset[pst-poker]{cardvalue=3,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdtred[1][]{\psset[pst-poker]{cardvalue=3,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdtrec[1][]{\psset[pst-poker]{cardvalue=3,cardsuit=club}\drawcard[#1]}%
+\newcommand\crdtwos[1][]{\psset[pst-poker]{cardvalue=2,cardsuit=spade}\drawcard[#1]}%
+\newcommand\crdtwoh[1][]{\psset[pst-poker]{cardvalue=2,cardsuit=heart}\drawcard[#1]}%
+\newcommand\crdtwod[1][]{\psset[pst-poker]{cardvalue=2,cardsuit=diamond}\drawcard[#1]}%
+\newcommand\crdtwoc[1][]{\psset[pst-poker]{cardvalue=2,cardsuit=club}\drawcard[#1]}%
+
+\renewcommand\crdback[1][]{\pkr@drawback[#1]}%
+%
+% universal card command
+% \drawcard{value}{suit}{color}
+%
+\newcommand\drawcard[1][]{{%
+  \ifx\relax#1\relax\else\psset{#1}\fi
+  \pspicture(-1.7,0)(1.7,4.4)
+    \pkr@drawcardframe
+    \pkr@drawlpips
+    \pkr@drawrpips
+    \pkr@drawsymframe
+    \pkr@drawsymbols
+  \endpspicture}}
+%
+% draw frame of card
+\newcommand\pkr@drawcardframe{%
+ \psframe[linewidth=0.3pt,
+          fillstyle=solid,
+          fillcolor=white,
+          shadow=\pkr@shad,
+          blur=\pkr@shadblur,
+          framearc=0.1
+         ](\pkr@cxl,\pkr@cyb)(\pkr@cxr,\pkr@cyt)%
+}%
+% draw left indices
+% \pkr@drawlpips
+\newcommand\pkr@drawlpips{%
+ \rput[b](\pkr@pxl,\pkr@pytv){\psscaleboxto(\pkr@pvw,\pkr@pvh){\textcolor{\pkr@col}{\sffamily\pkr@val}}}%
+ \rput[t](\pkr@pxl,\pkr@pyts){\psscaleboxto(\pkr@pw,\pkr@ph){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[t]{180}(\pkr@pxr,\pkr@pybs){\psscaleboxto(\pkr@pw,\pkr@ph){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@pxr,\pkr@pybv){\psscaleboxto(\pkr@pvw,\pkr@pvh){\textcolor{\pkr@col}{\sffamily \pkr@val}}}%
+}%
+% restore command used by corners key
+\newcommand\pkr@restorelpips{%
+\renewcommand{\pkr@drawlpips}{%
+ \rput[b](\pkr@pxl,\pkr@pytv){\psscaleboxto(\pkr@pvw,\pkr@pvh){\textcolor{\pkr@col}{\sffamily \pkr@val}}}%
+ \rput[t](\pkr@pxl,\pkr@pyts){\psscaleboxto(\pkr@pw,\pkr@ph){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[t]{180}(\pkr@pxr,\pkr@pybs){\psscaleboxto(\pkr@pw,\pkr@ph){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@pxr,\pkr@pybv){\psscaleboxto(\pkr@pvw,\pkr@pvh){\textcolor{\pkr@col}{\sffamily \pkr@val}}}%
+}%
+}%
+% index modify command used by peek key
+\newcommand{\pkr@setlpeek}{%
+\renewcommand{\pkr@drawlpips}{%
+  \rput[l]{45}(\pkr@kxl,\pkr@kyt){\psscaleboxto(\pkr@kw,\pkr@kh){\textcolor{\pkr@col}{\sffamily \pkr@val\pkr@suit}}}%
+  \rput[l]{-135}(\pkr@kxr,\pkr@kyb){\psscaleboxto(\pkr@kw,\pkr@kh){\textcolor{\pkr@col}{\sffamily \pkr@val\pkr@suit}}}%
+}%
+}%
+% draw right indices
+% \pkr@drawrpips
+\newcommand{\pkr@drawrpips}{%
+ \rput[b](\pkr@pxr,\pkr@pytv){\psscaleboxto(\pkr@pvw,\pkr@pvh){\textcolor{\pkr@col}{\sffamily \pkr@val}}}%
+ \rput[t](\pkr@pxr,\pkr@pyts){\psscaleboxto(\pkr@pw,\pkr@ph){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[t]{180}(\pkr@pxl,\pkr@pybs){\psscaleboxto(\pkr@pw,\pkr@ph){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@pxl,\pkr@pybv){\psscaleboxto(\pkr@pvw,\pkr@pvh){\textcolor{\pkr@col}{\sffamily \pkr@val}}}%
+}%
+% restore command used by corners key
+\newcommand{\pkr@restorerpips}{%
+ \renewcommand{\pkr@drawrpips}{%
+ \rput[b](\pkr@pxr,\pkr@pytv){\psscaleboxto(\pkr@pvw,\pkr@pvh){\textcolor{\pkr@col}{\sffamily \pkr@val}}}%
+ \rput[t](\pkr@pxr,\pkr@pyts){\psscaleboxto(\pkr@pw,\pkr@ph){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[t]{180}(\pkr@pxl,\pkr@pybs){\psscaleboxto(\pkr@pw,\pkr@ph){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@pxl,\pkr@pybv){\psscaleboxto(\pkr@pvw,\pkr@pvh){\textcolor{\pkr@col}{\sffamily \pkr@val}}}%
+}%
+}%
+% index modify command used by peek key
+\newcommand{\pkr@setrpeek}{%
+ \renewcommand{\pkr@drawrpips}{%
+  \rput[r]{-45}(\pkr@kxr,\pkr@kyt){\psscaleboxto(\pkr@kw,\pkr@kh){\textcolor{\pkr@col}{\sffamily \pkr@val\pkr@suit}}}%
+  \rput[r]{135}(\pkr@kxl,\pkr@kyb){\psscaleboxto(\pkr@kw,\pkr@kh){\textcolor{\pkr@col}{\sffamily \pkr@val\pkr@suit}}}%
+}%
+}%
+% draw inner frame
+\newcommand{\pkr@drawsymframe}{%
+ \psframe[linewidth=0.2pt,
+          fillstyle=solid,
+          fillcolor=\colorbgname
+         ] (\pkr@fxl,\pkr@fyb)(\pkr@fxr,\pkr@fyt)%
+}%
+% draw center symbols and faces
+% wrapper to be redefined by internal cardvalue key
+\newcommand\pkr@drawsymbols{\pkr@Asymbols}
+%
+% center symbols
+% A
+\newcommand\pkr@Asymbols{%
+ \rput[b](\pkr@sxm,\pkr@sym){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily\pkr@suit}}}%
+}%
+% K
+\newcommand{\pkr@Ksymbols}{%
+ \psframe[linewidth=0.2pt,%
+          fillstyle=solid,%
+          fillcolor=white%
+         ] (\pkr@fxl,\pkr@fyb)(\pkr@fxr,\pkr@fyt)%
+ \rput[b](\pkr@isxl,\pkr@isyt){\psscaleboxto(\pkr@isw,\pkr@ish){\textcolor{\pkr@col}{\sffamily\pkr@suit}}}%
+ \rput[b]{180}(\pkr@isxr,\pkr@isyb){\psscaleboxto(\pkr@isw,\pkr@ish){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxm,\pkr@iy){\psscaleboxto(\pkr@iw,\pkr@ih){\includegraphics{King-\pkr@suitname-\pkr@facecol}}}%
+}%
+% Q
+\newcommand{\pkr@Qsymbols}{%
+ \psframe[linewidth=0.2pt,%
+          fillstyle=solid,%
+          fillcolor=white%
+         ] (\pkr@fxl,\pkr@fyb)(\pkr@fxr,\pkr@fyt)%
+ \rput[b](\pkr@isxl,\pkr@isyt){\psscaleboxto(\pkr@isw,\pkr@ish){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@isxr,\pkr@isyb){\psscaleboxto(\pkr@isw,\pkr@ish){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxm,\pkr@iy){\psscaleboxto(\pkr@iw,\pkr@ih){\includegraphics{Queen-\pkr@suitname-\pkr@facecol}}}%
+}%
+% J
+\newcommand{\pkr@Jsymbols}{%
+ \psframe[linewidth=0.2pt,%
+          fillstyle=solid,%
+          fillcolor=white%
+         ] (\pkr@fxl,\pkr@fyb)(\pkr@fxr,\pkr@fyt)%
+ \rput[b](\pkr@isxl,\pkr@isyt){\psscaleboxto(\pkr@isw,\pkr@ish){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@isxr,\pkr@isyb){\psscaleboxto(\pkr@isw,\pkr@ish){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxm,\pkr@iy){\psscaleboxto(\pkr@iw,\pkr@ih){\includegraphics{Jack-\pkr@suitname-\pkr@facecol}}}%
+}%
+% 10
+\newcommand{\pkr@tensymbols}{%
+ \rput[b](\pkr@sxl,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxl,\pkr@syti){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxl,\pkr@sybi){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxl,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@syti){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxr,\pkr@sybi){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxr,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxm,\pkr@sytiii){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxm,\pkr@sybiii){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+}%
+% 9
+\newcommand{\pkr@ninesymbols}{%
+ \rput[b](\pkr@sxl,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxl,\pkr@syti){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxl,\pkr@sybi){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxl,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@syti){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxr,\pkr@sybi){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxr,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxm,\pkr@sym){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+}%
+% 8
+\newcommand{\pkr@eigsymbols}{%
+ \rput[b](\pkr@sxl,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxl,\pkr@sym){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxl,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@sym){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxr,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxm,\pkr@sytii){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxm,\pkr@sybii){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+}%
+% 7
+\newcommand\pkr@sevsymbols{%
+ \rput[b](\pkr@sxl,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxl,\pkr@sym){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxl,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@sym){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxr,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxm,\pkr@sytii){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+}%
+% 6
+\newcommand{\pkr@sixsymbols}{%
+ \rput[b](\pkr@sxl,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxl,\pkr@sym){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxl,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@sym){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxr,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+}%
+% 5
+\newcommand{\pkr@fivesymbols}{%
+ \rput[b](\pkr@sxl,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxl,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxr,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxm,\pkr@sym){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+}%
+% 4
+\newcommand{\pkr@foursymbols}{%
+ \rput[b](\pkr@sxl,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxl,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxr,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxr,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+}%
+% 3
+\newcommand{\pkr@tresymbols}{%
+ \rput[b](\pkr@sxm,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b](\pkr@sxm,\pkr@sym){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxm,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+}%
+% 2
+\newcommand{\pkr@twosymbols}{%
+ \rput[b](\pkr@sxm,\pkr@syt){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+ \rput[b]{180}(\pkr@sxm,\pkr@syb){\psscaleboxto(\pkr@sw,\pkr@sh){\textcolor{\pkr@col}{\sffamily \pkr@suit}}}%
+}%
+%
+% draw back cards
+\newcommand\pkr@drawback[1][]{{%
+  \ifx\relax#1\relax\else\psset{#1}\fi
+  \pspicture(-1.7,0)(1.7,4.4)\pkr@back\endpspicture}}
+%
+% wrapper to be redefined by back key
+\let\pkr@back\pkr@backsimple
+%
+% back style simple
+\newcommand\pkr@backsimple{%
+ \psframe[linewidth=0.3pt,
+          shadow=\pkr@shad,
+          blur=\pkr@shadblur,
+          fillstyle=crosshatch*,
+          hatchangle=45,
+          hatchsep=0.1,
+          hatchwidth=0.02,
+          fillcolor=\colorbackname,
+          hatchcolor=white,
+          framearc=0.1
+         ](\pkr@cxl,\pkr@cyb)(\pkr@cxr,\pkr@cyt)%
+}%
+% back style suits
+\newcommand{\pkr@backsuits}{%
+ \psframe[linewidth=0.3pt,
+          fillstyle=solid,
+          fillcolor=white,
+          backcolor=red,
+          shadow=\pkr@shad,
+          blur=\pkr@shadblur,
+          framearc=0.1%
+         ](\pkr@cxl,\pkr@cyb)(\pkr@cxr,\pkr@cyt)%
+ \psframe[linewidth=0.3pt,
+          hatchangle=45,
+          hatchsep=0.08,
+          hatchwidth=0.04,
+          linecolor=\colorbackname,
+          hatchcolor=\colorbackname
+         ](-1.25,0.25)(1.25,3.95)
+ \psellipse[linewidth=0.2pt,%
+          fillstyle=solid,%
+          linecolor=\colorbackname,%
+          fillcolor=white%
+         ](0,3.1)(1,0.5)
+ \psellipse[linewidth=0.2pt,%
+          fillstyle=solid,%
+          linecolor=\colorbackname,%
+          fillcolor=white%
+         ](0,1.1)(1,0.5)
+ \rput[b](0,2.9){\psscaleboxto(1.6,0.4){\sffamily 
+    \textcolor{\crd@Colors}{\pspade}\textcolor{\crd@Colord}{\pdiamond}%
+    \textcolor{\crd@Colorc}{\pclub}\textcolor{\crd@Colorh}{\pheart}}}%
+ \rput[b]{180}(0,1.3){\psscaleboxto(1.6,0.4){\sffamily 
+    \textcolor{\crd@Colors}{\pspade}\textcolor{\crd@Colord}{\pdiamond}%
+    \textcolor{\crd@Colorc}{\pclub}\textcolor{\crd@Colorh}{\pheart}}}%
+}%
+% back style spades
+\newcommand\pkr@spade{%
+  \psscaleboxto(0.2,0.2){\textcolor{\colorbackname}{\sffamily\pspade}}%
+}%
+%
+\newcommand\pkr@backspades{%
+  \psboxfill{\pkr@spade}%
+%  \begin{pspicture}(\pkr@cxl,\pkr@cyb)(\pkr@cxr,\pkr@cyt)%
+    \psframe[linewidth=0.3pt,%
+          shadow=\pkr@shad,%
+          blur=\pkr@shadblur,%
+          fillstyle=boxfill,%
+          fillcycley=2,%
+          fillloopaddx=8,%
+          %PstDebug=1,%
+          fillcolor=white,%
+          %fillsize={(\pkr@cxl,\pkr@cyb)(\pkr@cxr,\pkr@cyt)},%
+          framearc=0.1,%
+    ](\pkr@cxl,\pkr@cyb)(\pkr@cxr,\pkr@cyt)%
+%  \end{pspicture}%
+}%
+% back style fournier
+\newcommand\fournier{%
+\begin{pspicture}(0,0)(0.28,0.28)%
+  \rput[bl]{36.9}(0.06,0){\psframe[linewidth=0.3pt,linecolor=\colorbackname](0,0)(0.1,0.1)}%
+  \rput[bl]{-126.9}(0.06,0.28){\psframe[linewidth=0.3pt,linecolor=\colorbackname](0,0)(0.1,0.1)}%
+  \rput[bl]{53.1}(0.22,0){\psframe[linewidth=0.3pt,linecolor=\colorbackname](0,0)(0.1,0.1)}%
+  \rput[bl]{216.9}(0.22,0.28){\psframe[linewidth=0.3pt,linecolor=\colorbackname](0,0)(0.1,0.1)}%
+\end{pspicture}
+}%
+\newcommand\pkr@backfournier{%
+ \psboxfill{\fournier}%
+ \psframe[linewidth=0.3pt,%
+          shadow=\pkr@shad,%
+          blur=\pkr@shadblur,%
+          fillstyle=boxfill,%
+          fillcolor=white,%
+          hatchcolor=\colorbackname,%
+          PstDebug=1,%
+          framearc=0.1%
+         ](\pkr@cxl,\pkr@cyb)(\pkr@cxr,\pkr@cyt)%
+}%
+% define layout measurements
+% poker sized jumbo index
+\newcommand{\pkr@indexjumbo}{%
+   \renewcommand{\pkr@cxl}{-1.5}%
+   \renewcommand{\pkr@cxr}{1.5}%
+   \renewcommand{\pkr@cyt}{4.2}%
+   \renewcommand{\pkr@cyb}{0}%
+   \renewcommand{\pkr@fxl}{-0.75}%
+   \renewcommand{\pkr@fxr}{0.75}%
+   \renewcommand{\pkr@fyt}{3.45}%
+   \renewcommand{\pkr@fyb}{0.75}%
+   \renewcommand{\pkr@ph}{0.6}%
+   \renewcommand{\pkr@pw}{0.6}%
+   \renewcommand{\pkr@pvh}{0.7}%
+   \renewcommand{\pkr@pvw}{0.6}%
+   \renewcommand{\pkr@pxl}{-1.125}%
+   \renewcommand{\pkr@pxr}{1.125}%
+   \renewcommand{\pkr@pytv}{3.35}%
+   \renewcommand{\pkr@pyts}{3.25}%
+   \renewcommand{\pkr@pybs}{0.95}%
+   \renewcommand{\pkr@pybv}{0.85}%
+   \renewcommand{\pkr@sh}{0.4}%
+   \renewcommand{\pkr@sw}{0.4}%
+   \renewcommand{\pkr@sxl}{-0.4}%
+   \renewcommand{\pkr@sxm}{0}%
+   \renewcommand{\pkr@sxr}{0.4}%
+   \renewcommand{\pkr@syt}{2.95}%
+   \renewcommand{\pkr@sytiii}{2.6}%
+   \renewcommand{\pkr@sytii}{2.4}%
+   \renewcommand{\pkr@syti}{2.25}%
+   \renewcommand{\pkr@sym}{1.9}%
+   \renewcommand{\pkr@sybi}{1.95}%
+   \renewcommand{\pkr@sybii}{1.8}%
+   \renewcommand{\pkr@sybiii}{1.6}%
+   \renewcommand{\pkr@syb}{1.25}%
+   \renewcommand{\pkr@ish}{0.4}%
+   \renewcommand{\pkr@isw}{0.4}%
+   \renewcommand{\pkr@isxl}{-0.55}%
+   \renewcommand{\pkr@isxr}{0.55}%
+   \renewcommand{\pkr@isyt}{2.95}%
+   \renewcommand{\pkr@isyb}{1.25}%
+   \renewcommand{\pkr@ih}{2.4}%
+   \renewcommand{\pkr@iw}{1.5}%
+   \renewcommand{\pkr@iy}{0.9}%
+   \renewcommand{\pkr@kh}{0.2}%
+   \renewcommand{\pkr@kw}{0.35}%
+   \renewcommand{\pkr@kxl}{-1.35}%
+   \renewcommand{\pkr@kxr}{1.35}%
+   \renewcommand{\pkr@kyt}{3.8}%
+   \renewcommand{\pkr@kyb}{0.4}%
+}%
+% poker sized regular index
+\newcommand{\pkr@indexregular}{%
+   \renewcommand{\pkr@cxl}{-1.5}%
+   \renewcommand{\pkr@cxr}{1.5}%
+   \renewcommand{\pkr@cyt}{4.2}%
+   \renewcommand{\pkr@cyb}{0}%
+   \renewcommand{\pkr@fxl}{-1}%
+   \renewcommand{\pkr@fxr}{1}%
+   \renewcommand{\pkr@fyt}{3.7}%
+   \renewcommand{\pkr@fyb}{0.5}%
+   \renewcommand{\pkr@ph}{0.35}%
+   \renewcommand{\pkr@pw}{0.35}%
+   \renewcommand{\pkr@pvh}{0.35}%
+   \renewcommand{\pkr@pvw}{0.35}%
+   \renewcommand{\pkr@pxl}{-1.25}%
+   \renewcommand{\pkr@pxr}{1.25}%
+   \renewcommand{\pkr@pytv}{3.7}%
+   \renewcommand{\pkr@pyts}{3.6}%
+   \renewcommand{\pkr@pybs}{0.6}%
+   \renewcommand{\pkr@pybv}{0.5}%
+   \renewcommand{\pkr@sh}{0.4}%
+   \renewcommand{\pkr@sw}{0.4}%
+   \renewcommand{\pkr@sxl}{-0.5}%
+   \renewcommand{\pkr@sxm}{0}%
+   \renewcommand{\pkr@sxr}{0.5}%
+   \renewcommand{\pkr@syt}{3.1}%
+   \renewcommand{\pkr@sytiii}{2.7}%
+   \renewcommand{\pkr@sytii}{2.5}%
+   \renewcommand{\pkr@syti}{2.3}%
+   \renewcommand{\pkr@sym}{1.9}%
+   \renewcommand{\pkr@sybi}{1.9}%
+   \renewcommand{\pkr@sybii}{1.7}%
+   \renewcommand{\pkr@sybiii}{1.5}%
+   \renewcommand{\pkr@syb}{1.1}%
+   \renewcommand{\pkr@ish}{0.5}%
+   \renewcommand{\pkr@isw}{0.5}%
+   \renewcommand{\pkr@isxl}{-0.7}%
+   \renewcommand{\pkr@isxr}{0.7}%
+   \renewcommand{\pkr@isyt}{3.1}%
+   \renewcommand{\pkr@isyb}{1.1}%
+   \renewcommand{\pkr@ih}{3.2}%
+   \renewcommand{\pkr@iw}{2.0}%
+   \renewcommand{\pkr@iy}{0.5}%
+   \renewcommand{\pkr@kh}{0.2}%
+   \renewcommand{\pkr@kw}{0.35}%
+   \renewcommand{\pkr@kxl}{-1.35}%
+   \renewcommand{\pkr@kxr}{1.35}%
+   \renewcommand{\pkr@kyt}{3.8}%
+   \renewcommand{\pkr@kyb}{0.4}%
+}%
+%
+% draw pair of cards
+\newcommand\crdpair[2]{%
+  \begin{pspicture}(-1.7,-1)(2.7,4.6)
+  \rput[b](0,0){#1}%
+  \rput[b](1,-1){#2}%
+  \end{pspicture}
+}%
+%
+% draw three overlapped cards
+\newcommand\crdflop[3]{%
+  \begin{pspicture}(-1.7,0)(3.7,4.6)
+  \rput[b](0,0){#1}%
+  \rput[b](1,0){#2}%
+  \rput[b](2,0){#3}%
+  \end{pspicture}
+}%
+%
+% presetting user keys to defaults
+\psset[pst-poker]{inline=card,index=jumbo,corners=2,colorset=2c,
+                  framebg=beige,back=simple,backcolor=blue,crdshadow=blurred}%
+\psset{unit=5mm}%
+%
+\endinput

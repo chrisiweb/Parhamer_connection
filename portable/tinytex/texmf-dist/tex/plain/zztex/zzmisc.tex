@@ -1,0 +1,292 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Miscellaneous Facilities
+%
+% Synopsis:  This module contains miscellaneous facilities that do not
+%            seem to belong in any other file.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   26 August 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Character Categories
+%                       --------- ----------
+
+
+% The following list contains characters with category codes other
+% than endofline, ignored, space, letter, other, and invalid:
+
+\setlist \zcatlist = {}
+
+
+\def \establishcatcode #1#2{%                           {`\c}{\catname}
+  \zdelcat{#1}%
+  \catcode #1 = #2%
+  {\setflag \znext = \true
+   \if \eqlp{#2}{\catendofline}\setflag \znext = \false \fi
+   \if \eqlp{#2}{\catignored}\setflag \znext = \false \fi
+   \if \eqlp{#2}{\catspace}\setflag \znext = \false \fi
+   \if \eqlp{#2}{\catletter}\setflag \znext = \false \fi
+   \if \eqlp{#2}{\catother}\setflag \znext = \false \fi
+   \if \eqlp{#2}{\catinvalid}\setflag \znext = \false \fi
+   \if \znext \append{#1}{\zcatlist}\fi}}
+
+\def \zdelcat #1{%
+  {\setlist \znewcatlist = {}%
+   \maplist{\def \zcata {##1}\def \zcatb{#1}%
+            \if \notp{\tokeqlp{\zcata}{\zcatb}}\append{##1}{\znewcatlist}\fi}%
+           {\zcatlist}%
+   \setlist \zcatlist = \znewcatlist}}
+
+% Initialize the character list:
+
+\establishcatcode{`\^^L}{\catactive}
+\establishcatcode{`\#}{\catparameter}
+\establishcatcode{`\$}{\catmath}
+\establishcatcode{`\&}{\catalign}
+\establishcatcode{`\%}{\catcomment}
+\establishcatcode{`\@}{\catactive}
+\establishcatcode{`\\}{\catescape}
+\establishcatcode{`\^}{\catsuperscript}
+\establishcatcode{`\_}{\catsubscript}
+\establishcatcode{`\{}{\catbegin}
+\establishcatcode{`\}}{\catend}
+\establishcatcode{`\~}{\catactive}
+
+\def \uncatcode #1#2#3{%      {allow-commands}{allow-at-commands}{allow-math}
+  \maplist{\catcode##1=\catother}{\zcatlist}%
+  \if #1%
+    \catcode`\\ = \catescape
+    \catcode`\{ = \catbegin
+    \catcode`\} = \catend
+  \fi
+  \if #2%
+    \catcode`\@ = \catactive
+  \fi
+  \if #3%
+    \catcode`\$ = \catmath
+    \catcode`\^ = \catsuperscript
+    \catcode`\_ = \catsubscript
+  \fi}
+
+\def \catcodemath {%
+  \catcode `\  = \catspace
+  \catcode `\$ = \catmath
+  \catcode `\^ = \catsuperscript
+  \catcode `\_ = \catsubscript}
+
+\def \catcoderange #1#2#3{%                     {first}{last}{\catname}
+  \tcounta = #1\relax
+  \tcountb = #2\relax \increment \tcountb
+  \loop
+    \ifnum \tcounta < \tcountb
+      \catcode \tcounta = #3%
+      \increment \tcounta
+  \repeat}
+
+% Make the upper half of the ASCII characters invalid.
+
+\catcoderange{"80}{"FF}{\catinvalid}
+
+%                       Conditional Text
+%                       ----------- ----
+
+
+\let \setif = \if
+\let \endsetif = \fi
+
+\def \ignore {%
+  \if \notp{\zemptyblockstackp}\todo{$\ignore command.}\fi
+  \setif \false}
+
+\let \endignore = \endsetif
+
+%                       Date & Time
+%                       ---- - ----
+
+
+% \year, \month, and \day are TeX parameters.
+
+\definecount{\weekday}{0}
+
+% \time is a TeX parameter, the number of minutes since midnight.
+
+\definecount{\hour}{0}
+\definecount{\minute}{0}
+
+
+\def \zdtinit {%
+  \zwdinit
+  \hour = \time
+  \divide \hour by 60
+  \minute = \time
+  \divide \minute by 60
+  \multiply \minute by -60
+  \advance \minute by \time}
+
+\def \zwdinit {%
+  \tcounta = \year
+  \if \lssp{\month}{3}\advance \tcounta by -1 \fi
+  \tcountb = \tcounta
+  \divide \tcountb by 100
+  \tcountc = \tcountb
+  \multiply \tcountc by -100
+  \advance \tcountc by \tcounta
+  \tcounta = \month
+  \if \lssp{\month}{3}\advance \tcounta by 9 \else \advance \tcounta by -3 \fi
+  \multiply \tcountb by 146097
+  \divide \tcountb by 4
+  \multiply \tcountc by 1461
+  \divide \tcountc by 4
+  \advance \tcountb by \tcountc
+  \multiply \tcounta by 153
+  \advance \tcounta by 2
+  \divide \tcounta by 5
+  \advance \tcountb by \tcounta
+  \advance \tcountb by \day
+  \advance \tcountb by -693902
+  \weekday = \tcountb
+  \divide \weekday by 7
+  \multiply \weekday by -7
+  \advance \weekday by \tcountb}
+
+
+\def \formattime {%
+  \number\hour:%
+  \if \lssp{\minute}{10}0\fi
+  \number\minute}
+
+%                       Fancy Names
+%                       ----- -----
+
+
+\def \AMSTeX {AMS\TeX}
+
+\def \BibTeX {Bib\TeX}
+
+\def \LaTeX {L\kern-.3em \raise .4ex \hbox{a}\kern-.05em \TeX}
+
+%                       Hiding Writes
+%                       ------ ------
+
+
+% These macros help to hide the \write's that are performed by commands
+% like \tag and \xpage.
+
+\definedimen{\zhidewriteskip}{0pt}
+
+\def \zbeginhidewrite {%
+  \zhidewriteskip = \lastskip
+  \begingroup
+    \if \hmodep \edef \zsf {\spacefactor=\the\spacefactor}\fi}
+
+\def \zendhidewrite {%
+    \if \hmodep \zsf \fi
+  \endgroup
+  \if \andp{\hmodep}{\dimposp{\zhidewriteskip}}\ignorespaces \fi}
+
+%                       Initialization File
+%                       -------------- ----
+
+
+\def \zloadinifile {%
+  \gdef \inicompositor {???}%
+  \gdef \iniinitials {???}%
+  \gdef \ininame {???}
+  \gdef \iniorganization {(none)}%
+  \checkfile{\zini}{zztex.ini}%
+  \if \zini
+    \writelog{(loading ini file)}%
+    \zloadinifilea
+  \else
+    \writelog{(no ini file)}%
+  \fi}
+
+\def \zloadinifilea {%
+  \begingroup
+    \catcode \endlinechar = \catcomment
+    \catcode `\; = \catcomment
+    \openin \zreada zztex.ini\relax
+    \setflag \zinireg = \false
+    \loop
+      \read \zreada to \zline
+      \if \notp{\emptydefp{\zline}}\expandafter\zloadinifileb \zline\zmark \fi
+    \if \notp{\eofp{\zreada}}\repeat
+    \closein \zreada
+  \endgroup}
+
+\def \zloadinifileb #1#2\zmark {%
+  \if \codeeqlp{#1}{[}%
+    \zloadinifilec #2\zmark
+  \else\if \zinireg
+    \zloadinifiled #1#2\zmark
+  \fi\fi}
+
+\def \zloadinifilec #1]#2\zmark {%
+  \stringeql{\zinireg}{#1}{registration}}
+
+\def \zloadinifiled #1=#2\zmark {%
+  \withname\gdef {\ini#1}{#2}}
+
+%                       Penalties
+%                       ---------
+
+
+% The following symbolic penalties should be used everywhere so they
+% can be adjusted without any recoding.  The trailing spaces are
+% like \relax but don't screw up \ifnum.
+
+\def \breaknever   {10000 }     %~ Never break here. %^penalty
+\def \breakworst   {500 }       %~ Worst place to break. %^penalty
+\def \breakworse   {300 }       %~ Worse place to break. %^penalty
+\def \breakbad     {100 }       %~ Bad place to break. %^penalty
+\def \breakallowed {0 }         %~ Break allowed here. %^penalty
+\def \breakgood    {-100 }      %~ Good place to break. %^penalty
+\def \breakbetter  {-300 }      %~ Better place to break. %^penalty
+\def \breakbest    {-500 }      %~ Best place to break. %^penalty
+\def \breakalways  {-10000 }    %~ Always break here. %^penalty
+
+
+\def \allowbreak {\penalty \breakallowed}       %~ Allow page break here.
+\def \break      {\penalty \breakalways}        %~ Force page break here.
+\def \nobreak    {\penalty \breaknever}         %~ Disallow page break here.
+\let \unbreakable = \nobreak
+
+%                       Versions
+%                       --------
+
+
+% I have no idea what my intention was here.
+
+
+\def \defineversion #1#2{%                              {\name}{status}
+  \if #2%
+    \let \znext = \zletiftrue
+  \else
+    \let \znext = \zletiffalse
+  \fi
+  \withname\let {\end \expandafter\discardtok\string#1} = \fi
+  \znext{#1}}
+
+\def \zletiftrue #1{%
+  \let #1 = \iftrue}
+
+\def \zletiffalse #1{%
+  \let #1 = \iffalse}
+
+
+\defineversion{\ignore}{\false}
+
+%                       Translator Flags
+%                       ---------- -----
+
+
+\def \XTran<#1>{%
+  \error{xtran}{XTran flag: #1}}
+
+\def \ZzTran[#1]{%
+  \error{zztran}{ZzTran flag: #1}}

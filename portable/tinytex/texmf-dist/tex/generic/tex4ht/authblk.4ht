@@ -1,0 +1,45 @@
+% authblk.4ht (2022-11-20-07:09), generated from tex4ht-4ht.tex
+% Copyright 2017-2022 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2022-11-20-07:09}
+
+\let\o:maketitle:\maketitle
+\def\maketitle{\bgroup
+   \gHAdvance\:mpNum by 1
+\HAssign\minipageNum=\:mpNum \relax
+%
+   \ifx \EndPicture\:UnDef
+      \def\sec:typ{title}%
+      \Configure{HtmlPar}{}{}{}{}%
+      \Configure{newpage}{}%
+      \ConfigureEnv{center}{\empty}{}{\empty}{\empty}
+      \renewenvironment{tabular}[2][]{\begin{center}}{\end{center}}
+      \ConfigureEnv{tabular}{\empty}{}{}{}%
+      %
+      \pend:def\@title{\a:ttl}\append:def\@title{\b:ttl}%
+      \pend:def\@date{\a:date}\append:def\@date{\b:date}%
+      \pend:defI\@author{\a:author}\append:def\@author{\b:author}%
+      \def\and{\a:and}
+%
+   \fi
+   \pic:gobble\a:mktl  \AB@maketitle \pic:gobble\b:mktl
+   \egroup \let\maketitle\empty}
+
+\Hinput{authblk}
+\endinput
+

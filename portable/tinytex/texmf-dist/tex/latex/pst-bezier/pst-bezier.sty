@@ -1,0 +1,18 @@
+%% $Id: pst-bezier.sty 321 2016-08-20 07:45:01Z herbert $
+%
+\RequirePackage{pstricks}
+\RequirePackage{expl3}
+\ExplSyntaxOn
+  \cs_new_eq:NN \pscalculate \fp_eval:n
+\ExplSyntaxOff
+%
+\ProvidesPackage{pst-bezier}[2016/08/19 v. 0.02 package wrapper for 
+  pst-bezier.tex (hv)]
+\input{pst-bezier.tex}
+\ProvidesFile{pst-bezier.tex}
+  [\filedate\space v\fileversion\space `PST-bezier' (tn,hv)]
+\IfFileExists{pst-bezier.pro}{%
+  \ProvidesFile{pst-bezier.pro}
+    [2016/08/19 v. 0.02,  PostScript prologue file (tn,hv)]
+    \@addtofilelist{pst-bezier.pro}}{}%
+\endinput

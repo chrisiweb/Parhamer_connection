@@ -1,0 +1,92 @@
+% visualtoks.tex, version 1.1b
+
+% Copyright (C) 2025 plante
+% This package is released under the LaTeX Project Public License (LPPL) 1.3c.
+
+% visualtoks: typeset TeXbook-style visualisations of token lists.
+
+% This package may be used in LaTeX by `\usepackage{visualtoks}`, or
+% in plain TeX and other formats by `\input{visualtoks}`.
+
+% See the documentation for typeset examples and caveats.
+
+
+
+\ifdefined\visualtoks
+	\expandafter\endinput
+\fi
+\edef\next{\catcode`\noexpand\@=\the\catcode`\@\space}
+\catcode`\@=11
+
+\input tokmap
+
+\newdimen\visualtokssep \visualtokssep=1em
+
+\protected\long\def\visualtoks#1{%
+	\begingroup
+		\leavevmode
+		\ifcsname ttfamily\endcsname \ttfamily \else \tt \fi \m@th
+		\hskip-\visualtokssep \tokmap\visualtoksA{#1}%
+	\endgroup
+}
+\long\def\visualtoksA#1{%
+	\hskip\visualtokssep
+	\ifx\tokmap@space#1%
+		\char`\ $_{10}$%
+	\else\ifx\tokmap@bgroup#1%
+		\char`\{$_1$%
+	\else\ifx\tokmap@egroup#1%
+		\char`\}$_2$%
+	\else
+		\escapechar`\\%
+		\edef\tempa{\string#1}%
+		\escapechar\m@ne
+		\edef\tempb{\string#1}%
+		\ifx\tempa\tempb \expandafter\@firstoftwo \else \expandafter\@secondoftwo \fi
+			{\ifnum`\ =`#1 \expandafter\@firstoftwo \else \expandafter\@secondoftwo \fi
+				{\char`\ }{\string#1}%
+			$_{%
+				\let~\empty
+				\lccode`~=`#1\lowercase{\let~}\empty
+				\ifcat$\noexpand#13\fi
+				\ifcat &\noexpand#14\fi
+				\ifcat##\noexpand#16\fi
+				\ifcat ^\noexpand#17\fi
+				\ifcat _\noexpand#18\fi
+				\ifcat\space\noexpand#110\fi
+				\ifcat a\noexpand#111\fi
+				\ifcat !\noexpand#112\fi
+				\ifcat\noexpand~\noexpand#113\fi
+			}$}%
+			{\ifx\visualtoks@emptycs\tempb \expandafter\@firstoftwo \else \expandafter\@secondoftwo \fi
+				{\visualtoksB{}}%
+				{\expandafter\visualtoksB\expanded{{\string#1}}%
+				\long\expandafter\def\expandafter\tempa\expandafter##\expandafter1\csname\string#1\endcsname{}%
+				\if\relax\detokenize\expandafter\expandafter\expandafter
+					{\expandafter\tempa\expandafter#1\csname\string#1\endcsname}\relax *\fi}}%
+	\fi\fi\fi
+}
+
+\long\def\visualtoksB#1{%
+	\hbox{%
+		\vrule
+		\vtop{%
+			\vbox{%
+				\hrule \kern\p@
+				\hbox{\vphantom/\thinspace \tokmap\visualtoksC{#1}\thinspace}%
+			}%
+			\kern\p@ \hrule
+		}%
+		\vrule
+	}%
+}
+
+\long\def\visualtoksC#1{\ifx\tokmap@space#1\char`\ \else#1\fi}
+
+\begingroup \escapechar=\m@ne
+\xdef\visualtoks@emptycs{\expandafter\string \csname\endcsname}
+\endgroup
+
+\next
+
+\endinput

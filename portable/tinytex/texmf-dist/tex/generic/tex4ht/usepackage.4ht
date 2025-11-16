@@ -1,0 +1,110 @@
+% usepackage.4ht (2025-08-27-10:30), generated from tex4ht-4ht.tex
+% Copyright 2003-2009 Eitan M. Gurari
+% Copyright 2009-2025 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <https://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2025-08-27-10:30}
+
+   \def\:temp{tex4ht}\ifx \:temp\@currname
+   \:warning{\string\usepackage{tex4ht} again?}
+   \def\:temp#1htex4ht.def,tex4ht.sty#2!*?: {\def\:temp{#2}}
+\expandafter\:temp \@filelist htex4ht.def,tex4ht.sty!*?: %
+\ifx \:temp\empty  \else
+   \:warning{if
+    \string\RequirePackage[tex4ht]{hyperref} or
+    \string\usepackage[tex4ht]{hyperref} was
+    used try instead, repectively,
+    \string\RequirePackage{hyperref} or
+    \string\usepackage{hyperref}}
+\fi
+
+\fi
+\gdef\a:usepackage{\use:package ,!*?: }
+\gdef\use:package#1,{%
+   \if :#1:\def\:temp##1!*?: {}\else
+      \def\:temp{#1}\ifx \@currname\:temp
+             \def\:temp##1!*?: {\input usepackage.4ht  }%
+      \else \let\:temp=\use:package \fi
+   \fi \:temp}
+\Configure{PackageHooks}{titlesec.sty}{titlesec-hooks.4ht}
+\Configure{PackageHooks}{multibib.sty}{multibib-hooks.4ht}
+\Configure{PackageHooks}{biblatex-chicago.sty}{biblatex-chicago-hooks.4ht}
+\Configure{PackageHooks}{cleveref.sty}{cleveref-hooks.4ht}
+\Configure{PackageHooks}{xr.sty}{xr-hooks.4ht}
+\Configure{PackageHooks}{xr-hyper.sty}{xrhyper-hooks.4ht}
+\Configure{PackageHooks}{eso-pic.sty}{esopic-hooks.4ht}
+\Configure{PackageHooks}{showframe.sty}{showframe-hooks.4ht}
+\Configure{PackageHooks}{expl3.sty}{expl3-hooks.4ht}
+\Configure{PackageHooks}{savetrees.sty}{savetrees-hooks.4ht}
+\Configure{PackageHooks}{newcomputermodern.sty}{newcomputermodern-hooks.4ht}
+\Configure{PackageHooks}{newcomputermodern.sty}{newcomputermodern-hooks.4ht}
+\Configure{PackageHooks}{fontawesome5-utex-helper.sty}%
+{fontawesome5-utex-helper-hooks.4ht}
+\Configure{PackageHooks}{fontawesome5.sty}{fontawesome5-hooks.4ht}
+\Configure{PackageHooks}{biblatex.sty}{biblatex-hooks.4ht}
+\Configure{PackageHooks}{xeCJK.sty}{xecjk-hooks.4ht}
+\Configure{PackageHooks}{unicode-math.sty}{unicode-math-hooks.4ht}
+\Configure{PackageHooks}{ctex.sty}{ctex-hooks.4ht}
+\AddToHook{class/ctexart/before}{\input{ctexart-hooks.4ht}}
+\Configure{PackageHooks}{luatexja.sty}{luatexja-hooks.4ht}
+\Configure{PackageHooks}{luatexja-fontspec.sty}{luatexja-hooks.4ht}
+\Configure{PackageHooks}{polyglossia.sty}{polyglossia-hooks.4ht}
+\Configure{PackageHooks}{fontspec.sty}{fontspec-hooks.4ht}
+\Configure{PackageHooks}{tikz.sty}{tikz-hooks.4ht}
+\Configure{PackageHooks}{pgf.sty}{pgf-hooks.4ht}
+\Configure{PackageHooks}{pdfbase.sty}{pdfbase-hooks.4ht}
+\Configure{PackageHooks}{pdfx.sty}{pdfx-hooks.4ht}
+\Configure{PackageHooks}{lua-widow-control.sty}{lua-widow-control-hooks.4ht}
+\Configure{PackageHooks}{tagpdf.sty}{tagpdf-hooks.4ht}
+\Configure{PackageHooks}{tagpdf-base.sty}{tagpdf-base-hooks.4ht}
+\Configure{PackageHooks}{accessibility.sty}{accessibility-hooks.4ht}
+\Configure{PackageHooks}{embedfile.sty}{embedfile-hooks.4ht}
+\Configure{PackageHooks}{breakurl.sty}{breakurl-hooks.4ht}
+\Configure{PackageHooks}{hyperref.sty}{hyperref-hooks.4ht}
+\Configure{PackageHooks}{bookmark.sty}{bookmark-hooks.4ht}
+\Configure{PackageHooks}{draftwatermark.sty}{draftwatermark-hooks.4ht}
+\AddToHook{package/tabu/before}{\RequirePackage{tabularx}}
+\Configure{PackageHooks}{caption.sty}{caption-hooks.4ht}
+\Configure{PackageHooks}{footnotebackref.sty}{footnotebackref-hooks.4ht}
+\Configure{PackageHooks}{novel-pdfx.sty}{novel-pdfx-hooks.4ht}
+\AddToHook{package/doc/before}{\SUPOff}
+\AddToHook{package/doc/after}{\SUPOn}
+\AddToHook{package/hypdoc/before}{\SUPOff}
+\AddToHook{package/hypdoc/after}{\SUPOn}
+\Configure{PackageHooks}{mathtools.sty}{mathtools-hooks.4ht}
+\Configure{PackageHooks}{resizegather.sty}{resizegather-hooks.4ht}
+\Configure{PackageHooks}{babel.sty}{babel-sty-hooks.4ht}
+\Configure{PackageHooks}{minted.sty}{minted-sty-hooks.4ht}
+\Configure{PackageHooks}{xyling.sty}{xyling-hooks.4ht}
+\Configure{PackageHooks}{graphics.sty}{graphics-hooks.4ht}
+\Configure{PackageHooks}{graphbox.sty}{graphbox-hooks.4ht}
+\Configure{PackageHooks}{xcolor.sty}{xcolor-hooks.4ht}
+\Configure{PackageHooks}{colortbl.sty}{colortbl-hooks.4ht}
+\Configure{PackageHooks}{enumitem.sty}{enumitem-hooks.4ht}
+\Configure{PackageHooks}{imakeidx.sty}{imakeidx-hooks.4ht}
+\Configure{PackageHooks}{fancyhdr.sty}{fancyhdr-hooks.4ht}
+\Configure{PackageHooks}{exerquiz.sty}{exerquiz-hooks.4ht}
+\Configure{PackageHooks}{hyperxmp.sty}{hyperxmp-hooks.4ht}
+\Configure{PackageHooks}{datetime2.sty}{datetime2-hooks.4ht}
+\Configure{PackageHooks}{manyfoot.sty}{manyfoot-hooks.4ht}
+\Configure{PackageHooks}{bigfoot.sty}{bigfoot-hooks.4ht}
+
+\InputIfFileExists{usepackage-user.4ht}{}
+
+
+\endinput
+

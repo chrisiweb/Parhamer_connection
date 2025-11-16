@@ -1,0 +1,4 @@
+.ot1-stixgeneral
+htfcss:  ot1-stixgeneral-bolditalic  font-weight: bold; font-style: italic; font-family: 'STIXGeneral', serif;
+
+

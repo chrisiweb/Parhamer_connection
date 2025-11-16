@@ -1,0 +1,114 @@
+% This file is part of the CTAN package named ifis-macros.
+% 
+%   ifisdimension.tex: provide macro \ifisdim to check if a given
+%                      input is a valid dimension for \TeX.
+%   Usage: \ifisdim <argument>\Boolend <true branch>\else <false branch>\fi
+%
+%   Copyright (C) 2024,2025  Udo Wermuth (author)
+%
+%   This program is free software: you can redistribute it and/or modify
+%   it under the terms of the GNU General Public License as published by
+%   the Free Software Foundation, either version 3 of the License, or
+%   (at your option) any later version.
+%
+%   This program is distributed in the hope that it will be useful,
+%   but WITHOUT ANY WARRANTY; without even the implied warranty of
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   GNU General Public License for more details.
+%
+%   You should have received a copy of the GNU General Public License
+%   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%
+\catcode`\@=11
+\newif\ifII@itis      %% reused from \ifisint %%
+\def\II@rmsign #1{\ifx#1+\else\ifx#1-\else    %%
+ \II@endrm#1\fi\fi\II@rmsign}%  remove signs: %%
+\def\II@endrm #1\fi\fi#2{\fi\fi#1}% `+' & `-' %%
+\let\Boolend=\iffalse \font\II@font=cmr10 %   %%
+\let\IIcurrentmode=\errorstopmode % CONFIGURE %%
+\def\II@W{W}\def\II@octW{'W}\def\II@hexW{"W}% %%
+%% declarations
+\newdimen\II@frac
+\countdef\II@cnt=255 \dimendef\II@dim=255
+%% helper macros; some use \ifisint's sentinel W
+\def\II@bad #1#2#3#4#5#6\II@end{%   numeric part
+ \def\II@id{#1W}% is missing but maybe with unit
+ \edef\II@X{#6}\ifx\II@X\empty
+  \edef\II@X{#5}\ifx\II@X\empty\else\II@Bad\fi
+ \else \edef\II@X{\II@mklc#2#3#4W}%
+  \ifx\II@X\II@rueW
+  \else\ifx\II@X\II@truW\II@Bad
+  \else \II@itistrue
+ \fi\fi\fi}
+\def\II@rueW{rueW}\def\II@truW{truW}
+\def\II@Bad{\ifx\II@id\II@W
+ \else\ifx\II@id\II@octW
+ \else\ifx\II@id\II@hexW
+ \else \II@itistrue
+ \fi\fi\fi}
+\def\II@mklc #1{\if#1pp\else\if#1Pp\else
+ \if#1tt\else\if#1Tt\else
+ \if#1bb\else\if#1Bb\else
+ \if#1ss\else\if#1Ss\else
+ \if#1rr\else\if#1Rr\else
+ \if#1uu\else\if#1Uu\else
+ \if#1ee\else\if#1Ee\else
+  \II@endlc#1\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+ \fi\fi\fi \II@mklc}%  `W' and `m' stop \II@mklc
+\def\II@endlc #1\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+ \fi\fi\fi\fi#2{\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+ \fi\fi\fi\fi#1}
+\def\II@getfrac #1mm\II@end{\global\II@frac=0#1}
+\def\II@getcalc{%\II@calc=coerced\II@int\II@frac
+ \ifdim\II@unit=26.11119pt %  \II@unit is ``pt''
+  \II@dim=\ifnum\II@int<16384
+   \II@int\else 0\fi pt
+ \else\ifdim\II@unit=27.77786pt %   it is ``bp''
+  \II@dim=\ifnum\II@int<16323
+   \II@int\else 0\fi bp
+ \else\ifdim\II@unit=26.16673pt %   it is ``sp''
+  \II@dim=\ifnum\II@int<1073741824
+   \II@int\else 0\fi sp
+ \else \II@dim=0pt \fi\fi\fi
+ \II@cnt=\II@dim \advance\II@cnt by \II@frac
+ \edef\II@calc{\number\II@cnt}}
+\def\II@point #1#2\II@end{% assign digits of the
+ \afterassignment\II@mklc  % fraction to \II@cnt
+ \ifx#1.\II@cnt=0#2%
+ \else\ifx#1,\II@cnt=0#2%
+ \else \II@cnt=0#1#2%
+ \fi\fi}
+\def\II@getunit #1{\afterassignment\II@hdlfrac
+ \II@cnt=#1\relax}
+\def\II@rmtrue{\ifdim\wd0>40pt \the\II@dim
+ \else \the\wd0 \fi}
+%% main macro
+\def\ifisdim #1\Boolend{\II@itisfalse     % S1.3
+ \edef\II@dist{\II@rmsign#1mm}%             S1.1
+ \edef\II@dist{\expandafter\II@rmsign\II@dist}%
+ \expandafter\II@bad
+  \II@dist\empty\empty\empty\empty\II@end % S1.2
+ \ifII@itis                         % S4.1, S4.4
+  \wlog{=== start ignore}\batchmode\begingroup
+   \setbox0=\hbox{\II@font
+    \afterassignment\II@getfrac
+     \II@cnt=\II@dist\II@end              % S2.2
+    \xdef\II@int{\the\II@cnt}}%             S2.1
+   \setbox0=\hbox{\II@font
+    \afterassignment\II@point
+     \II@cnt=\II@dist\II@end}\II@dim=\wd0
+   \advance\II@dim by -17.80559pt % width `true'
+   \xdef\II@unit{\II@rmtrue}%               S2.3
+   \setbox0=\hbox{\II@font\II@dim=#1mm%     S3.1
+    \xdef\II@val{\ifdim\II@dim<0pt-\fi
+     \the\II@dim}}%
+   \xdef\II@wd{\the\wd0}%
+  \endgroup\IIcurrentmode\wlog{=== stop ignore}%
+  \ifdim\II@wd=16.66672pt % width ``mm''    S3.2
+   \ifdim\II@val=\maxdimen \II@getcalc
+    \ifnum\II@calc=1073741823 %             S4.2
+    \else \II@itisfalse                   % S4.3
+   \fi\fi
+  \else \II@itisfalse                     % S3.3
+ \fi\fi \ifII@itis}
+\catcode`\@=12

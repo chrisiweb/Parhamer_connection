@@ -1,0 +1,47 @@
+\catcode`\@=11
+
+\let\@xp=\expandafter
+\def\@gobble#1{}
+\def\m@strip{\@xp\@gobble\string}
+\def\@nul{\noexpand\@nul}
+
+\def\pdfdraw@afterfi#1#2\fi{\fi#1}
+
+\def\@xplet#1#2{%
+    \def\pdfdraw@regA{\@xp\let#1}%
+    \@xp\pdfdraw@regA#2%
+}
+
+\def\pdfdraw@stack@init#1{\@xp\def\csname #1@sp\endcsname{0}}
+
+\def\pdfdraw@stack@push#1#2{%
+    \@xp\edef\csname #1@sp\endcsname{\the\numexpr \csname #1@sp\endcsname + 1\relax}%
+    \@xp\let\csname #1@def@\csname #1@sp\endcsname\endcsname=#2%
+    \@xp\edef\csname #1@name@\csname #1@sp\endcsname\endcsname{\m@strip#2}%
+}
+
+\def\pdfdraw@stack@decrement#1{%
+    \@xp\let\csname #1@name@\csname #1@sp\endcsname\endcsname=\undefined%
+    \@xp\let\csname #1@def@\csname #1@sp\endcsname\endcsname=\undefined%
+    \@xp\edef\csname #1@sp\endcsname{\the\numexpr \csname #1@sp\endcsname - 1\relax}%
+}
+
+\def\pdfdraw@stack@pop#1{%
+    \@xplet{\csname\csname #1@name@\csname #1@sp\endcsname\endcsname\endcsname}{\csname #1@def@\csname #1@sp\endcsname\endcsname}%
+    \pdfdraw@stack@decrement{#1}%
+}
+
+\def\pdfdraw@stack@top#1#2#3{%
+    \@xp\let#2\csname #1@def@\csname #1@sp\endcsname\endcsname%
+    \@xp\let#3\csname #1@name@\csname #1@sp\endcsname\endcsname%
+}
+
+\def\pdfdraw@repeat#1#2#3#4#5{%
+    \unless\ifnum #1 #4 #2 %
+        \pdfdraw@afterfi{%
+            #5{#1}%
+            \@xp\pdfdraw@repeat\@xp{\the\numexpr #1 + #3\relax}{#2}{#3}{#4}{#5}%
+        }%
+    \fi%
+}
+

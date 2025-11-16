@@ -1,0 +1,1534 @@
+%%
+%% This is file `pst-geo.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-geo'
+%%
+%% Copyright 2016, 2021, 2025
+%% Manuel Luque <Mluque5130@aol.com> (France)
+%% Giuseppe Matarazzo <joematara@hotmail.com> (Italy)
+%% Herbert Voss <hvoss@tug.org> (Germany)
+%%
+%% Febr 20 2025
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-geo' is a PSTricks package to create geographical objects
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csname PSTGeo\endcsname
+\let\PSTGeoLoaded\endinput
+
+% Require PSTricks
+\ifx\PSTricksLoaded\endinput\else\input pstricks.tex\fi
+\ifx\PSTnodesLoaded\endinput\else\input pst-node.tex\fi
+\ifx\PSTXKeyLoaded\endinput\else\input pst-xkey\fi
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+
+\pst@addfams{pst-geo}
+%
+\def\fileversion{0.09}
+\def\filedate{2025/02/20}
+\message{`PST-geo' v\fileversion, \filedate\space (ML/HV/JGK)}
+%
+\pstheader{pst-geo.pro}
+
+\define@key[psset]{pst-geo}{path}[data]{\def\psk@geo@Path{#1}} % chemin des données
+\define@key[psset]{pst-geo}{specialData}[]{\def\psk@geo@specialData{#1}}
+\define@key[psset]{pst-geo}{level}[1]{\def\psk@geo@level{#1}}
+\define@key[psset]{pst-geo}{type}[1]{\def\psk@geo@type{#1}}
+% type=1 ==> Mercator
+% type=2 ==> Lambert
+% type=3 ==> simple
+% type=4 ==> Sanson-Flamsteed
+% type=5 ==> cylindrical
+% type=6 ==> Babinet
+% type=7 ==> Collignon
+% type=8 ==> Bonne
+\psset{path=data,level=1,type=1,specialData={}}
+\define@key[psset]{pst-geo}{n}[n]{\def\psk@geo@n{#1}}
+\psset{n=1.77245} % sqrt(pi) % pour Collignon
+\define@key[psset]{pst-geo}{limiteL}[180]{\def\psk@geo@limiteL{#1}}
+\psset{limiteL=180} % longitude limite
+\define@key[psset]{pst-geo}{latitude0}[45]{\def\psk@geo@latitudeO{#1}}
+\psset{latitude0=45}  % pour Bonne latitude 0
+\define@key[psset]{pst-geo}{longitude0}[0]{\def\psk@geo@longitudeO{#1}}
+\psset{longitude0=0}  % pour Bonne longitude 0
+\define@key[psset]{pst-geo}{increment}[10]{%
+  \def\psk@geo@increment{#1}%
+  \def\psk@geo@incrementX{#1}% 
+  \def\psk@geo@incrementY{#1}}
+\define@key[psset]{pst-geo}{incrementX}[10]{\def\psk@geo@incrementX{#1}}
+\define@key[psset]{pst-geo}{incrementY}[10]{\def\psk@geo@incrementY{#1}}
+%\define@key[psset]{pst-geo}{increment}[10]{\def\psk@geo@increment{#1}}
+\psset{increment=10}
+%
+\define@key[psset]{pst-geo}{MapFillColor}%[{[rgb]{0.99, 0.95, 0.7}}]
+{\pst@getcolor{#1}\psk@geo@Fillcolor} % couleur des continents
+\psset{MapFillColor={[rgb]{0.99, 0.95, 0.7}}}
+\define@key[psset]{pst-geo}{SeaFillColor}%[{[rgb]{0.5, 0.8, 0.8}}]
+{\pst@getcolor{#1}\psk@geo@Seacolor} % sea color
+\psset{SeaFillColor={[rgb]{0.5, 0.8, 0.8}}}
+\define@key[psset]{pst-geo}{LakeFillColor}%[{[rgb]{0.2, 0.2, 0.9}}]
+{\pst@getcolor{#1}\psk@geo@Lakecolor} % lake color
+\psset{LakeFillColor={[rgb]{0.2, 0.2, 0.9}}}
+\define@key[psset]{pst-geo}{RiverFillColor}%[{[rgb]{0, 0, 1}}]
+{\pst@getcolor{#1}\psk@geo@Rivercolor} % river color
+\psset{RiverFillColor={[rgb]{0, 0, 1}}}
+%
+%\define@boolkey[psset]{pst-3dplot}[Pst@]{Debug}[true]{}% 
+%
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{capitals}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{cities}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{rivers}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{borders}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{maillage}[true]{}
+\psset{cities=false,capitals=false,rivers=false,borders,maillage}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{Fill}[true]{}
+\psset{Fill}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{USA}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{Australia}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{Mexico}[true]{}
+\psset{USA=false,Australia=false,Mexico=false}
+%
+%\define@key[psset]{pst-geo}{increment}[10]{\def\psk@geo@increment{#1}}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{Europe}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{Asia}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{Africa}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{Northamerica}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{Southamerica}[true]{}
+\psset{Europe,Asia=false,Africa=false,Northamerica=false,Southamerica=false}
+\define@key[psset]{pst-geo}{all}[true]{\psset{increment=10,Europe,
+  Asia,Africa,Northamerica,Southamerica}}
+
+\def\psNodeLabelStyle{}
+\newpsstyle{psNodeMapStyle}{fillstyle=solid,fillcolor=yellow!80,framesep=1pt,linestyle=none,opacity=0.4}
+\define@key[psset]{pst-geo}{mapCountry}[all]{\def\psk@geo@mapCountry{#1}}
+\define@key[psset]{pst-geo}{nodeWidth}[1mm]{\def\psk@geo@nodeWidth{#1}}
+\psset{mapCountry=all,nodeWidth=1mm}
+
+\definecolor{orange}{cmyk}{0,0.61,0.87,0}
+\definecolor{darkgreen}{cmyk}{1,0,1,0.5}
+
+
+\def\geo@variablesMap#1{%
+% 0 2d
+% 1 2dII
+% 2 3d
+% 3 3dII
+  \ifcase #1 % 2d
+    /Coeff_mercatorY {2 div 45 add dup sin exch cos div ln 57.2958 mul} def % Mercator
+    /Coeff_simpleY {1 mul} def % simple
+    /Coeff_lambertY {sin 57.2958 mul} def % Lambert
+    /Coeff_sanson_flamsteedY {1 mul} def % Sanson_Flamstead
+    /Coeff_cylindricalY { dup sin exch cos div 57.2958 mul} def % Cylindrical
+    /Coeff_babinetY { sin 2 sqrt mul 57.2958 mul} def % Babinet
+    /n \psk@geo@n\space def
+    /Coeff_collignonY { 0 ge { 1 2 sqrt 90 Y sub 2 div sin mul sub 57.2958 mul n mul}
+       { 1 2 sqrt 90 Y add 2 div sin mul sub 57.2958 mul n mul neg} ifelse }def % Collignon
+    /Coeff_BonneY {pop /RHO l0 dup cos exch sin div Y neg l0 add 57.2958 div add def
+      /Theta Y cos X L0 sub mul RHO div def
+      Theta cos RHO mul neg 57.2958 mul }def % Bonne
+%
+    /Coeff_mercatorX {1 mul} def % Mercator
+    /Coeff_simpleX {1 mul} def % simple
+    /Coeff_lambertX {1 mul} def % Lambert
+    /Coeff_sanson_flamsteedX {Y cos mul} def % Sanson_Flamstead
+    /Coeff_cylindricalX { 1 mul } def % Cylindrical
+    /Coeff_babinetX { 2 mul 2 sqrt mul 3.1415926 div Y cos mul} def % Babinet
+    /Coeff_collignonX { 2 mul 2 sqrt mul 90 Y abs sub 2 div sin mul n div} def % Collignon
+    /l0 \psk@geo@latitudeO\space def
+    /L0 \psk@geo@longitudeO\space def
+    /Coeff_BonneX { pop /RHO l0 dup cos exch sin div Y neg l0 add 57.2958 div add def
+      /Theta Y cos X L0 sub mul RHO div def
+        Theta sin RHO mul 57.2958 mul } def % Bonne
+    \ifcase\psk@geo@type\or
+      /CoeffY {Coeff_mercatorY} def
+      /CoeffX {Coeff_mercatorX} def
+      /StartY -85 def
+    \or
+      /CoeffY {Coeff_simpleY} def
+      /CoeffX {Coeff_simpleX} def
+      /StartY -90 def
+    \or
+      /CoeffY {Coeff_lambertY} def
+      /CoeffX {Coeff_lambertX} def
+      /StartY -90 def
+    \or
+      /CoeffY {Coeff_sanson_flamsteedY} def
+      /CoeffX {Coeff_sanson_flamsteedX} def
+      /StartY -90 def
+    \or
+      /CoeffY {Coeff_cylindricalY} def
+      /CoeffX {Coeff_cylindricalX} def
+      /StartY -85 def
+    \or
+      /CoeffY {Coeff_babinetY} def
+      /CoeffX {Coeff_babinetX} def
+      /StartY -90 def
+    \or
+      /CoeffY {Coeff_collignonY} def
+      /CoeffX {Coeff_collignonX} def
+      /StartY -90 def
+    \or
+      /CoeffY {Coeff_BonneY} def
+      /CoeffX {Coeff_BonneX} def
+      /StartY -90 def
+    \fi
+  \or % 2dII
+    /Coeff_mercatorY { 2 div 45 add dup sin exch cos div ln 57.2958 mul } def % Mercator
+    /Coeff_simpleY {1 mul } def % simple
+    /Coeff_lambertY {sin 57.2958 mul } def % Lambert
+    /Coeff_sanson_flamsteedY {1 mul } def % Sanson_Flamstead
+    /Coeff_cylindricalY { dup sin exch cos div 57.2958 mul } def % Cylindrical
+    /Coeff_babinetY { sin 2 sqrt mul 57.2958 mul } def % Babinet
+    /n \psk@geo@n\space def
+    /Coeff_collignonY { 0 ge { 1 2 sqrt 90 Y sub 2 div sin mul sub 57.2958 mul n mul }
+                      { 1 2 sqrt 90 Y add 2 div sin mul sub 57.2958 mul n mul neg} ifelse } def % Collignon
+    /Coeff_BonneY { pop /RHO l0 dup cos exch sin div Y neg l0 add 57.2958 div add def
+                    /Theta Y cos X L0 sub mul RHO div def
+                    Theta cos RHO mul neg 57.2958 mul } def % Bonne
+    /Coeff_mercatorX {1 mul} def % Mercator
+    /Coeff_simpleX {1 mul} def % simple
+    /Coeff_lambertX {1 mul} def % Lambert
+    /Coeff_sanson_flamsteedX {Y cos mul} def % Sanson_Flamstead
+    /Coeff_cylindricalX { 1 mul } def % Cylindrical
+    /Coeff_babinetX { 2 mul 2 sqrt mul 3.1415926 div Y cos mul} def % Babinet
+    /Coeff_collignonX { 2 mul 2 sqrt mul 90 Y abs sub 2 div sin mul n div } def % Collignon
+    /l0 \psk@geo@latitudeO\space def
+    /L0 \psk@geo@longitudeO\space def
+    /Coeff_BonneX {pop /RHO l0 dup cos exch sin div Y neg l0 add 57.2958 div add def
+               /Theta Y cos X L0 sub mul RHO div def
+               Theta sin RHO mul 57.2958 mul } def % Bonne
+    \ifcase\psk@geo@type\or % type 1  % hv 2004-05-04
+      /CoeffY {Coeff_mercatorY} def
+      /CoeffX {Coeff_mercatorX} def
+      /StartY -85 def
+    \or % type 2  % hv 2004-05-04
+      /CoeffY {Coeff_simpleY} def
+      /CoeffX {Coeff_simpleX} def
+      /StartY -90 def
+    \or % type 3  % hv 2004-05-04
+      /CoeffY {Coeff_lambertY} def
+      /CoeffX {Coeff_lambertX} def
+      /StartY -90 def
+    \or % type 4  % hv 2004-05-04
+      /CoeffY {Coeff_sanson_flamsteedY} def
+      /CoeffX {Coeff_sanson_flamsteedX} def
+      /StartY -90 def
+    \or % type 5  % hv 2004-05-04
+      /CoeffY {Coeff_cylindricalY} def
+      /CoeffX {Coeff_cylindricalX} def
+      /StartY -85 def
+    \or % type 6  % hv 2004-05-04
+      /CoeffY {Coeff_babinetY} def
+      /CoeffX {Coeff_babinetX} def
+      /StartY -90 def
+    \or % type 7  % hv 2004-05-04
+      /CoeffY {Coeff_collignonY} def
+      /CoeffX {Coeff_collignonX} def
+      /StartY -90 def
+    \else % every other is type 8  % hv 2004-05-04
+      /CoeffY {Coeff_BonneY} def
+      /CoeffX {Coeff_BonneX} def
+      /StartY -90 def
+    \fi
+    /step \psk@geo@level\space def % hv 2004-05-04
+    /increment \psk@geo@increment\space def
+    /incrementX \psk@geo@incrementX\space def
+    /incrementY \psk@geo@incrementY\space def    
+  \or % 3d
+    /RotX \psk@geo@RotX\space def
+    /RotY \psk@geo@RotY\space def
+    /RotZ \psk@geo@RotZ\space def
+    /THETA \psk@geo@Theta\space def
+    /PHI \psk@geo@Phi\space def
+    /Rsphere \psk@geo@Radius\space def
+    /Dobs \psk@geo@Dobs\space def
+    /DScreen \psk@geo@Ecran\space def
+    /xunit {\pst@number\psxunit\space mul} def
+    /yunit {\pst@number\psyunit\space mul} def
+    /runit {\pst@number\psrunit\space mul} def
+  \or
+    /RotX \psk@geo@RotX\space def
+    /RotY \psk@geo@RotY\space def
+    /RotZ \psk@geo@RotZ\space def
+    /THETA \psk@geo@Theta\space def
+    /PHI \psk@geo@Phi\space def
+    /Rsphere \psk@geo@Radius\space def
+    /Dobs \psk@geo@Dobs\space def
+    /DScreen \psk@geo@Ecran\space def
+  \fi % \ifcase
+  /level \psk@geo@level\space def % hv 2004-05-04
+  /step \psk@geo@level\space def % hv 2004-05-04
+}
+\newcount\TypeProjection
+\def\WorldMap{\pst@object{WorldMap}}
+\def\WorldMap@i{%
+%  \psset{#1}%
+  \begin@ClosedObj
+  \addto@pscode{
+    \geo@variablesMap{0}
+    (\psk@geo@Path/river.dat) run
+    (\psk@geo@Path/pcoast.dat) run
+    (\psk@geo@Path/pisland.dat) run
+    (\psk@geo@Path/pborder.dat) run
+    (\psk@geo@Path/plake.dat) run
+    (\psk@geo@Path/usa.dat) run
+    (\psk@geo@Path/aus.dat) run
+    (\psk@geo@Path/mexico.dat) run
+    1 setlinejoin 0 0 translate
+    /xunit {\pst@number\psxunit\space mul 20 div } def
+    /yunit {\pst@number\psyunit\space mul 20 div } def
+    /increment \psk@geo@increment\space def
+    /incrementX \psk@geo@incrementX\space def
+    /incrementY \psk@geo@incrementY\space def
+    /limiteLongitude \psk@geo@limiteL\space def
+%
+    \ifPst@geo@Fill
+      gsave
+      newpath
+      /X limiteLongitude neg def
+      /Y StartY def
+      X CoeffX xunit Y CoeffY yunit moveto
+      StartY 2 StartY neg { /Y exch def X CoeffX xunit Y CoeffY yunit lineto } for
+      /X limiteLongitude def
+      StartY neg -2 StartY { /Y exch def X CoeffX xunit Y CoeffY yunit lineto } for
+      closepath
+%     /Color {\psk@geo@Seacolor} def
+%     Color setrgbcolor
+      \pst@usecolor\psk@geo@Seacolor fill
+      grestore
+    \fi
+    /CalculsPoints {
+      /region exch def
+      newpath
+      /nbr region length def % nombre de régions
+      region 0 get aload pop
+      /Y exch def /X exch def
+      X CoeffX xunit Y CoeffY yunit moveto
+      /ncount 0 def % hv 2004-05-04
+      0 1 nbr 1 sub {
+        /ncount ncount 1 add def % hv 2004-05-04
+        region exch get aload pop
+        ncount step mod 0 eq nbr ncount sub 0 lt or { % hv 2004-05-04
+          /Y exch def /X exch def
+          X CoeffX xunit Y CoeffY yunit lineto }{ pop pop } ifelse % hv 2004-05-04
+      } for
+    } def
+%
+    /Draw { {
+        CalculsPoints
+        \ifPst@geo@Fill closepath gsave Color fill grestore \fi
+        stroke
+      } forall
+    } def
+    \ifPst@geo@borders border \else coasts \fi
+    /Color { \pst@usecolor\psk@geo@Fillcolor } def
+    Draw islands Draw
+    \ifPst@geo@Mexico mexico Draw \fi
+    \ifPst@geo@USA usa Draw \fi
+    \ifPst@geo@Australia australia Draw \fi
+    /Color { \pst@usecolor\psk@geo@Lakecolor } def
+    lake Draw
+    \ifPst@geo@rivers
+      /DrawRivers { { CalculsPoints \pst@usecolor\psk@geo@Rivercolor stroke } forall } def
+      river DrawRivers
+    \fi
+%
+    \ifPst@geo@maillage
+    % meridiens
+      limiteLongitude neg incrementX limiteLongitude {% for X
+%      limiteLongitude neg increment limiteLongitude {% for X
+        /X exch def
+        newpath
+        /Y StartY def
+        X CoeffX xunit StartY CoeffY yunit moveto
+        StartY incrementY 10 div StartY neg { % for Y
+%        StartY increment 10 div StartY neg { % for Y
+          /Y exch def
+          X CoeffX xunit Y CoeffY yunit lineto
+        } for
+        gsave
+        X 0 eq {1 0 0 setrgbcolor}{0.2 setgray} ifelse
+        0.25 setlinewidth
+        stroke
+        grestore
+      } for
+      % parallèles
+%      StartY increment StartY neg {% for Y
+       StartY incrementY StartY neg {% for Y
+       /Y exch def
+        newpath
+        /X limiteLongitude neg def
+        X CoeffX xunit Y CoeffY yunit moveto
+        limiteLongitude neg incrementX 10 div limiteLongitude { % for X
+%        limiteLongitude neg increment 10 div limiteLongitude { % for X
+          /X exch def
+          X CoeffX xunit Y CoeffY yunit lineto
+        } for
+        % 11 janvier 2004
+        Y 0 eq {1 0 0 setrgbcolor}{0.2 setgray} ifelse
+        0.25 setlinewidth
+        stroke
+      } for
+    \fi
+    /DrawCities {
+      /CITY exch def
+      /Rayon exch def
+      /nbr CITY length def % nombre de villes
+      0 1 nbr 1 sub {
+        /compteur exch def
+        CITY compteur get aload pop
+        /X exch def /Y exch def
+        gsave
+        1 0 0 setrgbcolor newpath
+        X CoeffX xunit Y CoeffY yunit
+        Rayon 0 360 arc closepath fill
+        grestore
+      } for
+    } def
+    \ifPst@geo@cities (\psk@geo@Path/c-cap.dat) run 1.5 % rayon du point
+      citycapitals DrawCities (\psk@geo@Path/c-sub.dat) run 0.5 % rayon du point
+      CitySub DrawCities
+    \fi
+    \ifPst@geo@capitals (\psk@geo@Path/c-cap.dat) run 1.5 citycapitals DrawCities \fi
+  }% end pscode
+  \end@ClosedObj
+}
+%
+\def\pnodeMap(#1,#2)#3{%   hv 2004-05-09
+  \pst@killglue
+  \pnode(!
+      \geo@variablesMap{0}
+      /Y #2 def
+      /X #1 def
+      X CoeffX 20 div Y CoeffY 20 div 
+      ){#3}%
+}
+%
+%------------------- hv 2004-05-08 ----------------------
+%
+%\mapput[90](2.316667,48.85000){Paris}
+%
+\def\mapput{\@ifnextchar[{\mapput@i}{\mapput@i[90]}}
+\def\mapput@i[#1](#2,#3){\@ifnextchar[{\mapput@iii[#1](#2,#3)}{\mapput@ii[#1](#2,#3)}}
+\def\mapput@ii[#1](#2,#3)#4{\mapput@iii[#1](#2,#3)[#4]{#4}}
+%
+\def\mapput@iii[#1](#2,#3)[#4]#5{%
+  \@ifnextchar[{\mapput@iv[#1](#2,#3)[#4]#5}{\mapput@iv[#1](#2,#3)[#4]#5[\@empty]}}
+\def\mapput@iv[#1](#2,#3)[#4]#5[#6]{{%
+% [angle](longitude,lattitude)[node name]{node label}[country]
+  \def\pst@tempb{all}%
+  \ifx\pst@tempb\psk@geo@mapCountry
+    \mapput@v[#1](#2,#3)[#4]{#5}%
+  \else
+    \def\pst@tempb{#6}%
+%    \typeout{Compare \pst@tempb{} with \psk@geo@mapCountry}
+    \ifx\pst@tempb\psk@geo@mapCountry
+      \mapput@v[#1](#2,#3)[#4]{#5}%
+    \fi
+  \fi
+}}
+\def\mapput@v[#1](#2,#3)[#4]#5{%
+  \pnodeMap(#2,#3){#4}%
+%  \typeout{Node: #4}
+  \pst@dima=\psk@geo@nodeWidth
+  \pscircle[style=psNodeMapStyle](#4){\pst@dima}%
+  \pscircle*(#4){0.5\pst@dima}%
+  \uput{1.2\pst@dima}[#1](#4){\psframebox[style=psNodeMapStyle]{\psNodeLabelStyle #5}}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 2DII %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ %
+\newcount\TypeProjection
+\def\WorldMapII{\pst@object{WorldMapII}}
+\def\WorldMapII@i{{%
+  \use@par
+  \begin@ClosedObj
+  \addto@pscode{
+    \geo@variablesMap{1}
+    1 setlinejoin
+    0 0 translate
+    /xunit {\pst@number\psxunit\space mul 20 div } def
+    /yunit {\pst@number\psyunit\space mul 20 div } def
+    /limiteLongitude \psk@geo@limiteL\space def
+%
+    /CalculsPoints {
+      /region exch def
+      newpath
+      /nbr region length def % nombre de points
+      region nbr 2 sub get
+      /Y exch def
+      region nbr 1 sub get
+      /X exch def
+      X CoeffX xunit Y CoeffY yunit moveto
+      /ncount 0 def % hv 2004-05-04
+      nbr 2 sub -2 2  {
+        /Counter exch def % hv 2004-05-04
+        /ncount ncount 1 add def % hv 2004-05-04
+        ncount step ge { % hv 2004-05-04
+          region Counter get
+          /Y exch def
+          region Counter 1 add get
+          /X exch def
+          X CoeffX xunit Y CoeffY yunit lineto
+          /ncount 0 def % hv 2004-05-04
+        }{ /ncount ncount 1 add def } ifelse % hv 2004-05-04
+     } for
+    } def
+%
+    /CalculsPointsAsia {
+      /region exch def
+      newpath
+      /nbr region length def % nombre de points
+      region nbr 2 sub get
+      /Y exch def
+      region nbr 1 sub get
+      /X exch def
+      X 0 le {/X X 360 add def} if
+      X CoeffX xunit Y CoeffY yunit moveto
+      /ncount 0 def % hv 2004-05-04
+      nbr 2 sub -2 2  {
+        /Counter exch def % hv 2004-05-04
+        /ncount ncount 1 add def % hv 2004-05-04
+        ncount step ge { % hv 2004-05-04
+          region Counter get
+          /Y exch def
+          region Counter 1 add get
+          /X exch def
+          X 0 le {/X X 360 add def} if
+          X CoeffX xunit Y CoeffY yunit lineto
+          /ncount 0 def % hv 2004-05-04
+        }{ /ncount ncount 1 add def } ifelse % hv 2004-05-04
+      } for
+    } def
+%
+    /Draw {
+      { CalculsPoints
+        stroke
+      } forall
+    } def
+%
+    /DrawAsia {
+      { CalculsPointsAsia
+        stroke
+      } forall
+    } def
+    /DrawRivers {
+      { CalculsPoints
+        gsave
+        0 0 1 setrgbcolor
+        stroke
+        grestore
+      } forall
+    } def
+%
+    /DrawRiversAsia {
+      { CalculsPointsAsia
+        gsave
+        0 0 1 setrgbcolor
+        stroke
+        grestore
+      } forall
+    } def
+    /DrawBdy {
+      { CalculsPoints
+        gsave
+        1 0 0 setrgbcolor
+        stroke
+        grestore
+      } forall
+    } def
+    \ifPst@geo@Europe
+      (\psk@geo@Path/europe-cil_II.dat) run
+      europe-cil
+      Draw
+      \ifPst@geo@rivers
+        (\psk@geo@Path/europe-riv_II.dat) run
+        europe-riv
+        DrawRivers
+      \fi
+      \ifPst@geo@borders
+        (\psk@geo@Path/europe-bdy_II.dat) run
+        europe-bdy
+        DrawBdy
+      \fi
+    \fi
+%
+    \ifPst@geo@Africa
+      (\psk@geo@Path/africa-cil_II.dat) run
+      africa-cil
+      Draw
+      \ifPst@geo@rivers
+        (\psk@geo@Path/africa-riv_II.dat) run
+        africa-riv
+        DrawRivers
+      \fi
+      \ifPst@geo@borders
+        (\psk@geo@Path/africa-bdy_II.dat) run
+        africa-bdy
+        DrawBdy
+      \fi
+    \fi
+%
+    \ifPst@geo@Asia
+      (\psk@geo@Path/asia-cil_II.dat) run
+      asia-cil
+      DrawAsia
+      (\psk@geo@Path/asia-isl_II.dat) run
+      asia-isl
+      Draw
+      \ifPst@geo@rivers
+        (\psk@geo@Path/asia-riv_II.dat) run
+        asia-riv
+        DrawRiversAsia
+      \fi
+      \ifPst@geo@borders
+        (\psk@geo@Path/asia-bdy_II.dat) run
+        asia-bdy
+        DrawBdy
+      \fi
+    \fi
+    \ifPst@geo@Northamerica
+      (\psk@geo@Path/northamerica-cil_II.dat) run northamerica-cil Draw
+    \ifPst@geo@rivers
+      (\psk@geo@Path/northamerica-riv_II.dat) run northamerica-riv DrawRivers
+      \fi
+      \ifPst@geo@borders
+        (\psk@geo@Path/northamerica-bdy_II.dat) run
+        (\psk@geo@Path/northamerica-pby_II.dat) run
+        northamerica-bdy
+        DrawBdy
+        northamerica-pby
+        DrawBdy
+      \fi
+    \fi
+    \ifPst@geo@Southamerica
+      (\psk@geo@Path/southamerica-cil_II.dat) run
+      southamerica-cil
+      Draw
+      (\psk@geo@Path/southamerica-arc_II.dat) run
+      southamerica-arc
+      DrawAsia
+      \ifPst@geo@rivers
+        (\psk@geo@Path/southamerica-riv_II.dat) run
+        southamerica-riv
+        DrawRivers
+      \fi
+      \ifPst@geo@borders
+        (\psk@geo@Path/southamerica-bdy_II.dat) run
+        southamerica-bdy
+        DrawBdy
+      \fi
+    \fi
+    \ifx\psk@geo@specialData\@empty\else
+      (\psk@geo@specialData.dat) run
+      \psk@geo@specialData\space
+      DrawRivers
+    \fi
+%
+    \ifPst@geo@maillage
+% meridiens
+      limiteLongitude neg incrementX limiteLongitude {% for X
+%      limiteLongitude neg increment limiteLongitude {% for X
+        /X exch def
+        newpath
+        /Y StartY def
+        X CoeffX xunit StartY CoeffY yunit moveto
+%        StartY increment 10 div StartY neg { % for Y
+         StartY incrementY 10 div StartY neg { % for Y
+         /Y exch def
+          X CoeffX xunit Y CoeffY yunit lineto
+        } for
+        gsave
+% 11 janvier 2004
+        X 0 eq { 1 0 0 setrgbcolor }{ 0.2 setgray } ifelse
+%
+        0.25 setlinewidth
+        stroke
+        grestore
+      } for
+% parallèles
+%      StartY increment StartY neg {% for Y
+      StartY incrementY StartY neg {% for Y
+        /Y exch def
+        newpath
+        /X limiteLongitude neg def
+        X CoeffX xunit Y CoeffY yunit moveto
+%        limiteLongitude neg increment 10 div limiteLongitude { % for X
+         limiteLongitude neg incrementX 10 div limiteLongitude { % for X
+          /X exch def
+          X CoeffX xunit Y CoeffY yunit lineto
+        } for
+% 11 janvier 2004
+        Y 0 eq {1 0 0 setrgbcolor}{0.2 setgray} ifelse
+%
+        0.25 setlinewidth
+        stroke
+      } for
+    \fi
+    /DrawCities {
+      /CITY exch def
+      /Rayon exch def
+      /nbr CITY length def % nombre de villes
+      0 1 nbr 1 sub {
+        /compteur exch def
+        CITY compteur get aload pop
+        /X exch def /Y exch def
+        gsave
+        1 0 0 setrgbcolor newpath
+        X CoeffX xunit Y CoeffY yunit
+        Rayon 0 360 arc closepath fill
+        grestore
+      } for
+    } def
+    \ifPst@geo@cities
+% les capitales
+      (\psk@geo@Path/c-cap.dat) run
+      1.5 % rayon du point
+      citycapitals
+      DrawCities
+% les autres villes
+      (\psk@geo@Path/c-sub.dat) run
+      0.5 % rayon du point
+      CitySub
+      DrawCities
+    \fi
+    \ifPst@geo@capitals
+% les capitales
+      (\psk@geo@Path/c-cap.dat) run
+      1.5
+      citycapitals
+      DrawCities
+    \fi
+  }%
+  \end@ClosedObj
+  }\ignorespaces}
+%
+%%============================================ 3d =======================================================
+%
+\define@key[psset]{pst-geo}{RotX}{\def\psk@geo@RotX{#1}} % rotation autour de Ox en degrés
+\define@key[psset]{pst-geo}{RotY}{\def\psk@geo@RotY{#1}} % rotation autour de Oy en degrés
+\define@key[psset]{pst-geo}{RotZ}{\def\psk@geo@RotZ{#1}} % rotation autour de OZ en degrés
+\define@key[psset]{pst-geo}{Radius}{\def\psk@geo@Radius{#1}} % rayon de la sphère
+%
+\define@key[psset]{pst-geo}{THETA}{\def\psk@geo@Theta{#1}}
+\define@key[psset]{pst-geo}{PHI}{\def\psk@geo@Phi{#1}}
+\define@key[psset]{pst-geo}{Dobs}{\def\psk@geo@Dobs{#1}}
+\define@key[psset]{pst-geo}{Decran}{\def\psk@geo@Ecran{#1}}
+\psset[pst-geo]{THETA=0,PHI=45,Dobs=20,Decran=25,RotX=0,RotY=0,RotZ=0,Radius=5}
+%
+\define@key[psset]{pst-geo}{Day}{\def\psk@geo@J{#1}}
+\define@key[psset]{pst-geo}{Month}{\def\psk@geo@M{#1}}
+\define@key[psset]{pst-geo}{Year}{\def\psk@geo@A{#1}}
+\define@key[psset]{pst-geo}{hour}{\def\psk@geo@hour{#1}}
+\psset[pst-geo]{Day=\number\day,Month=\number\month,Year=\number\year,hour=12}
+%
+\define@key[psset]{pst-geo}{gridmapdiv}{\def\psk@geo@mapgriddiv{#1}}
+\define@key[psset]{pst-geo}{longitudeMeridien}{\def\psk@geo@longitudeMeridien{#1}}
+\newdimen\psmeridienwidth
+\define@key[psset]{pst-geo}{meridienwidth}[1pt]{\pssetlength\psmeridienwidth{#1}}
+\define@key[psset]{pst-geo}{meridiencolor}[red]{\pst@getcolor{#1}\psmeridiencolor}
+\psset[pst-geo]{meridiencolor=red,meridienwidth=1pt,longitudeMeridien=0,gridmapdiv=10}
+%
+\define@key[psset]{pst-geo}{latitudeParallel}[0]{\def\psk@geo@latitudeParallel{#1}}
+\newdimen\psparallelwidth
+\define@key[psset]{pst-geo}{parallelwidth}[1pt]{\pssetlength\psparallelwidth{#1}}
+\define@key[psset]{pst-geo}{parallelcolor}{\pst@getcolor{#1}\psparallelcolor}
+\psset[pst-geo]{parallelcolor=red,latitudeParallel=0,parallelwidth=1pt}
+%
+\definecolor{terre}{rgb}{0.99,0.95,0.7}
+\definecolor{mer}{rgb}{0.5,0.8,0.8}
+\definecolor{darkblue}{cmyk}{1,1,0,0.7}
+
+\define@key[psset]{pst-geo}{mapcolor}{\pst@getcolor{#1}\psmapcolor}
+\define@key[psset]{pst-geo}{bordercolor}[black]{\pst@getcolor{#1}\psbordercolor}
+\define@key[psset]{pst-geo}{islandcolor}[black]{\pst@getcolor{#1}\psislandcolor}
+\define@key[psset]{pst-geo}{coastcolor}[black]{\pst@getcolor{#1}\pscoastcolor}
+\psset[pst-geo]{mapcolor=terre,bordercolor=black,islandcolor=black,coastcolor=black}
+\define@key[psset]{pst-geo}{oceancolor}{\pst@getcolor{#1}\psoceancolor}
+\psset[pst-geo]{oceancolor=mer}
+\define@key[psset]{pst-geo}{rivercolor}{\pst@getcolor{#1}\psrivercolor}
+\psset[pst-geo]{rivercolor=blue}
+\define@key[psset]{pst-geo}{wfraczoncolor}{\pst@getcolor{#1}\pswfraczoncolor}
+\psset[pst-geo]{wfraczoncolor=red}
+\define@key[psset]{pst-geo}{wmaglincolor}{\pst@getcolor{#1}\pswmaglincolor}
+\psset[pst-geo]{wmaglincolor=darkblue}
+\define@key[psset]{pst-geo}{ridgecolor}{\pst@getcolor{#1}\psridgecolor}
+\psset[pst-geo]{ridgecolor=red}
+\define@key[psset]{pst-geo}{transfrmcolor}{\pst@getcolor{#1}\pstransfrmcolor}
+\psset[pst-geo]{transfrmcolor=orange}
+\define@key[psset]{pst-geo}{trenchcolor}{\pst@getcolor{#1}\pstrenchcolor}
+\psset[pst-geo]{trenchcolor=darkgreen}
+\define@key[psset]{pst-geo}{gridmapcolor}{\pst@getcolor{#1}\psgridmapcolor}
+\psset[pst-geo]{gridmapcolor=black}
+\define@key[psset]{pst-geo}{circlecolor}{\pst@getcolor{#1}\pscirclecolor}
+\psset[pst-geo]{circlecolor=blue}
+\define@key[psset]{pst-geo}{circlesep}{\def\psk@geo@circlesep{#1}}
+\psset[pst-geo]{circlesep=2} % en degres
+\newdimen\pscirclewidth
+\define@key[psset]{pst-geo}{circlewidth}{\pssetlength\pscirclewidth{#1}}
+\psset[pst-geo]{circlewidth=.5pt}
+\newdimen\psgridmapwidth
+\define@key[psset]{pst-geo}{gridmapwidth}[0.8pt]{\pssetlength\psgridmapwidth{#1}}
+\psset[pst-geo]{gridmapwidth=.8pt}
+\newdimen\psborderwidth
+\define@key[psset]{pst-geo}{borderwidth}[0.8pt]{\pssetlength\psborderwidth{#1}}
+\psset[pst-geo]{borderwidth=.8pt}
+\newdimen\pscoastwidth
+\define@key[psset]{pst-geo}{coastwidth}[0.8pt]{\pssetlength\pscoastwidth{#1}}
+\psset[pst-geo]{coastwidth=.8pt}
+\newdimen\pswfraczonwidth
+\define@key[psset]{pst-geo}{wfraczonwidth}[0.8pt]{\pssetlength\pswfraczonwidth{#1}}
+\psset[pst-geo]{wfraczonwidth=.8pt}
+\newdimen\pswmaglinwidth
+\define@key[psset]{pst-geo}{wmaglinwidth}[0.8pt]{\pssetlength\pswmaglinwidth{#1}}
+\psset[pst-geo]{wmaglinwidth=.8pt}
+\newdimen\psridgewidth
+\define@key[psset]{pst-geo}{ridgewidth}[2pt]{\pssetlength\psridgewidth{#1}}
+\psset[pst-geo]{ridgewidth=2pt}
+%
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{islands}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{France}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{Germany}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{Canada}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{lakes}[true]{}
+\psset[pst-geo]{islands,France=false,Canada=false,lakes=false,Germany=false}
+%
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{gridmap}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{coasts}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{wfraczon}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{ridge}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{wmaglin}[true]{}
+\psset[pst-geo]{gridmap,coasts=false,wfraczon=false,ridge=false,wmaglin=false}
+%
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{circles}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{visibility}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{blueEarth}[true]{}
+\define@boolkey[psset]{pst-geo}[Pst@geo@]{daynight}[true]{}
+\psset[pst-geo]{circles,visibility,blueEarth,daynight=false}
+%	
+\def\WorldMapThreeD{\pst@object{WorldMapThreeD}}
+\def\WorldMapThreeD@i{%
+\begin@ClosedObj
+\addto@pscode{
+  /increment \psk@geo@mapgriddiv\space def
+  /incrementX \psk@geo@mapgriddiv\space def
+  /incrementY \psk@geo@mapgriddiv\space def
+ \geo@variablesMap{2}
+  /mapcolor  {\pst@usecolor\psmapcolor currentrgbcolor} def
+  /bordercolor  {\pst@usecolor\psbordercolor currentrgbcolor} def
+  /coastcolor  {\pst@usecolor\pscoastcolor currentrgbcolor} def
+  /islandcolor  {\pst@usecolor\psislandcolor currentrgbcolor} def
+  /maillagecolor  {\pst@usecolor\psgridmapcolor currentrgbcolor} def
+  /oceancolor  {\pst@usecolor\psoceancolor currentrgbcolor} def
+  /rivercolor  {\pst@usecolor\psrivercolor currentrgbcolor} def
+  /wfraczoncolor {\pst@usecolor\pswfraczoncolor currentrgbcolor} def
+  /wmaglincolor {\pst@usecolor\pswmaglincolor currentrgbcolor} def
+  /ridgecolor {\pst@usecolor\psridgecolor currentrgbcolor} def
+  /transfrmcolor {\pst@usecolor\pstransfrmcolor currentrgbcolor} def
+  /trenchcolor {\pst@usecolor\pstrenchcolor currentrgbcolor} def
+  /circlecolor  {\pst@usecolor\pscirclecolor currentrgbcolor} def
+  /circlewidth {\pst@number\pscirclewidth SLW} def
+  /circlesep \psk@geo@circlesep\space def
+  /maillagewidth {\pst@number\psgridmapwidth SLW} def
+  /borderwidth {\pst@number\psborderwidth SLW} def
+  /coastwidth {\pst@number\pscoastwidth SLW} def
+  /wfraczonwidth {\pst@number\pswfraczonwidth SLW} def
+  /wmaglinwidth {\pst@number\pswmaglinwidth SLW} def
+  /ridgewidth {\pst@number\psridgewidth SLW} def
+  /longitude_meridien \psk@geo@longitudeMeridien\space def
+  /meridienwidth {\pst@number\psmeridienwidth SLW} def
+  /meridiencolor  {\pst@usecolor\psmeridiencolor currentrgbcolor} def
+  /latitude_parallel \psk@geo@latitudeParallel\space def
+  /parallelwidth {\pst@number\psparallelwidth SLW} def
+  /parallelcolor  {\pst@usecolor\psparallelcolor currentrgbcolor} def
+  /year \psk@geo@A\space def
+  /month \psk@geo@M\space def
+  /day \psk@geo@J\space def
+   month 3 lt {/month month 12 add def /year year 1 sub def} if
+  /AA year 100 div truncate def
+  /BB 2 AA sub AA 4 div truncate add def
+  /CC 365.25 year mul truncate def
+  /DD 30.6001 month 1 add mul truncate def
+  /julien BB CC add DD add day add 1720994.5 add def
+  /hour \psk@geo@hour\space def
+  /jours julien 2454367 sub def
+  /AngleRayonsSoleil latitude_parallel  23.5 sin 360 jours mul 365.25 div sin mul tx@geoDict begin arccos end sub def
+   /u1 0 def /u2 AngleRayonsSoleil cos def /u3 AngleRayonsSoleil sin def
+%  /Julien jd hour 24 div add def
+  %
+  1 setlinejoin
+  0 0 translate
+  /pst@fill { \psk@opacityalpha .setopacityalpha fill } def
+   tx@geoDict begin
+   MatriceTransformationZXY
+%
+  /RsphereScreen Rsphere DScreen mul Dobs div
+    1 Rsphere dup mul Dobs dup mul div sub sqrt div runit def
+%
+/GrandCercle {
+  % cercle vu par l'observateur
+  0 0 RsphereScreen 0 360 arc
+  closepath
+} def
+%
+\ifPst@geo@visibility
+  /condition { 0 ge } def
+\else
+ /condition { 0 le } def
+\fi
+%
+\ifPst@geo@daynight
+    the_night
+\fi
+%
+\ifPst@geo@blueEarth
+  gsave
+  newpath
+  oceancolor
+  GrandCercle
+  pst@fill  % fill
+  grestore
+\fi
+%
+\ifPst@geo@circles
+gsave
+ oceans_seas_hatched
+grestore
+\fi
+%
+\ifPst@geo@borders
+  (\psk@geo@Path/pborder.dat) run
+gsave
+GrandCercle
+clip
+border dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+  closepath
+   gsave
+  mapcolor
+  pst@fill  % fill
+  grestore
+  borderwidth
+  bordercolor
+  stroke
+  }forall
+grestore
+\fi
+%
+\ifPst@geo@islands
+  (\psk@geo@Path/pisland.dat) run
+gsave
+GrandCercle
+clip
+islands dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+  closepath
+   gsave
+  mapcolor
+  pst@fill  % fill
+  grestore
+  borderwidth
+  islandcolor
+   stroke
+  }forall
+grestore
+\fi
+%
+\ifPst@geo@France
+  (\psk@geo@Path/france.dat) run
+gsave
+GrandCercle
+clip
+france dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+  closepath
+   gsave
+ mapcolor
+  pst@fill  % fill
+  grestore
+  borderwidth
+  bordercolor
+  stroke
+  }forall
+grestore
+\fi
+%
+\ifPst@geo@Germany
+  (\psk@geo@Path/germany.dat) run
+  gsave
+  GrandCercle
+  clip
+  germany dup /REGION exch def
+  CompteurRegions
+  {CalculsPointsRegion
+    closepath
+    gsave
+    mapcolor
+    pst@fill  % fill
+    grestore
+    borderwidth
+    bordercolor
+    stroke
+  } forall
+grestore
+\fi
+%
+\ifPst@geo@lakes
+ (\psk@geo@Path/plake.dat) run
+gsave
+GrandCercle
+clip
+lake dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+  closepath
+   gsave
+  oceancolor
+  pst@fill  % fill
+  grestore
+%  borderwidth
+%  bordercolor
+0 0 1 setrgbcolor
+  stroke
+  }forall
+grestore
+\fi
+%
+\ifPst@geo@coasts
+  (\psk@geo@Path/pcoast.dat) run
+gsave
+GrandCercle
+clip
+coasts dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+   coastwidth
+   coastcolor
+   stroke
+  }forall
+grestore
+\fi
+%
+\ifPst@geo@USA
+  (\psk@geo@Path/usa.dat) run
+gsave
+GrandCercle
+clip
+usa dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+   closepath
+   gsave
+   mapcolor
+   pst@fill  % fill
+   grestore
+  borderwidth
+  bordercolor
+   stroke
+  }forall
+grestore
+\fi
+%
+\ifPst@geo@Mexico
+  (\psk@geo@Path/mex.dat) run
+gsave
+GrandCercle
+clip
+mexico dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+   closepath
+   gsave
+   mapcolor
+   pst@fill  % fill
+   grestore
+  borderwidth
+  bordercolor
+   stroke
+  }forall
+grestore
+\fi
+%
+\ifPst@geo@Australia
+  (\psk@geo@Path/aus.dat) run
+gsave
+GrandCercle
+clip
+australia dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+   closepath
+   gsave
+   mapcolor
+   pst@fill  % fill
+   grestore
+  borderwidth
+  bordercolor
+   stroke
+  }forall
+grestore
+\fi
+%
+\ifPst@geo@Canada
+  (\psk@geo@Path/canada.dat) run
+gsave
+GrandCercle
+clip
+canada dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+   closepath
+   gsave
+   mapcolor
+   pst@fill  % fill
+   grestore
+  borderwidth
+  bordercolor
+   stroke
+  }forall
+grestore
+\fi
+%
+\ifPst@geo@wfraczon
+  (\psk@geo@Path/wfraczon.dat) run
+GrandCercle
+clip
+wfraczon dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+  wfraczoncolor
+  wfraczonwidth
+   stroke}forall
+\fi
+%
+\ifPst@geo@wmaglin
+  (\psk@geo@Path/wmaglin.dat) run
+GrandCercle
+clip
+wmaglin dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+  wmaglincolor
+  wmaglinwidth
+   stroke}forall
+\fi
+%
+\ifPst@geo@ridge
+  (\psk@geo@Path/ridge.dat) run
+gsave
+GrandCercle
+clip
+ridge dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+  ridgecolor
+  ridgewidth
+   stroke}forall
+grestore
+  (\psk@geo@Path/transfrm.dat) run
+gsave
+GrandCercle
+clip
+transfrm dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+  transfrmcolor
+  ridgewidth
+   stroke}forall
+grestore
+  (\psk@geo@Path/trench.dat) run
+gsave
+GrandCercle
+clip
+trench dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+  trenchcolor
+  ridgewidth
+   stroke}forall
+grestore
+\fi
+%
+\ifPst@geo@rivers
+  (\psk@geo@Path/river.dat) run
+GrandCercle
+clip
+river dup /REGION exch def
+CompteurRegions
+{CalculsPointsRegion
+   rivercolor
+   stroke}forall
+\fi
+%
+\ifPst@geo@cities
+% les capitales
+  (\psk@geo@Path/c-cap.dat) run
+  1.5
+  citycapitals
+  DrawCities
+% les autres villes
+  (\psk@geo@Path/c-sub.dat) run
+  0.5
+  CitySub
+DrawCities
+\fi
+\ifPst@geo@capitals
+% les capitales
+  (\psk@geo@Path/c-cap.dat) run
+  2
+  citycapitals
+  DrawCities
+\fi
+%
+\ifPst@geo@gridmap
+    MaillageSphere
+\fi
+end
+}%
+\end@ClosedObj}
+% placer une ville en particulier
+% par sa longitude et sa latitude en degrés
+% si la ville n'est pas visible
+% elle est rejetée hors de l'écran
+\def\pnodeMapIIID{\pst@object{pnodeMapIIID}}
+\def\pnodeMapIIID@i(#1,#2)#3{%
+   \begin@SpecialObj
+   \pnode(!
+   \geo@variablesMap{2}
+   tx@geoDict begin
+   MatriceTransformationZXY
+        /Xpoint {#2 cos #1 cos mul Rsphere mul} def
+        /Ypoint {#2 cos #1 sin mul Rsphere mul} def
+        /Zpoint {#2 sin Rsphere mul } def
+   CalculsPointsAfterTransformations
+%  CalcCoordinates
+%  /YcoorCity exch def /XcoorCity exch def
+%   Test
+%   PS 0 ge %
+%    {XcoorCity YcoorCity }
+%    {/XcoorCity 1000 def /YcoorCity 1000 def}
+%    ifelse
+formulesTroisD
+     Xi Yi end){#3}%
+   \end@SpecialObj%
+   \ignorespaces}%
+%
+%
+\def\mapputIIID{\@ifnextchar[{\mapputIIID@i}{\mapputIIID@i[90]}}
+\def\mapputIIID@i[#1](#2,#3){\@ifnextchar[{\mapputIIID@iii[#1](#2,#3)}{\mapputIIID@ii[#1](#2,#3)}}
+\def\mapputIIID@ii[#1](#2,#3)#4{\mapputIIID@iii[#1](#2,#3)[#4]{#4}}
+\def\mapputIIID@iii[#1](#2,#3)[#4]#5{%
+  \@ifnextchar[{\mapputIIID@iv[#1](#2,#3)[#4]#5}{\mapputIIID@iv[#1](#2,#3)[#4]#5[\@empty]}}
+\def\mapputIIID@iv[#1](#2,#3)[#4]#5[#6]{{%
+% [angle](longitude,lattitude)[node name]{node label}[country]
+  \def\pst@tempb{all}
+  \ifx\pst@tempb\psk@geo@mapCountry
+    \mapputIIID@v[#1](#2,#3)[#4]{#5}%
+  \else
+    \def\pst@tempb{#6}%
+%    \typeout{Compare \pst@tempb{} with \psk@geo@mapCountry}
+    \ifx\pst@tempb\psk@geo@mapCountry
+      \mapputIIID@v[#1](#2,#3)[#4]{#5}
+    \fi%
+  \fi%
+}}
+\def\mapputIIID@v[#1](#2,#3)[#4]#5{%
+  \pnodeMapIIID(#2,#3){#4}
+  \pst@dima=\psk@geo@nodeWidth
+  \pscircle[style=psNodeMapStyle](#4){\pst@dima}
+  \pscircle*(#4){0.5\pst@dima}
+  \ifx\relax#5\relax\else
+    \uput{1.2\pst@dima}[#1](#4){\psframebox[style=psNodeMapStyle]{#5}}%
+  \fi}
+%
+% dessiner un méridien de longitude donnée
+% longitude en degrés
+\def\psmeridien{\pst@object{psmeridien}}
+\def\psmeridien@i#1{%
+   \pst@killglue
+   \begingroup
+   \begin@SpecialObj%
+   \addto@pscode{%
+   \geo@variablesMap{2}
+   /longitude_meridien #1 def
+   /meridienwidth {\pst@number\psmeridienwidth SLW} def
+   /meridiencolor  {\pst@usecolor\psmeridiencolor currentrgbcolor} def
+   tx@geoDict begin
+   MatriceTransformationZXY
+  \ifPst@geo@visibility
+    /condition { 0 ge } def
+  \else
+   /condition { 0 le } def
+  \fi
+   meridien
+   end}%
+   \end@SpecialObj%
+   \endgroup%
+   \ignorespaces%
+}
+%
+% dessiner un cercle parallèle à l'équateur de latitude donnée
+% latitude en degrés
+\def\psparallel{\pst@object{psparallel}}
+\def\psparallel@i#1{%
+   \pst@killglue
+   \begingroup
+   \begin@SpecialObj%
+   \addto@pscode{%
+   \geo@variablesMap{2}
+   /latitude_parallel #1 def
+   /parallelwidth {\pst@number\psparallelwidth SLW} def
+   /parallelcolor  {\pst@usecolor\psparallelcolor currentrgbcolor} def
+   tx@geoDict begin
+   MatriceTransformationZXY
+     \ifPst@geo@visibility
+    /condition { 0 ge } def
+    \else
+    /condition { 0 le } def
+    \fi
+   Parallel
+   parallelwidth
+   parallelcolor
+   stroke
+   end}%
+   \end@SpecialObj%
+   \endgroup%
+   \ignorespaces%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% le dessin du globe tellure
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newpsstyle{Globe}{circles=true}
+\newpsstyle{night}{fillstyle=solid,fillcolor=black,opacity=0.8}
+\define@key[psset]{pst-geo}{styleGlobe}{\def\psk@styleGlobe{#1}}
+\define@key[psset]{pst-geo}{styleNight}{\def\psk@styleNight{#1}}
+\psset[pst-geo]{styleGlobe=Globe,styleNight=night}
+
+\def\psGlobeTellure{\pst@object{psGlobeTellure}}
+\def\psGlobeTellure@i(#1,#2)#3{% longitude, latitude et nom de la ville
+   \begin@SpecialObj
+    \pnode(!/ux 0 def /uy 90 #2 sub sin def /uz 90 #2 sub cos def 0 0){ttt}%
+    \psset[pst-geo]{THETA=0,PHI=0}%
+    {\psset[pst-geo]{RotX=#2 90 sub,RotZ=90 #1 add}
+    \WorldMapThreeD[style=\psk@styleGlobe,daynight=false]%
+    \mapputIIID(#1,#2){#3}}%
+    {\psset[pst-geo]{daynight=true,circles=false,blueEarth=false,
+                         borders=false,islands=false,
+                         rivers=false,lakes=false,
+                         gridmap=false,latitudeParallel=#2}
+    \WorldMapThreeD[style=\psk@styleNight]}
+   \psframe*(! -3 \psk@geo@Radius\space neg -1.5 add)(!3 \psk@geo@Radius\space neg -0.5 add)
+   \rput(! 0 \psk@geo@Radius\space neg -1 add){\white\psk@geo@hour h le \psk@geo@J/\psk@geo@M/\psk@geo@A}
+   \end@SpecialObj%
+   \ignorespaces}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% épicentre d'un tremblement de terre
+% Earthquake Epicenters
+%
+\define@key[psset]{pst-geo}{waves}{\edef\psk@geo@waves{#1}}
+\psset{waves=3} % nombre de cercles concentriques
+\define@key[psset]{pst-geo}{Rmax}{\edef\psk@geo@Rmax{#1}}
+\psset{Rmax=1500} % rayon maximum du séisme en km
+
+\def\psepicenter{\pst@object{psepicenter}}
+\def\psepicenter@i(#1,#2)#3{%
+  \begin@ClosedObj%
+  \addto@pscode{
+  \geo@variablesMap{2}
+    /longitude #1 def
+    /latitude #2 def
+    /nbre \psk@geo@waves\space def
+    /dphi \psk@geo@Rmax\space 0.008983 mul def
+    /circlecolor  {\pst@usecolor\pscirclecolor currentrgbcolor} def
+    /circlewidth {\pst@number\pscirclewidth SLW} def
+    tx@geoDict begin
+    circlecolor
+    circlewidth
+    nbre dphi longitude latitude
+    ondes
+    end }%
+  \ifx\relax#3\relax\else\mapputIIID(#1,#2){#3}\fi%
+  \end@ClosedObj%
+  \ignorespaces}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 3dII %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\def\WorldMapThreeDII{\pst@object{WorldMapThreeDII}}
+\def\WorldMapThreeDII@i{%
+  \addbefore@par{fillstyle=solid}
+  \begin@ClosedObj
+  \addto@pscode{
+    \geo@variablesMap{3}
+    1 setlinejoin
+    0 0 translate
+    /incrementX \psk@geo@incrementX\space def
+    /incrementY \psk@geo@incrementY\space def
+    /increment \psk@geo@increment\space def
+    /xunit {\pst@number\psxunit\space mul}def
+    /yunit {\pst@number\psyunit\space mul}def
+    /runit {\pst@number\psrunit\space mul}def
+    /pst@fill { \psk@opacityalpha .setopacityalpha fill } def
+    gsave
+    newpath
+    0.7 0.9 0.9 setrgbcolor
+% cercle vu par l'observateur
+    /RsphereScreen Rsphere DScreen mul Dobs div
+      1 Rsphere dup mul Dobs dup mul div sub sqrt div runit def
+    0 0 RsphereScreen 0 360 arc
+    closepath
+    \ifx\psk@fillstyle\relax\else fill \fi
+    grestore
+    /condition {PSfacette 0 le} def
+    /departPhi -90 def
+    tx@geoIIDict begin
+      MatriceTransformation
+      /Draw {
+        { CalculsPoints
+          stroke
+        } forall
+      }def
+%
+      /DrawRivers {
+        { CalculsPoints
+          gsave
+          0 0 1 setrgbcolor
+          CLW 0.25 mul
+          stroke
+          grestore
+        } forall
+      } def
+%
+      /DrawBdy {
+        { CalculsPoints
+          gsave
+          1 0 0 setrgbcolor
+          stroke
+          grestore
+        } forall
+      } def
+\ifPst@geo@maillage MaillageSphereII \fi
+\ifPst@geo@Europe
+    (\psk@geo@Path/europe-cil_II.dat) run
+ europe-cil
+  Draw
+ \ifPst@geo@rivers
+(\psk@geo@Path/europe-riv_II.dat) run
+  europe-riv
+  DrawRivers
+  \fi
+ \ifPst@geo@borders
+(\psk@geo@Path/europe-bdy_II.dat) run
+ europe-bdy
+ DrawBdy
+ \fi
+\fi
+%
+\ifPst@geo@Africa
+  (\psk@geo@Path/africa-cil_II.dat) run
+  africa-cil
+  Draw
+  \ifPst@geo@rivers
+    (\psk@geo@Path/africa-riv_II.dat) run
+    africa-riv
+    DrawRivers
+  \fi
+  \ifPst@geo@borders
+    (\psk@geo@Path/africa-bdy_II.dat) run
+    africa-bdy
+    DrawBdy
+  \fi
+\fi
+%
+\ifPst@geo@Asia
+  (\psk@geo@Path/asia-cil_II.dat) run
+  asia-cil
+  Draw
+  \ifPst@geo@rivers
+    (\psk@geo@Path/asia-riv_II.dat) run
+    asia-riv
+    DrawRivers
+  \fi
+  \ifPst@geo@borders
+    (\psk@geo@Path/asia-bdy_II.dat) run
+    asia-bdy
+    DrawBdy
+  \fi
+\fi
+%
+\ifPst@geo@Northamerica
+(\psk@geo@Path/northamerica-cil_II.dat) run
+ northamerica-cil
+  Draw
+\ifPst@geo@rivers
+(\psk@geo@Path/northamerica-riv_II.dat) run
+  northamerica-riv
+  DrawRivers
+  \fi
+\ifPst@geo@borders
+(\psk@geo@Path/northamerica-bdy_II.dat) run
+(\psk@geo@Path/northamerica-pby_II.dat) run
+  northamerica-bdy DrawBdy northamerica-pby DrawBdy
+\fi
+\fi
+%
+\ifPst@geo@Southamerica
+(\psk@geo@Path/southamerica-cil_II.dat) run
+ southamerica-cil
+  Draw
+\ifPst@geo@rivers
+(\psk@geo@Path/southamerica-riv_II.dat) run
+  southamerica-riv
+  DrawRivers
+ \fi
+\ifPst@geo@borders
+(\psk@geo@Path/southamerica-bdy_II.dat) run
+ southamerica-bdy
+  DrawBdy
+\fi
+\fi
+%
+\ifPst@geo@cities
+% les capitales
+  (\psk@geo@Path/c-cap.dat) run
+  1.5 % rayon du point
+  citycapitals
+  DrawCities
+% les autres villes
+  (\psk@geo@Path/c-sub.dat) run
+  0.5 % rayon du point
+  CitySub
+DrawCities
+\fi
+\ifPst@geo@capitals
+% les capitales
+  (\psk@geo@Path/citycapitals.dat) run
+  1.5
+  citycapitals
+  DrawCities
+\fi
+end
+}%
+\end@ClosedObj
+\ignorespaces
+}
+%
+
+%
+\catcode`\@=\PstAtCode\relax
+\endinput

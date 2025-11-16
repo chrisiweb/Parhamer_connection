@@ -1,0 +1,177 @@
+% piton.4ht (2024-10-01-13:46), generated from tex4ht-4ht.tex
+% Copyright 2023-2024 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2024-10-01-13:46}
+
+
+\ExplSyntaxOn
+\IfPackageLoadedTF{xcolor}{}{\RequirePackage{xcolor}}
+
+\def\:pitonvisiblespace{ \HCode{\string&\#x2423;} }
+\cs_new_protected:Npn \:__piton_replace_spaces:n #1
+  {
+    \tl_set:Nn \l_tmpa_tl { #1 }
+    \bool_if:NTF \l__piton_show_spaces_bool
+      {
+        \tl_set:Nn \l__piton_space_tl {\:pitonvisiblespace} % U+2423
+        \regex_replace_all:nnN { \x20 } {\c{:pitonvisiblespace}} \l_tmpa_tl
+      }
+      {
+        \bool_if:NTF \l__piton_break_lines_in_Piton_bool
+          {
+            \regex_replace_all:nnN
+              { \x20 }
+              { \c { __piton_breakable_space: } }
+              \l_tmpa_tl
+            \regex_replace_all:nnN
+              { \c { l__piton_space_tl } }
+              { \c { __piton_breakable_space: } }
+              \l_tmpa_tl
+          }
+          {
+    \regex_replace_all:nnN { \x20 } { \x20 } \l_tmpa_tl
+          }
+      }
+    \l_tmpa_tl
+  }
+
+
+\HLet\__piton_replace_spaces:n\:__piton_replace_spaces:n
+
+
+\NewConfigure{pitonline}{3}
+\NewConfigure{pitonnumber}{2}
+\protected\def\:tempa #1\__piton_end_line:{
+  \:pitonendignorelines\glet\:pitonendignorelines\relax
+  \group_begin:
+  % we set line in a box, because otherwise lines are collapsed sometimes
+  \hbox_set:Nn \l_tmpa_box{
+  \a:pitonline
+  \a:pitonnumber
+  \bool_if:NT \l__piton_line_numbers_bool
+  {
+  \bool_if:nF
+    {
+      \str_if_eq_p:nn { #1 } { \PitonStyle {Prompt}{} }
+      &&
+      \l__piton_skip_empty_lines_bool
+    }
+    { \int_gincr:N \g__piton_visual_line_int}
+
+  \bool_if:nT
+    {
+      ! \str_if_eq_p:nn { #1 } { \PitonStyle {Prompt}{} }
+      ||
+      ( ! \l__piton_skip_empty_lines_bool && \l__piton_label_empty_lines_bool )
+    }
+    \__piton_print_number:
+  }
+  \b:pitonnumber
+  \language = -1
+  \raggedright
+  \strut
+  % \HCode{<code>}
+  \b:pitonline
+  \NoFonts
+  \__piton_replace_spaces:n { #1 }
+  \EndNoFonts
+  %
+  \c:pitonline
+  }
+  \box_use_drop:N \l_tmpa_box
+  \group_end:
+}
+\HLet\__piton_begin_line:\:tempa
+
+
+\NewConfigure{piton}{2}
+
+% Piton environments and file input produces extra blank line at the start
+% we use TeX4ht specials to remove them
+\gdef\:pitonendignorelines{}
+\pend:def\__piton_pre_env:{\a:piton
+  \ht:special{t4ht@[}% ignore next linebreak, to preven spurious blank line at the beginning of listings
+  \gdef\:pitonendignorelines{\ht:special{t4ht@]}}
+}
+\append:def\__piton_write_aux:{\b:piton}
+
+
+\NewDocumentCommand { \:__piton_piton_standard } { m }
+  {
+    \group_begin:
+    \ttfamily
+    \a:pitonline\b:pitonline
+    \automatichyphenmode = 1
+    \cs_set_eq:NN \\ \c_backslash_str
+    \cs_set_eq:NN \% \c_percent_str
+    \cs_set_eq:NN \{ \c_left_brace_str
+    \cs_set_eq:NN \} \c_right_brace_str
+    \cs_set_eq:NN \$ \c_dollar_str
+    \cs_set_eq:cN { ~ } \space
+    \cs_set_protected:Npn \__piton_begin_line: { }
+    \cs_set_protected:Npn \__piton_end_line: { }
+    \tl_set:Ne \l_tmpa_tl
+      {
+        \lua_now:e
+          { piton.ParseBis('\l__piton_language_str',token.scan_string()) }
+          { #1 }
+      }
+    \bool_if:NTF \l__piton_show_spaces_bool
+      { \regex_replace_all:nnN { \x20 } { ^^^^2423  } \l_tmpa_tl } % U+2423
+      {
+        \bool_if:NT \l__piton_break_lines_in_piton_bool
+          { \regex_replace_all:nnN { \x20 } { \x20 } \l_tmpa_tl }
+      }
+      % our extra code to remove the space glyph
+    \regex_replace_all:nnN { \x20 } { \c { __piton_breakable_space: } } \l_tmpa_tl
+    \l_tmpa_tl
+    \c:pitonline
+    \group_end:
+  }
+
+\HLet\__piton_piton_standard\:__piton_piton_standard
+
+\NewDocumentCommand { \:__piton_piton_verbatim } { v }
+  {
+    \group_begin:
+    \ttfamily
+    \a:pitonline\b:pitonline
+    \automatichyphenmode = 1
+    \cs_set_protected:Npn \__piton_begin_line: { }
+    \cs_set_protected:Npn \__piton_end_line: { }
+    \tl_set:Ne \l_tmpa_tl
+      {
+        \lua_now:e
+          { piton.Parse('\l__piton_language_str',token.scan_string()) }
+          { #1 }
+      }
+    \bool_if:NT \l__piton_show_spaces_bool
+      { \regex_replace_all:nnN { \x20 } { ^^^^2423  } \l_tmpa_tl } % U+2423
+    % our extra code to remove the space glyph
+    \regex_replace_all:nnN { \x20 } { \c { __piton_breakable_space: } } \l_tmpa_tl
+    \l_tmpa_tl
+    \c:pitonline
+    \group_end:
+  }
+
+\HLet\__piton_piton_verbatim\:__piton_piton_verbatim
+
+\ExplSyntaxOff
+\Hinput{piton}
+\endinput
+

@@ -1,0 +1,44 @@
+\input ptb-utils
+
+\_checkloaded{math}
+
+\newcount\_mathcountA   \newcount\_mathcountB
+
+\def\newnumber#1{%
+    \_xp\def\csname num@#1\endcsname{{0}}%
+    \_xp\def\csname num@#1@exp\endcsname{0}%
+}
+
+\def\__setnumber#1#2#3#4#5{%
+    \let\_next=\_gobbletilnul%
+    \ifx\relax#2%
+    \else\ifx\relax#3%
+        \_xp\edef\csname num@#1\endcsname{\csname num@#1\endcsname{#2}}%
+    \else\ifx\relax#4%
+        \_xp\edef\csname num@#1\endcsname{\csname num@#1\endcsname{#3#2}}%
+    \else\ifx\relax#5%
+        \_xp\edef\csname num@#1\endcsname{\csname num@#1\endcsname{#4#3#2}}%
+    \else
+        \_xp\edef\csname num@#1\endcsname{\csname num@#1\endcsname{#5#4#3#2}}%
+        \def\_next{\__setnumber{#1}}%
+    \fi\fi\fi\fi%
+    \_next%
+}
+
+\def\_setnumber#1#2.#3.#4\_nul{%
+    \reverse\_regA{#2#3}%
+    \def\_regB{\__setnumber{#1}}%
+    \_xp\_regB\_regA\relax\relax\relax\relax\_nul%
+}
+
+\def\setnumber#1#2{%
+    \_xp\def\csname num@#1\endcsname{}%
+    \_setnumber{#1}#2..\_nul%
+}
+
+\newnumber{test}
+\setnumber{test}{1234567890.69420}
+
+\say{\meaning\num@test}
+
+\bye

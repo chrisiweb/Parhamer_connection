@@ -1,0 +1,230 @@
+\input ptb-utils
+
+\_checkloaded{tableofcontents}
+
+\input ptb-pdfData
+\input pdfDstruct/ptb-fonts
+\input pdfDstruct/ptb-hooks
+\input pdfDstruct/ptb-hyperlinks
+
+\newwrite\_tocwrite
+\newread\_tocread
+
+\def\setuptoc{%
+    \immediate\openout\_tocwrite{\jobname .toc}%
+    \immediate\openin\_tocread{\jobname .data}%
+    \unless\ifeof\_tocread%
+        \input{\jobname .data}%
+    \fi%
+}
+
+\createbordertype{toc}{}{0}
+
+%   #1: Content marker
+%   #2: Content title
+%   #3: Content value
+%   #4: Content depth
+%   #5: Anchor name
+\def\addtoccontent#1#2#3#4#5{%
+    \anchor[toc]{#5}%
+    \immediate\write\_tocwrite{\noexpand\tocline{#1}{#2}{#3}{#4}{#5}}%
+}
+
+\def\tocline#1#2#3#4#5{%
+    \csname tocline@depth@#4\endcsname{#1}{#2}{#3}{#5}%
+}
+
+\def\settoclinemanager#1{%
+    \_xp\currdef\csname tocline@depth@#1\endcsname##1##2##3##4%
+}
+
+\def\settoctitleformat#1#2{%
+    \_xp\currdef\csname toctitle@depth@#1\endcsname{#2}%
+}
+
+\def\settocvalueformat#1#2{%
+    \_xp\currdef\csname tocvalue@depth@#1\endcsname{#2}%
+}
+
+\def\settocleader#1#2{%
+    \_xp\currdef\csname tocleader@depth@#1\endcsname{#2}%
+}
+
+\def\settocindent#1#2{%
+    \_xp\curredef\csname tocindent@depth@#1\endcsname{#2}%
+}
+
+\def\settocbuf#1#2{
+    \_xp\curredef\csname tocbuf@depth@#1\endcsname{#2}%
+}
+
+\def\printtoc{%
+    \immediate\openin\_tocread{\jobname .toc}%
+    \unless\ifeof\_tocread%
+        \input{\jobname .toc}%
+    \fi%
+    \immediate\closein\_tocread%
+}
+
+\def\tableofcontents{\printtoc\setuptoc}
+
+\def\dotfill{\xleaders\hbox{$\m@th\mkern1.5mu\hbox{.}\mkern1.5mu$}\hfill}
+
+\def\settomax#1#2{{%
+    \setbox0=\hbox{#2}%
+    \ifdim\wd0>#1 %
+        \xdef#1{\the\wd0}%
+    \fi%
+}}
+
+\def\settomaxanddisplay#1#2#3#4{{%
+    \setbox0=\hbox{#2}%
+    \ifdim\wd0>#1 %
+        \xdef#1{\the\wd0}%
+    \fi%
+    \hbox to#1{#3\unhbox0\relax#4}%
+}}
+
+\def\_definetocmanager#1{%
+    \_xp\xdef\csname tocvaluewd@depth@#1\endcsname{0pt}%
+    \_xp\xdef\csname tocmarkerwd@depth@#1\endcsname{0pt}%
+    \_xp\docdata\_xp{\csname tocvaluewd@depth@#1\endcsname}%
+    \_xp\docdata\_xp{\csname tocmarkerwd@depth@#1\endcsname}%
+    \settoclinemanager{#1}{%
+        \kern\csname tocbuf@depth@#1\endcsname\relax%
+        \hbox to\hsize{%
+            \hskip\csname tocindent@depth@#1\endcsname\relax%
+            \gotoanchor[toc]{##4}{%
+                \_xp\settomaxanddisplay\csname tocmarkerwd@depth@#1\endcsname{%
+                    \csname tocmarker@depth@#1\endcsname{##1}%
+                }{}\hss%
+                \kern\csname tocmbuf@depth@#1\endcsname\csname toctitle@depth@#1\endcsname{##2}%
+            }%
+            \hfil\ {\csname tocleader@depth@#1\endcsname}\ %
+            \gotoanchor[toc]{##4}{%
+                \_xp\settomaxanddisplay\csname tocvaluewd@depth@#1\endcsname{%
+                    \csname tocvalue@depth@#1\endcsname{##3}%
+                }\hss{}%
+            }
+        }%
+        \kern\csname tocbuf@depth@#1\endcsname\relax%
+    }%
+}
+ 
+
+\def\settocdepthformat#1#2{%
+    \mapkeys{%
+        marker={%
+            name=tocmarker@depth@#1,
+            default=\setfont{rm}%
+        },
+        marker buffer={%
+            name=tocmbuf@depth@#1,
+            default=.25cm%
+        },
+        title={%
+            name=toctitle@depth@#1,
+            default=\setfont{rm}%
+        },
+        value={%
+            name=tocvalue@depth@#1,
+            default=\setfont{rm}%
+        },
+        leader={%
+            name=tocleader@depth@#1,
+            default%
+        },
+        indent={%
+            name=tocindent@depth@#1,
+            default=0pt%
+        },
+        buffer={%
+            name=tocbuf@depth@#1,
+            default=0pt%
+        }%
+    }{#2}%
+    \_definetocmanager{#1}%
+}
+
+\def\upperroman#1{\uppercase\expanded{{\_xp\romannumeral\expanded{#1}}}}
+\def\_partmarker#1{\rlap{\upperroman{#1}}}
+\settocdepthformat0{marker=\setfontandscale{bf}{12pt}\_partmarker, marker buffer=.75cm, title=\setfontandscale{bf}{12pt}, value=\setfontandscale{bf}{12pt}, leader=, indent=0pt, buffer=5pt}
+\settocdepthformat1{marker=\setfont{bf}\rlap, marker buffer=.75cm, title=\setfont{bf}, value=\setfont{bf}, leader=, indent=0pt, buffer=3pt}
+\settocdepthformat2{leader=\dotfill, indent=.75cm, buffer=0pt}
+\settocdepthformat3{leader=\dotfill, indent=\dimexpr 1cm+\csname tocmarkerwd@depth@2\endcsname\relax, buffer=0pt}
+
+\createcounter{part}
+\createcounter{section}[part]
+\createcounter{subsection}[section]
+\createcounter{subsubsection}[subsection]
+
+\def\part#1{%
+    \par\vfill%
+    \advancecounter{part}{1}%
+    \def\currpart{#1}%
+    \gdef\currsection{#1}%
+    \gdef\currsubsection{#1}%
+    \gdef\currsubsubsection{#1}%
+    \addtoccontent{\the\counter{part}}{#1}{\the\pageno}{0}{part@\the\counter{part}}%
+    \vbox to\vsize{\vfil\centerline{\setfontandscale{sc}{40pt}\upperroman{\the\counter{part}}. #1}\vfil}%
+}
+
+\def\_section#1{%
+    \advancecounter{section}{1}%
+    \par\bigskip%
+    \noindent{\setfontandscale{bf}{15pt}\the\counter{section} #1}%
+    \addtoccontent{\the\counter{section}}{#1}{\the\pageno}{1}{section@\the\counter{part}.\the\counter{section}}%
+    \gdef\currsection{#1}%
+    \gdef\currsubsection{#1}%
+    \gdef\currsubsubsection{#1}%
+    \par\penalty\@M\bigskip%
+}
+
+\def\_pseudosection#1{%
+    \par\bigskip%
+    \noindent{\setfontandscale{bf}{15pt}#1}%
+    \par\penalty\@M\bigskip%
+}
+
+\def\section{\@ifstar \_pseudosection\_section}
+
+\def\currsubsubsection{}
+\def\currsubsection{}
+\def\currsection{}
+\def\currpart{}
+
+\def\_subsection#1{%
+    \advancecounter{subsection}{1}%
+    \par\medskip%
+    \noindent{\setfontandscale{bf}{12pt}\the\counter{section}.\the\counter{subsection} #1}%
+    \addtoccontent{\the\counter{section}.\the\counter{subsection}}{#1}{\the\pageno}{2}{subsection@\the\counter{part}.\the\counter{section}.\the\counter{subsection}}%
+    \gdef\currsubsection{#1}%
+    \gdef\currsubsubsection{#1}%
+    \par\penalty\@M\medskip%
+}
+
+\def\_pseudosubsection#1{%
+    \par\medskip%
+    \noindent{\setfontandscale{bf}{12pt}#1}%
+    \par\penalty\@M\medskip%
+}
+
+\def\subsection{\@ifstar \_pseudosubsection\_subsection}
+
+\def\_subsubsection#1{%
+    \advancecounter{subsubsection}{1}%
+    \par\medskip%
+    \noindent{\setfontandscale{bf}{12pt}\the\counter{section}.\the\counter{subsection}.\the\counter{subsubsection} #1}%
+    \addtoccontent{\the\counter{section}.\the\counter{subsection}.\the\counter{subsubsection}}{#1}{\the\pageno}{3}{subsubsection@\the\counter{part}.\the\counter{section}.\the\counter{subsection}.\the\counter{subsubsection}}%
+    \gdef\currsubsubsection{#1}%
+    \par\penalty\@M\medskip%
+}
+
+\def\_pseudosubsubsection#1{%
+    \par\medskip%
+    \noindent{\setfontandscale{bf}{12pt}#1}%
+    \par\penalty\@M\medskip%
+}
+
+\def\subsubsection{\@ifstar \_pseudosubsubsection\_subsubsection}
+

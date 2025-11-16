@@ -43,7 +43,7 @@
 \DeclareCurrentRelease{}{2020-02-07}
 
 \ProvidesPackage{longtable}
-          [2024-12-18 v4.23 Multi-page Table package (DPC)]
+          [2025-10-13 v4.24 Multi-page Table package (DPC)]
 \def\LT@err{\PackageError{longtable}}
 \def\LT@warn{\PackageWarning{longtable}}
 \def\LT@final@warn{%
@@ -497,6 +497,7 @@
         \ifdim\dimen@<\ht\z@
           \setbox\@cclv\vbox{\unvbox\z@\copy\LT@foot\vss}%
           \@makecol
+          \@expl@@@mark@update@singlecol@structures@@
           \@outputpage
           \global\vsize\@colroom
           \setbox\z@\vbox{\box\LT@head}%
@@ -509,6 +510,7 @@
     \setbox\@cclv\vbox{\unvbox\@cclv\copy\LT@foot\vss}%
     \UseTaggingSocket{tbl/longtable/foot}
     \@makecol
+    \@expl@@@mark@update@singlecol@structures@@
     \@outputpage
       \global\vsize\@colroom
     \copy\LT@head\nobreak

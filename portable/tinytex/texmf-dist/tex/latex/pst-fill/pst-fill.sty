@@ -1,0 +1,23 @@
+%%
+%% This is file `pst-fill.sty',
+%%
+%% Denis Girou (CNRS/IDRIS - France) <Denis.Girou@idris.fr>
+%% Herbert Voss <hvoss@tug.org>
+%% (C) 2007-2021
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-fill' is a PSTricks package for filling and tiling areas
+%%
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-fill}[2010/03/20 package wrapper for pst-fill.tex (hv)]
+\DeclareOption{tiling}{\def\PstTiling{true}}
+\ProcessOptions\relax
+\input{pst-fill.tex}
+\ProvidesFile{pst-fill.tex} [\filedate\space v\fileversion\space `PST-fill' (tvz,dg,hv)]
+\endinput
+%%
+%% End of file `pst-fill.sty'.

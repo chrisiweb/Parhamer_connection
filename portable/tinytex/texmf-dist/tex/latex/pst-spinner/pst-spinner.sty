@@ -1,0 +1,19 @@
+%% $Id: pst-spinner.sty 453 2017-05-11 19:40:46Z herbert $
+%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+\RequirePackage{pstricks}
+\RequirePackage{pst-node}
+\ProvidesPackage{pst-spinner}[2017/05/11 package wrapper for
+  pst-spinner.tex]
+\input{pst-spinner.tex}
+\ProvidesFile{pst-spinner.tex}
+  [\filedate\space v\fileversion\space `PSt-spinner' (ml,hv)]
+\IfFileExists{pst-spinner.pro}{%
+  \ProvidesFile{pst-spinner.pro}
+    [2017/05/11 v. 0.01,  PostScript prologue file (hv)]
+    \@addtofilelist{pst-spinner.pro}}{}%
+
+\endinput

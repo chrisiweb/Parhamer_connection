@@ -1,0 +1,83 @@
+%% $Id: pst-ovl.tex 1169 2020-05-01 14:27:32Z herbert $
+%%
+%%
+%% This is file `pst-ovl.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-ovl.tex'
+%% 
+%% 2015,2020 --  Timothy Van Zandt
+%%          Herbert Voss <hvoss@tug.org>
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-ovl' is a PostScript related package for  
+%%    overlay support
+%%
+\csname PSTovlloaded\endcsname
+\let\PSTovlloaded\endinput
+%
+%% Requires main PSTricks
+\ifx\PSTricksLoaded\endinput\else\input pstricks \fi
+%
+\def\fileversion{0.07b}
+\def\filedate{2020/05/01}
+\message{`pst-ovl' v\fileversion, \filedate\space (tvz,hv)}
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+%
+\def\tx@BeginOL{ tx@ovlDict begin BeginOL }
+\def\tx@InitOL{ tx@ovlDict begin InitOL }
+\def\tx@BOLend{ tx@ovlDict begin BOL end }
+%
+\pstheader{pst-ovl.pro}
+%
+\def\pst@initoverlay#1{\pst@Verb{ \tx@InitOL end /TheOL #1 def }}
+%
+\def\AltOverlayMode{%
+  \def\pst@initoverlay##1{%
+    \pst@Verb{
+      \tx@InitOL
+      /Visible { initclip } def
+      /Invisible {
+        CP newpath OLUnit itransform moveto clip newpath moveto
+      } def
+      /TheOL ##1 def end }}}
+%
+\def\pst@overlay#1{%
+  \edef\curr@overlay{#1}%
+  \expandafter\pst@Verb\expandafter{ #1 \tx@BOLend }%
+  \aftergroup\pst@endoverlay}
+%
+\def\pst@endoverlay{\expandafter\pst@Verb\expandafter{\curr@overlay \space \tx@BOLend }}
+\def\curr@overlay{-1}
+%
+\newbox\thepsoverlaybox
+%
+\def\psoverlaybox{%
+  \global\setbox\thepsoverlaybox=\hbox\bgroup
+  \begingroup
+  \let\psoverlay\pst@overlay
+  \def\psoverlaybox{%
+    \@pstrickserr{Overlays cannot be nested}\@eha}%
+  \def\psputoverlaybox{%
+    \@pstrickserr{You must end the overlay box
+         before using \string\psputoverlaybox}}%
+  \psoverlay{0}%
+  \ignorespaces}
+%
+\def\endpsoverlaybox{\endgroup\egroup}
+\def\psputoverlaybox#1{%
+  \hbox{\expandafter\pst@initoverlay\expandafter{#1}\copy\thepsoverlaybox}}
+%
+\def\psoverlay{\@pstrickserr{\string\psoverlay\space
+  can only be used after \string\overlaybox}}
+%
+\catcode`\@=\PstAtCode\relax
+%
+%% END: pst-ovl.tex
+\endinput

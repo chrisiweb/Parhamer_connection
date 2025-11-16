@@ -1,0 +1,681 @@
+\input ptb-utils
+
+\_checkloaded{pdfdraw}
+
+\input pdfData/ptb-stack
+%\input pdfData/math
+\input apnum
+\input pdfData/ptb-key-value
+\input pdfGraphics/ptb-colors
+
+\def\_multiply#1#2{\_nopt{#1\dimexpr #2pt\relax}}
+\def\_add#1#2{\_nopt{#1pt + #2pt}}
+\def\_subtract#1#2{\_nopt{#1pt - #2pt}}
+\def\_square#1{\_multiply{#1}{#1}}
+
+\def\_pdfdraw_nattrans,{.996264 0 0 .996264 0 0 cm}
+
+\def\_pdfdraw_moveto#1#2{\_pdfdraw_p{#1}{#2} m }
+\def\_pdfdraw_lineto#1#2{\_pdfdraw_p{#1}{#2} l }
+\def\_pdfdraw_bezierv#1#2#3#4{\_pdfdraw_p{#1}{#2} \_pdfdraw_p{#3}{#4} v }
+\def\_pdfdraw_bezierc#1#2#3#4#5#6{\_pdfdraw_p{#1}{#2} \_pdfdraw_p{#3}{#4} \_pdfdraw_p{#5}{#6} c }
+\def\_pdfdraw_re#1#2#3#4{\_pdfdraw_p{#1}{#2} \_pdfdraw_p{#3}{#4} re }
+
+\def\_pdfdraw_cd{.55228475}
+\def\_pdfdraw_ellipse#1#2#3#4{% (x,y), r1, r2
+    \_pdfdraw_moveto {\_add{#1}{#3}}{#2}%                                                   (x+r1, y)    m
+    \_pdfdraw_bezierc{\_add{#1}{#3}}{\_add{#2}{\_multiply\_pdfdraw_cd{#4}}}%    (x+r, y+d*r2)
+                    {\_add{#1}{\_multiply\_pdfdraw_cd{#3}}}{\_add{#2}{#4}}%     (x+d*r1, y+r2)
+                    {#1}{\_add{#2}{#4}}%                                                    (x,y+r2)     c
+    \_pdfdraw_bezierc{\_add{#1}{\_multiply{-\_pdfdraw_cd}{#3}}}{\_add{#2}{#4}}% (x-d*1r,y+r2)
+                    {\_add{#1}{-#3}}{\_add{#2}{\_multiply\_pdfdraw_cd{#4}}}%    (x-r1,y+d*r2)
+                    {\_add{#1}{-#3}}{#2}%                                                   (x-r1,y)     c
+    \_pdfdraw_bezierc{\_add{#1}{-#3}}{\_add{#2}{\_multiply{-\_pdfdraw_cd}{#4}}}%(x-r1, y-d*r2)
+                    {\_add{#1}{\_multiply{-\_pdfdraw_cd}{#3}}}{\_add{#2}{-#4}}% (x-d*r1, y-r2)
+                    {#1}{\_add{#2}{-#4}}%                                                   (x,y-r2)     c
+    \_pdfdraw_bezierc{\_add{#1}{\_multiply\_pdfdraw_cd{#3}}}{\_add{#2}{-#4}}%   (x+d*r1,y-r2)
+                    {\_add{#1}{#3}}{\_add{#2}{\_multiply{-\_pdfdraw_cd}{#4}}}%  (x+r1,y-d*r2)
+                    {\_add{#1}{#3}}{#2}%                                                    (x-r1,y)     c
+}
+\def\_pdfdraw_circle#1#2#3{\_pdfdraw_ellipse{#1}{#2}{#3}{#3}}
+
+\createmacrostack{transstack}
+\def\_pdfdraw_transform#1#2{{#1}{#2}}
+\macrostackpush{transstack}\_pdfdraw_transform
+\def\_pdfdraw_transform#1#2{{#1}{#2}}
+\def\_pdfdraw_p_id#1#2{#1 #2}
+\def\_pdfdraw_p#1#2{\_xp\_pdfdraw_p_id\expanded{\_pdfdraw_transform{#1}{#2}}}
+
+\let\_pdfdraw_xp=\relax
+\def\_pdfdraw_addtransform#1{%
+    \_xp\_xp\_xp\def\_xp\_xp\_xp\_regA\_xp\_xp\_xp{\macrostackget{transstack}{\macrostackpointer{transstack}}}%
+    \_xp\def\_xp\_pdfdraw_transform\_xp##\_xp1\_xp##\_xp2\_xp{\_xp\_xp\_regA\expanded{#1{##1}{##2}}}%
+    \macrostackpush{transstack}\_pdfdraw_transform%
+}
+
+\def\_pdfdraw_postaddtransform#1{%
+    \_xp\_xp\_xp\def\_xp\_xp\_xp\_regA\_xp\_xp\_xp{\macrostackget{transstack}{\macrostackpointer{transstack}}}%
+    \_xp\def\_xp\_pdfdraw_transform\_xp##\_xp1\_xp##\_xp2\_xp{\_xp\_xp\_xp#1\_xp\expanded\_xp{\_regA{##1}{##2}}}%
+    \macrostackpush{transstack}\_pdfdraw_transform%
+}
+
+\def\_pdfdraw_settransform#1{%
+    \let\_pdfdraw_transform=#1%
+    \macrostackpush{transstack}\_pdfdraw_transform%
+}
+
+\def\_pdfdraw_poptransform{%
+    \macrostackpop{transstack}%
+    %\macrostackpeek{transstack}%
+}
+
+\createmacrostack{affinetransstack}
+\def\_pdfdraw_addaffinetransform#1#2#3#4#5#6{%
+    \beginscope%
+    \localize\_regA%
+    \edef\_regA##1##2{%
+        {\noexpand\_add{\noexpand\_add{\noexpand\_multiply{#1}{##1}}{\noexpand\_multiply{#3}{##2}}}{#5}}% #1 * ##1 + #3 * ##2 + #5
+        {\noexpand\_add{\noexpand\_add{\noexpand\_multiply{#2}{##1}}{\noexpand\_multiply{#4}{##2}}}{#6}}% #2 * ##1 + #4 * ##2 + #6
+    }%
+    \macrostackpush{affinetransstack}\_regA%
+    \_xp\_xp\_xp\_pdfdraw_addtransform\macrostackget{affinetransstack}{\macrostackpointer{affinetransstack}}%
+    \endscope%
+}
+
+\def\_pdfdraw_postaddaffinetransform#1#2#3#4#5#6{%
+    \beginscope%
+    \localize\_regA%
+    \edef\_regA##1##2{%
+        {\noexpand\_add{\noexpand\_add{\noexpand\_multiply{#1}{##1}}{\noexpand\_multiply{#3}{##2}}}{#5}}% #1 * ##1 + #3 * ##2 + #5
+        {\noexpand\_add{\noexpand\_add{\noexpand\_multiply{#2}{##1}}{\noexpand\_multiply{#4}{##2}}}{#6}}% #2 * ##1 + #4 * ##2 + #6
+    }%
+    \macrostackpush{affinetransstack}\_regA%
+    \_xp\_xp\_xp\_pdfdraw_postaddtransform\macrostackget{affinetransstack}{\macrostackpointer{affinetransstack}}%
+    \endscope%
+}
+
+\def\_pdfdraw_setaffinetransform#1#2#3#4#5#6{%
+    \beginscope%
+    \localize\_regA%
+    \edef\_regA##1##2{%
+        {\noexpand\_add{\noexpand\_add{\noexpand\_multiply{#1}{##1}}{\noexpand\_multiply{#3}{##2}}}{#5}}% #1 * ##1 + #3 * ##2 + #5
+        {\noexpand\_add{\noexpand\_add{\noexpand\_multiply{#2}{##1}}{\noexpand\_multiply{#4}{##2}}}{#6}}% #2 * ##1 + #4 * ##2 + #6
+    }%
+    \macrostackpush{affinetransstack}\_regA%
+    \_xp\_xp\_xp\_pdfdraw_settransform\macrostackget{affinetransstack}{\macrostackpointer{affinetransstack}}%
+    \endscope%
+}
+
+%\def\_pdfdraw_addaffinetransform#1#2#3#4{%
+%    \def\_regA##1##2{%
+%        {\_add{\_multiply{#1}{##1}}{\_multiply{#3}{##2}}}% #1 * ##1 + #3 * ##2
+%        {\_add{\_multiply{#2}{##1}}{\_multiply{#4}{##2}}}% #2 * ##1 + #4 * ##2
+%    }%
+%    \macrostackpush{affinetransstack}\_regA%
+%    \_xp\_xp\_xp\_pdfdraw_addtransform\macrostackget{affinetransstack}{\macrostackpointer{affinetransstack}}%
+%}
+
+\def\_pdfdraw_popaffinetransform{%
+    \macrostackdecrement{affinetransstack}%
+    \_pdfdraw_poptransform%
+}
+
+\newdimen\_pdfdraw_width     \newdimen\_pdfdraw_negwidth
+\newdimen\_pdfdraw_height    \newdimen\_pdfdraw_depth
+\def\_pdfdraw_strokewidth{.6}
+
+\def\_pdfdraw_updatedimens#1#2{%
+    \ifdim #1pt > \_pdfdraw_width %
+        \global\_pdfdraw_width=#1pt%
+    \else\ifdim #1pt < \_pdfdraw_negwidth %
+        \global\_pdfdraw_negwidth=#1pt%
+    \fi\fi%
+    \ifdim #2pt > \_pdfdraw_height %
+        \global\_pdfdraw_height=#2pt%
+    \else\ifdim #2pt < \_pdfdraw_depth %
+        \global\_pdfdraw_depth=#2pt
+    \fi\fi%
+}
+
+\def\__pdfdraw_updatedimens_list#1#2{%
+    \_pdfdraw_updatedimens{#1}{#2}%
+    \_pdfdraw_updatedimens_list%
+}
+
+\def\_pdfdraw_updatedimens_list#1{%
+    \ifx\_nul#1%
+    \else%
+        \_afterfi{\expanded{\noexpand\__pdfdraw_updatedimens_list\_pdfdraw_transform#1}}%
+    \fi%
+}
+
+\def\_pdfdraw_def_param_text#1{###1}
+\def\_pdfdraw_def_pass_text#1{{###1}}
+\def\_pdfdraw_def_point_text#1{{{###1}{##\the\numexpr #1+1\relax}}}
+
+%\def\_pdfdraw_drawing_def#1#2{%
+%    \expanded{%
+%        \unexpanded{\_xp\def\csname \_mstrip#1@draw\endcsname}\_varrepeat{1}{\numexpr #2+2\relax}{1}>\_pdfdraw_def_param_text{%
+%            \pdfliteral{q ##1
+%                \unexpanded{#1}\_varrepeat{3}{\numexpr #2+2\relax}{1}>\_pdfdraw_def_pass_text%
+%                \unexpanded{\_pdfdraw_updatedimens_list}\_varrepeat{3}{\numexpr #2+2\relax}{2}>\_pdfdraw_def_point_text\_nul\_space%
+%                ##2
+%            Q}%
+%        }%
+%    }%
+%}
+%
+%\_pdfdraw_drawing_def\_pdfdraw_moveto2
+%\_pdfdraw_drawing_def\_pdfdraw_lineto2
+%\_pdfdraw_drawing_def\_pdfdraw_bezierv4
+%\_pdfdraw_drawing_def\_pdfdraw_bezierc6
+
+\newbox\_pdfdrawbox
+\def\bdrawing{\bgroup%
+    \_pdfdraw_width=\z@     \_pdfdraw_negwidth=\z@%
+    \_pdfdraw_height=\z@    \_pdfdraw_depth=\z@%
+    \setbox\_pdfdrawbox=\vbox\bgroup%
+        \offinterlineskip%
+}
+
+\def\edrawing{%
+    \egroup%
+    {\offinterlineskip
+    \hbox{%
+        \vtop to\dimexpr\_pdfdraw_height - \_pdfdraw_depth\relax{%
+            \vfil%
+            \hbox to\dimexpr\_pdfdraw_width - \_pdfdraw_negwidth\relax{%
+                \kern-\_pdfdraw_negwidth\box\_pdfdrawbox\hfil%
+            }%
+            \kern-\_pdfdraw_depth%
+        }%
+    }}% 
+    \egroup%
+}
+
+\def\coordhbuf{3pt}
+\def\coordvbuf{0pt}
+
+\def\_addnode#1#2#3#4{%
+    \setbox0=\hbox{#3}%
+    \_xp\xdef\csname point@#4.left\endcsname{\_nopt{#1pt - .5\wd0 - \coordhbuf}}%
+    \_xp\xdef\csname point@#4.top\endcsname{\_nopt{#2pt + .5\ht0 + .5\dp0 + \coordvbuf}}%
+    \_xp\xdef\csname point@#4.right\endcsname{\_nopt{#1pt + .5\wd0 + \coordhbuf}}%
+    \_xp\xdef\csname point@#4.bottom\endcsname{\_nopt{#2pt - .5\ht0 - .5\dp0 - \coordvbuf}}%
+    \_xp\xdef\csname point@#4.xcenter\endcsname{\_nopt{#1pt}}%
+    \_xp\xdef\csname point@#4.ycenter\endcsname{\_nopt{#2pt}}%
+    \_pdfdraw_updatedimens{\csname point@#4.left\endcsname}{\csname point@#4.top\endcsname}%
+    \_pdfdraw_updatedimens{\csname point@#4.right\endcsname}{\csname point@#4.bottom\endcsname}%
+    \vbox to\z@{%
+        \vss%
+        \hbox to\z@{%
+            \kern\dimexpr #1pt - .5\wd0\relax%
+            \copy0%
+            \hss%
+        }%
+        \kern\dimexpr #2pt - .5\ht0 - .5\dp0\relax%
+    }%
+}
+
+\def\addnode#1#2#3#4{{%
+    \_xp\_addnode\expanded{\_pdfdraw_transform{#2}{#3}}{#1}{#4}%
+}}
+
+\def\_getcoordvalue#1{%
+    \ifcsname point@#1\endcsname%
+        \csname point@#1\endcsname%
+    \else%
+        #1%
+    \fi%
+}
+
+\def\_unpackinternalcoords#1#2#3#4{%
+    \def#1{#3}%
+    \def#2{#4}%
+}
+
+\def\_gettransformedcoords#1#2#3#4{%
+    \expanded{\unexpanded{\_unpackinternalcoords{#1}{#2}}\_pdfdraw_transform{#3}{#4}}%
+}
+
+%\_pdfdraw_addaffinetransform{0.707}{0.707}{-0.707}{0.707}{100}{0}
+\_pdfdraw_addaffinetransform{1.5}{0}{0}{1.5}{0}{0}
+
+\def\_unpackcoords#1#2#3,#4\_nul{%
+    \def#1{\_id#3}%
+    \def#2{\_id#4}%
+}
+
+\def\@pathinsert{}
+
+% #1,#2 -> from, #3,#4 -> to, #5,#6 -> offset, #7,#8 -> caps, #9 -> color
+\def\drawpath#1#2#3#4#5#6#7#8#9{%
+    \edef\_regA{\_nopt{\_getcoordvalue{\_id#1}pt + #5}}%
+    \edef\_regB{\_nopt{\_getcoordvalue{\_id#2}pt + #6}}%
+    \edef\_regC{\_nopt{\_getcoordvalue{\_id#3}pt + #5}}%
+    \edef\_regD{\_nopt{\_getcoordvalue{\_id#4}pt + #6}}%
+    %\computesqrt{\_add{\_square{\_subtract{\_regC}{\_regA}}}{\_square{\_subtract{\_regD}{\_regB}}}}\_regF\_regE%
+    \evaldef\_regF{\SQRT{(\_regC-\_regA)^2 + (\_regD-\_regB)^2}}%
+    \ifdim\_regF pt=\z@ %
+        \def\_regE{99999}%
+    \else%
+        \evaldef\_regE{1/ \_regF}%
+    \fi%
+    \pdfliteral{%
+        q
+        \_pdfdraw_strokewidth\_space w
+        1 j 1 J
+        \_getcolor{}{#9}
+    }%
+    \_pdfdraw_setaffinetransform%
+        {\_multiply{\_subtract{\_regC}{\_regA}}{\_regE}}{\_multiply{\_subtract{\_regD}{\_regB}}{\_regE}}%
+        {\_multiply{\_subtract{\_regB}{\_regD}}{\_regE}}{\_multiply{\_subtract{\_regC}{\_regA}}{\_regE}}%
+        {\_regA}{\_regB}%
+    \pdfliteral{\csname linecap@#7\endcsname}%
+    \_pdfdraw_popaffinetransform%
+    \pdfliteral{
+        q
+        \@pathinsert\_space
+        \_multiply{\_subtract{\_regC}{\_regA}}{\_regE} \_multiply{\_subtract{\_regD}{\_regB}}{\_regE}
+        \_multiply{\_subtract{\_regB}{\_regD}}{\_regE} \_multiply{\_subtract{\_regC}{\_regA}}{\_regE}
+        \_regA\_space\_regB\_space cm
+        \csname linecap@#7@wd\endcsname\_space 0 m
+        \_nopt{\_regF pt - \csname linecap@#8@wd\endcsname pt} 0 l
+        S
+        Q
+    }%
+    \_pdfdraw_setaffinetransform%
+        {\_multiply{\_subtract{\_regC}{\_regA}}{\_regE}}{\_multiply{\_subtract{\_regD}{\_regB}}{\_regE}}%
+        {\_multiply{\_subtract{\_regB}{\_regD}}{\_regE}}{\_multiply{\_subtract{\_regC}{\_regA}}{\_regE}}%
+        {\_regC}{\_regD}%
+    \_pdfdraw_addaffinetransform{1}{0}{0}{1}{-\csname linecap@#8@wd\endcsname}{0}%
+    \pdfliteral{
+        \csname linecap@#8\endcsname
+        Q
+    }%
+    \_pdfdraw_popaffinetransform%
+    \_pdfdraw_popaffinetransform%
+}
+
+\def\_unpackdouble#1#2#3#4{%
+    \def#1{#3}%
+    \def#2{#4}%
+}
+
+% #1,#2 -> from, #3,#4 -> to, #5 -> offset, #6 -> curve, #7,#8 -> caps, #9 -> color
+\def\drawbezier#1#2#3#4#5#6#7#8#9{%
+    \_unpackdouble\_regE\_regF#5%
+    \edef\_regA{\_nopt{\_getcoordvalue{\_id#1}pt + \_regE}}%
+    \edef\_regB{\_nopt{\_getcoordvalue{\_id#2}pt + \_regF}}%
+    \edef\_regC{\_nopt{\_getcoordvalue{\_id#3}pt + \_regE}}%
+    \edef\_regD{\_nopt{\_getcoordvalue{\_id#4}pt + \_regF}}%
+    %\computesqrt{\_add{\_square{\_subtract{\_regC}{\_regA}}}{\_square{\_subtract{\_regD}{\_regB}}}}\_regF\_regE%
+    \evaldef\_regF{\SQRT{(\_regC-\_regA)^2 + (\_regD-\_regB)^2}}%
+    \ifdim\_regF pt=\z@ %
+        \def\_regE{0}%
+    \else%
+        \evaldef\_regE{1/ \_regF}%
+    \fi%
+    \pdfliteral{%
+        q
+        \_pdfdraw_strokewidth\_space w
+        1 j 1 J
+        \_getcolor{}{#9}
+    }%
+    \_pdfdraw_setaffinetransform%
+        {\_multiply{\_subtract{\_regC}{\_regA}}{\_regE}}{\_multiply{\_subtract{\_regD}{\_regB}}{\_regE}}%
+        {\_multiply{\_subtract{\_regB}{\_regD}}{\_regE}}{\_multiply{\_subtract{\_regC}{\_regA}}{\_regE}}%
+        {\_regA}{\_regB}%
+    \pdfliteral{\csname linecap@#7\endcsname}%
+    \_pdfdraw_popaffinetransform%
+    \pdfliteral{
+        q
+        \@pathinsert\_space
+        \_multiply{\_subtract{\_regC}{\_regA}}{\_regE} \_multiply{\_subtract{\_regD}{\_regB}}{\_regE}
+        \_multiply{\_subtract{\_regB}{\_regD}}{\_regE} \_multiply{\_subtract{\_regC}{\_regA}}{\_regE}
+        \_regA\_space\_regB\_space cm
+        \csname linecap@#8@wd\endcsname\_space 0 m
+        \_nopt{.5\dimexpr\_regF pt - \csname linecap@#8@wd\endcsname pt\relax} \_nopt{#6} \_nopt{\_regF pt - \csname linecap@#8@wd\endcsname pt} 0 v
+        S
+        Q
+    }%
+    \_pdfdraw_setaffinetransform%
+        {\_multiply{\_subtract{\_regC}{\_regA}}{\_regE}}{\_multiply{\_subtract{\_regD}{\_regB}}{\_regE}}%
+        {\_multiply{\_subtract{\_regB}{\_regD}}{\_regE}}{\_multiply{\_subtract{\_regC}{\_regA}}{\_regE}}%
+        {\_regC}{\_regD}%
+    \_pdfdraw_addaffinetransform{1}{0}{0}{1}{-\csname linecap@#8@wd\endcsname}{0}%
+    \pdfliteral{
+        \csname linecap@#8\endcsname
+        Q
+    }%
+    \_pdfdraw_popaffinetransform%
+    \_pdfdraw_popaffinetransform%
+}
+
+\def\definelinecap#1#2#3{%
+    \_xp\def\csname linecap@#1\endcsname{#2}%
+    \_xp\edef\csname linecap@#1@wd\endcsname{#3}%
+}
+
+\definelinecap{-}{}{0}
+
+\definelinecap{>}{%
+    \_pdfdraw_moveto{0}{0} \_pdfdraw_lineto{4}{0} \_pdfdraw_lineto{2}{1} \_pdfdraw_moveto{4}{0} \_pdfdraw_lineto{2}{-1}
+    S
+}{4}
+
+\definelinecap{<}{%
+    \_pdfdraw_moveto{4}{0} \_pdfdraw_lineto{0}{0} \_pdfdraw_lineto{2}{1} \_pdfdraw_moveto{0}{0} \_pdfdraw_lineto{2}{-1}
+    S
+}{4}
+
+\definelinecap{|-}{%
+    \_pdfdraw_moveto{0}{-1} \_pdfdraw_lineto{0}{1} \_pdfdraw_moveto{0}{0} \_pdfdraw_lineto{4}{0}
+    S
+}{4}
+
+\definelinecap{-|}{%
+    \_pdfdraw_moveto{4}{-1} \_pdfdraw_lineto{4}{1} \_pdfdraw_moveto{4}{0} \_pdfdraw_lineto{0}{0}
+    S
+}{4}
+
+\definelinecap{>>}{%
+    \_pdfdraw_moveto{0}{0} \_pdfdraw_lineto{4}{0}
+    \_pdfdraw_moveto{2}{0} \_pdfdraw_lineto{0}{1} \_pdfdraw_moveto{2}{0} \_pdfdraw_lineto{0}{-1}
+    \_pdfdraw_moveto{4}{0} \_pdfdraw_lineto{2}{1} \_pdfdraw_moveto{4}{0} \_pdfdraw_lineto{2}{-1}
+    S
+}{4}
+
+\definelinecap{<<}{%
+    \_pdfdraw_moveto{4}{0} \_pdfdraw_lineto{0}{0}
+    \_pdfdraw_moveto{2}{0} \_pdfdraw_lineto{4}{1} \_pdfdraw_moveto{2}{0} \_pdfdraw_lineto{4}{-1}
+    \_pdfdraw_moveto{0}{0} \_pdfdraw_lineto{2}{1} \_pdfdraw_moveto{0}{0} \_pdfdraw_lineto{2}{-1}
+    S
+}{4}
+
+\definelinecap{o}{%
+    \_pdfdraw_circle{1}{0}{1} S
+}{2}
+
+\definelinecap{8=D}{%
+    \_pdfdraw_circle{1}{1}{1} \_pdfdraw_circle{1}{-1}{1}
+    \_pdfdraw_moveto{2}{1} \_pdfdraw_lineto{5}{1}
+    \_pdfdraw_bezierv{6}{1}{6}{0} \_pdfdraw_bezierv{6}{-1}{5}{-1}
+    \_pdfdraw_lineto{2}{-1} S
+}{6}
+
+\definelinecap{c=8}{%
+    \_pdfdraw_circle{5}{1}{1} \_pdfdraw_circle{5}{-1}{1}
+    \_pdfdraw_moveto{4}{1} \_pdfdraw_lineto{1}{1}
+    \_pdfdraw_bezierv{0}{1}{0}{0} \_pdfdraw_bezierv{0}{-1}{1}{-1}
+    \_pdfdraw_lineto{4}{-1} S
+}{6}
+
+\def\diagrowbuf{10pt}
+\def\diagcolbuf{10pt}
+\def\diagrowheight{.5cm}
+\def\diagcolwidth{.5cm}
+
+\def\_getdiagdimens{%
+    \unless\ifnum\_ptbcountB<\_ptbcountC%
+        \_xp\glet\csname diag@col@\the\_ptbcountB @wd\endcsname=\diagcolwidth%
+    \fi%
+    \ifnum\_ptbcountB=1 %
+        \_xp\glet\csname diag@row@\the\_ptbcountA @ht\endcsname=\diagrowheight%
+    \fi%
+    \ifdim\csname diag@col@\the\_ptbcountB @wd\endcsname<\wd\_ptbboxA%
+        \_xp\xdef\csname diag@col@\the\_ptbcountB @wd\endcsname{\the\wd\_ptbboxA}%
+    \fi%
+    \ifdim\csname diag@row@\the\_ptbcountA @ht\endcsname<\dimexpr\ht\_ptbboxA + \dp\_ptbboxA\relax%
+        \_xp\xdef\csname diag@row@\the\_ptbcountA @ht\endcsname{\the\dimexpr\ht\_ptbboxA+\dp\_ptbboxA\relax}%
+    \fi%
+    \global\advance\_ptbcountB by 1\relax%
+}
+
+%\def\_placediagcell{%
+%    \vbox to\csname diag@row@\the\_ptbcountA @ht\endcsname{%
+%        \offinterlineskip%
+%        \vfil%
+%        \hbox to\csname diag@col@\the\_ptbcountB @wd\endcsname{\hfil\box\_ptbboxA\hfil}%
+%        \vfil
+%    }%
+%    \global\advance\_ptbcountB by 1\relax%
+%}
+
+\def\_placediagcell{%
+    \addnode{\box\_ptbboxA}%
+        {\_nopt{\csname diag@col@\the\_ptbcountB @off\endcsname}}%
+        {\_nopt{\csname diag@row@\the\_ptbcountA @off\endcsname}}%
+        {(\the\_ptbcountA, \the\_ptbcountB)}%
+    \global\advance\_ptbcountB by 1\relax%
+}
+
+\def\_setrowoffset#1{%
+    \_xp\xdef\csname diag@row@#1@off\endcsname%
+        {\the\dimexpr\csname diag@row@\the\numexpr#1+1\relax @off\endcsname + .5\dimexpr\csname diag@row@#1@ht\endcsname + \csname diag@row@\the\numexpr #1+1\relax @ht\endcsname\relax + \diagrowbuf\relax}%
+}
+
+\def\_setcoloffset#1{%
+    \_xp\xdef\csname diag@col@#1@off\endcsname%
+        {\the\dimexpr\csname diag@col@\the\numexpr#1-1\relax @off\endcsname + .5\dimexpr\csname diag@col@#1@wd\endcsname + \csname diag@col@\the\numexpr #1-1\relax @wd\endcsname\relax + \diagcolbuf\relax}%
+}
+
+\def\_getcelloffsets{%
+    \_xp\def\csname diag@col@0@wd\endcsname{0pt}%
+    \_xp\def\csname diag@col@0@off\endcsname{-\diagcolbuf}%
+    \_xp\def\csname diag@row@\the\_ptbcountA @ht\endcsname{0pt}%
+    \_xp\def\csname diag@row@\the\_ptbcountA @off\endcsname{-\diagrowbuf}%
+    \_varrepeat{\the\numexpr\_ptbcountA-1\relax}{1}{-1}<{\_setrowoffset}%
+    \_prepeat{\the\numexpr\_ptbcountC-1\relax}{\_setcoloffset}%
+}
+
+\def\diagrowbuf{5pt}
+
+\def\drawdiagram#1#2{$\vcenter{{
+    \offinterlineskip%
+    \_ptbcountA=\z@ \_ptbcountB=\z@ \_ptbcountC=\z@%
+    \everycr={\noalign{%
+        \global\advance\_ptbcountA by 1\relax%
+        \ifnum\_ptbcountB>\_ptbcountC%
+            \global\_ptbcountC=\_ptbcountB%
+        \fi%
+        \global\_ptbcountB=1\relax%
+    }}%
+    \halign{&\setbox\_ptbboxA=\hbox{\strut##}\_getdiagdimens\crcr
+        #1\crcr
+    }%
+    \_getcelloffsets%
+    \_ptbcountA=\z@ \_ptbcountB=\z@%
+    \bdrawing%
+    \tabskip=0pt\relax%
+    \halign{&\setbox\_ptbboxA=\hbox{\strut##}\_placediagcell\crcr
+        #1\crcr
+    }%
+    #2%
+    \edrawing%
+}}$}
+
+ % #1,#2 -> from, #3,#4 -> to, #5,#6 -> offsets, #7 -> curve
+\def\_diagarrow#1#2#3#4#5#6#7#8#9{%
+    \ifnum#2<#4 %
+        \def\_oxplace{right}%
+        \def\_dxplace{left}%
+    \else\ifnum#2>#4 %
+        \def\_oxplace{left}%
+        \def\_dxplace{right}%
+    \else
+        \def\_oxplace{xcenter}%
+        \def\_dxplace{xcenter}%
+    \fi\fi%
+    \ifnum#1<#3 %
+        \def\_oyplace{bottom}%
+        \def\_dyplace{top}%
+    \else\ifnum#1>#3 %
+        \def\_oyplace{top}%
+        \def\_dyplace{bottom}%
+    \else
+        \def\_oyplace{ycenter}%
+        \def\_dyplace{ycenter}%
+    \fi\fi%
+    \unless\ifx\novalue#8%
+        \expanded{\unexpanded{\_unpackcoords\_oxplace\_oyplace}#8}\_nul%
+    \fi%
+    \unless\ifx\novalue#9%
+        \expanded{\unexpanded{\_unpackcoords\_dxplace\_dyplace}#9}\_nul%
+    \fi%
+    \ifx#7\novalue%
+        \_afterfi{\drawpath{(#1, #2).\_oxplace}{(#1, #2).\_oyplace}{(#3, #4).\_dxplace}{(#3, #4).\_dyplace}{#5}{#6}}%
+    \else%
+        \_afterfi{\drawbezier{(#1, #2).\_oxplace}{(#1, #2).\_oyplace}{(#3, #4).\_dxplace}{(#3, #4).\_dyplace}{{#5}{#6}}{#7}}%
+    \fi%
+}
+
+% #1,#2 -> from #3,#4 -> to #5 -> text #6,#7 -> distance #8 -> slide
+\def\_drawtext#1#2#3#4#5#6#7#8{{%
+    \setbox0=\hbox{#5}%
+    \def\_ox{\_getcoordvalue{(#1, #2).xcenter}pt}%
+    \def\_oy{\_getcoordvalue{(#1, #2).ycenter}pt}%
+    \def\_dx{\_getcoordvalue{(#3, #4).xcenter}pt}%
+    \def\_dy{\_getcoordvalue{(#3, #4).ycenter}pt}%
+    \edef\_xplace{\the\dimexpr\_ox + #8\dimexpr \_dx-\_ox\relax + #6 - .5\wd0\relax}%
+    \edef\_yplace{\the\dimexpr\_oy + #8\dimexpr \_dy-\_oy\relax + #7 - .5\ht0\relax}%
+    \vbox to\z@{\vss\hbox to\z@{\kern\_xplace\box0\hss}\kern\_yplace}%
+}}
+
+\def\diagarrow#1{%
+    \mapkeys{%
+        from={%
+            name=_from,
+            required%
+        },
+        to={%
+            name=_to,
+            required%
+        },
+        left cap={%
+            name=_lcap,
+            default=-%
+        },
+        right cap={%
+            name=_rcap,
+            default=>%
+        },
+        color={%
+            name=_clr,
+            default=black,
+            definition=\edef%
+        },
+        x off={%
+            name=_xoff,
+            default=0pt%
+        },
+        y off={%
+            name=_yoff,
+            default=0pt%
+        },
+        text={%
+            name=_txt,
+            default=\novalue%
+        },
+        x distance={
+            name=_dst,
+            default=0pt%
+        },
+        y distance={
+            name=_ydst,
+            default=0pt%
+        },
+        slide={
+            name=_slide,
+            default=.5%
+        },
+        curve={
+            name=_crv,
+            default=\novalue%
+        },
+        dashed={
+            name=_dashed,
+            default=\novalue%
+        },
+        dotted={
+            name=_dotted,
+            default=\novalue%
+        },
+        origin orient={
+            name=_oorient,
+            default=\novalue%
+        },
+        dest orient={
+            name=_dorient,
+            default=\novalue%
+        }%
+    }{#1}%
+    \unless\ifx\_dashed\novalue%
+        \ifx\_dashed\empty%
+            \gdef\@pathinsert{[2] 0 d}
+        \else%
+            \expanded{\unexpanded{\_unpackcoords\_dA\_dB}\_dashed}\_nul%
+            \gdef\@pathinsert{[\_dA\_space\_dB] 0 d}%
+        \fi%
+    \fi%
+    \unless\ifx\_dotted\novalue%
+        \gdef\@pathinsert{[.1 1.5] 0 d}%
+    \fi%
+    \expanded{\unexpanded{\_unpackcoords\_fromx\_fromy}\_from}\_nul%
+    \expanded{\unexpanded{\_unpackcoords\_tox\_toy}\_to}\_nul%
+    \_diagarrow{\_fromx}{\_fromy}{\_tox}{\_toy}{\_xoff}{\_yoff}{\_crv}{\_oorient}{\_dorient}{\_lcap}{\_rcap}{\_clr}%
+    \unless\ifx\_txt\novalue%
+        \_drawtext{\_fromx}{\_fromy}{\_tox}{\_toy}{\_txt}{\_dst}{\_ydst}{\_slide}%
+    \fi%
+    \gdef\@pathinsert{}%
+}
+
+\def\_shit{
+    q
+    1 w
+    .6 .2 0 rg
+    1 J 1 j
+    -13 -18 m
+    -16 -19 -17 -20 v
+    -18 -20 -18 -25 v
+    -17 -27 -16 -28 v
+    16 -28 l
+    17 -27 18 -25 v
+    18 -20 17 -20 v
+    16 -19 13 -18 v
+    B
+    -6 -12 m
+    -10 -13 -12 -15 v
+    -13 -17 -13 -18 v
+    -12 -20 -10 -20 v
+    10 -20 l
+    12 -20 13 -18 v
+    13 -17 12 -15 v
+    10 -13 6.5 -12 v
+    B
+    0 0 m
+    -1 -5 -6 -10 v
+    -7 -12 -4 -13 v
+    0 -14 4 -13 v
+    7 -12 6 -7 v
+    6 -5 5 -3 0 0 c
+    b
+    Q
+}
+
+\edef\_fpwd{\_noptfloor\pdfpagewidth}
+\edef\_fpht{\_noptfloor\pdfpageheight}
+
+\def\_draw_shit{%
+    \pdfliteral page{
+        q
+        1 0 0 1 \pdfuniformdeviate\_fpwd\_space\_space\pdfuniformdeviate\_fpht\_space\_space cm
+        \_shit\_space
+        Q
+    }
+}
+
+\def\eatshit{%
+    \pdfliteral page{q 1 1 0 rg 0 0 \_nopt\pdfpagewidth\_space\_nopt\pdfpageheight\_space re f Q}%
+    \_repeat{100}\_draw_shit%
+}

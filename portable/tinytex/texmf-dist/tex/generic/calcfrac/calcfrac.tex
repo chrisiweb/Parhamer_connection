@@ -1,0 +1,262 @@
+% ____________________________________
+
+%               calcfrac
+%                 v0.2
+%              28/10/2023
+
+%          TeX & LaTeX package
+% ____________________________________
+
+% Author  : TeXpérimental
+% Email   : texperimental@mailo.fr
+% Licence : Released under the LaTeX Project Public License v1.3c or
+%           later, see http://www.latex-project.org/lppl.txt
+% Status  : maintained
+
+\csname calcfraconce\endcsname
+\let\calcfraconce\endinput
+\def\calcfracname{calcfrac}
+\def\calcfracver{v0.2}
+\def\calcfracdate{2023/10/28}
+
+\catcode`\@11
+\def\cf@test@ifx#1{%
+	\ifx#1\expandafter\cf@execfirst\else\expandafter\cf@execsecond\fi
+}
+\def\cf@test@ifnum#1{%
+	\ifnum#1\expandafter\cf@execfirst\else\expandafter\cf@execsecond\fi
+}
+\def\cf@execfirst#1#2{#1}
+\def\cf@execsecond#1#2{#2}
+\def\cf@execarg#1{#1}
+\def\cf@matharg#1{$#1$}
+%###########################################
+%############# boucle \cf@for ##############
+%###########################################
+\def\cf@for#1=#2to#3#{%
+	\cf@for@a{#1}{#2}{#3}%
+}
+\def\cf@for@a#1#2#3#4{%
+	\edef#1{\number\numexpr#2}%
+	\edef\cf@maxint{\number\numexpr#3}%
+	\def\cf@for@b{%
+		\unless\ifnum#1>\cf@maxint\relax
+			#4%
+			\edef#1{\number\numexpr#1+1}%
+			\expandafter\cf@for@b
+		\fi
+	}%
+	\cf@for@b
+}
+%###########################################
+%###########################################
+%###########################################
+\newcount\cf@tmp@count
+\newcount\cf@frac@cnt
+\newif\if@inparen
+\def\calcfrac@err{%
+	\cf@test@ifnum{\currentgrouplevel>\cf@nestparen\relax}
+		{%
+		\endgroup
+		\calcfrac@err
+		}
+		{%
+		\calcfrac@err@a
+		}%
+}
+\def\calcfrac@err@a#1#2\relax{%
+	\errmessage{Illegal char "#1", "#2" ignored}%
+}
+\def\calcfrac{%
+	\xdef\cf@nestparen{\the\currentgrouplevel}%
+	\begingroup
+		\catcode32=9 % espaces ignorés
+		\calcfrac@a
+}
+\def\calcfrac@a#1{%
+	\ifcat\relax\detokenize{#1}\relax\expandafter\cf@execfirst\else\expandafter\cf@execsecond\fi
+		{}
+		{%
+		\cf@frac@cnt=0
+		\@inparenfalse
+		\expandafter\cf@read@frac\detokenize{#1}\relax
+		}%
+}
+\def\cf@read@frac{% [1 signe optionnel + ou-]<entier non signé>[1 signe / ou * suivi d'un entier non signé]*n
+	\advance\cf@frac@cnt1
+	\let\cf@current@sign\empty
+	\def\cf@current@numer{1}%
+	\def\cf@current@denom{1}%
+	\def\cf@current@op{*}%
+	\cf@read@sign
+}
+\def\cf@read@sign#1{%
+	\cf@test@ifnum{0\ifx+#11\fi\ifx-#11\fi=1 }
+		{%
+		\def\cf@current@sign{#1}%
+		\cf@read@int
+		}
+		{%
+		\cf@read@int#1%
+		}%
+}
+\def\cf@read@int#1{%
+	\cf@test@ifnum{0\ifnum`#1<`0 1\fi\ifnum`#1>`9 1\fi=0 }
+		{%
+		\afterassignment\cf@update@afterint
+		\cf@tmp@count#1%
+		}
+		{% si #1=parenthèse
+		\if(#1\expandafter\cf@execfirst\else\expandafter\cf@execsecond\fi
+			{%
+			\begingroup
+				\@inparentrue
+				\cf@frac@cnt=0
+				\cf@read@frac
+			}
+			{%
+			\calcfrac@err#1%
+			}%
+		}%
+}
+\def\cf@update@afterint{%
+	\if*\cf@current@op\expandafter\cf@execfirst\else\expandafter\cf@execsecond\fi
+		{%
+		\edef\cf@current@numer{\cf@current@numer*\the\cf@tmp@count}%
+		\cf@read@op
+		}
+		{%
+		\if/\cf@current@op\expandafter\cf@execfirst\else\expandafter\cf@execsecond\fi
+			{%
+			\edef\cf@current@denom{\cf@current@denom*\the\cf@tmp@count}%
+			\cf@read@op
+			}
+			{%
+			\errmessage{This error should not occur, \string\cf@current@op=\cf@current@op}%
+			}%
+		}%
+}
+\def\cf@read@op#1{%
+	\cf@test@ifnum{0\ifx*#11\fi\ifx/#11\fi=1 }
+		{%
+		\def\cf@current@op{#1}%
+		\cf@read@int
+		}
+		{%
+		\cf@compute@frac#1%
+		}%
+}
+\def\cf@compute@frac#1{%
+	\edef\cf@current@numer{\the\numexpr\cf@current@numer}%
+	\edef\cf@current@denom{\the\numexpr\cf@current@denom}%
+	\expandafter\cf@calc@gcd\expanded{{\cf@current@numer}{\cf@current@denom}}\cf@tem@gcd
+	\expandafter\edef\csname sign@\the\cf@frac@cnt\endcsname{\ifnum\cf@current@sign1=1+\else-\fi}%
+	\expandafter\edef\csname numer@\the\cf@frac@cnt\endcsname{\the\numexpr\cf@current@numer/\cf@tem@gcd}%
+	\expandafter\edef\csname denom@\the\cf@frac@cnt\endcsname{\the\numexpr\cf@current@denom/\cf@tem@gcd}%
+	\cf@test@ifnum{0\ifx\relax#111\fi\if@inparen1\fi\if)#11\fi=11 }% si <#1=\relax> OU <inparen=vrai ET #1=")">
+		{%
+		\cf@add@allfrac
+		}
+		{%
+		\cf@read@frac#1%
+		}%
+}
+\def\cf@calc@gcd#1#2{% #1, #2=entiers
+	\cf@test@ifnum{#1>#2\relax}
+		{%
+		\cf@calc@gcd@a{#2}{#1}%
+		}
+		{%
+		\cf@calc@gcd@a{#1}{#2}%
+		}%
+}
+\def\cf@calc@gcd@a#1#2{% #1=diviseur  #2=dividende
+	\cf@test@ifnum{#1>0 }
+		{%
+		\cf@tmp@count=#2\relax
+		\divide\cf@tmp@count#1\relax
+		\expandafter\cf@calc@gcd@a\expandafter{\the\numexpr#2-\cf@tmp@count*#1}{#1}%
+		}
+		{%
+		\cf@calc@gcd@b{#2}%
+		}%
+}
+\def\cf@calc@gcd@b#1#2{% #1=PGCD #2=macro qui stocke le PGCD
+	\def#2{#1}%
+}
+\def\calc@lcm#1#2#3{% #1, #2=entiers  #3=macro recevant le PPCM
+	\cf@calc@gcd{#1}{#2}\cf@tem@gcd%
+	\edef#3{\the\numexpr#1*#2/\cf@tem@gcd}%
+}
+\def\cf@add@allfrac{%
+	\cf@test@ifnum{\cf@frac@cnt>1 }
+		{%
+		\expandafter\let\expandafter\cf@result@denom\csname denom@1\endcsname
+		\cf@for\cf@temp@index=2 to \cf@frac@cnt{%
+			\expandafter\calc@lcm\expanded{{\cf@result@denom}{\csname denom@\cf@temp@index\endcsname}}\cf@result@denom
+			}%
+		\def\cf@result@numer{0}%
+		\cf@for\cf@temp@index=1 to \cf@frac@cnt{%
+			\edef\cf@result@numer{%
+				\the\numexpr
+					\cf@result@numer
+					\csname sign@\cf@temp@index\endcsname% <-  + ou -
+					\csname numer@\cf@temp@index\endcsname*\cf@result@denom/\csname denom@\cf@temp@index\endcsname
+				}%
+			}%
+		\ifnum\cf@result@numer<0
+			\edef\cf@result@numer{\the\numexpr-\cf@result@numer}%
+			\def\cf@result@sign{-}%
+		\else
+			\def\cf@result@sign{+}%
+		\fi
+		\expandafter\cf@calc@gcd\expanded{{\cf@result@numer}{\cf@result@denom}}\cf@tem@gcd
+		\ifnum\cf@tem@gcd>1
+			\edef\cf@result@numer{\the\numexpr\cf@result@numer/\cf@tem@gcd}%
+			\edef\cf@result@denom{\the\numexpr\cf@result@denom/\cf@tem@gcd}%
+		\fi
+		}
+		{%
+		\expandafter\let\expandafter\cf@result@sign\csname sign@1\endcsname
+		\expandafter\let\expandafter\cf@result@numer\csname numer@1\endcsname
+		\expandafter\let\expandafter\cf@result@denom\csname denom@1\endcsname
+		}%
+		\if@inparen\expandafter\cf@execfirst\else\expandafter\cf@execsecond\fi
+			{%
+				\expandafter
+			\endgroup
+			\expanded{%
+				\def\noexpand\cf@paren@sign{\cf@result@sign}%
+				\def\noexpand\cf@paren@numer{\cf@result@numer}%
+				\def\noexpand\cf@paren@denom{\cf@result@denom}%
+				}%
+			\edef\cf@current@sign{\cf@current@sign\cf@paren@sign}%
+			\expandafter\cf@read@int\expanded{\cf@paren@numer\if*\cf@current@op/\else*\fi\cf@paren@denom}%
+			}
+			{%
+				\expandafter
+			\endgroup
+			\expandafter\cfdisp\expanded{{\cf@result@sign}{\cf@result@numer}{\cf@result@denom}}%
+			}%
+}
+\def\cfdisp#1#2#3{%
+	\ifmmode\expandafter\cf@execarg\else\expandafter\cf@matharg\fi
+			{\ifnum#11=-1 -\fi
+			{\ifnum#3=1
+				#2%
+			\else
+				#2\over#3%
+			\fi
+			}%
+			}%
+}
+\catcode`\@12
+\endinput
+
+VERSIONS :
+v0.1 26/10/2023
+	version initiale
+v0.2 28/10/2023
+	corrections de bugs
+	améliorations du code
+	ajout d'un fichier pdf (manuel succint + exemples)

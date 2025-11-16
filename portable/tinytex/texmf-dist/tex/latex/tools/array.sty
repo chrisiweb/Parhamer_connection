@@ -47,7 +47,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2024/06/01]
 \ProvidesPackage{array}
-         [2025/06/08 v2.6j Tabular extension package (FMi)]
+         [2025/09/25 v2.6n Tabular extension package (FMi)]
 %%
 
 \ExplSyntaxOn
@@ -211,7 +211,7 @@
              \@height \arraystretch \@tempdima
              \@depth \arraystretch \dp \strutbox
              \@width \z@}%
-  \tbl_save_outer_table_cols:
+  \tbl_init_cell_data_for_table:
   \begingroup
   \@mkpream{#2}%
   \tbl_count_table_cols:
@@ -231,12 +231,12 @@
   \lineskip \z@
   \baselineskip \z@
   \mathsurround \z@
-  \let\\\@arraycr \let\tabularnewline\\\let\par\@empty
+  \let\\\@arraycr \let\tabularnewline\\%
+  \def\par{\ifnum\currentgrouptype=6~ \else\@@par\fi}%
   \UseTaggingSocket{tbl/init}
   \@preamble
 }
 \def\ar@ialign{%
-  \tbl_init_cell_data_for_table:
   \everycr{%
     \noalign{%
       \tbl_if_row_was_started:T  { \UseTaggingSocket{tbl/row/end} }
@@ -292,16 +292,16 @@
 \expandafter\def\csname tabular*\endcsname#1{%
        \setlength\dimen@{#1}%
        \edef\@halignto{to\the\dimen@}\@tabular}
-\providecommand\MathCollectTrue{}
-\providecommand\MathCollectFalse{}
+\providecommand\UseMathForPositioningText{}
 \providecommand\@kernel@tabular@init{}
 \def\@tabular{%
   \leavevmode
   \UseTaggingSocket{tbl/hmode/begin}%
   \hbox \bgroup
-    \MathCollectFalse$\MathCollectTrue
-    \col@sep\tabcolsep \let\d@llarbegin\begingroup
-                                    \let\d@llarend\endgroup
+    \UseMathForPositioningText $%
+    \col@sep\tabcolsep
+    \let\d@llarbegin\begingroup
+    \let\d@llarend\endgroup
    \@kernel@tabular@init
   \@tabarray}
 \def\endarray {

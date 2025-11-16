@@ -1,0 +1,1182 @@
+%%
+%% This is file `latex-lab-math.ltx',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-math.dtx  (with options: `kernel')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-math.dtx
+
+\def\ltlabmathdate{2025-10-02}
+\def\ltlabmathversion{0.6w}
+\ProvidesFile{latex-lab-math.ltx}
+             [\ltlabmathdate\space
+              v\ltlabmathversion\space
+              Grab all the math(s) and tag it (experiments)]
+\AddToHook{begindocument/before}{\RequirePackage{latex-lab-testphase-block}}
+\ExplSyntaxOn
+\AddToHook{begindocument/before}{ \RequirePackage { amsmath } }
+\bool_new:N \g__math_debug_bool
+\cs_new_eq:NN \__math_debug:n \use_none:n
+\cs_new_eq:NN \__math_debug_typeout:n \use_none:n
+\cs_new_protected:Npn \math_debug_on:
+  {
+    \bool_gset_true:N \g__math_debug_bool
+    \__math_debug_gset:
+  }
+\cs_new_protected:Npn \math_debug_off:
+  {
+    \bool_gset_false:N \g__math_debug_bool
+    \__math_debug_gset:
+  }
+\cs_new_protected:Npn \__math_debug_gset:
+  {
+    \cs_gset_protected:Npe \__math_debug:n ##1
+      { \bool_if:NT \g__math_debug_bool {##1} }
+    \cs_gset_protected:Npe \__math_debug_typeout:n ##1
+      { \bool_if:NT \g__math_debug_bool { \typeout{[Math]~ ==>~ ##1} } }
+  }
+\cs_new_protected:Npn \DebugMathOn  { \math_debug_on: }
+\cs_new_protected:Npn \DebugMathOff { \math_debug_off: }
+\DebugMathOff
+\bool_new:N \l__math_collected_bool
+\bool_new:N \l__math_fakemath_bool
+\tl_new:N \g__math_grabbed_env_tl
+\tl_new:N \g__math_grabbed_math_tl
+\tl_new:N \l__math_tmpa_tl
+\skip_new:N \l__math_tmpa_skip
+\str_new:N \l__math_tmpa_str
+\tl_new:N \l__math_content_alt_tl
+\tl_new:N \l__math_content_actual_tl
+\tl_new:N \l__math_content_AF_source_tl
+\tl_new:N \l__math_content_AF_source_tmpa_tl
+\tl_new:N \l__math_content_AF_mathml_tl
+\cs_new_protected:Npn \__tag_tool_close_P:
+  {
+    \tag_if_active:T
+     {
+       \tag_mc_end: %end P-chunk, should perhaps be \tag_mc_end_push: ...
+         \__tag_gincr_para_end_int:
+         \__tag_check_para_end_show:nn{red}{} %debug: show para
+         \tag_struct_end:
+     }
+  }
+\tl_new:N\l__math_attribute_class_tl
+\tagpdfsetup
+      {role/new-attribute = {inline}    {/O /Layout /Placement/Inline},
+       role/new-attribute = {display}   {/O /Layout /Placement/Block},
+      }
+\bool_new:N\l__tag_math_texsource_AF_bool
+\bool_new:N\l__tag_math_texsource_pane_bool
+\bool_new:N\l__tag_math_mathml_AF_bool
+\bool_new:N\g__tag_math_mathml_AF_bool
+\bool_new:N\l__tag_math_mathml_pane_bool
+\bool_new:N\l__tag_math_alt_bool
+\tl_new:N\g__tag_math_luamml_tl
+\tl_gset:Nn\g__tag_math_luamml_tl {0}
+\int_new:N\g__math_mathml_total_int
+\int_new:N\g__math_mathml_int
+\int_new:N\g__math_math_total_int
+\int_new:N\g__math_mathml_AF_found_int
+\int_new:N\g__math_mathml_AF_attached_int
+\clist_new:N\l__tag_math_mathml_files_clist
+\clist_put_right:Ne\l__tag_math_mathml_files_clist
+  {\c_sys_jobname_str-mathml,\c_sys_jobname_str-luamml-mathml}
+\cs_new_protected:Npn \__math_AF_mml:nnnn #1 #2 #3 #4
+  {
+    \int_gincr:N \g__math_mathml_total_int
+    \tl_if_exist:cF { g__math_mathml_#3_tl }
+     {
+       \int_gincr:N \g__math_mathml_int
+       \pdfdict_put:nne {l_pdffile/Filespec} {Desc}{(mathml-#1)}
+       \pdffile_embed_stream:nnN {#4}{mathml-#1.xml}\l__math_tmpa_tl
+       \bool_if:NT \l__tag_math_mathml_pane_bool
+        {\pdfmanagement_add:nne {Catalog/Names}{EmbeddedFiles}{\l__math_tmpa_tl}}
+       \tl_new:c{g__math_mathml_#3_tl}
+       \tl_gset_eq:cN{g__math_mathml_#3_tl}\l__math_tmpa_tl
+     }
+  }
+\cs_new_protected:Npn \__math_AF_html_reader:w#1</h2>#2<p>#3</p>#4<p>#5</p>#6<math{
+  \begingroup
+   \char_set_catcode_other:N\{
+   \char_set_catcode_other:N\}
+   \char_set_catcode_other:N\#
+   \char_set_catcode_other:N\%
+   \char_set_catcode_other:N\^
+   \__math_AF_html_reader_verb:w{#1}{#3}{#5}<math
+}
+\cs_new_protected:Npn\__math_AF_html_reader_verb:w#1#2#3#4~</div>{
+  \endgroup
+   \__math_AF_mml:nnnn{#1}{#2}{#3}{#4}
+   }
+\tl_const:Nn \c__math_mathml_write_init_tl
+  {
+    <!DOCTYPE~html>
+    \iow_newline:
+    <html~ xmlns="http://www.w3.org/1999/xhtml">
+    \iow_newline:
+  }
+\tl_new:N \l__math_mathml_write_before_tl
+\tl_const:Nn \c__math_mathml_write_after_tl
+  {
+    \iow_newline:
+    </div>
+    \iow_newline:
+  }
+\tl_const:Nn \c__math_mathml_write_final_tl
+  {
+    </html>
+  }
+
+\NewTaggingSocket{math/mathml/write/prepare}{0}
+\NewTaggingSocketPlug{math/mathml/write/prepare}{On}
+  {
+    \str_set:NV\l__math_tmpa_str\l__math_content_AF_source_tl
+    \str_replace_all:Nnn\l__math_tmpa_str{&}{&amp;}
+    \str_replace_all:Nnn\l__math_tmpa_str{<}{&lt;}
+    \tl_set:Nn \l__math_mathml_write_before_tl
+      {
+        <div>
+        \iow_newline:
+        <h2>\c_backslash_str mml\c_space_tl \int_use:N \g__math_math_total_int </h2>
+        \iow_newline:
+        <p>\l__math_tmpa_str</p>
+        \iow_newline:
+        <p>\l__math_content_hash_tl </p>
+        \iow_newline:
+      }
+  }
+\cs_new_protected:Npn\__math_provide_luamml_commands:
+  {
+    \providecommand\luamml_flag_structelem:{}
+    \cs_if_free:NT \luamml_structelem:
+     {
+       \cs_set_eq:NN\luamml_structelem:\luamml_flag_structelem:
+     }
+    \providecommand\luamml_flag_process:{}
+    \cs_if_free:NT \luamml_process:
+     {
+       \cs_set_eq:NN\luamml_process:\luamml_flag_process:
+     }
+    \providecommand\luamml_flag_ignore:{}
+    \cs_if_free:NT \luamml_ignore:
+     {
+       \cs_set_eq:NN\luamml_ignore:\luamml_flag_ignore:
+     }
+  }
+\sys_if_engine_luatex:TF
+ {
+   \AddToHook{begindocument/before}
+     {
+       \str_case:on \g__math_luamml_load_tl
+         {
+           { 1 } {
+                   \RequirePackage  { luamml }
+                   \AddToHook{begindocument/end}
+                    {
+                      \__math_luamml_activate_write:
+                    }
+                 }
+           {-1 } {
+                   \AddToHook{begindocument/end}
+                    {
+                     \msg_note:nnnn { tag }
+                     { luamml-status }{ disabled }{ not~create }
+                    }
+                 }
+           { 0 }
+           {
+             \@ifpackageloaded { unicode-math }
+              {
+                \RequirePackage  { luamml }
+                \AddToHook{begindocument/end}
+                  {
+                    \__math_luamml_activate_write:
+                  }
+              }
+              { \msg_warning:nn { tag }{ unicode-math-missing } }
+           }
+         }
+         \__math_provide_luamml_commands:
+     }
+ }
+ {
+   \AddToHook{begindocument/before}
+    {
+      \__math_provide_luamml_commands:
+    }
+ }
+\msg_new:nnn { tag }{ luamml-status }
+  {
+    luamml~has~been~#1~and~will~#2~an~MathML~file.
+  }
+
+\msg_new:nnn { tag }{ unicode-math-missing }
+  {
+    The~package~unicode-math~is~missing\\
+    luamml~will~not~create~an~MathML~file.\\
+    To~avoid~this~warning~load~unicode-math~\\
+    or~disable~luamml~with~\\
+    \tl_to_str:n{\tagpdfsetup{math/mathml/luamml/load=false}}\\
+    or~force~luamml~with~\\
+    \tl_to_str:n{\tagpdfsetup{math/mathml/luamml/load=true}}
+  }
+\cs_new_protected:Npn \__math_luamml_activate_write:
+ {
+   \bool_if:NT \g__math_luamml_write_bool
+     {
+       \bool_gset_true:N\g__tag_math_mathml_AF_bool
+       \AssignTaggingSocketPlug{math/struct/begin}{mathml-AF}
+       \AssignTaggingSocketPlug{math/struct/end}{mathml-AF}
+       \int_set:Nn \l__luamml_pretty_int { 7 }
+       \RegisterFamilyMapping\symsymbols{oms}
+       \RegisterFamilyMapping\symletters{oml}
+       \AssignTaggingSocketPlug{math/mathml/write/prepare}{On}
+       \iow_new:N   \g__math_luamml_iow
+       \iow_open:Nn \g__math_luamml_iow {\c_sys_jobname_str-luamml-mathml.html}
+       \iow_now:Ne  \g__math_luamml_iow { \c__math_mathml_write_init_tl  }
+       \cs_new:Npn  \__math_luamml_output_hook:n  ##1
+         {
+           \tl_if_empty:NF \l__math_mathml_write_before_tl
+             {
+              \int_compare:nNnT
+               { \@math@level } = { 1 }
+               {
+                 \iow_now:Ne \g__math_luamml_iow
+                  {
+                    \l__math_mathml_write_before_tl
+                    ##1
+                    \c__math_mathml_write_after_tl
+                  }
+               }
+             }
+         }
+       \__luamml_register_output_hook:N \__math_luamml_output_hook:n
+      \AddToHook{enddocument/afterlastpage}
+        {
+          \iow_now:Ne \g__math_luamml_iow
+            { \c__math_mathml_write_final_tl }
+          \iow_close:N \g__math_luamml_iow
+        }
+      \msg_note:nnnn { tag }
+        { luamml-status }{ enabled }{ create }
+     }
+ }
+\cs_set_protected:Npn \UseMathForPositioningText $ {
+  \bool_if:NTF \l__math_collected_bool
+     { $ }
+     {
+       \bool_set_true:N  \l__math_collected_bool
+       $
+       \bool_set_false:N \l__math_collected_bool
+       \int_decr:N \@math@level
+     }
+}
+\def\@textsuperscript#1{%
+  {\m@th\@unreal@math{^{\mbox{\fontsize\sf@size\sf@size#1}}}}}
+\def\@textsubscript#1{%
+  {\m@th\@unreal@math{\sb{\mbox{\fontsize\sf@size\sf@size#1}}}}}
+\protected\def\@unreal@math{%
+  \ifmmode
+    \expandafter\@firstofone
+  \else
+    \expandafter\@ensured@unreal@math
+  \fi}
+\long\def\@ensured@unreal@math#1{
+  $
+  \bool_set_false:N \l__math_collected_bool
+  \int_decr:N \@math@level
+  #1 $
+}
+\tl_new:N  \g__math_luamml_load_tl
+\tl_gset:Nn \g__math_luamml_load_tl {0}
+\bool_new:N  \g__math_luamml_write_bool
+\bool_gset_true:N \g__math_luamml_write_bool
+\cs_new:Npn\__math_luamml_structelem:{}
+\cs_new:Npn\__math_luamml_ignore:{}
+\msg_new:nnn { tag }{ PDF-2.0-recommended }
+  {
+    The~key~#1~will~not~work~properly~with~PDF~#2.\\
+    Switching~to~PDF~2.0~is~recommended.
+  }
+\keys_define:nn { __tag / setup }
+   {
+     math/mathml/luamml/load .choice: ,
+     math/mathml/luamml/load/true  .code:n = {\tl_gset:Nn \g__math_luamml_load_tl{1}},
+     math/mathml/luamml/load/false .code:n = {\tl_gset:Nn \g__math_luamml_load_tl{-1}},
+     math/mathml/luamml/load .default:n = true,
+     math/mathml/luamml/load .usage:n=preamble,
+     math/mathml/structelem .choice:,
+     math/mathml/structelem/true .code:n =
+      {
+        \pdf_version_compare:NnT < {2.0}
+         {
+          \msg_warning:nnne { tag }{ PDF-2.0-recommended }
+           { math/mathml/structelem }{ \pdf_version: }
+         }
+        \cs_set:Npn\__math_luamml_structelem:{\luamml_structelem:}
+        \cs_set:Npn\__math_luamml_ignore:{\luamml_ignore:}
+      },
+     math/mathml/structelem/false .code:n =
+      {
+        \cs_set_eq:NN\__math_luamml_structelem:\prg_do_nothing:
+        \cs_set_eq:NN\__math_luamml_ignore:\prg_do_nothing:
+      },
+     math/mathml/structelem .default:n = true,
+     math/mathml/ignore .code:n = {\luamml_ignore:},
+     math/mathml/luamml/write .choice:,
+     math/mathml/luamml/write/true .code:n =
+      {
+        \tl_gset:Nn \g__math_luamml_load_tl{1}
+        \bool_gset_true:N \g__math_luamml_write_bool
+      },
+     math/mathml/luamml/write/false .code:n =
+      {
+        \bool_gset_false:N \g__math_luamml_write_bool
+      },
+     math/mathml/luamml/write .default:n = true,
+     math/mathml/luamml/write .usage:n=preamble,
+     math/mathml/luamml .bool_gset:N = \g__math_luamml_write_bool,
+     math/mathml/luamml .usage:n=preamble
+   }
+\NewTaggingSocket{math/mathml/write}{0}
+\NewTaggingSocketPlug{math/mathml/write}{On}
+ {
+    \iow_now:Ne \g__math_writedummy_iow
+     {
+      \l__math_mathml_write_before_tl
+      <math~ xmlns="http://www.w3.org/1998/Math/MathML"></math>
+      \c__math_mathml_write_after_tl
+      }
+ }
+
+\keys_define:nn { __tag / setup }
+   {
+     math/mathml/write-dummy .code:n =
+       {
+         \bool_gset_true:N \g__tag_math_mathml_AF_bool
+         \tl_if_exist:NF\g__math_writedummy_iow
+          {
+            \iow_new:N  \g__math_writedummy_iow
+            \iow_open:Nn \g__math_writedummy_iow
+             {
+               \c_sys_jobname_str-mathml-dummy.html
+             }
+            \iow_now:Ne \g__math_writedummy_iow
+             {
+               \c__math_mathml_write_init_tl
+             }
+            \AssignTaggingSocketPlug{math/mathml/write/prepare}{On}
+            \AssignTaggingSocketPlug{math/mathml/write}{On}
+            \AddToHook{enddocument/afterlastpage}
+             {
+               \iow_now:Ne \g__math_writedummy_iow
+                 { \c__math_mathml_write_final_tl }
+               \iow_close:N \g__math_writedummy_iow
+             }
+          }
+       },
+     math/mathml/write-dummy .usage:n=preamble
+   }
+\box_new:N\l__math_tmpa_box
+\cs_new_protected:Npn \__math_AF_process_mathml_files:
+ {
+   \hbox_set:Nn \l__math_tmpa_box
+    {
+      \pdfdict_put:nnn { l_pdffile/Filespec }{AFRelationship} { /Supplement }
+      \pdfdict_put:nne
+       { l_pdffile }{Subtype}
+       { \pdf_name_from_unicode_e:n{application/mathml+xml} }
+      \char_set_catcode_other:N \#
+      \cs_set_eq:NN\mml \__math_AF_html_reader:w
+      \clist_map_inline:Nn \l__tag_math_mathml_files_clist
+        {
+          \file_if_exist:nTF {##1.html}
+            {
+              \typeout{Info:~reading~mathml~file~##1}
+              \file_input:n {##1.html}
+              \bool_gset_true:N\g__tag_math_mathml_AF_bool
+            }
+            {
+              \typeout{Info:~mathml~file~##1~does~not~exist}%info message
+            }
+        }
+    }
+   \box_clear:N \l__math_tmpa_box
+    \bool_if:NT\g__tag_math_mathml_AF_bool
+      {
+        \typeout{Info:~Activating~mathml~support}
+        \AssignTaggingSocketPlug{math/struct/begin}{mathml-AF}
+        \AssignTaggingSocketPlug{math/struct/end}{mathml-AF}
+        \AddToHook{enddocument/info}
+         {
+           \iow_term:n{MathML~statistic}
+           \iow_term:n{================}
+           \iow_term:e{==>~\int_use:N\g__math_mathml_total_int\c_space_tl
+           MathML~fragments~read}
+           \iow_term:e{==>~\int_use:N\g__math_mathml_int\c_space_tl
+           different~MathML~fragments}
+           \iow_term:e{==>~\int_use:N\g__math_math_total_int\c_space_tl
+           math~fragments~found}
+           \iow_term:e{==>~\int_use:N\g__math_mathml_AF_found_int\c_space_tl
+           fitting~MathML~AF~found}
+           \iow_term:e{==>~\int_use:N\g__math_mathml_AF_attached_int\c_space_tl
+           MathML~AF~attached}
+         }
+      }
+ }
+\AddToHook{begindocument}{\__math_AF_process_mathml_files:}
+\int_new:N \l__math_mathstyle_int
+\int_new:N \g__math_mathchoice_int
+\property_new:nnnn{mathstyle}{now}{-1}{\int_use:N \l__math_mathstyle_int }
+\cs_new_protected:Npn \__math_tag_if_mathstyle:nn #1 #2
+ %#1 refers to label
+ %#2 is a number for the mathstyle (typically 0,2,4,6)
+ {
+   \int_set:Nn \l__math_mathstyle_int {#2}
+   \property_record:nn {#1} { mathstyle }
+   \int_compare:nNnTF { \property_ref:nn {#1}{ mathstyle} } = { #2 }
+    { \tag_resume:n{\mathchoice} }{ \tag_suspend:n{\mathchoice} }
+ }
+\cs_generate_variant:Nn \__math_tag_if_mathstyle:nn {en}
+\keys_define:nn { __tag / setup }
+  {
+   math/mathml/sources .clist_set:N = \l__tag_math_mathml_files_clist,
+   math/alt/use        .bool_set:N  = \l__tag_math_alt_bool,
+   viewer/pane/mathml      .bool_set:N = \l__tag_math_mathml_pane_bool,
+   viewer/pane/mathml      .initial:n = true,
+   viewer/pane/mathsource  .bool_set:N = \l__tag_math_texsource_pane_bool,
+   math/mathml/AF .bool_set:N = \l__tag_math_mathml_AF_bool,
+   math/mathml/AF  .initial:n = true,
+   math/tex/AF    .bool_set:N = \l__tag_math_texsource_AF_bool,
+   math/tex/AF    .initial:n = true
+  }
+\AddToHook{begindocument/end}
+ {
+   \str_if_eq:eeT
+    {1}
+    {
+        \exp_last_unbraced:Ne\use_i:nn
+         {\GetDocumentProperties{document/pdfstandard-UA}}
+         \c_empty_tl\c_empty_tl
+    }
+    {
+      \bool_if:NF \l__tag_math_alt_bool
+       {
+         \typeout{PDF/UA-1~detected.~Enabling~alt~text~on~Formula}
+       }
+      \bool_set_true:N\l__tag_math_alt_bool
+    }
+ }
+\keys_define:nn {__tag / setup}
+  {
+    math/setup .code:n =
+     {
+       %deactivate loading of luamml
+       \tl_gset:Nn \g__math_luamml_load_tl{-1}
+       \keys_set:nn {__tag / setup}
+        {
+          %deactivate tex source AF
+          math/tex/AF = false,
+          %deactivate reading of mathml-AF
+          math/mathml/sources=,
+          math/mathml/AF=false,
+          %deactivate structelem
+          math/mathml/structelem=false,
+          %handle value
+        }
+       \clist_map_inline:nn { #1}
+        {
+          \keys_set:nn {__tag/ setup}{math/__setup/##1}
+        }
+     },
+    math/__setup / mathml-SE .code:n =
+     {
+      \tl_gset:Nn \g__math_luamml_load_tl{1}
+      \keys_set:nn {__tag / setup}
+        {
+          math/mathml/structelem=true
+        }
+     },
+    math/__setup / mathml-AF .code:n =
+     {
+      \tl_gset:Nn \g__math_luamml_load_tl{1}
+      \clist_put_right:Ne\l__tag_math_mathml_files_clist
+       {\c_sys_jobname_str-mathml,\c_sys_jobname_str-luamml-mathml}
+      \keys_set:nn {__tag / setup}
+        {
+          math/mathml/AF=true
+        }
+     },
+    math/__setup / tex-AF .code:n =
+     {
+      \keys_set:nn {__tag / setup}
+        {
+          math/tex/AF =true
+        }
+     },
+  }
+\NewTaggingSocketPlug
+  {math/inline/begin}
+  {MC}
+  {\tag_mc_end_push:}
+\NewTaggingSocketPlug
+  {math/inline/end}
+  {MC}
+  {\tag_mc_begin_pop:n{}}
+\NewTaggingSocketPlug
+  {math/inline/formula/begin}
+  {default}
+  { \tagpdfparaOff
+    \__math_luamml_structelem:
+    \tag_socket_use:n{math/content}
+    \tag_socket_use:n{math/struct/begin}
+    #2
+    \tag_socket_use:n{math/end}
+  }
+\NewTaggingSocketPlug
+  {math/inline/formula/end}
+  {default}
+  {
+    \tag_socket_use:n{math/struct/end}
+  }
+
+\NewTaggingSocketPlug
+  {math/display/begin}
+  {default}
+  { \__tag_tool_close_P:  }
+\NewTaggingSocketPlug
+  {math/display/end}
+  {default}
+  {
+  }
+
+\NewTaggingSocketPlug
+  {math/display/formula/begin}
+  {default}
+  {
+    \tagpdfparaOff
+    \__math_luamml_structelem:
+    \tag_socket_use:n{math/content}
+    \tag_socket_use:n{math/struct/begin}
+    #2
+    \tag_socket_use:n{math/end}
+  }
+\NewTaggingSocketPlug
+  {math/display/formula/end}
+  {default}
+  {
+    \tag_socket_use:n{math/struct/end}
+  }
+\NewTaggingSocketPlug
+  {math/display/tag/begin}
+  {default}
+  {
+    \tag_mc_end:
+    \tag_struct_begin:n {tag=Lbl}
+    \tag_mc_begin:n {}
+  }
+\NewTaggingSocketPlug
+  {math/display/tag/end}
+  {default}
+  {
+    \tag_mc_end:
+    \tag_struct_end:
+    \tag_mc_begin:n{}
+  }
+\AssignTaggingSocketPlug{math/display/tag/begin}{default}
+\AssignTaggingSocketPlug{math/display/tag/end}{default}
+\tl_new:N\l__math_content_template_tl
+\tl_set:Nn \l__math_content_template_tl
+   {
+       LaTeX~ formula~ starts~
+       \exp_not:N\begin{\g__math_grabbed_env_tl}
+       \c_space_tl
+       \exp_not:V\g__math_grabbed_math_tl
+       \c_space_tl
+       \exp_not:N\end{\g__math_grabbed_env_tl}
+       \c_space_tl LaTeX~ formula~ ends~
+   }
+
+\tl_new:N\l__math_texsource_template_tl
+\tl_const:Nn\c__math_inline_env_tl {math}
+\tl_set:Nn \l__math_texsource_template_tl
+   {
+     \tl_if_eq:NNTF\g__math_grabbed_env_tl\c__math_inline_env_tl
+      {
+       $
+         \exp_not:V\g__math_grabbed_math_tl
+       $
+      }
+      {
+       \exp_not:N\begin{\g__math_grabbed_env_tl}
+       \exp_not:V\g__math_grabbed_math_tl
+       \exp_not:N\end{\g__math_grabbed_env_tl}
+      }
+   }
+
+\NewTaggingSocket{math/content}{0}
+\NewTaggingSocketPlug
+  {math/content}
+  {actual+source}
+  {
+   \tl_set:Ne\l__math_content_actual_tl
+    {
+       \l__math_content_template_tl
+    }
+   \tl_set:Ne \l__math_content_AF_source_tl
+    {
+      \l__math_texsource_template_tl
+    }
+   \tl_set:Nn    \l__math_content_AF_mathml_tl {}
+   \tl_set:Nn    \l__math_content_alt_tl    {}
+  }
+\NewTaggingSocketPlug
+  {math/content}
+  {alt+source}
+  {
+   \tl_set:Ne\l__math_content_alt_tl
+    {
+       \l__math_content_template_tl
+    }
+   \tl_set:Ne \l__math_content_AF_source_tl
+    {
+       \l__math_texsource_template_tl
+    }
+   \tl_set:Nn    \l__math_content_AF_mathml_tl {}
+   \tl_set:Nn    \l__math_content_actual_tl    {}
+  }
+\AssignTaggingSocketPlug{math/content}{alt+source}
+\NewTaggingSocket{math/struct/begin}{0}
+\NewTaggingSocket{math/struct/end}{0}
+\NewTaggingSocketPlug
+  {math/struct/begin}
+  {default}
+  {
+    \bool_if:NTF\l__tag_math_texsource_AF_bool
+     { \tl_set_eq:NN \l__math_content_AF_source_tmpa_tl \l__math_content_AF_source_tl }
+     { \tl_clear:N \l__math_content_AF_source_tmpa_tl }
+    \tl_if_eq:NnTF\g__math_grabbed_env_tl {math}
+          {
+            \tl_set:Nn\l__math_attribute_class_tl{inline}
+          }
+          {
+            \tl_set:Nn\l__math_attribute_class_tl{display}
+          }
+    \bool_if:NF\l__tag_math_alt_bool
+      { \tl_set:Nn \l__math_content_alt_tl{} }
+    \tag_struct_begin:n
+     {
+       tag=Formula,
+       attribute-class=\l__math_attribute_class_tl,
+       texsource   = \l__math_content_AF_source_tmpa_tl,
+       title-o     = \g__math_grabbed_env_tl,
+       actualtext  = \l__math_content_actual_tl,
+       alt         = \l__math_content_alt_tl
+     }
+    \__math_debug_typeout:n{grabbed~math=\meaning\g__math_grabbed_math_tl}
+    \tag_mc_begin:n{}
+  }
+\NewTaggingSocketPlug
+  {math/struct/end}
+  {default}
+  { \tag_mc_end: \tag_struct_end: }
+
+\AssignTaggingSocketPlug{math/struct/begin}{default}
+\AssignTaggingSocketPlug{math/struct/end}{default}
+\cs_generate_variant:Nn \str_mdfive_hash:n {o}
+\tl_new:N\l__math_content_hash_tl
+\tl_new:N\l__math_grabbed_math_tl
+\NewTaggingSocketPlug
+  {math/struct/begin}
+  {mathml-AF}
+  {
+   \int_gincr:N\g__math_math_total_int
+   \tl_set:Ne\l__math_content_hash_tl
+    {\str_mdfive_hash:o { \l__math_content_AF_source_tl }}
+   \tl_set_eq:NN\l__math_grabbed_math_tl\g__math_grabbed_math_tl
+   \tl_if_eq:NnTF\g__math_grabbed_env_tl {math}
+     {
+       \tl_set:Nn\l__math_attribute_class_tl{inline}
+     }
+     {
+       \tl_set:Nn\l__math_attribute_class_tl{display}
+     }
+   \bool_if:NF\l__tag_math_alt_bool
+     { \tl_set:Nn \l__math_content_alt_tl{} }
+   \tl_if_exist:cTF { g__math_mathml_ \l__math_content_hash_tl _tl }
+     {
+       \int_gincr:N\g__math_mathml_AF_found_int
+       \bool_if:NTF \l__tag_math_mathml_AF_bool
+        {
+          \int_gincr:N\g__math_mathml_AF_attached_int
+          \__math_debug_typeout:n {Inserting~mathml~with~Hash~\l__math_content_hash_tl}
+        }
+        {
+          \__math_debug_typeout:n {Ignoring~mathml~with~Hash~\l__math_content_hash_tl}
+        }
+     }
+     {
+       \bool_if:NT \l__tag_math_mathml_AF_bool
+        {
+          \typeout {WARNING:~mathml~missing~for~hash~\l__math_content_hash_tl}
+        }
+     }
+   \tag_socket_use:n {math/mathml/write/prepare}
+   \tag_socket_use:n {math/mathml/write} % write hash if request
+    \bool_if:NTF\l__tag_math_texsource_AF_bool
+     { \tl_set_eq:NN \l__math_content_AF_source_tmpa_tl \l__math_content_AF_source_tl }
+     { \tl_clear:N \l__math_content_AF_source_tmpa_tl }
+   \tag_struct_begin:n
+     {
+       tag=Formula,
+       attribute-class=\l__math_attribute_class_tl, %
+       AFref       =
+        \bool_if:NT\l__tag_math_mathml_AF_bool
+         {
+           \cs_if_exist_use:c {g__math_mathml_ \l__math_content_hash_tl _tl}
+         },
+       texsource   = \l__math_content_AF_source_tmpa_tl, % should be after mathml AF!
+       title-o     = \g__math_grabbed_env_tl,    %
+       alt         = \l__math_content_alt_tl
+     }
+   \__math_debug_typeout:n {grabbed~math=\meaning\g__math_grabbed_math_tl}
+   \tag_mc_begin:n{}
+   }
+\NewTaggingSocketPlug
+  {math/struct/end}
+  {mathml-AF}
+  {
+    \tag_mc_end:
+    \tag_struct_end:
+  }
+\NewTaggingSocket{math/end}{0}
+\AssignTaggingSocketPlug{math/inline/begin}{MC}
+\AssignTaggingSocketPlug{math/inline/end}{MC}
+\AssignTaggingSocketPlug{math/inline/formula/begin}{default}
+\AssignTaggingSocketPlug{math/inline/formula/end}{default}
+\AssignTaggingSocketPlug{math/display/begin}{default}
+\AssignTaggingSocketPlug{math/display/end}{default}
+\AssignTaggingSocketPlug{math/display/formula/begin}{default}
+\AssignTaggingSocketPlug{math/display/formula/end}{default}
+\newif\ifmeasuring@
+\cs_new_protected:Npn \__math_process:nn #1#2
+  {
+    \legacy_if:nF { measuring@ }
+      {
+        \tl_if_in:nnTF {#2} { \m@th }
+          { \bool_set_true:N\l__math_fakemath_bool }
+          { \tl_trim_spaces_apply:nN {#2} \__math_process_auxi:nn {#1} }
+      }
+  }
+\cs_generate_variant:Nn \__math_process:nn { V }
+\cs_new_protected:Npn \__math_process_auxi:nn #1#2
+  {
+    \tl_gset:Nn \g__math_grabbed_env_tl {#2}
+    \tl_gset:Nn \g__math_grabbed_math_tl {#1}
+    \__math_process_auxii:nn {#2} {#1}
+  }
+\cs_new_protected:Npn \__math_process_auxii:nn #1#2 { }
+\cs_new_protected:Npn \math_processor:n #1
+  { \cs_set_protected:Npn \__math_process_auxii:nn ##1##2 {#1} }
+\cs_set_protected:Npn\MathCollectTrue{\bool_set_false:N \l__math_collected_bool}
+\cs_set_protected:Npn\MathCollectFalse{\bool_set_true:N \l__math_collected_bool}
+\cs_new_protected:Npn \__math_grab_dollar:w { \__math_grab_dollar_delim:w }
+\cs_new_protected:Npn \__math_grab:n #1
+  {
+    \__math_process:nn { math } {#1}
+      \bool_lazy_any:nTF
+        {
+          {\legacy_if_p:n { measuring@ }}
+          { \l__math_fakemath_bool }
+          { \tl_if_blank_p:n {#1} }
+        }
+        {
+          \__math_luamml_ignore:
+          #1 $ % $
+        }
+        {
+            \tag_socket_use:n  {math/inline/begin} %end P-MC
+            \tag_socket_use:nnn {math/inline/formula/begin}{}{#1}
+            $ % $
+            \tag_socket_use:n  {math/inline/formula/end}
+            \tag_socket_use:n  {math/inline/end} % restart P-MC
+        }
+  }
+\cs_new_protected:Npn \__math_grab_dollar_delim:w #1 $ % $
+  { \__math_grab:n {#1} }
+\cs_new_protected:Npn \__math_grab_dollardollar:w #1 $$ {
+  \tl_if_blank:nF {#1}
+    {
+      \__math_process:nn { equation* } {#1}
+      \tag_socket_use:n {math/display/begin}
+      \tag_socket_use:nn{math/display/formula/begin}{}{#1}
+    }
+  \__math_prepare_display_end:
+  $$
+}
+\cs_new_protected:Npn \__math_grab_inline_delim:w % \(
+  #1 \)
+  {
+    \tl_if_blank:nF {#1}
+      {
+        $ #1 $
+      }
+    \bool_set_false:N \l__math_collected_bool
+  }
+\cs_new_protected:Npn \__math_grab_inline:w { \__math_grab_inline_delim:w }
+\cs_new_protected:Npn \__math_grab_eqn:w % \[
+  #1 \]
+   {
+     \begin { equation* } #1 \end { equation* }
+   }
+\tl_new:N \l__math_grabbed_tl
+\int_new:N \l__math_grab_env_int
+\cs_new_protected:Npn \__math_grab_loop_aux:
+  {
+    \group_begin:
+      \tl_clear:N \l__math_grabbed_tl
+      \__math_grab_loop:
+  }
+\cs_new_protected:Npn \__math_grab_loop:
+  {
+    \peek_remove_spaces:n
+      {
+        \peek_meaning:NTF \c_group_begin_token
+          { \__math_grab_loop_group:n }
+          { \__math_grab_loop_token:N }
+      }
+  }
+\cs_new_protected:Npn \__math_grab_loop_group:n #1
+  { \__math_grab_loop_store:n { {#1} } }
+\cs_new_protected:Npn \__math_grab_loop_store:n #1
+  {
+    \tl_put_right:Nn \l__math_grabbed_tl {#1}
+    \__math_grab_loop:
+  }
+\cs_new_protected:Npn \__math_grab_loop_token:N #1
+  {
+    \cs_if_exist_use:cF
+      { __math_grab_loop_ \token_to_str:N #1 : }
+      { \__math_grab_loop_store:n {#1} }
+  }
+\cs_new_protected:cpn { __math_grab_loop_ \token_to_str:N $ : }
+  { \__math_grab_loop_end: }
+\cs_new_protected:cpn { __math_grab_loop_ \token_to_str:N \) : }
+  { \__math_grab_loop_end: }
+\cs_new_protected:cpn { __math_grab_loop_ \token_to_str:N \\ : }
+  {
+    \int_compare:nNnTF \l__math_grab_env_int = 0
+       { \__math_grab_loop_newline: }
+       { \__math_grab_loop_store:n { \\ } }
+  }
+\cs_new_protected:cpn { __math_grab_loop_ \token_to_str:N \begin : }
+  {
+    \int_incr:N \l__math_grab_env_int
+    \__math_grab_loop_store:n { \begin }
+  }
+\cs_new_protected:cpn { __math_grab_loop_ \token_to_str:N \end : }
+  {
+    \int_compare:nNnTF \l__math_grab_env_int = 0
+       {
+         \__math_grab_loop_newline:
+         \end
+       }
+       {
+         \int_decr:N \l__math_grab_env_int
+         \__math_grab_loop_store:n { \end }
+       }
+  }
+\tl_map_inline:nn { \ignorespaces \unskip \textonly@unskip }
+  {
+    \cs_new_protected:cpn { __math_grab_loop_ \token_to_str:N #1 : }
+      { \__math_grab_loop: }
+  }
+\cs_new_protected:Npn \__math_grab_loop_newline:
+  {
+    \if_false: { \fi:
+    \cs_set_protected:Npn \cr
+      {
+        \__math_grab_loop:
+        \tex_cr:D
+      }
+    \if_false: } \fi:
+    \\
+  }
+\cs_new_protected:Npn \__math_grab_loop_end:
+  {
+    \exp_args:NNV \group_end:
+    \__math_grab:n \l__math_grabbed_tl
+  }
+\tl_new:N \l__math_env_name_tl
+\keys_define:nn { __math }
+  {
+     arg-spec .code:n =
+       {
+         \ExpandArgs { c } \DeclareDocumentCommand
+           { __math_env \l__math_env_name_tl _aux: }
+           {#1}
+           { \__math_env_forward:w }
+       }
+  }
+\cs_new_protected:Npn \math_register_env:nn #1#2
+  {
+    \tl_set:Nn \l__math_env_name_tl {#1}
+    \keys_set:nn { __math } {#2}
+    \cs_gset_eq:cc { __math_env_ #1 _begin: } {#1}
+    \cs_gset_eq:cc { __math_env_ #1 _end: } { end #1 }
+    \ExpandArgs { nne } \RenewDocumentEnvironment {#1} { b }
+      {
+        \exp_not:N \bool_if:NTF \exp_not:N \l__math_collected_bool
+          {
+          }
+          {
+            \cs_if_exist:cTF { __math_env #1 _aux: }
+              {
+                \exp_not:c { __math_env #1 _aux: }
+                  ##1 \exp_not:N \__math_env_end: {#1}
+              }
+              { \exp_not:N \__math_process:nn {#1} {##1} }
+            \exp_not:n { \@kernel@math@registered@begin }
+            \bool_set_true:N \exp_not:N \l__math_collected_bool
+          }
+        \exp_not:c { __math_env_ #1 _begin: }
+        ##1
+        \exp_not:c { __math_env_ #1 _end: }
+     }
+     {
+     }
+  }
+\cs_new_protected:Npn \math_register_halign_env:nn #1#2
+  {
+    \tl_set:Nn \l__math_env_name_tl {#1}
+    \keys_set:nn { __math } {#2}
+    \cs_gset_eq:cc { __math_env_ #1 _begin: } {#1}
+    \cs_gset_eq:cc { __math_env_ #1 _end: } { end #1 }
+    \ExpandArgs { nnee } \RenewDocumentEnvironment {#1} { b }
+      {
+        \exp_not:N \bool_if:NTF \exp_not:N \l__math_collected_bool
+          {
+          }
+          {
+            \cs_if_exist:cTF { __math_env #1 _aux: }
+              {
+                \exp_not:c { __math_env #1 _aux: }
+                  ##1 \exp_not:N \__math_env_end: {#1}
+              }
+              { \exp_not:N \__math_process:nn {#1} {##1} }
+            \exp_not:n { \@kernel@math@registered@begin }
+            \bool_set_true:N \exp_not:N \l__math_collected_bool
+          }
+        \exp_not:c { __math_env_ #1 _begin: }
+        ##1
+     }
+     {
+       \exp_not:c { __math_env_ #1 _end: }
+     }
+  }
+
+\cs_new:Npn \@kernel@math@registered@begin {
+  \mode_if_vertical:TF
+       {
+        \tag_if_active:T
+          {
+            \exp_args:Noo\str_if_eq:nnF \g__tag_struct_tag_tl { \l__tag_para_main_tag_tl }    % needs correction!
+             {
+               \__block_beginpar_vmode:
+             }              % needs correction!
+          }
+       }
+       {
+         \__tag_tool_close_P:
+       }
+  \tag_socket_use:nn{math/display/formula/begin}{}{}
+}
+
+\cs_new_protected:Npn \math_register_env:n #1
+  { \math_register_env:nn {#1} { } }
+
+\NewDocumentCommand \RegisterMathEnvironment { O{} m }
+  { \math_register_env:nn {#2} {#1} }
+\cs_new_protected:Npn \__math_env_forward:w #1 \__math_env_end: #2
+  { \__math_process:nn {#2} {#1} }
+\cs_new_protected:Npn \__math_prepare_display_end: {
+  \bool_lazy_or:nnTF
+    { \dim_compare_p:nNn \belowdisplayskip  < {0pt} }
+    { \dim_compare_p:nNn \belowdisplayshortskip  < {0pt} }
+    { \tl_gclear:N \g__math_skip_sign_tl  }
+    {
+      \tl_gset:Nn \g__math_skip_sign_tl {-}
+      \skip_set:Nn \belowdisplayskip      {-\belowdisplayskip}
+      \skip_set:Nn \belowdisplayshortskip {-\belowdisplayshortskip}
+    }
+  \int_gset_eq:NN \g__math_postdisplaypenalty_int \postdisplaypenalty
+  \int_set_eq:NN  \postdisplaypenalty \@M
+}
+\cs_new_protected:Npn \__math_tag_dollardollar_display_end:
+  {
+    %  \typeout{== tag dollarldollar display end}
+    %  \ShowTagging{struct-stack}
+    \para_raw_end:
+    \l__math_tmpa_skip \lastskip
+    \tag_socket_use:n{math/display/formula/end}
+    \nobreak
+    \skip_vertical:n { -\l__math_tmpa_skip  }
+    \penalty \g__math_postdisplaypenalty_int
+    \skip_vertical:n
+       { \g__math_skip_sign_tl \l__math_tmpa_skip  }
+    \skip_vertical:n { -\tex_parskip:D }
+    \@domathendpetrue
+    \@doendpe             % this has no \end{...} to take care of it
+}
+\int_new:N \g__math_postdisplaypenalty_int
+\tl_new:N \g__math_skip_sign_tl
+\def \dollardollar@end { \__math_prepare_display_end: $$ }
+\protected\def\eqno{
+  \__math_prepare_display_end:
+  \@kernel@eqno
+  \cs_set_eq:NN \__math_prepare_display_end: \prg_do_nothing:
+  \aftergroup\ignorespaces
+}
+\protected\def\leqno{
+  \__math_prepare_display_end:
+  \@kernel@leqno
+  \cs_set_eq:NN \__math_prepare_display_end: \prg_do_nothing:
+  \aftergroup\ignorespaces
+}
+\tl_gput_right:Nn \@kernel@before@begindocument
+  {
+    \math_register_env:n { equation }
+    \math_register_env:n { equation* }
+    \RenewDocumentEnvironment{math} {b}{$#1$}{}
+    \RenewDocumentEnvironment{displaymath} {b}{\[#1\]}{}
+  }
+\cs_gset_protected:Npn \( % \)
+  {
+    \bool_if:NTF \l__math_collected_bool
+      {
+        \mode_if_math:TF
+          { \@badmath }
+          { $ }
+      }
+      {
+        \__math_grab_inline:w
+      }
+  } % \(
+\cs_gset_protected:Npn \)
+  {
+    \mode_if_math:TF
+      { $ }
+      { \@badmath }
+  }
+\tl_gput_right:Nn \@kernel@before@begindocument
+  {
+    \cs_gset_protected:Npn \[ % \]
+       {
+         \__math_grab_eqn:w
+ %       \bool_if:NTF \l__math_collected_bool
+      } % \[
+    \cs_gset_protected:Npn \]
+      {
+        \@badmath
+      }
+  }
+
+\exp_args:No \tex_everymath:D
+  {
+    \tex_the:D \tex_everymath:D
+    \bool_if:NF \l__math_collected_bool
+      {
+        \bool_set_true:N \l__math_collected_bool
+        \__math_grab_dollar:w
+      }
+  }
+
+\exp_args:No \tex_everydisplay:D
+  {
+    \tex_the:D \tex_everydisplay:D
+    \group_insert_after:N \__math_tag_dollardollar_display_end:
+    \bool_if:NF \l__math_collected_bool
+      {
+        \bool_set_true:N \l__math_collected_bool
+        \__math_grab_dollardollar:w
+      }
+  }
+\tl_gput_right:Nn \@kernel@before@begindocument
+  {
+    \math_register_env:n { eqnarray }
+    \math_register_env:n { eqnarray* }
+  }
+\RequirePackage{array}
+\tl_if_exist:NT\@kernel@tabular@init
+ {
+   \tl_put_right:Nn\@kernel@tabular@init
+    {
+      \cs_set_protected:Npn \__math_grab_dollar:w { \__math_grab_loop_aux: }
+      \cs_set_protected:Npn \__math_grab_inline:w { $ }
+    }
+ }
+\cs_new_eq:NN \__math_m@th: \m@th
+\cs_gset_protected:Npn \m@th
+  {
+    \bool_set_true:N \l__math_collected_bool
+    \__math_m@th:
+  }
+\sys_if_engine_luatex:T
+ {
+  \def\mathpalette#1#2{%
+   \ifcase\mathstyle
+    #1\displaystyle{#2}\or
+    #1\displaystyle{#2}\or
+    #1\textstyle{#2}\or
+    #1\textstyle{#2}\or
+    #1\scriptstyle{#2}\or
+    #1\scriptstyle{#2}\or
+    #1\scriptscriptstyle{#2}\or
+    #1\scriptscriptstyle{#2}
+   \fi}
+  }
+\def\mathsm@sh#1#2{%
+  \setbox\z@\hbox{$\m@th#1{#2}
+    \UseTaggingSocket{math/luamml/save/nNn}{{mathsmash} #1 {mpadded}}
+    $}%
+  \UseTaggingSocket{math/luamml/finsm@sh}{}{{}\finsm@sh}}
+\tl_gput_right:Nn\@kernel@before@begindocument
+  {
+    \bool_set_true:N\l__math_collected_bool
+  }
+\tl_gput_right:Nn\@kernel@after@begindocument
+ {
+   \bool_set_false:N\l__math_collected_bool
+ }
+\ExplSyntaxOff
+\endinput
+%%
+%% End of file `latex-lab-math.ltx'.

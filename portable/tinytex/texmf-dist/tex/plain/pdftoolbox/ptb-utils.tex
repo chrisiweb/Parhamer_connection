@@ -1,0 +1,213 @@
+\catcode`_=11
+\catcode`@=11
+
+\def\_checkloaded#1{%
+    \ifcsname #1\endcsname%
+        \endinput%
+    \else%
+        \expandafter\global\expandafter\let\csname #1\endcsname=\relax%
+    \fi%
+}
+
+\_checkloaded{pdfToolbox-utils}
+
+\let\_xp=\expandafter
+\def\_nul{\_nul}
+\def\_id#1{#1}
+\def\_empty{}
+\long\def\_gobble#1{}
+\long\def\_gobbletilnul#1\_nul{}
+\def\_mstrip{\_xp\_gobble\string}
+\def\True{\True}
+\def\False{\False}
+
+\newcount\_ptbcountA    \newcount\_ptbcountB    \newcount\_ptbcountC
+\newbox\_ptbboxA        \newbox\_ptbboxB
+\newdimen\_ptbdimenA    \newdimen\_ptbdimenB
+
+\def\glet{\global\let}
+
+\def\_xplet#1#2{%
+    \def\_uregA{\_xp\let#1}%
+    \_xp\_uregA#2%
+}
+
+\long\def\_afterfi#1#2\fi{\fi#1}
+\def\say{\immediate\write16}
+
+\def\_commap#1#2,{
+    \ifx\_nul#2%
+    \else%
+        #1{#2}%
+        \_afterfi{\_commap{#1}}%
+    \fi%
+}
+
+\def\commap#1#2{%
+    \_commap{#1}#2,\_nul,%
+}
+
+\def\_map#1#2{%
+    \ifx\_nul#2%
+    \else%
+        #1{#2}%
+        \_afterfi{\_map{#1}}%
+    \fi%
+}
+
+\def\map#1#2{%
+    \_map{#1}#2\_nul%
+}
+
+\def\reversecall#1#2#3{#1{#3}{#2}}
+
+\def\__ifnextchar{%
+    \ifx\_uregD\_uregA %
+        \expandafter\_uregB%
+    \else%
+        \expandafter\_uregC%
+    \fi%
+}
+
+\bgroup
+    \global\long\def\_ifnextchar#1#2#3{%
+        \let\_uregA=#1\relax\def\_uregB{#2}\def\_uregC{#3}%
+        \futurelet\_uregD\__ifnextchar%
+    }
+
+    \unless\ifcsname @ifnextchar\endcsname
+        \global\let\@ifnextchar=\_ifnextchar
+    \fi
+
+    \global\long\def\_ifstar#1#2{%
+        \def\_temp{#1}%
+        \_ifnextchar* {\afterassignment\_temp\let\_tempA}{#2}%
+    }
+
+    \unless\ifcsname @ifstar\endcsname
+        \global\let\@ifstar=\_ifstar
+    \fi
+\egroup
+
+\def\localsetters{%
+    \glet\currlet=\let%
+    \glet\currdef=\def%
+    \glet\curredef=\edef%
+    \glet\currset=\empty%
+}
+
+\def\globalsetters{%
+    \glet\currlet=\glet%
+    \glet\currdef=\gdef%
+    \glet\curredef=\xdef%
+    \glet\currset=\global%
+}
+
+\localsetters
+
+\bgroup\lccode`\!=`\p \lccode`\?=`\t
+\lowercase{\egroup\def\_rmpt#1!?{#1}\def\_floorrm#1.#2!?{#1}}
+\def\_nopt#1{\_xp\_rmpt\the\dimexpr #1\relax}
+\def\_noptfloor#1{\_xp\_floorrm\the\dimexpr #1\relax}
+
+\long\def\_repeat#1#2{%
+    \ifnum#1>0 %
+        #2%
+        \_afterfi{\_xp\_repeat\_xp{\the\numexpr #1-1\relax}{#2}}%
+    \fi%
+}
+
+\long\def\__prepeat#1#2#3{%
+    \unless\ifnum#1>#2 %
+        #3{#1}%
+        \_afterfi{\_xp\__prepeat\_xp{\the\numexpr #1+1\relax}{#2}{#3}}%
+    \fi%
+}
+
+\long\def\_prepeat#1#2{%
+    \__prepeat{1}{#1}{#2}%
+}
+
+%   Repeat a macro multiple times
+%   #1: Start, #2: Stop, #3: Step
+%   #4: Comparison (<, =, or >), comparison done by #1 #4 #2 (if true, stop)
+%   #5: Macro (current index is passed to it)
+\def\_varrepeat#1#2#3#4#5{%
+    \unless\ifnum #1 #4 #2 %
+        #5{#1}%
+        \_afterfi{\_xp\_varrepeat\_xp{\the\numexpr #1+#3\relax}{#2}{#3}{#4}{#5}}%
+    \fi%
+}
+
+\def\literal{\afterassignment\@@ \def\@@}
+
+\def\_space{ }
+
+{\catcode`\^^M=12
+\long\gdef\__getline#1#2^^M{\egroup #1{#2}}}
+\def\_getline#1{\bgroup\catcode`\^^M=12 \__getline{#1}}
+
+\def\@def@ifequals#1#2{%
+	\def\_uregA{#1}\def\_uregB{#2}%
+	\ifx\_uregA\_uregB %
+}
+\def\@tok@ifequals#1#2{\ifx#1#2}
+\let\@ifequals=\@tok@ifequals
+
+\def\ifequals#1#2#3#4{\bgroup%
+	\@ifequals{#1}{#2}%
+		\_afterfi{\egroup #3}%
+	\else%
+		\_afterfi{\egroup #4}%
+	\fi
+}
+
+\def\default{\noexpand\default}
+\def\endifcases{\noexpand\endifcases}
+\def\@endcases#1\endifcases{\_uregA}
+
+\def\___ifstrcases#1#2#3{%
+    \iftrue%
+		\_afterfi{%
+		    \ifequals{#1}{#2}{\def\_uregA{#3}\@endcases}{%
+		    	\ifequals{#2}{\default}{%
+		    		\def\_uregA{#3}\@endcases%
+		    	}{\@ifstrcases{#1}}%
+		    }%
+        }%
+	\fi%
+}
+\def\__ifstrcases#1#2#{\___ifstrcases{#1}{#2}}
+\def\_ifstrcases{%
+    \ifx\_uregB\endifcases%
+        \_xp\_gobble%
+    \else%
+        \_afterfi{\_xp\__ifstrcases\_xp{\_uregA}}%
+    \fi%
+}
+\def\@ifstrcases#1{\def\_uregA{#1}\futurelet\_uregB\_ifstrcases}
+
+\def\ifstrcases#1{\@ifstrcases{#1}}
+
+\long\def\loop#1\repeat{\def\body{#1}\iterate}
+\def\newcount{\alloc@0\count\countdef\insc@unt}
+
+\newwrite\_PTBwrite
+\newread\_PTBread
+
+\def\_reverse#1{%
+    \def\_uregB{#1}%
+    \_xp\_xp\_xp\def\_xp\_xp\_xp\_uregA\_xp\_xp\_xp{\_xp\_uregB\_uregA}%
+}
+
+\def\reverse#1#2{%
+    \def\_uregA{}%
+    \map{\_reverse}{#2}%
+    \let#1=\_uregA%
+}
+
+\def\setmacrotolen#1#2{{%
+    \setbox0=\hbox{#2}%
+    \xdef#1{\the\wd0}%
+}}
+

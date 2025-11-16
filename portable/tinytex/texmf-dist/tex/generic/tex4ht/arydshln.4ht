@@ -1,0 +1,39 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% arydshln.4ht (2025-05-22-13:55), generated from tex4ht-4ht.tex
+% Copyright 2022-2025 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2025-05-22-13:55}
+
+% this is a copy of code that arydshln inserts to \@array
+\def\:new:array{\adl@everyvbox\everyvbox
+        \everyvbox{\adl@arrayinit \the\adl@everyvbox \everyvbox\adl@everyvbox}%
+        % this line may lead to errors if the document uses Colortbl:
+        % \ifadl@inactive \adl@inactivate \else \adl@activate \fi
+        \let\adl@noalign\noalign}
+\ifcsname n:@array:\endcsname% if \@array was already patched by TeX4ht
+  \let\orig:n@array\n:@array:
+  \def\n:@array:{\:new:array\orig:n@array}
+\else
+  \pend:def\@array{\:new:array}
+\fi
+% this should fix matrix support
+\def\:tempa{\cr}
+\HLet\adl@cr\:tempa
+\Hinput{arydshln}
+\endinput
+

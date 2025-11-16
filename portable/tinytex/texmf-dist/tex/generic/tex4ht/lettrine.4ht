@@ -1,0 +1,58 @@
+% lettrine.4ht (2024-05-19-07:41), generated from tex4ht-4ht.tex
+% Copyright 2012-2024 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2024-05-19-07:41}
+
+\NewConfigure{lettrine}{7}
+\NewConfigure{lettrinechar}{2}
+\define@key{L}{ante}{\def\LH:ante{#1}}%
+\define@key{L}{findent}{\def\LH:findent{#1}}%
+\define@key{L}{lhang}{\def\LH:lhang{#1}}%
+\define@key{L}{lines}{\def\LH:lines{#1}}%
+\define@key{L}{slope}{}
+\define@key{L}{depth}{}
+\define@key{L}{loversize}{}
+\define@key{L}{lraise}{}
+\define@key{L}{nindent}{}
+\define@key{L}{novskip}{}
+\define@key{L}{image}{}
+\define@key{L}{grid}{}
+\define@key{L}{realheight}{}
+\define@key{L}{refstring}{}
+\define@key{L}{refstring}{}
+\define@key{L}{optionsfile}{}
+
+\def\reset:LH:keys{\let\LH:ante\@empty
+    \def\LH:lines{2}%
+    \def\LH:lhang{0}%
+    \def\LH:findent{0pt}}
+\reset:LH:keys
+%
+\def\@lettrine[#1]#2#3{\setkeys{L}{#1}%
+     \def\HlettrineChar{#2}%
+     \def\HlettrineString{#3}%
+     \a:lettrine
+     \ifx\LH:ante\@empty\else\f:lettrine\LH:ante\g:lettrine\fi
+     \c:lettrine
+     \a:lettrinechar#2\b:lettrinechar
+     \b:lettrine\d:lettrine#3\e:lettrine
+     \reset:LH:keys}
+
+\Hinput{lettrine}
+\endinput
+

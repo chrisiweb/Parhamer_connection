@@ -1,0 +1,47 @@
+% tikz-hooks.4ht (2024-01-15-14:00), generated from tex4ht-4ht.tex
+% Copyright 2020-2024 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2024-01-15-14:00}
+
+\ifdefined\pgfsysdriver\else%
+  \typeout{*****************************}
+  \typeout{TeX4ht info: Using dvisvgm4ht TikZ driver. Put \detokenize{\def\pgfsysdriver{driver-name}} to your
+  document before use of TikZ if you want to another driver. Use tikz+ option if your TikZ pictures use patterns.}%
+  \def\pgfsysdriver{pgfsys-dvisvgm4ht.def}%
+\fi%
+\ifdefined\find:externalize\else
+\:AtEndOfPackage{%
+\let\use:tikzlibrary\usetikzlibrary
+\def\find:externalize#1external#2\@nil{%
+  \ifdefined\tikzexternalize
+    \let\tikz:externalize\tikzexternalize
+    \renewcommand\tikzexternalize[1][]{\tikz:externalize[##1,mode=only graphics]}
+    \tikzset{%
+      tex4ht inc/.style={%
+        /pgf/images/include external/.code={%
+          \includegraphics[]{####1.pdf}%
+        }%
+      }%
+    }%
+    \tikzset{tex4ht inc}%
+  \fi%
+}
+\append:defI\use@@tikzlibrary{\find:externalize##1external\@nil}%
+}
+\fi
+

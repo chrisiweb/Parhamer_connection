@@ -1,0 +1,269 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Tag Facilities
+%
+% Synopsis:  This module contains the definitions necessary to implement
+%            tags and references to them.
+%
+% Note:      Tag names beginning with `zX:' are reserved for ZzTeX:
+%
+%            zA:  design alternative choices (obsolete)
+%            zB:  bibliographic tags
+%            zE:  frame page numbers
+%            zF:  float page numbers
+%            zH:  help text
+%            zM:  margin note page numbers
+%            zP:  proof note page numbers
+%            zR:  margin rule page numbers
+%            zS:  snapshot information
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   19 September 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Tag Definition
+%                       --- ----------
+
+
+\definetoks{\taginfonumber}
+\taginfonumber = {???}
+\definetoks{\taginfotitle}
+\taginfotitle = {???}
+\definecount{\zmistags}{0}
+
+
+% The number is fully expanded, while the title is not expanded.
+% Then we make sure they are never expanded again.
+
+\def \settaginfo #1#2{%                                 {number}{title}
+  \edef \znext {\taginfonumber = {#1}}%
+  \znext
+  \taginfotitle = {#2}}
+
+\def \tag #1{%                                          {name}
+  \if \emptytoksp{\taginfonumber}%
+    \warning{notaginfo}{ZzTeX reference: Misplaced tag '#1'}%
+    \global\increment \zmistags
+  \fi
+  \zbeginhidewrite
+    \edef \znext {\noexpand\xref{tag}{\noexpand\folio}%
+                                     {\the\taginfonumber}%
+                                     {\the\taginfotitle}
+                                     {#1}}%
+    \znext
+    \if \PDFhyperlinks \PDFmark{T:#1}\fi
+  \zendhidewrite}
+
+\def \tagwith #1#2{%                                    {name}{reference-text}
+  \zbeginhidewrite
+    \edef \znext {\noexpand\xref{tag}{\noexpand\folio}%
+                                     {#2}%
+                                     {???notitle???}
+                                     {#1}}%
+    \znext
+    \if \PDFhyperlinks \PDFmark{T:#1}\fi
+  \zendhidewrite}
+
+% This is a special command when you just want to know the page number.
+
+\def \tagpageonly #1{%                                  {name}
+  \zbeginhidewrite
+    \edef \znext {\noexpand\xref{tag}{\noexpand\folio}%
+                                     {???nonumber???}%
+                                     {???notitle???}
+                                     {#1}}%
+    \znext
+    \if \PDFhyperlinks \PDFmark{T:#1}\fi
+  \zendhidewrite}
+
+\def \uniquetag #1#2{%                                  {prefix}{counter}
+  #1:\the\divisionname-#2}
+
+%                       Subtag Definition
+%                       ------ ----------
+
+
+\definecount{\subtagnumber}{0}
+
+
+\def \setsubtagnumber #1{%                              {integer}
+  \subtagnumber = #1\relax}
+
+\def \subtag #1#2{%                                     {name}{subnumber}
+  \zparsesubnumber #2???\zmark
+  \tagwith{#1}{\zsubtagtext}}
+
+\def \zparsesubnumber #1?#2?#3?#4\zmark{%
+  \if \emptyargp{#2}%
+    \edef \zsubtagtext {\the\taginfonumber #1}%
+  \else
+    \increment \subtagnumber
+    \edef \zsubtagtext {\the\taginfonumber #1#2\subtagnumber#3}%
+  \fi}
+
+%                       Tag Reference
+%                       --- ---------
+
+
+% This counter keeps track of the number of undefined tag references.
+
+\definecount{\zuntagrefs}{0}
+
+
+\def \refnumber #1{%                    {tag-name}
+  \zbeginrefhilight
+  \if \definedp{\=#1}%
+    \zreftext{#1}{\expandafterthrice\ztagdata \name{\=#1}\zmark1}%
+  \else
+    \zuntag{#1}{???}%
+  \fi
+  \zendrefhilight}
+
+\let \ref = \refnumber                  % Because it's so common.
+
+\def \refpage #1{%                      {tag-name}
+  \zbeginrefhilight
+  \if \definedp{\=#1}%
+    \zreftext{#1}{\expandafterthrice\ztagdata \name{\=#1}\zmark0}%
+  \else
+    \zuntag{#1}{???}%
+  \fi
+  \zendrefhilight}
+
+\def \reftitle #1{%                     {tag-name}
+  \zbeginrefhilight
+  \if \notp{\allowreftitle}%
+    \warning{noreftitle}{Use of \string\reftitle is not allowed}%
+    ???not allowed???%
+  \else \if \definedp{\=#1}%
+    {\zadjtitle = \zadjtitlenone
+     \zreftext{#1}{\expandafterthrice\ztagdata \name{\=#1}\zmark2}}%
+  \else
+    \zuntag{#1}{???title???}%
+  \fi\fi
+  \zendrefhilight}
+
+\def \zbeginrefhilight {%
+  \if \DVIWindoinuse
+    \colorspecial{ifview color push rgb 1 0 .25}%       % Color the reference.
+  \fi}
+
+\def \zendrefhilight {%
+  \if \DVIWindoinuse
+    \colorspecial{ifview color pop}%                    % Done with color.
+  \fi}
+
+\def \zreftext #1#2{%                                   {tag}{text}
+  \if \PDFhyperlinks
+    \tagbutton{#1}{#2}%
+  \else
+    #2%
+  \fi}
+
+\def \ztagdata #1\zmark#2\zmark#3\zmark#4{%
+  \ifcase #4 #1\or #2\or #3\fi}                 % Space after #4 is critical!
+
+\def \zuntag #1#2{%                                     {tag}{what-to-set}
+  \writelog{ZzTeX reference: Undefined tag `#1'.}%
+  \zxwriteinfo{\false}{undef-tag}{#1}{}%
+  \global\increment \zuntagrefs
+  #2}
+
+%                       Determining the Page
+%                       ----------- --- ----
+
+
+% This command allows us to use the tag facility to determine which page
+% a particular element is on, in case the design of the element depends
+% on whether it is on a recto or verso.
+
+\def \whichpage #1#2{%                          {\count-reg}{tag-name}
+  \def \zreg {#1}%
+  \if \definedp{\=#2}%
+    \edef \zpg {\expandafterthrice\ztagdata \name{\=#2}\zmark0}%
+    \expandafter\zwhichpagea \zpg--\zmark
+  \else
+    \zuntag{#2}{\relax}%
+    #1=\pagenumber
+  \fi\relax}
+
+\def \zwhichpagea #1-#2-#3\zmark{%
+  \if \emptyargp{#2}%
+    \zwhichpageb #1\zmark
+  \else
+    \zwhichpageb #2\zmark
+  \fi}
+
+\def \zwhichpageb #1\zmark{%
+  \setbox \zboxa=\hbox{\zreg=0#1}%
+  \if \dimzerop{\wd\zboxa}%
+    \zreg=#1%
+  \else
+    \zreg=\pagenumber
+  \fi}
+
+%                       Tag Cross-Reference
+%                       --- ---------------
+
+
+% These counters keep track of the number of duplicate tags, and the
+% number of tags that have changed since the previous run.
+
+\definecount{\zduptags}{0}
+\definecount{\zchangedtags}{0}
+
+
+% Define the macro \=tag to contain the page, number, and title.
+% However, use of the title is controlled by \allowreftitle.
+
+\def \xreftag #1#2#3#4{%                        {page}{number}{title}{tag}
+  \ifnum \xrefmode=\xrefloadtagmode
+    \if \definedp{\=#4}\zduptag{#4}\fi
+    \xreftagdef{#1}{#2}{#3}{\=#4}%
+  \else\ifnum \xrefmode=\xrefcopymode
+    \xreftagchk{#1}{#2}{#3}{\=#4}%
+  \fi\fi}
+
+\def \xreftagdef #1#2#3#4{%                     {page}{number}{title}{\name}
+  \if \allowreftitle
+    \withname\gdef{#4}{#1\zmark#2\zmark#3}%
+  \else
+    \withname\gdef{#4}{#1\zmark#2\zmark}%
+  \fi}
+
+\def \xreftagchk #1#2#3#4{%                     {page}{number}{title}{\name}
+  \xreftagdef{#1}{#2}{#3}{\zxrefchk}%
+  \expandaftertwice\ifx \name{#4}\zxrefchk
+  \else
+    \global\increment \zchangedtags
+  \fi}
+
+\def \zduptag #1{%                                      {tag}
+  \writelog{ZzTeX reference: Duplicate tag `#1'.}%
+  \global\increment \zduptags}
+
+%                       Tag Cross-Reference Summary
+%                       --- --------------- -------
+
+
+\def \ztagsummary {%
+  \if \posp{\zuntagrefs}%
+    \remark{Number of undefined tags in this run: \number\zuntagrefs.}%
+  \fi
+  \if \posp{\zduptags}%
+    \remark{Number of duplicate tags in this run: \number\zduptags._%
+            \space\space\space\space\space\space\space Eliminate duplicates %
+            and reprocess the book twice.}%
+  \fi
+  \if \posp{\zmistags}%
+    \remark{Number of misplaced tags in this run: \number\zmistags.}%
+  \fi
+  \if \posp{\zchangedtags}%
+    \remark{Number of tags changed since previous run: \number\zchangedtags._%
+            \space\space\space\space\space\space\space Reprocess the book %
+            to obtain correct cross-references.}%
+  \fi}

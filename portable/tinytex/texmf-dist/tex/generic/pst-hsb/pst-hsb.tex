@@ -1,0 +1,181 @@
+%% $Id: pst-hsb.tex 686 2023-04-02 13:03:12Z herbert $
+%%
+%% This is file `pst-hsb.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-hsb.tex'
+%%
+%% Denis Girou
+%% Manuel Luque
+%% Herbert Voss <hvoss@tug.org>
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-hsb' is a PSTricks package for continous color
+%%
+%%
+\csname PSThsbLoaded\endcsname
+\let\PSThsbLoaded\endinput
+
+\ifx\PSTricksLoaded\endinput\else\input pstricks.tex\fi
+\ifx\PSTplotLoaded\endinput\else \input pst-plot \fi
+\ifx\PSTXKeyLoaded\endinput\else \input pst-xkey.tex \fi
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+% interface to the `xkeyval' package
+\pst@addfams{pst-hsb}
+%
+\def\fileversion{0.03}
+\def\filedate{2023/04/02}
+\message{`PST-hsb' v\fileversion, \filedate\space (hv)}
+%
+\define@key[psset]{pst-hsb}{HueBegin}{\def\psHSB@HueBegin{#1}}% 0..1    H
+\define@key[psset]{pst-hsb}{HueEnd}{\def\psHSB@HueEnd{#1}}%     0..1    H
+\define@key[psset]{pst-hsb}{SaturationBegin}{\def\psHSB@SaturationBegin{#1}}% 0..1   S
+\define@key[psset]{pst-hsb}{SaturationEnd}{\def\psHSB@SaturationEnd{#1}}%     0..1   S
+\define@key[psset]{pst-hsb}{BrightnessBegin}{\def\psHSB@BrightnessBegin{#1}}% 0..1   B
+\define@key[psset]{pst-hsb}{BrightnessEnd}{\def\psHSB@BrightnessEnd{#1}}%     0..1   B
+\define@key[psset]{pst-hsb}{ColorBegin}{\pst@getcolor{#1}\ps@ColorBegin}
+\define@key[psset]{pst-hsb}{ColorEnd}{\pst@getcolor{#1}\ps@ColorEnd} 
+\define@boolkey[psset]{pst-hsb}[Pst@]{HSB}[true]{}
+% Default values
+\psset[pst-hsb]{
+  HueBegin=0,HueEnd=1,
+  SaturationBegin=1, SaturationEnd=1,
+  BrightnessBegin=1, BrightnessEnd=1, 
+  HSB=true,ColorBegin=white,ColorEnd=black}
+\psset{dimen=outer,variableColor=false}
+ 
+\def\psparametricplotHSB{\pst@object{psparametricplotHSB}}
+\def\psparametricplotHSB@i#1#2#3{{%
+  \begin@ClosedObj
+  \addto@pscode{%
+    /t #1 def
+    /dt #2 t sub \psk@plotpoints\space div def
+    /t t dt sub def
+    /F@pstplot 
+      \ifPst@algebraic (#3)
+         \ifx\psk@PlotDerivative\@none\else
+           \psk@PlotDerivative\space { (t) tx@Derive begin Derive end } repeat
+         \fi
+         tx@AlgToPs begin AlgToPs end cvx
+      \else 
+         { #3 } 
+      \fi  
+    def
+    /Counter 0 def
+    1 setlinejoin
+    \psk@plotpoints {
+      /t t dt add def
+      /Counter Counter 1 add def
+      t F@pstplot
+      \pst@number\psyunit mul exch
+      \pst@number\psxunit mul exch
+      1 Counter eq { moveto currentpoint /OldY ED /OldX ED } % First point
+        {\ifPst@HSB % Other points than the first one
+          /PointY exch def
+          /PointX exch def
+          Counter \psk@plotpoints\space div /Factor ED
+          \psHSB@HueEnd\space
+          \psHSB@HueBegin\space sub               % HueEnd-HueBegin
+          dup 0 eq { pop \psHSB@HueBegin\space }
+                   { Factor mul \psHSB@HueBegin\space add } ifelse
+          /H_hsb ED 
+          \psHSB@SaturationEnd\space
+          \psHSB@SaturationBegin\space sub 
+          dup 0 eq { pop \psHSB@SaturationBegin\space }
+                   { Factor mul \psHSB@SaturationBegin\space add } ifelse 
+          /S_hsb ED 
+          \psHSB@BrightnessEnd\space
+          \psHSB@BrightnessBegin\space sub
+          dup 0 eq { pop \psHSB@BrightnessBegin\space }
+                   { Factor mul \psHSB@BrightnessBegin\space add } ifelse
+          /B_hsb ED
+          H_hsb S_hsb B_hsb sethsbcolor    % H S B was on stack
+          OldX OldY PointX PointY lineto lineto 
+          stroke
+          PointX PointY moveto
+          /OldX PointX def /OldY PointY def
+        \else lineto \fi } ifelse
+     } repeat }% fin du code ps
+   \end@ClosedObj
+   }\ignorespaces} 
+%
+\def\pslineHSB{\pst@object{pslineHSB}}
+\def\pslineHSB@i(#1)(#2){{%
+  \begin@OpenObj
+  \pst@getcoor{#1}\pst@tempA
+  \pst@getcoor{#2}\pst@tempB
+%  \typeout{\psHSB@HueEnd~
+%          \psHSB@HueBegin~
+%          \psHSB@SaturationBegin~
+%          \psHSB@SaturationEnd~
+%          \psHSB@BrightnessBegin~
+%          \psHSB@BrightnessEnd}%
+  \addto@pscode{%
+    \pst@tempA 
+    /y0 ED /x0 ED
+    \pst@tempB 
+    /y1 ED /x1 ED
+    /dx x1 x0 sub \psk@plotpoints\space div def
+    /m y1 y0 sub x1 x0 sub div def
+    /t x0 dx sub def
+    /Counter 0 def
+    \ifPst@variableColor
+      /startWave 
+      lambda dColor add dup /lambda ED 
+      tx@addDict begin wavelengthToRGB Red Green Blue end setrgbcolor
+    \fi
+    gsave
+    x0 y0 translate
+    \psk@plotpoints {
+      /t t dx add def
+      /Counter Counter 1 add def
+      t dup m mul
+      1 Counter eq 
+        { moveto currentpoint /OldY ED /OldX ED } % First point
+        {\ifPst@HSB                               % Other points than the first one
+          /PointY exch def
+          /PointX exch def
+          Counter \psk@plotpoints\space div /Factor ED
+          \psHSB@HueEnd\space
+          \psHSB@HueBegin\space sub               % HueEnd-HueBegin
+          dup 0 eq { pop \psHSB@HueBegin\space }
+                   { Factor mul \psHSB@HueBegin\space add } ifelse
+          /H_hsb ED 
+          \psHSB@SaturationEnd\space
+          \psHSB@SaturationBegin\space sub 
+          dup 0 eq { pop \psHSB@SaturationBegin\space }
+                   { Factor mul \psHSB@SaturationBegin\space add } ifelse 
+          /S_hsb ED 
+          \psHSB@BrightnessEnd\space
+          \psHSB@BrightnessBegin\space sub
+          dup 0 eq { pop \psHSB@BrightnessBegin\space }
+                   { Factor mul \psHSB@BrightnessBegin\space add } ifelse
+          /B_hsb ED
+          H_hsb S_hsb B_hsb sethsbcolor    % H S B was on stack
+          OldX OldY PointX PointY lineto lineto 
+          stroke
+          PointX PointY moveto
+          /OldX PointX def /OldY PointY def
+         \else 
+           \ifPst@variableColor
+           \else
+             lineto 
+           \fi
+         \fi 
+       } ifelse
+     } repeat 
+     grestore
+   }%
+   \end@OpenObj
+   }\ignorespaces} 
+\catcode`\@=\TheAtCode\relax
+%
+\endinput
+%%
+%% END pst-hsb.tex

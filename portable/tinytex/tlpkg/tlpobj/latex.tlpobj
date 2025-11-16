@@ -1,6 +1,6 @@
 name latex
 category Package
-revision 75474
+revision 76708
 shortdesc A TeX macro package that defines LaTeX
 longdesc LaTeX is a widely-used macro package for TeX, providing many
 longdesc basic document formating commands extended by a wide range of
@@ -17,13 +17,13 @@ longdesc user commands, font selection and control, class and package
 longdesc writing, font encodings, configuration options and modification
 longdesc of LaTeX. For downloading details, see the linked catalogue
 longdesc entries above.
-containersize 258120
-containerchecksum c75da273bbc707caf254640ad3984314e1527ce721a0e811deabadbdd0bf9ae76810cb055f1dac5b5e27675ed5a71572c8c66897d89657da3507bd4dba7feb78
-doccontainersize 37313888
-doccontainerchecksum 469b002797242ac8b87791cb6afeb86aa2384075b96a14727d43d1bdda164a6516d5cc60e006fab89c86dfe2189906542cbf9550487f8aed50efde54a2750855
-srccontainersize 815644
-srccontainerchecksum ffe2be438ece5411f0d6b6430d3f6e7a73366e923515987ea8acb334676a5830babae34f91ab1e1e2646a5dc55f9dca790899a930848db6d01581c6092236062
-runfiles size=771
+containersize 260040
+containerchecksum 8c5ca9f1602082208245056782e73dec202c467d508660c6bc135e15bb64dc7550ac3aff2562176cc7eb9f78f45536dbd0a944da891461c83d9c030247c29358
+doccontainersize 38185216
+doccontainerchecksum fe8f4f278bda9e0d3e9b627b25f05bb4c579002a8341d31552f608ecad5d349e9ba2fa719fcf7ea92119d4e3c18f069d41248b5511979f1a67cf14933c949661
+srccontainersize 823188
+srccontainerchecksum db5412b45616aad2c31d0203f41ea311854fa15e4bb8c9ae1fdd0742652292c347e18f9499d82b397e730d5c80653d42033b37e3a83adcb16cc371d93b11c5d1
+runfiles size=776
  texmf-dist/makeindex/latex/gglo.ist
  texmf-dist/makeindex/latex/gind.ist
  texmf-dist/tex/latex/base/alltt.sty

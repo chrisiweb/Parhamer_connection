@@ -1,0 +1,693 @@
+%% Package `pst-contourplot.tex'
+%%
+%% This program can be redistributed and/or modified under
+%% the terms of the LaTeX Project Public License Distributed
+%% from CTAN archives in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%% `pst-contourplot'  Extension of PSTricks
+%% for drawing implicit functions f(x,y)=0
+%% This package uses the "marching squares" algorithm.
+%%
+%% Author  :   <manuel.luque27@gmail.com>
+%%
+\csname PSTCONTOURPLOTLoaded\endcsname
+\let \PSTCONTOURPLOTLoaded\endinput
+\ifx\PSTricksLoaded\endinput\else\input pstricks.tex\fi
+\ifx\PSTXKeyLoaded\endinput \else\input pst-xkey.tex\fi
+\def\fileversion{0.6}
+\def\filedate{2018/07/14}
+\message{`PST' v\fileversion, \filedate}
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+\pst@addfams{pst-contourplot}
+\define@key[psset]{pst-contourplot}{a}{\edef\psk@contourplot@a{#1 }} %  dimension d'une cellule
+%
+\define@boolkey[psset]{pst-contourplot}[pst@]{grid}[true]{}
+\define@boolkey[psset]{pst-contourplot}[Pst@]{Fill}[true]{}
+\define@boolkey[psset]{pst-contourplot}[Pst@]{ReverseColors}[true]{}
+\psset[pst-contourplot]{a=0.025,grid=false,Fill=false,ReverseColors=false}
+% 04 juillet 2018
+\define@boolkey[psset]{pst-contourplot}[Pst@]{Draw}[true]{}
+\psset[pst-contourplot]{Draw=true}
+% 6 juillet
+\define@key[psset]{pst-contourplot}{function}{\edef\psk@contourplot@function{#1 }} %  la fonction implicite
+\define@key[psset]{pst-contourplot}{ChoicePoints}{\edef\psk@contourplot@ChoicePoints{#1 }} %  choix des points pour les flèches
+\psset[pst-contourplot]{function=,ChoicePoints=}
+% 14 juillet
+\define@boolkey[psset]{pst-contourplot}[Pst@]{WriteData}[true]{}
+\psset[pst-contourplot]{WriteData=false}
+\define@key[psset]{pst-contourplot}{FileName}{\edef\psk@contourplot@FileName{#1}} %  nom du fichier
+\psset[pst-contourplot]{FileName=PointsCurve}
+%
+\def\psContourPlot{\def\pst@par{}\pst@object{psContourPlot}}
+\def\psContourPlot@i(#1,#2)(#3,#4){% les limites
+\begin@SpecialObj
+\addto@pscode{%
+100 dict begin
+/cm {\pst@number\psunit mul } bind def % mise à l'échelle
+/Div { dup 0 eq { pop } { div } ifelse } def  	% control the Division
+% cote du carre-cellule
+/a \psk@contourplot@a def % en pts
+ \ifPst@algebraic
+      /fonction (\psk@contourplot@function) tx@AlgToPs begin AlgToPs end cvx def
+    \else
+      /fonction  { \psk@contourplot@function } def
+    \fi
+    /function {2 dict begin
+      /y exch def
+      /x exch def
+      fonction end
+    } def
+\ifPst@ReverseColors /flag 0 def \else /flag 1 def \fi
+/tabCels [
+#1 a #3 {/x exch def
+#2 a #4 {/y exch def
+[ x y
+  x a add y
+  x a add y a add
+  x y a add]
+} for
+} for
+] def
+ % indexer les sommets avec leur poids
+ % 0 si f(x,y)<=0
+ % 1 si f(x,y)>0
+/calcValeur {
+  function
+  0 le {(0)}{(1)} ifelse
+ } def
+% https://en.wikibooks.org/wiki/PostScript_FAQ
+/concatstringarray  %  [(a) (b) ... (z)] --> (ab...z)
+    { 0 1 index { length add } forall string
+      0 3 2 roll
+        { 3 copy putinterval
+          length add
+        }
+      forall pop
+    } bind def
+/interpolate { % x2 y2 x1 y1 interpolation lineaire => x y
+7 dict begin
+    /y1 exch def /x1 exch def
+    /y2 exch def /x2 exch def
+    /v1 x1 y1 function def
+    /v2 x2 y2 function def
+    /delta v1 v2 v1 sub Div def
+    x1 delta x2 x1 sub mul sub % x
+    y1 delta y2 y1 sub mul sub % y
+  end
+} def
+/tabIndex [
+#1 a #3 {/x exch def
+#2 a #4 {/y exch def
+[
+x y                 calcValeur
+x a add y 			calcValeur
+x a add y a add     calcValeur
+x y a add			calcValeur
+]
+concatstringarray
+} for
+} for
+] def
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifPst@Fill
+gsave
+1 setlinejoin
+\pst@usecolor\psfillcolor
+0 1 tabCels length 1 sub {/i exch def
+/valuesVertice tabIndex i get def
+/cellule tabCels i get def
+% les sommets
+/S0 {cellule 0 2 getinterval aload pop } def
+/S1 {cellule 2 2 getinterval aload pop } def
+/S2 {cellule 4 2 getinterval aload pop } def
+/S3 {cellule 6 2 getinterval aload pop } def
+flag 0 eq {valuesVertice (1111) eq {
+S0 /y exch def /x exch def
+/part {
+newpath
+x cm y cm moveto
+a cm 0 rlineto
+0 a cm rlineto
+a neg cm 0 rlineto
+closepath
+} def
+part fill part stroke
+ } if
+ }{
+valuesVertice (0000) eq  {
+S0 /y exch def /x exch def
+/part {
+newpath
+x cm y cm moveto
+a cm 0 rlineto
+0 a cm rlineto
+a neg cm 0 rlineto
+closepath
+} def
+part fill part stroke
+} if
+} ifelse
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+valuesVertice (1000) eq {
+   S0 S1 interpolate /yA exch def /xA exch def
+   S0 S3 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   xA cm yA cm moveto
+   S1 cm exch cm exch lineto
+   S2 cm exch cm exch lineto
+   S3 cm exch cm exch lineto
+   xB cm yB cm lineto
+   }{
+   S0 cm exch cm exch moveto
+   xA cm yA cm lineto
+   xB cm yB cm lineto
+   } ifelse
+   closepath
+   fill
+   } if
+valuesVertice (0100) eq {
+   S1 S0 interpolate /yA exch def /xA exch def
+   S1 S2 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   xA cm yA cm moveto
+   xB cm yB cm lineto
+   S2 cm exch cm exch lineto
+   S3 cm exch cm exch lineto
+   S0 cm exch cm exch lineto
+    }{
+   xA cm yA cm moveto
+   xB cm yB cm lineto
+   S1 cm exch cm exch lineto
+    }ifelse
+   closepath
+   fill
+   } if
+valuesVertice (1100) eq {
+   S1 S2 interpolate /yA exch def /xA exch def
+   S0 S3 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   xA cm yA cm moveto
+   S2 cm exch cm exch lineto
+   S3 cm exch cm exch lineto
+   xB cm yB cm lineto
+   }{
+   S0 cm exch cm exch moveto
+   S1 cm exch cm exch lineto
+   xA cm yA cm lineto
+   xB cm yB cm lineto
+   }ifelse
+   closepath
+   fill
+   } if
+valuesVertice (0001) eq {
+   S3 S0 interpolate /yA exch def /xA exch def
+   S3 S2 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   xA cm yA cm moveto
+   S0 cm exch cm exch lineto
+   S1 cm exch cm exch lineto
+   S2 cm exch cm exch lineto
+   xB cm yB cm lineto
+   }{
+   xA cm yA cm moveto
+   xB cm yB cm lineto
+   S3 cm exch cm exch lineto
+   } ifelse
+   closepath
+   fill
+   } if
+valuesVertice (1001) eq {
+   S0 S1 interpolate /yA exch def /xA exch def
+   S3 S2 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   xA cm yA cm moveto
+   S1 cm exch cm exch lineto
+   S2 cm exch cm exch lineto
+   xB cm yB cm lineto
+   }{
+   xA cm yA cm moveto
+   xB cm yB cm lineto
+   S3 cm exch cm exch lineto
+   S0 cm exch cm exch lineto
+   } ifelse
+   closepath
+   fill
+   } if
+valuesVertice (0101) eq { % ambigüité
+% lever l'ambigüité
+% calculer les cccordonnées du centre de la cellule
+S0 /y0 exch def /x0 exch def
+S2 /y2 exch def /x2 exch def
+/xI x0 x2 add 2 div def
+/yI y0 y2 add 2 div def
+   S0 S1 interpolate /yC exch def /xC exch def
+   S0 S3 interpolate /yD exch def /xD exch def
+   S2 S1 interpolate /yB exch def /xB exch def
+   S2 S3 interpolate /yA exch def /xA exch def
+xI yI function 0 flag 0 eq {ge}{le} ifelse {
+  newpath
+  xA cm yA cm moveto
+  xB cm yB cm lineto
+  S2 cm exch cm exch lineto
+   closepath
+   fill
+  newpath
+  xD cm yD cm moveto
+  S0 cm exch cm exch lineto
+  xC cm yC cm lineto
+   closepath
+   fill
+  }{
+  newpath
+  xA cm yA cm moveto
+  xB cm yB cm lineto
+  S1 cm exch cm exch lineto
+  xC cm yC cm lineto
+  S0 cm exch cm exch lineto
+  xD cm yD cm lineto
+   closepath
+   fill
+   } ifelse
+   } if
+valuesVertice (1101) eq {
+   S2 S1 interpolate /yA exch def /xA exch def
+   S2 S3 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   xA cm yA cm moveto
+   S2 cm exch cm exch lineto
+   xB cm yB cm lineto
+   }{
+   xA cm yA cm moveto
+   xB cm yB cm lineto
+   S3 cm exch cm exch lineto
+   S0 cm exch cm exch lineto
+   S1 cm exch cm exch lineto
+   }ifelse
+   closepath
+   fill
+   } if
+valuesVertice (0010) eq {
+   S2 S1 interpolate /yA exch def /xA exch def
+   S2 S3 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   S0 cm exch cm exch moveto
+   S1 cm exch cm exch lineto
+   xA cm yA cm lineto
+   xB cm yB cm lineto
+   S3 cm exch cm exch lineto
+   }{
+   xA cm yA cm moveto
+   S2 cm exch cm exch lineto
+   xB cm yB cm lineto
+   } ifelse
+   closepath
+   fill
+   } if
+valuesVertice (1010) eq {  % ambigüité
+% lever l'ambigüité
+% calculer les cccordonnées du centre de la cellule
+S0 /y0 exch def /x0 exch def
+S2 /y2 exch def /x2 exch def
+/xI x0 x2 add 2 div def
+/yI y0 y2 add 2 div def
+   S0 S1 interpolate /yC exch def /xC exch def
+   S0 S3 interpolate /yD exch def /xD exch def
+   S2 S1 interpolate /yB exch def /xB exch def
+   S2 S3 interpolate /yA exch def /xA exch def
+xI yI function 0 flag 0 eq {ge}{le} ifelse {
+  newpath
+  xA cm yA cm moveto
+  xB cm yB cm lineto
+  S2 cm exch cm exch lineto
+   closepath
+%   fill
+  newpath
+  xD cm yD cm moveto
+  S0 cm exch cm exch lineto
+  xC cm yC cm lineto
+   closepath
+   fill
+ }{
+  newpath
+  xA cm yA cm moveto
+  xB cm yB cm lineto
+  S1 cm exch cm exch lineto
+  xC cm yC cm lineto
+  S0 cm exch cm exch lineto
+  xD cm yD cm lineto
+   closepath
+   fill
+   } ifelse
+   } if
+valuesVertice (0110) eq {
+   S0 S1 interpolate /yA exch def /xA exch def
+   S3 S2 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   S0 cm exch cm exch moveto
+   xA cm yA cm lineto
+   xB cm yB cm lineto
+   S3 cm exch cm exch lineto
+   }{
+   xA cm yA cm moveto
+   S1 cm exch cm exch lineto
+   S2 cm exch cm exch lineto
+   xB cm yB cm lineto
+   } ifelse
+   closepath
+   fill
+   } if
+valuesVertice (1110) eq { % OK
+   S3 S0 interpolate /yA exch def /xA exch def
+   S3 S2 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   xA cm yA cm  moveto
+   xB cm yB cm lineto
+   S3 cm exch cm exch lineto
+   }{
+   xA cm yA cm  moveto
+   xB cm yB cm lineto
+   S2 cm exch cm exch lineto
+   S1 cm exch cm exch lineto
+   S0 cm exch cm exch lineto
+   } ifelse
+   closepath
+   fill
+   } if
+valuesVertice (0011) eq {
+   S0 S3 interpolate /yA exch def /xA exch def
+   S1 S2 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   S0 cm exch cm exch moveto
+   S1 cm exch cm exch lineto
+   xB cm yB cm lineto
+   xA cm yA cm lineto
+   }{
+   xA cm yA cm moveto
+   xB cm yB cm lineto
+   S2 cm exch cm exch lineto
+   S3 cm exch cm exch lineto
+   } ifelse
+   closepath
+   fill
+   } if
+valuesVertice (1011) eq {
+   S1 S0 interpolate /yA exch def /xA exch def
+   S1 S2 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   xA cm yA cm  moveto
+   S1 cm exch cm exch lineto
+   xB cm yB cm lineto
+   }{
+   xA cm yA cm  moveto
+   xB cm yB cm lineto
+   S2 cm exch cm exch lineto
+   S3 cm exch cm exch lineto
+   S0 cm exch cm exch lineto
+   } ifelse
+   closepath
+   fill
+   } if
+valuesVertice (0111) eq {
+   S0 S1 interpolate /yA exch def /xA exch def
+   S0 S3 interpolate /yB exch def /xB exch def
+   newpath
+flag 1 eq {
+   S0 cm exch cm exch moveto
+   xA cm yA cm lineto
+   xB cm yB cm lineto
+   }{
+   xA cm yA cm moveto
+   S1 cm exch cm exch lineto
+   S2 cm exch cm exch lineto
+   S3 cm exch cm exch lineto
+   xB cm yB cm lineto
+   } ifelse
+   closepath
+   fill
+   } if
+ }for
+grestore
+\fi
+% la grille
+\ifpst@grid
+gsave
+0.25 setlinewidth
+0.5 setgray
+#1 a #3 {/x exch def
+ x cm #2 cm moveto
+ x cm #4 cm lineto
+ stroke
+ } for
+#2 a #4 {/y exch def
+ #1 cm y cm moveto
+ #3 cm y cm lineto
+ stroke
+ } for
+newpath
+#1 cm #2 cm moveto
+#3 cm #2 cm lineto
+#3 cm #4 cm lineto
+#1 cm #4 cm lineto
+closepath
+stroke
+grestore
+\fi
+% collecter un tableau de valeurs
+/LesPoints [
+0 1 tabCels length 1 sub {/i exch def
+/valuesVertice tabIndex i get def
+/cellule tabCels i get def
+% les sommets
+/S0 {cellule 0 2 getinterval aload pop } def
+/S1 {cellule 2 2 getinterval aload pop } def
+/S2 {cellule 4 2 getinterval aload pop } def
+/S3 {cellule 6 2 getinterval aload pop } def
+valuesVertice (0000) eq valuesVertice (1111) eq or {} if
+valuesVertice (1000) eq {
+   [S0 S1 interpolate cm exch cm exch]
+   [S0 S3 interpolate cm exch cm exch]
+   } if
+valuesVertice (0100) eq {
+   [S1 S0 interpolate cm exch cm exch]
+   [S1 S2 interpolate cm exch cm exch]
+   } if
+valuesVertice (1100) eq { % OK
+   [S1 S2 interpolate cm exch cm exch]
+   [S0 S3 interpolate cm exch cm exch]
+   } if
+valuesVertice (0001) eq {
+   [S3 S0 interpolate cm exch cm exch]
+   [S3 S2 interpolate cm exch cm exch]
+   } if
+valuesVertice (1001) eq {
+   [S0 S1 interpolate cm exch cm exch]
+   [S3 S2 interpolate cm exch cm exch]
+   } if
+valuesVertice (0101) eq { % ambigüité
+% lever l'ambigüité
+% calculer les coordonnées du centre de la cellule
+S0 /y0 exch def /x0 exch def
+S2 /y2 exch def /x2 exch def
+/xI x0 x2 add 2 div def
+/yI y0 y2 add 2 div def
+xI yI function 0 ge {
+   [S0 S1 interpolate cm exch cm exch]
+   [S0 S3 interpolate cm exch cm exch]
+   [S2 S1 interpolate cm exch cm exch]
+   [S2 S3 interpolate cm exch cm exch]
+  }{
+   [S1 S0 interpolate cm exch cm exch]
+   [S1 S2 interpolate cm exch cm exch]
+   [S3 S2 interpolate cm exch cm exch]
+   [S3 S0 interpolate cm exch cm exch]
+   } ifelse
+   } if
+valuesVertice (1101) eq { % OK
+   [S2 S1 interpolate cm exch cm exch]
+   [S2 S3 interpolate cm exch cm exch]
+   } if
+valuesVertice (0010) eq { %OK
+   [S2 S1 interpolate cm exch cm exch]
+   [S2 S3 interpolate cm exch cm exch]
+   } if
+valuesVertice (1010) eq {  % ambigüité
+% lever l'ambigüité
+% calculer les coordonnées du centre de la cellule
+S0 /y0 exch def /x0 exch def
+S2 /y2 exch def /x2 exch def
+/xI x0 x2 add 2 div def
+/yI y0 y2 add 2 div def
+xI yI function 0 ge {
+   [S1 S0 interpolate cm exch cm exch]
+   [S1 S2 interpolate cm exch cm exch]
+   [S3 S2 interpolate cm exch cm exch]
+   [S3 S0 interpolate cm exch cm exch]
+   }{
+% or
+   [S0 S1 interpolate cm exch cm exch]
+   [S0 S3 interpolate cm exch cm exch]
+   [S2 S1 interpolate cm exch cm exch]
+   [S2 S3 interpolate cm exch cm exch]
+   } ifelse
+   } if
+valuesVertice (0110) eq {
+   [S0 S1 interpolate cm exch cm exch]
+   [S3 S2 interpolate cm exch cm exch]
+   } if
+valuesVertice (1110) eq { % OK
+   [S3 S0 interpolate cm exch cm exch]
+   [S3 S2 interpolate cm exch cm exch]
+   } if
+valuesVertice (0011) eq {
+   [S0 S3 interpolate cm exch cm exch]
+   [S1 S2 interpolate cm exch cm exch]
+   } if
+valuesVertice (1011) eq {
+   [S1 S0 interpolate cm exch cm exch]
+   [S1 S2 interpolate cm exch cm exch]
+   } if
+valuesVertice (0111) eq {
+   [S0 S1 interpolate cm exch cm exch]
+   [S0 S3 interpolate cm exch cm exch]
+   } if
+} for
+ ] def
+\ifPst@WriteData
+(\psk@contourplot@FileName.dat) (w) file /filePoints exch def
+0 1 LesPoints length 1 sub {/i exch def
+  LesPoints i get aload pop /y exch def /x exch def
+    filePoints 91 write %% [
+  filePoints  x 15 string cvs writestring
+  filePoints  32 write %% espace
+  filePoints  y 15 string cvs writestring
+    filePoints 93 write %% ]
+  filePoints  10 write %% CR
+  } for
+ filePoints closefile
+\fi
+% le dessin
+\ifshowpoints
+0 1 LesPoints length 1 sub {/i exch def
+  LesPoints i get aload pop \psk@@dotsize \psk@@@dotsize CLW mul add 2 div 0 360 arc fill
+  } for
+\fi
+\ifPst@Draw
+0 2 LesPoints length 2 sub {/i exch def
+  LesPoints i get aload pop moveto LesPoints i 1 add get aload pop lineto
+  stroke
+  } for
+\fi
+% flécher
+% dessin d'une flèche
+/CLW /currentlinewidth load def
+/fleche {
+ 4 dict begin
+ /y1 exch def /x1 exch def
+ /y2 exch def /x2 exch def
+  gsave
+  x1 y1 moveto
+  y2 y1 sub x2 x1 sub Atan rotate
+   1 CLW mul  2 CLW mul rlineto
+  -5 CLW mul -2 CLW mul rlineto
+   5 CLW mul -2 CLW mul rlineto
+  closepath
+  fill
+  grestore
+ end
+} def
+/ChoicePoints [\psk@contourplot@ChoicePoints] def
+ChoicePoints length 0 ne {
+0 1 ChoicePoints length 1 sub {/i exch def
+/UnPoint ChoicePoints i get def
+ UnPoint abs 2 mod 1 eq {/UnPoint UnPoint 1 sub def} if
+UnPoint LesPoints length ge {/UnPoint LesPoints length 5 sub def} if
+UnPoint LesPoints length neg le {/UnPoint LesPoints length 4 sub neg def} if
+UnPoint 0 ge {
+ LesPoints UnPoint get aload pop
+ LesPoints UnPoint 1 add get aload pop
+ fleche
+} {
+ LesPoints UnPoint abs 1 add get aload pop
+ LesPoints UnPoint abs get aload pop
+ fleche
+} ifelse
+} for
+} if
+end
+ }% fin du code ps
+ \end@SpecialObj
+ }% % fin de la commande PSTricks
+%
+% read data
+%
+\def\psReadData{\def\pst@par{}\pst@object{psReadData}}
+\def\psReadData@i{%
+\begin@SpecialObj
+\addto@pscode{%
+ /LesPoints [(\psk@contourplot@FileName.dat) run ] def
+% le dessin
+\ifshowpoints
+0 1 LesPoints length 1 sub {/i exch def
+  LesPoints i get aload pop \psk@@dotsize \psk@@@dotsize CLW mul add 2 div 0 360 arc fill
+  } for
+\fi
+\ifPst@Draw
+0 2 LesPoints length 2 sub {/i exch def
+  LesPoints i get aload pop moveto LesPoints i 1 add get aload pop lineto
+  stroke
+  } for
+\fi
+% flécher
+% dessin d'une flèche
+/CLW /currentlinewidth load def
+/fleche {
+ 4 dict begin
+ /y1 exch def /x1 exch def
+ /y2 exch def /x2 exch def
+  gsave
+  x1 y1 moveto
+  y2 y1 sub x2 x1 sub Atan rotate
+   1 CLW mul  2 CLW mul rlineto
+  -5 CLW mul -2 CLW mul rlineto
+   5 CLW mul -2 CLW mul rlineto
+  closepath
+  fill
+  grestore
+ end
+} def
+/ChoicePoints [\psk@contourplot@ChoicePoints] def
+ChoicePoints length 0 ne {
+0 1 ChoicePoints length 1 sub {/i exch def
+/UnPoint ChoicePoints i get def
+ UnPoint abs 2 mod 1 eq {/UnPoint UnPoint 1 sub def} if
+ UnPoint LesPoints length ge {/UnPoint LesPoints length 4 sub def} if
+ UnPoint LesPoints length neg le {/UnPoint LesPoints length 4 sub neg def} if
+UnPoint 0 ge {
+ LesPoints UnPoint get aload pop
+ LesPoints UnPoint 1 add get aload pop
+ fleche
+} {
+ LesPoints UnPoint abs 1 add get aload pop
+ LesPoints UnPoint abs get aload pop
+ fleche
+} ifelse
+} for
+} if
+ }% fin du code ps
+ \end@SpecialObj
+ }% % fin de la commande PSTricks
+\catcode`\@=\PstAtCode\relax
+\endinput 

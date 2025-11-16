@@ -1,0 +1,92 @@
+%%
+%% This is file `latex-lab-kernel-changes.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-toc-kernel-changes.dtx  (with options: `kernelchange')
+%% latex-lab-sec.dtx  (with options: `kernelchange')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-toc-kernel-changes.dtx (C) Copyright 2022-2025 LaTeX Project
+\def\ltlabkerneldate{2025-07-09}
+\def\ltlabkernelversion{0.85i}
+\ProvidesPackage{latex-lab-kernel-changes}
+        [\ltlabkerneldate\space v\ltlabkernelversion\space
+         General kernel and class changes]
+
+\def\toclevel@document{-10}
+\def\toclevel@part{-1}
+\def\toclevel@chapter{0}
+\def\toclevel@section{1}
+\def\toclevel@subsection{2}
+\def\toclevel@subsubsection{3}
+\def\toclevel@paragraph{4}
+\def\toclevel@subparagraph{5}
+\def\toclevel@figure{1}
+\def\toclevel@table{1}
+\ExplSyntaxOn
+\AddToHook{package/hyperref/after}
+ {
+   \RenewDocumentCommand\MakeLinkTarget {s O{} m}
+    {
+      \bool_if:NT \l__hyp_target_create_bool
+        {
+          \group_begin:
+          \hook_use:n { makelinktarget }
+          \IfBooleanTF  {#1}
+            {
+              \__hyp_target_manual:nn {#2}{#3}
+            }
+            {
+              \__hyp_target_counter:nn {#2}{#3}
+            }
+          \group_end:
+          \UseTaggingSocket{recordtarget}
+        }
+    }
+ }
+\ExplSyntaxOff
+%% File: latex-lab-sec.dtx (C) Copyright 2022-2025 LaTeX Project
+\def\ltlabsecdate{2025-10-20}
+\def\ltlabsecversion{0.84k}
+\ifdefined\directlua
+ \ifnum\outputmode > 0
+   \pdfvariable gentounicode =1
+   \protected\def\pdfglyphtounicode {\pdfextension glyphtounicode }
+   \protected\edef\pdfgentounicode  {\pdfvariable gentounicode}
+   \input{glyphtounicode}
+ \fi
+\fi
+\ifdefined\pdfglyphtounicode
+ \input{glyphtounicode-cmex}
+\fi
+
+\endinput
+%%
+%% End of file `latex-lab-kernel-changes.sty'.

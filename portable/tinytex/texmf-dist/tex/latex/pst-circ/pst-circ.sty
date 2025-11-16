@@ -1,0 +1,14 @@
+%% $Id: pst-circ.sty 210 2021-09-10 07:52:09Z herbert $
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-circ}[2021/09/09 package wrapper for 
+  pst-circ.tex (hv)]
+\input{pst-circ.tex}
+\IfFileExists{pst-circ.pro}{%
+  \ProvidesFile{pst-circ.pro}
+    [2021/09/09 v. 0.02,  PostScript prologue file (hv)]
+    \@addtofilelist{pst-circ.pro}}{}%
+\ProvidesFile{pst-circ.tex}
+  [\filedate\space v\fileversion\space `PST-circ' (CJ,hv)]
+\let\bf\bfseries
+\let\it\itshape
+\endinput

@@ -1,0 +1,306 @@
+\input ptb-utils
+\input ptb-pdfData
+
+\createarray{available fonts}
+
+\def\___setfontsizes#1#2#3{%
+    \def\_temp{#2}%
+    \def\_tempA{default}%
+    \font\@@=#3\relax%
+    \ifx\_temp\_tempA%
+        \_xp\edef\csname #1 default\endcsname{#3}%
+    \else%
+        \_xp\edef\csname #1 at #2\endcsname{#3}%
+    \fi%
+}
+
+\def\__setfontsizes#1#2{%
+    \ifx\_nul#2%
+    \else%
+        \___setfontsizes{#1}#2%
+        \_afterfi{\__setfontsizes{#1}}%
+    \fi%
+}
+
+\def\_setfontsizes#1#2{%
+    \def\_temp{\__setfontsizes{#1}}%
+    \_xp\_temp#2\_nul%
+}
+
+\def\addfont#1#2{%
+    \_mapkeys_with_setter\_vanilla_mapkey\lastkeys{#2}%
+    \keyexists{default}\_defaultcode\lastkeys%
+    \ifx\_defaultcode\_nul%
+        {\newlinechar=`^^J
+            \errhelp={Default codes are used for when a specific font size is not specified but requested, in which case the default code is scaled up to the requested font size.^^J%
+            For example, if the font name is `rm', the default code may be `cmr10'.^^J%
+            If a font size of 20 is requested, but not specified, then the font `cmr10 at 20pt' will be utilized.}%
+            \errmessage{Default code was not specified}%
+        }%
+    \fi%
+    \_setfontsizes{#1}\lastkeys%
+    \appendarray{available fonts}{#1}%
+}
+
+\def\applyfontcode{\afterassignment\@@ \font\@@}
+
+\def\getfontcode#1#2{%
+    \ifcsname #1 at #2\endcsname%
+        \csname #1 at #2\endcsname%
+    \else%
+        \csname #1 default\endcsname\_space at #2
+    \fi%
+}
+
+\def\textfontcalc#1{\def\fontsize{#1}}
+\def\scriptfontcalc#1{\edef\fontsize{\the\dimexpr #1 * 7 / 10\relax}}
+\def\scriptscriptfontcalc#1{\edef\fontsize{\the\dimexpr #1 / 2\relax}}
+
+%   #1: Family
+%   #2: Font
+\def\_setfontfamily#1#2{%
+    \textfontcalc{\currscale}%
+    \expanded{\noexpand\font\noexpand\@@=\getfontcode{#2}{\fontsize}}%
+    \textfont#1=\@@%
+    \scriptfontcalc{\currscale}%
+    \expanded{\noexpand\font\noexpand\@@=\getfontcode{#2}{\fontsize}}%
+    \scriptfont#1=\@@%
+    \scriptscriptfontcalc{\currscale}%
+    \expanded{\noexpand\font\noexpand\@@=\getfontcode{#2}{\fontsize}}%
+    \scriptscriptfont#1=\@@%
+}
+
+\def\_rsetfontfamily#1#2#3{\_setfontfamily{#2}{#1}}
+
+\createarray{math@fonts}
+
+\def\setfontfamily#1#2{%
+    \ifcsname family@#1@font\endcsname%
+        \removeitemarray{font@\csname family@#1@font\endcsname @family}{#1}%
+    \fi%
+    \_setfontfamily{#1}{#2}%
+    \_xp\def\csname family@#1@font\endcsname{#2}%
+    \ensurearray{font@#2@family}%
+    \appendarray{font@#2@family}{#1}%
+    \appendarray{math@fonts}{#2}%
+}
+
+\def\_updatefontfamily#1#2{%
+    \arraymap{font@#1@family}{\_rsetfontfamily{#1}}%
+}
+
+\def\updatefontfamilies{%
+    \arraymap{math@fonts}\_updatefontfamily%
+}
+
+\def\_setfont_and_scale#1#2{%
+    \applyfontcode\getfontcode{#1}{#2}\relax%
+}
+
+\protected\def\setfont#1{%
+    \edef\currfont{#1}%
+    \_setfont_and_scale\currfont\currscale%
+}
+
+\protected\def\setscale#1{%
+    \edef\currscale{\the\dimexpr#1\relax}%
+    \_setfont_and_scale\currfont\currscale%
+    \updatefontfamilies%
+}
+
+\protected\def\setfontandscale#1#2{%
+    \edef\currfont{#1}%
+    \edef\currscale{\the\dimexpr#2\relax}%
+    \_setfont_and_scale\currfont\currscale%
+    \updatefontfamilies%
+}
+
+\addfont{rm}{%
+    default=cmr10,
+    5pt=cmr5,
+    6pt=cmr6,
+    7pt=cmr7,
+    8pt=cmr8,
+    9pt=cmr9,
+    10pt=cmr10,
+    12pt=cmr12,
+    17pt=cmr17
+}
+
+\addfont{it}{%
+    default=cmti10,
+    7pt=cmti7,
+    8pt=cmti8,
+    9pt=cmti9,
+    10pt=cmti10,
+    12pt=cmti12
+}
+
+\addfont{bf}{%
+    default=cmbx10,
+    5pt=cmbx5,
+    6pt=cmbx6,
+    7pt=cmbx7,
+    8pt=cmbx8,
+    9pt=cmbx9,
+    10pt=cmbx10,
+    12pt=cmbx12
+}
+
+\addfont{sc}{%
+    default=cmcsc10,
+    8pt=cmcsc8,
+    9pt=cmcsc9,
+    10pt=cmcsc10
+}
+
+\addfont{mi}{%
+    default=cmmi10,
+    5pt=cmmi5,
+    6pt=cmmi6,
+    7pt=cmmi7,
+    8pt=cmmi8,
+    9pt=cmmi9,
+    10pt=cmmi10,
+    12pt=cmmi12
+}
+
+\addfont{sy}{%
+    default=cmsy10,
+    5pt=cmsy5,
+    6pt=cmsy6,
+    7pt=cmsy7,
+    8pt=cmsy8,
+    9pt=cmsy9,
+    10pt=cmsy10
+}
+
+\addfont{ex}{%
+    default=cmex10,
+    7pt=cmex7,
+    8pt=cmex8,
+    9pt=cmex9,
+    10pt=cmex10
+}
+
+\addfont{sl}{%
+    default=cmsl10,
+    8pt=cmsl8,
+    9pt=cmsl9,
+    10pt=cmsl10,
+    12pt=cmsl12
+}
+
+\addfont{ss}{%
+    default=cmss10,
+    8pt=cmss8,
+    9pt=cmss9,
+    10pt=cmss10,
+    12pt=cmss12
+}
+
+\addfont{tt}{%
+    default=cmtt10,
+    8pt=cmtt8,
+    9pt=cmtt9,
+    10pt=cmtt10,
+    12pt=cmtt12
+}
+
+\addfont{sl}{%
+    default=cmsl10,
+    8pt=cmsl8,
+    9pt=cmsl9,
+    10pt=cmsl10,
+    12pt=cmsl12
+}
+
+\addfont{msam}{%
+    default=msam10,
+    8pt=msam8,
+    9pt=msam9,
+    10pt=msam10
+}
+
+\addfont{msbm}{%
+    default=msbm10,
+    8pt=msbm8,
+    9pt=msbm9,
+    10pt=msbm10
+}
+
+\addfont{eufm}{%
+    default=eufm10,
+    8pt=eufm8,
+    9pt=eufm9,
+    10pt=eufm10
+}
+
+\addfont{rsfs}{
+    default=rsfs10,
+    10pt=rsfs10
+}
+
+\setfontandscale{rm}{10pt}
+\setfontfamily{0}{rm}
+\setfontfamily{1}{mi}
+\setfontfamily{2}{sy}
+\setfontfamily{3}{ex}
+\setfontfamily{4}{msam}
+\setfontfamily{5}{msbm}
+\setfontfamily{6}{bf}
+\setfontfamily{7}{tt}
+\setfontfamily{8}{it}
+\setfontfamily{9}{ss}
+\setfontfamily{10}{sl}
+\setfontfamily{11}{eufm}
+\setfontfamily{12}{rsfs}
+\def\bf{\setfont{bf}\fam=6\relax}
+\def\it{\setfont{it}\fam=8\relax}
+\def\bb{\fam=5\relax}
+\def\sf{\setfont{ss}\fam=9\relax}
+\def\sl{\setfont{sl}\fam=10\relax}
+\def\frak{\setfont{eufm}\fam=11\relax}
+\def\scr{\setfont{rsfs}\fam=12\relax}
+
+\def\__{\__}
+
+\def\__mathftable#1#2#3{%
+    \mathchardef#2=\the\numexpr"#3#100 + \the\_ptbcountA\relax%
+    \advance\_ptbcountA by 1\relax%
+    \_mathftable{#1}%
+}
+
+\def\_mathftable#1#2{%
+    \ifx\_nul#2%
+    \else%
+        \_afterfi{%
+            \ifx\__#2%
+                \advance\_ptbcountA by 1\relax%
+                \_afterfi{\_mathftable{#1}}%
+            \else%
+                \_afterfi{\__mathftable{#1}{#2}}%
+            \fi%
+        }%
+    \fi%
+}
+
+\def\_mathfonttable#1[#2]#3{%
+    \_ptbcountA=#2\relax%
+    \_mathftable{#1}#3\_nul%
+}
+
+\def\mathfonttable#1{%
+    \_ifnextchar[ {\_mathfonttable{#1}}{\_mathfonttable{#1}[0]}%
+}
+
+\mathfonttable{4}[0]{%
+    \boxdot2\boxplus2\boxtimes2\square0\blacksquare0\__\diamond0\blackdiamond0\rotateclockwise0%
+    \rotatecounterclockwise0\rightleftharpoons3\leftrightharpoons3\boxminus2\Vdash3\Vvdash3\vDash3%
+    \twoheadrightarrow3\twoheadleftarrow3\leftleftarrows3\rightrightarrows3\upuparrows3%
+    \downdownarrows3\uprightharpoon3\downrightharpoon3\upleftharppon3\downleftharpoon3%
+    \rightarrowtail3\leftarrowtail3\leftrightarrows3\rightleftarrows3\Lsh3\Rsh3\rightsquigarrow3%
+    \leftrightsquigarrow3\looparrowleft3\looparrowright3\circeq3\succsim3\gtrsim3\gtrapprox3%
+    \multimap3\therefore2\because2\Doteq3\triangleq3\precsim3\lesssim3\lessapprox3%
+}
+

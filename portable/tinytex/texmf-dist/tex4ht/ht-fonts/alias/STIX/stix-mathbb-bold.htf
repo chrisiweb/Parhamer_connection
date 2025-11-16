@@ -1,0 +1,4 @@
+.stix-mathbb
+htfcss:  stix-mathbb-bold  font-weight: bold; font-family: 'STIXMathBlackboard', serif;
+
+

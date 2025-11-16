@@ -1,0 +1,14 @@
+\ProvidesPackage{pst-shell}
+  [2016/12/22 v0.01 LaTeX wrapper for `pst-shell' ]
+%
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-shell}[2016/12/22 package wrapper for
+  pst-shell]
+\input{pst-shell.tex}
+\ProvidesFile{pst-shell.tex}
+  [\filedate\space v\fileversion\space `PST-shell']
+\IfFileExists{pst-shell.pro}{%
+  \ProvidesFile{pst-shell.pro}
+    [2016/12/23 v. 0.01,  PostScript prologue file (hv)]
+\@addtofilelist{pst-func.pro}}{}%
+\endinput

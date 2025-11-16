@@ -1,0 +1,196 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Main Module
+%
+% Synopsis:  This is the main module of ZzTeX.  It sets up character
+%            categories and loads all the other modules.
+%
+% Note:      ZzTeX assumes the use of DVIPSONE, the PostScript DVI program
+%            from Y&Y.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   27 March 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% If ZzTeX is already loaded, quit immediately.
+
+\ifx \ZzTeX\zzzundefinedzzz \else \message{... using format}\endinput \fi
+
+%                       Character Categories
+%                       --------- ----------
+
+
+%  Character   INITEX         ZzTeX             Notes
+%
+%  NUL         ignored        invalid           Ignored in Plain TeX.
+%  TAB                        invalid           Space in Plain TeX.
+%  FORMFEED                   active: \par
+%  RETURN      end of line    end of line
+%  space       space          space
+%  #                          parameter
+%  $                          math shift
+%  &                          alignment tab
+%  %           comment        comment
+%  @           other          active: command
+%  letters     letter         letter
+%  \           escape         escape
+%  ^                          superscript
+%  _                          subscript
+%  {                          begin group
+%  }                          end group
+%  ~                          active: tie
+%  DELETE      invalid        invalid
+%  others      other          invalid
+
+
+\chardef \catescape      =  0 %  Escape character (\).          %^catcode
+\chardef \catbegin       =  1 %  Begin group ({).               %^catcode
+\chardef \catend         =  2 %  End group (}).                 %^catcode
+\chardef \catmath        =  3 %  Math mode ($).                 %^catcode
+\chardef \catalign       =  4 %  Alignment tab (&).             %^catcode
+\chardef \catendofline   =  5 %  End of line.                   %^catcode
+\chardef \catparameter   =  6 %  Parameter (#).                 %^catcode
+\chardef \catsuperscript =  7 %  Superscript (^).               %^catcode
+\chardef \catsubscript   =  8 %  Subscript (_).                 %^catcode
+\chardef \catignored     =  9 %  Ignored character.             %^catcode
+\chardef \catspace       = 10 %  Space.                         %^catcode
+\chardef \catletter      = 11 %  Letter.                        %^catcode
+\chardef \catother       = 12 %  Other.                         %^catcode
+\chardef \catactive      = 13 %  Active character (tilde).      %^catcode
+\chardef \catcomment     = 14 %  Comment (percent).             %^catcode
+\chardef \catinvalid     = 15 %  Invalid character.             %^catcode
+\chardef \catcsname      = 16
+
+\catcode`\^   = \catsuperscript
+\catcode`\^^@ = \catinvalid
+\catcode`\^^I = \catinvalid
+\catcode`\^^L = \catactive
+\catcode`\^^M = \catendofline
+\catcode`\    = \catspace
+\catcode`\#   = \catparameter
+\catcode`\$   = \catmath
+\catcode`\&   = \catalign
+\catcode`\%   = \catcomment
+\catcode`\@   = \catactive
+\catcode`\\   = \catescape
+\catcode`\_   = \catsubscript
+\catcode`\{   = \catbegin
+\catcode`\}   = \catend
+\catcode`\~   = \catactive
+\catcode`\^^? = \catinvalid
+
+% Characters "80--"FF are catcoded as invalid in zzmisc.
+
+\outer \def ^^L{\par}
+
+%                       Atsign Commands
+%                       ------ --------
+
+
+% At-sign commands are reserved for extended commands within blocks.
+% \defineatsigncommand makes a local definition!
+
+
+\def \defineatsigncommand @#1{%                         char args {body}
+  \withname\def{\zat#1}}
+
+\def @#1{%                                              char
+  %%%\relax % Stops \omit search in an alignment cell.
+  \if \undefinedp{\zat#1}%
+    \error{undefat}{The atsign command `\string@#1' is not defined
+                    in this block}%
+  \fi
+  \name{\zat#1}}
+
+%                       Markers
+%                       -------
+
+
+% This command does nothing, but it provides a name on which to
+% hang a comment for ZzExplore.
+
+\def \definemarker #1{%                                 {marker-name}
+  }
+
+%                       Paragraph Programs
+%                       --------- --------
+
+
+% We maintain a list of little programs that must be executed
+% at the beginning of every paragraph.  A program is declared
+% with `\declareeverypar'.  The programs are executed with
+% `\requiredeverypar'.
+
+\def \everyparlist {}
+
+\def \declareeverypar #1{%                              {code}
+  \append{#1}{\everyparlist}}
+
+\def \requiredeverypar {%
+  \maplist{##1}{\everyparlist}}
+
+%                       Modules
+%                       -------
+
+
+\def \zremovePlaindef #1{%
+  \let #1= \relax}
+
+\input zzprog           % Must be first.
+\input zzreg            % Must be second. 
+\input zzerror
+\input zzhelp
+\input zzio
+\input zzfont
+\input zzvmode
+\input zzhmode
+\input zzhmodeb
+\input zzhyph
+\input zzltrspc
+\input zzblock
+\input zzxref
+\input zzdoc
+\input zzdiv
+\input zzpage
+\input zzoverlay
+\input zzindexv1        % Must precede body files.
+\input zzsect
+\input zztext
+\input zztabbing
+\input zznote
+\input zzlist
+\input zztabularv3
+\input zzfloat
+\input zzart
+\input zztag
+\input zzmath
+\input zzfront
+\input zzps
+\input zzhyper
+\input zzmisc           % Must be next to last.
+\input zzplain          % Must be last.
+
+%                       Identification
+%                       --------------
+
+
+\def \TeX {T\kern-.1667em \lower .55ex \hbox{E}\kern-.1em X}
+\def \ZzTeX {Z\kern -.02em z\kern -.05em \TeX}
+
+\input zzver\relax
+
+\everyjob = {\messagenl{__Welcome to ZzTeX version \ZzTeXversion__}}
+
+\def  \fmtname    {ZzTeX}
+\edef \fmtversion {\ZzTeXversion}
+
+
+\messagenl{__Welcome to ZzTeX version \ZzTeXversion__}
+
+\if \orp{\hmodep}{\posp{\pagetotal}}
+  \zzerror{Spurious paragraph text appears in the ZzTeX files}% 
+\fi

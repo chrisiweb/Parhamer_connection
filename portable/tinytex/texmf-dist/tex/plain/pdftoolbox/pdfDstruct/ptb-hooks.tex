@@ -1,0 +1,40 @@
+\input ptb-utils
+
+\_checkloaded{hooks}
+
+\input pdfData/ptb-arrays
+
+\def\createhook#1{%
+    \_xp\def\csname hook@#1\endcsname{}
+}
+
+\def\appendtohook#1#2{%
+    \def\_temp{\_xp\def\csname hook@#1\endcsname}%
+    \_xp\_xp\_xp\_temp\_xp\_xp\_xp{\csname hook@#1\endcsname#2}
+}
+
+\def\prependtohook#1#2{%
+    \def\_temp{\_xp\def\csname hook@#1\endcsname}%
+    \def\_tempA{#2}%
+    \_xp\_xp\_xp\_xp\_xp\_xp\_xp\_temp\_xp\_xp\_xp\_xp\_xp\_xp\_xp{\_xp\_xp\_xp\_tempA\_xp\_xp\_xp\csname hook@#1\endcsname}%
+}
+
+\def\callhook#1{%
+    \csname hook@#1\endcsname%
+}
+
+\createhook{end}
+
+\def\_writedata#1{\immediate\write\_PTBwrite{\gdef\noexpand#1{#1}}}
+
+\createarray{document data}
+\def\docdata#1{\appendarray{document data}{#1}}
+
+\appendtohook{end}{%
+    \immediate\openout\_PTBwrite{\jobname .data}%
+    \let\_arr_index=\_writedata%
+    \executearray{document data}%
+}
+
+\def\bye{\par\callhook{end}\par\vfill\supereject\end}
+

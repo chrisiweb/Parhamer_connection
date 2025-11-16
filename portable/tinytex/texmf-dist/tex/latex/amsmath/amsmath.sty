@@ -26,7 +26,7 @@
 \DeclareRelease{}{1994-06-01}{amsmath-2018-12-01.sty}
 \DeclareRelease{}{2018-12-01}{amsmath-2018-12-01.sty}
 \DeclareCurrentRelease{}{2019-04-01}
-\ProvidesPackage{amsmath}[2025/06/16 v2.17y AMS math features]
+\ProvidesPackage{amsmath}[2025/07/09 v2.17z AMS math features]
 \edef\@temp{\catcode 96=\number\catcode 96 }
 \catcode\string `\`=12
 \def\do#1{\catcode\number`#1=\number\catcode`#1}
@@ -1226,6 +1226,7 @@ ill-advised in LaTeX.%
 \def\make@df@tag@@@#1{\gdef\df@tag{\tagform@{#1}%
   \toks@\@xp{\p@equation{#1}}\edef\@currentlabel{\the\toks@}}}
 \AddToHook{begindocument/end}{\let\ltx@label\label}
+\AddToHook{build/page/reset}{\let \ltx@label \@gobble@with@sphack@om}
 \def\label@in@display{%
     \ifx\df@label\@empty\else
         \@amsmath@err{Multiple \string\label's:

@@ -1,0 +1,773 @@
+%% $Id: pst-fractal.tex 1162 2020-03-16 19:18:15Z herbert $
+%%
+%% This is file `pst-fractal.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-fractal.tex'
+%%
+%% Herbert Voss <hvoss _at_ tug.org>
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-fractal' is a PSTricks package to draw Julia and
+%%       Mandelbrot sets as well as Sierpinski, ...
+%%
+\csname PSTfractalLoaded\endcsname
+\let\PSTfractalLoaded\endinput
+\ifx\PSTricksLoaded\endinput\else   \input pstricks.tex\fi
+\ifx\PSTfuncLoaded\endinput \else   \input pst-func.tex\fi
+\ifx\PSTricksAddLoaded\endinput\else\input pstricks-add.tex\fi
+\ifx\PSTXKeyLoaded\endinput\else    \input pst-xkey \fi
+%
+\def\fileversion{0.12}
+\def\filedate{2022/10/13}
+\message{`PST-fractal' v\fileversion, \filedate\space (hv)}
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+\pst@addfams{pst-fractal}
+\pstheader{pst-fractal.pro}
+%\SpecialCoor
+%
+\newdimen\pst@fractal@xWidth
+\define@key[psset]{pst-fractal}{xWidth}[1cm]{\pssetlength\pst@fractal@xWidth{#1}}
+\newdimen\pst@fractal@yWidth
+\define@key[psset]{pst-fractal}{yWidth}[1cm]{\pssetlength\pst@fractal@yWidth{#1}}
+\psset[pst-fractal]{xWidth=1cm,yWidth=1cm}
+\define@key[psset]{pst-fractal}{type}[Julia]{\def\pst@fractal@type{#1}}
+\psset[pst-fractal]{type=Julia}% or type=Mandel
+\def\pst@fractal@Julia{Julia}\def\pst@fractal@Mandel{Mandel}
+\define@key[psset]{pst-fractal}{baseColor}[white]{\pst@getcolor{#1}\pst@fractal@baseColor}
+\psset[pst-fractal]{baseColor=white}
+\define@key[psset]{pst-fractal}{function}[z z cxmul c cxadd ]{\def\pst@fractal@function{#1 }}
+\psset{function=z z cxmul c cxadd}
+
+%
+\define@key[psset]{pst-fractal}{cx}[0]{\def\pst@fractal@cx{#1 }}
+\define@key[psset]{pst-fractal}{cy}[0]{\def\pst@fractal@cy{#1 }}
+\define@key[psset]{pst-fractal}{dIter}[1]{\def\pst@fractal@dIter{#1 }}
+\psset[pst-fractal]{cx=0,cy=0,dIter=1}
+\define@key[psset]{pst-fractal}{maxIter}[255]{\pst@checknum{#1}\pst@fractal@maxIter}
+\define@key[psset]{pst-fractal}{maxRadius}[100]{\pst@checknum{#1}\pst@fractal@maxRadius}
+\psset[pst-fractal]{maxIter=255,maxRadius=100}
+\define@key[psset]{pst-fractal}{plotpoints}[2000]{\pst@checknum{#1}\pst@fractal@plotpoints}
+\psset[pst-fractal]{plotpoints=2000}
+%
+\define@key[psset]{pst-fractal}{angle}[0]{\pst@getangle{#1}\pst@fractal@angle}
+\define@key[psset]{pst-fractal}{c}[5]{\pst@checknum{#1}\pst@fractal@c}
+\newdimen\pst@fractal@minWidth
+\define@key[psset]{pst-fractal}{minWidth}[1pt]{\pssetlength\pst@fractal@minWidth{#1}}
+\psset[pst-fractal]{angle=0,c=5,minWidth=1pt}
+%
+\define@key[psset]{pst-fractal}{scale}[1]{\pst@getscale{#1}{\pst@fractal@scale}%
+    \let\pst@fractal@Xscale\pst@tempg}
+\psset[pst-fractal]{scale=1}
+%
+\def\pst@fractal@radius{0.001 }
+%
+\newdimen\pst@fractal@Radius
+\define@key[psset]{pst-fractal}{Radius}[5cm]{\pssetlength\pst@fractal@Radius{#1}}
+\define@boolkey[psset]{pst-fractal}[Pst@fractal@]{Color}[true]{}
+\psset[pst-fractal]{Radius=5cm,Color=false}
+%
+\define@key[psset]{pst-fractal}{n}{\def\pst@fractal@n{#1 }} 
+\define@key[psset]{pst-fractal}{dotcolor}{\pst@getcolor{#1}\psdotcolor}
+\define@key[psset]{pst-fractal}{N}{\def\pst@fractal@N{#1}}  
+\psset[pst-fractal]{n=3,N=all,dotcolor=red}
+
+\define@key[psset]{pst-fractal}{i}{\def\pst@fractal@i{#1 }} % i-Fibonacci
+\define@key[psset]{pst-fractal}{morphism}{\def\pst@fractal@morphism{#1}} % les substitutions
+\define@boolkey[psset]{pst-fractal}[Pst@]{juxtaposition}[true]{} %
+\define@key[psset]{pst-fractal}{colorF}{\pst@getcolor{#1}\pscolorF}
+\psset[pst-fractal]{morphism=(0) (1) (2),juxtaposition=false,colorF=red,i=6}
+%
+%===========================================================
+%
+\def\psCantor{\pst@object{psCantor}}
+\def\psCantor@i{%
+  \addbefore@par{n=5,xWidth=10cm,yWidth=5mm,linewidth=2mm}
+  \begin@SpecialObj
+  \addto@pscode{
+    /N@ \pst@fractal@n def
+%    \pst@number\psunit dup scale
+    /v 0 def
+    /deltaV \pst@number\pst@fractal@yWidth def
+    0 0 moveto
+    /cantor_set { %  x0 x1 v n
+      4 dict begin
+      /n exch def
+      /v exch def
+      /x1 exch def
+      /x0 exch def 
+      x0 v moveto 
+      x1 v lineto \pst@usecolor\pslinecolor \pst@number\pslinewidth stroke
+      n 1 gt { 
+        x0 dup dup add x1 add 3 div v deltaV sub n 1 sub cantor_set
+        x0 x1 dup add add 3 div x1 v deltaV sub n 1 sub cantor_set
+      } if
+      end
+    } def 
+    0 \pst@number\pst@fractal@xWidth 0 N@ cantor_set
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces} 
+%
+\def\psHilbert{\pst@object{psHilbert}}
+\def\psHilbert@i{%
+  \addbefore@par{n=4,N=all,dotcolor=red}
+  \begin@SpecialObj
+  \addto@pscode{
+    /N@ \pst@fractal@n def
+    /NbrePts (\pst@fractal@N) def
+    NbrePts (all) eq {/Npts 4 N@ 1 add exp cvi def}{/Npts NbrePts cvi def Npts 4 N@ 1 add exp gt {/Npts 4 N@ 1 add exp cvi def} if } ifelse
+    /dotcolor {\pst@usecolor\psdotcolor } def
+    /cmunit {\pst@number\psunit mul} bind def 
+    tx@fractalDict begin HilbertFractal 
+    \psls@solid
+    \ifshowpoints
+      0 2 HilbertCurve length 2 sub {
+	/i exch def
+        i 2 div Npts ge {exit} if
+        HilbertCurve i get
+        HilbertCurve i 1 add get
+        \psk@dotsize DS
+        0 360 arc dotcolor fill
+      } for
+    \fi
+    end 
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces} 
+%
+\def\psFibonacci{\pst@object{psFibonacci}}
+\def\psFibonacci@i{%
+  \addbefore@par{n=10, angle=90}%
+  \begin@SpecialObj
+  \addto@pscode{
+    /cmunit {\pst@number\psunit mul} bind def % mise Ã  l'Ã©chelle
+    /angle \pst@fractal@angle def
+    /n@ \pst@fractal@n def
+    n@ 3 le {/n@ 3 def} if
+    /ColorF { \pst@usecolor\pscolorF } def
+    /setLineColor { \pst@usecolor\pslinecolor } def
+    /Pst@juxtaposition \ifPst@juxtaposition true \else false \fi def
+    /F1 (1) def
+    /F2 (0) def
+    /tx { x1 x0 sub } def
+    /ty { y1 y0 sub } def
+    /x0 0 def /y0 0 def
+    x0 y0 moveto
+    /x1 0 def /y1 1 cmunit def
+    x1 y1 lineto
+    tx@fractalDict begin FibonacciFractal end
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces}
+%
+%
+\def\psNewFibonacci{\def\pst@par{}\pst@object{psNewFibonacci}}
+\def\psNewFibonacci@i{%
+  \addbefore@par{n=10, angle=90}%
+  \begin@SpecialObj
+  \addto@pscode{
+    /cmunit {\pst@number\psunit mul} bind def % mise à l'échelle
+    /angle \pst@fractal@angle def
+    /n@ \pst@fractal@n def
+    n@ 3 le {/n@ 3 def} if
+    /morhism [\pst@fractal@morphism] def
+    /setLineColor { \pst@usecolor\pslinecolor } def
+    /m@0 morhism 0 get def
+    /m@1 morhism 1 get def
+    /m@2 morhism 2 get def
+    /F1 (1) def
+    /F2 (0) def
+    /tx {x1 x0 sub} def
+    /ty {y1 y0 sub} def
+    /x0 0 def /y0 0 def
+    x0 y0 moveto
+    /x1 0 def /y1 1 cmunit def
+    x1 y1 lineto
+    tx@fractalDict begin newFibonacciFractal end
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces}
+%
+% i-Fibonacci
+\def\psiFibonacci{\def\pst@par{}\pst@object{psiFibonacci}}
+\def\psiFibonacci@i{%
+  \addbefore@par{angle=90}%
+  \begin@SpecialObj
+  \addto@pscode{
+    /cmunit {\pst@number\psunit mul} def 
+    /angle \pst@fractal@angle def
+    /n@ \pst@fractal@n def
+    n@ 3 le {/n@ 3 def} if
+    /i@ \pst@fractal@i def
+    /setLineColor { \pst@usecolor\pslinecolor } bind def
+    tx@fractalDict begin i-FibonacciFractal end
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces}
+%
+% 30 septembre 2017
+% k-Fibonacci
+\define@key[psset]{pst-fractal}{k}{\def\pst@fractal@k{#1 }} % k
+\psset[pst-fractal]{k=5}
+%
+\def\pskFibonacci{\def\pst@par{}\pst@object{pskFibonacci}}
+\def\pskFibonacci@i{\@ifnextchar({\pskFibonacci@ii}{\pskFibonacci@ii(0,0)}}
+\def\pskFibonacci@ii(#1){%
+  \addbefore@par{k=5,angle=90}%
+  \begin@SpecialObj
+  \pst@@getcoor{#1}%
+  \addto@pscode{
+     \pst@coor /t@y ED /t@x ED
+    /cmunit {\pst@number\psunit mul} bind def % mise à l'échelle
+    /cmunit_1 {\pst@number\psunit div} bind def % mise à l'échelle
+    /angle \pst@fractal@angle def
+    /n@ \pst@fractal@n def
+    /k@ \pst@fractal@k def
+    /setLineColor { \pst@usecolor\pslinecolor } def
+    tx@fractalDict begin k-FibonacciFractal end
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces}
+%
+% 1 octobre 2017
+% Biperiodic-Fibonacci-Words
+\define@key[psset]{pst-fractal}{a}{\def\pst@fractal@a{#1 }} % k
+\psset[pst-fractal]{a=5}
+\define@key[psset]{pst-fractal}{b}{\def\pst@fractal@b{#1 }} % k
+\psset[pst-fractal]{b=5}
+%
+\def\psBiperiodicFibonacci{\def\pst@par{}\pst@object{psBiperiodicFibonacci}}
+\def\psBiperiodicFibonacci@i{\@ifnextchar({\psBiperiodicFibonacci@ii}{\psBiperiodicFibonacci@ii(0,0)}}
+\def\psBiperiodicFibonacci@ii(#1){%
+  \addbefore@par{a=5,b=5,angle=90,n=3,k=5}
+  \begin@SpecialObj
+  \pst@@getcoor{#1}%
+  \addto@pscode{
+    \pst@coor /t@y ED /t@x ED
+    /cmunit {\pst@number\psunit mul} bind def 
+    /cmunit_1 {\pst@number\psunit div} bind def 
+    /a@ \pst@fractal@a def
+    /b@ \pst@fractal@b def
+    /angle \pst@fractal@angle def
+    /n@ \pst@fractal@n def
+    /k@ \pst@fractal@k def
+    /setLineColor { \pst@usecolor\pslinecolor } def
+    tx@fractalDict begin Biperiodic-FibonacciWords end
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces}
+%
+% 3 octobre 2017
+%
+\def\psFibonacciPolyominoes{\pst@object{psFibonacciPolyominoes}}
+\def\psFibonacciPolyominoes@i{\@ifnextchar({\psFibonacciPolyominoes@ii}{\psFibonacciPolyominoes@ii(0,0)}}
+\def\psFibonacciPolyominoes@ii(#1){%
+  \addbefore@par{n=3}
+  \begin@SpecialObj
+  \pst@@getcoor{#1}%
+  \addto@pscode{
+     \pst@coor /t@y ED /t@x ED
+    /cmunit {\pst@number\psunit mul} bind def % mise à l'échelle
+    /n@ \pst@fractal@n def
+    /setFillColor {
+      \ifx\psk@fillstyle\relax\else
+        gsave \pst@usecolor\psfillcolor fill grestore
+      \fi } def    
+    /setLineColor{ \ifx\pslinestyle\@none\else stroke \fi } def
+    tx@fractalDict begin FibonacciPolyominoes end
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces}
+%
+% type de fonte et taille
+\define@boolkey[psset]{pst-fractal}[Pst@]{DFW}[true]{} %
+\define@boolkey[psset]{pst-fractal}[Pst@]{iFibonacci}[true]{} %
+\psset[pst-fractal]{DFW=false,iFibonacci=false} %
+%
+\def\psFibonacciWord{\pst@object{psFibonacciWord}}
+\def\psFibonacciWord@i{\@ifnextchar({\psFibonacciWord@ii}{\psFibonacciWord@ii(0,0)}}
+\def\psFibonacciWord@ii(#1,#2){%
+  \addbefore@par{%PSfont=Times-Roman,
+  fontscale=8}
+  \begin@SpecialObj
+  \addto@pscode{
+    /n@ \pst@fractal@n def
+    /i@ \pst@fractal@i def
+    n@ 3 le {/n@ 3 def} if
+    /cmunit {\pst@number\psunit mul} bind def % mise à l'échelle
+    /PSfont {\psk@PSfont} def
+    PSfont findfont \psk@fontscale scalefont setfont
+    /F1 (1) def
+    /F2 (0) def
+    n@ 2 sub{
+      /Fi F2 F1 concatstrings def
+      /F1 F2 def
+      /F2 Fi def
+    } repeat
+    \ifPst@DFW
+      /Fi () def
+      0 2 F2 length 2 sub {/i exch def
+        /I F2 i 2 getinterval def
+        I (00) eq {Fi (0) concatstrings /Fi exch def} if
+        I (01) eq {Fi (1) concatstrings /Fi exch def} if
+        I (10) eq {Fi (2) concatstrings /Fi exch def} if
+      } for
+    \fi
+    \ifPst@iFibonacci
+      /F0 (0) def
+      /Fi () def
+      i@ 1 sub {
+	Fi (0) concatstrings /Fi exch def
+      } repeat
+      Fi (1) concatstrings
+      /F1 exch def
+      n@ {
+        F1 F0 concatstrings
+	/Fi exch def
+	/F0 F1 def
+	/F1 Fi def
+      } repeat
+    \fi
+    #1 cmunit #2 cmunit moveto Fi show
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces}
+
+%
+\def\psfractal{\pst@object{psfractal}}
+\def\psfractal@i{\@ifnextchar({\psfractal@ii}{\psfractal@ii(-1,-1)}}%
+\def\psfractal@ii(#1){\@ifnextchar({\psfractal@iii(#1)}{\psfractal@iii(#1)(1,1)}}% 
+\def\psfractal@iii(#1)(#2){%
+  \begin@SpecialObj
+  \psset{unit=1pt}%
+  \pst@getcoor{#1}\pst@temp@A
+  \pst@getcoor{#2}\pst@temp@B
+  \pspicture(\pst@fractal@xWidth,\pst@fractal@yWidth)%
+  \addto@pscode{
+    \pst@temp@A 
+    \pst@temp@B 
+    \pst@number\pst@fractal@xWidth
+    \pst@number\pst@fractal@yWidth
+    \pst@fractal@cx 
+    \pst@fractal@cy  
+    \pst@fractal@maxIter
+    \pst@fractal@dIter
+    \pst@fractal@maxRadius    
+    { \pst@usecolor\pst@fractal@baseColor } 
+    \ifx\pst@fractal@type\pst@fractal@Julia true \else false \fi
+    \ifPst@CMYK true \else false \fi ^^J
+    tx@fractalDict begin 
+    /FractalFunc { /z ED \pst@fractal@function } def 
+    tx@Fractal end 
+    ^^J
+  }% end add@pscode
+  \endpspicture
+  \end@SpecialObj
+  \ignorespaces}
+%
+\def\psSier{\pst@object{psSier}}
+\def\psSier@i{\@ifnextchar({\psSier@v}{\psSier@vi}}
+%
+\def\psSier@v(#1){\@ifnextchar({\psSier@ii(#1)}{\psSier@iii(#1)}}
+\def\psSier@ii(#1)(#2)(#3){{%
+  \pst@getcoor{#1}\pst@temp@A
+  \pst@getcoor{#2}\pst@temp@B
+  \pst@getcoor{#3}\pst@temp@C
+  \begin@SpecialObj%
+  \addto@pscode{
+    [ \pst@temp@A \pst@temp@B \pst@temp@C ]  ^^J%
+    { \pst@usecolor\pslinecolor } ^^J%
+    \pst@fractal@plotpoints ^^J%
+    tx@fractalDict begin tx@Sierpinski end ^^J%
+  }% end add@pscode
+  \end@SpecialObj%
+}}
+\def\psSier@iii(#1)#2#3{%
+  \pst@getcoor{#1}\pst@tempA
+  \pst@getlength{#2}\pst@tempB
+  \begin@OpenObj%
+  \addto@pscode{
+    /sierpy { 
+      dup 1 ge 
+       { 1 sub gsave 0.5 dup scale dup sierpy
+         1 0 translate dup sierpy
+        -0.5 0.8660254 translate dup sierpy grestore
+       }{newpath 
+         0 0 moveto 
+         1 0 lineto 0.5 0.8660254 lineto closepath 
+         gsave \pst@usecolor\pslinecolor 
+         fill grestore } ifelse pop
+    } def
+    \pst@tempA\space translate
+    \pst@tempB\space dup scale
+    0 setlinewidth
+    0 0 moveto 1 0 lineto 0.5 0.8660254 lineto 0 setlinewidth closepath 
+    gsave #3 0 gt { \pst@usecolor\psfillcolor }{ \pst@usecolor\pslinecolor } ifelse
+      fill grestore stroke
+    #3 dup 0 gt { sierpy } if }%
+  \end@OpenObj%
+}
+%
+\def\psSier@vi{%  Sierpinski curve
+  \addbefore@par{n=3,N=all,dotcolor=red}%
+  \begin@SpecialObj
+  \addto@pscode{
+    /useFill \ifx\psk@fillstylename\@none false \else true \fi def
+    /fillColor { \pst@usecolor\psfillcolor } def
+%      \else 
+%    /useFillColor {Â 
+%      \ifx\psk@fillstylename\@none 
+%      \else 
+%        gsave \pst@usecolor\psfillcolor fill grestore 
+%      \fi
+%    } def
+    /useLineStyle { \ifx\pslinestyle\@none\else \psls@solid stroke \fi } def
+    /n@ \pst@fractal@n def
+    /NbrePts (\pst@fractal@N) def
+    /dotcolor { \pst@usecolor\psdotcolor } def
+    /cmunit { \pst@number\psunit mul }  def 
+    NbrePts (all) eq {/Npts 4 n@ 1 add exp cvi def}{/Npts NbrePts cvi def Npts 4 n@ 1 add exp gt {/Npts 4 n@ 1 add exp cvi def} if } ifelse
+    tx@fractalDict begin 
+    tx@SierpinskiCurve
+    \ifshowpoints
+      0 2 Sierpinsky length 2 sub {
+        /i exch def
+        i 2 div Npts ge {exit} if
+        Sierpinsky i get
+        Sierpinsky i 1 add get
+        \psk@dotsize DS
+        0 360 arc dotcolor fill
+      } for
+    \fi
+    end
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces}     
+%
+\def\psSierCarpet{\pst@object{psSierCarpet}}
+\def\psSierCarpet@i{\@ifnextchar({\psSierCarpet@ii}{\psSierCarpet@ii(0,0)}}
+%
+\def\psSierCarpet@ii(#1){{%
+  \pst@getcoor{#1}\pst@temp@A
+  \begin@SpecialObj
+  \addto@pscode{
+    \pst@fractal@scale
+  	\pst@temp@A\space translate
+	/r { moveto 0 -1 1 0 0 1 3 { rlineto } repeat closepath fill } def
+	/serp { gsave
+        3 1 roll translate
+        1 3 div dup scale
+        1 1 r
+        dup 1 sub dup 0 eq not {
+                0 0 0 1 0 2 1 0 1 2 2 0 2 1 2 2 17 -1 roll 8 { serp } repeat
+        } if pop
+        grestore
+	} def
+	300 300 scale 0 0 r 1 setgray
+	0 0 \pst@fractal@n serp 
+  }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces
+}}
+%
+%
+\def\psPhyllotaxis{\pst@object{psPhyllotaxis}}
+\def\psPhyllotaxis@i{\@ifnextchar({\psPhyllotaxis@ii}{\psPhyllotaxis@ii(0,0)}}
+\def\psPhyllotaxis@ii(#1){{%
+  \pst@getcoor{#1}\pst@tempA
+  \begin@SpecialObj%
+  \addto@pscode{
+    \pst@tempA
+    \pst@fractal@c
+    \pst@fractal@angle
+    \pst@fractal@maxIter
+    \ifPst@CMYK true \else false \fi ^^J%
+    tx@fractalDict begin tx@Phyllotaxis end ^^J%
+  }% end add@pscode
+  \end@SpecialObj%
+}}
+%
+\def\pst@fractal@radius{0.001 }
+\def\psFern{\pst@object{psFern}}
+\def\psFern@i{\@ifnextchar({\psFern@ii}{\psFern@ii(0,0)}}
+\def\psFern@ii(#1){{%
+  \addbefore@par{scale=10,linewidth=0.001pt,maxIter=20000,radius=0.001pt}%
+  \pst@getcoor{#1}\pst@tempA%
+  \begin@SpecialObj%
+  \addto@pscode{
+    \pst@fractal@Xscale 
+    \pst@tempA 
+    \pst@fractal@maxIter
+    \pst@fractal@radius
+    \pst@number\pslinewidth
+    { \pst@usecolor\pslinecolor }
+    tx@fractalDict begin tx@Fern end 
+  }% end add@pscode
+  \end@SpecialObj%
+}}
+%
+\def\psHugo{\pst@object{psHugo}}
+\def\psHugo@i{\@ifnextchar({\psHugo@ii}{\psHugo@ii(0,0)}}
+\def\psHugo@ii(#1){{%
+  \addbefore@par{scale=0.1,linewidth=0.001pt,maxIter=5}%
+  \pst@getcoor{#1}\pst@tempA%
+  \begin@SpecialObj%
+  \addto@pscode{
+    \pst@fractal@Xscale 
+    \pst@tempA 
+    \pst@fractal@maxIter
+    \pst@number\pslinewidth
+    { \pst@usecolor\pslinecolor }
+    tx@fractalDict begin tx@Hugo end 
+  }% end add@pscode
+  \end@SpecialObj%
+}}
+%
+\def\psKochflake{\pst@object{psKochflake}}
+\def\psKochflake@i{\@ifnextchar({\psKochflake@ii}{\psKochflake@ii(0,0)}}
+\def\psKochflake@ii(#1){{%
+  \addbefore@par{radius=0.25cm,maxIter=5}%
+  \pst@getcoor{#1}\pst@tempA
+  \begin@SpecialObj
+  \addto@pscode{
+    gsave ^^J
+    \pst@tempA translate
+    \pst@usecolor\pslinecolor 
+    \pst@fractal@angle rotate ^^J
+    \pst@number\pslinewidth 10 div \pst@fractal@Xscale div SLW ^^J
+    \pst@fractal@maxIter ^^J
+    tx@fractalDict begin ^^J
+      \pst@fractal@scale ^^J
+      tx@Kochflake end ^^J
+  }% end add@pscode
+  \psk@fillstyle
+  \addto@pscode{stroke grestore }%
+  \end@SpecialObj
+}}
+%
+\def\psAppolonius{\pst@object{psAppolonius}}
+\def\psAppolonius@i{\@ifnextchar({\psAppolonius@ii}{\psAppolonius@ii(0,0)}}
+\def\psAppolonius@ii(#1){{%
+  \addbefore@par{Radius=5cm,dIter=1,linewidth=0.1pt}%
+  \pst@getcoor{#1}\pst@tempA%
+  \begin@SpecialObj%
+  \addto@pscode{
+    \pst@fractal@dIter
+    \pst@number\pst@fractal@Radius
+    \ifPst@fractal@Color true \else false \fi
+    \ifPst@CMYK true \else false \fi ^^J
+      gsave ^^J
+      \pst@tempA translate ^^J
+      \pst@usecolor\pslinecolor
+      \pst@fractal@scale
+      \pst@number\pslinewidth SLW ^^J
+      tx@fractalDict begin tx@Appolonius end ^^J 
+  }% end add@pscode
+  \psk@fillstyle%
+  \addto@pscode{stroke grestore  ^^J }%
+  \end@SpecialObj%
+}}
+%
+\def\psPTree{\pst@object{psPTree}}
+\def\psPTree@i{\@ifnextchar({\psPTree@ii}{\psPTree@ii(0,0)}}
+\def\psPTree@ii(#1){{%
+  \addbefore@par{xWidth=1cm,Color=false,c=0.5}%
+  \pst@getcoor{#1}\pst@tempA%
+  \begin@SpecialObj%
+  \addto@pscode{
+  gsave ^^J%
+  \pst@tempA exch \pst@number\pst@fractal@xWidth 2 div sub exch translate ^^J%
+  \pst@usecolor\pslinecolor
+  \pst@fractal@scale
+  \pst@number\pslinewidth \pst@fractal@Xscale div SLW ^^J%
+  /sqrt2 1.41421356237310 def ^^J%
+  /minWidth \pst@number\pst@fractal@minWidth def 
+  /r 1 def /g 0 def /b 0 def 
+  /icount 380 def 
+  /setWaveColor { 
+    /icount icount dup 780 gt { pop 380 }{ \pst@fractal@dIter add } ifelse def ^^J%
+    tx@addDict begin icount ^^J%
+    \ifPst@CMYK wavelengthToCMYK Cyan Magenta Yellow Black end setcmykcolor  ^^J%
+    \else wavelengthToRGB Red Green Blue end setrgbcolor \fi ^^J%
+  } def ^^J%
+  /Alpha1 { .5 1 \pst@fractal@c sub atan } bind def 
+  /Alpha2 { .5 \pst@fractal@c atan } bind def 
+  /box { \@percentchar stacksize ^^J 	%  width on stack
+    /w ED
+    newpath  				%
+    0 0 moveto 				%   
+    w 0 rlineto 			% w 0 move right
+    0 w rlineto 			% 0 w move up
+    w neg \pst@fractal@c mul w 0.5 mul % -c*w 0.5*w
+    rlineto 				% move left up
+    w \pst@fractal@c 1 sub mul   	% -(1-c)*w
+    w -0.5 mul rlineto			% -(1-c)*w -0.5w move left down	
+    closepath 				% close
+    \ifPst@fractal@Color
+    setWaveColor fill  ^^J%
+%      r g b setrgbcolor fill r g b /g exch def /r exch def /b exch def 
+    \else stroke \fi  %
+    w minWidth gt { 			% w w limit gt
+      gsave %
+        0 w translate 
+	Alpha1 rotate 
+	w dup 0.5 mul 1 \pst@fractal@c sub w mul Pyth box % one w to leave on stack
+      grestore 
+      gsave 
+        dup dup dup 			% w w w w
+        1 \pst@fractal@c sub mul 	% w w w w*(1-c)
+	exch 1.5 mul 			% w w w*(1-c) w*1.5
+	translate			% w w 
+	360 Alpha2 sub rotate 
+	0.5 mul exch \pst@fractal@c mul Pyth box 
+      grestore 
+    } if
+  } def 
+  \pst@number\pst@fractal@xWidth box ^^J%
+  }% end add@pscode
+  \end@SpecialObj%
+}}
+%
+\def\psFArrow{\pst@object{psFArrow}}
+\def\psFArrow@i{\@ifnextchar({\psFArrow@ii}{\psFArrow@ii(0,0)}}
+\def\psFArrow@ii(#1)#2{{%
+  \addbefore@par{linewidth=10pt,yWidth=5cm,maxIter=10,Color=false,scale=1,dIter=1}%
+  \pst@getcoor{#1}\pst@tempA%
+  \begin@SpecialObj%
+  \addto@pscode{
+  gsave ^^J%
+  \pst@tempA translate 0 0 moveto ^^J%
+  \pst@usecolor\pslinecolor ^^J%
+  \pst@fractal@scale ^^J%
+  /depth 0 def ^^J%
+  /depth++ { /depth depth 1 add def } def ^^J%
+  /depth-- { /depth depth 1 sub def } def ^^J%
+  /icount 380 def ^^J%
+  /setWaveColor { ^^J%
+    /icount icount dup 780 gt { pop 380 }{ \pst@fractal@dIter add } ifelse def ^^J%
+    tx@addDict begin icount  ^^J%
+    \ifPst@CMYK wavelengthToCMYK Cyan Magenta Yellow Black end setcmykcolor   ^^J%
+    \else wavelengthToRGB Red Green Blue end setrgbcolor \fi ^^J%
+  } def ^^J%
+  /DoLine {		\@percentchar print a vert. line ^^J%
+    0 \pst@number\pst@fractal@yWidth rlineto currentpoint   ^^J%
+    \ifPst@fractal@Color setWaveColor \fi ^^J%
+    stroke  ^^J%
+    translate 0 0 moveto  ^^J%
+  } def ^^J%
+  /FractArrow {  ^^J%
+    /sc exch def ^^J% 
+    gsave  ^^J%
+    sc dup scale ^^J%
+    \pst@number\pslinewidth SLW ^^J%
+    depth++ DoLine ^^J%
+    depth \pst@fractal@maxIter le {  ^^J%
+      135 rotate sc FractArrow ^^J%
+      -270 rotate sc FractArrow ^^J% 
+    } if ^^J%
+    depth--  ^^J%
+    grestore ^^J%
+  } def ^^J%
+  \pst@fractal@angle rotate ^^J%
+  #2 FractArrow  ^^J%
+%  180 rotate #2 FractArrow
+%  stroke
+  }% end add@pscode
+  \end@SpecialObj%
+}}
+%
+\define@key[psset]{pst-fractal}{NbrIter}{\def\pst@fractal@NbrIter{#1 }} % nombre d'itÃ©rations
+\define@key[psset]{pst-fractal}{tabPts}{\def\pst@fractal@tabPts{#1 }} % tableau de points
+\define@key[psset]{pst-fractal}{angleH}{\def\pst@fractal@angleH{#1 }} % angle en radians
+\define@key[psset]{pst-fractal}{zoom}{\def\pst@fractal@zoom{#1 }} % grossissement
+\psset[pst-fractal]{NbrIter=500,angleH=1.32837,zoom=5,tabPts=0.05 0.05
+0.1 0.1
+0.2 0.2
+0.3 0.2
+0.3 0.3
+0.4 0.3
+0.4 0.324
+0.4 0.326
+0.4 0.5
+0.5 0.3
+0.5 0.5
+0.6 0.5
+0.6 0.6
+0.57 0.575
+0.7 0.7
+0.7 0.9}
+\define@boolkey[psset]{pst-fractal}[Pst@]{pixelscolor}[true]{}
+\psset[pst-fractal]{pixelscolor=true} % pixels en couleurs
+
+\def\psHenon{\pst@object{psHenon}}
+\def\psHenon@i{%
+  \addbefore@par{dotsize=0.75pt}%
+  \begin@SpecialObj
+  \addto@pscode{
+% échelle 2=> 10 cm pour zoom=5
+    /zoom \pst@fractal@zoom def
+    /cm {\pst@number\psunit mul zoom mul} bind def
+    /NbreIter \pst@fractal@NbrIter def
+    /Angle 	\pst@fractal@angleH RadtoDeg def	
+    /CosA Angle cos def
+    /SinA Angle sin def
+    /TabPts [\pst@fractal@tabPts] def
+    \ifPst@pixelscolor /pixelscolor true def \else /pixelscolor false def \fi
+    /AttracteurHenon {
+      5 dict begin
+      /Y exch def /X exch def /Aux X def
+      NbreIter {
+        /Aux X def
+        /X X CosA mul Y X X mul sub SinA mul sub def
+        /Y Aux SinA mul Y Aux Aux mul sub CosA mul add def
+        X abs 1e12 ge Y abs 1e10 ge or { exit }{
+          newpath
+          X cm \psk@@dotsize sub Y cm \psk@@dotsize sub moveto
+          \psk@@dotsize 0 rlineto		%  bottom of square
+          0 \psk@@dotsize rlineto		%  right side of square
+          -\psk@@dotsize  0 rlineto		%  top of square
+          closepath	
+          fill	
+        }ifelse
+      } repeat
+      end
+    } def
+    /Hsb 0 def
+    0 2 TabPts length 2 sub {
+      /i exch def
+      % 0 setgray
+      %TabPts i get TabPts i 1 add get 2 copy
+      %exch 200 mul exch 200 mul 2 0 360 arc fill
+      pixelscolor {Hsb 1 1 sethsbcolor}{0 setgray}ifelse
+      TabPts i get TabPts i 1 add get
+      AttracteurHenon
+      /Hsb i TabPts length div def
+     } for
+   }%
+  \showpointsfalse
+  \end@SpecialObj
+  \ignorespaces}
+%
+\catcode`\@=\PstAtCode\relax
+%
+%% END: pst-fractal.tex
+\endinput
+

@@ -1,0 +1,93 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX New Mathematics Facilities
+%
+% Synopsis:  This file provides the mathematics facilities for "new math"
+%            modes 1 and 2. It is loaded after the design file.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   16 October 2002
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Punctuation
+%                       -----------
+
+
+\if \eqlp{\newmath}{1}%
+
+\def \ldotp {\hbox to .42em{\hfil.\hfil}}
+
+\else\if \gtrp{\newmath}{1}%
+
+% This macro defines the math characters \zmperiod, \zmcomma,
+% colon, and semicolon to use the specified style.
+% If the style is \mit, then it's different.
+
+\def \setmathpunctuationstyle #1{%                              {style}
+  {\zmstyfam = \name{#1fam}%
+   \definemathchar {\zmperiod} \classord  \zmstyfam {2E}
+   \definemathchar {\zmcomma}  \classpunc \zmstyfam {2C}
+   \definemathchar {`;}        \classpunc \zmstyfam {3B}
+   \definemathchar {`:}        \classrel  \zmstyfam {3A}}}
+
+% Now establish \rm as the default punctuation style.
+
+\setmathpunctuationstyle{\rm}
+
+% Period and comma must be active in math.
+
+\definemathchar {`.} \classactive \rmfam {00}
+
+\definemathchar {`,} \classactive \rmfam {00}
+
+% When period and comma are active in math, this is what they do.
+
+{
+\catcode `\. = \catactive
+\gdef .{\mathpalette\zmactperiod{}}
+
+\catcode `\, = \catactive
+\gdef ,{\mathpalette\zmactcomma{}}
+}
+
+\def \zmactperiod #1#2{%
+  \mathord{\hbox to .28em{\hfil $#1\zmperiod$\hfil}}}
+
+\def \zmactcomma #1#2{%
+  \mathpunct{\hbox to .33em{\hfil $#1\zmcomma$\kern .03em\hfil}}}
+
+% Now we can define all the dot-oriented math commands.
+
+\def \cdotp {\mathpunct{\vcenter{\hbox{$.$}}}}
+
+\def \ldotp {\mathpunct{.}}
+
+\def \cdots {\mathinner{\cdotp\cdotp\cdotp}}
+
+\def \ddots {%
+  \vbox{\baselineskip = 4pt \lineskiplimit = 0pt
+        \hbox{.}%
+        \hbox{\kern .4em .}%
+        \hbox{\kern .8em .}%
+        \vskip -.25ex}}
+
+\def \ldots {\mathinner{\ldotp\ldotp\ldotp}}
+
+\def \vdots {%
+  \vbox{\baselineskip = 4pt \lineskiplimit = 0pt
+        \hbox{.}%
+        \hbox{.}%
+        \hbox{.}%
+        \vskip -.25ex}}
+
+% Make \maps and \colon do the right thing.
+
+\def \maps {\mathpunct{:}}
+
+\let \colon = \maps
+
+\fi\fi

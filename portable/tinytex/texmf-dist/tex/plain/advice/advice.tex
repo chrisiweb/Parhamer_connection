@@ -1,0 +1,518 @@
+%%
+%% This is file `advice.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% advice.dtx  (with options: `main,plain')
+%% 
+%% This file is a part of Advice, a TeX package implementing a generic
+%% framework for extending the functionality of selected commands and
+%% environments, available at https://ctan.org/pkg/advice and
+%% https://github.com/sasozivanovic/advice.
+%%
+%% Copyright (c) 2023- Saso Zivanovic <saso.zivanovic@guest.arnes.si>
+%%                     (Sa\v{s}o \v{Z}ivanovi\'{c})
+%%
+%% This work may be distributed and/or modified under the conditions of the
+%% LaTeX Project Public License, either version 1.3c of this license or (at
+%% your option) any later version.  The latest version of this license is in
+%% https://www.latex-project.org/lppl.txt and version 1.3c or later is part of
+%% all distributions of LaTeX version 2008 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%% The Current Maintainer of this work is Saso Zivanovic.
+%%
+%% The files belonging to this work and covered by LPPL are listed in
+%% (<texmf>/doc/generic/advice/)FILES.
+\input miniltx
+\input collargs
+\pgfkeys{
+  /handlers/.install advice/.code={%
+    \edef\auto@install@namespace{\pgfkeyscurrentpath}%
+    \def\advice@install@setupkey{advice}%
+    \def\advice@install@activation{immediate}%
+    \pgfqkeys{/advice/install}{#1}%
+    \expanded{\noexpand\advice@install
+      {\auto@install@namespace}%
+      {\advice@install@setupkey}%
+      {\advice@install@activation}%
+    }%
+  },
+  /advice/install/.cd,
+  setup key/.store in=\advice@install@setupkey,
+  activation/.is choice,
+  activation/.append code=\def\advice@install@activation{#1},
+  activation/immediate/.code={},
+  activation/deferred/.code={},
+}
+\def\advice@install#1#2#3{%
+  \pgfqkeys{#1}{%
+    #2/.code 2 args={%
+      \AdviceSetup{#1}{#2}{##1}{\pgfqkeys{#1/#2}{##2}}%
+      \pgfqkeys{#1}{try activate, activate={##1}}%
+    },
+    #2'/.code 2 args={%
+      \AdviceSetup{#1}{#2}{##1}{\pgfqkeys{#1/#2}{##2}}%
+    },
+    #2 csname/.style 2 args={
+      #2/.expand once=\expandafter{\csname ##1\endcsname}{##2},
+    },
+    #2 csname'/.style 2 args={
+      #2'/.expand once=\expandafter{\csname ##1\endcsname}{##2},
+    },
+    #2 key/.style 2 args={
+      #2/.expand once=%
+        \expandafter{\csname pgfk@##1/.@cmd\endcsname}%
+        {collector=\advice@pgfkeys@collector,##2},
+    },
+    #2 key'/.style 2 args={
+      #2'/.expand once=%
+        \expandafter{\csname pgfk@##1/.@cmd\endcsname}%
+        {collector=\advice@pgfkeys@collector,##2},
+    },
+    activation/.style={/advice/activation/##1={#1}},
+    activation=#3,
+    activate deferred/.code={},
+    activate csname/.style={activate/.expand once={\csname##1\endcsname}},
+    deactivate csname/.style={deactivate/.expand once={\csname##1\endcsname}},
+    activate key/.style={activate@key={#1/activate}{##1}},
+    deactivate key/.style={activate@key={#1/deactivate}{##1}},
+    activate@key/.code n args=2{%
+      \def\advice@temp{}%
+      \def\advice@do####1{%
+        \eappto\advice@temp{,\expandonce{\csname pgfk@####1/.@cmd\endcsname}}}%
+      \forcsvlist\advice@do{##2}%
+      \pgfkeysalso{##1/.expand once=\advice@temp}%
+    },
+    #2/.cd,
+    run conditions/.store in=\AdviceRunConditions,
+    bailout handler/.store in=\AdviceBailoutHandler,
+    outer handler/.store in=\AdviceOuterHandler,
+    collector/.store in=\AdviceCollector,
+    collector options/.code={\appto\AdviceCollectorOptions{,##1}},
+    clear collector options/.code={\def\AdviceCollectorOptions{}},
+    raw collector options/.code={\appto\AdviceRawCollectorOptions{##1}},
+    clear raw collector options/.code={\def\AdviceRawCollectorOptions{}},
+    args/.store in=\AdviceArgs,
+    inner handler/.store in=\AdviceInnerHandler,
+    options/.code={\appto\AdviceOptions{,##1}},
+    clear options/.code={\def\AdviceOptions{}},
+    .unknown/.code={%
+      \eappto{\AdviceOptions}{,\pgfkeyscurrentname={\unexpanded{##1}}}%
+    },
+    run conditions/.default=\AdviceRuntrue,
+    bailout handler/.default=\relax,
+    outer handler/.default=\AdviceCollector,
+    collector/.default=\advice@CollectArgumentsRaw,
+    collector options/.value required,
+    raw collector options/.value required,
+    args/.default=\advice@noargs,
+    inner handler/.default=\advice@error@noinnerhandler,
+    options/.value required,
+    reset/.code={\csname\advice@setup@init@\AdviceType\endcsname},
+    after setup/.code={\appto\AdviceAfterSetup{##1}},
+  }%
+}
+\def\AdviceSetup#1#2#3{%
+  \begingroup
+  \def\AdviceName{#3}%
+  \advice@def@AdviceCsname
+  \collargs@cs@cases{#3}{%
+    \def\AdviceType{command}%
+    \advice@setup@init@command
+    \advice@setup@i{#3}{#1}{#3}%
+  }{%
+    \advice@error@advice@notcs{#1/#2}{#3}%
+  }{%
+    \def\AdviceType{environment}%
+    \advice@setup@init@environment
+    \expandafter\advice@setup@i\expandafter{\csname #3\endcsname}%
+      {#1}{#3}%
+  }%
+}
+\def\advice@setup@i#1#2#3#4{%
+  \advice@setup@init@i{#2}{#1}%
+  \advice@setup@init@I{#2}{#1}%
+  \def\AdviceAfterSetup{}%
+  #4%
+  \advice@setup@save{#2}{#1}%
+}
+\def\advice@setup@init@common{%
+  \def\AdviceRunConditions{\AdviceRuntrue}%
+  \def\AdviceBailoutHandler{\relax}%
+  \def\AdviceOuterHandler{\AdviceCollector}%
+  \def\AdviceCollector{\advice@CollectArgumentsRaw}%
+  \def\AdviceCollectorOptions{}%
+  \def\AdviceInnerHandler{\advice@error@noinnerhandler}%
+  \def\AdviceOptions{}%
+}
+\def\advice@setup@init@command{%
+  \advice@setup@init@common
+  \def\AdviceRawCollectorOptions{}%
+  \def\AdviceArgs{\advice@noargs}%
+}
+\def\advice@setup@init@environment{%
+  \advice@setup@init@common
+  \edef\AdviceRawCollectorOptions{%
+    \noexpand\collargsEnvironment{\AdviceName}%
+    \noexpand\collargsEndTagtrue
+  }%
+  \def\AdviceArgs{+b}%
+}
+\advice@setup@init@command
+\def\advice@init@i#1#2{\csname advice@i#1//\string#2\endcsname}
+\def\advice@init@I#1#2{\csname advice@I#1//\string#2\endcsname}
+\let\advice@setup@init@i\advice@init@i
+\let\advice@setup@init@I\advice@init@I
+\def\advice@setup@save#1#2{%
+  \expanded{%
+    \endgroup
+    \noexpand\csdef{advice@i#1//\string#2}{%
+      \def\noexpand\AdviceRunConditions{\expandonce\AdviceRunConditions}%
+      \def\noexpand\AdviceBailoutHandler{\expandonce\AdviceBailoutHandler}%
+    }%
+    \noexpand\csdef{advice@I#1//\string#2}{%
+      \def\noexpand\AdviceOuterHandler{\expandonce\AdviceOuterHandler}%
+      \def\noexpand\AdviceCollector{\expandonce\AdviceCollector}%
+      \def\noexpand\AdviceRawCollectorOptions{%
+                                        \expandonce\AdviceRawCollectorOptions}%
+      \def\noexpand\AdviceCollectorOptions{\expandonce\AdviceCollectorOptions}%
+      \def\noexpand\AdviceArgs{\expandonce\AdviceArgs}%
+      \def\noexpand\AdviceInnerHandler{\expandonce\AdviceInnerHandler}%
+      \def\noexpand\AdviceOptions{\expandonce\AdviceOptions}%
+    }%
+    \expandonce{\AdviceAfterSetup}%
+  }%
+}
+\pgfkeys{
+  /advice/activation/deferred/.style={
+    #1/activate/.style={%
+      activate deferred/.append style={#1/activate={##1}}},
+    #1/deactivate/.style={%
+      activate deferred/.append style={#1/deactivate={##1}}},
+    #1/force activate/.style={%
+      activate deferred/.append style={#1/force activate={##1}}},
+    #1/try activate/.style={%
+      activate deferred/.append style={#1/try activate={##1}}},
+  },
+  /advice/activation/immediate/.style={
+    #1/activate/.code={%
+      \forcsvlist{\advice@activate{#1}}{##1}%
+      \advice@activate@forcefalse
+      \advice@activate@tryfalse
+    },
+    #1/deactivate/.code={%
+      \forcsvlist{\advice@deactivate{#1}}{##1}%
+      \advice@activate@forcefalse
+      \advice@activate@tryfalse
+    },
+    #1/force activate/.is if=advice@activate@force,
+    #1/try activate/.is if=advice@activate@try,
+  },
+}
+\newif\ifadvice@activate@force
+\newif\ifadvice@activate@try
+\def\advice@original@csname#1#2{advice@o#1//\string#2}
+\def\advice@original@cs#1#2{\csname advice@o#1//\string#2\endcsname}
+\def\AdviceGetOriginal#1#2{%
+  \ifcsname advice@o#1//\string#2\endcsname
+    \expandonce{\csname advice@o#1//\string#2\expandafter\endcsname\expandafter}%
+  \else
+    \unexpanded\expandafter{\expandafter#2\expandafter}%
+  \fi
+}
+\begingroup
+\catcode`\/=0
+\catcode`\\=12
+/gdef/advice@backslash@other{\}%
+/endgroup
+\def\AdviceCsnameGetOriginal#1#2{%
+  \ifcsname advice@o#1//\advice@backslash@other#2\endcsname
+    \expandonce{\csname advice@o#1//\advice@backslash@other#2\expandafter\endcsname
+      \expandafter}%
+  \else
+    \expandonce{\csname#2\expandafter\endcsname\expandafter}%
+  \fi
+}
+\def\advice@activate#1#2{%
+  \collargs@cs@cases{#2}%
+    {\advice@activate@cmd{#1}{#2}}%
+    {\advice@error@activate@notcsorenv{}{#1}}%
+    {\advice@activate@env{#1}{#2}}%
+}
+\def\advice@deactivate#1#2{%
+  \collargs@cs@cases{#2}%
+    {\advice@deactivate@cmd{#1}{#2}}%
+    {\advice@error@activate@notcsorenv{de}{#1}}%
+    {\advice@deactivate@env{#1}{#2}}%
+}
+\def\advice@activate@cmd#1#2{%
+  \ifdef{#2}{%
+    \ifcsdef{\advice@original@csname{#1}{#2}}{%
+      \advice@if@our@definition{#1}{#2}{%
+        \advice@activate@error@activated{#1}{#2}{Command}{already}%
+      }{%
+        \ifadvice@activate@force
+          \advice@activate@cmd@do{#1}{#2}%
+        \else
+          \advice@activate@error@activated{#1}{#2}{Command}{already}%
+        \fi
+      }%
+    }{%
+      \advice@activate@cmd@do{#1}{#2}%
+    }%
+  }{%
+    \advice@activate@error@undefined{#1}{#2}{Command}{}%
+  }%
+}
+\def\advice@deactivate@cmd#1#2{%
+  \ifdef{#2}{%
+    \ifcsdef{\advice@original@csname{#1}{#2}}{%
+      \advice@if@our@definition{#1}{#2}{%
+        \advice@deactivate@cmd@do{#1}{#2}%
+      }{%
+        \advice@deactivate@error@changed{#1}{#2}%
+      }%
+    }{%
+      \advice@activate@error@activated{#1}{#2}{Command}{not yet}%
+    }%
+  }{%
+    \advice@activate@error@undefined{#1}{#2}{Command}{de}%
+  }%
+}
+\def\advice@if@our@definition#1#2{%
+  \protected\def\advice@temp{\advice@handle{#1}{#2}}%
+  \ifx#2\advice@temp
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
+\def\advice@activate@cmd@do#1#2{%
+  \cslet{\advice@original@csname{#1}{#2}}#2%
+  \protected\def#2{\advice@handle{#1}{#2}}%
+  \PackageInfo{advice (#1)}{Activated command "\string#2"}%
+}
+\def\advice@deactivate@cmd@do#1#2{%
+  \letcs#2{\advice@original@csname{#1}{#2}}%
+  \csundef{\advice@original@csname{#1}{#2}}%
+  \PackageInfo{advice (#1)}{Deactivated command "\string#2"}%
+}
+\def\advice@handle#1#2{%
+  \advice@init@i{#1}{#2}%
+  \AdviceRunfalse
+  \AdviceRunConditions
+  \advice@handle@rc{#1}{#2}%
+}
+\def\advice@handle@rc#1#2{%
+  \ifAdviceRun
+    \expandafter\advice@handle@outer
+  \else
+    \AdviceBailoutHandler
+    \expandafter\advice@original@cs
+  \fi
+  {#1}{#2}%
+}
+\def\advice@handle@outer#1#2{%
+  \def\AdviceNamespace{#1}%
+  \def\AdviceName{#2}%
+  \advice@def@AdviceCsname
+  \let\AdviceReplaced\AdviceName
+  \def\AdviceOriginal{\AdviceGetOriginal{#1}{#2}}%
+  \advice@init@I{#1}{#2}%
+  \AdviceOuterHandler
+}
+\def\advice@def@AdviceCsname{%
+  \begingroup
+  \escapechar=-1
+  \expandafter\expandafter\expandafter\endgroup
+  \expandafter\expandafter\expandafter\def
+  \expandafter\expandafter\expandafter\AdviceCsname
+  \expandafter\expandafter\expandafter{\expandafter\string\AdviceName}%
+}
+\newif\ifAdviceRun
+\def\advice@CollectArgumentsRaw{%
+  \AdviceIfArgs{}{%
+    \expandafter\GetDocumentCommandArgSpec\expandafter{\AdviceName}%
+    \let\AdviceArgs\ArgumentSpecification
+  }%
+  \expanded{%
+    \noexpand\CollectArgumentsRaw{%
+      \noexpand\collargsCaller{\expandonce\AdviceName}%
+      \expandonce\AdviceRawCollectorOptions
+      \ifdefempty\AdviceCollectorOptions{}{%
+        \noexpand\collargsSet{\expandonce\AdviceCollectorOptions}%
+      }%
+    }%
+    {\expandonce\AdviceArgs}%
+    {\expandonce\AdviceInnerHandler}%
+  }%
+}
+\def\advice@noargs@text{\advice@noargs}
+\def\AdviceIfArgs{%
+  \ifx\AdviceArgs\advice@noargs@text
+    \expandafter\@secondoftwo
+  \else
+    \expandafter\@firstoftwo
+  \fi
+}
+\def\advice@pgfkeys@collector#1\pgfeov{%
+  \AdviceInnerHandler{#1}%
+}
+\def\advice@activate@env#1#2{%
+  \expanded{%
+    \noexpand\advice@activate@cmd{#1}{\expandonce{\csname
+        #2\endcsname}}%
+  }%
+}
+\def\advice@deactivate@env#1#2{%
+  \expanded{%
+    \noexpand\advice@deactivate@cmd{#1}{\expandonce{\csname
+        #2\endcsname}}%
+  }%
+}
+\def\advice@activate@error@activated#1#2#3#4{%
+  \ifadvice@activate@try
+  \else
+    \PackageError{advice (#1)}{#3 "\string#2" is #4 activated}{}%
+  \fi
+}
+\def\advice@activate@error@undefined#1#2#3#4{%
+  \ifadvice@activate@try
+  \else
+    \PackageError{advice (#1)}{%
+      #3 "\string#2" you are trying to #4activate is not defined}{}%
+  \fi
+}
+\def\advice@deactivate@error@changed#1#2{%
+  \ifadvice@activate@try
+  \else
+    \PackageError{advice (#1)}{The definition of "\string#2" has changed since we
+      have activated it. Has somebody overridden our command?}{If you have tried
+      to deactivate so that you could immediately reactivate, you may want to try
+      "force activate".}%
+  \fi
+}
+\def\advice@error@advice@notcs#1#2{%
+  \PackageError{advice}{The first argument of key "#1" should be either a single
+    control sequence or an environment name, not "#2"}{}%
+}
+\def\advice@error@activate@notcsorenv#1#2{%
+  \PackageError{advice}{Each item in the value of key "#1activate" should be
+    either a control sequence or an environment name, not "#2".}{}%
+}
+\def\advice@error@storecs@notcs#1#2{%
+  \PackageError{advice}{The value of key "#1" should be a single control sequence,
+    not "\string#2"}{}%
+}
+\def\advice@error@noinnerhandler#1{%
+  \PackageError{advice (\AdviceNamespace)}{The inner handler for
+    "\expandafter\string\AdviceName" is not defined}{}%
+}
+\def\AdviceTracingOn{%
+  \let\advice@init@i\advice@trace@init@i
+  \let\advice@init@I\advice@trace@init@I
+}
+\def\AdviceTracingOff{%
+  \let\advice@init@i\advice@setup@init@i
+  \let\advice@init@I\advice@setup@init@I
+}
+\ifdefined\luatexversion
+  \long\def\advice@typeout#1{\directlua{texio.write_nl("\luaescapestring{#1}")}}
+\else
+  \def\advice@typeout{\immediate\write128}
+\fi
+\def\advice@trace#1{\advice@typeout{[tracing advice] #1}}
+\def\advice@trace@init@i#1#2{%
+  \advice@trace{Advising \detokenize\expandafter{\string#2} (\detokenize{#1})}%
+  \advice@trace{\space\space Original command meaning:
+    \expandafter\expandafter\expandafter\meaning\advice@original@cs{#1}{#2}}%
+  \advice@setup@init@i{#1}{#2}%
+  \edef\AdviceRunConditions{%
+    \expandonce\AdviceRunConditions
+    \noexpand\advice@trace{\space\space
+      Executing run conditions:
+      \detokenize\expandafter{\AdviceRunConditions}
+      -->
+      \noexpand\ifAdviceRun true\noexpand\else false\noexpand\fi
+    }%
+  }%
+  \edef\AdviceBailoutHandler{%
+    \noexpand\advice@trace{\space\space
+      Executing bailout handler:
+      \detokenize\expandafter{\AdviceBailoutHandler}}%
+    \expandonce\AdviceBailoutHandler
+  }%
+}
+\def\advice@trace@init@I#1#2{%
+  \advice@setup@init@I{#1}{#2}%
+  \edef\AdviceOuterHandler{%
+    \noexpand\advice@trace{\space\space
+      Executing outer handler:
+      \detokenize\expandafter{\AdviceOuterHandler}}%
+    \expandonce\AdviceOuterHandler
+  }%
+  \edef\AdviceCollector{%
+    \noexpand\advice@trace{\space\space
+      Executing collector:
+      \detokenize\expandafter{\AdviceCollector}}%
+    \noexpand\advice@trace{\space\space\space\space
+      Argument specification:
+      \detokenize\expandafter{\AdviceArgs}}%
+    \noexpand\advice@trace{\space\space\space\space
+      Options:
+      \detokenize\expandafter{\AdviceCollectorOptions}}%
+    \noexpand\advice@trace{\space\space\space\space
+      Raw options:
+      \detokenize\expandafter{\AdviceRawCollectorOptions}}%
+    \unexpanded{%
+      \gdef\advice@collargs@return{0}%
+      \appto\AdviceRawCollectorOptions{\advice@remember@collargs@return}%
+    }%
+    \expandonce\AdviceCollector
+  }%
+  \edef\advice@inner@handler@trace@do{%
+    \noexpand\advice@trace{\space\space
+      Executing inner handler:
+      \detokenize\expandafter{\AdviceInnerHandler}}%
+    \noexpand\advice@trace{\space\space\space\space
+      Received arguments\noexpand\advice@inner@handler@trace@printcollargsreturn:
+      \noexpand\detokenize\noexpand\expandafter{\unexpanded{\the\toks0}}}%
+    \noexpand\advice@trace{\space\space\space\space
+      Options:
+      \detokenize\expandafter{\AdviceOptions}}%
+    \expandonce{\AdviceInnerHandler}%
+  }%
+  \def\AdviceInnerHandler{\advice@inner@handler@trace}%
+}
+\def\advice@remember@collargs@return{%
+  \global\let\advice@collargs@return\collargsReturn
+}
+\def\advice@inner@handler@trace{%
+  \ifnum\advice@collargs@return=0
+    \expandafter\advice@inner@handler@trace@i
+  \else
+    \expandafter\advice@inner@handler@trace@ii
+  \fi
+}
+\def\advice@inner@handler@trace@i#1{%
+  \toks0={#1}%
+  \advice@inner@handler@trace@do{#1}%
+}
+\def\advice@inner@handler@trace@ii{%
+  \expandafter\toks\expandafter0\expandafter{\the\collargsArgs}%
+  \advice@inner@handler@trace@do
+}
+\def\advice@inner@handler@trace@printcollargsreturn{%
+  \ifnum\advice@collargs@return=0
+  \else
+    \space(collargs return=%
+    \ifcase\advice@collargs@return braced\or plain\or no\fi
+    )%
+  \fi
+}
+\resetatcatcode
+\endinput
+%%
+%% End of file `advice.tex'.

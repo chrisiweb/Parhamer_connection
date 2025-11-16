@@ -1,0 +1,147 @@
+%% $Id: pst-rputover.tex 1.00 2017-06-29 08:08:51Z thomas $
+%% Version 1.0
+%%
+%% This is file `pst-rputover.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-rputover.tex'
+%%
+%% Thomas S\"{O}LL and Martin J.OSBORNE
+%%
+%% This program can redistributed and/or modified under %%
+%% the terms of the LaTeX Project Public License              %%
+%% Distributed from CTAN archives in directory                %%
+%% macros/latex/base/lppl.txt; either version 1.3c of       %%
+%% the License, or (at your option) any later version.       %%
+%%
+%%    DESCRIPTION:
+%%   `pst-rputover' is a PSTricks package that allows you to place text over objects without obscuring background colors
+%%
+%% Based partially on the answer of Werner at
+%% http://tex.stackexchange.com/questions/353748/is-there-a-variant-of-rput-in-pstricks-that-preserves-background-fill-colors
+%%
+\def\fileversion{1.0}
+\def\filedate{2017/29/06}
+
+\message{`PST-RPUTOVER' v\fileversion, \filedate}
+
+\csname PSTRPUTOVER\endcsname
+\let\PSTRPUTOVERLoaded\endinput
+
+% Requires PSTricks packages etc.
+\ifx\PSTricksLoaded\endinput\else \input pstricks \fi
+\ifx\PSTnodesLoaded\endinput\else \input pst-node \fi
+\ifx\PSTXKeyLoaded\endinput\else  \input pst-xkey \fi
+
+\edef\PstAtCode{\the\catcode`\@}
+\catcode`\@=11\relax
+
+\pst@addfams{pst-rputover}
+
+\newcounter{rpo@pstfiglabel}
+\newcounter{rpo@coverable}
+\newlength{\rpo@fboxrule}
+\setlength{\rpo@fboxrule}{\fboxrule}
+
+\define@key[psset]{pst-node}{npos}[{}]{%
+\def\pst@tempa{#1}%
+\ifx\pst@tempa\@empty\def\psk@npos{\npos@default}\else\pst@checknum{#1}\psk@npos\fi}
+\psset[pst-node]{npos=}
+
+\define@boolkey[psset]{pst-rputover}[Pst@]{autoangle}[true]{}
+\define@boolkey[psset]{pst-rputover}[Pst@]{inverscl}[false]{\ifPst@inverscl\def\fill@Rev{solid}\else\def\fill@Rev{none}\fi}
+\define@key[psset]{pst-rputover}{addbars}[|-|]{\def\psk@addbars{#1}}%
+\define@key[psset]{pst-rputover}{baroffset}[0pt]{\def\psk@baroffset{#1}}%
+\define@key[psset]{pst-rputover}{Cbarwidth}[\pslinewidth]{\def\psk@Cbarwidth{#1}}%
+\define@key[psset]{pst-rputover}{absnodesep}[none]{\def\psk@absnodesep{#1}}%
+\define@key[psset]{pst-rputover}{boxpos}[c]{\def\psk@boxpos{#1}}%
+\define@key[psset]{pst-rputover}{angleadd}[0]{\def\psk@angleadd{#1}}%
+\define@key[psset]{pst-rputover}{fboxsep}[1.5pt]{\def\psk@fboxsep{#1}}%
+
+\psset[pst-rputover]{autoangle=true,angleadd=0,fboxsep=1.5pt,boxpos=c,inverscl=false,absnodesep={0,0},addbars=|-|,Cbarwidth=\pslinewidth,baroffset=0pt}
+
+\def\rputover{\fboxrule=0pt\def\pst@par{}\pst@object{rputover}}
+\def\rputover@i{\@ifnextchar({\rputover@ii{0}}{\rputover@ii}}
+\def\rputover@ii#1(#2){\@ifnextchar(%
+{\rputover@iii{#1}(#2)}%
+{\rputover@iii{#1}(#2)(#2)}}%
+\def\rputover@iii#1(#2)(#3)#4{%
+\begin@SpecialObj%
+\pst@killglue%
+\pnode(#2){@PA}\pnode(#3){@PB}
+\use@par%
+\fboxsep=\psk@fboxsep%
+\pst@getcoor{@PA}\pst@tempA
+\pst@getcoor{@PB}\pst@tempB
+\pst@Verb{%
+    \pst@tempA \tx@UserCoor /@y1 ED /@x1 ED
+    \pst@tempB \tx@UserCoor /@y2 ED /@x2 ED
+#1  \ifPst@autoangle  @y1 @y2 sub dup mul @x1 @x2 sub dup mul add 0 eq { 0 } { @y1 @y2 sub @x1 @x2 sub Atan neg 180 add } ifelse add \else\fi /delta1 ED
+}%
+    \psLNode(@PA)(@PB){\psk@npos}{@MidAB}%
+    \pnode[\psk@absnodesep]([nodesep=-\psk@nodesepA]{@PB}@MidAB){@Mid}%
+    \rput[\psk@boxpos]{!delta1}(@Mid){\psDefBoxNodes{label\therpo@pstfiglabel}{%
+      \fbox{\expandafter #4}}}%
+      \stepcounter{rpo@pstfiglabel}%
+      \setlength{\fboxrule}{\rpo@fboxrule}%
+\end@SpecialObj\ignorespaces%
+}%
+%-------------------------------------------------------------------------------------------------------------
+% Optional argument of \coverable is intended to be the region (x0,y0)(x1,y1) with
+% respect to which the reverse clip is done.  The default, (-\maxdimen,-\maxdimen)(\maxdimen,\maxdimen),
+% seems to work fine, so the possibility of specifying the region manually doesn't seem to be necessary (or useful).
+\def\coverable{\def\pst@par{}\pst@object{coverable}}%
+\def\coverable@i{\@ifnextchar[{\@coverableo}{\@coverablen}}%
+\def\@coverableo[(#1,#2)(#3,#4)]#5{\@coverableg{#1}{#2}{#3}{#4}{#5}}%
+\def\@coverablen#1{%
+\@coverableg{-\maxdimen}{-\maxdimen}{\maxdimen}{\maxdimen}{#1}%
+}%
+\def\@coverableg#1#2#3#4#5{%
+\begin@SpecialObj\ignorespaces
+\pst@killglue%
+\begingroup%
+\use@par%
+  \psclip{%
+    \pscustom[linestyle=none,fillstyle=\fill@Rev,arrows=-]{%
+      \loop%
+        \psline[liftpen=2](label\therpo@coverable:bl)(label\therpo@coverable:br)(label\therpo@coverable:tr)(label\therpo@coverable:tl)(label\therpo@coverable:bl)%
+        \stepcounter{rpo@coverable}%
+        \ifnum\value{rpo@coverable}<\value{rpo@pstfiglabel}%
+      \repeat%
+      \psline[liftpen=2](#1,#2)(#1,#4)(#3,#4)(#3,#2)%
+      }%
+    }%
+    #5
+\endpsclip%
+\endgroup
+\end@SpecialObj\ignorespaces}
+%-------------------------------------------------------------------------------------------------------------
+\def\pclineover{\pst@object{pclineover}}%
+\def\pclineover@i{\pst@getarrows{\pclineover@ii}}%
+\def\pclineover@ii(#1)(#2)#3{%
+\addbefore@par{autoangle=true}%
+\begin@SpecialObj\ignorespaces
+\begingroup
+\use@par%
+\rputover{\psk@angleadd}(#1)(#2){#3}%
+\coverable{%
+\pcline(#1)(#2)}%
+\endgroup%
+\end@SpecialObj\ignorespaces}
+%-------------------------------------------------------------
+\def\pcarrowC{\pst@object{pcarrowC}}%
+\def\pcarrowC@i{\pst@getarrows{\pcarrowC@ii}}%
+\def\pcarrowC@ii(#1)(#2)#3{%
+\addbefore@par{autoangle=true,arrows=<D-D>,arrowlength=2.5,arrowinset=0.1,arrowsize=2.2pt,arrowscale=1}%
+\begin@SpecialObj\ignorespaces
+\begingroup
+\use@par%
+\rputover{\psk@angleadd}(#1)(#2){#3}%
+\coverable{%
+\pcline(#1)(#2)}%
+\pcline[linestyle=none,linewidth=\psk@Cbarwidth,offset=\psk@baroffset]{\psk@addbars}(#1)(#2)
+\endgroup%
+\end@SpecialObj\ignorespaces}
+\catcode`\@=\PstAtCode\relax
+\endinput 

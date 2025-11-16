@@ -1,0 +1,268 @@
+%%
+%% This is file `tracklang.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% tracklang.dtx  (with options: `tracklang.sty,package')
+%% 
+%%  tracklang.dtx
+%%  Copyright 2025 Nicola Talbot
+%% 
+%%  This work may be distributed and/or modified under the
+%%  conditions of the LaTeX Project Public License, either version 1.3
+%%  of this license or (at your option) any later version.
+%%  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%%  and version 1.3 or later is part of all distributions of LaTeX
+%%  version 2005/12/01 or later.
+%% 
+%%  This work has the LPPL maintenance status `maintained'.
+%% 
+%%  The Current Maintainer of this work is Nicola Talbot.
+%% 
+%%  This work consists of the files tracklang.dtx and tracklang.ins and the derived files tracklang.sty, tracklang.tex, tracklang-region-codes.tex, tracklang-scripts.sty, tracklang-scripts.tex.
+%% 
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tracklang}[2025/03/11 v1.6.6 (NLCT) Track Languages]
+\providecommand*{\@tracklang@declareoption}[1]{%
+  \DeclareOption{#1}{\TrackPredefinedDialect{#1}}%
+}
+\input{tracklang}
+\let\@tracklang@declaredoptions\@declaredoptions
+\DeclareOption{verbose}{\TrackLangShowVerbosetrue}
+\DeclareOption{noverbose}{\TrackLangShowVerbosefalse}
+\DeclareOption{warn}{\TrackLangShowWarningstrue}
+\DeclareOption{nowarn}{\TrackLangShowWarningsfalse}
+\ProcessOptions
+\let\@tracklang@declareoption\@gobble
+\ExplSyntaxOn
+\cs_if_exist_use:N \@tracklang@prelangpkgcheck@hook
+\cs_new:Nn \__tracklang_localeforeach:
+ {
+  \cs_if_exist:NT \LocaleForEach
+   {
+     \LocaleForEach
+      {
+        \@tracklang@verbose{Checking babel locale `##1'}%
+        \cs_if_exist_use:cF { @tracklang@add@##1 }
+         {
+           \getlocaleproperty \tracklang@propresult
+            {##1} {identification/tag.bcp47}
+           \exp_args:NV \TrackLanguageTag \tracklang@propresult
+           \tl_if_eq:NnF \TrackLangLastTrackedDialect { ##1 }
+            {
+             \@tracklang@info
+              {Adding ~ mapping ~ `\TrackLangLastTrackedDialect' ~ -> ~ `##1'}
+             \exp_args:NV \SetTrackedDialectLabelMap
+               \TrackLangLastTrackedDialect
+               { ##1 }
+            }
+         }
+      }
+   }
+ }
+\cs_new:Nn \__tracklang_bbl_loaded:
+ {
+   \clist_map_inline:Nn \bbl@loaded
+    {
+      \cs_if_exist:cTF
+        { @tracklang@add@ ##1 }
+       {
+         \tl_if_eq:nnTF { ##1 } { nil }
+          {
+            \tl_if_empty:NT \@tracklang@languages
+             {
+               \@tracklang@add@nil
+             }
+          }
+          {
+            \use:c { @tracklang@add@ ##1 }
+            \tl_if_eq:nnT { ##1 } { serbian }
+             {
+               \SetTrackedDialectScript{serbian}{Latn}
+             }
+          }
+       }
+       {
+         \@tracklang@pkgwarn
+           {tracklang}
+           {Adding ~ unknown ~ babel ~ language ~ `##1'}
+          \AddTrackedLanguage { ##1 }
+       }
+    }
+ }
+\cs_new:Nn \__tracklang_polyglossia:
+ {
+   \tl_if_exist:NTF \xpg@bcp@loaded
+    {
+      \clist_map_inline:Nn \xpg@bcp@loaded
+       {
+         \@tracklang@info{Found ~ polyglossia ~ BCP ~ `##1'}%
+         \TrackLanguageTag { ##1 }
+       }
+    }
+    {
+     \tl_if_exist:NTF \xpg@loaded
+       {
+        \clist_map_inline:Nn \xpg@loaded
+         {
+          \cs_if_exist_use:cF {@tracklang@add@ ##1 }
+           {
+             \@tracklang@pkgwarn
+               {tracklang}
+               {Adding ~ unknown ~ polyglossia ~ language ~ `##1'}
+             \AddTrackedLanguage { ##1 }
+           }
+        }
+     }
+     {
+       \PackageInfo {tracklang}
+        {
+          polyglossia ~ loaded ~ but ~
+          \tl_to_str:N \xpg@loaded\c_space_tl ~ not ~ defined. ~
+           Will ~ attempt ~ to ~ track ~ known ~ languages.
+        }
+       \clist_map:Nn \@tracklang@declaredoptions
+        {
+          \tl_if_exist:cT { ##1 @loaded }
+          { \cs_use:c { @tracklang@add@ ##1} }
+        }
+      }
+    }
+   \tl_if_exist:NT \BCPdata
+    {
+      \exp_args:Ne \TrackLanguageTag { \BCPdata {tag} }
+    }
+ }
+\cs_new:Nn \__tracklang_translator:
+ {
+    \cs_set_eq:NN \@tracklang@add@Acadian\@tracklang@add@acadian
+    \cs_set_eq:NN \@tracklang@add@French\@tracklang@add@french
+    \cs_set_eq:NN \@tracklang@add@Afrikaans\@tracklang@add@afrikaans
+    \cs_set_eq:NN \@tracklang@add@Dutch\@tracklang@add@dutch
+    \cs_set_eq:NN \@tracklang@add@AmericanEnglish\@tracklang@add@american
+    \cs_set_eq:NN \@tracklang@add@Austrian\@tracklang@add@austrian
+    \cs_set_eq:cN{@tracklang@add@Austrian1997}\@tracklang@add@naustrian
+    \cs_set_eq:NN \@tracklang@add@Bahasa\@tracklang@add@bahasa
+    \cs_set_eq:NN \@tracklang@add@Basque\@tracklang@add@basque
+    \cs_set_eq:NN \@tracklang@add@Brazilian\@tracklang@add@brazil
+    \cs_set_eq:NN \@tracklang@add@Portuguese\@tracklang@add@portuguese
+    \cs_set_eq:NN \@tracklang@add@Breton\@tracklang@add@breton
+    \cs_set_eq:NN \@tracklang@add@BritishEnglish\@tracklang@add@british
+    \cs_set_eq:NN \@tracklang@add@Bulgarian\@tracklang@add@bulgarian
+    \cs_set_eq:NN \@tracklang@add@Canadian\@tracklang@add@canadian
+    \cs_set_eq:NN \@tracklang@add@Canadien\@tracklang@add@canadien
+    \cs_set_eq:NN \@tracklang@add@Catalan\@tracklang@add@catalan
+    \cs_set_eq:NN \@tracklang@add@Croatian\@tracklang@add@croatian
+    \cs_set_eq:NN \@tracklang@add@Czech\@tracklang@add@czech
+    \cs_set_eq:NN \@tracklang@add@Danish\@tracklang@add@danish
+    \cs_set_eq:NN \@tracklang@add@Dutch\@tracklang@add@dutch
+    \cs_set_eq:NN \@tracklang@add@English\@tracklang@add@english
+    \cs_set_eq:NN \@tracklang@add@Esperanto\@tracklang@add@esperanto
+    \cs_set_eq:NN \@tracklang@add@Estonian\@tracklang@add@estonian
+    \cs_set_eq:NN \@tracklang@add@Finnish\@tracklang@add@finnish
+    \cs_set_eq:NN \@tracklang@add@French\@tracklang@add@french
+    \cs_set_eq:NN \@tracklang@add@Galician\@tracklang@add@galician
+    \cs_set_eq:NN \@tracklang@add@German\@tracklang@add@german
+    \cs_set_eq:cN{@tracklang@add@German1997}\@tracklang@add@ngerman
+    \cs_set_eq:NN \@tracklang@add@Greek\@tracklang@add@greek
+    \cs_set_eq:NN \@tracklang@add@Polutoniko\@tracklang@add@polutoniko
+    \cs_set_eq:NN \@tracklang@add@Hebrew\@tracklang@add@hebrew
+    \cs_set_eq:NN \@tracklang@add@Hungarian\@tracklang@add@hungarian
+    \cs_set_eq:NN \@tracklang@add@Icelandic\@tracklang@add@icelandic
+    \cs_set_eq:NN \@tracklang@add@Irish\@tracklang@add@irish
+    \cs_set_eq:NN \@tracklang@add@Italian\@tracklang@add@italian
+    \cs_set_eq:NN \@tracklang@add@Latin\@tracklang@add@latin
+    \cs_set_eq:NN \@tracklang@add@LowerSorbian\@tracklang@add@lowersorbian
+    \cs_set_eq:NN \@tracklang@add@Magyar\@tracklang@add@magyar
+    \cs_set_eq:NN \@tracklang@add@Nynorsk\@tracklang@add@nynorsk
+    \cs_set_eq:NN \@tracklang@add@Norsk\@tracklang@add@norsk
+    \cs_set_eq:NN \@tracklang@add@Polish\@tracklang@add@polish
+    \cs_set_eq:NN \@tracklang@add@Portuguese\@tracklang@add@portuguese
+    \cs_set_eq:NN \@tracklang@add@Romanian\@tracklang@add@romanian
+    \cs_set_eq:NN \@tracklang@add@Russian\@tracklang@add@russian
+    \cs_set_eq:NN \@tracklang@add@Scottish\@tracklang@add@scottish
+    \cs_set_eq:NN \@tracklang@add@Serbian\@tracklang@add@serbian
+    \cs_set_eq:NN \@tracklang@add@Slovak\@tracklang@add@slovak
+    \cs_set_eq:NN \@tracklang@add@Slovene\@tracklang@add@slovene
+    \cs_set_eq:NN \@tracklang@add@Spanish\@tracklang@add@spanish
+    \cs_set_eq:NN \@tracklang@add@Swedish\@tracklang@add@swedish
+    \cs_set_eq:NN \@tracklang@add@Turkish\@tracklang@add@turkish
+    \cs_set_eq:NN \@tracklang@add@Ukrainian\@tracklang@add@ukrainian
+    \cs_set_eq:NN \@tracklang@add@UpperSorbian\@tracklang@add@uppersorbian
+    \cs_set_eq:NN \@tracklang@add@Welsh\@tracklang@add@welsh
+    \clist_map_inline:Nn \trans@languages
+     {
+       \cs_if_exist_use:c { @tracklang@add@##1 }
+     }
+ }
+\tl_if_empty:NT \@tracklang@languages
+ {
+   \__tracklang_localeforeach:
+   \tl_if_exist:NTF \bbl@loaded
+    {
+      \__tracklang_bbl_loaded:
+    }
+    {
+      \tl_if_exist:NTF \trans@languages
+       {
+         \__tracklang_translator:
+       }
+       {
+         \@ifpackageloaded{ngerman}
+         {
+           \@tracklang@add@ngerman
+         }
+         {
+           \@ifpackageloaded{german}
+           {
+             \@tracklang@add@german
+           }
+           {
+             \@ifpackageloaded{polyglossia}
+             {
+               \__tracklang_polyglossia:
+             }
+             {
+               \@ifpackageloaded{babel}
+                {
+                 \PackageInfo {tracklang}
+                  {
+                    babel ~ loaded ~ but ~
+                    \tl_to_str:N \bbl@loaded \c_space_tl ~ not ~
+                    defined. ~ Will ~ attempt ~ to ~ track ~ known ~
+                     languages.
+                  }
+                 \clist_map_inline:Nn \@tracklang@declaredoptions
+                  {
+                    \cs_if_exist:cT {captions #1 }
+                    { \cs_if_exist_use:c { @tracklang@add@ #1 } }
+                  }
+                }
+                { }
+             }
+           }
+         }
+       }
+    }
+ }
+\ExplSyntaxOff
+\endinput
+%%
+%% End of file `tracklang.sty'.

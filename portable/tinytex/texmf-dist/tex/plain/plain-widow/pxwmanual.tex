@@ -1,0 +1,55 @@
+% This file is part of the CTAN package named plain-widow.
+% 
+%   pxwmanual.tex: add manual \vsize change to pxwreport.tex
+%   Version 1.0, 13.05.2025
+%
+%   Copyright (C) 2025  Udo Wermuth (author)
+%
+%   This program is free software: you can redistribute it and/or modify
+%   it under the terms of the GNU General Public License as published by
+%   the Free Software Foundation, either version 3 of the License, or
+%   (at your option) any later version.
+%
+%   This program is distributed in the hope that it will be useful,
+%   but WITHOUT ANY WARRANTY; without even the implied warranty of
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   GNU General Public License for more details.
+%
+%   You should have received a copy of the GNU General Public License
+%   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%
+\input pxwreport.tex
+% code from single.tex with ``SINGLE'' replaced by ``MANUAL''
+\def\footlinedist{30pt }%plain TeX's value: 24pt
+\def\makefootline{\baselineskip=\footlinedist
+ \lineskiplimit=0pt\line{\the\footline}}
+\begingroup \dimen255=\footlinedist
+ \gdef\PXnormaldist{\gdef\footlinedist{30 pt}}
+ \advance\dimen255 by +1\baselineskip
+ \xdef\PXplusdist{\noexpand\gdef\noexpand
+  \footlinedist{\the\dimen255 }}
+ \advance\dimen255 by -2\baselineskip
+ \xdef\PXminusdist{\noexpand\gdef\noexpand
+  \footlinedist{\the\dimen255 }}\endgroup
+\def\PXincVsize{% increase \vsize by one line
+ \global\advance\vsize by +1\baselineskip
+ \PXminusdist\wlog{MANUAL: \vsize + 1 line}}
+\def\PXdecVsize{% decrease \vsize by one line
+ \global\advance\vsize by -1\baselineskip
+ \PXplusdist\wlog{MANUAL: \vsize - 1 line}}
+\def\PXresetVsize{% reset \vsize to former value
+ \ifdim\vsize=\PXsaveVsize \else \PXnormaldist
+  \global\vsize=\PXsaveVsize \fi}
+\def\PXstorevsize{\edef\PXsaveVsize{\the\vsize}}
+\PXstorevsize % call this if \vsize is changed
+%
+% put the following macros into \def\PXpostoutput
+\def\PXplus(#1){% #1: page number; now +1 line
+ \ifnum#1=\pageno \PXresetVsize \PXincVsize
+ \fi \ignorespaces}
+\def\PXminus(#1){% #1: page number; now -1 line
+ \ifnum#1=\pageno \PXresetVsize \PXdecVsize
+ \fi \ignorespaces}
+\def\PXstop(#1){% #1: page number; now no change
+ \ifnum#1=\pageno \PXresetVsize
+  \wlog{MANUAL: \vsize}\fi \ignorespaces}

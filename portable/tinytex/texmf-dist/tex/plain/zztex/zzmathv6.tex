@@ -1,0 +1,180 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX New Mathematics Facilities
+%
+% Synopsis:  This file provides the mathematics facilities for "new math"
+%            version 5.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   24 September 2003
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Document Parameters
+%                       -------- ----------
+
+
+\delimitershortfall = 2pt
+
+%                       Math Spaces
+%                       ---- ------
+
+
+\setmathspaces{4mu plus .25mu minus .5mu}
+              {4mu plus .25mu minus .5mu}
+              {4mu plus .25mu minus .5mu}%
+
+%                       Math Font Selections
+%                       ---- ---- ----------
+
+
+\outer\def \ComputerModernmathfonts {%
+  \input zzcmmath\relax
+  \setmathpunctuationstyle{\mit}{\rm}}
+
+\outer\def \Lucidamathfonts #1{%                        {arrows?}
+  \setflag \zusemar = #1\relax
+  \input zzlucida\relax
+  \setmathpunctuationstyle{\mit}{\rm}}
+
+\outer\def \MathTimefonts #1{%                          {text face is Times?}
+  \input zzmtime\relax
+  \setmathucgreekstyles{\mit}{\boldgreekunavailable}%
+  \if #1%
+    \setmathpunctuationstyle{\mit}{\rm}%
+  \else
+    \setmathpunctuationstyle{\rm}{\rm}%
+  \fi}
+
+\outer\def \Stonemathfonts {%
+  \setmathpunctuationstyle{\rm}{\rm}}
+
+%                       Greek Letter Style
+%                       ----- ------ -----
+
+
+\def \zmucgreekstyler {}
+\def \zmucgreekstyleb {}
+
+
+% Note the "s" at the end of the name, versus \setmathucgreekstyle.
+
+\def \setmathucgreekstyles #1#2{%               {regular-style}{bold-style}
+  \gdef \zmucgreekstyler {#1}%
+  \gdef \zmucgreekstyleb {#2}%
+\definemathchar  \Alpha   \classvarfam \rmfam {41}%
+\definemathchar  \Beta    \classvarfam \rmfam {42}%
+\zdefucgreekchar \Gamma                       {30}%
+\zdefucgreekchar \Delta                       {31}%
+\definemathchar  \Epsilon \classvarfam \rmfam {45}%
+\definemathchar  \Zeta    \classvarfam \rmfam {5A}%
+\definemathchar  \Eta     \classvarfam \rmfam {48}%
+\zdefucgreekchar \Theta                       {32}%
+\definemathchar  \Iota    \classvarfam \rmfam {49}%
+\definemathchar  \Kappa   \classvarfam \rmfam {4B}%
+\zdefucgreekchar \Lambda                      {33}%
+\definemathchar  \Mu      \classvarfam \rmfam {4D}%
+\definemathchar  \Nu      \classvarfam \rmfam {4E}%
+\zdefucgreekchar \Xi                          {34}%
+\definemathchar  \Omicron \classvarfam \rmfam {4F}%
+\zdefucgreekchar \Pi                          {35}%
+\definemathchar  \Rho     \classvarfam \rmfam {50}%
+\zdefucgreekchar \Sigma                       {36}%
+\definemathchar  \Tau     \classvarfam \rmfam {54}%
+\zdefucgreekchar \Upsilon                     {37}%
+\zdefucgreekchar \Phi                         {38}%
+\definemathchar  \Chi     \classvarfam \rmfam {58}%
+\zdefucgreekchar \Psi                         {39}%
+\zdefucgreekchar \Omega                       {7F}}
+
+\def \zdefucgreekchar #1#2{%                            {\name}{code}
+  \gdef #1{%
+    \if \eqlp{\fam}{-1}%
+      {\zmucgreekstyler \mathchar "70#2}%
+    \else\if \eqlp{\fam}{\bffam}%
+      {\zmucgreekstyleb \mathchar "70#2}%
+    \else
+      \error{invgrkstyle}{The current math family precludes using bold Greek}%
+    \fi\fi}}
+
+%                       Punctuation Style
+%                       ----------- -----
+
+
+% Here we deal with the style for comma, period, semicolon, and colon.
+% The default punctuation style for all four is \rm.
+
+
+% This macro defines the math characters \zmperiod, \zmcomma,
+% colon, and semicolon to use the specified style.
+% If the style is \mit, then it's different.
+
+\def \setmathpunctuationstyle #1#2{%                    {\style1}{\style2}
+  {\zmstyfam = \name{#1fam}%
+   \if \eqlp{\zmstyfam}{\mitfam}%
+     \definemathchar {`.} \classord  \mitfam {3A}%
+     \definemathchar {`,} \classpunc \mitfam {3B}%
+   \else
+     \definemathchar {`.} \classactive \rmfam {00}%
+     \definemathchar {`,} \classactive \rmfam {00}%
+     \definemathchar {\zmperiod} \classord  \zmstyfam {2E}%
+     \definemathchar {\zmcomma}  \classpunc \zmstyfam {2C}%
+   \fi
+   \zmstyfam = \name{#2fam}%
+   \definemathchar {`;} \classpunc \zmstyfam {3B}%
+   \definemathchar {`:} \classrel  \zmstyfam {3A}}}
+
+% When period and comma are active in math, this is what they do.
+
+{
+\catcode `\. = \catactive
+\gdef .{\mathpalette\zmactperiod{}}
+
+\catcode `\, = \catactive
+\gdef ,{\mathpalette\zmactcomma{}}
+}
+
+\def \zmactperiod #1#2{%
+  \mathord{\hbox to .275em{\hfil $#1\zmperiod$\hfil}}}
+
+\def \zmactcomma #1#2{%
+  \mathpunct{\hbox to .331em{\kern .045em $#1\zmcomma$\hfil}}}
+
+%                       Dot-Related Commands
+%                       ----------- --------
+
+
+\def \cdot {\mathbin{\vcenter{\hbox{$.$}}}}
+
+\def \cdotp {\mathpunct{\vcenter{\hbox{$.$}}}}
+
+\def \ldotp {\mathpunct{.}}
+
+\def \cdots {\mathinner{\cdotp\cdotp\cdotp}}
+
+\def \ddots {%
+  \vbox{\baselineskip = 4pt \lineskiplimit = 0pt
+        \hbox{.}%
+        \hbox{\kern .4em .}%
+        \hbox{\kern .8em .}%
+        \vskip -.25ex}}
+
+\def \ldots {\mathinner{\ldotp\ldotp\ldotp}}
+
+\def \vdots {%
+  \vbox{\baselineskip = 4pt \lineskiplimit = 0pt
+        \hbox{.}%
+        \hbox{.}%
+        \hbox{.}%
+        \vskip -.25ex}}
+
+%                       Colon Commands
+%                       ----- --------
+
+
+\def \maps {\mathpunct{:}}
+
+\let \colon = \maps

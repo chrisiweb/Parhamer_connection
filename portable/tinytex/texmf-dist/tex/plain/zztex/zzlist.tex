@@ -1,0 +1,163 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX List Facilities
+%
+% Synopsis:
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   12 September 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       List Block
+%                       ---- -----
+
+
+\defineblock{\list}{\endlist}{\false}{}
+\resetinvcontext{\list}
+
+%~block list Type, Level
+% \abovepenalty = integer               % Penalty above list.
+% \aboveskip = glue                     % Space b/b above list.
+% \setflag \allowitemtag = flag         % Allow \tag command on item.
+% \belowpenalty = integer               % Penalty below list.
+% \belowskip = glue                     % Space b/b below list.
+% \bodyfont = {...}                     % Font for text.
+% \def \endpartext {...}                % Text at end of each paragraph.
+% \interitemskip = skip                 % Extra space between items.
+% \itemnumber = integer                 % Number of first item.
+% \def \labelformat ##1{...}            % Item label formatter.
+% \labelshift = dimen                   % Horizontal shift of label.
+% \def \labeltext {...}                 % Label text or \arg if \item{...}.
+% \labelwidth = dimen                   % Width of label or \naturalwidth.
+% \leftindent = glue                    % Left indentation.
+% \parindent = glue                     % Paragraph indent.
+% \parrag = dimen                       % Paragraph raggedness.
+% \parskip = glue                       % Paragraph skip.
+% \rightindent = glue                   % Right indentation.
+% \def \tagcomptext {...}               % Composite text for tag, if not label.
+% \width = dimen                        % Width of text.
+%~end
+
+\defineskip{\interitemskip}{0pt}
+\definedimen{\labelshift}{0pt}
+\definedimen{\labelwidth}{0pt}
+
+\definecount{\nextitemnumber}{0}
+
+
+\def \list #1{%                         {type}
+  \endgraf
+  \beginblockscope{list}%
+  \global\increment \listdepth
+  \abovepenalty = \breakgood            %~default hard
+  \setflag \allowitemtag = \false       %~default soft
+  \belowpenalty = \breakgood            %~default hard
+  \def \endpartext {}%                  %~default hard
+  \itemnumber = 1                       %~default with
+  \def \tagcomptext {}%                 %~default soft
+  \processdesign{\list}{#1\romannumeral\listdepth}%
+  \global\increment \listnumber
+  \decrement \itemnumber
+  \listformat
+  \def \par {\endpartext \endgraf}%
+  \settaginfo{}{}}                              % No tag info so far.
+
+\def \endlist {%
+  \par
+  \futurelet\nexttoken \zendlist}
+
+\def \zendlist {%
+  \closeifinblock{\item}{\enditem}%
+  \endlistformat
+  \if \onep{\listdepth}%
+    \global\nextitemnumber = \itemnumber
+    \global\increment \nextitemnumber
+  \fi
+  \global\decrement \listdepth
+  \endblockscope{list}%
+  \parnext}
+
+\def \listformat {%
+  \the\bodyfont
+  \bbskipabove{\abovepenalty}{\aboveskip}%
+  \alterindentation{\leftindent}{\rightindent}%
+  \settextwidth{\width}%
+  \setparrag{\parrag}%
+  \advance \interitemskip by \baselineskip}
+
+\def \endlistformat{%
+  \bbskipbelowblockpar{\nexttoken}{\belowpenalty}{\belowskip}}
+
+
+% This macro helps with a list design that involves measuring some text.
+
+\def \setmeasuredlabel #1#2#3{%         {extra-indent}{template}{formatter}
+  \def \labelformat ##1{#3}%
+  \measuretextwidth{\labelwidth}{#2}%
+  \labelshift = -\labelwidth
+  \leftindent = \labelwidth
+  \advance \leftindent by #1\relax}
+
+\def \adjustinteritemskip #1{%                          {amount} %^modifier
+  \with{\advance\interitemskip by #1}}
+
+%~ This modifier on |\list| is used when a list immediately follows
+%~ an |\item| command; that is, when an item is a sublist.
+%~ It eliminates the vertical space above the sublist.
+
+\def \immediatesublist {%                               %^modifier
+  \with{\abovepenalty = \breaknever
+        \aboveskip = 0pt}}
+
+%                       Item Block
+%                       ---- -----
+
+% The \item block is subordinate to the \list block, and thus inherits all
+% of its design parameters from \list.
+
+
+\defineblock{\item}{\enditem}{\false}{}
+
+%~block item
+% \difficulty = integer                 % Level of difficulty.
+%~end
+
+\def \item {%                                           [{label}]
+  \blockmustbein{\item}{\list}%
+  \closeifinblock{\item}{\enditem}%
+  % Don't bother with block scope.
+  \difficulty = 0                       %~default with
+  \zprocesswith                         % Instead of \processdesign.
+  \increment \itemnumber
+  \bbskipabove{\breakgood}{\interitemskip}%
+  \def \zarg {\arg}%
+  \if \tokeqlp{\labeltext}{\zarg}%
+    \def \znext {\itemformat}%
+  \else
+    \def \znext {\itemformat{\labeltext}}%
+  \fi
+  \znext}
+
+\def \enditem {%
+  \par}
+
+\def \itemformat #1{%                                   {label}
+  \noindent
+  \kern \labelshift
+  \if \dimeqlp{\labelwidth}{\naturalwidth}%
+    {\labelformat{#1}}%
+  \else
+    \hbox to \labelwidth{\labelformat{#1}}%
+  \fi
+  \if \allowitemtag
+    \if \emptydefp{\tagcomptext}%
+      \settaginfo{#1}{???}%
+    \else
+      \settaginfo{\tagcomptext}{???}%
+    \fi
+  \fi
+  \ignorespaces}

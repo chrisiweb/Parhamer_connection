@@ -1,0 +1,4711 @@
+% mathml.4ht (2025-10-17-09:06), generated from tex4ht-mathml.tex
+% Copyright 2009-2025 TeX Users Group
+% Copyright 1999-2009 Eitan M. Gurari
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <https://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2025-10-17-09:06}
+
+\exit:ifnot{Preamble,% 
+accents,% 
+amsbsy,% 
+amscd,% 
+amsfonts,% 
+amsmath,% 
+amsopn,% 
+amssymb,% 
+amstex,% 
+amstex1,% 
+amstext,% 
+array,% 
+bm,% 
+cancel,% 
+dcolumn,% 
+esvect,% 
+etex4ht,% 
+fontmath,% 
+gauss,% 
+latex,% 
+mathtools,% 
+mhchem,% 
+plain,% 
+rlbabel,% 
+sistyle,% 
+siunitx,% 
+stmaryrd,% 
+subeqnarray,% 
+tex4ht,% 
+ulem,% 
+ushort,% 
+vanilla}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{Preamble}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{PROLOG}{VERSION,DOCTYPE,*XML-STYLESHEET}
+\:CheckOption{no-DOCTYPE} \if:Option
+   \Configure{PROLOG}{VERSION,*XML-STYLESHEET}
+\fi
+\ifx \a:mathml\:UnDef
+   \NewConfigure{mathml}{1}
+   \Configure{mathml}{}
+\fi
+\def\mml:class{\a:mathml class}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{tex4ht}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{DviMath}
+    {\a:DviMathML \mathmltrue
+       \ifOption{mml-fonts}{}{\NoFonts}%
+       \IgnoreRule \HCode{<!--l.
+       \the\inputlineno-->}\Tg<\a:mathml math\Hnewline
+           \csname a:math-xmlns\endcsname \Hnewline \a:@math>\a:math
+       \edef\sv:ignore{\if:nopar
+    \noexpand\IgnorePar\else \noexpand\ShowPar\fi}%
+\IgnorePar}
+    {\Tg</\a:mathml math>\EndIgnoreRule
+     \ifOption{mml-fonts}{}{\EndNoFonts}%
+     \mathmlfalse \b:DviMathML \sv:ignore
+}
+\NewConfigure{DviMathML}{2}
+\NewConfigure{math-xmlns}{1}
+\Configure{math-xmlns}
+  { xmlns="http://www.w3.org/1998/Math/MathML" }
+\newif\ifmathml \mathmlfalse
+\newif\ifmtext \mtextfalse
+\LinkCommand\mtxt:link{\a:mathml mtext,%
+   xlink:type="simple"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xlink:href,
+   id, \mml:class="label",,}
+\LinkCommand\msp:link{\a:mathml mstyle,%
+   xlink:type="simple"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xlink:href,
+   id, \mml:class="label",,}
+\let\M:Link\Link
+\def\Link{\ifmathml
+     \ifmtext \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext>}%
+              \expandafter\expandafter\expandafter\mtxt:link
+     \else    \expandafter\expandafter\expandafter\msp:link\fi
+   \else \expandafter\M:Link\fi}
+\let\M:EndLink\EndLink
+\edef\:temp{\catcode`\#=\the\catcode`\#}
+\catcode`\#=12
+   \def\EndLink{\ifmathml
+      \ifmtext    \ht:special{t4ht@,}%
+%
+          \Endmtxt:link \HCode{<\a:mathml mtext\Hnewline
+                  \mml:class="endlabel">}\ht:special{t4ht@,&#x00A0;}%
+%
+           \else  \HCode{</\a:mathml mstyle><!--endlabel-->}\fi
+       \else \expandafter\M:EndLink\fi}
+\:temp
+
+\NewConfigure{math}{1}
+\NewConfigure{@math}{1}
+\def\IgnoreRule{\ht:special{t4ht@\string_}}
+\def\EndIgnoreRule{\ht:special{t4ht@\string_\string_}}
+\Configure{$$}
+   {\Configure{@math}{%\a:mathml
+ display="block"
+}\IgnorePar
+    \ifvmode\else \HCode{<!--tex4ht:inline-->}\fi
+\EndP\DviMath}
+   {\EndDviMath\ShowPar\par{\csname HCondtrue\endcsname\noindent}}
+   {\DisplayMathtrue}
+\Configure{$}
+   {\Configure{@math}{%\a:mathml
+ display="inline"
+}\DviMath}
+   {\EndDviMath}{}
+\newif\ifDisplayMath  \DisplayMathfalse
+\Configure{radical}
+  {\Tg<\a:mathml msqrt>%
+   \special{t4ht\string~!e<<\a:mathml mrow>}%
+   \special{t4ht\string~!e></\a:mathml mrow></\a:mathml msqrt>}%
+   \special{t4ht\string~!ee/}%
+   \special{t4ht\string~!ese-}%
+  }
+\def\:MT{\ifmathml \a:mathml m\fi}
+\Configure{halignTB}{\HCode{<\:MT table }\halignTBL}{\HCode{>}}
+\Configure{halignTBL}
+   {t}{}
+   {b}{}
+   {c}{}
+   {}
+\def\t:HA{\HCode{</\:MT table>}}
+\def\R:HA{\HCode{<\:MT tr \Hnewline style="vertical-align:baseline">}}
+\def\r:HA{\HCode{</\:MT tr>}}
+\def\D:HA{\SaveEndP
+\HCode{<\:MT td
+                        \ifnum \HMultispan>1 colspan="\HMultispan"\fi}%
+   \halignTD \HCode{\Hnewline>}}
+\def\d:HA{\HCode{</\:MT td>}\RecallEndP
+}
+
+\Configure{SUB}
+   {\Send{BACK}
+     {<\a:mathml msub><\a:mathml mrow\Hnewline>}%
+     \Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>\trap:base}
+   {\Tg</\a:mathml mrow>\TG</\a:mathml msub\Hnewline>}
+\Configure{SUP}
+   {\Send{BACK}
+      {<\a:mathml msup><\a:mathml mrow\Hnewline>}%
+      \Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>\trap:base}
+   {\Tg</\a:mathml mrow>\TG</\a:mathml msup\Hnewline>}
+\Configure{SUBSUP}
+   {\Send{BACK}
+      {<\a:mathml msubsup><\a:mathml mrow\Hnewline>}%
+      \Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>\trap:base}
+   {\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>\trap:base}
+   {\Tg</\a:mathml mrow>\TG</\a:mathml msubsup\Hnewline>}
+\def\trap:base{{\HCode{}}}
+
+\Configure{nolimits}{\HCode{<!--nolimits-->}}
+\Configure{limits}
+   {\let\pl:SUB =\:UnDef
+\let\pl:SUP  =\:UnDef
+\ifx \:temp\sp \def\pl:SUP{\Configure{SUP}}%
+\expandafter\append:def
+   \expandafter\pl:SUP\expandafter{\expandafter{\a:SUP}}%
+\expandafter\append:def
+   \expandafter\pl:SUP\expandafter{\expandafter{\b:SUP}}%
+%
+\Configure{SUP}
+   {\Send{BACK}{<\a:mathml mover
+             \mml:class="msup"><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup
+     \ifx \pl:SUBSUP
+\:UnDef \else
+   \let\SUBSUP:=\pl:SUBSUP
+%
+\fi
+%
+     \Configure{SUP}
+   {\Send{BACK}{<\a:mathml msup><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup
+    \Configure{SUP}
+   {\Send{BACK}{<\a:mathml msup><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup \trap:base}
+   {\egroup \Tg</\a:mathml mrow>\TG</\a:mathml msup\Hnewline>%
+}%
+\trap:base}
+   {\egroup\Tg</\a:mathml mrow>\TG</\a:mathml mover\Hnewline>\aftergroup\pl:SUP  %
+}%
+\trap:base}
+   {}%
+\else
+    \ifx \:temp\sb \def\pl:SUB{\Configure{SUB}}%
+\expandafter\append:def
+   \expandafter\pl:SUB\expandafter{\expandafter{\a:SUB}}%
+\expandafter\append:def
+   \expandafter\pl:SUB\expandafter{\expandafter{\b:SUB}}%
+%
+\Configure{SUB}
+   {\Send{BACK}{<\a:mathml munder
+             \mml:class="msub"><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup
+     \ifx \pl:SUBSUP
+\:UnDef \else
+   \let\SUBSUP:=\pl:SUBSUP
+%
+\fi
+%
+     \Configure{SUB}
+   {\Send{BACK}{<\a:mathml msub><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup
+    \Configure{SUB}
+   {\Send{BACK}{<\a:mathml msub><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup \trap:base}
+   {\egroup \Tg</\a:mathml mrow>\TG</\a:mathml msub\Hnewline>%
+}%
+\trap:base}
+   {\egroup\Tg</\a:mathml mrow>\TG</\a:mathml
+              munder\Hnewline>\aftergroup\pl:SUB %
+}%
+\trap:base}
+   {}%
+\fi
+\fi
+\let\pl:SUBSUP
+=\SUBSUP:
+%
+\Configure{SUBSUP}
+   {\ifx \pl:SUB \:UnDef\else  \pl:SUB \fi
+    \ifx \pl:SUP  \:UnDef\else  \pl:SUP  \fi
+    \ifx \pl:SUBSUP
+\:UnDef \else
+   \let\SUBSUP:=\pl:SUBSUP
+%
+\fi
+%
+    \Send{BACK}
+      {<\a:mathml munderover \a:mathml accentunder="false"
+                             \a:mathml accent="false"><\a:mathml mrow
+          \Hnewline>}%
+    \Tg</\a:mathml mrow>\Tg<\a:mathml
+           mrow\Hnewline>\trap:base
+   }
+   {\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>\trap:base}
+   {\Tg</\a:mathml mrow>\TG</\a:mathml munderover\Hnewline>}
+%
+}
+\Configure{displaylimits}
+   {\ifDisplayMath \expandafter\disp:limits\fi}
+\def\disp:limits{\let\pl:SUB =\:UnDef
+\let\pl:SUP  =\:UnDef
+\ifx \:temp\sp \def\pl:SUP{\Configure{SUP}}%
+\expandafter\append:def
+   \expandafter\pl:SUP\expandafter{\expandafter{\a:SUP}}%
+\expandafter\append:def
+   \expandafter\pl:SUP\expandafter{\expandafter{\b:SUP}}%
+%
+\Configure{SUP}
+   {\Send{BACK}{<\a:mathml mover
+             \mml:class="msup"><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup
+     \ifx \pl:SUBSUP
+\:UnDef \else
+   \let\SUBSUP:=\pl:SUBSUP
+%
+\fi
+%
+     \Configure{SUP}
+   {\Send{BACK}{<\a:mathml msup><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup
+    \Configure{SUP}
+   {\Send{BACK}{<\a:mathml msup><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup \trap:base}
+   {\egroup \Tg</\a:mathml mrow>\TG</\a:mathml msup\Hnewline>%
+}%
+\trap:base}
+   {\egroup\Tg</\a:mathml mrow>\TG</\a:mathml mover\Hnewline>\aftergroup\pl:SUP  %
+}%
+\trap:base}
+   {}%
+\else
+    \ifx \:temp\sb \def\pl:SUB{\Configure{SUB}}%
+\expandafter\append:def
+   \expandafter\pl:SUB\expandafter{\expandafter{\a:SUB}}%
+\expandafter\append:def
+   \expandafter\pl:SUB\expandafter{\expandafter{\b:SUB}}%
+%
+\Configure{SUB}
+   {\Send{BACK}{<\a:mathml munder
+             \mml:class="msub"><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup
+     \ifx \pl:SUBSUP
+\:UnDef \else
+   \let\SUBSUP:=\pl:SUBSUP
+%
+\fi
+%
+     \Configure{SUB}
+   {\Send{BACK}{<\a:mathml msub><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup
+    \Configure{SUB}
+   {\Send{BACK}{<\a:mathml msub><\a:mathml mrow\Hnewline>}%
+\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>%
+\bgroup \trap:base}
+   {\egroup \Tg</\a:mathml mrow>\TG</\a:mathml msub\Hnewline>%
+}%
+\trap:base}
+   {\egroup\Tg</\a:mathml mrow>\TG</\a:mathml
+              munder\Hnewline>\aftergroup\pl:SUB %
+}%
+\trap:base}
+   {}%
+\fi
+\fi
+\let\pl:SUBSUP
+=\SUBSUP:
+%
+\Configure{SUBSUP}
+   {\ifx \pl:SUB \:UnDef\else  \pl:SUB \fi
+    \ifx \pl:SUP  \:UnDef\else  \pl:SUP  \fi
+    \ifx \pl:SUBSUP
+\:UnDef \else
+   \let\SUBSUP:=\pl:SUBSUP
+%
+\fi
+%
+    \Send{BACK}
+      {<\a:mathml munderover \a:mathml accentunder="false"
+                             \a:mathml accent="false"><\a:mathml mrow
+          \Hnewline>}%
+    \Tg</\a:mathml mrow>\Tg<\a:mathml
+           mrow\Hnewline>\trap:base
+   }
+   {\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>\trap:base}
+   {\Tg</\a:mathml mrow>\TG</\a:mathml munderover\Hnewline>}
+%
+}
+\ifx \a:putSUB\:UnDef \else
+   \pend:def\a:putSUB{\ifx \pl:SUBSUP
+\:UnDef\else
+         \let\SUBSUP:=\pl:SUBSUP
+%
+         \let\pl:SUBSUP
+=\:UnDef
+      \fi}%
+\fi
+\ifx \a:putSUP\:UnDef \else
+   \pend:def\a:putSUP{\ifx \pl:SUBSUP
+\:UnDef\else
+         \let\SUBSUP:=\pl:SUBSUP
+%
+         \let\pl:SUBSUP
+=\:UnDef
+      \fi}%
+\fi
+
+\def\mml:htfsym{\Configure
+   {htf}{254}{+}{<\a:mathml mglyph\Hnewline fontfamily="}{\%s"}{
+   index="\%s"}{ mathsize="\%d\%\%"}{}{ alt="}{"/>}}
+\def\ext:htfsym{\Configure{htf}{254}{+}{}{}{}{}{}{}{}}
+\Configure{over}
+   {\Send{GROUP}{0}
+      {<\a:mathml mfrac><\a:mathml mrow>}\HCode{</\a:mathml mrow>}}
+   {\HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}
+      {</\a:mathml mrow></\a:mathml mfrac>}}
+\Configure{atop}
+   {\Send{GROUP}{0}{<\a:mathml mfrac linethickness="0"><\a:mathml mrow>}\HCode{</\a:mathml mrow>}}
+   {\HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml mrow></\a:mathml mfrac>}}
+\Configure{above}
+   {\Send{GROUP}{0}{<\a:mathml mfrac linethickness="\the\tmp:dim"><\a:mathml mrow>}%
+    \HCode{</\a:mathml mrow>}\o:over:\:gobbleII}
+   {\HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml mrow></\a:mathml mfrac>}}
+\Configure{abovewithdelims}
+   {\abovewithdelims:III}
+   {}
+\def\abovewithdelims:III#1#2#3{%
+   \def\:temp{#2#3}\def\:tempa{..}\ifx \:temp\:tempa
+      \Send{GROUP}{0}{<\a:mathml mfrac linethickness="\the\tmp:dim"><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:over:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml mrow></\a:mathml mfrac>}
+   \else
+      \Send{GROUP}{0}{<\a:mathml mfenced \a:mathml separators=""\Hnewline
+          \a:mathml open="\expandafter
+\ifx \csname \string#2:lr del\endcsname\relax #2\else
+     \csname \string#2:lr del\endcsname\fi
+" \a:mathml close="\expandafter
+\ifx \csname \string#3:lr del\endcsname\relax #3\else
+     \csname \string#3:lr del\endcsname\fi
+"><\a:mathml mfrac
+          \a:mathml linethickness="\the\tmp:dim"><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:over:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml
+                                mrow></\a:mathml mfrac></\a:mathml mfenced>}
+   \fi
+   \tmp:dim
+ }
+\Configure{atopwithdelims}
+   {\atopwithdelims:III}
+   {}
+\def\atopwithdelims:III#1#2#3{%
+   \def\:temp{#2#3}\def\:tempa{..}\ifx \:temp\:tempa
+      \Send{GROUP}{0}{<\a:mathml mfrac linethickness="0"><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:atop:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml mrow></\a:mathml mfrac>}
+   \else
+      \Send{GROUP}{0}{<\a:mathml mfenced \a:mathml separators=""\Hnewline
+          \a:mathml open="\expandafter
+\ifx \csname \string#2:lr del\endcsname\relax #2\else
+     \csname \string#2:lr del\endcsname\fi
+" \a:mathml close="\expandafter
+\ifx \csname \string#3:lr del\endcsname\relax #3\else
+     \csname \string#3:lr del\endcsname\fi
+"><\a:mathml mfrac
+          \a:mathml linethickness="0"><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:atop:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml
+                              mrow></\a:mathml mfrac></\a:mathml mfenced>}
+   \fi
+ }
+\Configure{overwithdelims}
+   {\overwithdelims:III}
+   {}
+\def\overwithdelims:III#1#2#3{%
+   \def\:temp{#2#3}\def\:tempa{..}\ifx \:temp\:tempa
+      \Send{GROUP}{0}{<\a:mathml mfrac><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:over:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml mrow></\a:mathml mfrac>}
+   \else
+      \Send{GROUP}{0}{<\a:mathml mfenced \a:mathml separators=""\Hnewline
+          \a:mathml open="\expandafter
+\ifx \csname \string#2:lr del\endcsname\relax #2\else
+     \csname \string#2:lr del\endcsname\fi
+" \a:mathml close="\expandafter
+\ifx \csname \string#3:lr del\endcsname\relax #3\else
+     \csname \string#3:lr del\endcsname\fi
+"><\a:mathml mfrac><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:over:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml
+                               mrow></\a:mathml mfrac></\a:mathml mfenced>}
+   \fi
+ }
+\def\mathunderscore{\nfss@text{\HChar{95}}}
+\Configure{halignTD} {}{}
+   {<}{\HCode{ \a:mathml columnalign="left"}}
+   {-}{\HCode{ \a:mathml columnalign="center"}}
+   {>}{\HCode{ \a:mathml columnalign="right"}}
+   {^}{\HCode{ \a:mathml rowalign="top"}}
+   {=}{\HCode{ \a:mathml rowalign="baseline"}}
+   {|}{\HCode{ \a:mathml rowalign="center"}}
+   {_}{\HCode{ \a:mathml rowalign="bottom"}}
+   {p}{\HCode{ \a:mathml columnalign="left"}}
+   {}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{etex4ht}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \def\:tempc#1{\a:middle\mathrel{\left:right#1\:EMPTY}\b:middle}
+\HLet\middle=\:tempc
+\NewConfigure{middle}{2}
+\Configure{middle}
+   {\bgroup
+        \Configure{mathrel}{*}
+          {<mo \mml:class="MathClass-rel"
+                     fence="true" stretchy="true" >}
+          {</mo>}
+        {\Configure{mathrel}{}{}{}{}}%
+        }
+        {\egroup}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{latex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \:CheckOption{core}\if:Option \expandafter\endinput \fi
+\let\A:equation\a:equation
+\let\B:equation\b:equation
+\let\C:equation\c:equation
+\Configure{equation}
+  {\A:equation\Configure{$$}
+   {\Configure{@math}{%\a:mathml
+ display="block"
+%
+                       \mml:class="equation"}\IgnorePar\EndP\DviMath}
+   {\EndDviMath\EndP}
+   {\DisplayMathtrue}%
+}
+  {\B:equation}{\C:equation}
+\ExplSyntaxOn
+\def\:tempa#1#2{% these functions must be protected
+  \cs_set_protected:Npn\:tempb{\mathop{\PauseMathClass%
+    \HCode{<\a:mathml mi~\mml:class="loglike">} #2\HCode{</\a:mathml mi>%
+    <\a:mathml mo>&\#x2061;<!--FUNCTION~APPLICATION--></\a:mathml mo>}\EndPauseMathClass%
+    }\nolimits
+  }
+  \HLet#1\:tempb
+}
+\ExplSyntaxOff
+
+\:tempa\log{log}
+\:tempa\lg{lg}
+\:tempa\ln{ln}
+\:tempa\sin{sin}
+\:tempa\arcsin{arcsin}
+\:tempa\sinh{sinh}
+\:tempa\cos{cos}
+\:tempa\arccos{arccos}
+\:tempa\cosh{cosh}
+\:tempa\tan{tan}
+\:tempa\arctan{arctan}
+\:tempa\tanh{tanh}
+\:tempa\cot{cot}
+\:tempa\coth{coth}
+\:tempa\sec{sec}
+\:tempa\csc{csc}
+\:tempa\arg{arg}
+\:tempa\ker{ker}
+\:tempa\dim{dim}
+\:tempa\hom{hom}
+\:tempa\exp{exp}
+\:tempa\deg{deg}
+\Configure{hspace}
+  {\ifmathml\ifmtext\else \Tg<\a:mathml mspace width="\the\tmp:dim"/>\fi\fi}{}{ }
+\Configure{romannumeral}
+   {\ifmathml\ifmtext\else \HCode{<\a:mathml mrow  \mml:class="romannumeral">}\fi\fi}
+   {\ifmathml\ifmtext\else \HCode{</\a:mathml mrow>}\fi\fi}
+\Configure{newline}
+  {\ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext\Hnewline><\a:mathml
+                         mtext \mml:class="newline">}\ht:special{t4ht@,&\#x00A0;}%
+}
+\Configure{[]}
+  {\Configure{@math}{%\a:mathml
+ display="block"
+}\csname a:mathml[]\endcsname
+   \DviMath\Tg<\a:mathml mrow\Hnewline>$$\DisplayMathtrue }
+  {$$\Tg</\a:mathml mrow>\EndDviMath\csname b:mathml[]\endcsname}
+\Configure{()}
+  {\Configure{@math}{%\a:mathml
+ display="inline"
+}\csname a:mathml()\endcsname
+   \DviMath\Tg<\a:mathml mrow\Hnewline>$}
+  {$\Tg</\a:mathml mrow>\EndDviMath\csname b:mathml()\endcsname}
+\NewConfigure{mathml[]}{2}
+\NewConfigure{mathml()}{2}
+\let\columnlines\empty
+\Configure{halignTB<>}{array}{\HCode{\Hnewline
+   \a:mathml equalrows="false"
+   \ifx\columnlines\empty\else\a:mathml columnlines="\columnlines" \fi
+   \a:mathml equalcolumns="false" \a:mathml class="array" \a:mathml displaystyle="true"}<>\HAlign}
+\Configure{array}
+   {\halignTB{array}}
+   {\ifvmode \IgnorePar\fi \expandafter\tmp:toks\expandafter{\Clr}%
+\HCode{<!--\the\tmp:toks-->}%
+\Tg</\a:mathml mtable>}
+   {\Tg<\a:mathml mtr \mml:class="array-row">}{\Tg</\a:mathml mtr>}
+   {\HCode{<\a:mathml mtd\Hnewline \mml:class="array-td"
+   \ifnum 1<\HMultispan columnspan="\HMultispan"\fi}%
+   \halignTD    \HCode{>}%
+}
+   {\Tg</\a:mathml mtd>}
+\ConfigureEnv{array}
+   {\bgroup\Configure{$}{}{}{}}
+   {\egroup}
+   {}{}
+\Configure{VBorder}
+   {\HAssign\NewGroup = 0
+    \HAssign\borderlines = 0
+\global\let\columnlines=\relax
+}
+   {\ifx \columnlines\relax \gHAssign\borderlines = 1
+                      \else \gHAdvance\borderlines by 2 \fi
+%
+    \HAssign\NewGroup = 0}
+   {\Advance:\NewGroup by 1
+    \ifnum \borderlines>1 \gHAdvance\borderlines by -2 \fi
+\ifx \columnlines\relax
+    \global\let\columnlines\empty
+\else
+    \ifnum \NewGroup=1
+       \xdef\columnlines{\columnlines\ifx\columnlines\empty
+                                     \else \space\fi solid}%
+    \else
+       \xdef\columnlines{\columnlines\ifx\columnlines\empty
+                                     \else \space\fi none}%
+    \fi
+\fi
+}
+   {}
+
+\def\:MM{m}
+\def\mathml:hborder{%
+\Configure{HBorder}
+   {<\a:mathml mtr\Hnewline \mml:class="array-hline">}
+   {<\a:mathml mtd \mml:class="hline-mtd"></\a:mathml mtd>
+}
+   {</\a:mathml mtr>}
+   {<\a:mathml mtr\Hnewline \mml:class="array-cline">}
+   {<\a:mathml mtd></\a:mathml mtd>}
+   {<\a:mathml mtd \mml:class="hline-mtd"></\a:mathml mtd>
+}
+   {</\a:mathml mtr>}
+   {<\a:mathml mtr\Hnewline
+         \mml:class="array-vspace" style="font-size:\HBorderspace">}
+   {}
+   {</\a:mathml mtr>}
+  }
+
+  \mathml:hborder
+
+\def\providemtextclass#1{%
+  \Configure{@mtext}{#1}%
+}
+
+\Configure{texttt}
+   {\ifmathml \providemtextclass{\mml:class="texttt"
+         mathvariant="monospace" }\fi}
+   {}%
+\Configure{textit}
+   {\ifmathml \providemtextclass{\mml:class="textit"
+         mathvariant="italic" }\fi}
+   {}%
+\Configure{textrm}
+   {\ifmathml \providemtextclass{\mml:class="textrm"
+         mathvariant="normal" }\fi}
+   {}%
+\Configure{textup}
+   {\ifmathml \providemtextclass{\mml:class="textup"
+         mathvariant="normal" }\fi}
+   {}%
+\Configure{textsl}
+   {\ifmathml \providemtextclass{\mml:class="textsl"
+         mathvariant="italic" }\fi}
+   {}%
+\Configure{textsf}
+   {\ifmathml \providemtextclass{\mml:class="textsf"
+         mathvariant="sans-serif" }\fi}
+   {}%
+\Configure{textbf}
+   {\ifmathml \providemtextclass{\mml:class="textbf"
+         mathvariant="bold" }\fi}
+   {}%
+\Configure{textsc}
+   {\ifmathml \providemtextclass{\mml:class="textsc"
+         mathvariant="normal" }\fi}
+   {}%
+\Configure{emph}
+   {\ifmathml \providemtextclass{\mml:class="emph"
+         mathvariant="italic" }\fi}
+   {}%
+\def\:closebf{\HCode{</\a:mathml mi>}\EndPauseMathClass}
+\def\:tempa{\ifmmode\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi{\PauseMathClass\HCode{<\a:mathml mi mathvariant="bold">}\aftergroup\:closebf}{\o:bf:}}
+\HLet\bf\:tempa
+
+\let\A:fbox=\a:fbox
+\let\B:fbox=\b:fbox
+\let\OLDn:fbox:\n:fbox:
+\def\OLDf:box{\ifx \EndPicture \:UnDef
+    \expandafter \OLDn:fbox: \else\expandafter \o:fbox: \fi}
+\def\:temp{\relax\ifmmode
+    \Configure{fbox}{\leavevmode\Configure{HtmlPar}{}{}{}{}\IgnoreRule
+                     \AA:text{fbox}}{\BB:text\EndIgnoreRule}\else
+    \Configure{fbox}{\IgnoreRule\A:fbox}{\B:fbox\EndIgnoreRule}\fi
+    \OLDf:box}
+\HLet\fbox\:temp
+\let\A:mbox\a:mbox
+\let\B:mbox\b:mbox
+\let\OLD:mbox\mbox
+\def\mbox{\relax\ifmmode \Configure{mbox}{\AA:text{mbox}}{\BB:text}\else
+                   \Configure{mbox}{\A:mbox}{\B:mbox}\fi\OLD:mbox}
+\NewConfigure{@mtext}{1}
+\Configure{@mtext}{ }
+\def\AA:text#1{\mtexttrue
+\HCode{<\a:mathml mstyle\Hnewline \mml:class="#1"><\a:mathml
+   mtext \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \ifmmode\else
+   \Configure{$}%
+  {\EndPauseMathClass \mtextfalse
+      \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext><\a:mathml
+                                mstyle\Hnewline \mml:class="math">}}%
+  {\HCode{</\a:mathml mstyle><\a:mathml
+       mtext \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \mtexttrue}%
+  {}%
+\Configure{()}%
+  {\EndPauseMathClass \mtextfalse
+      \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext><\a:mathml
+                                mstyle\Hnewline \mml:class="math">}$}%
+  {$\HCode{</\a:mathml mstyle><\a:mathml
+       mtext \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \mtexttrue}%
+  {}%
+%
+   \fi
+}
+\def\BB:text{\mtextfalse\EndPauseMathClass\ht:special{t4ht@,}%
+\HCode
+     {</\a:mathml mtext></\a:mathml mstyle>}%
+}
+
+\Configure{frac}
+   {\Tg<\a:mathml mfrac>\Tg<\a:mathml mrow\Hnewline>}
+   {\Tg</\a:mathml mrow>\Configure{over}{}{}}
+   {\Tg<\a:mathml mrow\Hnewline>}
+   {\Tg</\a:mathml mrow>\Tg</\a:mathml mfrac>}
+\ConfigureEnv{eqnarray}
+   {\ifvmode \IgnorePar \fi \EndP}
+   {\ifvmode \IgnorePar \fi \EndP \ShowPar \par}
+   {}{}
+\Configure{eqnarray}
+   {\HCode{<\a:mathml mtable\Hnewline \a:mathml displaystyle="true"
+       \mml:class="eqnarray\ifx
+       \@seqncr\@eqncr\else-star\fi"
+       \a:mathml columnalign="right center left" >}}%
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}  {\HCode{</\a:mathml mtr>}}
+   {\Tg<\a:mathml mtd\Hnewline \mml:class="eqnarray-\HCol">
+      \ifnum \HCol=4
+        \Tg<\a:mathml mtext
+             \mml:class="eqnarray">\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+        \mtexttrue
+        \Configure{$}%
+  {\EndPauseMathClass \mtextfalse
+      \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext><\a:mathml
+                                mstyle\Hnewline \mml:class="math">}}%
+  {\HCode{</\a:mathml mstyle><\a:mathml
+       mtext \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \mtexttrue}%
+  {}%
+\Configure{()}%
+  {\EndPauseMathClass \mtextfalse
+      \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext><\a:mathml
+                                mstyle\Hnewline \mml:class="math">}$}%
+  {$\HCode{</\a:mathml mstyle><\a:mathml
+       mtext \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \mtexttrue}%
+  {}%
+%
+      \fi}
+   {\ifnum \HCol=4 \mtextfalse
+      \EndPauseMathClass\ht:special{t4ht@,}%
+\Tg</\a:mathml mtext>\fi
+      \Tg</\a:mathml mtd>}
+\def\:temp#1#2{{\a:stackrel{#1}\b:stackrel {#2}\c:stackrel}}
+\HLet\stackrel\:temp
+\:CheckOption{stackrel-}     \if:Option
+   \Configure{stackrel}
+      {\mathrel\bgroup \HCode{<\a:mathml mglyph\Hnewline
+          alt="\string\stackrel}\afterassignment\put:arg\tmp:toks}
+      {\afterassignment\put:arg\tmp:toks}
+      {\HCode{" />}\egroup}
+   \def\put:arg{\HCode{{\the\tmp:toks}}}
+\else
+   \Configure{stackrel}
+     {\HCode{<\a:mathml mover\Hnewline
+             \mml:class="stackrel"><\a:mathml mrow\Hnewline>}\inv:i:iii}
+     {\HCode{</\a:mathml mrow><\a:mathml
+               mrow\Hnewline>}\Configure{mathop*}{*}
+         {<\a:mathml mrow>}
+         {</\a:mathml mrow>}
+         {\Configure{mathop}{}{}{}{}}%
+\mathop}
+     {\HCode{</\a:mathml mrow></\a:mathml mover>}}
+   \def\inv:i:iii#1#2#3{{#3}#2{#1}}
+\fi
+\ifdefined\MathMLintent
+\RenewDocumentCommand{\MathMLintent}{mm}{{%
+  \def\${$}% Fix support for the \$ command
+  \HCode{<mrow intent="#1">}#2\HCode{</mrow>}%
+}}
+\fi
+
+\ifdefined\MathMLarg
+\RenewDocumentCommand\MathMLarg{mm}{%
+  \HCode{<mrow arg="#1">}#2\HCode{</mrow>}%
+}
+\fi
+\Configure{overline}
+   {\bgroup \HCode{<\a:mathml mover  accent="false"\Hnewline
+\mml:class="mml-overline"><\a:mathml mrow>}%
+}
+   {\HCode{</\a:mathml mrow><\a:mathml mo\Hnewline
+ accent="true">&\#x00AF;</\a:mathml mo>%
+</\a:mathml mover>}%
+\egroup}
+\Configure{underline}
+   {\bgroup \ifmmode \HCode{<\a:mathml munder \a:mathml accentunder="false"\Hnewline
+\mml:class="mml-underline"><\a:mathml mrow>}%
+\else
+     \expandafter\everymath
+\expandafter{\expandafter\everymath
+             \expandafter{\the\everymath}}%
+\let\o::@underline:\o:@@underline:
+\def\o:@@underline:{\let\o:@@underline:\o::@underline:}%
+\fi}
+   {\HCode{</\a:mathml mrow><\a:mathml mo\Hnewline
+accent="true">&\#x0332;</\a:mathml mo></\a:mathml munder>}%
+\egroup}
+
+
+
+
+\let\A:displaylines\a:displaylines
+\let\B:displaylines\b:displaylines
+\let\C:displaylines\c:displaylines
+\let\D:displaylines\d:displaylines
+\Configure{displaylines}
+   {\ifmmode
+     \def\A:displaylines{\HCode{<\a:mathml mtable
+                                   \mml:class="displaylines">}}%
+     \def\B:displaylines{\HCode{</\a:mathml mtable>}}%
+     \def\C:displaylines{\HCode{<\a:mathml mtr\Hnewline
+                              \mml:class="displaylines"><\a:mathml mtd>}}%
+     \def\D:displaylines{\HCode{</\a:mathml mtd></\a:mathml mtr>}}%
+    \fi
+    \A:displaylines}
+   {\B:displaylines} {\C:displaylines}{\D:displaylines}
+\let\mathml:on\relax
+\Configure{ }
+   {\ifmathml \ifmtext \space \else\Tg<\a:mathml mspace
+    width="0.33em" \mml:class="nbsp" />\fi
+    \else \:nbsp\fi}
+
+% redefine macro from unicode.4ht to produce better accents
+\def\unicode:mathop#1{\PauseMathClass\HCode{<\a:mathml mo accent="true">}#1\HCode{</\a:mathml mo>}\EndPauseMathClass}
+
+\:CheckOption{new-accents}     \if:Option \else
+  \Configure{accent}\widetilde\widetilde{{}{}}
+  {}
+  {\HCode{<\a:mathml mover\Hnewline accent="true"><\a:mathml mrow\Hnewline>}#2\HCode{</\a:mathml mrow>}%
+    \:widetilde:over  \HCode{</\a:mathml mover>}}
+  % this configuration caused problems with text accents.
+  % we can use Unicode characters with tilde accents instead even in MathML
+  % \Configure{accent}\tilde\tilde{{}{}}
+  % {}
+  % {\HCode{<\a:mathml mover\Hnewline accent="true"><\a:mathml mrow\Hnewline>}#2\HCode{</\a:mathml mrow>}%
+  %   \:tilde:over  \HCode{</\a:mathml mover>}}
+  \Configure{accent}\widehat\widehat{{}{}}
+  {}
+  {\HCode{<\a:mathml mover\Hnewline accent="true"><\a:mathml mrow\Hnewline>}#2\HCode{</\a:mathml mrow>}%
+    \:widehat:over  \HCode{</\a:mathml mover>}}
+\fi
+\:CheckOption{new-accents}     \if:Option \else
+   \ifx \mathml:on\:UnDef
+      \Configure{accents}
+        {\ifmmode \expandafter\mathord\fi
+         {\leavevmode
+\if !#1!\ht:special{t4ht@+\string&{35}x#2;}%
+\else \expandafter \ifx\csname U#2#1\endcsname\relax
+    \ht:special{t4ht@+\string&{35}x#2;}%
+\else
+    \ht:special{t4ht@+\string&{35}x\csname U#2#1\endcsname;}%
+\fi \fi x%
+%
+          \ht:special{t4ht@[}\if!#1!x\else#2\fi\ht:special{t4ht@]}}}
+        {\Tg<\a:mathml mrow
+                \mml:class="accent#1">\mathord{#3}\Tg</\a:mathml mrow>%
+        }%
+   \fi
+\fi
+\let\mml:TeX\TeX
+\def\TeX{\ifmathml\ifmtext TeX\else
+   \HCode{<\a:mathml mtext
+      \mml:class="TeX">TeX</\a:mathml mtext>}\fi\else \mml:TeX\fi}
+\Configure{afterSUB}{'}{\def\SUB:prime{\SUB:SUP}}
+\Configure{'}
+   {\let\:primes=\empty}
+   {\relax \csname SUB:prime\endcsname\sp{%
+      \global\let\SUB:prime=\:UnDef
+      \def\:tempa{\prime\prime}\ifx \:tempa\:primes
+              \mathop{\HCode{<\a:mathml mi>\string&\#x2033;</\a:mathml mi>}}\else
+      \def\:tempa{\prime\prime\prime}\ifx \:tempa\:primes
+              \mathop{\HCode{<\a:mathml mi>\string&\#x2034;</\a:mathml mi>}}\else
+              \:primes \fi\fi}%
+   }
+   {\let\prime=\relax \xdef\:primes{\:primes\prime}}
+\def\:temp#1{\a:left{#1}\o:left:.\b:left{#1}}   \HLet\left\:temp
+\def\:temp#1{\a:right{#1}\o:right:.\b:right{#1}}\HLet\right\:temp
+\Configure{left}
+   {}
+   {\HCode{<\a:mathml mrow><\a:mathml mo \a:mathml fence="true" \a:mathml form="prefix">%
+       \expandafter
+\ifx \csname \string#1:lr del\endcsname\relax #1\else
+     \csname \string#1:lr del\endcsname\fi
+</\a:mathml mo>}\bgroup
+                              \HCode{<\a:mathml mrow>}\bgroup}
+\Configure{right}
+{\egroup\egroup}%{\egroup\Send{GROUP}{0}{ \a:mathml close=""\space}\egroup}
+   {\HCode{</\a:mathml mrow><\a:mathml mo \a:mathml fence="true" \a:mathml form="postfix">\expandafter
+\ifx \csname \string#1:lr del\endcsname\relax #1\else
+     \csname \string#1:lr del\endcsname\fi
+</\a:mathml mo></\a:mathml mrow>}}
+\def\def:DEL#1{\def\:DEL{#1}}
+\def\check:DEL#1#2{\def\:tempa{#1}\ifx \:tempa\:DEL \def\:DEL{#2}\fi}
+\NewConfigure{mfenced}[2]{\append:defI\def:DEL{\check:DEL{#1}{#2}}}
+\NewConfigure{Biggl}{2}
+\NewConfigure{Biggm}{2}
+\NewConfigure{Biggr}{2}
+\NewConfigure{Bigl}{2}
+\NewConfigure{Bigm}{2}
+\NewConfigure{Bigr}{2}
+\NewConfigure{biggl}{2}
+\NewConfigure{biggm}{2}
+\NewConfigure{biggr}{2}
+\NewConfigure{bigl}{2}
+\NewConfigure{bigm}{2}
+\NewConfigure{bigr}{2}
+\Configure{Biggm}
+   {\bgroup
+       \Configure{Bigg}{}{}{}{}%
+       \Configure{mathrel}{*}
+          {<mo \mml:class="MathClass-rel"
+                     fence="true" mathsize="2.45em" >}
+          {</mo>}
+          {\Configure{mathrel}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Bigm}
+   {\bgroup
+       \Configure{Big}{}{}{}{}%
+       \Configure{mathrel}{*}
+          {<mo \mml:class="MathClass-rel"
+                     fence="true" mathsize="1.61em" >}
+          {</mo>}
+          {\Configure{mathrel}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{biggm}
+   {\bgroup
+       \Configure{bigg}{}{}{}{}%
+       \Configure{mathrel}{*}
+          {<mo \mml:class="MathClass-rel"
+                     fence="true" mathsize="2.03em" >}
+          {</mo>}
+          {\Configure{mathrel}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{bigm}
+   {\bgroup
+       \Configure{big}{}{}{}{}%
+       \Configure{mathrel}{*}
+          {<mo \mml:class="MathClass-rel"
+                     fence="true" mathsize="1.19em" >}
+          {</mo>}
+          {\Configure{mathrel}{}{}{}{}}%
+   }
+   {\egroup}
+
+\:CheckOption{mathml-}     \if:Option
+   \Configure{Biggl}
+   {\bgroup
+       \Configure{Bigg}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="2.45em" >}
+          {</mo>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Biggr}
+   {\bgroup
+       \Configure{Bigg}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {<mo \mml:class="MathClass-close"
+                     fence="true" mathsize="2.45em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Bigl}
+   {\bgroup
+       \Configure{Big}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="1.61em" >}
+          {</mo>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Bigr}
+   {\bgroup
+       \Configure{Big}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {<mo \mml:class="MathClass-close"
+                     fence="true" mathsize="1.61em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{biggl}
+   {\bgroup
+       \Configure{bigg}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="2.03em" >}
+          {</mo>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{biggr}
+   {\bgroup
+       \Configure{bigg}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {<mo \mml:class="MathClass-close"
+                     fence="true" mathsize="2.03em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{bigl}
+   {\bgroup
+       \Configure{big}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="1.19em" >}
+          {</mo>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{bigr}
+   {\bgroup
+       \Configure{big}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {<mo \mml:class="MathClass-close"
+                     fence="true" mathsize="1.19em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+
+\else
+   \Configure{Biggl}
+   {\bgroup
+       \Configure{Bigg}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="2.45em" >}
+          {</mo><mrow>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Biggr}
+   {\bgroup
+       \Configure{Bigg}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {</mrow><mo \mml:class="MathClass-close"
+                     fence="true" mathsize="2.45em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Bigl}
+   {\bgroup
+       \Configure{Big}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="1.61em" >}
+          {</mo><mrow>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Bigr}
+   {\bgroup
+       \Configure{Big}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {</mrow><mo \mml:class="MathClass-close"
+                     fence="true" mathsize="1.61em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{biggl}
+   {\bgroup
+       \Configure{bigg}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="2.03em" >}
+          {</mo><mrow>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{biggr}
+   {\bgroup
+       \Configure{bigg}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {</mrow><mo \mml:class="MathClass-close"
+                     fence="true" mathsize="2.03em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{bigl}
+   {\bgroup
+       \Configure{big}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="1.19em" >}
+          {</mo><mrow>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{bigr}
+   {\bgroup
+       \Configure{big}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {</mrow><mo \mml:class="MathClass-close"
+                     fence="true" mathsize="1.19em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+
+\fi
+\def\:tempc#1{\ht:special{t4ht@[}(\ht:special{t4ht@]}%
+   \a:bigl\mathopen{\left:right\big{#1\:EMPTY}}\b:bigl\:EMPTY}
+\HLet\bigl=\:tempc
+\def\:tempc#1{\a:bigm\mathrel{\left:right\big{#1\:EMPTY}}\b:bigm}
+\HLet\bigm=\:tempc
+\def\:tempc#1{\:EMPTY
+   \a:bigr\mathclose{\left:right\big{#1\:EMPTY}}\b:bigr%
+   \ht:special{t4ht@[})\ht:special{t4ht@]}}
+\HLet\bigr=\:tempc
+\def\:tempc#1{\ht:special{t4ht@[}(\ht:special{t4ht@]}%
+  \a:Bigl\mathopen{\left:right\Big{#1}\:EMPTY}\b:Bigl\:EMPTY}
+\HLet\Bigl=\:tempc
+\def\:tempc#1{\a:Bigm\mathrel{\left:right\Big{#1\:EMPTY}}\b:Bigm}
+\HLet\Bigm=\:tempc
+\def\:tempc#1{\:EMPTY
+   \a:Bigr\mathclose{\left:right\Big{#1\:EMPTY}}\b:Bigr%
+   \ht:special{t4ht@[})\ht:special{t4ht@]}}
+\HLet\Bigr=\:tempc
+\def\:tempc#1{\ht:special{t4ht@[}(\ht:special{t4ht@]}%
+  \a:biggl\mathopen{\left:right\bigg{#1\:EMPTY}}\b:biggl\:EMPTY}
+\HLet\biggl=\:tempc
+\def\:tempc#1{\a:biggm\mathrel{\left:right\bigg{#1\:EMPTY}}\b:biggm}
+\HLet\biggm=\:tempc
+\def\:tempc#1{\:EMPTY
+   \a:biggr\mathclose{\left:right\bigg{#1\:EMPTY}}\b:biggr%
+   \ht:special{t4ht@[})\ht:special{t4ht@]}}
+\HLet\biggr=\:tempc
+\def\:tempc#1{\ht:special{t4ht@[}(\ht:special{t4ht@]}%
+  \a:Biggl\mathopen{\left:right\Bigg{#1\:EMPTY}}\b:Biggl\:EMPTY}
+\HLet\Biggl=\:tempc
+\def\:tempc#1{\a:Biggm\mathrel{\left:right\Bigg{#1\:EMPTY}}\b:Biggm}
+\HLet\Biggm=\:tempc
+\def\:tempc#1{\:EMPTY
+   \a:Biggr\mathclose{\left:right\Bigg{#1}\:EMPTY}\b:Biggr
+   \ht:special{t4ht@[})\ht:special{t4ht@]}}
+\HLet\Biggr=\:tempc
+\def\:EMPTY{{\HCode{}}}
+\def\left:right{%
+   \let\left\o:left:
+   \let\right\o:right:
+   \Configure{left}{}{}\Configure{right}{}{}}
+
+\:CheckOption{new-accents}     \if:Option \else
+   \Configure{accents}
+  {\ifmmode \expandafter\mathord\fi
+     {\leavevmode
+\if !#1!\ht:special{t4ht@+\string&{35}x#2;}%
+\else \expandafter \ifx\csname U#2#1\endcsname\relax
+    \ht:special{t4ht@+\string&{35}x#2;}%
+\else
+    \ht:special{t4ht@+\string&{35}x\csname U#2#1\endcsname;}%
+\fi \fi x%
+%
+   \ht:special{t4ht@[}\if!#1!x\else#2\fi
+   \ht:special{t4ht@]}}}
+  {\ifmathml
+      \ifmtext \expandafter\ifx \csname :#1:over\endcsname\relax
+   \expandafter\ifx \csname :#1:under\endcsname\relax
+      \AccentMath{\expandafter\ifx \csname :#1:over\endcsname\relax
+  \HCode{<\a:mathml munder\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+      \csname :#1:under\endcsname
+   \HCode{</\a:mathml munder>}%
+%
+\else \expandafter\ifx \csname :#1:under\endcsname\relax
+  \HCode{<\a:mathml mover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml mover>}%
+%
+\else
+  \HCode{<\a:mathml munderover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:under\endcsname
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml munderover>}%
+%
+\fi \fi
+}%
+   \else #3\csname :#1:under\endcsname \fi
+\else #3\csname :#1:over\endcsname \fi
+%
+      \else    \AccentMath{\expandafter\ifx \csname :#1:over\endcsname\relax
+  \HCode{<\a:mathml munder\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+      \csname :#1:under\endcsname
+   \HCode{</\a:mathml munder>}%
+%
+\else \expandafter\ifx \csname :#1:under\endcsname\relax
+  \HCode{<\a:mathml mover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml mover>}%
+%
+\else
+  \HCode{<\a:mathml munderover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:under\endcsname
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml munderover>}%
+%
+\fi \fi
+}\fi
+   \else       \expandafter\ifx \csname :#1:over\endcsname\relax
+   \expandafter\ifx \csname :#1:under\endcsname\relax
+      \AccentMath{\expandafter\ifx \csname :#1:over\endcsname\relax
+  \HCode{<\a:mathml munder\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+      \csname :#1:under\endcsname
+   \HCode{</\a:mathml munder>}%
+%
+\else \expandafter\ifx \csname :#1:under\endcsname\relax
+  \HCode{<\a:mathml mover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml mover>}%
+%
+\else
+  \HCode{<\a:mathml munderover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:under\endcsname
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml munderover>}%
+%
+\fi \fi
+}%
+   \else #3\csname :#1:under\endcsname \fi
+\else #3\csname :#1:over\endcsname \fi
+\fi
+  }
+
+\fi
+\def\mathinner#1{\Tg<\a:mathml mrow
+   \mml:class="mathinner">#1\Tg</\a:mathml mrow>}
+\Configure{root}{\rev:root}{}{}
+\def\rev:root #1\b:root#2\c:root{
+   \Tg<\a:mathml mroot>{\Tg<\a:mathml mrow\Hnewline>#2\Tg</\a:mathml mrow>}%
+             {\Tg<\a:mathml mrow\Hnewline>#1\Tg</\a:mathml mrow>}\Tg</\a:mathml mroot>}
+\def\AccentMath#1{\relax\ifmmode #1\else $#1$\fi}
+\NewConfigure{mfenced}[2]{\expandafter
+   \def\csname \string#1:lr del\endcsname{#2}}
+\Configure{mfenced}{\|}{\string&\#x2225;}
+\Configure{mfenced}{.}{}
+\Configure{mfenced}{\langle}{\string&\#x27E8;} 
+\Configure{mfenced}{\rangle}{\string&\#x27E9;} 
+\Configure{mfenced}{\vert}{|}
+\edef\:temp{\noexpand\Configure{mfenced}{\noexpand\{}{\string{}}\:temp
+\edef\:temp{\noexpand\Configure{mfenced}{\noexpand\}}{\string}}}\:temp
+\edef\:temp{\noexpand
+   \Configure{mfenced}{\noexpand\lbrace}{\string{}}\:temp
+\edef\:temp{\noexpand
+   \Configure{mfenced}{\noexpand\rbrace}{\string}}}\:temp
+\Configure{mfenced}{<}{\string&\#x003C;} 
+\Configure{mfenced}{>}{\string&\#x003E;} 
+\Configure{mfenced}{\lceil}{\string&\#x2308;}
+\Configure{mfenced}{\rceil}{\string&\#x2309;}
+\Configure{mfenced}{\lfloor}{\string&\#x230A;}
+\Configure{mfenced}{\rfloor}{\string&\#x230B;}
+\Configure{mfenced}{\Vert}{\string&\#x2225;}
+\Configure{mfenced}{\rgroup}{)}
+\Configure{mfenced}{\lgroup}{(}
+\Configure{mfenced}{\bracevert}{|}
+\Configure{mfenced}{\bracevert}{|}
+\Configure{mfenced}{\downarrow}{\string&\#x2193;}
+\Configure{mfenced}{\uparrow}{\string&\#x2191;}
+\Configure{mfenced}{\Uparrow}{\string&\#x21D1;}
+\Configure{mfenced}{\updownarrow}{\string&\#x2195;}
+\Configure{mfenced}{\Updownarrow}{\string&\#x21D5;}
+\Configure{mfenced}{\Downarrow}{\string&\#x21D3;}
+\Configure{mfenced}{\backslash}{\string&\#x2216;}
+\Configure{mfenced}{\rmoustache}{\string&\#x25DD;}
+\Configure{mfenced}{\lmoustache}{\string&\#x25DC;}
+\Configure{mfenced}{\Arrowvert}{\string&\#x2225;}
+\Configure{mfenced}{\arrowvert}{\string&\#x007C;}
+
+\let\A:oalign\a:oalign
+\let\B:oalign\b:oalign
+\Configure{oalign}
+   {\ifmmode \Configure{$}{\Tg<\a:mathml mrow\Hnewline>}%
+                          {\Tg</\a:mathml mrow>}{}%
+             \let\halign\TeXhalign
+             \Tg<\a:mathml mrow\Hnewline \mml:class="oalign">\else\A:oalign
+    \fi}
+   {\ifmmode \Tg</\a:mathml mrow>\else\B:oalign\fi}
+\def\mathop:prefix#1{%
+   \Configure{mathop}{*}{<\a:mathml mo #1\Hnewline>}{</\a:mathml mo>}%
+    {\Configure{mathop}{*}{<\a:mathml mo>}{</\a:mathml mo>}{}}}
+\ifdefined\protect%
+\def\:unicodespace{\protect\leavevmode\special{t4ht@+\string&{35}x00A0{59}}x}%
+\def\:unicodenspace{\protect\leavevmode\special{t4ht@+\string&{35}x2002{59}}x}%
+\else%
+\def\:unicodespace{\leavevmode\special{t4ht@+\string&{35}x00A0{59}}x}%
+\def\:unicodenspace{\leavevmode\special{t4ht@+\string&{35}x2002{59}}x}%
+\fi
+\def\:nbsp{\ifmtext \:unicodespace%
+\else\ifmathml
+    \Tg<\a:mathml mspace />\else \:unicodespace%
+\fi\fi}
+\def\:ensp{\ifmtext \:unicodenspace%
+\else\ifmathml
+    \Tg<\a:mathml mspace />\else \:unicodenspace%
+\fi\fi}
+\Configure{cases}
+    {}{} {\Tg<\a:mathml mtable>}{\Tg</\a:mathml mtable>}
+    {\Tg<\a:mathml mtr>}{\Tg</\a:mathml mtr>}
+    {\Tg<\a:mathml mtd \mml:class="cases">}{\Tg</\a:mathml mtd>}
+\Configure{matrix}
+   {\Tg<\a:mathml mtable
+        \a:mathml equalrows="false" \a:mathml equalcolumns="false"\Hnewline
+          \mml:class="matrix">}
+   {\Tg</\a:mathml mtable>}
+   {\Tg<\a:mathml mtr>}{\Tg</\a:mathml mtr>}
+   {\HCode{<\a:mathml mtd\Hnewline \mml:class="matrix"
+   \ifnum 1<\HMultispan columnspan="\HMultispan"\fi}%
+   \halignTD    \HCode{>}%
+}{\Tg</\a:mathml mtd>}
+\Configure{pmatrix}  {\bgroup\Tg<\a:mathml mrow\Hnewline
+   \mml:class="pmatrix">}  {\Tg</\a:mathml mrow>\egroup}
+\Configure{quad}{{\ifmathml \ifmtext \o:quad:\else
+   {\HCode{<\a:mathml mspace width="1em" \mml:class="quad"/>}}\fi
+    \else \o:quad: \fi}}
+\Configure{qquad}{{\ifmathml \ifmtext \o:qquad:\else
+   {\HCode{<\a:mathml mspace width="2em" \mml:class="qquad"/>}}\fi
+    \else \o:qquad: \fi}}
+\Configure{,}
+   {{\HCode{<\a:mathml mspace width="0.17em" \mml:class="thinspace"/>}}}
+\Configure{:}
+   {{\HCode{<\a:mathml mspace width="0.22em" \mml:class="thinspace"/>}}}
+\Configure{;}
+   {{\HCode{<\a:mathml mspace width="0.28em" \mml:class="thickpace"/>}}}
+\Configure{>}
+   {{\HCode{<\a:mathml mspace width="0.30em" \mml:class="medspace"/>}}}
+\Configure{!}
+   {{\HCode{<\a:mathml mspace width="-0.17em" \mml:class="negthinspace"/>}}}
+
+\def\:tempb#1{%
+   \expandafter\let\expandafter\:tempc\csname #1\endcsname
+   \append:def\:tempc{\limits}%
+   \expandafter\HLet\csname #1\endcsname\:tempc
+}
+\:tempb{lim}
+% \:tempb{limsup}
+% \:tempb{liminf}
+\:tempb{max}
+\:tempb{min}
+\:tempb{sup}
+\:tempb{inf}
+\:tempb{det}
+\:tempb{Pr}
+\:tempb{gcd}
+
+
+\def\:limspaces#1#2{\HCode{<\a:mathml mi>#1</\a:mathml mi><\a:mathml mspace class="thinspace"  width="0.17em"></\a:mathml mspace><\a:mathml mi>#2</\a:mathml mi><\a:mathml mspace class="thinspace" width="0.17em"></\a:mathml mspace>}}
+\def\:tempa{\mathop{\:limspaces{lim}{sup}}\limits}
+\HLet\limsup\:tempa
+\def\:tempa{\mathop{\:limspaces{lim}{inf}}\limits}
+\HLet\liminf\:tempa
+\def\:temp#1#2{\def\:tempa{\PauseMathClass{\HCode{<mi mathvariant="normal">}\ht:special{t4ht@+\string&{35}x#2{59}}\a:HChar\HCode{</mi>}}\EndPauseMathClass}\HLet#1\:tempa}
+\:temp\Gamma{0393}
+\:temp\Delta{0394}
+\:temp\Theta{0398}
+\:temp\Lambda{039B}
+\:temp\Xi{039E}
+\:temp\Pi{03A0}
+\:temp\Sigma{03A3}
+\:temp\Upsilon{03A5}
+\:temp\Phi{03A6}
+\:temp\Psi{03A8}
+\:temp\Omega{03A9}
+
+\AtBeginDocument{%
+\Configure{mathop*}{*}{}{}{\Configure{mathop}{*}{<\a:mathml mo>}{</\a:mathml mo>}{}}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{fontmath}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \ifx \tmp:bx\:UnDef \csname newbox\endcsname \tmp:bx \fi
+\ifx \find:set:mgroup\:UnDef
+   \def\find:set:mgroup#1#2#3{\bgroup
+     \def\use@mathgroup##1##2##3{\relax
+       \tmp:cnt=##2%
+       \xdef\:temp####1{\noexpand\Configure{MathClass}{#2}%
+           {}{}{}{\mathchar"0\the\tmp:cnt ####1}}%
+     }%
+     \setbox\tmp:bx=\hbox{$#1$}\setbox\tmp:bx=\hbox{}%
+     \set:mgroup#3{}{}%
+     \egroup
+   }
+\fi
+\def\set:mgroup#1#2{\if :#1#2:\else
+   \:temp{#1#2}\expandafter\set:mgroup \fi}
+
+\ifx \mathboldcalMathClass\:UnDef
+  \NewMathClass\mathboldcalMathClass
+\fi
+\Configure{MathClass}{\mathboldcalMathClass}{*}
+    {<\a:mathml mi\Hnewline
+         mathvariant="bold-script">}{</\a:mathml mi>}{}
+
+\expandafter\ifx\csname mv@bold\endcsname\relax  \else
+\bgroup
+\mathversion{bold}%
+\find:set:mgroup{\mathcal{A}}{\mathboldcalMathClass}%
+  {4142434445464748494A4B4C4D4E4F505152535455565758595A} 
+\egroup
+\fi
+
+\def\:tempa#1{\bgroup\HCode{<\a:mathml mstyle\Hnewline mathvariant="script">}#1\HCode{</\a:mathml mstyle>}\egroup}
+\HLet\mathcal\:tempa
+
+\expandafter\ifx \csname o@everypar\endcsname\relax \else
+\expandafter\ifx \csname ht:everypar\endcsname\relax
+  \let\ht:everypar\o@everypar
+\fi\fi
+
+\Configure{MathClass}{1}{}{}{}{
+   \mathchar"1360
+   \mathchar"1357
+   \mathchar"1356
+   \mathchar"1355
+   \mathchar"1354
+   \mathchar"1353
+   \mathchar"1352
+   \mathchar"1351
+   \mathchar"1350
+   \mathchar"134E
+   \mathchar"134C
+   \mathchar"134A
+   \mathchar"1348
+   \mathchar"1346
+   \mathchar"1273
+   \mathchar"3234 
+\mathchar"3238 
+\mathchar"3239 
+\mathchar"323A 
+\mathchar"323E 
+\mathchar"323F 
+\mathchar"3272 
+\mathchar"3278 
+\mathchar"327B 
+\mathchar"327C 
+\mathchar"327D 
+\mathchar"327E 
+\mathchar"327F 
+%
+}
+\Configure{MathClass}{2}{}{}{}{
+*-+/
+\mathchar"212F
+\mathchar"212E
+\mathchar"2234
+\mathchar"2235
+\mathchar"225E
+\mathchar"225F
+\mathchar"225C
+\mathchar"225B
+\mathchar"227A
+\mathchar"2279
+\mathchar"2275
+\mathchar"2274
+\mathchar"225D
+\mathchar"2271
+\mathchar"2205
+\mathchar"220F
+\mathchar"226F
+\mathchar"2204
+\mathchar"220C
+\mathchar"220B
+\mathchar"220A
+\mathchar"2209
+\mathchar"2208
+\mathchar"2207
+\mathchar"2206
+\mathchar"220E
+\mathchar"220D
+\mathchar"226E
+\mathchar"2201
+\mathchar"2203
+\mathchar"2202
+\mathchar"213F
+\mathchar"6201 % cdot
+}
+\Configure{MathClass}{3}{}{}{}{
+   \mathchar"3128
+   \mathchar"3129
+   \mathchar"312A
+   \mathchar"312B
+   \mathchar"315E
+   \mathchar"315F
+   \mathchar"3210
+   \mathchar"3211
+   \mathchar"3212
+   \mathchar"3213
+   \mathchar"3214
+   \mathchar"3215
+   \mathchar"3216
+   \mathchar"3217
+   \mathchar"3218
+   \mathchar"3219
+   \mathchar"321A
+   \mathchar"321B
+   \mathchar"321C
+   \mathchar"321D
+   \mathchar"321E
+   \mathchar"321F
+   \mathchar"3220
+   \mathchar"3221
+   \mathchar"3224
+   \mathchar"3227
+   \mathchar"3232
+   \mathchar"3233
+   \mathchar"3236
+   \mathchar"3237
+   \mathchar"323F
+   :=><
+   \mathchar"322F
+   \mathchar"3276
+   \mathchar"3277
+   \mathchar"326B
+   \mathchar"326A
+   \mathchar"3261
+   \mathchar"3260
+   \mathchar"3225
+   \mathchar"3226
+   \mathchar"322D
+   \mathchar"322E
+   \mathchar"322C
+   \mathchar"3228
+   \mathchar"3229
+}
+\Configure{MathClass}{4}{}{}{}{}
+\Configure{MathDelimiters}{(}{)}
+\Configure{MathDelimiters}{[}{]}
+\Configure{MathDelimiters}{\mathchar"4262}{\mathchar"5263}
+\Configure{MathDelimiters}{\mathchar"4264}{\mathchar"5265}
+\Configure{MathDelimiters}{\mathchar"4266}{\mathchar"5267}
+\Configure{MathDelimiters}{\mathchar"4268}{\mathchar"5269}
+\Configure{MathDelimiters}{\mathchar"4300}{\mathchar"5301}
+\Configure{MathDelimiters}{\mathchar"4302}{\mathchar"5303}
+\Configure{MathDelimiters}{\mathchar"4304}{\mathchar"5305}
+\Configure{MathDelimiters}{\mathchar"4306}{\mathchar"5307}
+\Configure{MathDelimiters}{\mathchar"4308}{\mathchar"5309}
+\Configure{MathDelimiters}{\mathchar"430A}{\mathchar"530B}
+\Configure{MathClass}{6}{}{}{}{
+\mathchar"613A % ldot
+\mathchar"603A % colon
+!?; ,
+}
+
+\Configure{overrightarrow}
+  {\leavevmode\hbox\bgroup$\Tg<\a:mathml mover accent="true" class="overrightarrow">%
+   \Tg<\a:mathml mrow\Hnewline>\:gobble}
+  {\Tg</\a:mathml mrow>\HCode{<\a:mathml mo>&\#x2192;</\a:mathml mo>}%
+   \Tg</\a:mathml mover>$\egroup}
+\Configure{overleftarrow}
+  {\leavevmode\hbox\bgroup$\Tg<\a:mathml mover accent="true" class="overleftarrow">%
+   \Tg<\a:mathml mrow\Hnewline>\:gobble}
+  {\Tg</\a:mathml mrow>\HCode{<\a:mathml mo>&\#x2190;</\a:mathml mo>}%
+   \Tg</\a:mathml mover>$\egroup}
+\Configure{big}
+   {}{}
+   {\HCode{<\a:mathml mstyle mathsize="1.19em">}}
+   {\HCode{</\a:mathml mstyle>}}
+\Configure{Big}
+   {}{}
+   {\HCode{<\a:mathml mstyle mathsize="1.61em">}}
+   {\HCode{</\a:mathml mstyle>}}
+\Configure{bigg}
+   {}{}
+   {\HCode{<\a:mathml mstyle mathsize="2.03em">}}
+   {\HCode{</\a:mathml mstyle>}}
+\Configure{Bigg}
+   {}{}
+   {\HCode{<\a:mathml mstyle mathsize="2.45em">}}
+   {\HCode{</\a:mathml mstyle>}}
+\def\:tempc#1{{\hbox{\a:big$\c:big
+   \left#1\hbox{}\right.\n@space\d:big$\b:big}}}
+\HLet\big=\:tempc
+\def\:tempc#1{{\hbox{\a:Big$\c:Big
+   \left#1\hbox{}\right.\n@space\d:Big$\b:Big}}}
+\HLet\Big=\:tempc
+\def\:tempc#1{{\hbox{\a:bigg$\c:bigg
+   \left#1\hbox{}\right.\n@space\d:bigg$\b:bigg}}}
+\HLet\bigg=\:tempc
+\def\:tempc#1{{\hbox{\a:Bigg$\c:Bigg
+   \left#1\hbox{}\right.\n@space\d:Bigg$\b:Bigg}}}
+\HLet\Bigg=\:tempc
+\Configure{overbrace}
+   {\Configure{mathop*}{*}
+         {<\a:mathml mover \a:mathml accent="false"><\a:mathml mrow>}
+         {</\a:mathml mrow><\a:mathml mo>\string
+               &\#xFE37;</\a:mathml mo></\a:mathml mover>}
+         {\Configure{mathop}{}{}{}{}}%
+   }
+   {\let\o:overbrace:=\displaystyle}
+   {}
+\Configure{underbrace}
+   {\Configure{mathop*}{*}
+         {<\a:mathml munder
+                 \a:mathml accentunder="false"><\a:mathml mrow>}
+         {</\a:mathml mrow><\a:mathml mo>\string
+               &\#x23DF;</\a:mathml mo></\a:mathml munder>}
+         {\Configure{mathop}{}{}{}{}}%
+   }
+   {\let\o:underbrace:=\displaystyle}
+   {}
+\Configure{MathClass}{0}{*}{<\a:mathml mi\Hnewline>}{</\a:mathml mi>}{}
+\Configure{MathClass}{1}{*}{<\a:mathml mi\Hnewline
+             \mml:class="MathClass-op">}{</\a:mathml mi><\a:mathml mo> &\#x2061;<!--FUNCTION APPLICATION--></\a:mathml mo>}{}
+\Configure{MathClass}{2}{*}{<\a:mathml mo\Hnewline
+             \mml:class="MathClass-bin" \a:mathml stretchy="false">}{</\a:mathml mo>}{}
+\Configure{MathClass}{3}{*}{<\a:mathml mo\Hnewline
+             \mml:class="MathClass-rel" \a:mathml stretchy="false">}{</\a:mathml mo>}{}
+\Configure{MathClass}{4}{*}{<\a:mathml mo\Hnewline
+          \mml:class="MathClass-open" \a:mathml stretchy="false">}
+                        {</\a:mathml mo>}{}
+\Configure{MathClass}{5}{*}{<\a:mathml mo\Hnewline
+          \mml:class="MathClass-close" \a:mathml stretchy="false">}
+                        {</\a:mathml mo>}{}
+\Configure{MathClass}{6}{*}{<\a:mathml mo\Hnewline
+             \mml:class="MathClass-punc" \a:mathml stretchy="false">}{</\a:mathml mo>}{}
+\Configure{MathClass}{7}{*}{<\a:mathml mn>}{</\a:mathml mn>}
+                           {0123456789}
+\ifx \mathordMathClass\:UnDef
+  \NewMathClass\mathordMathClass
+\fi
+\Configure{MathClass}{\mathordMathClass}{*}{<\a:mathml mo\Hnewline
+             \mml:class="MathClass-ord">}{</\a:mathml mo>}{}
+\Configure{FormulaClass}{0}{}{}{}
+\Configure{FormulaClass}{1}{}{}{}
+\Configure{FormulaClass}{2}{}{}{}
+\Configure{FormulaClass}{3}{}{}{}
+\Configure{FormulaClass}{4}{}{}{}
+\Configure{FormulaClass}{5}{}{}{}
+\Configure{FormulaClass}{6}{}{}{}
+\Css{mo.MathClass-op + mi{margin-left:0.3em}}
+\Css{mi + mo.MathClass-op{margin-left:0.3em}}
+
+\def\bold:version{bold}
+\Configure{mathbf}%
+  {\bgroup\Tg<\a:mathml mstyle
+             mathvariant="bold">}%
+  {\Tg</\a:mathml mstyle>\egroup}%
+\Configure{mathit}%
+  {\bgroup\Tg<\a:mathml mstyle  mathvariant="\ifx
+                 \bold:version\math@version bold-\fi italic">}%
+  {\Tg</\a:mathml mstyle>\egroup}%
+\Configure{mathrm}%
+  {\bgroup\Tg<\a:mathml mstyle
+             mathvariant="\ifx
+                 \bold:version\math@version bold\else normal\fi">}%
+  {\Tg</\a:mathml mstyle>\egroup}%
+\Configure{mathsf}%
+  {\bgroup\Tg<\a:mathml mstyle  mathvariant="\ifx
+            \bold:version\math@version bold-\fi sans-serif">}%
+  {\Tg</\a:mathml mstyle>\egroup}%
+\Configure{mathtt}%
+  {\bgroup\Tg<\a:mathml mstyle mathvariant="monospace">}%
+  {\Tg</\a:mathml mstyle>\egroup}%
+\Css{
+   math mstyle[mathvariant="bold"]  {
+      font-weight: bold;
+      font-style: normal;
+   }
+}
+\Css{
+   math mstyle[mathvariant="normal"]  {
+      font-weight: normal;
+      font-style: normal;
+   }
+}
+\NewConfigure{mathversion-style}[2]{\expandafter\gdef\csname :mathversion-#1\endcsname{#2}}
+% ToDo: Add support for other mathversions
+\Configure{mathversion-style}{bold}{\a:mathml mathvariant="bold-italic"}
+\append:defI\mathversion{%
+    % \a:DviMathML is executed at the beginning of math \a:@math is hook for attributes. we need to append out tags to it
+    \Configure{DviMathML}{\append:def\a:@math{\ifcsname :mathversion-\math@version\endcsname\expandafter\csname :mathversion-\math@version\endcsname\fi}}{}%
+}
+
+\def\:tempd#1#2{%
+   \expandafter\def\csname #1\endcsname{\mathchar"13#2\relax}%
+   \MathSymbol\mathop{#1}%
+   \expandafter\def\csname #1:limits\endcsname{\expandafter
+                    \:same \math:sym\mathop{#1}\limits}%
+   \expandafter\ProvideDocumentCommand\csname #1:nolimits\endcsname{}{\expandafter
+                  \:same \math:sym\mathop{#1}\nolimits}%
+   \expandafter\edef\csname n:#1:\endcsname{\noexpand\ifDisplayMath
+          \noexpand\expandafter \expandafter\noexpand \csname #1:limits\endcsname
+          \noexpand\else \noexpand\expandafter
+                         \expandafter\noexpand
+                         \csname #1:nolimits\endcsname\noexpand\fi}%
+   \expandafter\pend:def\csname n:#1:\endcsname{\ifDisplayMath
+          \mathop:prefix{}\fi}%
+}
+\:tempd{bigcap}{54}
+\:tempd{bigcup}{53}
+\:tempd{bigodot}{4A}
+\:tempd{bigoplus}{4C}
+\:tempd{bigotimes}{4E}
+\:tempd{bigsqcup}{46}
+\:tempd{biguplus}{55}
+\:tempd{bigvee}{57}
+\:tempd{bigwedge}{56}
+\:tempd{coprod}{60}
+\:tempd{intop}{52}
+\:tempd{ointop}{48}
+\:tempd{prod}{51}
+\:tempd{sum}{50}
+\def\:tempc{\ifDisplayMath\mathop:prefix{}\fi\o:n:int::}
+\HLet\n:int:\:tempc
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amsbsy}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{pmb}
+   {\ifmmode \HCode{<!--binary math rel, tripple hight-->}\fi}
+   {\ifmmode \HCode{<!--/binary math rel, tripple hight-->}\fi}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amsmath}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{underarrow@}
+   {\Tg<\a:mathml munder>\Tg<\a:mathml mrow\Hnewline>}
+   {\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>}
+   {\Tg</\a:mathml mrow>\Tg</\a:mathml munder>}
+\Configure{overarrow@}
+   {\Tg<\a:mathml mover accent="true">\Tg<\a:mathml mrow\Hnewline>}
+   {\Tg</\a:mathml mrow>\Tg<\a:mathml mrow>}
+   {\Tg</\a:mathml mrow>\Tg</\a:mathml mover>}
+\def\:tempc#1#2#3{\a:overarrow@
+      \hbox{$\m@th#2#3$}\b:overarrow@
+      \hbox{#1#2}\c:overarrow@
+   }
+\HLet\overarrow@\:tempc
+
+\Configure{equation}
+  {\Configure{gather}
+     {\HCode{<\a:mathml mtable\Hnewline \a:mathml displaystyle="true"
+        \mml:class="equation"><\a:mathml mtr><\a:mathml mtd>}\IgnorePar }
+     {\HCode{</\a:mathml mtd></\a:mathml mtr></\a:mathml mtable>}}
+     {}
+     {}
+     {\ifnum\HCol=2 \IgnorePar
+         \HCode{</\a:mathml mtd><\a:mathml mtd>}\fi }
+     {}
+  }{}{}
+\Css{.equation-star td{text-align:center; vertical-align:middle; }}
+\Css{table.equation-star { width:100\%; }   }
+\def\eq:mathopen#1{\ifx\relax#1\relax\else\a:mathopen\fi\o:mathopen:{#1}}
+
+% fix \mathopen inside equation
+\Configure{@begin}{equation}{\let\mathopen\eq:mathopen%
+}
+\Configure{above}
+   {\Send{GROUP}{0}{<\a:mathml mfrac
+                      linethickness="\the\tmp:dim"><\a:mathml mrow>}%
+    \HCode{</\a:mathml mrow>}\o:@@over:\:gobbleII}
+   {\HCode{<\a:mathml
+      mrow>}\Send{EndGROUP}{0}{</\a:mathml mrow></\a:mathml mfrac>}}
+\def\overwithdelims:III#1#2#3{%
+   \def\:temp{#2#3}\def\:tempa{..}\ifx \:temp\:tempa
+      \Send{GROUP}{0}{<\a:mathml mfrac linethickness="0"><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:over:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml mrow></\a:mathml mfrac>}
+   \else
+      \Send{GROUP}{0}{<\a:mathml mfenced \a:mathml separators=""\Hnewline
+          \a:mathml open="\expandafter
+\ifx \csname \string#2:lr del\endcsname\relax #2\else
+     \csname \string#2:lr del\endcsname\fi
+" \a:mathml close="\expandafter
+\ifx \csname \string#3:lr del\endcsname\relax #3\else
+     \csname \string#3:lr del\endcsname\fi
+"><\a:mathml mfrac
+          \a:mathml linethickness="0"><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:@@over:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml
+                                    mrow></\a:mathml mfrac></\a:mathml mfenced>}
+   \fi
+ }
+\Configure{tmspace}
+   {\ifdim \textspace>0.2em
+       \HCode{<\a:mathml mspace
+                         width="\textspace" \mml:class="tmspace"/>}%
+    \else \HCode{<\a:mathml mspace
+                            width="0.3em" \mml:class="thinspace"/>}\fi
+   }
+\Configure{mfenced}{\lvert}{\string&\#x007C;} 
+\Configure{mfenced}{\rvert}{\string&\#x007C;} 
+\Configure{mfenced}{\lVert}{\string&\#x2016;}
+\Configure{mfenced}{\rVert}{\string&\#x2016;}
+\Configure{split}
+   {\HCode{<\a:mathml mtable \Hnewline
+           \a:mathml  columnalign="right left"
+           \mml:class="split">}}
+   {\ifvmode\IgnorePar\fi \HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr \mml:class="split-mtr">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline \mml:class="split-mtd">}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{multline}
+   {\HCode{<\a:mathml mtable\Hnewline \a:mathml displaystyle="true"  \mml:class="multline">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>%
+           <\a:mathml mtd\Hnewline \mml:class="multline">}}
+   {\HCode{</\a:mathml mtd></\a:mathml mtr>}}
+   {\HCode{</\a:mathml mtd><\a:mathml mtd>}}
+   {}
+\Configure{multline*}
+   {\HCode{<\a:mathml mtable\Hnewline \a:mathml displaystyle="true" \mml:class="multline-star">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr><\a:mathml mtd\Hnewline
+                                        \mml:class="multline-star">}}
+   {\HCode{</\a:mathml mtd></\a:mathml mtr>}}
+\Configure{gather}
+   {\HCode{<\a:mathml mtable\Hnewline \a:mathml displaystyle="true" \mml:class="gather">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}    {\HCode{</\a:mathml mtr>}}
+   {\HCode{\Hnewline<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}
+\Configure{gather*}
+   {\HCode{<\a:mathml mtable\Hnewline \a:mathml displaystyle="true" \mml:class="gather-star">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}    {\HCode{</\a:mathml mtr>}}
+   {\HCode{\Hnewline<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}
+\Configure{subarray}
+   {\HCode{<\a:mathml mtable \mml:class="subarray\if c\Hlcr-c\fi"
+      \a:mathml rowspacing="0"
+      \if c\Hlcr \a:mathml columnalign="center"\fi>}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr><\a:mathml mtd>}}
+   {\HCode{</\a:mathml mtd></\a:mathml mtr>}}
+\Configure{smallmatrix}
+   {\HCode{<\a:mathml mtable>}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline \mml:class="smallmatrix">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{\Hnewline<\a:mathml mtd>}}
+   {\HCode{</\a:mathml mtd>}}
+\def\:tempc#1#2{%
+   \ConfigureEnv{#1}
+     {\def\end:al:env{}\ifmmode\else
+       \ifvmode\else \def\end:al:env{\par\ShowPar\IgnoreIndent}\fi\fi}
+     {\end:al:env }
+     {}{}%
+   \Configure{#1}
+   {\IgnorePar
+    \ifvmode \EndP  \else \EndP  \HCode{<!--tex4ht:inline-->}\fi
+    \ifmathml
+       \Tg<\a:mathml mrow>\def\end:mathalign{\Tg</\a:mathml mrow>}%
+    \else
+       \Configure{@math}{%\a:mathml
+ display="block"
+}\DviMath
+       \def\end:mathalign{\EndDviMath \DisplayMathfalse}%
+       \DisplayMathtrue
+    \fi
+    \HCode{<\a:mathml mtable\Hnewline
+       \a:mathml displaystyle="true" \a:mathml columnalign="left" \mml:class="#2">}}
+   {\HCode{</\a:mathml mtable>}\end:mathalign }
+   {\HCode{<\a:mathml mtr>}}    {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline
+      \ifodd\HCol \a:mathml  columnalign="right" \fi
+%
+      \mml:class="align-\ifnum \HCol>\maxfields@ label\else
+         \ifodd\HCol\space  odd\else     even\fi
+       \fi">}}
+   {\HCode{\ifodd\HCol\space\else
+       <\a:mathml mspace width="2em"/>\fi
+</\a:mathml mtd>}}}
+\:tempc{align}{align}
+\:tempc{alignat}{alignat}
+\:tempc{xalignat}{xalignat}
+\:tempc{xxalignat}{xxalignat}
+\:tempc{flalign}{flalign}
+\:tempc{align*}{align-star}
+\:tempc{alignat*}{alignat-star}
+\:tempc{xalignat*}{xalignat-star}
+\:tempc{flalign*}{flalign-star}
+\Configure{gathered}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="gathered" \a:mathml displaystyle="true"  \mtable:align:attribute>}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}    {\HCode{</\a:mathml mtr>}}
+   {\HCode{\Hnewline<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}
+\Configure{[]}{\begin{equation*}}{\end{equation*}}
+\Configure{underrightarrow}
+  {\Tg<\a:mathml munder>\Tg<\a:mathml mrow\Hnewline>\:gobble}
+  {\Tg</\a:mathml mrow>\mathop{\rightarrow}\Tg</\a:mathml munder>}
+\Configure{underleftarrow}
+  {\Tg<\a:mathml munder>\Tg<\a:mathml mrow\Hnewline>\:gobble}
+  {\Tg</\a:mathml mrow>\mathop{\leftarrow}\Tg</\a:mathml munder>}
+\Configure{overleftrightarrow}
+  {\Tg<\a:mathml mover class="overleftrightarrow">\Tg<\a:mathml mrow\Hnewline>\:gobble}
+  {\Tg</\a:mathml mrow>\mathop{\HCode{&\#x20E1;}}\Tg</\a:mathml mover>}
+\Configure{underleftrightarrow}
+  {\Tg<\a:mathml munder>\Tg<\a:mathml mrow\Hnewline>\:gobble}
+  {\Tg</\a:mathml mrow>\mathop{\leftrightarrow}\Tg</\a:mathml munder>}
+\def\m:env#1{\HCode{<\a:mathml mtable
+  \mml:class="#1"><\a:mathml mtr><\a:mathml mtd>}%
+   \def\endm:env{\HCode
+      {</\a:mathml mtd></\a:mathml mtr></\a:mathml mtable>}}}
+
+\renewcommand{\xrightarrow}[2][]{%
+   \Tg<\a:mathml munderover>%
+     \rightarrow
+     \Tg<\a:mathml mrow\Hnewline>#1\Tg</\a:mathml mrow>%
+     \Tg<\a:mathml mrow\Hnewline>#2\Tg</\a:mathml mrow>%
+   \Tg</\a:mathml munderover>}%
+\renewcommand{\xleftarrow}[2][]{%
+   \Tg<\a:mathml munderover>%
+      \leftarrow
+      \Tg<\a:mathml mrow\Hnewline>#1\Tg</\a:mathml mrow>%
+      \Tg<\a:mathml mrow\Hnewline>#2\Tg</\a:mathml mrow>%
+   \Tg</\a:mathml munderover>}%
+
+\def\overset#1#2{{%
+      \Tg<\a:mathml mover class="overset">\Tg<\a:mathml
+                              mrow\Hnewline>#2\Tg</\a:mathml mrow>%
+                \Tg<\a:mathml mrow\Hnewline>#1\Tg</\a:mathml mrow>%
+      \Tg</\a:mathml mover>}}%
+\def\underset#1#2{{%
+      \Tg<\a:mathml munder>\Tg<\a:mathml mrow\Hnewline>#2\Tg</\a:mathml mrow>%
+                 \Tg<\a:mathml mrow\Hnewline>#1\Tg</\a:mathml mrow>%
+      \Tg</\a:mathml munder>}}%
+
+\def\sideset#1#2#3{{\Tg<\a:mathml mrow \mml:class="sideset"\Hnewline
+        >{\HCode{}}#1{\HCode{}#3}#2\Tg</\a:mathml mrow>}}
+\ConfigureEnv{eqxample}{}{}{}{}
+\ConfigureEnv{gather*}{}{}{}{}
+\ConfigureEnv{gathered}{}{}{}{}
+\ConfigureEnv{matrix}{}{}{}{}
+
+\def\:tempc{\DOTSI\protect\:idotsint}
+\HLet\idotsint\:tempc
+\def\:idotsint{%
+  \mathop{\intop\cdotp\cdotp\cdotp\intop }\ilimits@
+}
+\def\:tempc{\HCode{<\a:mathml mspace width="0.2em"/>}\mathbin
+  {mod}\HCode{<\a:mathml mspace width="0.2em"/>}}
+\HLet\bmod\:tempc
+\def\:tempc#1{\allowbreak
+  \HCode{<\a:mathml mspace width="0.3em"/>}(#1)}
+\HLet\pod=\:tempc
+\def\:tempc#1{\pod{\mathop{mod}\HCode{<\a:mathml mspace width="0.3em"/>}#1}}
+\HLet\pmod=\:tempc
+\def\:tempc#1{\allowbreak
+   \HCode{<\a:mathml mspace width="0.3em"/>}\mathop
+      {mod}\HCode{<\a:mathml mspace width="0.3em"/>}#1}
+\HLet\mod=\:tempc
+
+\Configure{intertext}
+    {\IgnorePar \ifinalign@
+        \HCode{\ifnum \HRow>0 </\a:mathml mtd></\a:mathml mtr>\fi
+          <\a:mathml mtr><\a:mathml mtd
+          columnspan="\ifnum \HRow=0 15\else \HCol\fi"
+                                            \mml:class="intertext">}%
+     \else \ifingather@
+        \HCode{<\a:mathml mtr><\a:mathml mtd columnspan="\HCol"
+                                            \mml:class="intertext">}%
+     \fi\fi
+     \AA:text{intertext}%
+    }
+    {\BB:text \ifvmode \IgnorePar \fi \EndP\ifinalign@
+        \HCode{</\a:mathml mtd></\a:mathml mtr>%
+           \ifnum \HRow>0 <\a:mathml mtr><\a:mathml mtd>\fi}%
+     \else \ifingather@
+         \HCode{</\a:mathml mtd></\a:mathml mtr>}%
+     \fi\fi
+    }
+\Configure{boldsymbol}{\bgroup\HCode{<\a:mathml mstyle mathvariant="bold-italic">}}{\HCode{</\a:mathml mstyle>}\egroup}
+\Configure{maketag}
+  {\ifmathml
+     \ifmtext \expandafter\expandafter\expandafter\no:maketag\fi
+   \else \expandafter\no:maketag\fi
+   \AA:text{maketag}\hbox\bgroup\:gobbleIII :@:}
+  {\egroup\BB:text\ }
+\def\no:maketag#1:@:#2\b:maketag{\hbox{#2}}
+\Configure{abovewithdelims}
+   {\abovewithdelims:III}
+   {}
+\def\abovewithdelims:III#1#2#3{%
+   \def\:temp{#2#3}\def\:tempa{..}\ifx \:temp\:tempa
+      \Send{GROUP}{0}{<\a:mathml mfrac linethickness="\the\tmp:dim"><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:@@over:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml mrow></\a:mathml mfrac>}
+   \else
+      \Send{GROUP}{0}{<\a:mathml mfenced \a:mathml separators=""\Hnewline
+          \a:mathml open="\expandafter
+\ifx \csname \string#2:lr del\endcsname\relax #2\else
+     \csname \string#2:lr del\endcsname\fi
+" \a:mathml close="\expandafter
+\ifx \csname \string#3:lr del\endcsname\relax #3\else
+     \csname \string#3:lr del\endcsname\fi
+"><\a:mathml mfrac
+          \a:mathml linethickness="\the\tmp:dim"><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:@@over:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml
+                                  mrow></\a:mathml mfrac></\a:mathml mfenced>}
+   \fi
+   \tmp:dim
+ }
+\Configure{atopwithdelims}
+   {\atopwithdelims:III}
+   {}
+\def\atopwithdelims:III#1#2#3{%
+   \def\:temp{#2#3}\def\:tempa{..}\ifx \:temp\:tempa
+      \Send{GROUP}{0}{<\a:mathml mfrac \a:mathml linethickness="0"><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:@@atop:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml mrow></\a:mathml mfrac>}
+   \else
+      \Send{GROUP}{0}{<\a:mathml mfenced \a:mathml separators=""\Hnewline
+          \a:mathml open="\expandafter
+\ifx \csname \string#2:lr del\endcsname\relax #2\else
+     \csname \string#2:lr del\endcsname\fi
+" \a:mathml close="\expandafter
+\ifx \csname \string#3:lr del\endcsname\relax #3\else
+     \csname \string#3:lr del\endcsname\fi
+"><\a:mathml mfrac
+          \a:mathml linethickness="0"><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:@@atop:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml
+                               mrow></\a:mathml mfrac></\a:mathml mfenced>}
+   \fi
+ }
+\Configure{overwithdelims}
+   {\overwithdelims:III}
+   {}
+\def\overwithdelims:III#1#2#3{%
+   \def\:temp{#2#3}\def\:tempa{..}\ifx \:temp\:tempa
+      \Send{GROUP}{0}{<\a:mathml mfrac><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:@@over:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml mrow></\a:mathml mfrac>}
+   \else
+      \Send{GROUP}{0}{<\a:mathml mfenced \a:mathml separators=""\Hnewline
+          \a:mathml open="\expandafter
+\ifx \csname \string#2:lr del\endcsname\relax #2\else
+     \csname \string#2:lr del\endcsname\fi
+" \a:mathml close="\expandafter
+\ifx \csname \string#3:lr del\endcsname\relax #3\else
+     \csname \string#3:lr del\endcsname\fi
+"><\a:mathml mfrac><\a:mathml mrow>}%
+      \HCode{</\a:mathml mrow>}\o:@@over:
+      \HCode{<\a:mathml mrow>}\Send{EndGROUP}{0}{</\a:mathml
+                                 mrow></\a:mathml mfrac></\a:mathml mfenced>}
+   \fi
+ }
+\pend:def\dfrac{\Configure{genfrac}{\HCode{<\a:mathml mstyle \a:mathml displaystyle="true"><mfrac><mrow>}
+  \Configure{over}{}{}}{}{}{\HCode{</mrow><mrow>}
+} {}{\HCode{</mrow></mfrac></\a:mathml mstyle>}}}
+\pend:def\tfrac{\Configure{genfrac}{\HCode{<\a:mathml mstyle \a:mathml displaystyle="false"><mfrac><mrow>}
+  \Configure{over}{}{}}{}{}{\HCode{</mrow><mrow>}
+}{}{\HCode{</mrow></mfrac></\a:mathml mstyle>}}}
+\pend:def\dbinom{\Configure{genfrac}{\HCode{<\a:mathml mstyle \a:mathml displaystyle="true">}}{}{}{}{}{\HCode{</\a:mathml mstyle>}}}
+\pend:def\tbinom{\Configure{genfrac}{\HCode{<\a:mathml mstyle \a:mathml displaystyle="false">}}{}{}{}{}{\HCode{</\a:mathml mstyle>}}}
+\def\:tempc{\ifDisplayMath\mathop:prefix{}\fi\o:n:iint::}
+\HLet\n:iint:\:tempc
+\def\:tempc{\ifDisplayMath\mathop:prefix{}\fi\o:n:iiint::}
+\HLet\n:iiint:\:tempc
+\def\:tempc{\ifDisplayMath\mathop:prefix{}\fi\o:n:idotsint::}
+\HLet\n:idotsint:\:tempc
+\ifx \ilimits@\o:nolimits:
+  \let\ilimits@\nolimits
+\fi
+\ifx \ilimits@\o:nolimits:
+  \let\slimits@\nolimits
+\fi
+\ifx \ilimits@\o:displaylimits:
+   \let\ilimits@\nolimits
+\fi
+% thanks to Linas Stonys for this code
+\def\mtable:align:attribute{%
+  \if t\Hlcr\space\a:mathml align="axis 1"\fi
+  \if b\Hlcr\space\a:mathml align="axis -1"\fi
+  }
+
+\Configure{aligned}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="aligned" \a:mathml displaystyle="true" \mtable:align:attribute>}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline>}}   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd
+       \a:mathml columnalign="\ifodd\HCol right\else left\fi" >}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{alignedat}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="alignedat" \a:mathml displaystyle="true"  \mtable:align:attribute>}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline>}}   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd
+       \a:mathml columnalign="\ifodd\HCol right\else left\fi" >}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{boxed}
+   {\ifmathml \Tg<\a:mathml menclose \a:mathml notation="box">\Tg<\a:mathml mrow>%
+    \else     \HCode{<span class="boxed">}\fi\IgnorePar}
+   {\ifmathml \Tg</\a:mathml mrow>\Tg</\a:mathml menclose>%
+    \else \HCode{</span>}\fi}
+\Css{.boxed{border: 1px solid black; padding-left:2px;
+                                     padding-right:2px;}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amsfonts}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{mathbb}{}{}
+\Configure{mathfrak}{}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amstext}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{text}{\AA:text{text}}{\BB:text}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amstex1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % amstex.sty
+\Configure{underarrow@}
+   {\Tg<\a:mathml munder>\Tg<\a:mathml mrow\Hnewline>}
+   {\Tg</\a:mathml mrow>\Tg<\a:mathml mrow\Hnewline>}
+   {\Tg</\a:mathml mrow>\Tg</\a:mathml munder>}
+\Configure{overarrow@}
+   {\Tg<\a:mathml mover accent="true">\Tg<\a:mathml mrow\Hnewline>}
+   {\Tg</\a:mathml mrow>\Tg<\a:mathml mrow>}
+   {\Tg</\a:mathml mrow>\Tg</\a:mathml mover>}
+\def\:tempc#1#2#3{\a:overarrow@
+      \hbox{$\m@th#2#3$}\b:overarrow@
+      \hbox{#1#2}\c:overarrow@
+   }
+\HLet\overarrow@\:tempc
+
+\Configure{mfenced}{\lvert}{\string&\#x007C;}
+\Configure{mfenced}{\rvert}{\string&\#x007C;}
+\Configure{mfenced}{\lVert}{\string&\#x2016;}
+\Configure{mfenced}{\rVert}{\string&\#x2016;}
+\ConfigureEnv{aligned}{}{}{}{}
+\Configure{aligned}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="aligned">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline>}}   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}
+
+
+\def\:tempc{{\underrightarrow\lim}}  \HLet\varinjlim\:tempc
+\def\:tempc{{\underleftarrow\lim}}   \HLet\varprojlim\:tempc
+\def\:tempc{{\overline\lim}}         \HLet\varlimsup\:tempc
+\def\:tempc{{\underline\lim}}        \HLet\varliminf\:tempc
+\def\:tempc#1#2#3{\hbox{{\mtexttrue
+   \HCode{<\a:mathml mrow\Hnewline
+       \mml:class="text"><\a:mathml mtext
+              \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \Configure{$}{\EndPauseMathClass\mtextfalse
+      \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext><\a:mathml
+              mrow\Hnewline \mml:class="math">}}
+        {\HCode{</\a:mathml mrow><\a:mathml mtext
+           \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\mtexttrue\PauseMathClass}{#1}
+   \let\f@size#2\selectfont #3}%
+   \mtextfalse \EndPauseMathClass \ht:special{t4ht@,}%
+\HCode
+      {</\a:mathml mtext></\a:mathml mrow>}}}
+\HLet\textdef@\:tempc
+
+  \ifx \o:overrightarrow:\:UnDef\else
+   \HRestore\overrightarrow
+   \HRestore\overleftarrow
+   \HRestore\overleftrightarrow
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amstex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % amstex.tex
+\def\m:env#1{\HCode{<\a:mathml mtable
+  \mml:class="#1"><\a:mathml mtr><\a:mathml mtd>}%
+   \def\endm:env{\HCode
+      {</\a:mathml mtd></\a:mathml mtr></\a:mathml mtable>}}}
+
+\Configure{pmatrix}
+   {\bgroup\m:env{pmatrix}}
+   {\endm:env\egroup}
+\Configure{multline}
+   {\HCode{<\a:mathml mtable\mml:class="multline">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline\mml:class="multline"><\a:mathml mtd>}}
+   {\HCode{</\a:mathml mtd></\a:mathml mtr>}}
+\Configure{smallmatrix}
+   {\HCode{<\a:mathml mtable\mml:class="smallmatrix">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline\mml:class="smallmatrix">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline\mml:class="smallmatrix">}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{bmatrix}
+   {\bgroup\m:env{bmatrix}}
+   {\endm:env\egroup}
+\Configure{vmatrix}{\bgroup\m:env{vmatrix}}{\endm:env\egroup}
+\Configure{Vmatrix}{\bgroup\m:env{Vmatrix}}{\endm:env\egroup}
+\Configure{aligned}
+   {\HCode{<\a:mathml mtable\mml:class="aligned" \a:mathml displaystyle="true">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline\mml:class="aligned">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline\mml:class="aligned">}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{xalignat}
+   {\HCode{<\a:mathml mtable\mml:class="xalignat" \a:mathml displaystyle="true">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline \mml:class="xalignat">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline  \mml:class="xalignat">}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{xxalignat}
+   {\HCode{<\a:mathml mtable  \mml:class="xxalignat" \a:mathml displaystyle="true">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline  \mml:class="xxalignat">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline  \mml:class="xxalignat">}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{alignedat}
+   {\HCode{<\a:mathml mtable \mml:class="alignedat" \a:mathml displaystyle="true">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline  \mml:class="alignedat">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline \mml:class="alignedat">}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{gathered}
+   {\HCode{<\a:mathml mtable \mml:class="gathered" \a:mathml displaystyle="true">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline \mml:class="gathered">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline \mml:class="gathered">}}
+   {\HCode{</\a:mathml mtd>}}
+\NewConfigure{@mtext}{1}
+\Configure{@mtext}{ }
+\def\AA:text#1{\mtexttrue
+\HCode{<\a:mathml mstyle\Hnewline \mml:class="#1"><\a:mathml
+   mtext \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \ifmmode\else
+   \Configure{$}%
+  {\EndPauseMathClass \mtextfalse
+      \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext><\a:mathml
+                                mstyle\Hnewline \mml:class="math">}}%
+  {\HCode{</\a:mathml mstyle><\a:mathml
+       mtext \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \mtexttrue}%
+  {}%
+\Configure{()}%
+  {\EndPauseMathClass \mtextfalse
+      \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext><\a:mathml
+                                mstyle\Hnewline \mml:class="math">}$}%
+  {$\HCode{</\a:mathml mstyle><\a:mathml
+       mtext \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \mtexttrue}%
+  {}%
+%
+   \fi
+}
+\def\BB:text{\mtextfalse\EndPauseMathClass\ht:special{t4ht@,}%
+\HCode
+     {</\a:mathml mtext></\a:mathml mstyle>}%
+}
+
+\Configure{text}{\AA:text{text}}{\BB:text}
+\Configure{format}
+   {\HCode{<\a:mathml mtable \mml:class="format">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline \mml:class="format">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline \mml:class="format">}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{multilimits}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="multilimits">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr><\a:mathml mtd\Hnewline>}}
+   {\HCode{</\a:mathml mtd></\a:mathml mtr>}}
+\Configure{smallmatrix}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="smallmatrix">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline>}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{matrix}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="matrix">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline>}}   {\HCode{</\a:mathml mtr>}}
+   {\HCode{\HCode{<\a:mathml mtd\Hnewline \mml:class="matrix"
+   \ifnum 1<\HMultispan columnspan="\HMultispan"\fi}%
+   \halignTD    \HCode{>}%
+}}   {\HCode{</\a:mathml mtd>}}
+\Configure{pmatrix}{\Tg<\a:mathml mrow \mml:class="pmatrix">}
+                   {\Tg</\a:mathml mrow>}
+\Configure{align}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="align">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline>}}   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}
+\Configure{aligned}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="aligned">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline>}}   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}
+\Configure{cases}
+   {\Tg<\a:mathml mrow \mml:class="cases">}
+   {\Tg</\a:mathml mrow>}
+\Configure{alignat}
+   {\HCode{<\a:mathml mtable \mml:class="alignat">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline \mml:class="alignat">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline \mml:class="alignat">}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{gather}
+   {\HCode{<\a:mathml mtable \mml:class="gather">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline \mml:class="gather">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline \mml:class="gather">}}
+   {\HCode{</\a:mathml mtd>}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{plain}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \:CheckOption{core}\if:Option \expandafter\endinput \fi
+ \Configure{eqalign}
+   {\HCode{<\a:mathml mtable \mml:class="eqalign">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr \Hnewline \mml:class="eqalign">}}
+   {\IgnorePar\HCode{</\a:mathml mtr>}}
+   {\HCode{\ifnum \HCol=3 <\a:mathml mtd\Hnewline
+       \mml:class="eqalign3"></\a:mathml mtd>\fi
+       <\a:mathml mtd \Hnewline  \mml:class="eqalign\HCol">}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{overline}
+   {\bgroup \HCode{<\a:mathml mover  accent="false"\Hnewline
+\mml:class="mml-overline"><\a:mathml mrow>}%
+}
+   {\HCode{</\a:mathml mrow><\a:mathml mo\Hnewline
+ accent="true">&\#x00AF;</\a:mathml mo>%
+</\a:mathml mover>}%
+\egroup}
+\Configure{underline}
+   {\bgroup \ifmmode \HCode{<\a:mathml munder \a:mathml accentunder="false"\Hnewline
+\mml:class="mml-underline"><\a:mathml mrow>}%
+\else
+     \expandafter\everymath
+\expandafter{\expandafter\everymath
+             \expandafter{\the\everymath}}%
+\let\o::@underline:\o:@@underline:
+\def\o:@@underline:{\let\o:@@underline:\o::@underline:}%
+\fi}
+   {\HCode{</\a:mathml mrow><\a:mathml mo\Hnewline
+accent="true">&\#x0332;</\a:mathml mo></\a:mathml munder>}%
+\egroup}
+
+
+\Configure{eqalignno}
+   {\HCode{<\a:mathml mtable \mml:class="eqalignno">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline \mml:class="eqalignno">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd \Hnewline \mml:class="eqalignno-\HCol">}}
+   {\HCode{</\a:mathml mtd>}}
+\def\:eqalignno:{\Configure{noalign}
+  {\HCode{<\a:mathml mtr><\a:mathml mtd \mml:class="noalign" colspan="2">}}%
+  {\HCode{</\a:mathml mtd></\a:mathml mtr>}}}
+\Configure{leqalignno}
+   {\HCode{<\a:mathml mtable \mml:class="leqalignno">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline \mml:class="leqalignno">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd \Hnewline \mml:class="leqalignno-\HCol">}}
+   {\HCode{</\a:mathml mtd>}}
+\def\:leqalignno:{\Configure{noalign}
+  {\HCode{<\a:mathml mtr><\a:mathml mtd \mml:class="noalign" colspan="2">}}%
+  {\HCode{</\a:mathml mtd></\a:mathml mtr>}}}
+
+\expandafter\ifx \csname o@everypar\endcsname\relax \else
+\expandafter\ifx \csname ht:everypar\endcsname\relax
+  \let\ht:everypar\o@everypar
+\fi\fi
+
+\Configure{MathClass}{1}{}{}{}{
+   \mathchar"1360
+   \mathchar"1357
+   \mathchar"1356
+   \mathchar"1355
+   \mathchar"1354
+   \mathchar"1353
+   \mathchar"1352
+   \mathchar"1351
+   \mathchar"1350
+   \mathchar"134E
+   \mathchar"134C
+   \mathchar"134A
+   \mathchar"1348
+   \mathchar"1346
+   \mathchar"1273
+   \mathchar"3234 
+\mathchar"3238 
+\mathchar"3239 
+\mathchar"323A 
+\mathchar"323E 
+\mathchar"323F 
+\mathchar"3272 
+\mathchar"3278 
+\mathchar"327B 
+\mathchar"327C 
+\mathchar"327D 
+\mathchar"327E 
+\mathchar"327F 
+%
+}
+\Configure{MathClass}{2}{}{}{}{
+*-+/
+\mathchar"212F
+\mathchar"212E
+\mathchar"2234
+\mathchar"2235
+\mathchar"225E
+\mathchar"225F
+\mathchar"225C
+\mathchar"225B
+\mathchar"227A
+\mathchar"2279
+\mathchar"2275
+\mathchar"2274
+\mathchar"225D
+\mathchar"2271
+\mathchar"2205
+\mathchar"220F
+\mathchar"226F
+\mathchar"2204
+\mathchar"220C
+\mathchar"220B
+\mathchar"220A
+\mathchar"2209
+\mathchar"2208
+\mathchar"2207
+\mathchar"2206
+\mathchar"220E
+\mathchar"220D
+\mathchar"226E
+\mathchar"2201
+\mathchar"2203
+\mathchar"2202
+\mathchar"213F
+\mathchar"6201 % cdot
+}
+\Configure{MathClass}{3}{}{}{}{
+   \mathchar"3128
+   \mathchar"3129
+   \mathchar"312A
+   \mathchar"312B
+   \mathchar"315E
+   \mathchar"315F
+   \mathchar"3210
+   \mathchar"3211
+   \mathchar"3212
+   \mathchar"3213
+   \mathchar"3214
+   \mathchar"3215
+   \mathchar"3216
+   \mathchar"3217
+   \mathchar"3218
+   \mathchar"3219
+   \mathchar"321A
+   \mathchar"321B
+   \mathchar"321C
+   \mathchar"321D
+   \mathchar"321E
+   \mathchar"321F
+   \mathchar"3220
+   \mathchar"3221
+   \mathchar"3224
+   \mathchar"3227
+   \mathchar"3232
+   \mathchar"3233
+   \mathchar"3236
+   \mathchar"3237
+   \mathchar"323F
+   :=><
+   \mathchar"322F
+   \mathchar"3276
+   \mathchar"3277
+   \mathchar"326B
+   \mathchar"326A
+   \mathchar"3261
+   \mathchar"3260
+   \mathchar"3225
+   \mathchar"3226
+   \mathchar"322D
+   \mathchar"322E
+   \mathchar"322C
+   \mathchar"3228
+   \mathchar"3229
+}
+\Configure{MathClass}{4}{}{}{}{}
+\Configure{MathDelimiters}{(}{)}
+\Configure{MathDelimiters}{[}{]}
+\Configure{MathDelimiters}{\mathchar"4262}{\mathchar"5263}
+\Configure{MathDelimiters}{\mathchar"4264}{\mathchar"5265}
+\Configure{MathDelimiters}{\mathchar"4266}{\mathchar"5267}
+\Configure{MathDelimiters}{\mathchar"4268}{\mathchar"5269}
+\Configure{MathDelimiters}{\mathchar"4300}{\mathchar"5301}
+\Configure{MathDelimiters}{\mathchar"4302}{\mathchar"5303}
+\Configure{MathDelimiters}{\mathchar"4304}{\mathchar"5305}
+\Configure{MathDelimiters}{\mathchar"4306}{\mathchar"5307}
+\Configure{MathDelimiters}{\mathchar"4308}{\mathchar"5309}
+\Configure{MathDelimiters}{\mathchar"430A}{\mathchar"530B}
+\Configure{MathClass}{6}{}{}{}{
+\mathchar"613A % ldot
+\mathchar"603A % colon
+!?; ,
+}
+
+\Configure{overrightarrow}
+  {\leavevmode\hbox\bgroup$\Tg<\a:mathml mover accent="true" class="overrightarrow">%
+   \Tg<\a:mathml mrow\Hnewline>\:gobble}
+  {\Tg</\a:mathml mrow>\HCode{<\a:mathml mo>&\#x2192;</\a:mathml mo>}%
+   \Tg</\a:mathml mover>$\egroup}
+\Configure{overleftarrow}
+  {\leavevmode\hbox\bgroup$\Tg<\a:mathml mover accent="true" class="overleftarrow">%
+   \Tg<\a:mathml mrow\Hnewline>\:gobble}
+  {\Tg</\a:mathml mrow>\HCode{<\a:mathml mo>&\#x2190;</\a:mathml mo>}%
+   \Tg</\a:mathml mover>$\egroup}
+\Configure{big}
+   {}{}
+   {\HCode{<\a:mathml mstyle mathsize="1.19em">}}
+   {\HCode{</\a:mathml mstyle>}}
+\Configure{Big}
+   {}{}
+   {\HCode{<\a:mathml mstyle mathsize="1.61em">}}
+   {\HCode{</\a:mathml mstyle>}}
+\Configure{bigg}
+   {}{}
+   {\HCode{<\a:mathml mstyle mathsize="2.03em">}}
+   {\HCode{</\a:mathml mstyle>}}
+\Configure{Bigg}
+   {}{}
+   {\HCode{<\a:mathml mstyle mathsize="2.45em">}}
+   {\HCode{</\a:mathml mstyle>}}
+\def\:tempc#1{{\hbox{\a:big$\c:big
+   \left#1\hbox{}\right.\n@space\d:big$\b:big}}}
+\HLet\big=\:tempc
+\def\:tempc#1{{\hbox{\a:Big$\c:Big
+   \left#1\hbox{}\right.\n@space\d:Big$\b:Big}}}
+\HLet\Big=\:tempc
+\def\:tempc#1{{\hbox{\a:bigg$\c:bigg
+   \left#1\hbox{}\right.\n@space\d:bigg$\b:bigg}}}
+\HLet\bigg=\:tempc
+\def\:tempc#1{{\hbox{\a:Bigg$\c:Bigg
+   \left#1\hbox{}\right.\n@space\d:Bigg$\b:Bigg}}}
+\HLet\Bigg=\:tempc
+\Configure{overbrace}
+   {\Configure{mathop*}{*}
+         {<\a:mathml mover \a:mathml accent="false"><\a:mathml mrow>}
+         {</\a:mathml mrow><\a:mathml mo>\string
+               &\#xFE37;</\a:mathml mo></\a:mathml mover>}
+         {\Configure{mathop}{}{}{}{}}%
+   }
+   {\let\o:overbrace:=\displaystyle}
+   {}
+\Configure{underbrace}
+   {\Configure{mathop*}{*}
+         {<\a:mathml munder
+                 \a:mathml accentunder="false"><\a:mathml mrow>}
+         {</\a:mathml mrow><\a:mathml mo>\string
+               &\#x23DF;</\a:mathml mo></\a:mathml munder>}
+         {\Configure{mathop}{}{}{}{}}%
+   }
+   {\let\o:underbrace:=\displaystyle}
+   {}
+\Configure{MathClass}{0}{*}{<\a:mathml mi\Hnewline>}{</\a:mathml mi>}{}
+\Configure{MathClass}{1}{*}{<\a:mathml mi\Hnewline
+             \mml:class="MathClass-op">}{</\a:mathml mi><\a:mathml mo> &\#x2061;<!--FUNCTION APPLICATION--></\a:mathml mo>}{}
+\Configure{MathClass}{2}{*}{<\a:mathml mo\Hnewline
+             \mml:class="MathClass-bin" \a:mathml stretchy="false">}{</\a:mathml mo>}{}
+\Configure{MathClass}{3}{*}{<\a:mathml mo\Hnewline
+             \mml:class="MathClass-rel" \a:mathml stretchy="false">}{</\a:mathml mo>}{}
+\Configure{MathClass}{4}{*}{<\a:mathml mo\Hnewline
+          \mml:class="MathClass-open" \a:mathml stretchy="false">}
+                        {</\a:mathml mo>}{}
+\Configure{MathClass}{5}{*}{<\a:mathml mo\Hnewline
+          \mml:class="MathClass-close" \a:mathml stretchy="false">}
+                        {</\a:mathml mo>}{}
+\Configure{MathClass}{6}{*}{<\a:mathml mo\Hnewline
+             \mml:class="MathClass-punc" \a:mathml stretchy="false">}{</\a:mathml mo>}{}
+\Configure{MathClass}{7}{*}{<\a:mathml mn>}{</\a:mathml mn>}
+                           {0123456789}
+\ifx \mathordMathClass\:UnDef
+  \NewMathClass\mathordMathClass
+\fi
+\Configure{MathClass}{\mathordMathClass}{*}{<\a:mathml mo\Hnewline
+             \mml:class="MathClass-ord">}{</\a:mathml mo>}{}
+\Configure{FormulaClass}{0}{}{}{}
+\Configure{FormulaClass}{1}{}{}{}
+\Configure{FormulaClass}{2}{}{}{}
+\Configure{FormulaClass}{3}{}{}{}
+\Configure{FormulaClass}{4}{}{}{}
+\Configure{FormulaClass}{5}{}{}{}
+\Configure{FormulaClass}{6}{}{}{}
+\Css{mo.MathClass-op + mi{margin-left:0.3em}}
+\Css{mi + mo.MathClass-op{margin-left:0.3em}}
+
+
+
+\let\A:displaylines\a:displaylines
+\let\B:displaylines\b:displaylines
+\let\C:displaylines\c:displaylines
+\let\D:displaylines\d:displaylines
+\Configure{displaylines}
+   {\ifmmode
+     \def\A:displaylines{\HCode{<\a:mathml mtable
+                                   \mml:class="displaylines">}}%
+     \def\B:displaylines{\HCode{</\a:mathml mtable>}}%
+     \def\C:displaylines{\HCode{<\a:mathml mtr\Hnewline
+                              \mml:class="displaylines"><\a:mathml mtd>}}%
+     \def\D:displaylines{\HCode{</\a:mathml mtd></\a:mathml mtr>}}%
+    \fi
+    \A:displaylines}
+   {\B:displaylines} {\C:displaylines}{\D:displaylines}
+\let\mathml:on\relax
+\Configure{ }
+   {\ifmathml \ifmtext \space \else\Tg<\a:mathml mspace
+    width="0.33em" \mml:class="nbsp" />\fi
+    \else \:nbsp\fi}
+
+% redefine macro from unicode.4ht to produce better accents
+\def\unicode:mathop#1{\PauseMathClass\HCode{<\a:mathml mo accent="true">}#1\HCode{</\a:mathml mo>}\EndPauseMathClass}
+
+\:CheckOption{new-accents}     \if:Option \else
+  \Configure{accent}\widetilde\widetilde{{}{}}
+  {}
+  {\HCode{<\a:mathml mover\Hnewline accent="true"><\a:mathml mrow\Hnewline>}#2\HCode{</\a:mathml mrow>}%
+    \:widetilde:over  \HCode{</\a:mathml mover>}}
+  % this configuration caused problems with text accents.
+  % we can use Unicode characters with tilde accents instead even in MathML
+  % \Configure{accent}\tilde\tilde{{}{}}
+  % {}
+  % {\HCode{<\a:mathml mover\Hnewline accent="true"><\a:mathml mrow\Hnewline>}#2\HCode{</\a:mathml mrow>}%
+  %   \:tilde:over  \HCode{</\a:mathml mover>}}
+  \Configure{accent}\widehat\widehat{{}{}}
+  {}
+  {\HCode{<\a:mathml mover\Hnewline accent="true"><\a:mathml mrow\Hnewline>}#2\HCode{</\a:mathml mrow>}%
+    \:widehat:over  \HCode{</\a:mathml mover>}}
+\fi
+\:CheckOption{new-accents}     \if:Option \else
+   \ifx \mathml:on\:UnDef
+      \Configure{accents}
+        {\ifmmode \expandafter\mathord\fi
+         {\leavevmode
+\if !#1!\ht:special{t4ht@+\string&{35}x#2;}%
+\else \expandafter \ifx\csname U#2#1\endcsname\relax
+    \ht:special{t4ht@+\string&{35}x#2;}%
+\else
+    \ht:special{t4ht@+\string&{35}x\csname U#2#1\endcsname;}%
+\fi \fi x%
+%
+          \ht:special{t4ht@[}\if!#1!x\else#2\fi\ht:special{t4ht@]}}}
+        {\Tg<\a:mathml mrow
+                \mml:class="accent#1">\mathord{#3}\Tg</\a:mathml mrow>%
+        }%
+   \fi
+\fi
+\let\mml:TeX\TeX
+\def\TeX{\ifmathml\ifmtext TeX\else
+   \HCode{<\a:mathml mtext
+      \mml:class="TeX">TeX</\a:mathml mtext>}\fi\else \mml:TeX\fi}
+\Configure{afterSUB}{'}{\def\SUB:prime{\SUB:SUP}}
+\Configure{'}
+   {\let\:primes=\empty}
+   {\relax \csname SUB:prime\endcsname\sp{%
+      \global\let\SUB:prime=\:UnDef
+      \def\:tempa{\prime\prime}\ifx \:tempa\:primes
+              \mathop{\HCode{<\a:mathml mi>\string&\#x2033;</\a:mathml mi>}}\else
+      \def\:tempa{\prime\prime\prime}\ifx \:tempa\:primes
+              \mathop{\HCode{<\a:mathml mi>\string&\#x2034;</\a:mathml mi>}}\else
+              \:primes \fi\fi}%
+   }
+   {\let\prime=\relax \xdef\:primes{\:primes\prime}}
+\def\:temp#1{\a:left{#1}\o:left:.\b:left{#1}}   \HLet\left\:temp
+\def\:temp#1{\a:right{#1}\o:right:.\b:right{#1}}\HLet\right\:temp
+\Configure{left}
+   {}
+   {\HCode{<\a:mathml mrow><\a:mathml mo \a:mathml fence="true" \a:mathml form="prefix">%
+       \expandafter
+\ifx \csname \string#1:lr del\endcsname\relax #1\else
+     \csname \string#1:lr del\endcsname\fi
+</\a:mathml mo>}\bgroup
+                              \HCode{<\a:mathml mrow>}\bgroup}
+\Configure{right}
+{\egroup\egroup}%{\egroup\Send{GROUP}{0}{ \a:mathml close=""\space}\egroup}
+   {\HCode{</\a:mathml mrow><\a:mathml mo \a:mathml fence="true" \a:mathml form="postfix">\expandafter
+\ifx \csname \string#1:lr del\endcsname\relax #1\else
+     \csname \string#1:lr del\endcsname\fi
+</\a:mathml mo></\a:mathml mrow>}}
+\def\def:DEL#1{\def\:DEL{#1}}
+\def\check:DEL#1#2{\def\:tempa{#1}\ifx \:tempa\:DEL \def\:DEL{#2}\fi}
+\NewConfigure{mfenced}[2]{\append:defI\def:DEL{\check:DEL{#1}{#2}}}
+\NewConfigure{Biggl}{2}
+\NewConfigure{Biggm}{2}
+\NewConfigure{Biggr}{2}
+\NewConfigure{Bigl}{2}
+\NewConfigure{Bigm}{2}
+\NewConfigure{Bigr}{2}
+\NewConfigure{biggl}{2}
+\NewConfigure{biggm}{2}
+\NewConfigure{biggr}{2}
+\NewConfigure{bigl}{2}
+\NewConfigure{bigm}{2}
+\NewConfigure{bigr}{2}
+\Configure{Biggm}
+   {\bgroup
+       \Configure{Bigg}{}{}{}{}%
+       \Configure{mathrel}{*}
+          {<mo \mml:class="MathClass-rel"
+                     fence="true" mathsize="2.45em" >}
+          {</mo>}
+          {\Configure{mathrel}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Bigm}
+   {\bgroup
+       \Configure{Big}{}{}{}{}%
+       \Configure{mathrel}{*}
+          {<mo \mml:class="MathClass-rel"
+                     fence="true" mathsize="1.61em" >}
+          {</mo>}
+          {\Configure{mathrel}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{biggm}
+   {\bgroup
+       \Configure{bigg}{}{}{}{}%
+       \Configure{mathrel}{*}
+          {<mo \mml:class="MathClass-rel"
+                     fence="true" mathsize="2.03em" >}
+          {</mo>}
+          {\Configure{mathrel}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{bigm}
+   {\bgroup
+       \Configure{big}{}{}{}{}%
+       \Configure{mathrel}{*}
+          {<mo \mml:class="MathClass-rel"
+                     fence="true" mathsize="1.19em" >}
+          {</mo>}
+          {\Configure{mathrel}{}{}{}{}}%
+   }
+   {\egroup}
+
+\:CheckOption{mathml-}     \if:Option
+   \Configure{Biggl}
+   {\bgroup
+       \Configure{Bigg}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="2.45em" >}
+          {</mo>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Biggr}
+   {\bgroup
+       \Configure{Bigg}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {<mo \mml:class="MathClass-close"
+                     fence="true" mathsize="2.45em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Bigl}
+   {\bgroup
+       \Configure{Big}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="1.61em" >}
+          {</mo>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Bigr}
+   {\bgroup
+       \Configure{Big}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {<mo \mml:class="MathClass-close"
+                     fence="true" mathsize="1.61em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{biggl}
+   {\bgroup
+       \Configure{bigg}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="2.03em" >}
+          {</mo>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{biggr}
+   {\bgroup
+       \Configure{bigg}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {<mo \mml:class="MathClass-close"
+                     fence="true" mathsize="2.03em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{bigl}
+   {\bgroup
+       \Configure{big}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="1.19em" >}
+          {</mo>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{bigr}
+   {\bgroup
+       \Configure{big}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {<mo \mml:class="MathClass-close"
+                     fence="true" mathsize="1.19em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+
+\else
+   \Configure{Biggl}
+   {\bgroup
+       \Configure{Bigg}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="2.45em" >}
+          {</mo><mrow>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Biggr}
+   {\bgroup
+       \Configure{Bigg}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {</mrow><mo \mml:class="MathClass-close"
+                     fence="true" mathsize="2.45em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Bigl}
+   {\bgroup
+       \Configure{Big}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="1.61em" >}
+          {</mo><mrow>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{Bigr}
+   {\bgroup
+       \Configure{Big}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {</mrow><mo \mml:class="MathClass-close"
+                     fence="true" mathsize="1.61em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{biggl}
+   {\bgroup
+       \Configure{bigg}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="2.03em" >}
+          {</mo><mrow>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{biggr}
+   {\bgroup
+       \Configure{bigg}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {</mrow><mo \mml:class="MathClass-close"
+                     fence="true" mathsize="2.03em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{bigl}
+   {\bgroup
+       \Configure{big}{}{}{}{}%
+       \Configure{mathopen}{*}
+          {<mrow><mo \mml:class="MathClass-open"
+                     fence="true" mathsize="1.19em" >}
+          {</mo><mrow>}
+          {\Configure{mathopen}{}{}{}{}}%
+   }
+   {\egroup}
+\Configure{bigr}
+   {\bgroup
+       \Configure{big}{}{}{}{}%
+       \Configure{mathclose}{*}
+          {</mrow><mo \mml:class="MathClass-close"
+                     fence="true" mathsize="1.19em" >}
+          {</mo></mrow>}
+          {\Configure{mathclose}{}{}{}{}}%
+   }
+   {\egroup}
+
+\fi
+\def\:tempc#1{\ht:special{t4ht@[}(\ht:special{t4ht@]}%
+   \a:bigl\mathopen{\left:right\big{#1\:EMPTY}}\b:bigl\:EMPTY}
+\HLet\bigl=\:tempc
+\def\:tempc#1{\a:bigm\mathrel{\left:right\big{#1\:EMPTY}}\b:bigm}
+\HLet\bigm=\:tempc
+\def\:tempc#1{\:EMPTY
+   \a:bigr\mathclose{\left:right\big{#1\:EMPTY}}\b:bigr%
+   \ht:special{t4ht@[})\ht:special{t4ht@]}}
+\HLet\bigr=\:tempc
+\def\:tempc#1{\ht:special{t4ht@[}(\ht:special{t4ht@]}%
+  \a:Bigl\mathopen{\left:right\Big{#1}\:EMPTY}\b:Bigl\:EMPTY}
+\HLet\Bigl=\:tempc
+\def\:tempc#1{\a:Bigm\mathrel{\left:right\Big{#1\:EMPTY}}\b:Bigm}
+\HLet\Bigm=\:tempc
+\def\:tempc#1{\:EMPTY
+   \a:Bigr\mathclose{\left:right\Big{#1\:EMPTY}}\b:Bigr%
+   \ht:special{t4ht@[})\ht:special{t4ht@]}}
+\HLet\Bigr=\:tempc
+\def\:tempc#1{\ht:special{t4ht@[}(\ht:special{t4ht@]}%
+  \a:biggl\mathopen{\left:right\bigg{#1\:EMPTY}}\b:biggl\:EMPTY}
+\HLet\biggl=\:tempc
+\def\:tempc#1{\a:biggm\mathrel{\left:right\bigg{#1\:EMPTY}}\b:biggm}
+\HLet\biggm=\:tempc
+\def\:tempc#1{\:EMPTY
+   \a:biggr\mathclose{\left:right\bigg{#1\:EMPTY}}\b:biggr%
+   \ht:special{t4ht@[})\ht:special{t4ht@]}}
+\HLet\biggr=\:tempc
+\def\:tempc#1{\ht:special{t4ht@[}(\ht:special{t4ht@]}%
+  \a:Biggl\mathopen{\left:right\Bigg{#1\:EMPTY}}\b:Biggl\:EMPTY}
+\HLet\Biggl=\:tempc
+\def\:tempc#1{\a:Biggm\mathrel{\left:right\Bigg{#1\:EMPTY}}\b:Biggm}
+\HLet\Biggm=\:tempc
+\def\:tempc#1{\:EMPTY
+   \a:Biggr\mathclose{\left:right\Bigg{#1}\:EMPTY}\b:Biggr
+   \ht:special{t4ht@[})\ht:special{t4ht@]}}
+\HLet\Biggr=\:tempc
+\def\:EMPTY{{\HCode{}}}
+\def\left:right{%
+   \let\left\o:left:
+   \let\right\o:right:
+   \Configure{left}{}{}\Configure{right}{}{}}
+
+\:CheckOption{new-accents}     \if:Option \else
+   \Configure{accents}
+  {\ifmmode \expandafter\mathord\fi
+     {\leavevmode
+\if !#1!\ht:special{t4ht@+\string&{35}x#2;}%
+\else \expandafter \ifx\csname U#2#1\endcsname\relax
+    \ht:special{t4ht@+\string&{35}x#2;}%
+\else
+    \ht:special{t4ht@+\string&{35}x\csname U#2#1\endcsname;}%
+\fi \fi x%
+%
+   \ht:special{t4ht@[}\if!#1!x\else#2\fi
+   \ht:special{t4ht@]}}}
+  {\ifmathml
+      \ifmtext \expandafter\ifx \csname :#1:over\endcsname\relax
+   \expandafter\ifx \csname :#1:under\endcsname\relax
+      \AccentMath{\expandafter\ifx \csname :#1:over\endcsname\relax
+  \HCode{<\a:mathml munder\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+      \csname :#1:under\endcsname
+   \HCode{</\a:mathml munder>}%
+%
+\else \expandafter\ifx \csname :#1:under\endcsname\relax
+  \HCode{<\a:mathml mover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml mover>}%
+%
+\else
+  \HCode{<\a:mathml munderover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:under\endcsname
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml munderover>}%
+%
+\fi \fi
+}%
+   \else #3\csname :#1:under\endcsname \fi
+\else #3\csname :#1:over\endcsname \fi
+%
+      \else    \AccentMath{\expandafter\ifx \csname :#1:over\endcsname\relax
+  \HCode{<\a:mathml munder\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+      \csname :#1:under\endcsname
+   \HCode{</\a:mathml munder>}%
+%
+\else \expandafter\ifx \csname :#1:under\endcsname\relax
+  \HCode{<\a:mathml mover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml mover>}%
+%
+\else
+  \HCode{<\a:mathml munderover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:under\endcsname
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml munderover>}%
+%
+\fi \fi
+}\fi
+   \else       \expandafter\ifx \csname :#1:over\endcsname\relax
+   \expandafter\ifx \csname :#1:under\endcsname\relax
+      \AccentMath{\expandafter\ifx \csname :#1:over\endcsname\relax
+  \HCode{<\a:mathml munder\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+      \csname :#1:under\endcsname
+   \HCode{</\a:mathml munder>}%
+%
+\else \expandafter\ifx \csname :#1:under\endcsname\relax
+  \HCode{<\a:mathml mover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml mover>}%
+%
+\else
+  \HCode{<\a:mathml munderover\Hnewline
+   accent="true"><\a:mathml mrow\Hnewline>}#3\HCode{</\a:mathml mrow>}%
+   \csname :#1:under\endcsname
+   \csname :#1:over\endcsname
+   \HCode{</\a:mathml munderover>}%
+%
+\fi \fi
+}%
+   \else #3\csname :#1:under\endcsname \fi
+\else #3\csname :#1:over\endcsname \fi
+\fi
+  }
+
+\fi
+\def\mathinner#1{\Tg<\a:mathml mrow
+   \mml:class="mathinner">#1\Tg</\a:mathml mrow>}
+\Configure{root}{\rev:root}{}{}
+\def\rev:root #1\b:root#2\c:root{
+   \Tg<\a:mathml mroot>{\Tg<\a:mathml mrow\Hnewline>#2\Tg</\a:mathml mrow>}%
+             {\Tg<\a:mathml mrow\Hnewline>#1\Tg</\a:mathml mrow>}\Tg</\a:mathml mroot>}
+\def\AccentMath#1{\relax\ifmmode #1\else $#1$\fi}
+\NewConfigure{mfenced}[2]{\expandafter
+   \def\csname \string#1:lr del\endcsname{#2}}
+\Configure{mfenced}{\|}{\string&\#x2225;}
+\Configure{mfenced}{.}{}
+\Configure{mfenced}{\langle}{\string&\#x27E8;} 
+\Configure{mfenced}{\rangle}{\string&\#x27E9;} 
+\Configure{mfenced}{\vert}{|}
+\edef\:temp{\noexpand\Configure{mfenced}{\noexpand\{}{\string{}}\:temp
+\edef\:temp{\noexpand\Configure{mfenced}{\noexpand\}}{\string}}}\:temp
+\edef\:temp{\noexpand
+   \Configure{mfenced}{\noexpand\lbrace}{\string{}}\:temp
+\edef\:temp{\noexpand
+   \Configure{mfenced}{\noexpand\rbrace}{\string}}}\:temp
+\Configure{mfenced}{<}{\string&\#x003C;} 
+\Configure{mfenced}{>}{\string&\#x003E;} 
+\Configure{mfenced}{\lceil}{\string&\#x2308;}
+\Configure{mfenced}{\rceil}{\string&\#x2309;}
+\Configure{mfenced}{\lfloor}{\string&\#x230A;}
+\Configure{mfenced}{\rfloor}{\string&\#x230B;}
+\Configure{mfenced}{\Vert}{\string&\#x2225;}
+\Configure{mfenced}{\rgroup}{)}
+\Configure{mfenced}{\lgroup}{(}
+\Configure{mfenced}{\bracevert}{|}
+\Configure{mfenced}{\bracevert}{|}
+\Configure{mfenced}{\downarrow}{\string&\#x2193;}
+\Configure{mfenced}{\uparrow}{\string&\#x2191;}
+\Configure{mfenced}{\Uparrow}{\string&\#x21D1;}
+\Configure{mfenced}{\updownarrow}{\string&\#x2195;}
+\Configure{mfenced}{\Updownarrow}{\string&\#x21D5;}
+\Configure{mfenced}{\Downarrow}{\string&\#x21D3;}
+\Configure{mfenced}{\backslash}{\string&\#x2216;}
+\Configure{mfenced}{\rmoustache}{\string&\#x25DD;}
+\Configure{mfenced}{\lmoustache}{\string&\#x25DC;}
+\Configure{mfenced}{\Arrowvert}{\string&\#x2225;}
+\Configure{mfenced}{\arrowvert}{\string&\#x007C;}
+
+\let\A:oalign\a:oalign
+\let\B:oalign\b:oalign
+\Configure{oalign}
+   {\ifmmode \Configure{$}{\Tg<\a:mathml mrow\Hnewline>}%
+                          {\Tg</\a:mathml mrow>}{}%
+             \let\halign\TeXhalign
+             \Tg<\a:mathml mrow\Hnewline \mml:class="oalign">\else\A:oalign
+    \fi}
+   {\ifmmode \Tg</\a:mathml mrow>\else\B:oalign\fi}
+\def\mathop:prefix#1{%
+   \Configure{mathop}{*}{<\a:mathml mo #1\Hnewline>}{</\a:mathml mo>}%
+    {\Configure{mathop}{*}{<\a:mathml mo>}{</\a:mathml mo>}{}}}
+\ifdefined\protect%
+\def\:unicodespace{\protect\leavevmode\special{t4ht@+\string&{35}x00A0{59}}x}%
+\def\:unicodenspace{\protect\leavevmode\special{t4ht@+\string&{35}x2002{59}}x}%
+\else%
+\def\:unicodespace{\leavevmode\special{t4ht@+\string&{35}x00A0{59}}x}%
+\def\:unicodenspace{\leavevmode\special{t4ht@+\string&{35}x2002{59}}x}%
+\fi
+\def\:nbsp{\ifmtext \:unicodespace%
+\else\ifmathml
+    \Tg<\a:mathml mspace />\else \:unicodespace%
+\fi\fi}
+\def\:ensp{\ifmtext \:unicodenspace%
+\else\ifmathml
+    \Tg<\a:mathml mspace />\else \:unicodenspace%
+\fi\fi}
+\Configure{cases}
+    {}{} {\Tg<\a:mathml mtable>}{\Tg</\a:mathml mtable>}
+    {\Tg<\a:mathml mtr>}{\Tg</\a:mathml mtr>}
+    {\Tg<\a:mathml mtd \mml:class="cases">}{\Tg</\a:mathml mtd>}
+\Configure{matrix}
+   {\Tg<\a:mathml mtable
+        \a:mathml equalrows="false" \a:mathml equalcolumns="false"\Hnewline
+          \mml:class="matrix">}
+   {\Tg</\a:mathml mtable>}
+   {\Tg<\a:mathml mtr>}{\Tg</\a:mathml mtr>}
+   {\HCode{<\a:mathml mtd\Hnewline \mml:class="matrix"
+   \ifnum 1<\HMultispan columnspan="\HMultispan"\fi}%
+   \halignTD    \HCode{>}%
+}{\Tg</\a:mathml mtd>}
+\Configure{pmatrix}  {\bgroup\Tg<\a:mathml mrow\Hnewline
+   \mml:class="pmatrix">}  {\Tg</\a:mathml mrow>\egroup}
+\Configure{quad}{{\ifmathml \ifmtext \o:quad:\else
+   {\HCode{<\a:mathml mspace width="1em" \mml:class="quad"/>}}\fi
+    \else \o:quad: \fi}}
+\Configure{qquad}{{\ifmathml \ifmtext \o:qquad:\else
+   {\HCode{<\a:mathml mspace width="2em" \mml:class="qquad"/>}}\fi
+    \else \o:qquad: \fi}}
+\Configure{,}
+   {{\HCode{<\a:mathml mspace width="0.17em" \mml:class="thinspace"/>}}}
+\Configure{:}
+   {{\HCode{<\a:mathml mspace width="0.22em" \mml:class="thinspace"/>}}}
+\Configure{;}
+   {{\HCode{<\a:mathml mspace width="0.28em" \mml:class="thickpace"/>}}}
+\Configure{>}
+   {{\HCode{<\a:mathml mspace width="0.30em" \mml:class="medspace"/>}}}
+\Configure{!}
+   {{\HCode{<\a:mathml mspace width="-0.17em" \mml:class="negthinspace"/>}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amsopn}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \def\:tempc{{\underrightarrow\lim}}  \HLet\varinjlim\:tempc
+\def\:tempc{{\underleftarrow\lim}}   \HLet\varprojlim\:tempc
+\def\:tempc{{\overline\lim}}         \HLet\varlimsup\:tempc
+\def\:tempc{{\underline\lim}}        \HLet\varliminf\:tempc
+\def\:tempc#1#2#3{\hbox{{\mtexttrue
+   \HCode{<\a:mathml mrow\Hnewline
+       \mml:class="text"><\a:mathml mtext
+              \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \Configure{$}{\EndPauseMathClass\mtextfalse
+      \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext><\a:mathml
+              mrow\Hnewline \mml:class="math">}}
+        {\HCode{</\a:mathml mrow><\a:mathml mtext
+           \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\mtexttrue\PauseMathClass}{#1}
+   \let\f@size#2\selectfont #3}%
+   \mtextfalse \EndPauseMathClass \ht:special{t4ht@,}%
+\HCode
+      {</\a:mathml mtext></\a:mathml mrow>}}}
+\HLet\textdef@\:tempc
+
+\def\:tempc{\qopname\relax m{\:limspaces{lim}{inf}}}
+\HLet\liminf=\:tempc
+\def\:tempc{\qopname\relax m{\:limspaces{lim}{sup}}}
+\HLet\limsup=\:tempc
+\def\:tempc{\qopname\relax m{\:limspaces{proj}{lim}}}
+\HLet\projlim=\:tempc
+\def\:tempc{\qopname\relax m{\:limspaces{inj}{lim}}}
+\HLet\injlim=\:tempc
+\Configure{qopname}
+   {\Configure{mathop}{*}
+      {<\a:mathml mi \mml:class="qopname">}
+  {</\a:mathml mi><\a:mathml mo> &\#x2061;<!--FUNCTION APPLICATION--> </\a:mathml mo>}
+      {}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{array}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \let\columnlines\empty
+\Configure{halignTB<>}{array}{\HCode{\Hnewline
+   \a:mathml equalrows="false"
+   \ifx\columnlines\empty\else\a:mathml columnlines="\columnlines" \fi
+   \a:mathml equalcolumns="false" \a:mathml class="array" \a:mathml displaystyle="true"}<>\HAlign}
+\Configure{array}
+   {\halignTB{array}}
+   {\ifvmode \IgnorePar\fi \expandafter\tmp:toks\expandafter{\Clr}%
+\HCode{<!--\the\tmp:toks-->}%
+\Tg</\a:mathml mtable>}
+   {\Tg<\a:mathml mtr \mml:class="array-row">}{\Tg</\a:mathml mtr>}
+   {\HCode{<\a:mathml mtd\Hnewline \mml:class="array-td"
+   \ifnum 1<\HMultispan columnspan="\HMultispan"\fi}%
+   \halignTD    \HCode{>}%
+}
+   {\Tg</\a:mathml mtd>}
+\ConfigureEnv{array}
+   {\bgroup\Configure{$}{}{}{}}
+   {\egroup}
+   {}{}
+\Configure{VBorder}
+   {\HAssign\NewGroup = 0
+    \HAssign\borderlines = 0
+\global\let\columnlines=\relax
+}
+   {\ifx \columnlines\relax \gHAssign\borderlines = 1
+                      \else \gHAdvance\borderlines by 2 \fi
+%
+    \HAssign\NewGroup = 0}
+   {\Advance:\NewGroup by 1
+    \ifnum \borderlines>1 \gHAdvance\borderlines by -2 \fi
+\ifx \columnlines\relax
+    \global\let\columnlines\empty
+\else
+    \ifnum \NewGroup=1
+       \xdef\columnlines{\columnlines\ifx\columnlines\empty
+                                     \else \space\fi solid}%
+    \else
+       \xdef\columnlines{\columnlines\ifx\columnlines\empty
+                                     \else \space\fi none}%
+    \fi
+\fi
+}
+   {}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amscd}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \ConfigureEnv{CD}{}{}{}{}
+\Configure{CD}
+   {\HCode{<\a:mathml mtable class="CD"\Hnewline>}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd\Hnewline>}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{ @>}
+  {\Configure{mathrel*}{*}
+          {<mrow \mml:class="rightarrow" >}
+          {</mrow>}
+          {}}
+\Configure{ @<}
+  {\Configure{mathrel*}{*}
+          {<mrow \mml:class="leftarrow" >}
+          {</mrow>}
+          {}}
+\Configure{ @V}
+   {\HCode{<mphantom>}
+    \hbox{$\m@th\vcenter{\hbox{$\scriptstyle#2$}}$}%%
+    \HCode{</mphantom>}}
+   {\HCode{<mphantom>}
+    \hbox{$\m@th\vcenter{\hbox{$\m@th\vcenter{\hbox
+                           {$\scriptstyle#1$}}$}}$}%
+    \HCode{</mphantom>}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{vanilla}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+          \Configure{align}
+   {\EndP\HCode{<\a:mathml mtable\Hnewline \mml:class="align">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}   {\HCode{</\a:mathml mtr>}}
+   {\HCode{<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}
+
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{amssymb}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \def\:tempa#1"#2#3///{%
+   \edef\:next{\noexpand\Configure{MathClass}{\ifnum 0=#2
+                                     \mathordMathClass \else #2\fi}}%
+   \:next
+}
+% \def\:tempb#1{\:tempa#1///{}{}{}{#1}}
+% \def\:tempc#1"#2//{\:tempb{\mathchar"#2}}
+% \def\:temp#1{\expandafter\:tempc\meaning#1//}
+\def\:temp#1{\expandafter\:tempc\meaning#1//}
+\def\:tempb#1{\:tempa#1///{}{}{}{#1}}
+\def\:tempc#1"#2//{\:tempd#2...//}
+\def\:tempd#1#2#3#4#5//{%
+   \if #4.\:tempb{\mathchar"0#1#2#3}\else
+          \:tempb{\mathchar"#1#2#3#4}\fi
+}
+\:temp \boxdot
+\:temp \boxplus
+\:temp \boxtimes
+\:temp \centerdot
+\:temp \boxminus
+\:temp \veebar
+\:temp \barwedge
+\:temp \doublebarwedge
+\:temp \Cup
+\:temp \Cap
+\:temp \curlywedge
+\:temp \curlyvee
+\:temp \leftthreetimes
+\:temp \rightthreetimes
+\:temp \dotplus
+\:temp \intercal
+\:temp \circledcirc
+\:temp \circledast
+\:temp \circleddash
+\:temp \divideontimes
+\:temp \lessdot
+\:temp \gtrdot
+\:temp \ltimes
+\:temp \rtimes
+\:temp \smallsetminus
+\:temp \circlearrowright
+\:temp \circlearrowleft
+\:temp \leftrightharpoons
+\:temp \Vdash
+\:temp \Vvdash
+\:temp \vDash
+\:temp \twoheadrightarrow
+\:temp \twoheadleftarrow
+\:temp \leftleftarrows
+\:temp \rightrightarrows
+\:temp \upuparrows
+\:temp \downdownarrows
+\:temp \upharpoonright
+\:temp \downharpoonright
+\:temp \upharpoonleft
+\:temp \downharpoonleft
+\:temp \rightarrowtail
+\:temp \leftarrowtail
+\:temp \leftrightarrows
+\:temp \rightleftarrows
+\:temp \Lsh
+\:temp \Rsh
+\:temp \rightsquigarrow
+\:temp \leftrightsquigarrow
+\:temp \looparrowleft
+\:temp \looparrowright
+\:temp \circeq
+\:temp \succsim
+\:temp \gtrsim
+\:temp \gtrapprox
+\:temp \multimap
+\:temp \therefore
+\:temp \because
+\:temp \doteqdot
+\:temp \triangleq
+\:temp \precsim
+\:temp \lesssim
+\:temp \lessapprox
+\:temp \eqslantless
+\:temp \eqslantgtr
+\:temp \curlyeqprec
+\:temp \curlyeqsucc
+\:temp \preccurlyeq
+\:temp \leqq
+\:temp \leqslant
+\:temp \lessgtr
+\:temp \risingdotseq
+\:temp \fallingdotseq
+\:temp \succcurlyeq
+\:temp \geqq
+\:temp \geqslant
+\:temp \gtrless
+\:temp \vartriangleright
+\:temp \vartriangleleft
+\:temp \trianglerighteq
+\:temp \trianglelefteq
+\:temp \between
+\:temp \blacktriangleright
+\:temp \blacktriangleleft
+\:temp \vartriangle
+\:temp \eqcirc
+\:temp \lesseqgtr
+\:temp \gtreqless
+\:temp \lesseqqgtr
+\:temp \gtreqqless
+\:temp \Rrightarrow
+\:temp \Lleftarrow
+\:temp \varpropto
+\:temp \smallsmile
+\:temp \smallfrown
+\:temp \Subset
+\:temp \Supset
+\:temp \subseteqq
+\:temp \supseteqq
+\:temp \bumpeq
+\:temp \Bumpeq
+\:temp \lll
+\:temp \ggg
+\:temp \pitchfork
+\:temp \backsim
+\:temp \backsimeq
+\:temp \lvertneqq
+\:temp \gvertneqq
+\:temp \nleq
+\:temp \ngeq
+\:temp \nless
+\:temp \ngtr
+\:temp \nprec
+\:temp \nsucc
+\:temp \lneqq
+\:temp \gneqq
+\:temp \nleqslant
+\:temp \ngeqslant
+\@ifpackageloaded{program}{}{\:temp \lneq}
+\:temp \gneq
+\:temp \npreceq
+\:temp \nsucceq
+\:temp \precnsim
+\:temp \succnsim
+\:temp \lnsim
+\:temp \gnsim
+\:temp \nleqq
+\:temp \ngeqq
+\:temp \precneqq
+\:temp \succneqq
+\:temp \precnapprox
+\:temp \succnapprox
+\:temp \lnapprox
+\:temp \gnapprox
+\:temp \nsim
+\:temp \ncong
+\:temp \varsubsetneq
+\:temp \varsupsetneq
+\:temp \nsubseteqq
+\:temp \nsupseteqq
+\:temp \subsetneqq
+\:temp \supsetneqq
+\:temp \varsubsetneqq
+\:temp \varsupsetneqq
+\:temp \subsetneq
+\:temp \supsetneq
+\:temp \nsubseteq
+\:temp \nsupseteq
+\:temp \nparallel
+\:temp \nmid
+\:temp \nshortmid
+\:temp \nshortparallel
+\:temp \nvdash
+\:temp \nVdash
+\:temp \nvDash
+\:temp \nVDash
+\:temp \ntrianglerighteq
+\:temp \ntrianglelefteq
+\:temp \ntriangleleft
+\:temp \ntriangleright
+\:temp \nleftarrow
+\:temp \nrightarrow
+\:temp \nLeftarrow
+\:temp \nRightarrow
+\:temp \nLeftrightarrow
+\:temp \nleftrightarrow
+\:temp \eqsim
+\:temp \shortmid
+\:temp \shortparallel
+\:temp \thicksim
+\:temp \thickapprox
+\:temp \approxeq
+\:temp \succapprox
+\:temp \precapprox
+\:temp \curvearrowleft
+\:temp \curvearrowright
+\:temp \backepsilon
+\:temp \square
+\:temp \blacksquare
+\:temp \lozenge
+\:temp \blacklozenge
+\:temp \backprime
+\:temp \bigstar
+\:temp \blacktriangledown
+\:temp \blacktriangle
+\:temp \triangledown
+\:temp \measuredangle
+\:temp \sphericalangle
+\:temp \circledS
+\:temp \complement
+\:temp \diagup
+\:temp \diagdown
+\:temp \varnothing
+\:temp \nexists
+\:temp \Finv
+\:temp \Game
+\:temp \eth
+\:temp \beth
+\:temp \gimel
+\:temp \daleth
+\:temp \digamma
+\:temp \varkappa
+\:temp \Bbbk
+\:temp \hslash
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{gauss}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{gmatrix}
+   {\HCode{<\a:mathml mtable \mml:class="gmatrix-\g@environment">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr\Hnewline \mml:class="gmatrix">}}
+   {\HCode{</\a:mathml mtr>}}
+   {\HCode{\Hnewline<\a:mathml mtd>}}
+   {\HCode{</\a:mathml mtd>}}
+\Css{mtr.gmatrix mtd {margin-left:0em; margin-right:0em;
+                padding-left:0em; padding-right:0em;
+                text-indent:0pt;
+}}
+\Css{mfenced mtable {margin-left:0em; margin-right:0em;
+                padding-left:0em; padding-right:0em;
+                text-indent:0pt;
+}}
+\Configure{rowops}
+   {\HCode{<mtable class="rowops">
+           <mtr><mtd columnspan="3"><mtext>Row ops:</mtext></mtd></mtr>
+   }}
+   {\HCode{</mtable>}}
+\Configure{colops}
+   {\HCode{<mtable class="colops">
+           <mtr><mtd columnspan="3"><mtext>Col ops:</mtext></mtd></mtr>
+   }}
+   {\HCode{</mtable>}}
+\Css{mtable.rowops, mtable.colops {
+          margin-left:0.2em;
+          margin-right:0.2em;
+          font-size:75\%;
+   }}
+\Css{mtable.rowops mtr, mtable.colops mtr,
+     mtable.rowops mtd, mtable.colops mtd
+   {
+     margin:0em; padding:0em;
+   }}
+\Configure{add}
+   {\HCode{<mtr><mtd>}\mbox{add }\HCode{</mtd><mtd>}}
+   {,\HCode{</mtd><mtd>}}
+   {\HCode{</mtd></mtr>}}
+\Configure{mult}
+   {\HCode{<mtr><mtd>}\mbox{mult }\HCode{</mtd><mtd>}}
+   {,\HCode{</mtd><mtd>}}
+   {\HCode{</mtd></mtr>}}
+\Configure{swap}
+   {\HCode{<mtr><mtd>}\mbox{swap }\HCode{</mtd><mtd>}}
+   {,\HCode{</mtd><mtd>}}
+   {\HCode{</mtd></mtr>}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{rlbabel}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{[]}
+  {\Configure{@math}{%\a:mathml
+ display="block"
+}\csname a:mathml[]\endcsname
+   \DviMath\Tg<\a:mathml mrow\Hnewline>$$\DisplayMathtrue }
+  {$$\Tg</\a:mathml mrow>\EndDviMath\csname b:mathml[]\endcsname
+   \if@rl\else\beginR\fi }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{dcolumn}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{dcolumn}
+  {\NoFonts\Configure{$}{}{}{}}
+  {\EndNoFonts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{mathtools}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{MT_gathered_env}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="MT-gathered-env">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}    {\HCode{</\a:mathml mtr>}}
+   {\HCode{\Hnewline<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}
+\ConfigureEnv{MT_gathered_env}{}{}{}{}
+\ConfigureEnv{gathered}
+    {%
+     \Configure{MT_gathered_env}
+        {\HCode{<\a:mathml mtable\Hnewline
+                          \mml:class="gathered" columnalign="center" >}}
+        {\HCode{</\a:mathml mtable>}}
+        {\HCode{<\a:mathml mtr>}}    {\HCode{</\a:mathml mtr>}}
+        {\HCode{\Hnewline<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}%
+    }
+    {}{}{}
+\ConfigureEnv{lgathered}
+    {%
+     \Configure{MT_gathered_env}
+        {\HCode{<\a:mathml mtable\Hnewline
+                          \mml:class="lgathered" columnalign="left" >}}
+        {\HCode{</\a:mathml mtable>}}
+        {\HCode{<\a:mathml mtr>}}    {\HCode{</\a:mathml mtr>}}
+        {\HCode{\Hnewline<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}%
+    }
+    {}{}{}
+\ConfigureEnv{rgathered}
+    {%
+     \Configure{MT_gathered_env}
+        {\HCode{<\a:mathml mtable\Hnewline
+                          \mml:class="rgathered" columnalign="right" >}}
+        {\HCode{</\a:mathml mtable>}}
+        {\HCode{<\a:mathml mtr>}}    {\HCode{</\a:mathml mtr>}}
+        {\HCode{\Hnewline<\a:mathml mtd>}}   {\HCode{</\a:mathml mtd>}}%
+    }
+    {}{}{}
+\ConfigureEnv{cases}
+   {\HCode{<\a:mathml mrow \mml:class="cases" >}}
+   {\HCode{</\a:mathml mrow>}}
+   {}{}
+\Configure{dcases}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="dcases">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}    {\HCode{</\a:mathml mtr>}}
+   {\HCode{\Hnewline<\a:mathml mtd columnalign="left">}}
+   {\HCode{</\a:mathml mtd>}}
+\Configure{dcases*}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="dcases-star">}}
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}    {\HCode{</\a:mathml mtr>}}
+   {\HCode{\Hnewline<\a:mathml mtd columnalign="left">}%
+    \ifnum\HCol=2
+       \PauseMathClass
+       \HCode{<\a:mathml mtext>}%
+       % the content of this environment is displayed as text, we must switch back to the normal math processing
+       % in inline math
+       \Configure{$}{\EndPauseMathClass\HCode{</\a:mathml mtext>}}{\PauseMathClass\HCode{<\a:mathml mtext>}}{}%
+       \Configure{()}{\HCode{</\a:mathml mtext>}\EndPauseMathClass$}{$\PauseMathClass\HCode{<\a:mathml mtext>}}{}%
+    \fi
+   }
+   {\ifnum\HCol=2
+       \EndPauseMathClass
+       \HCode{</\a:mathml mtext>}%
+    \fi
+    \HCode{</\a:mathml mtd>}}
+% support bidirectional harpoons
+\def\:leftrightharpoons{\HCode{<\a:mathml mo stretchy="true">}\PauseMathClass\x:unicode{21CC}\EndPauseMathClass\HCode{</\a:mathml mo>}}
+\def\:righleftharpoons{\HCode{<\a:mathml mo stretchy="true">}\PauseMathClass\x:unicode{21CB}\EndPauseMathClass\HCode{</\a:mathml mo>}}
+
+\providecommand*\:xleftrightharpoons[2][]{%
+\ext@arrow 3095\:leftrightharpoons{#1}{#2}}
+
+\providecommand*\:xrightleftharpoons[2][]{%
+\ext@arrow 3095\:leftrightharpoons{#1}{#2}}
+
+\HLet\xleftrightharpoons\:xleftrightharpoons
+\HLet\xrightleftharpoons\:xrightleftharpoons
+
+% correctly place text under and over arrows
+\def\:tempa#1#2#3#4#5#6#7{%
+  \bgroup%
+  \def\relbar{}% remove relbar in arrow fills
+  \def\arrowfill@##1##2##3##4{##1##2##3##4}% remove arrowfill@, to prevent errors
+  \@ifempty{#7}{%
+    \HCode{<\a:mathml munder><\a:mathml mrow><\a:mathml mo stretchy="true">}\PauseMathClass#5{}\EndPauseMathClass\HCode{</\a:mathml mo></\a:mathml mrow><\a:mathml mrow>}#6\HCode{</\a:mathml mrow></\a:mathml munder>}%
+  }{%
+    \@ifempty{#6}{%
+      \HCode{<\a:mathml mover><\a:mathml mrow><\a:mathml mo stretchy="true">}\PauseMathClass#5{}\EndPauseMathClass\HCode{</\a:mathml mo></\a:mathml mrow><\a:mathml mrow>}#7\HCode{</\a:mathml mrow></\a:mathml mover>}%
+    }{%
+      \HCode{<\a:mathml munderover><\a:mathml mrow><\a:mathml mo stretchy="true">}\PauseMathClass#5{}\EndPauseMathClass\HCode{</\a:mathml mo></\a:mathml mrow><\a:mathml mrow>}#6\HCode{</\a:mathml mrow><\a:mathml mrow>}#7\HCode{</\a:mathml mrow></\a:mathml munderover>}%
+    }%
+  }%
+  \egroup
+}
+
+\HLet\ext@arrow\:tempa
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{accents}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{accentset}
+   {\HCode{<mover accent="true" class="accentset"><mrow>}}
+   {\HCode{</mrow><mrow> }}
+   {\HCode{</mrow></mover>}}
+\Configure{underaccent}
+   {\HCode{<munder class="underaccent"><mrow>}}
+   {\HCode{</mrow><mrow> }}
+   {\HCode{</mrow></munder>}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{subeqnarray}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{subeqnarray}
+   {\HCode{<\a:mathml mtable\Hnewline \mml:class="subeqnarray\ifx
+       \@seqncr\@eqncr\else-star\fi"
+       \a:mathml columnalign="right center left" >}}%
+   {\HCode{</\a:mathml mtable>}}
+   {\HCode{<\a:mathml mtr>}}  {\HCode{</\a:mathml mtr>}}
+   {\Tg<\a:mathml mtd\Hnewline \mml:class="subeqnarray-\HCol">
+      \ifnum \HCol=4
+        \Tg<\a:mathml mtext
+             \mml:class="subeqnarray">\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+        \mtexttrue
+        \Configure{$}%
+  {\EndPauseMathClass \mtextfalse
+      \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext><\a:mathml
+                                mstyle\Hnewline \mml:class="math">}}%
+  {\HCode{</\a:mathml mstyle><\a:mathml
+       mtext \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \mtexttrue}%
+  {}%
+\Configure{()}%
+  {\EndPauseMathClass \mtextfalse
+      \ht:special{t4ht@,}%
+\HCode{</\a:mathml mtext><\a:mathml
+                                mstyle\Hnewline \mml:class="math">}$}%
+  {$\HCode{</\a:mathml mstyle><\a:mathml
+       mtext \a:@mtext>}\ht:special{t4ht@,&\#x00A0;}%
+\PauseMathClass
+   \mtexttrue}%
+  {}%
+%
+      \fi}
+   {\ifnum \HCol=4 \mtextfalse
+      \EndPauseMathClass\ht:special{t4ht@,}%
+\Tg</\a:mathml mtext>\fi
+      \Tg</\a:mathml mtd>}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{siunitx}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % redefinitions of Expl 3 syntax commands
+\ExplSyntaxOn
+% this fixes circle in degree celsius not printed as superscript
+\siunitx_declare_unit:Ne \degreeCelsius { \HCode{<\a:mathml msup><\a:mathml mrow /><\a:mathml mi>&\#x2218;</\a:mathml mi></\a:mathml msup>} C }
+
+\ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{sistyle}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{thousandsep}
+  {\ifmathml
+     \ifmtext\else \Tg<\a:mathml mspace width="0.25em"/>\fi
+   \fi}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{ushort}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{ushort}
+   {\bgroup
+    \expandafter\ushort:data
+   }
+   {\egroup}
+\Configure{ushortw}
+   {\bgroup
+    \expandafter\ushort:data
+   }
+   {\egroup}
+\Configure{ushortd}
+   {\bgroup
+    \expandafter\ushortd:data
+   }
+   {\egroup}
+\Configure{ushortdw}
+   {\bgroup
+    \expandafter\ushortd:data
+   }
+   {\egroup}
+\Configure{ushortdline}
+   {\bgroup\expandafter\ushortdline:data }
+   {\egroup}
+\def\ushort:data#1#2{\underline{\:gobbleIII #2}}
+\def\ushortd:data#1#2{\underline{\underline{\:gobbleIII #2}}}
+\def\ushortdline:data#1#2{#1{#1{\:gobble #2}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{bm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{bm}
+  {\bgroup\ifmmode \ifmtext \else
+     \Tg<\a:mathml mstyle
+             mathvariant="bold">%
+     \expandafter\expandafter\expandafter\:gobble
+   \fi\fi}
+  {\ifmmode \ifmtext \else \Tg</\a:mathml mstyle>\fi\fi\egroup}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{ulem}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{uline-math}
+   {\HCode{<\a:mathml menclose class="uline-math" notation="bottom">}\NoFonts} {\EndNoFonts\HCode{</\a:mathml menclose>}}
+\Configure{uuline-math}
+   {\HCode{<\a:mathml menclose class="uuline-math" notation="bottom">}\NoFonts} {\EndNoFonts\HCode{</\a:mathml menclose>}}
+\Css{.uuline-math{ border-bottom:3px double black; }}
+\Configure{sout-math}
+   {\HCode{<\a:mathml menclose class="sout-math" notation="horizontalstrike">}\NoFonts} {\EndNoFonts\HCode{</\a:mathml menclose>}}
+\Configure{xout-math}
+   {\HCode{<\a:mathml menclose class="xout-math" notation="horizontalstrike bottom">}\NoFonts}
+   {\EndNoFonts\HCode{</\a:mathml menclose>}}
+\Configure{uwave-math}
+   {\HCode{<\a:mathml menclose class="uwave-math" notation="bottom">}\NoFonts}
+   {\EndNoFonts\HCode{</\a:mathml menclose>}}
+\Configure{dashuline-math}
+   {\HCode{<\a:mathml mstyle class="dashuline-math" notation="bottom">}\NoFonts}
+   {\EndNoFonts\HCode{</\a:mathml mstyle>}}
+\Css{.dashuline-math {border-bottom: 1px dashed black;}}
+\Configure{dotuline-math}
+   {\HCode{<\a:mathml mstyle class="dotuline-math" notation="bottom">}\NoFonts}
+   {\EndNoFonts\HCode{</\a:mathml mstyle>}}
+\Css{.dotuline-math {border-bottom: 1px dotted black;}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{cancel}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{cancel-math}{\HCode{<\a:mathml menclose notation="updiagonalstrike">}}{\HCode{</\a:mathml menclose>}}
+\Configure{bcancel-math}{\HCode{<\a:mathml menclose notation="downdiagonalstrike">}}{\HCode{</\a:mathml menclose>}}
+\Configure{xcancel-math}{\HCode{<\a:mathml menclose notation="updiagonalstrike downdiagonalstrike">}}{\HCode{</\a:mathml menclose>}}
+\Configure{cancelto}
+{\HCode{<\a:mathml msup><\a:mathml menclose notation="updiagonalarrow"><\a:mathml mrow>}}
+{\HCode{</\a:mathml mrow></\a:mathml menclose><\a:mathml mrow>}}
+{\HCode{</\a:mathml mrow></\a:mathml msup>}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{stmaryrd}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+\def\:tempa{\HCode{<\a:mathml mo fence="false">\string&\#x27E6;</\a:mathml mo>}}
+\HLet\llbracket\:tempa
+\def\:tempa{\HCode{<\a:mathml mo fence="false">\string&\#x27E7;</\a:mathml mo>}}
+\HLet\rrbracket\:tempa
+\Configure{mfenced}{\llbracket}{\string&\#x27E6;}
+\Configure{mfenced}{\rrbracket}{\string&\#x27E7;}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{mhchem}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \Configure{mhchemcf}{\bgroup\HCode{<\:mhmathmlorhtml{mrow}{span}\space class="mhchem-cf">}}{\HCode{</\:mhmathmlorhtml{mrow}{span}>}\egroup}
+\Configure{mhchemce}{\bgroup\HCode{<\:mhmathmlorhtml{mrow}{span}\space class="mhchem-ce">}}{\HCode{</\:mhmathmlorhtml{mrow}{span}>}\egroup}
+
+% we configure subscripts and superscripts to have empty bases. it is because if superscript followed subscript, we got wrong
+% MathML markup, with mismatched tags. For example: \ce{CrO4^2-}
+\Configure{mhchemsub}{%
+  \:mhmathmlorhtml{%
+  \HCode{<\a:mathml msub><mrow></mrow><\a:mathml mrow>}%
+  }{%
+  \HCode{<sub>}}%
+}{\:mhmathmlorhtml{\Tg</\a:mathml mrow>\TG</\a:mathml msub>}{\HCode{</sub>}}}
+\Configure{mhchemsup}{%
+  \:mhmathmlorhtml{
+  \HCode{<\a:mathml msup><mrow></mrow><\a:mathml mrow>}%
+  }{%
+  \HCode{<sup>}}%
+}{\:mhmathmlorhtml{\Tg</\a:mathml mrow>\TG</\a:mathml msup\Hnewline>}{\HCode{</sup>}}}
+
+
+\Configure{mhchemsupsub}{\setbox0=\hbox\bgroup$}{$\egroup\setbox1=\hbox\bgroup$}{$\egroup\HCode{<\a:mathml msubsup><\a:mathml mrow></\a:mathml mrow><\a:mathml mrow>}\box1\HCode{</\a:mathml mrow><\a:mathml mrow>}\box0\HCode{</\a:mathml mrow></\a:mathml msubsup>}}
+\Configure{mhchemisotope}{\setbox0=\hbox\bgroup$}{$\egroup\setbox1=\hbox\bgroup$}{$\egroup\HCode{<\a:mathml msubsup><\a:mathml mrow></\a:mathml mrow><\a:mathml mrow>}\box1\HCode{</\a:mathml mrow><\a:mathml mrow>}\box0\HCode{</\a:mathml mrow></\a:mathml msubsup>}}
+
+
+
+% mhchemoperator is always used inside \HCode, so we need not to use \HCode in it's configuration
+\Configure{mhchemoperator}{<\:mhmathmlorhtml{mo \a:mathml stretchy="false" }{span} class="mhchem-operator">}{</\:mhmathmlorhtml{mo}{span}>}
+
+\Configure{mhchemarrow}{\HCode {<\:mhmathmlorhtml{mrow}{span} class="mhchem-arrow">\:mhonlyinmathml{\a:mhchemoperator}}\PauseMathClass}{\EndPauseMathClass\HCode{\:mhonlyinmathml{\b:mhchemoperator}</\:mhmathmlorhtml{mrow}{span}>}}
+\Configure{mhchemarrowabove}{\HCode{<\:mhmathmlorhtml{mrow}{span} class="mhchem-above">\:mhonlyinmathml{\a:mhchemoperator}}\PauseMathClass}{\EndPauseMathClass\HCode{\:mhonlyinmathml{\b:mhchemoperator}</\:mhmathmlorhtml{mrow}{span}>}}
+\Configure{mhchemarrowyields}{\ensuremath{\HCode{<\:mhmathmlorhtml{mrow}{span} class="mhchem-arrow-normal">\:mhonlyinmathml{\a:mhchemoperator}&\#x27F6;\:mhonlyinmathml{\b:mhchemoperator}</\:mhmathmlorhtml{mrow}{span}>}}}
+\Configure{mhchemarrowyieldsLeft}{\ensuremath{\HCode{<\:mhmathmlorhtml{mrow}{span} class="mhchem-arrow-normal">\:mhonlyinmathml{\a:mhchemoperator}&\#x27F5;\:mhonlyinmathml{\b:mhchemoperator}</\:mhmathmlorhtml{mrow}{span}>}}}
+\Configure{mhchemarrowyieldsLeftRight}{\ensuremath{\HCode{<\a:mathml munder class="mhchem-arrow-larger"><\a:mathml mrow><\a:mathml mpadded height="0" depth="0.3em"><\a:mathml mo  stretchy="false" >&\#x27F5;</\a:mathml mo></\a:mathml mpadded></\a:mathml mrow>
+  <\a:mathml mrow><\a:mathml mpadded depth="0" height="0"><\a:mathml mo stretchy="false">&\#x27F6;</\a:mathml mo></\a:mathml mpadded></\a:mathml mrow></\a:mathml munder>}
+}}
+\Configure{mhchemarrowmesomerism}{\HCode{<\:mhmathmlorhtml{mrow}{span} class="mhchem-arrow-normal">\:mhonlyinmathml{\a:mhchemoperator}&\#x2194;\:mhonlyinmathml{\b:mhchemoperator}</\:mhmathmlorhtml{mrow}{span}>}}  % todo: improve
+% \Configure{mhchemarrowequilibrium}{\ensuremath{\HCode{<\:mhmathmlorhtml{mrow}{span} class="mhchem-arrow-normal">\:mhonlyinmathml{\a:mhchemoperator}&\#x21cc;\:mhonlyinmathml{\b:mhchemoperator}</\:mhmathmlorhtml{mrow}{span}>}}}  % todo: improve
+\Configure{mhchemarrowequilibrium}{\ensuremath{\HCode{<\a:mathml munder class="mhchem-arrow-larger"><\a:mathml mrow><\a:mathml mpadded  height="0" depth="0" voffset="-0.1em" ><\a:mathml mo  stretchy="true" >&\#x21c0;</\a:mathml mo></\a:mathml mpadded></\a:mathml mrow>
+  <\a:mathml mpadded height="0" depth="0" ><\a:mathml mo stretchy="false">&\#x21bd;</\a:mathml mo></\a:mathml mpadded></\a:mathml munder>}
+}}  % todo: improve
+% this configuration is inspired by the MathML code from MathJax. There is a problem with vertical positioning of arrows, so we need to use
+% the <mpadded> element to fix that. It is still not perfect, moreover, there is a difference in rendering between
+% vanilla Firefox and MathJax's MathML
+\Configure{mhchemarrowequilibriumRight}
+{\ensuremath{\HCode{<\a:mathml munder class="mhchem-arrow-larger"><\a:mathml mrow><\a:mathml mpadded  height="0" depth="1" voffset="3px"><\a:mathml mo  stretchy="true" >&\#x21c0;</\a:mathml mo></\a:mathml mpadded></\a:mathml mrow>
+  <\a:mathml mpadded height="0" depth="1" voffset="2px"><\a:mathml mspace width="0.167em"></\a:mathml mspace><\a:mathml mo stretchy="false">&\#x21bd;</\a:mathml mo><\a:mathml mspace width="0.167em"></\a:mathml mspace></\a:mathml mpadded></\a:mathml munder>}
+}}  % todo: improve
+\Configure{mhchemarrowequilibriumLeft}
+{\ensuremath{\HCode{<\a:mathml munder class="mhchem-arrow-larger"><\a:mathml mrow><\a:mathml mpadded  height="0" depth="1" voffset="4px"><\a:mathml mspace width="0.167em"></\a:mathml mspace><\a:mathml mo stretchy="false">&\#x21c0;</\a:mathml mo><\a:mathml mspace width="0.167em"></\a:mathml mspace></\a:mathml mpadded></\a:mathml mrow>
+  <\a:mathml mpadded  height="0" depth="1" voffset="2px"><\a:mathml mo  stretchy="true" >&\#x21bd;</\a:mathml mo></\a:mathml mpadded></\a:mathml munder>}
+}}  % todo: improve
+
+% this is not the right symbol
+% \Configure{mhchemarrowequilibriumRight}{\a:mhchemoperator\HCode{&\#x2942;}\b:mhchemoperator }  % todo: improve
+% \Configure{mhchemarrowequilibriumLeft}{\a:mhchemoperator\HCode{&\#x2943;}\b:mhchemoperator}  % todo: improve
+\Configure{mhchembondhalf}{\HCode{<span class="mhchem-bond-half-middle">&\#xfe4d;</span>}}
+\Configure{mhchembondoneandhalf}{\HCode{<span class="mhchem-rlap">&\#x2212;</span><span class="mhchem-bond-half-top">&\#xfe4d;</span>}}
+\Configure{mhchembondtwoandhalf}{\HCode{<span class="mhchem-rlap">=</span><span class="mhchem-bond-half-top">&\#xfe4d;</span>}}
+\Configure{mhchembondtwoandhalff}{\HCode{<span class="mhchem-rlap mhchem-bond-top">&\#x2212;</span><span class="mhchem-rlap mhchem-bond-bottom">&\#x2212;</span><span class="mhchem-bond-half-middle">&\#xfe4d;</span>}}
+
+\ExplSyntaxOn
+\cs_set_protected:Npn \__mhchem_arrow_deployfourht:nnnnn #1#2#3#4#5
+  {
+\bgroup
+\ensuremath{%
+  % we need to test if the text is larger than arrow. if it is, the math operator needs to be stretchy.
+  % otherwise, it must be not stretchy, otherwise the text over arrow will be aligned to the right
+  \setbox0=\hbox{\tl_if_empty:nF {#3#5}
+    {
+      \str_case:nnF {#2}
+      {
+        {   } { \ce{ #5 } }
+        { M } { { #5 } }
+        { T } {  \text{ #5 } }
+        { C } { \ce{ #5 } }
+      }
+      { \msg_error:nnn { mhchem } { unexpected-arrow-type } {#2} }
+  }}
+  \setbox1=\hbox{\tl_if_empty:nF {#3#5}
+    {
+      \str_case:nnF {#2}
+      {
+        {   } { \ce{ #3 } }
+        { M } { { #3 } }
+        { T } { \text{ #3 } }
+        { C } { \ce{ #3 } }
+      }
+      { \msg_error:nnn { mhchem } { unexpected-arrow-type } {#2} }
+  }}
+  % now compare dimensions of boxes and change  math stretchines
+  \ifdim \wd0>1em
+    \Configure{mhchemoperator}{<\a:mathml mo~\a:mathml stretchy="true"~\a:mathml class="mhchem-operator">}{</\a:mathml mo>}
+  \else
+    \ifdim \wd1>1em
+      \Configure{mhchemoperator}{<\a:mathml mo~\a:mathml stretchy="true"~\a:mathml class="mhchem-operator">}{</\a:mathml mo>}
+    \fi
+  \fi
+\a:mhchemmathlarrow
+    \str_case:nnF {#1}
+      {
+        { yields } {\a:mhchemarrowyields }
+        { yieldsLeft } {\a:mhchemarrowyieldsLeft }
+        { yieldsLeftRight } {\a:mhchemarrowyieldsLeftRight }  % todo: improve
+        { esomerism } {\a:mhchemarrowesomerism }  % todo: improve
+        { equilibrium } {\a:mhchemarrowequilibrium }  % todo: improve
+        { equilibriumRight } {\a:mhchemarrowequilibriumRight }  % todo: improve
+        { equilibriumLeft } {\a:mhchemarrowequilibriumLeft }  % todo: improve
+      }
+      { \msg_error:nnn { mhchem } { unexpected-arrow-type } {#1} }
+\b:mhchemmathlarrow
+      \box0
+\c:mhchemmathlarrow
+      \box1
+\d:mhchemmathlarrow
+}
+\egroup
+  }
+
+\HRestore\__mhchem_arrow_deploy:nnnnn
+\HLet\__mhchem_arrow_deploy:nnnnn\__mhchem_arrow_deployfourht:nnnnn
+\ExplSyntaxOff
+
+\NewConfigure{mhchemmathlarrow}{4}
+\Configure{mhchemmathlarrow}{\HCode{<\a:mathml munderover><\a:mathml mrow>}}{\HCode{</\a:mathml mrow><\a:mathml mpadded>}}{\HCode{</\a:mathml mpadded><\a:mathml mpadded>}}{\HCode{</\a:mathml mpadded></\a:mathml munderover>}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                \ConfigureHinput{esvect}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \def\:tempa#1{%
+\bgroup\HCode{<\a:mathml mover><\a:mathml mrow>}#1\HCode{</\a:mathml mrow><\a:mathml mo \a:mathml stretchy="true">}
+\PauseMathClass\fldr\EndPauseMathClass%
+\HCode{</\a:mathml mo></\a:mathml mover>}\egroup
+}
+
+\HRestore\ESV@vecteur
+\HLet\ESV@vecteur\:tempa
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\endinput\empty\empty\empty\empty\empty\empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\endinput
+

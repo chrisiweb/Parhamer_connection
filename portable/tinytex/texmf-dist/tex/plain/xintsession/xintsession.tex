@@ -1,0 +1,602 @@
+% Release 0.4alpha (2021-11-01) of xintsession.tex
+% author: Jean-Francois Burnol
+% License: LPPL 1.3c (author-maintained)
+% Usage: execute "etex (or pdftex) xintsession"
+% If available use "rlwrap etex xintsession" for a better experience
+\edef\xsrestorenewlinechar{\newlinechar\the\newlinechar\relax}\newlinechar10\relax%
+% we load it with \newlinechar set in order for its error messages
+% to be nicer (since xintexpr 1.4g)
+\input xintexpr.sty\relax%
+\unless\ifdefined\xintreloadxintlog% defined at 1.4e
+{\catcode32=11%
+\errhelp{Please update xintexpr to at least 1.4e.  Aborting input.^^JSay `x' to exit.}%
+\errmessage{xintexpr is too old.  Say `x' to exit, `h' for help}}\endinput\fi%
+\input xintbinhex.sty\relax%
+\input polexpr.sty\relax% this will crash with polexpr versions < 0.8
+\let\PolToExprOneTerm\PolToExprOneTermStyleB%
+% \XINTrestorecatcodes.  Although we morally assume normal catcodes
+% we use it as a convenience: strangely named, it is to be used in
+% an \edef to store there catcodes and \endlinechar (but not
+% \newlinechar).  It was renamed at 1.4e and this is one reason
+% why we aborted input with earlier xintexpr...
+\edef\xsrestorecatcodes{\XINTrestorecatcodes\xsrestorenewlinechar}%
+\endlinechar 13 % default anyhow
+\newlinechar 10
+\catcode`_ 11
+\catcode`& 11
+\catcode`@ 11
+\catcode`^ 11 
+\catcode`$ 7 %$
+\catcode0 12
+\newwrite\xs_out
+\edef\xs_name{\jobname-\expandafter\xint_gobble_ii\the\year
+                      \expandafter\xint_gobble_i\the\numexpr100+\month\relax
+                      \expandafter\xint_gobble_i\the\numexpr100+\day\relax
+                      _%
+                      \expandafter\xint_gobble_i\the\numexpr(\time+30)/60+99h%
+                      \expandafter\xint_gobble_i\the\numexpr100+\time-60*((\time+30)/60-1).tex}%
+\immediate\openout\xs_out=\xs_name\relax
+\begingroup\catcode37 12
+\long\gdef\xs_message#1{\message{#1$$J}\immediate\write\xs_out{%#1}}\endgroup%$$
+{\catcode13\active\def
+{$$J}\catcode32\active\let \space%$$
+\catcode`?=0\catcode`\\=12\relax%
+?xdef?xs_logo{%
+               _____       _____
+        ____  ____(_)________  /_________  _________________
+        __  |/_/_  /__  __ \  __/  _ \_  |/_/__  __ \_  ___/
+        __>  < _  / _  / / / /_ /  __/_>  < __  /_/ /  /
+        /_/|_| /_/  /_/ /_/\__/ \___//_/|_| _  .___//_/
+                                              /_/
+_____       _____                         __________            ______
+___(_)________  /__________________ ________  /___(_)__   ______   / /
+__  /__  __ \  __/  _ \_  ___/  __ `/  ___/  __/_  /__ | / /  _ \ /_/
+_  / _  / / / /_ /  __/  /   / /_/ // /__ / /_ _  / __ |/ //  __/__
+/_/  /_/ /_/\__/ \___//_/    \__,_/ \___/ \__/ /_/  _____/ \___//_/%
+}%
+?xdef?xs_copyright{%
+  xintsession 0.4alpha (2021-11-01)
+  Copyright (c) Jean-Francois Burnol, 2021.%
+}}%
+\def\xs_no{0}%
+\XINT_expr_defvar_one{@___}{{0}}%
+\XINT_expr_defvar_one{@__}{{0}}%
+\XINT_expr_defvar_one{@_}{{0}}%
+\def\xs_prime_invite{>>> }%
+\def\xs_second_invite{... }%
+\def\xs_fetch
+{%
+  \let\xs_in\empty
+  \let\xs_invite\xs_prime_invite
+  \xs_fetch_aa
+}%
+\def\xs_fetch_aa
+{%
+  \message{\xs_invite}\read-1to\xs_buf
+  \expandafter\xs_fetch_a\xs_buf\xs_fetch_a
+}%
+\long\def\xs_fetch_a#1\xs_fetch_a
+{%
+  \odef\xs_firstitem{\romannumeral0\xintfirstitem{#1.}}%
+  \ifcat\relax\expandafter\noexpand\xs_firstitem
+    \expandafter\xs_cs
+  \else
+   \if &\expandafter\noexpand\xs_firstitem
+    \expandafter\expandafter\expandafter\xs_magic
+   \fi
+  \fi
+  \if;\expandafter\noexpand\romannumeral0\xintlastitem{#1}%
+    \xs_fetch_b#1^%
+  \else
+    \odef\xs_in{\xs_in#1}%
+    \let\xs_invite\xs_second_invite
+    \expandafter\xs_fetch_aa
+  \fi%
+}%
+\long\def\xs_cs\if;\expandafter\noexpand\romannumeral0\xintlastitem#1#2\fi
+{%
+   \xs_message{(executing \detokenize{#1} in background)}%
+% potential problems if a group is closed by #1.
+% should I issue \xs_resetenv here ?
+   #1%
+   \message{$$J}\xs_fetch_aa%$$
+}%
+\def\xs_firstfour#1#2#3#4#5\xint_bye{\edef\xs_magic_in{#1#2#3#4}\def\xs_magic_inb{#5}}%
+\long\def\xs_magic\if;\expandafter\noexpand\romannumeral0\xintlastitem#1#2\fi
+{%
+  \xs_firstfour#1\empty\empty\empty\empty\xint_bye
+  \ifcsname xs_magic@\xs_magic_in\endcsname
+      \csname xs_magic@\xs_magic_in\expandafter\endcsname
+  \else
+   \xs_message{(\detokenize\expandafter{\xint_gobble_i#1} is not a magic keyword:
+            ignored)$$J}%$$
+  \fi
+  \xs_fetch_aa
+}%
+\long\def\xs_fetch_b#1;^%
+{%
+   \odef\xs_in{\xs_in#1}\expandafter\xs_fetch_c
+}%
+\def\xs_fetch_c
+{%
+   \if\relax\romannumeral`$$@\detokenize\expandafter{\xs_in}\relax\expandafter\xs_pause\fi%$$
+   \expandafter\xs_parse_a\xs_in:=^%
+}%
+\def\xs_pause\expandafter\xs_parse_a\xs_in:=^{\xs_pause_a\xs_fetch_aa}%
+\def\xs_pause_a\xs_fetch_aa
+{%
+   \xs_message{Need a break? OK, use \string\xintsession\space if you change your mind.}%
+   \xs_resetenv
+}%
+\def\xs_bye\xs_fetch_aa
+{%
+   \xs_message{Did I say something wrong?}%
+   \xs_message{Session transcript written on \xs_name}%
+%   \xs_resetenv
+   \immediate\closeout\xs_out
+% expeditive exit because I need to think about generating new output
+% filename with a check that it is not same (a minute may be too coarse?).
+% Add random postfix? or simply do not bother rather...
+   \csname bye\endcsname
+}%
+\def\xs_parse_a#1:=#2%
+{%
+   \xint_gob_til_^#2\xs_calc ^%
+   \def\xs_left{#1}\xs_parse_b#2%
+}%
+\def\xs_calc ^#1^%
+{%
+   \edef\xs_no{\the\numexpr1+\xs_no}%
+   \xs_xintdefvar @_\xs_no=\xs_in;%
+   \immediate\write\xs_out
+   {\expandafter\string\xs_xintdefvar\space @_\xs_no:=%
+                \detokenize\expandafter{\xs_in};}%
+   \XINT_expr_defvar_one{@___}{\XINT_expr_varvalue_@__}%
+   \XINT_expr_defvar_one{@__}{\XINT_expr_varvalue_@_}%
+   \XINT_expr_defvar_one{@_}{\csname XINT_expr_varvalue_@_\xs_no\endcsname}%
+   \xs_message{%
+     @_\expandafter\xs_keepsix\xs_no\space\space\space\space\space\relax
+     \xs_xinteval{@_\xs_no}%
+   }%
+   \xs_fetch
+}%
+\def\xs_keepsix#1#2#3#4#5#6#7\relax{#1#2#3#4#5#6}%
+\def\xs_parse_b #1:=^%
+{%
+   \def\xs_right{#1}\expandafter\xs_parse_c\xs_left(;%
+}%
+\def\xs_parse_c #1(#2%
+{%
+   \edef\xs_funcname{\expandafter\xint_zapspaces\detokenize{#1} \xint_gobble_i}%
+   \xint_gob_til_sc#2\xs_defvar;\xs_deffunc
+}%
+\edef\xs_fourspaces{\space\space\space\space}%
+\def\xs_deffunc #1;%
+{%
+% attention: \xs_xintdeffunc needs to see parentheses immediately
+   \expandafter\xs_xintdeffunc\xs_left=\xs_right;%
+   \immediate\write\xs_out
+   {\expandafter\string\xs_xintdeffunc\space\detokenize\expandafter{\xs_left}:=%
+                \detokenize\expandafter{\xs_right};}%
+   \expandafter\ifx\xs_xintdeffunc\poldef
+        \xs_message{\xs_funcname\space = \PolToExpr{\xs_funcname}}%
+        \xs_message{\xs_fourspaces -->
+                    &GenFloat(\xs_funcname) lets
+                    \xs_funcname\space become usable as function in fp mode}%
+        \xs_message{\xs_fourspaces
+                    --> &ROOTS(\xs_funcname) (resp. &ROOTS(\xs_funcname,N))
+                       finds all rational roots exactly and}%
+        \xs_message{\xs_fourspaces\xs_fourspaces
+                    all irrational roots with at least
+                    \xintsessiondefaultrootsprecision\space(resp. N)
+                    fractional digits}%
+   \else\xs_message{Function \xs_funcname\space defined}%
+   \fi\xs_fetch
+}%
+\def\xs_defvar;\xs_deffunc
+{%
+   \edef\xs_no{\the\numexpr1+\xs_no}%
+   \xs_xintdefvar @_\xs_no=\xs_right;%
+   \immediate\write\xs_out
+   {\expandafter\string\xs_xintdefvar\space\detokenize\expandafter{\xs_left}:=%
+                \detokenize\expandafter{\xs_right};}%
+   \XINT_expr_defvar_one{@___}{\XINT_expr_varvalue_@__}%
+   \XINT_expr_defvar_one{@__}{\XINT_expr_varvalue_@_}%
+   \XINT_expr_defvar_one{@_}{\csname XINT_expr_varvalue_@_\xs_no\endcsname}%
+   % this is to allow multiple assignments
+   \expandafter\xs_xintdefvar\xs_left=@_\xs_no;%
+   \xs_message{%
+     @_\expandafter\xs_keepsix\xs_no\space\space\space\space\space\relax
+     \xs_xinteval{@_\xs_no}%
+   }%
+   \xs_fetch
+}%
+\let\xs_magic@&pau\xs_pause_a
+\let\xs_magic@&bye\xs_bye
+\def\xs_magic@&fp
+{%
+   \xs_message{fp mode (\xinttheDigits\space digits)}%
+   \def\xs_mode{fp (Digits=\xinttheDigits)}%
+   \def\xs_xintdefvar{\xintdeffloatvar}%
+   \def\xs_xintdeffunc{\xintdeffloatfunc}%
+   \def\xs_xinteval{\xintfloateval}%
+}%
+\expandafter\def\csname xs_magic@&fp=\endcsname
+{%
+   \xintDigits*:=\xs_magic_inb\relax
+   \xs_message{fp mode (log and trig reloaded at Digits=\xinttheDigits)}%
+   \def\xs_mode{fp=\xinttheDigits}%
+   \def\xs_xintdefvar{\xintdeffloatvar}%
+   \def\xs_xintdeffunc{\xintdeffloatfunc}%
+   \def\xs_xinteval{\xintfloateval}%
+}%
+\def\xs_magic@&exa
+{%
+   \xs_message{exact mode (floating point evaluations use \xinttheDigits\space digits)}%
+   \def\xs_mode{exact}%
+   \def\xs_xintdefvar{\xintdefvar}%
+   \def\xs_xintdeffunc{\xintdeffunc}%
+   \def\xs_xinteval{\xinteval}%
+}%
+\def\xs_magic@&int
+{%
+   \xs_message{int mode (integer only: / rounds, // is floored division, /: is
+   modulo)}%
+   \def\xs_mode{int}%
+   \def\xs_xintdefvar{\xintdefiivar}%
+   \def\xs_xintdeffunc{\xintdefiifunc}%
+   \def\xs_xinteval{\xintiieval}%
+}%
+\def\xs_magic@&pol
+{%
+   \xs_message{pol mode (i.e. function definitions use \string\poldef)}%
+   \def\xs_mode{pol}%
+   \def\xs_xintdefvar{\xintdefvar}%
+   \def\xs_xintdeffunc{\poldef}%
+   \def\xs_xinteval{\xinteval}%
+}%
+\def\xs_magic@&mod{\xs_message{current mode: \xs_mode}}%
+\def\xs_getpolname#1(#2#3)#4\xint_bye{\edef\xs_polname{\xint_zapspaces #2#3 \xint_gobble_i}}%
+\def\xs_magic@&Gen
+{%
+   \expandafter\xs_getpolname\xs_magic_inb\xint_bye
+   \PolGenFloatVariant{\xs_polname}%
+   \immediate\write\xs_out{\string\PolGenFloatVariant{\xs_polname}}%
+   \xs_message{Polynomial function \xs_polname\space for &fp mode usage now defined}%
+}%
+\def\xintsessiondefaultrootsprecision{10}%
+\def\xs_getpolandE#1(#2#3)#4\xint_bye
+{%
+   \xs_getpolandE_i#2#3,,\xint_bye
+}%
+\def\xs_getpolandE_i#1,#2,#3\xint_bye
+{%
+   \edef\xs_polname{\xint_zapspaces #1 \xint_gobble_i}%
+   \edef\xs_rootsprecision{\if\relax#3\relax
+                           \xintsessiondefaultrootsprecision\else
+        \xint_zapspaces #2 \xint_gobble_i\fi}%
+}%
+\expandafter\def\csname xs_magic@&ROO\endcsname
+{%
+   \expandafter\xs_getpolandE\xs_magic_inb\xint_bye
+   \xs_message{Solving for real roots of \xs_polname\space and assigning them (please wait...)}%
+   \PolToSturm{\xs_polname}{@\xs_polname}%
+   \PolSturmIsolateZerosGetMultiplicitiesAndRationalRoots{@\xs_polname}%
+   \PolEnsureIntervalLengths{@\xs_polname}{-\xs_rootsprecision}%
+     \immediate\write\xs_out{\string\PolToSturm{\xs_polname}{@\xs_polname}}%
+     \immediate\write\xs_out{\string\PolSturmIsolateZerosGetMultiplicitiesAndRationalRoots{@\xs_polname}}%
+     \immediate\write\xs_out{\string\PolEnsureIntervalLengths{@\xs_polname}{-\xs_rootsprecision}}%
+     \immediate\write\xs_out{\string\PolPrintIntervals{@\xs_polname}}%
+   \xs_polprintintervals
+   \xs_message{Square-free irrational part: \PolToExpr{@\xs_polname _sqf_norr}}%
+   \ifnum\PolSturmNbOfIsolatedZeros{@\xs_polname}>\PolSturmNbOfRationalRoots{@\xs_polname}
+     \xs_message{\xs_fourspaces -->
+                 &REFINEROOTS(\xs_polname,N) to extend real irr. roots to N fractional digits}%
+   \else
+    \xs_message{No irrational real roots.}%
+   \fi
+}%
+\expandafter\def\csname xs_magic@&REF\endcsname
+{%
+   \expandafter\xs_getpolandE\xs_magic_inb\xint_bye
+   \xs_message{Refining real roots of \xs_polname\space to \xs_rootsprecision\space
+   digits (please wait...)}%
+   \PolEnsureIntervalLengths{@\xs_polname}{-\xs_rootsprecision}%
+     \immediate\write\xs_out{\string\PolEnsureIntervalLengths{@\xs_polname}{-\xs_rootsprecision}}%
+     \immediate\write\xs_out{\string\PolPrintIntervals{@\xs_polname}}%
+   \xs_polprintintervals
+}%
+\def\xs_polprintintervals
+{%
+   \begingroup\xintglobaldefstrue
+   \def\PolPrintIntervalsNoRealRoots{\xs_message{No real roots.}}%
+   \let\PolPrintIntervalsBeginEnv\empty
+   \let\PolPrintIntervalsEndEnv\empty
+   \def\PolPrintIntervalsKnownRoot{\PolPrintIntervalsPrintExactZero}%
+   \def\PolPrintIntervalsUnknownRoot{\xintifSgn{\PolPrintIntervalsTheLeftEndPoint}%
+          {\PolPrintIntervalsPrintRightEndPoint}%
+          {\PolPrintIntervalsPrintLeftEndPoint}%
+          {\PolPrintIntervalsPrintLeftEndPoint}%
+       }%
+   \def\PolPrintIntervalsPrintExactZero
+     {\xs_message{(mult. \PolPrintIntervalsTheMultiplicity)
+                  Root\xs_polname _\PolPrintIntervalsTheIndex\space = \PolPrintIntervalsTheLeftEndPoint}%
+      \immediate\write\xs_out{\string\xintdefvar\space
+         Root\xs_polname _\PolPrintIntervalsTheIndex:=\PolPrintIntervalsTheLeftEndPoint;}%
+      \XINT_expr_defvar_one{Root\xs_polname _\PolPrintIntervalsTheIndex}%
+         {{\xintRaw{\PolPrintIntervalsTheLeftEndPoint}}}%
+     }%
+   \def\PolPrintIntervalsPrintLeftEndPoint
+     {\xs_message{(mult. \PolPrintIntervalsTheMultiplicity)
+                  Root\xs_polname _\PolPrintIntervalsTheIndex\space = \PolPrintIntervalsTheLeftEndPoint...}%
+      \immediate\write\xs_out{\string\xintdefvar\space
+         Root\xs_polname _\PolPrintIntervalsTheIndex:=\PolPrintIntervalsTheLeftEndPoint;}%
+      \XINT_expr_defvar_one{Root\xs_polname _\PolPrintIntervalsTheIndex}%
+         {{\xintRaw{\PolPrintIntervalsTheLeftEndPoint}}}%
+     }%
+   \def\PolPrintIntervalsPrintRightEndPoint
+     {\xs_message{(mult. \PolPrintIntervalsTheMultiplicity)
+                  Root\xs_polname _\PolPrintIntervalsTheIndex\space = \PolPrintIntervalsTheRightEndPoint...}%
+      \immediate\write\xs_out{\string\xintdefvar\space
+         Root\xs_polname _\PolPrintIntervalsTheIndex:=\PolPrintIntervalsTheRightEndPoint;}%
+      \XINT_expr_defvar_one{Root\xs_polname _\PolPrintIntervalsTheIndex}%
+         {{\xintRaw{\PolPrintIntervalsTheRightEndPoint}}}%
+     }%
+   \def\POL@PrintIntervals@Loop{%
+      \POL@SturmIfZeroExactlyKnown\PolPrintIntervalsTheSturmName\PolPrintIntervalsTheIndex
+          \PolPrintIntervalsKnownRoot
+          \PolPrintIntervalsUnknownRoot
+      \xdef\PolPrintIntervalsTheIndex{\the\numexpr\PolPrintIntervalsTheIndex+\@ne}%
+        \unless\ifnum\PolPrintIntervalsTheIndex>
+               \@nameuse{POL_ZL\PolPrintIntervalsTheSturmName*0}
+        \POL@PrintIntervals@DoDefs
+        \expandafter\POL@PrintIntervals@Loop
+      \fi
+   }%
+   \PolPrintIntervals{@\xs_polname}%
+   \endgroup       
+}%
+\def\xs_setenv
+{%
+    \newlinechar10\endlinechar-1\errorcontextlines0\relax
+}%
+\def\xs_storeenv{\edef\xs_resetenv
+{%
+    \newlinechar\the\newlinechar
+    \endlinechar\the\endlinechar
+    \errorcontextlines\the\errorcontextlines
+}}%
+\def\xintsession
+   {\let\xintsession\xintsessionresume
+    \xs_setenv\xint_welcome\message{Starting in}\xs_magic@&exa\xs_fetch}%
+\def\xintsessionresume
+   {\xs_storeenv\xs_setenv\xs_welcome_back\xs_fetch}%
+\begingroup
+% some things here are weird but this was initially to make the 0.3 transition
+% to usage of \read-1 in place of active ^^M with minimal collateral changes
+% the active ^^M here is now reduced to avoid to have to type explicit ^^J in the
+% definition of the help messages
+\catcode13\active\catcode32\active%
+\let \space% this is Plain default anyhow
+\def
+{$$J}%$$
+\xdef\xint_welcome{\noexpand\message{\xs_copyright
+  Welcome to
+\xs_logo
+
+  - input is `;'-terminated and can extend over multiple lines
+  - definitions of variables and functions are done with `:='.
+
+  \string\jobname is \jobname
+  Transcript will go to log and to \xs_name
+  Typing at the prompt
+  - `&pause' or `;' exits to normal TeX (typesetting) interaction,
+  - `&bye' terminates the session,
+  - `&help' triggers help panels,
+  - `&exact', `&fp', `&int', or `&pol' switches among modes.
+}}%
+\xdef\xs_welcome_back{\noexpand\message{%
+  You are back to the xintexpr interactive session!
+  (current mode: \noexpand\xs_mode, with Digits=\noexpand\xinttheDigits)
+
+  ">>> " means central computing is waiting for input
+  "... " means that multi-line input continues.  Use `;' to terminate it.
+
+  Say `&bye' at any time to terminate the session and the TeX run.
+}}%
+\catcode`?0\catcode`\\12\relax%
+?xdef?xs_help_message_i{%
+  - Terminate inputs with the `;' character.  Inputs can extend over
+    multiple lines (each terminated by <return>).
+
+  - An empty input (`;' terminated) or the magic word `&pause' puts
+    the session on hold and switches to normal TeX interaction, with
+    its `*' prompt.  Use \xintsession to resume the session.
+
+  - Lines starting with any control sequence are handed over to
+    TeX (no end of line space token is included), and the current
+    numerical input resumes on next line.
+
+  - The computing kernel can work in various modes:
+    exact (uses \xintexpr), fp (uses \xintfloatexpr), int (uses
+    \xintiiexpr), and pol (makes definitions using \poldef).
+    To activate a mode enter `&<mode name>' at the prompt
+
+  - Issue `&mode' if you forgot in what mode you are currently in.
+
+(1/5) say `n' (or directly <return>) for next, `q' to quit, or one of
+      `2', `3', `4', or `5' to jump directly to corresponding panel.
+}%
+?xdef?xs_help_message_ii{%
+  - Say `&exact' resp. `&fp' to go back and forth between exact
+    and floating point mode
+
+  - Say `&fp=<number>' for example `&fp=32' at the prompt to activate
+    fp mode at a given Digits setting.  This can be done in the midst
+    of the input of a multi-line computation!
+
+  - Math functions are supported up to Digits=62 (since xint 1.4e);
+    sqrt() and powers with integer exponents work in fp mode with Digits
+    arbitrary.
+
+  - Definitions (variables or functions) are done using `:='.
+
+    *  Parentheses present before the `:=' trigger a function
+       definition, else a variable definition is done.
+
+    *  IMPORTANT: using a `=' by oversight will cause breakage as
+    xintsession thinks it is handling an evaluation, not a definition.
+
+%    Perhaps in future it will be allowed to make definitions using `='
+%    and xintsession will check if it is not misinterpreting a `=' from
+%    `<=', `>=', `!=', `==' or `seq()' syntax but this currently was
+%    considered to add too much overhead for the benefit.
+%    
+(2/5) say `n' (next), `p' (previous), `q' (quit), or one of `1' to `5'.
+}%
+?xdef?xs_help_message_iii{%
+  - Functions defined in one mode are not available for usage in
+    other modes without further steps; check xintexpr doc.
+
+  - Polynomials in pol mode are defined using polname(x):=expression;
+    (or with another letter).  They can serve as functions in the exact
+    mode.  To use a polynomial also as an fp mode function, issue
+    &GenFloat(<polname>) at the prompt.
+
+  - Whenever a variable is defined, or a computation is performed,
+    the result is assigned a label @_<integer>.  These labels are
+    variables which can then be used in subsequent computations.
+
+  - The special variables @_, @__, and @___ hold the last, next
+    to last and next to next to last evaluation results.
+
+  - In the case of a multi-variable assignment (see xintexpr doc)
+    the automatic variable @_<integer> holds the whole thing, which
+    may be a nutple or an ople, in addition to individual variables.
+
+(3/5) say `n' (next), `p' (previous), `q' (quit), or one of `1' to `5'.
+}%
+?xdef?xs_help_message_iv{%
+  - Variables defined in any mode can be used in any mode except:
+    * polynomials can be used as variables only in the pol and the
+      exact modes,
+    * integer-only mode requires... integer-only variables, also
+      internally.  Use num() or \xintiexpr...\relax as wrappers in int
+      mode around exact or fp variables (even integer-valued ones).
+
+  Known issues:
+
+  - The [P] optional argument of \xintfloateval can not be used
+    because it is not recognized by \xintdeffloatvar, one can use
+    the float() function with its second argument.
+
+  - An \xintexpr...\relax wrapper can not start a line, as it would
+    trigger control sequence execution.  Use parentheses or 0+\...
+
+  - Exact mode does not reduce to lowest terms, use reduce().
+
+(4/5) say `n' (next), `p' (previous), `q' (quit), or one of `1' to `5'.
+}%
+?xdef?xs_help_message_v{%
+  (cont.)
+  - A session transcript file is created which can be executed by
+    eTeX to redo all calculations; however @_, @__, and @___ will
+    not be defined in this context so need to be manually replaced
+    by the suitable @_<integer>.  The format of the transcript
+    is to be considered unstable at this stage.
+
+  Future:
+
+  - a plot() function will be added at some point to export
+    coordinates into a .tex file for usage either with PSTricks or
+    TikZ/pgf.
+
+  Miscellany:
+
+  Some exceptions are caught by xintexpr itself: enter <return> at
+  the prompt and a recovery will be attempted.   If deep in core
+  TeX errors, try escaping using `S'.  It does work sometimes.
+
+(5/5) say `p' (previous), `q' (quit), or one of `1' to `5'.
+}%
+?endgroup
+\def\xs_help\xs_fetch_aa{\xs_help_i}%
+\def\xs_help_i
+{%
+  \message{\xs_help_message_i}%
+  \def\xs_help_next##1\xs_help_next
+  {%
+   \if\xintFirstItem{##1n}n\xint_dothis\xs_help_ii\fi%
+   \ifnum10<1\expandafter\string\romannumeral0\xintfirstitem{##1}\relax%
+      \xint_dothis{\csname xs_help_\romannumeral\xintFirstItem{##1}\endcsname}\fi%
+   \xint_orthat\xs_help_quit
+  }%
+  \message{n, q, or 1 to 5: }%
+  \read-1to\xs_tmp\expandafter\xs_help_next\xs_tmp\xs_help_next
+}%
+\def\xs_help_ii
+{%
+  \message{\xs_help_message_ii}%
+  \def\xs_help_next##1\xs_help_next
+  {%
+   \if\xintFirstItem{##1n}n\xint_dothis\xs_help_iii\fi%
+   \if\xintFirstItem{##1}p\xint_dothis\xs_help_i\fi%
+   \ifnum10<1\expandafter\string\romannumeral0\xintfirstitem{##1}\relax%
+      \xint_dothis{\csname xs_help_\romannumeral\xintFirstItem{##1}\endcsname}\fi%
+   \xint_orthat\xs_help_quit
+  }%
+  \message{n, p, q, or 1 to 5: }%
+  \read-1to\xs_tmp\expandafter\xs_help_next\xs_tmp\xs_help_next
+}%
+\def\xs_help_iii
+{%
+  \message{\xs_help_message_iii}%
+  \def\xs_help_next##1\xs_help_next
+  {%
+   \if\xintFirstItem{##1n}n\xint_dothis\xs_help_iv\fi%
+   \if\xintFirstItem{##1}p\xint_dothis\xs_help_ii\fi%
+   \ifnum10<1\expandafter\string\romannumeral0\xintfirstitem{##1}\relax%
+      \xint_dothis{\csname xs_help_\romannumeral\xintFirstItem{##1}\endcsname}\fi%
+   \xint_orthat\xs_help_quit
+  }%
+  \message{n, p, q, or 1 to 5: }%
+  \read-1to\xs_tmp\expandafter\xs_help_next\xs_tmp\xs_help_next
+}%
+\def\xs_help_iv
+{%
+  \message{\xs_help_message_iv}%
+  \def\xs_help_next##1\xs_help_next
+  {%
+   \if\xintFirstItem{##1n}n\xint_dothis\xs_help_v\fi%
+   \if\xintFirstItem{##1}p\xint_dothis\xs_help_iii\fi%
+   \ifnum10<1\expandafter\string\romannumeral0\xintfirstitem{##1}\relax%
+      \xint_dothis{\csname xs_help_\romannumeral\xintFirstItem{##1}\endcsname}\fi%
+   \xint_orthat\xs_help_quit
+  }%
+  \message{n, p, q, or 1 to 5: }%
+  \read-1to\xs_tmp\expandafter\xs_help_next\xs_tmp\xs_help_next
+}%
+\def\xs_help_v
+{%
+  \message{\xs_help_message_v}%
+  \def\xs_help_next##1\xs_help_next
+  {%
+   \if\xintFirstItem{##1n}p\xint_dothis\xs_help_iv\fi%
+   \ifnum10<1\expandafter\string\romannumeral0\xintfirstitem{##1}\relax%
+      \xint_dothis{\csname xs_help_\romannumeral\xintFirstItem{##1}\endcsname}\fi%
+   \xint_orthat\xs_help_quit
+  }%
+  \message{p, q, or 1 to 5: }%
+  \read-1to\xs_tmp\expandafter\xs_help_next\xs_tmp\xs_help_next
+}%
+\def\xs_help_quit{\xs_welcome_back\xs_fetch}%
+\let\xs_magic@&hel\xs_help\let\xs_help_vi\xs_help_quit\let\xs_help_vii\xs_help_quit
+\let\xs_help_viii\xs_help_quit\let\xs_help_ix\xs_help_quit
+%
+\xsrestorecatcodes%
+\csname xs\string _storeenv\endcsname\endlinechar13\relax%
+% extremely eTeX-weird bug of 0.3 which had here \endinput\xintsession,
+% causing breakage if the latter attempts a \scantokens in an \edef
+% (which is what happens for function definitions).
+% bugfix 0.3a by simply moving \xintsession to before the \endinput
+\xintsession\endinput%

@@ -1,0 +1,71 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% Module:    ZzTeX Plain TeX Compatibility
+%
+% Synopsis:  This module contains definitions necessary for
+%            compatibility with Plain TeX.  The only goal is to
+%            allow ZzTeX to run on top of Plain TeX.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   24 July 1991
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if \definedp{\dospecials}
+  \let \znext = \relax
+\else
+  \let \znext = \endinput
+\fi
+\znext
+
+\def \zplainerror {%
+  \error{plaintex}{Cannot use this Plain TeX feature in ZzTeX}}
+
+%                       Definitions
+%                       -----------
+
+
+\catcode`\@ = \catletter
+\zremovePlaindef \p@
+\definedimen{\p@}{1pt}
+\zremovePlaindef \z@
+\definedimen{\z@}{0pt}
+\zremovePlaindef \z@skip
+\defineskip{\z@skip}{0pt plus 0pt minus 0pt}
+\catcode`\@ = \catactive
+
+\let \beginsection = \zplainerror
+
+\let \bye = \zplainerror
+
+\let \eject = \zplainerror
+
+\let \leavevmode = \ensurepar
+
+\let \normalbottom = \zplainerror
+
+\let \raggedright = \zplainerror
+
+\let \supereject = \zplainerror
+
+\let \ttraggedright = \zplainerror
+
+%                       Eliminate Fonts
+%                       --------- -----
+
+  \tcounta = 0
+  \loop
+    \zclearfam{\tcounta}%
+    \increment \tcounta
+  \if \lssp{\tcounta}{16}\repeat
+
+  \let \rm  = \relax
+  \let \mit = \relax
+  \let \it  = \relax
+  \let \sl  = \undefined  \let \slfam = \undefined
+  \let \bf  = \relax
+  \let \tt  = \relax

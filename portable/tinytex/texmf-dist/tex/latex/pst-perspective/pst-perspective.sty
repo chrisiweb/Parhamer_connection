@@ -1,0 +1,11 @@
+\RequirePackage{pstricks}
+\RequirePackage{pst-grad}
+\ProvidesPackage{pst-perspective}[2014/02/21 package wrapper for PSTricks pst-perspective.tex]
+\input{pst-perspective.tex}
+\ProvidesFile{pst-perspective.tex}
+  [\filedate\space v\fileversion\space `PST-perspective' (ts)]
+\IfFileExists{pst-perspective.pro}{%
+  \ProvidesFile{pst-perspective.pro}
+    [2014/04/07 v. 1.01,  PostScript prologue file (hv)]
+    \@addtofilelist{pst-perspective.pro}}{}%
+\endinput

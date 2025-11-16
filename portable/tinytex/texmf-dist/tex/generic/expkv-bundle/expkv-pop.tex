@@ -1,0 +1,326 @@
+%%
+%% This is file `expkv-pop.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% expkv-pop.dtx  (with options: `tex')
+%% 
+%% ----------------------------------------------------------------
+%% expkv-bundle -- an expandable key=val implementation and friends
+%% E-mail: jspratte@yahoo.de
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
+%% ----------------------------------------------------------------
+%% 
+%% Copyright (C) 2020-2024 Jonathan P. Spratte
+%% 
+%% This  work may be  distributed and/or  modified under  the conditions  of the
+%% LaTeX Project Public License (LPPL),  either version 1.3c  of this license or
+%% (at your option) any later version.  The latest version of this license is in
+%% the file:
+%% 
+%%   http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%%   Jonathan P. Spratte.
+%% 
+%% This work consists of the files  expkv-bundle.ins
+%%                                  expkv.dtx
+%%                                  expkv-cs.dtx
+%%                                  expkv-def.dtx
+%%                                  expkv-opt.dtx
+%%                                  expkv-pop.dtx
+%% and the derived files            expkv.sty
+%%                                  expkv.tex
+%%                                  t-expkv.tex
+%%                                  expkv-cs.sty
+%%                                  expkv-cs.tex
+%%                                  t-expkv-cs.tex
+%%                                  expkv-def.sty
+%%                                  expkv-def.tex
+%%                                  t-expkv-def.tex
+%%                                  expkv-opt.sty
+%%                                  expkv-pop.sty
+%%                                  expkv-pop.tex
+%%                                  t-expkv-pop.tex
+%% 
+%% as well as any documentation files shipped with it.
+%% 
+\input expkv
+\expandafter\ifx\csname ekvpVersion\endcsname\relax
+\else
+  \expandafter\endinput
+\fi
+\def\ekvpVersion{1.0}
+\def\ekvpDate{2023-01-23}
+\csname ekvp@tmp\endcsname
+\expandafter\chardef\csname ekvp@tmp\endcsname=\catcode`\@
+\catcode`\@=11
+\long\def\ekvpParse#1#2%
+  {%
+    \ekv@unexpanded\ekv@expanded
+      {{\expandafter\ekvpParse@a\detokenize{#1}\ekv@mark{#2}}}%
+  }
+\def\ekvpParse@a#1\ekv@mark
+  {%
+    \ekv@ifdefined{ekvp@@p@#1}%
+      {\expandafter\ekvpParse@b\csname ekvp@@p@#1\endcsname}%
+      {\ekvp@err@unknownparser{#1}\@gobble}%
+  }
+\def\ekvpParse@b#1%
+  {%
+    \ekv@ifdefined{#1{ppa}}%
+      {%
+        \expandafter\ekvpParse@c\expandafter
+          {\expandafter#1\csname#1{ppa}\endcsname}%
+      }%
+      {\ekvpParse@c{#1{}}}%
+  }
+\def\ekvpParse@c#1#2#3{#2#3}
+\ekv@expargtwice{\long\def\ekvpParse@c#1#2}%
+  {\expandafter\ekvpParse@c\ekvparse{\ekvp@k#1}{\ekvp@p#1}{#2}}
+\long\def\ekvpParse@unsafe#1#2#3{\ekv@unexpanded\ekv@expanded{{#2#3}}}
+\ekv@expargtwice{\long\def\ekvpParse@unsafe@auto#1#2#3}
+  {\expandafter\ekvpParse@unsafe\ekvparse{\ekvp@k#1#2}{\ekvp@p#1#2}{#3}}
+\ekv@expargtwice{\long\def\ekvpParse@unsafe#1#2}%
+  {\expandafter\ekvpParse@unsafe\ekvparse{\ekvp@k#1{}}{\ekvp@p#1{}}{#2}}
+\def\ekvp@k#1{\csname #1k\endcsname#1}
+\long\def\ekvp@ifspace#1%
+  {%
+    \ekvp@ifspace@#1 \ekv@ifempty@B\ekv@ifempty@false
+      \ekv@ifempty@A\ekv@ifempty@B\@firstoftwo
+  }
+\long\def\ekvp@ifspace@#1 % keep this space
+  {\ekv@ifempty@\ekv@ifempty@A}
+\ekv@exparg{\long\def\ekvp@prefix#1}%
+  {%
+    \ekvp@ifspace{#1}%
+      {\ekvp@prefix@a#1\ekv@stop}%
+      {\ekvp@noprefix{#1}}%
+  }
+\ekv@exparg{\long\def\ekvp@p#1#2#3}{\ekvp@prefix{#3}#1{#2}{#3}}
+\long\def\ekvp@prefix@a#1 % keep this space
+  {\expandafter\ekvp@prefix@b\detokenize{#1}\ekv@mark{#1}}
+\ekv@exparg{\long\def\ekvp@prefix@b#1\ekv@mark#2#3\ekv@stop#4}%
+  {%
+    \ekv@ifdefined{#4{pt}@#1}
+      {\expandafter\ekvp@prefix@pt\csname #4{pt}@#1\endcsname{#1}}%
+      {%
+        \ekv@ifdefined{#4{pp}@#1}%
+          {\expandafter\ekvp@prefix@pp\csname #4{pp}@#1\endcsname}%
+          {\@firstoftwo{\ekvp@noprefix{#2 #3}}}%
+      }%
+      {#3}#4%
+  }
+\long\def\ekvp@prefix@pt#1#2#3#4#5#6#7%
+  {%
+    \ekvp@prefix@pt@{#2}{#3}{#6}#5{\@firstoftwo#1}{#7}\ekvpEOT
+    \ekv@unexpanded{\ekvpEOA{#6}}%
+  }
+\long\def\ekvp@prefix@pt@#1#2#3#4{#4{#1}{#2}{#3}}
+\ekv@exparg{\long\def\ekvp@prefix@pp#1#2#3#4}{\ekvp@prefix{#2}#3{#4#1}}
+\long\def\ekvp@noprefix#1#2%
+  {%
+    \ekv@ifdefined{#2{pn}}
+      {\expandafter\ekvp@prefix@pt\csname #2{pn}\endcsname{}{#1}}
+      \ekvp@err@missingtype
+      #2%
+  }
+\protected\long\def\ekvpNewParser#1%
+  {\expandafter\ekvpNewParser@\detokenize{#1}\ekv@mark}
+\protected\def\ekvpNewParser@#1\ekv@mark
+  {%
+    \ekv@ifdefined{ekvp@@p@#1}%
+      {\ekvp@errm{Parser `#1' already defined}}%
+      {%
+        \expandafter\def\csname ekvp@@p@#1\endcsname##1{ekvp@@##1@#1}
+        \expandafter
+        \let\csname\csname ekvp@@p@#1\endcsname k\endcsname\ekvp@k@default
+      }%
+  }
+\protected\long\def\ekvpValueAlwaysRequired#1%
+  {\ekvp@parser@def{#1}\ekvpValueAlwaysRequired@{}}
+\protected\def\ekvpValueAlwaysRequired@#1%
+  {\expandafter\let\csname#1k\endcsname\ekvp@err@noval}
+\protected\long\def\ekvpDefNoValue#1%
+  {\ekvp@parser@def{#1}\ekvpDefNoValue@\@gobble}
+\protected\long\def\ekvpDefNoValue@#1#2%
+  {%
+    \def\ekvp@tmp##1{\ekv@unexpanded{#2}}%
+    \ekv@exparg{\long\expandafter\def\csname#1k\endcsname##1##2##3}%
+      {\ekvp@tmp{##3}}%
+  }
+\protected\long\def\ekvpUseNoValueMarker#1%
+  {\ekvp@parser@def{#1}\ekvpUseNoValueMarker@\@gobble}
+\protected\long\def\ekvpUseNoValueMarker@#1#2%
+  {%
+    \long\expandafter\edef\csname#1k\endcsname##1##2##3%
+      {\ekv@unexpanded{\ekvp@p}##1{##2}{##3}{\ekv@unexpanded{#2}}}%
+  }
+\protected\long\def\ekvpDefNoValuePrefix#1%
+  {\ekvp@parser@def{#1}\ekvpDefNoValuePrefix@\@gobbletwo}
+\protected\def\ekvpDefNoValuePrefix@#1%
+  {\expandafter\ekvpDefNoValuePrefix@@\csname#1{ppn}\endcsname#1}
+\protected\long\def\ekvpDefNoValuePrefix@@#1#2%
+  {%
+    \long\def#1\ekvp@p##1##2##3%
+      {%
+        \ekv@unexpanded{\ekvp@p}%
+          ####1{####2\ekv@unexpanded{#1}}{####3}{\ekv@unexpanded{##3}}%
+      }%
+    \long\expandafter\edef\csname#2k\endcsname##1##2##3%
+      {\expandafter\expandafter\expandafter#1\csname#2k\endcsname{}{}{}}%
+    \ekvp@parser@def@prefix#1%
+  }
+\protected\long\def\ekvpDefAutoPrefix#1%
+  {\ekvp@parser@def{#1}\ekvpDefAutoPrefix@\@gobbletwo}
+\protected\long\def\ekvpDefAutoPrefix@#1%
+  {\expandafter\ekvp@parser@def@prefix\csname#1{ppa}\endcsname}
+\long\def\ekvp@parser@def#1%
+  {\expandafter\ekvp@parser@def@\detokenize{#1}\ekv@mark}
+\def\ekvp@parser@def@#1\ekv@mark#2#3%
+  {%
+    \ekv@ifdefined{ekvp@@p@#1}%
+      {\ekv@exparg{#2}{\csname ekvp@@p@#1\endcsname}}%
+      {\ekvp@errm{Parser `#1' not defined}#3}%
+  }
+\protected\long\def\ekvpDefPrefix#1%
+  {\ekvp@parser@def{#1}\ekvpDefPrefix@\@gobblethree}
+\protected\long\def\ekvpDefPrefix@#1#2%
+  {\expandafter\ekvp@parser@def@prefix\csname#1{pp}@\detokenize{#2}\endcsname}
+\protected\long\def\ekvp@parser@def@prefix#1#2#3%
+  {%
+    \def#1##1##2##3{#2#3}%
+    \long\def#1##1##2##3##4##5\ekvpEOT
+      {\ekv@unexpanded{#2}##4{##1}{##2}{##3}##5\ekvpEOT\ekv@unexpanded{#3}}%
+  }
+\ekv@exparg{\protected\long\def\ekvpDefPrefixLet#1#2#3#4#5}%
+  {\ekvpDefPrefix{#1}{#2}{\ekvpProtect{\let#3= #4}}{\ekvpProtect{\let#3= #5}}}
+\ekv@exparg{\protected\long\def\ekvpDefPrefixStore#1#2#3#4#5}%
+  {%
+    \ekvpDefPrefix{#1}{#2}%
+      {\ekvpProtect{\edef#3{\ekv@unexpanded{#4}}}}%
+      {\ekvpProtect{\edef#3{\ekv@unexpanded{#5}}}}%
+  }
+\protected\long\def\ekvpDefType#1{\ekvp@parser@def{#1}\ekvpDefType@\@gobbletwo}
+\protected\long\def\ekvpDefType@#1#2%
+  {\ekvpDefType@NoType{#1{pt}@\detokenize{#2}}}%
+\protected\long\def\ekvpDefNoType#1{\ekvp@parser@def{#1}\ekvpDefNoType@\@gobble}
+\protected\long\def\ekvpDefNoType@#1{\ekvpDefType@NoType{#1{pn}}}
+\protected\long\def\ekvpDefType@NoType#1#2%
+  {%
+    \long\expandafter\def\csname#1\endcsname##1##2##3\ekvpEOT
+      {\ekv@unexpanded{\ekvpEOP{##2}#2\ekvpEOT{##2}}}%
+  }%
+\protected\long\def\ekvpLet#1#2#3{\ekvoptarg{\ekvpLet@a{#1}{#2}{#3}}{#1}}
+\protected\long\def\ekvpLet@a#1%
+  {\ekvp@parser@def{#1}\ekvpLet@b{\@firstoftwo\@gobblethree}}
+\protected\long\def\ekvpLet@b#1#2#3#4%
+  {\ekvp@parser@def{#4}\ekvpLet@c{\@firstoftwo\@gobblethree}#1{#2}{#3}}
+\protected\long\def\ekvpLet@c#1#2#3%
+  {%
+    \ekv@ifdefined{ekvpLet@@\detokenize{#3}}%
+      {\expandafter\ekvpLet@d\csname ekvpLet@@\detokenize{#3}\endcsname{#1}{#2}}%
+      {\ekvp@errm{unknown type \detokenize{#3}}\@gobbletwo}%
+  }
+\protected\long\def\ekvpLet@d#1#2#3#4#5%
+  {%
+    \ekv@ifdefined{#2{#1}@\detokenize{#5}}%
+      {%
+        \expandafter\let
+          \csname#3{#1}@\detokenize{#4}\expandafter\endcsname
+          \csname#2{#1}@\detokenize{#5}\endcsname
+      }%
+      {\ekvp@errm{Undefined prefix/type \detokenize{#5} can't be copied}}%
+  }
+\def\ekvpLet@@prefix{pp}
+\def\ekvpLet@@type{pt}
+\ekv@ifdefined{c_novalue_tl}
+  {\expandafter\let\expandafter\ekvp@novalflag\csname c_novalue_tl\endcsname}
+  {%
+    \begingroup
+    \lccode`\Z=`\-
+    \lccode`\:=`\-
+    \lccode`\N=\z@
+    \lccode`\V=\z@
+    \lowercase{\endgroup\def\ekvp@novalflag{ZNoValue:}}%
+  }
+\def\ekvpIfNoVal#1%
+  {%
+    \long\def\ekvpIfNoVal##1%
+      {%
+        \ekvp@ifnoval{}##1{}?!#1??!\ekv@ifempty@B\ekv@ifempty@true
+          \ekv@ifempty@A\ekv@ifempty@B\@secondoftwo
+      }%
+    \long\def\ekvp@ifnoval##1#1##2?##3?!{\ekv@ifempty@\ekv@ifempty@A##1##2}%
+    \long\def\ekvp@k@default##1##2##3{\ekvp@p##1{##2}{##3}{#1}}%
+  }
+\expandafter\ekvpIfNoVal\expandafter{\ekvp@novalflag}
+\let\ekvp@novalflag\ekvp@undefined
+\def\ekvpAssertIf{\romannumeral\ekv@alignsafe\ekvoptarg{\ekvpAssertIf@{}}{EOT}}
+\def\ekvpAssertIfNot
+  {\romannumeral\ekv@alignsafe\ekvoptarg{\ekvpAssertIf@\else}{EOT}}
+\long\def\ekvpAssertIf@#1#2#3%
+  {%
+    #3#1\ekvpAssertIf@good\fi
+    \ekvpAssert@notgood{#2}%
+  }
+\long\def\ekvpAssertIf@good\fi\ekvpAssert@notgood#1#2%
+  {\fi\ekv@endalignsafe\ekv@zero}
+\long\def\ekvpAssert@notgood#1%
+  {%
+    \ekv@ifdefined{ekvpAssert@@#1}%
+      {\csname ekvpAssert@@#1\endcsname}%
+      {\ekvp@err@unknownmarker{#1}\ekvpAssert@@EOA}%
+  }
+\def\ekvpAssertTF{\ekvoptarg{\ekvpAssertTF@{}}{EOT}}
+\def\ekvpAssertTFNot{\ekvoptarg{\ekvpAssertTF@{\@secondoftwo\@firstoftwo}}{EOT}}
+\long\def\ekvpAssertTF@#1#2#3%
+  {%
+    \ekv@alignsafe
+    #3#1%
+      {\ekv@endalignsafe\@gobble}%
+      {\romannumeral\ekvpAssert@notgood{#2}}%
+  }
+\ekv@exparg{\def\ekvpAssert@further#1#2#3}%
+  {\ekvoptarg{\ekvpAssert@further{#1}{#2}{#3}}{EOT}}
+\ekv@exparg{\def\ekvpAssertValue}%
+  {\ekvpAssert@further{\@secondoftwo\@firstoftwo}{\ekvpIfNoVal}{missing value}}
+\ekv@exparg{\def\ekvpAssertNoValue}%
+  {\ekvpAssert@further{}{\ekvpIfNoVal}{superfluous value}}
+\ekv@exparg{\def\ekvpAssertOneValue}%
+  {\ekvpAssert@further{}{\ekvp@assert@num@args\@gobble}{argument count != 1}}
+\ekv@exparg{\def\ekvpAssertTwoValues}%
+  {\ekvpAssert@further{}{\ekvp@assert@num@args\@gobbletwo}{argument count != 2}}
+\long\def\ekvp@assert@num@args#1#2%
+  {%
+    \expandafter\ekv@ifempty@\expandafter\ekv@ifempty@A#1#2\ekv@ifempty@B
+      \ekv@ifempty@true\ekv@ifempty@A\ekv@ifempty@B\@secondoftwo
+  }
+\long\def\ekvpAssert@further#1#2#3#4#5{\ekvpAssertTF@{#1}{#4}{#2{#5}}{#3}}
+\def\ekvpAssert@@EOA#1#2%
+  {\long\def#1##1##2#2##3{\ekvp@err{##1 at `##3'}\ekv@endalignsafe\ekv@zero}}
+\ekvpAssert@@EOA\ekvpAssert@@EOP\ekvpEOP
+\ekvpAssert@@EOA\ekvpAssert@@EOT\ekvpEOT
+\ekvpAssert@@EOA\ekvpAssert@@EOA\ekvpEOA
+\long\def\ekvpGobbleP#1\ekvpEOP#2{}
+\long\def\ekvpGobbleT#1\ekvpEOT#2{}
+\long\def\ekvpGobbleA#1\ekvpEOA#2{}
+\let\ekvpEOP\@gobble
+\let\ekvpEOT\@gobble
+\let\ekvpEOA\@gobble
+\def\ekvpProtect{\ekvpProtect@\ekvpProtect@@}
+\protected\long\def\ekvpProtect@\ekvpProtect@@#1{#1}
+\long\def\ekvpProtect@@#1{\ekv@unexpanded{\ekvpProtect@@{#1}}}
+\protected\long\def\ekvp@errm#1{\errmessage{expkv-pop Error: #1}}
+\ekv@exparg{\long\def\ekvp@err#1}{\ekverr{expkv-pop}{#1}}
+\def\ekvp@err@unknownparser#1{\ekvp@err{unknown parser `#1'}}
+\long\def\ekvp@err@noval#1#2#3{\ekvp@err{missing value for `#3'}}
+\long\def\ekvp@err@missingtype#1#2#3#4{\ekvp@err{missing type in `#3'}}
+\long\def\ekvp@err@unknownmarker#1{\ekvp@err{unknown marker `#1'}}
+\let\ekvp@prefix\ekvp@undefined
+\catcode`\@=\ekvp@tmp
+%% 
+%%
+%% End of file `expkv-pop.tex'.

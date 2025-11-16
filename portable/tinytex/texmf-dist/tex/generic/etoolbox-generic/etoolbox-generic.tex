@@ -1,0 +1,80 @@
+% etoolbox-generic.tex 2023/10/10 v2.5k
+%
+% This is a loader for etoolbox.sty 2020/10/05 v2.5k in non-LaTeX formats.
+%
+% Copyright (c) 2023- Saso Zivanovic <saso.zivanovic@guest.arnes.si>
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3c of this license or (at
+% your option) any later version.  The latest version of this license is in
+% https://www.latex-project.org/lppl.txt and version 1.3c or later is part of
+% all distributions of LaTeX version 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained`.
+% The Current Maintainer of this work is Saso Zivanovic.
+%
+% This work consist of this file and README.md.
+% 
+% Prevent double-loading.
+\ifcsname ver@etoolbox.sty\endcsname
+  \expandafter\endinput
+\fi
+% We need miniltx and a couple of auxiliary macros.
+\input miniltx
+\def\newif#1{%
+  \count@\escapechar \escapechar\m@ne
+    \let#1\iffalse
+    \@if#1\iftrue
+    \@if#1\iffalse
+  \escapechar\count@}
+\def\@if#1#2{%
+  \expandafter\def\csname\expandafter\@gobbletwo\string#1%
+  \expandafter\@gobbletwo\string#2\endcsname
+  {\let#1#2}}
+% We need to define \AtEndOfPackage; etoolbox uses it to undefine its
+% catcodes. We're careful and restore the old (probably empty) definition at
+% the end.
+\let\etb@AtEndOfPackage\AtEndOfPackage
+\def\AtEndOfPackage#1{\def\AtEndOfPackageDo{#1}}
+% Kindly, all the LaTeX-specific code in etoolbox.sty occurs after
+% the call to \IfFormatAtLeastTF. Redefining this macro to \endinput will
+% therefore remove the LaTeX-specific part of the package:
+\def\IfFormatAtLeastTF#1#2#3{\endinput}
+\let\etb@extrafloats\extrafloats
+\let\extrafloats\relax
+\input etoolbox.sty
+% Restore what we changed, and execute the end-of-package code.
+\let\extrafloats\etb@extrafloats
+\AtEndOfPackageDo
+\let\AtEndOfPackage\etb@AtEndOfPackage
+\let\AtEndOfPackageDo\relax
+\cslet{ver@etoolbox.sty}\relax
+% To have this package work in ConTeXt, we must patch the macros by replacing
+% \unexpanded with \normalunexpanded.
+\ifcsname normalunexpanded\endcsname
+  \def\etb@patchunexpanded#1{%
+    \patchcmd#1\unexpanded\normalunexpanded{}{%
+      \PackageError{etoolbox}{Cannot adapt command \string#1 to ConTeXt}{}%
+    }%
+  }
+  % \patchcmd itself uses \etb@patchcmd@scantoks which uses \unexpanded; so we
+  % temporarily redefine \unexpanded to patch \etb@patchcmd@scantoks.
+  \let\unexpanded\normalunexpanded
+  \etb@patchunexpanded\etb@patchcmd@scantoks
+  \let\unexpanded\protected
+  % Now we can patch the rest.
+  \etb@patchunexpanded\expandonce
+  \etb@patchunexpanded\etb@unexpandable
+  \etb@patchunexpanded\appto\etb@patchunexpanded\appto
+  \etb@patchunexpanded\gappto\etb@patchunexpanded\gappto
+  \etb@patchunexpanded\preto\etb@patchunexpanded\preto
+  \etb@patchunexpanded\gpreto\etb@patchunexpanded\gpreto
+  \etb@patchunexpanded\etb@hooktocmd
+  % Patching \protecting is a bit involved, as its parameters text is #.
+  \expandafter\def\expandafter\protecting\expandafter{\protecting{}}
+  \etb@patchunexpanded\protecting
+  \patchcmd\protecting{{}}{}{}{}%
+  \expandafter\def\expandafter\protecting\expandafter#\expandafter{\protecting}
+\fi
+\resetatcatcode
+\endinput

@@ -1,0 +1,137 @@
+\input ptb-utils
+
+\_checkloaded{mergesort}
+
+\input pdfData/ptb-arrays
+
+\def\splitmarray#1#2#3{%
+    \edef\_arr_half_len{\the\numexpr\csname marr@#1@len\endcsname / 2}%
+    \_arr_cnt=0 %
+    \createmarray{#2}%
+    \createmarray{#3}%
+    \loop\ifnum\_arr_cnt < \csname marr@#1@len\endcsname %
+        \ifnum\_arr_cnt < \_arr_half_len%
+            \_xp\_xp\_xp\_rappendmarray\_xp\_xp\_xp{\csname marr@#1@idx@\the\_arr_cnt\endcsname}{#2}%
+        \else%
+            \_xp\_xp\_xp\_rappendmarray\_xp\_xp\_xp{\csname marr@#1@idx@\the\_arr_cnt\endcsname}{#3}%
+        \fi%
+        \advance\_arr_cnt by 1 %
+    \repeat%
+}
+
+
+\def\findmin#1#2#3{%
+    \let\_regA=\_nul%
+    \let#3=\_nul%
+    \_arr_cnt=0 %
+    \def\_arr_index##1{%
+        \ifx\_regA\_nul%
+            \def\_regA{##1}%
+            \def#3{0}%
+        \else%
+            \_xp#2\_xp{\_regA}{##1}%
+            \unless\ifnum\_return_val=-1 %
+                \def\_regA{##1}%
+                \_xp\def\_xp#3\_xp{\the\_arr_cnt}%
+            \fi%
+        \fi%
+        \advance\_arr_cnt by 1 %
+    }%
+    \csname arr@#1\endcsname%
+}
+
+\def\_sortarr#1#2#3{%
+    \findmin{#1}{#3}\_regB%
+    \unless\ifx\_regB\_nul%
+        \removearray{#1}\_regB\_regC%
+        \_xp\_rappendarray\_xp{\_regC}{#2}%
+        \_afterfi{\_sortarr{#1}{#2}{#3}}%
+    \fi%
+}
+
+\def\sortarr#1#2#3{%
+    \copyarray{#1}{_orig}%
+    \createarray{#2}%
+    \_sortarr{_orig}{#2}{#3}%
+}
+
+\def\merge#1#2#3#4{%
+    \createmarray{#1}%
+    \edef\_min_len{\min{\csname marr@#2@len\endcsname}{\csname marr@#3@len\endcsname}}%
+    \_arr_cnt=0 %
+    \_arr_cntB=0 %
+    \def\_temp{\appendmarray{#1}}
+%
+    \loop%
+        \let\_tempA=\_nul%
+        \ifnum\_arr_cnt < \csname marr@#2@len\endcsname
+        \ifnum\_arr_cntB < \csname marr@#3@len\endcsname
+            \_xp\let\_xp\_first\csname marr@#2@idx@\the\_arr_cnt\endcsname%
+            \_xp\let\_xp\_second\csname marr@#3@idx@\the\_arr_cntB\endcsname%
+            #4\_first\_second%
+            \ifnum\_return_val=-1 %
+                \_xp\_temp\_xp{\_first}%
+                \advance\_arr_cnt by 1 %
+            \else%
+                \_xp\_temp\_xp{\_second}%
+                \advance\_arr_cntB by 1 %
+            \fi%
+            \let\_tempA=\empty%
+        \fi\fi
+        \ifx\_tempA\empty%
+    \repeat%
+%
+    \loop%
+        \ifnum\_arr_cnt < \csname marr@#2@len\endcsname %
+            \_xp\let\_xp\_first\csname marr@#2@idx@\the\_arr_cnt\endcsname%
+            \_xp\_temp\_xp{\_first}%
+            \advance\_arr_cnt by 1 %
+    \repeat%
+    \loop%
+        \ifnum\_arr_cntB < \csname marr@#3@len\endcsname %
+            \_xp\let\_xp\_first\csname marr@#3@idx@\the\_arr_cntB\endcsname%
+            \_xp\_temp\_xp{\_first}%
+            \advance\_arr_cntB by 1 %
+    \repeat%
+}
+
+\def\_mergesort#1#2{%
+    \ifnum\csname marr@#1@len\endcsname>1 %
+        \_afterfi{%
+            \beginscope%
+                \def\_regA{#1}%
+                \def\_regB{_m1}%
+                \def\_regC{_m2}%
+                \unless\ifx\_regA\_regB%
+                    \localizemarray{_m1}%
+                \fi
+                \unless\ifx\_regA\_regC%
+                    \localizemarray{_m2}%
+                \fi
+                \copymarray{#1}{_m}%
+                \splitmarray{_m}{_m1}{_m2}%
+                \_mergesort{_m1}{#2}%
+                \_mergesort{_m2}{#2}%
+                \merge{_m}{_m1}{_m2}{#2}%
+                \copymarray{_m}{#1}%
+            \endscope%
+        }%
+    \fi%
+}
+
+\def\mergesort#1#2{%
+    \convertarray{#1}{_orig}%
+    \createmarray{_m1}%
+    \createmarray{_m2}%
+    \_mergesort{_orig}{#2}%
+    \convertmarray{_orig}{#1}%
+}
+
+\def\_cmp_num#1#2{%
+    \edef\_return_val{\ifnum#1=#2 0\else\ifnum #1<#2 -1\else 1\fi\fi}
+}
+
+\def\_cmp_str#1#2{%
+    \edef\_return_val{\pdfstrcmp{#1}{#2}}
+}
+

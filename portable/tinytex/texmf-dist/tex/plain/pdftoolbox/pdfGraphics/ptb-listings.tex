@@ -1,0 +1,254 @@
+\input ptb-utils
+
+\_checkloaded{listings}
+
+\input ptb-colors
+\input ptb-colorboxes
+\input ptb-fonts
+
+\def\setupverb{%
+    \def\do##1{\catcode`##1=12\relax}%
+    \dospecials%
+    \catcode`\^^M=12\relax%
+}
+
+\letcolor{lst-fg}{black}
+\definecolor{lst-bg}{rgb}{.8 .9 .9}
+
+\newtoks\_listingcommands
+\newtoks\_commandcapture
+\newtoks\_commandexecute
+\newtoks\_macrocallmanager
+\newtoks\lstheader
+\newtoks\lstfooter
+\newtoks\everylisting
+\newcount\lstlinenum \lstlinenum=0
+\newdimen\lstcodelinewd
+\everylisting={}
+
+\def\lstlineskip{2pt}
+\def\lstvbuf{.25cm}
+
+\def\_setuplstlines{%
+    \parindent=\z@%
+    \baselineskip=-\maxdimen%
+    \lineskip=\lstlineskip\relax%
+    \lineskiplimit=\maxdimen%
+}
+
+\def\lstlinenumbuf{.25cm}
+
+\def\blisting{\bgroup\_getline\_blisting}
+
+\def\_blisting#1{\the\everylisting#1\relax\setupverb\__blisting}
+
+{\catcode`\^^M=12
+\_xp\gdef\_xp\__blisting\_xp#\_xp1\expanded{\_mstrip\\}elisting#2^^M{%
+    \_setuplstlines%
+    \the\_commandcapture%
+    \the\_listingcommands%
+    \def\_code{\n\w#1\n}%
+    \setuplstcodelinewd%
+    \def\_execute##1{##1\_code}%
+    \the\_commandexecute%
+    \the\_macrocallmanager%
+    \edef\_code{\_code}%
+    \def\n##1\n{\_syntax_linemanager{##1}}%
+    \def\_colorcontentbox{\syntaxoutbox{\box\_splitbox}}%
+    \syntaxoutboxsetbuf%
+    \setbox\_contentbox=\vbox{\_code}%
+    \par\vskip\lstvbuf\relax%
+    \null\par%
+    \_splitcontentbox\syntaxoutboxbuf\_colorcontentbox\_colorcontentbox\_colorcontentbox\_colorcontentbox%
+    \vskip\lstvbuf\relax%
+    \egroup%
+}}
+
+{\catcode`\^^M=12
+\gdef\_listfile#1[#2-#3]{%
+    \bgroup%
+    \lstheader={\hfil\lstfileheaderfontset#1}%
+    \lstfooter={}%
+    \the\everylisting%
+    \setupverb%
+    \immediate\openin\_PTBread{#1}%
+    \the\_commandcapture%
+    \the\_listingcommands%
+    \def\_code{\n\w}%
+    \lstlinenum=\z@%
+    \def\_begin{#2}%
+    \def\_finish{#3}%
+    \ifx\_begin\_empty%
+        \def\_begin{1}%
+    \fi%
+    \ifx\_finish\_empty%
+        \def\_finish{999999}%
+    \fi%
+    \let\_stop=\_empty%
+    \loop%
+        \advance\lstlinenum by 1\relax%
+        \immediate\read\_PTBread to\_codeline%
+        \ifeof\_PTBread%
+            \let\_stop=\_nul%
+        \else\ifnum\lstlinenum>\numexpr\_begin-1\relax%
+        \ifnum\lstlinenum<\numexpr\_finish+1\relax%
+            \edef\_code{\_code\_codeline}%
+        \else\let\_stop=\_nul\fi\fi\fi%
+        \unless\ifx\_stop\_nul%
+    \repeat%
+    \immediate\closein\_PTBread%
+    \edef\_code{\_code\n}%
+    \setuplstcodelinewd%
+    \def\_execute##1{##1\_code}%
+    \the\_commandexecute%
+    \the\_macrocallmanager%
+    \lstlinenum=\numexpr\_begin-1\relax%
+    \edef\_code{\_code}%
+    \def\n##1\n{\_syntax_linemanager{##1}}%
+    \def\_colorcontentbox{\syntaxoutbox{\box\_splitbox}}%
+    \syntaxoutboxsetbuf%
+    \setbox\_contentbox=\vbox{\_code}%
+    \par\vskip\lstvbuf\relax%
+    \null\par%
+    \_splitcontentbox\syntaxoutboxbuf\_colorcontentbox\_colorcontentbox\_colorcontentbox\_colorcontentbox%
+    \vskip\lstvbuf\relax%
+    \egroup%
+}}
+
+\def\setuplstcodelinewd{%
+    \lstcodelinewd=\dimexpr\hsize - \_lstlinenumwd - \lstlinenumbuf\relax%
+}
+
+\def\listfile#1{\_ifnextchar[ {\_listfile{#1}}{\_listfile{#1}[-]}}
+
+\def\lstfileheaderfontset{\setfontandscale{tt}{8pt}}
+
+\def\syntaxoutbox#1{%
+    \vbox{\offinterlineskip%
+        \hbox{\makelstheader}%
+        \hbox{\coloredbox{lst-bg}{\color{lst-fg}#1}}%
+        \hbox{\makelstfooter}%
+    }
+}
+\def\syntaxoutboxsetbuf{{%
+    \setbox0=\hbox{\makelstheader}%
+    \setbox1=\hbox{\makelstfooter}%
+    \xdef\syntaxoutboxbuf{\the\dimexpr\bufferwidth * 2 + \ht0 + \dp0 + \ht1 + \dp1\relax}
+}}
+
+\def\makelstheader{\hbox to\hsize{\the\lstheader}}
+\def\makelstfooter{\hbox to\hsize{\the\lstfooter}}
+
+\def\_ptb_empty_macro{\_ptb_empty_macro}
+
+\def\replace#1#2#3{\_xp\_replace\_xp#1\expanded{{#2}{#3}}}
+\def\_replace#1#2#3{%
+    \def\__replace?##1#2##2\_nul{%
+        ##1%
+        \unless\ifcsname _ptb_empty_macro\detokenize{##2}\endcsname%
+            \_afterfi{#3\__replace?##2\_nul}%
+        \fi%
+    }%
+    \edef#1{\_xp\__replace\_xp?#1#2\_nul}%
+}
+
+\def\replacefromto#1#2#3#4{\_xp\_replacefromto\_xp#1\expanded{{#2}{#3}{#4}}}
+\def\_replacefromto#1#2#3#4{%
+    \def\_replacement##1{#4}%
+    \def\_replaceA?##1#2##2\_nul{%
+        ##1%
+        \unless\ifcsname _ptb_empty_macro\detokenize{##2}\endcsname%
+            \_afterfi{\_replaceB?##2\_nul}%
+        \fi%
+    }%
+    \def\_replaceB?##1#3##2\_nul{%
+        \ifcsname _ptb_empty_macro\detokenize{##2}\endcsname%
+            ##1%
+        \else%
+            \_afterfi{\_replacement{##1}%
+            \_replaceA?##2\_nul}%
+        \fi%
+    }%
+    \edef#1{\_xp\_replaceA\_xp?\expanded{#1#2#3}\_nul}%
+}
+
+\let\_o_replace=\replace
+\let\_o_replacefromto=\replacefromto
+
+\def\_r_replace#1#2#3{\replace{#3}{#1}{#2}}
+\def\_r_replacefromto#1#2#3#4{\replacefromto{#4}{#1}{#2}{#3}}
+
+\def\_addexecution#1{\_commandexecute=\_xp{\the\_commandexecute\_execute{#1}}}
+\def\_add_command_replace#1#2{\_addexecution{\_r_replace{#1}{#2}}}
+\def\_add_command_replacefromto#1#2#3{\_addexecution{\_r_replacefromto{#1}{#2}{#3}}}
+
+\def\lstnumfontset{\setfontandscale{tt}{6pt}}
+\def\lstfontset{\setfontandscale{tt}{8pt}}
+\def\lststrut{\vrule width\z@ height6pt depth1pt}
+
+\def\_c#1#2{{\_setcolor{}{#1}#2}}
+\def\mc#1#2{\mlcall _c{{#1}}{#2}}
+\def\c#1#2{\call _c{{#1}}{#2}}
+
+\_commandcapture={%
+    \setmacrotolen\_lstlinenumwd{\lstnumfontset\lstmaxnum}%
+    \let\w=\relax%
+    \let\n=\relax%
+    \let\mlcall=\relax%
+    \let\call=\relax%
+    \let\replace=\_add_command_replace%
+    \let\replacefromto=\_add_command_replacefromto%
+}
+
+\_commandexecute={%
+    \let\replace\_o_replace%
+    \let\replacefromto\_o_replacefromto%
+}
+
+\long\def\_syntax_printline#1{%
+    \hbox{\hbox to\_lstlinenumwd{\hss\lstnumfontset\the\lstlinenum}\kern\lstlinenumbuf\relax#1}%
+}
+
+\def\_syntax_linemanager#1{{%
+    \def\_regA{#1}%
+    \def\_regB{\w}%
+    \unless\ifx\_regA\_regB%
+        \global\advance\lstlinenum by 1\relax%
+        \def\w{}%
+        \setbox0=\hbox{\lstfontset\lststrut\relax#1}%
+        \ifdim\wd0<\lstcodelinewd %
+            \_syntax_printline{\hbox to\lstcodelinewd{\box0\hfil}}%
+        \else%
+            \def\w{\allowbreak}%
+            \_syntax_printline{\vtop{%
+                \hsize=\lstcodelinewd\hangindent=1cm\relax\hangafter=1\relax%
+                \lstfontset\lststrut\relax#1\par%
+            }}%
+        \fi%
+    \fi%
+}}
+
+\def\lstmaxnum{9999}
+
+\_macrocallmanager={%
+    \def\call#1#{\_call{#1}}%
+    \protected\def\_call#1#2#3{\csname #1\endcsname#2{#3}}%
+    \def\mlcall#1#{\_mlcall{#1}}%
+    \def\_mlcall#1#2#3{\__mlcall{#1}{#2}#3\n\n\_nul}%
+    \def\__mlcall#1#2#3\n\n#4\_nul{%
+        \_call{#1}{#2}{#3}%
+        \unless\ifcsname _ptb_empty_macro\detokenize{#4}\endcsname%
+            \n\n\_afterfi{\__mlcall{#1}{#2}#4\_nul}%
+        \fi%
+    }%
+}
+
+\bgroup\catcode`\ =12\relax\lowercase{\egroup\_add_command_replace{ }{\w\ \w}}
+\bgroup\catcode`\^^M=12\relax\lowercase{\egroup\_add_command_replace{^^M}{\w\n\n\w}}
+
+\def\loadsyntax#1{{\catcode`_=11\relax\input{ptb-syntax-#1.tex}}}
+\def\setsyntax#1{\_listingcommands=\_xp{\_xp\_xp\_xp\the\csname _#1_listingcommands\endcsname}}
+
+\definecolor{lst-comment}{rgb}{0 .6 0}
+\definecolor{lst-number}{rgb}{.2 .7 .2}
+

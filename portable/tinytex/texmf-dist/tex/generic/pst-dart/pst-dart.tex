@@ -1,0 +1,124 @@
+%% $Id: pst-dart.tex 229 2021-09-11 14:35:39Z herbert $
+%%
+%% This is file `pst-dart.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-dart.tex'
+%%
+%% Thomas Söll  <Thomas.Soell@onlinehome.de>
+%% Herbert Voss <hvoss@tug.org>
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION:
+%%   `pst-dart' is a PSTricks package to plot dart boards
+%%
+\csname PSTdartLoaded\endcsname
+\let\PSTfuncLoaded\endinput
+% Requires some PSTricks packages
+\ifx\PSTricksLoaded\endinput\else   \input pstricks.tex\fi
+\ifx\PSTXKeyLoaded\endinput\else    \input pst-xkey.tex \fi
+\ifx\GradientLoaded\endinput\else   \input pst-grad.tex \fi
+\ifx\PSTthreeDLoaded\endinput\else  \input pst-3d.tex \fi
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+% interface to the `xkeyval' package
+\pst@addfams{pst-dart}
+%
+\def\fileversion{0.03}
+\def\filedate{2021/09/11}
+\message{`PST-dart' v\fileversion, \filedate\space (ts,hv)}
+%
+\define@key[psset]{pst-dart}{preCode}[]{\def\psk@dart@preCode{#1}}
+\define@key[psset]{pst-dart}{postCode}[]{\def\psk@dart@postCode{#1}}
+\define@key[psset]{pst-dart}{boardview}[]{\def\psk@dart@boardview{#1}}
+\define@key[psset]{pst-dart}{fontsize}[10pt]{\def\psk@dart@fontsize{\fontsize{#1}{#1}}}
+\psset[pst-dart]{fontsize=10pt,boardview={},preCode=,postCode=}
+
+\newcmykcolor{Red}{0 1 1 0}
+\newcmykcolor{Green}{1 0 1 0}
+
+\def\psDartBoard{\pst@object{psDartBoard}}%      
+\def\psDartBoard@i{\@ifnextchar(\psDartBoard@ii{\psDartBoard@ii(0,0)}}%
+\def\psDartBoard@ii(#1){%
+  \begingroup
+  \addbefore@par{boardview={}}%,unit=0.1mm}%
+  \use@par
+  \degrees[20]%
+  \ifx\psk@dart@boardview\@empty
+    \rput(#1){\psset{unit=0.1mm}\psDartBoard@iii}%
+  \else  
+    \rput(#1){\psset{unit=0.1mm}%
+      \ThreeDput[normal=\psk@dart@boardview](0,0,0){\psDartBoard@iii}}%
+  \fi
+  \endgroup
+  \ignorespaces
+}
+
+\def\psDartBoard@iii{%
+  \begin{pspicture}(-210,-210)(210,210)%
+    \pscircle*(0,0){210}
+    % Gerader Part.
+    \psset{linewidth=0.5pt}%
+    \multido{\rA=-0.5+2.0,\rB=0.5+2.0}{10}{%
+      \pswedge*[linecolor=white]{170}{\rA}{!\rA\space 1 add}
+      \psarc[linecolor=Green,linewidth=8](0,0){166}{\rA}{!\rA\space 1 add}
+      \psarc[linecolor=Red,linewidth=8](0,0){166}{\rB}{!\rB\space 1 add}
+      \psarc[linecolor=Green,linewidth=8](0,0){103}{\rA}{!\rA\space 1 add}
+      \psarc[linecolor=Red,linewidth=8](0,0){103}{\rB}{!\rB\space 1 add}
+      \psline[linecolor=gray!30,dimen=inner,linewidth=0.5pt](170;\rA)(0,0)(170;\rB)
+    }%
+    \pscircle[linecolor=gray!30,dimen=inner,linewidth=0.5pt]{170}%
+    \pscircle[linecolor=gray!30,dimen=inner,linewidth=0.5pt]{162}%
+    \pscircle[linecolor=gray!30,dimen=inner,linewidth=0.5pt]{107}
+    \pscircle[linecolor=gray!30,dimen=inner,linewidth=0.5pt]{99}
+    \pscircle[fillstyle=solid,fillcolor=Green,linecolor=gray!30,linewidth=0.5pt,linecolor=white]{15.9}
+    \pscircle[fillstyle=solid,fillcolor=Red,linecolor=gray!30,linewidth=0.5pt,linecolor=white]{6.35}
+    \psforeach{\iA}{6,13,4,18,1,20,5,12,9,14,11,8,16,7,19,3,17,2,15,10}{%
+      \rput(190;\the\psLoopIndex){\psk@dart@fontsize\selectfont\white\iA}}
+    \end{pspicture}%
+}
+
+%
+\colorlet{gold}{orange!50!yellow}
+
+\define@key[psset]{pst-dart}{dartcolor}[red]{\def\psdartcolor{#1}}
+\psset{dartcolor}
+
+\def\psDart{\pst@object{psDart}}
+\def\psDart@i(#1){%
+  \begingroup
+  \addbefore@par{rot=0,linestyle=none,fillstyle=gradient}%
+  \use@par
+  \rput(#1){%
+%    \pstVerb{gsave \psk@dart@preCode }%
+    % tip
+    \pspolygon[gradangle=90,gradbegin=black!30,gradend=black!60](0,0)(1,0.04)(1,-0.04)
+    % golden mass
+    \pspolygon[gradangle=90,gradbegin=gold,gradend=gold!60!black](0,0)(0.99,0)(1.19,0.2)(1.69,0.2)(1.69,-0.2)(1.19,-0.2)(0.99,0)
+    % wings
+    \pscurve[gradbegin=\psdartcolor!20!white,gradend=\psdartcolor!10!black,gradmidpoint=1](4.5,0)(7.6,1)(7.3,0)
+    \pscurve[gradbegin=\psdartcolor!20!black,gradend=\psdartcolor,gradmidpoint=1](4.5,0)(7.6,-1)(7.3,0)
+    % body
+    \pscustom[gradbegin=\psdartcolor!50,gradend=\psdartcolor!100!-\psdartcolor!90,gradangle=45,gradmidpoint=0]{%
+      \pscurve(1.7,0.2)(2,0.24)(6,0.2)(7.6,0)
+      \pscurve(6,-0.2)(2,-0.24)(1.7,-0.2)
+    }%
+    \pscustom[gradbegin=\psdartcolor!80!white,gradend=black!50,gradangle=90,gradmidpoint=0.5]{%
+      \pscurve(4.5,0)(5.5,0.05)(7.6,0)
+      \pscurve(5.5,-0.05)(4.5,0)
+    }
+%    \pstVerb{ \psk@dart@postCode grestore }%
+  }%
+  \endgroup\ignorespaces
+}
+%
+\catcode`\@=\PstAtCode\relax
+%
+%% END: pst-dart.tex
+\endinput
+%
+

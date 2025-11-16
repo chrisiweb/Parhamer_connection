@@ -1,0 +1,239 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Horizontal Mode Facilities
+%
+% Synopsis:  This module provides various facilities that operate in
+%            horizontal mode, within a paragraph.  See also ZZHMODE.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   11 January 1994
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Basic Tools
+%                       ----- -----
+
+
+\def \llap #1{\hbox to 0pt{\hss #1}}%                   {text}
+\def \rlap #1{\hbox to 0pt{#1\hss}}%                    {text}
+\def \clap #1{\hbox to 0pt{\hss #1\hss}}%               {text}
+
+\def \minhbox to #1#2#3#4{%             to width{text}{space-in}{space-out}
+  \measuretextwidth{\tdimena}{#2\hspace{#3}}%
+  \if \dimgtrp{\tdimena}{#1}%
+    {#2}\hspace{#4}%
+  \else
+    \hbox to #1{#2\hfil}%
+  \fi}
+
+%                       Drop Capitals
+%                       ---- --------
+
+
+\def \dropcapital #1#2#3{%                      {height}{lines}{text}
+  \setbox \zboxa = \hbox{#3}%
+  \tdimena = \ht\zboxa
+  \advance \tdimena by -#1\relax
+  \setbox \zboxa = \hbox{\lower \tdimena \box\zboxa}%
+  \dp\zboxa = 0pt
+  \def \zdropshape {0pt,\naturalwidth}%
+  \tcounta = #2\relax
+  \loop
+     \decrement \tcounta
+     \if \posp{\tcounta}%
+       \edef \zdropshape {\zdropshape ,\the\wd\zboxa,\naturalwidth}%
+  \repeat
+  \expandafter\shapepar\expandafter{\zdropshape,0pt,\naturalwidth}%
+  \noindent \box\zboxa}
+
+%                       Enclosing Text
+%                       --------- ----
+
+
+\def \enclose #1#2#3{%                          {thickness}{separation}{text}
+  \ensurepar
+  \hbox{\vrule width #1%
+        \vtop{\vbox{\hrule height #1%
+                    \kern #2%
+                    \hbox{\kern #2#3\kern #2}}%
+              \kern #2%
+              \hrule height #1}%
+        \vrule width #1}}
+
+\def \colorenclose #1#2#3#4{%           {color}{thickness}{separation}{text}
+  \ensurepar
+  \hbox{\color{#1}\vrule width #2 \endcolor
+        \vtop{\vbox{\color{#1}\hrule height #2 \endcolor
+                    \kern #3%
+                    \hbox{\kern #3#4\kern #3}}%
+              \kern #3%
+              \color{#1}\hrule height #2 \endcolor}%
+        \color{#1}\vrule width #2 \endcolor}}
+
+%                       Fractions
+%                       ---------
+
+
+% This macro is specifically designed to work in math mode, too.
+
+\def \piecefraction #1{%
+  \ztfrac #1/}
+
+\def \ztfrac #1/#2/{%
+  \ensurepar
+  {\measuretextwidth{\tdimena}{/}%
+   \raise .5ex \hbox{$\scriptstyle #1$}%
+   \kern -.2\tdimena \raise .3ex \hbox{$\scriptstyle /$}\kern -.2\tdimena%
+   \hbox{$\scriptstyle #2$}}}
+
+\let \textfraction = \piecefraction             % For compatibility.
+
+%                       Leaders
+%                       -------
+
+
+\def \alignedleaders #1{%                       {box-or-rule}
+  \leaders #1\hfill}
+
+\def \dotleaders {%
+  \alignedleaders{\hbox to 1em{\hss.\hss}}}
+
+\def \ruleleaders #1{%                          {rule}
+  \alignedleaders{#1}}
+
+\def \centeredleaders #1{%                      {box-or-rule}
+  \cleaders #1\hfill}
+
+\def \spreadleaders #1{%                        {box-or-rule}
+  \xleaders #1\hfill}
+
+%                       Paragraph Dingbats
+%                       --------- --------
+
+
+\def \pardingbat #1#2{%                         {space}{dingbat}
+  {\unskip \unbreakable\hfil \allowbreak
+   \hspace{#1}\retain\unbreakable\hfill
+   #2%
+   \finalhyphendemerits = 0 \par}}
+
+%                       Rules
+%                       -----
+
+
+\def \rule #1{%                                 {dimensions}
+  \if \vmodep
+    \hrule #1\relax
+  \else
+    \vrule #1\relax
+  \fi}
+
+\def \colorrule #1#2{%                          {color}{dimensions}
+  \if \vmodep
+    \color{#1}
+    \nobreak
+    \hrule #2\relax
+    \endcolor
+  \else
+    \color{#1}\vrule #2\relax\endcolor
+  \fi}
+
+\def \slug #1#2{%                               {width}{height}
+  \rule{height #2 depth 0pt width #1}}
+
+%                       Shapes
+%                       ------
+
+
+\def \rectangle #1#2#3#4{%              {rise}{width}{height}{thickness}
+  {\tdimena = #2\relax
+   \advance \tdimena by -#4\relax
+   \advance \tdimena by -#4\relax
+   \raise #1 \hbox{%
+     \vrule height #3 depth 0pt width #4\relax
+     \vbox to #3{%
+       \hrule height #4 depth 0pt width \tdimena\relax
+       \vfil
+       \hrule height #4 depth 0pt width \tdimena\relax}%
+     \vrule height #3 depth 0pt width #4}}}
+
+%                       Underlining & Overstriking
+%                       ----------- - ------------
+
+
+\def \fakebold #1{%                                     {text}
+  \hbox{\rlap{#1}%
+        \rlap{\lower .009em \hbox{\kern .009em #1}}%
+        \lower .018em \hbox{\kern .018em #1}}}
+
+\def \multiunderline #1#2#3#4#5{%       {count}{drop1}{drop2}{thickness}{text}
+  \ensurepar
+  {\setbox\zboxa = \hbox{#5}%
+   \rlap{\lower #2 \hbox{\vrule height #4 depth 0pt width \the\wd\zboxa}}%
+   \tcounta = #1\relax
+   \tdimena = #2\relax
+   \loop
+     \decrement \tcounta
+     \if \posp{\tcounta}%
+       \advance \tdimena by #3\relax
+       \rlap{\lower \tdimena \hbox{\vrule height #4 depth 0pt
+                                          width \the\wd\zboxa}}%
+   \repeat
+   \box\zboxa}}
+  
+\def \overstrike #1#2{%                                 {text1}{text2} 
+  \ensurepar
+  {\setbox\zboxa = \hbox{#1}%
+   \setbox\zboxb = \hbox{#2}%
+   \tdimena = \wd\zboxa
+   \advance \tdimena by -\wd\zboxb
+   \divide \tdimena by 2
+   \rlap{\kern \tdimena \box\zboxb}\box\zboxa}}
+
+\def \strikethrough #1{%                                    {text}
+  \ensurepar
+  {\setbox\zboxa = \hbox{#1}%
+   \rlap{\raise .45ex \hbox{\vrule height .1ex depth 0pt
+                                   width \the\wd\zboxa}}%
+   \box\zboxa}}
+
+\let \zunline = \underline
+
+\def \underline #1{%                                            {text}
+  \relax
+  \if \mathmodep
+    \zunline{#1}%
+  \else
+    \multiunderline{1}{.4ex}{0pt}{.1ex}{#1}%
+  \fi}
+
+%                       Vertical Centering
+%                       -------- ---------
+
+
+\def \centeroncapheight #1{%                            {text}
+  \ensurepar
+  {\setbox\zboxa = \hbox{#1}%
+   \measurecapheight{\tdimena}%                 % Calculate ht(CAP) - ht(text)
+   \advance \tdimena by -\ht\zboxa              %           ------------------
+   \divide \tdimena by 2                        %                   2
+   \raise \tdimena \box\zboxa}}
+
+\def \centerondigitheight #1{%                          {text}
+  \ensurepar
+  {\setbox\zboxa = \hbox{#1}%
+   \measuredigitheight{\tdimena}%               % Calculate ht(123) - ht(text)
+   \advance \tdimena by -\ht\zboxa              %           ------------------
+   \divide \tdimena by 2                        %                   2
+   \raise \tdimena \box\zboxa}}
+
+\def \centeronxheight #1{%                              {text}
+  \ensurepar
+  {\setbox\zboxa = \hbox{#1}%
+   \tdimena = 1ex                               % Calculate 1ex - ht(text)
+   \advance \tdimena by -\ht\zboxa              %           --------------
+   \divide \tdimena by 2                        %                  2
+   \raise \tdimena \box\zboxa}}

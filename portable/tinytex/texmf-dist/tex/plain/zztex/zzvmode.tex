@@ -1,0 +1,380 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Vertical Mode Facilities
+%
+% Synopsis:
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   21 September 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Interline Skip
+%                       --------- ----
+
+
+\def \nointerlineskip {%
+  \prevdepth = -1000pt}
+
+\def \offinterlineskip {%
+  \baselineskip = -1000pt
+  \lineskip = 0pt
+  \lineskiplimit = \maxdimen}
+
+%                       Vertical Skiping Environment
+%                       -------- ------- -----------
+
+
+% The following registers make up the vertical skiping environment.
+
+\definecount{\zvskenvtype}{0}   % Previous vertical skip type.
+\definecount{\zvskenvpen}{0}    % Previous columnbreak penalty.
+\defineskip{\zvskenvreq}{0pt}   % Previous required base-to-base skip.
+\defineskip{\zvskenvskip}{0pt}  % Previous actual skip amount.
+
+\chardef \zvskenvdiscard = 0    % Just initialized the environment.
+\chardef \zvskenvpar     = 1    % Previous element was a paragraph.
+\chardef \zvskenvabove   = 2    % Just finished an above skip.
+\chardef \zvskenvbelow   = 3    % Just finished a below skip.
+\chardef \zvskenvmath    = 4    % Previous element was a paragraph ending
+                                % with a math display.
+
+\definecount{\zvskenvnopen}{20000\relax}
+
+\let \noskip = \mindimen
+
+
+% The vertical skiping environment is maintained in the vertical context.
+
+\zdeclareeveryvcontext{\zvskenvvcontext}
+
+\def \zvskenvvcontext {%
+  \zsavevcontext{\zvskenvtype=\the\zvskenvtype
+                 \zvskenvpen=\the\zvskenvpen
+                 \zvskenvreq=\the\zvskenvreq
+                 \zvskenvskip=\the\zvskenvskip}%
+  \zvskpar
+  \global\zvskenvtype = \zvskenvdiscard}
+
+%                       Base-to-Base Skiping
+%                       ------------ -------
+
+
+\declareeverypar{\zvskpar}
+
+\def \zvskpar {%
+  \global\zvskenvtype = \zvskenvpar
+  \global\zvskenvpen  = \zvskenvnopen
+  \global\zvskenvreq  = \parskip \global\advance \zvskenvreq by \baselineskip
+  \global\zvskenvskip = 0pt}
+
+
+%~ This command produces vertical space so that the base-to-base
+%~ distance above the next element is equal to the *glue*. The
+%~ space is preceded by the specified *penalty*.  If there is a font
+%~ change for the next element, it must be specified before this command.
+
+\def \bbskipabove #1#2{%                                {penalty}{glue} %^vspace
+  \if \neqlp{\zvskenvtype}{\zvskenvdiscard}%
+    {\zvskprevmath{\parskip}{\baselineskip}%
+     \zparseglue #2\zmark
+     \setflag \znosk = {\dimeqlp{\zskipa}{\noskip}}%
+     \vpenalty{#1}%
+     \ifcase \zvskenvtype
+       \relax
+     \or
+       \if \znosk \zskipa = \zvskenvreq \fi
+     \or
+       \zskipa = \zvskenvreq
+     \or
+       \if \dimlssp{\zskipa}{\zvskenvreq}\zskipa = \zvskenvreq \fi
+     \or
+       \if \dimlssp{\zskipa}{\zvskenvreq}\zskipa = \zvskenvreq \fi
+     \fi
+     \if \notp{\dimzerop{\zvskenvskip}}\vskip -\zvskenvskip \fi
+     \zskipb = \zskipa
+     \advance \zskipb by -\parskip
+     \advance \zskipb by -\baselineskip
+     \vskip \zskipb
+     \if \notp{\znosk}%
+       \global\zvskenvtype = \zvskenvabove
+       \global\zvskenvreq = \zskipa
+     \fi
+     \global\zvskenvskip = \zskipb}%
+  \fi}
+
+%~ This command produces vertical space so that the base-to-base
+%~ distance below the current element is equal to the *glue*. The
+%~ space is preceded by the specified *penalty*.
+
+\def \bbskipbelow #1#2{%                      {penalty}{glue} %^vspace
+  \zvskbelow{#1}{#2}{\parskip}{\baselineskip}}
+
+\def \bbskipbelowblock #1#2{%                 {penalty}{glue}
+  \zvskbelow{#1}{#2}{\enclosingparskip}{\enclosingbaselineskip}}
+
+% This macro "returns" a value in \parnext:
+%   \noindent if next token does not start a new paragraph.
+%   empty     if next token starts a new paragraph.
+
+\def \bbskipbelowblockpar #1#2#3{%            {token}{penalty}{glue}
+  {\setflag \znext = \false % Set \true if token starts new paragraph.
+   \ifcat \noexpand#1\relax \setflag \znext = \true \fi
+   \ifcat \noexpand#1\endgraf \setflag \znext = \true \fi
+   \ifcat \noexpand#1\egroup \setflag \znext = \true \fi
+   \ifcat \noexpand#1&\setflag \znext = \true \fi
+   \ifx #1\noindent \setflag \znext = \false \fi
+   \xdef \parnext {\if \znext \else \noindent \fi}%
+   \zskipa = #3\relax
+   \if \andp{\znext}{\dimneqlp{#3}{\noskip}}%
+     \tdimena = \zskipa
+     \advance \zskipa by -\tdimena
+     \advance \zskipa by \enclosingparskip
+     \advance \zskipa by \enclosingbaselineskip
+     \if \dimlssp{\zskipa}{#3}\zskipa = #3\fi
+   \fi
+   \zvskbelow{#2}{\zskipa}{\enclosingparskip}{\enclosingbaselineskip}}} 
+
+\def \zvskbelow #1#2#3#4{%      {penalty}{glue}{parskip}{baselineskip}
+  {\zvskprevmath{#3}{#4}%
+   \zparseglue #2\zmark
+   \setflag \znosk = {\dimeqlp{\zskipa}{\noskip}}%
+   \vpenalty{#1}%
+   \ifcase \zvskenvtype
+     \zzerror{Skiping type is discard}%
+   \or
+     \if \znosk \zskipa = #3 \advance \zskipa by #4\fi
+   \or
+     \error{skipab}{A `skip below' follows a `skip above'}%
+   \or
+     \if \znosk \zskipa = \zvskenvreq \fi
+   \or
+     \if \dimlssp{\zskipa}{\zvskenvreq}\zskipa = \zvskenvreq \fi
+   \fi
+   \if \notp{\dimzerop{\zvskenvskip}}\vskip -\zvskenvskip \fi
+   \zskipb = \zskipa
+   \advance \zskipb by -#3%
+   \advance \zskipb by -#4%
+   \vskip \zskipb
+   \if \notp{\znosk}%
+     \if \neqlp{\zvskenvtype}{\zvskenvmath}%    % Stay as math type so
+       \global\zvskenvtype = \zvskenvbelow      % subsequent below skip
+     \fi                                        % won't override.
+     \global\zvskenvreq = \zskipa
+   \fi
+   \global\zvskenvskip = \zskipb}}
+
+\def \zvskprevmath #1#2{%                       {parskip}{baselineskip}
+  \if \eqlp{\mathdisplayprevgraf}{\prevgraf}%
+    \global\zvskenvtype = \zvskenvmath
+    \global\zvskenvpen = \mathdisplayprevpenalty
+    \global\zvskenvreq = \mathdisplayprevskip
+    \global\advance \zvskenvreq by #1
+    \global\advance \zvskenvreq by #2
+    \global\zvskenvskip = \mathdisplayprevskip
+    \global\mathdisplayprevgraf = -1\relax
+  \fi}
+
+%~ This command forces the next base-to-base skip command
+%~ regardless of the relationship between the previous element
+%~ and the next one. 
+
+\def \forcenextbbskip {%                        %^vspace
+  \global\zvskenvtype = \zvskenvpar
+  \global\mathdisplayprevgraf = -1\relax}
+
+\definecount{\zvpen}{0}
+
+\def \vpenalty #1{%                             {penalty}
+  \zvpen = \if \emptyargp{#1}\breaknever \else #1\fi
+  \if \orp{\eqlp{\zvskenvpen}{\zvskenvnopen}}
+          {\eqlp{\zvpen}{\breaknever}}%
+    \columnbreak{\zvpen}%
+    \global\zvskenvpen = \zvpen\relax
+  \else \if \andp{\posp{\zvskenvpen}}{\gtrp{\zvpen}{\zvskenvpen}}%
+    \columnbreak{\zvpen}%
+    \global\zvskenvpen = \zvpen\relax
+  \fi\fi}
+
+\def \forcenextpenalty {%
+  \global\zvskenvpen = \zvskenvnopen}
+
+\def \repeatpenalty {%
+  \if \neqlp{\zvskenvpen}{\zvskenvnopen}%
+    \columnbreak{\zvskenvpen}%
+  \fi}
+
+%~ This command inserts the specified amount of extra vertical space
+%~ between the previous element and the next one.
+
+\def \vspace #1{%                                       {glue} %^vspace
+  \if \neqlp{\zvskenvtype}{\zvskenvdiscard}%
+    \zparseglue #1\zmark
+    \vskip \zskipa
+  \fi}
+
+%~ This command inserts extra vertical space between the previous element
+%~ and the next one. The space is measured in lines; a fractional number
+%~ is allowed.
+
+\def \linespace #1{\vspace{#1\baselineskip}}%           {lines} %^vspace
+
+\def \zparseglue #1#2\zmark{%                           {token}{tokens...}
+  \def \znext {#1}%
+  \def \zskip {\skip}%
+  \if \tokeqlp{\znext}{\zskip}%
+    \setskip \zskipa = #2\relax
+  \else
+    \zskipa = #1#2\relax
+  \fi}
+
+%                       Top to Text Skipping
+%                       --- -- ---- --------
+
+
+% These commands use \zskipb so as not to screw up \fakepar.
+
+\def \vsinkfromtypearea #1{%                            {sinkage}
+  \endgraf
+  \nobreak                              % So \fakepar can't break.
+  \fakepar                              % So \bbskipabove won't discard.
+  \vbox{}%                              % Force start of page if not already.
+  \kern -\pagetotal
+  \kern -\headerheight
+  \bbskipabove{\breaknever}{#1}}
+
+\let \vsink = \vsinkfromtypearea
+
+\def \vsinkfromtrim #1{%                                {sinkage}
+  \zskipb = #1\relax
+  \advance \zskipb by -\headmargin
+  \vsinkfromtypearea{\zskipb}}
+
+\def \vsinkfromtextarea #1{%                            {sinkage}
+  \zskipb = #1\relax
+  \advance \zskipb by \headerheight
+  \if \topdeltaadjustment
+    \advance \zskipb by \topdelta
+  \fi
+  \vsinkfromtypearea{\zskipb}}
+
+%                       Rules
+%                       -----
+
+
+\def \parrule #1#2{%                            {shift}{dimensions}
+  \endgraf
+  {\if \notp{\baselinetoprules}\zadjrule{#2}\fi
+   \hfuzz = 100pc
+   \noindent \hspace{#1}\vbox{\hrule height 0pt depth 0pt #2}\endgraf}}
+
+\def \colorparrule #1#2#3{%                     {color}{shift}{dimensions}
+  \endgraf
+  {\if \notp{\baselinetoprules}\zadjrule{#3}\fi
+   \hfuzz = 100pc
+   \noindent \hspace{#2}%
+   \color{#1}\vbox{\hrule height 0pt depth 0pt #3}\endcolor \endgraf}}
+
+\def \scotchrule #1#2#3{%                       {shift}{width}{height,gap,...}
+  \endgraf
+  {\hfuzz = 100pc
+   \commalist{\zscotchlist}{#3}%
+   \tcounta = 1\relax
+   \maplist{\zscotchb{#1}{#2}{##1}}{\zscotchlist}}}
+
+\def \zscotchb #1#2#3{%                         {shift}{width}{dimension}
+  \if \andp{\eqlp{\tcounta}{1}}{\notp{\baselinetoprules}}%
+    \zadjrule{height #3 depth 0pt}%
+  \fi
+  \if \oddp{\tcounta}
+    \noindent \hspace{#1}\vbox{\hrule height #3 depth 0pt width #2}\endgraf
+    \parskip = 0pt
+  \else
+    \nobreak
+    \vspace{#3}%
+    \nointerlineskip
+  \fi
+  \increment \tcounta}
+
+\def \zadjrule #1{%                             {dimensions}
+  \if \notp{\innermodep}%
+    \fakepar
+    \tdimena = \baselineskip
+    \advance \tdimena by -\prevdepth
+    \setbox \zboxa = \hbox{\vrule #1}%
+    \advance \tdimena by -\ht\zboxa
+    \vskip \tdimena
+    \vskip \topskip
+    \rule{height 0pt depth 0pt width 0pt}%
+    \penalty \breaknever
+    \vskip -\topskip
+    \parskip = 0pt \baselineskip = \ht\zboxa
+  \fi}
+
+%                       Vertical Alignment
+%                       -------- ---------
+
+
+\def \bottomout {%
+  \hrule width 0pt height 0pt           % Make sure \vskip isn't discarded.
+  \vskip 0pt plus 1filll}
+
+%                       Counting Lines
+%                       -------- -----
+
+
+\definecount{\zlinect}{0}
+
+
+\def \countlines #1#2#3#4{%             {\count}{width}{font}{text}
+  \setbox\zboxa = \vbox{%
+    \hsize = #2%
+    #3%
+    #4\par}%
+  \global\zlinect = 0
+  \setbox\zboxa = \vbox{\unvbox\zboxa \zscanvbox}%
+  #1=\zlinect}
+
+\def \zscanvbox {%
+  \loop
+    \setflag \zscanagain = \false
+    \setbox\zboxa = \lastbox
+    \if \hboxp{\zboxa}%
+      \global\increment \zlinect
+      \setflag \zscanagain = \true
+    \else\if \notp{\dimzerop{\lastskip}}%
+      \unskip
+      \setflag \zscanagain = \true
+    \else\if \notp{\dimzerop{\lastkern}}%
+      \unkern
+      \setflag \zscanagain = \true
+    \else\if \notp{\zerop{\lastpenalty}}%
+      \unpenalty
+      \setflag \zscanagain = \true
+    \fi\fi\fi\fi
+  \if \zscanagain \repeat}
+
+%                       Special Boxes
+%                       ------- -----
+
+
+\definedimen{\zibprevdepth}{0pt}
+
+
+\long\def \interjectbox #1#2{%                  {right-shift}{content}
+  {\zibprevdepth = \prevdepth
+   \penalty \breaknever
+   \nointerlineskip
+   \moveright #1 \vbox to 0pt{%
+     \zpushvcontext
+     #1\relax
+     \zpopvcontext}%
+   \prevdepth = \zibprevdepth}}
+
+\long\def \smashbox #1{%
+  \vbox to 0pt{%
+    #1\relax
+    \vss}}

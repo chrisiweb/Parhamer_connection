@@ -1,0 +1,924 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Horizontal Mode Facilities
+%
+% Synopsis:  This module provides various facilities that operate in
+%            horizontal mode, within a paragraph.  See also ZZHMODEB.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   21 September 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Starting Paragraphs
+%                       -------- ----------
+
+
+% The following token register is executed at the beginning of
+% every paragraph.
+
+\definetoks{\everyparagraph}
+\everyparagraph = {}
+
+% This is what we have to do at the beginning of every paragraph:
+
+\everypar = {\requiredeverypar \the\everyparagraph}
+
+% The following command ensures that we are in horizontal mode,
+% without doing anything if we already are.
+
+\def \ensurepar {\unhbox \voidbox}
+
+% The following command fakes up the start of a paragraph while
+% leaving us in vertical mode.
+
+\def \fakepar {%
+  \endgraf
+  \vspace{\parskip}%
+  \requiredeverypar}
+
+%                       Paragraph Penalties
+%                       --------- ---------
+
+
+\definecount{\zclubsv}{-100000}         % Overridden \clubpenalty.
+\definecount{\zclubct}{1}               % Overridden paragraph count.
+
+
+\def \overrideclubpenalty #1{%                          {penalty}
+  \if \eqlp{\zclubsv}{-100000}\global\zclubsv = \clubpenalty \fi
+  \global\clubpenalty = #1\relax
+  \global\zclubct = \if \vmodep -1\else 0\fi \relax}
+
+\declareeverypar{\zclubpar}
+
+\def \zclubpar {%
+  \ifnum \zclubct=0
+    \global\clubpenalty=\zclubsv
+    \global\zclubsv=-100000\relax
+  \fi
+  \global\advance \zclubct 1\relax}
+
+%                       Single-Character Commands
+%                       ---------------- --------
+
+
+%  Name         Description
+
+%  \<space>     Control space
+%  \!           Negative sixth space; negative thin space in math;
+%                 callout in code
+%  \"           Dieresis (umlaut) accent
+%  \#           Pound sign
+%  \$           Dollar sign
+%  \%           Percent sign
+%  \&           Ampersand
+%  \'           Acute accent
+%  \(           (reserved 
+%  \)            for user)
+%  \*           \discretionary{}{}{}
+%  \+           Hair space
+%  \,           Sixth space; thin space in math
+%  \-           Discretionary hyphen
+%  \.           Dot accent
+%  \/           Italic correction
+%  \0           \phantom{0}
+%  \1 -- \9     (reserved for user)
+%  \:           List element separator
+%  \;           Third space; thick space in math
+%  \<           (reserved for user)
+%  \=           Macron accent; prefix for tag namespace
+%  \>           (reserved for user)
+%  \?           (reserved for user)
+%  \@           At-sign
+%  \H           Hungarian umlaut accent
+%  \L           Polish suppressed L
+%  \O           Scandinavian O slash
+%  \P           Paragraph sign (pilcrow)
+%  \S           Section sign
+%  \[           (reserved for user)
+%  \\           Backslash
+%  \]           (reserved for user)
+%  \^           Circumflex accent
+%  \_           Underscore
+%  \`           Grave accent
+%  \b           Bar-under accent
+%  \c           Cedilla accent
+%  \d           Dot-under accent
+%  \g           Ogonek accent
+%  \h           Small horizontal space
+%  \i           Dotless i
+%  \j           Dotless j
+%  \l           Polish suppressed l
+%  \o           Scandinavian o slash
+%  \r           ring accent
+%  \t           Tie-after accent
+%  \u           Breve accent
+%  \v           Hacek accent
+%  \x           \
+%  \y            } (reserved for user, for index command abbreviations)
+%  \z           /
+%  \{           Left brace
+%  \|           Vertical bar; \Vert in math mode
+%  \}           Right brace
+%  \~           Tilde accent
+
+%                       Characters
+%                       ----------
+
+
+% These definitions are in alphabetical order.
+
+\def \AA {%                             %~ Ring A (Angstrom). %^named_char
+  \ensurepar
+  \if \mathmodep
+    \mtext{\AA}%
+  \else
+    \r{A}%
+  \fi}
+
+\def \aa {%                             %~ Ring a. %^named_char
+  \ensurepar
+  \if \mathmodep
+    \mtext{\aa}%
+  \else
+    \r{a}%
+  \fi}
+
+\chardef \AE = "1D                      %~ Scandinavian AE.
+
+\chardef \ae = "1A                      %~ Scandinavian ae.
+
+\chardef \ampersand = `\&               %~ Ampersand.
+
+\let \& = \ampersand
+
+\chardef \atsign = `\@                  %~ At sign.
+
+\let \@ = \atsign
+
+\def \backslash {%                      %~ Backslash. %^named_char
+  \ensurepar
+  \if \mathmodep
+    \zmbackslash
+  \else \if \monoencodingp
+    \char "5C\relax
+  \else
+    \PSbackslash
+  \fi\fi}
+
+\let \\=\backslash
+
+\def \baselinebullet #1{%               {size} %~ Bullet set on baseline.
+  \zrequiredoodad{\zdoodadfont}{#1}%
+  \hbox{\zdoodadfont .}}
+
+\def \bullet {%                         %~ Bullet. %^named_char
+  \ensurepar
+  \if \mathmodep
+    \zmbullet
+  \else
+    \PSbullet
+  \fi}
+
+\def \cent {%                           %~ Cent sign. %^named_char
+  \ensurepar
+  \PScent}
+
+\let \cents = \cent
+
+\def \copyright {%                      %~ Copyright symbol. %^named_char
+  \ensurepar
+  \PScopyright}
+
+\def \cdquote {''}                      %~ Close double quote. %^named_char
+
+\def \dagger {%                         %~ Dagger. %^named_char
+  \ensurepar
+  \if \mathmodep
+    \zmdagger
+  \else
+    \PSdagger
+  \fi}
+
+\def \ddagger {%                        %~ Double dagger. %^named_char
+  \ensurepar
+  \if \mathmodep
+    \zmddagger
+  \else
+    \PSddagger
+  \fi}
+
+\def \dollar {%                         %~ Dollar sign. %^named_char
+  \zprehyph{\dollarhyph}%
+  \if \monoencodingp
+    \char "24\relax
+  \else
+    \PSdollar
+  \fi
+  \zposthyph{\dollarhyph}}
+
+\let \$ = \dollar
+
+\def \ellipsis {%                       %~ Text ellipsis.
+  \if \mathmodep
+    \ldots
+  \else
+    \unbreakable\thickspace 
+    .\unbreakable\thickspace
+    .\unbreakable\thickspace
+    .\thickspace
+    \ignorespaces
+  \fi}
+
+\def \emdash {---}                      %~ Em dash. %^named_char
+
+\def \endash {--}                       %~ En dash. %^named_char
+
+\def \greater {%                        %~ Greater-than sign %^named_char
+  \ensurepar
+  \if \monoencodingp
+    \char "3E\relax
+  \else
+    \PSgreater
+  \fi}
+
+\def \>{%                               %~ Greater-than sign. %^named_char
+  \relax
+  \if \mathmodep \plainerror \else \greater \fi}
+
+\chardef \hash = `\#                    %~ Pound sign, hash, octothorpe.
+
+\let \# = \hash
+
+\def \hat {%                            %~ Hat symbol. %^named_char
+  \ensurepar
+  \if \mathmodep
+    \zmhat
+  \else
+    \char "5E\relax
+  \fi}
+
+\chardef \i = "10                       %~ Dotless i.
+
+\chardef \j = "11                       %~ Dotless j.
+
+\def \L {\PSpolishL}                    %~ Uppercase Polish L. %^named_char
+
+\def \l {\PSpolishl}                    %~ Lowercase Polish l. %^named_char
+
+% \lbrace and \rbrace cannot start with \ensurepar, because that won't
+% work following a \left or \right command.  However, the \relax is required.
+
+\def \lbrace {%                         %~ Left brace. %^named_char
+  \relax
+  \if \mathmodep
+    \zmlbrace
+  \else \if \monoencodingp
+    \char "7B\relax
+  \else
+    \PSbraceleft
+  \fi\fi}
+
+\let \{ = \lbrace
+
+\def \less {%                           %~ Less-than sign. %^named_char
+  \ensurepar
+  \if \monoencodingp
+    \char "3C\relax
+  \else
+    \PSless
+  \fi}
+
+\let \< = \less
+
+\chardef \O = "1F                       %~ Slashed O.
+
+\chardef \o = "1C                       %~ Slashed o.
+
+\chardef \OE = "1E                      %~ OE diphthong.
+
+\chardef \oe = "1B                      %~ oe diphthong.
+
+\def \odquote {``}                      %~ Open double quote. %^named_char
+
+\def \P {%                              %~ Paragraph symbol (pilcrow). %^named_char
+  \ensurepar
+  \PSparagraph}
+
+\chardef \percent = `\%                 %~ Percent sign.
+
+\let \% = \percent
+
+\def \perthousand {%                    %~ Per thousand symbol. %^named_char
+  \ensurepar
+  \PSperthousand}
+
+\def \prellipsis {%                     %~ Text ellipsis with no left space.
+  .\unbreakable\thickspace
+  .\unbreakable\thickspace
+  .\thickspace
+  \ignorespaces}
+
+\def \rbrace {%                         %~ Right brace. %^named_char
+  \relax
+  \if \mathmodep
+    \zmrbrace
+  \else \if \monoencodingp
+    \char "7D\relax
+  \else
+    \PSbraceright
+  \fi\fi}
+
+\let \} = \rbrace
+
+\def \registered {%                     %~ Registered symbol. %^named_char
+  \ensurepar
+  \PSregistered}
+
+\def \S {%                              %~ Section sign. %^named_char
+  \ensurepar
+  \PSsection}
+
+\def \SS {%                             %~ Double section sign. %^named_char
+  \ensurepar
+  \PSsection\PSsection}
+
+\chardef \ss = "19                      %~ German eszett.
+
+\def \sterling {%                       %~ Pound sterling symbol. %^named_char
+  \ensurepar
+  \PSsterling}
+
+\def \tilde {%                          %~ Tilde. %^named_char
+  \ensurepar
+  \if \mathmodep
+    \zmtilde
+  \else
+    \char "7E\relax
+  \fi}
+
+\def \trademark {%                      %~ Trademark symbol. %^named_char
+  \ensurepar
+  \PStrademark}
+
+\def \underscore {%                     %~ Underscore. %^named_char
+  \ensurepar
+  \zprehyph{\underscorehyph}%
+  \if \monoencodingp
+    \char "5F\relax
+  \else
+    \PSunderscore
+  \fi
+  \zposthyph{\underscorehyph}}
+
+\let \_ = \underscore
+
+\def \udquote {%                        %~ Undirected double quote. %^named_char
+  \ensurepar
+  \if \monoencodingp
+    \char "22\relax
+  \else
+    \PSudquote
+  \fi}
+
+\def \usquote {%                        %~ Undirected single quote. %^named_char
+  \ensurepar
+  \if \monoencodingp
+    \char "0D\relax
+  \else
+    \PSusquote
+  \fi}
+
+\def \verticalbar {%                    %~ Vertical bar. %^named_char
+  \ensurepar
+  \if \monoencodingp
+    \char "7C\relax
+  \else
+    \PSbar
+  \fi}
+
+\def \|{%                               %~ Vertical bar. %^named_char
+  \relax
+  \if \mathmodep \Vert \else \verticalbar \fi}
+
+%                       Accents
+%                       -------
+
+
+\def \"#1{{\accent "7F #1}}             %~ Umlaut accent. %^accent
+
+\def \'#1{{\accent 19 #1}}              %~ Acute accent. %^accent
+
+\def \.#1{{\accent 95 #1}}              %~ Dot accent. %^accent
+
+\def \=#1{{\accent 22 #1}}              %~ Macron accent. %^accent
+
+\def \^#1{{\accent 94 #1}}              %~ Circumflex accent. %^accent
+
+\def \`#1{{\accent 18 #1}}              %~ Grave accent. %^accent
+
+\def \~#1{{\accent "7E #1}}             %~ Tilde accent. %^accent
+
+\def \b #1{%                            %~ Bar-under accent. %^accent
+  \ozalign{\relax #1\cr
+           \hidewidth \vbox to .2ex {\hbox{\char 22}\vss}\hidewidth}}
+
+\def \c #1{%                            %~ Cedilla accent. %^accent
+  \setbox \zboxa = \hbox{#1}%
+  \if \dimeqlp{\ht\zboxa}{1ex}%
+    \accent 24 #1%
+  \else
+    {\ooalign{\hidewidth \char 24 \hidewidth \cr
+              \unhbox \zboxa}}%
+  \fi}
+
+\def \d #1{%                            %~ Dot-under accent. %^accent
+  \ozalign{\relax #1\cr
+           \hidewidth.\hidewidth}}
+
+\def \g #1{%                            %~ Ogonek accent. %^accent
+  \setbox \zboxa = \hbox{#1}%
+  \if \dimeqlp{\ht\zboxa}{1ex}%
+    \accent 154 #1%
+  \else
+    {\ooalign{\hidewidth \char 154 \hidewidth \cr
+              \unhbox \zboxa}}%
+  \fi}
+
+\def \H #1{{\accent "7D #1}}            %~ Long Hungarian umlaut accent. %^accent
+
+\def \r #1{{\accent "17 #1}}            %~ Ring accent. %^accent
+
+\def \t #1{%                            %~ Tie-after accent. %^accent
+  {\edef \znext {\the\font}\the\textfont1 \accent "7F \znext #1}}
+
+\def \u #1{{\accent 21 #1}}             %~ Breve accent. %^accent
+
+\def \v #1{{\accent 20 #1}}             %~ Hacek accent. %^accent
+
+%                       Spaces
+%                       ------
+
+
+% TeX space primitives include the following:
+%
+%   <space>     Produce a normal space, obeying \spacefactor.
+%   \<space>    Produce a normal space as if \spacefactor = 1000.
+
+% Here are a set of "space" commands that produce breakable space:
+
+%~ Specified amount of breakable horizontal space.
+
+\def \hspace #1{\ensurepar \hskip #1\relax}%            {amount} %^hspace
+
+%~ Specified amount of unbreakable horizontal space
+%~ measured in tenths of a point.
+
+\def \h #1;{%                                           tenths-points; %^hspace
+  {\tdimena = .1pt
+   \tdimena = #1\tdimena
+   \kern \tdimena}}
+
+\def \fiveemspace {\ensurepar \hskip 5em\relax}         %~ Breakable 5 em space. %^hspace
+
+\def \fouremspace {\ensurepar \hskip 4em\relax}         %~ Breakable 4 em space. %^hspace
+
+\def \threeemspace {\ensurepar \hskip 3em\relax}        %~ Breakable 3 em space. %^hspace
+
+\def \twoemspace {\ensurepar \hskip 2em\relax}          %~ Breakable 2 em space. %^hspace
+
+\def \emspace {\ensurepar \hskip 1em\relax}             %~ Breakable 1 em space. %^hspace
+
+\def \enspace {\ensurepar \hskip .5em\relax}            %~ Breakable 1 en space. %^hspace
+
+\def \digitspace {%                                     %~ Breakable digit space. %^hspace
+  {\measuredigitwidth{\tdimena}%
+   \ensurepar \hskip \tdimena}}
+
+{\catcode`\| = \catactive
+\gdef \digitspacebar {%
+  \catcode`\| = \catactive
+  \def |{\digitspace}}
+}
+
+\def \thirdspace {\ensurepar \hskip .333em\relax}       %~ Breakable 1/3 em space. %^hspace
+\let \thickspace = \thirdspace
+\def \negthickspace {\ensurepar \hskip -.333em\relax}   %~ Breakable negative 1/3 em space. %^hspace
+
+\def \space { }                                         %~ Normal space.
+\def \^^M{\ }                                           %~ Normal space.
+
+\def \fontspace {\ensurepar \hskip \fontdimen2\font}    %~ Breakable font space. %^hspace
+
+\def \visiblespace {%                                   %~ Visible space. %^hspace
+  \ensurepar
+   \hbox {%
+     \measurespacewidth{\tdimena}%
+     \kern .16ex
+     \llap{\rule{width .08ex height .15ex depth .2ex}}%
+     \lower .2ex \hbox{\rule{width \tdimena height .08ex depth 0pt}}%
+     \rlap{\rule{width .08ex height .15ex depth .2ex}}%
+     \kern .16ex}}
+
+\def \fourthspace {\ensurepar \hskip .25em\relax}       %~ Breakable 1/4 em space. %^hspace
+
+\def \fifthspace {\ensurepar \hskip .2em\relax}         %~ Breakable 1/5 em space. %^hspace
+\let \thinspace = \fifthspace
+\def \negfifthspace {\ensurepar \hskip -.2em\relax}     %~ Breakable negative 1/3 em space. %^hspace
+\let \negthinspace = \negfifthspace
+
+\def \sixthspace {\ensurepar \hskip .16667em\relax}     %~ Breakable 1/6 em space. %^hspace
+\def \negsixthspace {\ensurepar \hskip -.16667em\relax} %~ Breakable negative 1/6 em space. %^hspace
+
+\def \seventhspace {\ensurepar \hskip .14286em\relax}   %~ Breakable 1/7 em space. %^hspace
+\let \hairspace = \seventhspace
+\def \negseventhspace {\ensurepar \hskip -.14286em\relax} %~ Breakable negative 1/7 em space. %^hspace
+
+\def \qqqqquad {\unbreakable\fiveemspace}               %~ Unbreakable 5 em space. %^hspace
+\def \qqqquad {\unbreakable\fouremspace}                %~ Unbreakable 4 em space. %^hspace
+\def \qqquad {\unbreakable\threeemspace}                %~ Unbreakable 3 em space. %^hspace
+\def \qquad {\unbreakable\twoemspace}                   %~ Unbreakable 2 em space. %^hspace
+\def \quad {\unbreakable\emspace}                       %~ Unbreakable 1 em space. %^hspace
+\def \nut {\unbreakable\enspace}                        %~ Unbreakable 1 en space. %^hspace
+
+%~ Unbreakable 1/3 em space.
+
+\def \;{\relax\if \mathmodep \mthickspace \else \unbreakable\thickspace \fi} %^hspace
+
+%~ Unbreakable 1/5 em space.
+
+\def \,{\relax\if \mathmodep \mthinspace \else \unbreakable\thinspace \fi}  %^hspace
+
+%~ Unbreakable negative 1/5 em space.
+
+\def \!{\relax\if \mathmodep \mnegthinspace \else \unbreakable\negthinspace\fi}  %^hspace
+
+\def \+{\unbreakable\hairspace}                         %~ Unbreakable 1/7 em space. %^hspace
+
+%~ Specified amount of unbreakable horizontal space
+%~ measured in hundredths of an em.
+
+\def \k #1;{%                                   hundredths-em; %^hspace
+  {\tdimena = .01em
+   \tdimena = #1\tdimena
+   \kern \tdimena}}
+
+%~ This command retains horizontal space at the beginning of a line.
+%~ Such space is normally discarded.
+
+\def \retain {\vrule height 0pt depth 0pt width 0pt\relax} %^hspace
+
+%~ This declaration causes spaces to be "obeyed," so that every space
+%~ in the source is relevent.
+
+\def \obeyspaces {%
+  \catcode`\ =\catactive}
+
+{\obeyspaces
+\global\let =\ %
+}
+
+%                       Space Factors
+%                       ----- -------
+
+
+% IniTeX sets the space factor code of uppercase letters to 999 so
+% periods after them will not end sentences.  That just gives people
+% one more rule to remember.
+
+  \sfcode`\A=1000 \sfcode`\B=1000 \sfcode`\C=1000 \sfcode`\D=1000
+  \sfcode`\E=1000 \sfcode`\F=1000 \sfcode`\G=1000 \sfcode`\H=1000
+  \sfcode`\I=1000 \sfcode`\J=1000 \sfcode`\K=1000 \sfcode`\L=1000
+  \sfcode`\M=1000 \sfcode`\N=1000 \sfcode`\O=1000 \sfcode`\P=1000
+  \sfcode`\Q=1000 \sfcode`\R=1000 \sfcode`\S=1000 \sfcode`\T=1000
+  \sfcode`\U=1000 \sfcode`\V=1000 \sfcode`\W=1000 \sfcode`\X=1000
+  \sfcode`\Y=1000 \sfcode`\Z=1000
+
+% A few characters should not affect the space factor.
+
+  \sfcode`\'=0
+  \sfcode`\)=0
+  \sfcode`\]=0
+
+
+\def \setsentencespacing #1{%                           {flag}
+  \if #1%
+    \sfcode`\. = 2250
+    \sfcode`\? = 2250
+    \sfcode`\! = 2250
+    \sfcode`\: = 2000
+  \else
+    \sfcode`\. = 1000
+    \sfcode`\? = 1000
+    \sfcode`\! = 1000
+    \sfcode`\: = 1000
+  \fi
+  \relax}
+
+%                       Numbers
+%                       -------
+
+
+\let \lcromannumeral = \romannumeral
+
+%~ This command formats an integer as uppercase Roman numerals.
+
+\def \ucromannumeral #1{%                               {number}
+  \uppercase\expandafter{\romannumeral#1}}
+
+%~ This command formats an integer as lowercase letters.
+
+\def \lcletter #1{%                                     {number}
+  \ifcase #1%
+    0\or a\or b\or c\or d\or e\or f\or g\or h\or i\or j\or k\or l\or m\or
+         n\or o\or p\or q\or r\or s\or t\or u\or v\or w\or x\or y\or z\else
+         \number#1\fi}
+
+%~ This command formats an integer as uppercase letters.
+
+\def \ucletter #1{%                                     {number}
+  \ifcase #1%
+    0\or A\or B\or C\or D\or E\or F\or G\or H\or I\or J\or K\or L\or M\or
+         N\or O\or P\or Q\or R\or S\or T\or U\or V\or W\or X\or Y\or Z\else
+         \number#1\fi}
+
+%                       Lines
+%                       -----
+
+
+\long\def \line #1{%                                    {text}
+  \if \vmodep
+    {\parfillskip = 0pt
+     \noindent #1\retain \par}%
+  \else
+    \retain #1\tl
+  \fi}
+
+\long\def \leftline         #1{\line{#1\hfil}}%          {text}
+\long\def \rightline        #1{\line{\hfil#1}}%          {text}
+\long\def \centerline       #1{\line{\hfil#1\hfil}}%     {text}
+\long\def \spreadline       #1#2{\line{{#1}\hfil{#2}}}%  {text1}{text2} 
+\long\def \centerspreadline #1#2#3{%
+  \line{\rlap{#1}\hfil #2\hfil \llap{#3}}}%              {text1}{text2}{text3}
+
+
+% This declaration causes line breaks to be "obeyed," so that each
+% results in a paragraph end.
+
+{\catcode`\^^M = \catactive%
+\gdef \obeylines {\catcode`\^^M = \active \let ^^M = \par}%
+}
+
+%                       Line Breaks
+%                       ---- ------
+
+
+\def \linebreak #1{%                            {penalty}
+  \penalty #1\relax}
+
+\def \tl {\break}
+
+\def \nl {%
+  \gluevaries{\znlvar}{\leftskip}%
+  \if \znlvar \tl \else \hfil \break \fi}
+
+\def \blankline {\ensurepar \nl}
+
+
+% These commands are used to tie text on one line.
+
+\def ~{\nobreak \ }                             % Unbreakable space (tie).
+
+\def \tie {\ensurepar \hbox}
+
+%                       Indentation
+%                       -----------
+
+
+% Note that this macro just sets \leftskip and \rightskip, and so
+% blows away any \parrag.
+
+\def \setindentation #1#2{%                     {left}{right}
+  \leftskip = #1\relax
+  \rightskip = #2\relax}
+
+
+\def \alterindentation #1#2{%                   {left-delta}{right-delta}
+  \leftskip = 1\leftskip
+  \advance \leftskip by #1\relax
+  \rightskip = 1\rightskip
+  \advance \rightskip by #2\relax}
+
+%                       Text Width
+%                       ---- -----
+
+
+% This command must be used AFTER the indentation is established with
+% \setindentation or \alterindentation.
+
+\def \settextwidth #1{%                                 {width}
+  \if \dimneqlp{#1}{\naturalwidth}%
+    \hsize = #1\relax
+    \advance \hsize by \leftskip
+    \advance \hsize by \rightskip
+  \fi}
+
+%                       Paragraph Raggedness
+%                       --------- ----------
+
+
+% This command must be used AFTER the indentation is established with
+% \setindentation or \alterindentation.
+
+\def \setparrag #1{%                                            {rag-dimen}
+  \gluevaries{\zrsvar}{\rightskip}%
+  \if \notp{\zrsvar}%
+    \tdimena = #1\relax
+    \advance \rightskip by 0pt plus \tdimena\relax
+  \fi}
+
+\zdeclareeveryvcontext{\setindentation{0pt}{0pt}\setparrag{0pt}}
+
+%                       Paragraph Shapes
+%                       --------- ------
+
+
+\definecount{\zshparct}{0}
+\definecount{\zshparrep}{0}
+\definedimen{\zshpari}{0pt}
+\definedimen{\zshparw}{0pt}
+
+
+\def \nshapepar #1{%                            {[*repeat1,]indent1,width1,...}
+  \if \emptyargp{#1}%
+    \error{empshape}{The argument to \string\shapepar cannot be empty}%
+  \fi
+  \gdef \zshpartoks {}%
+  \global\zshparct = 0
+  {\zshapeparc #1,\zmark}%
+  \parshape = \zshparct\zshpartoks\relax}
+
+\def \zshapeparc #1#2,#3\zmark{%                [*repeat],indent,...
+  \if \codeeqlp{#1}{*}%
+    \global\zshparrep = #2\relax
+    \def \znext {\zshapepare #3\zmark}%
+  \else
+    \global\zshparrep = 1
+    \def \znext {\zshapepare #1#2,#3\zmark}%
+  \fi
+  \znext}
+
+\def \zshapepare #1,#2,#3\zmark{%               indent,width,...
+  \zshapepard #1,\false,\zshpari\zmark
+  \global\zshpari = \tdimena
+  \zshapepard #2,\true,\zshparw\zmark
+  \global\zshparw = \tdimena
+  \loop
+    \if \posp{\zshparrep}%
+      \xdef \zshpartoks {\zshpartoks \space \the\zshpari \space \the\zshparw}%
+      \global\increment \zshparct
+      \global\decrement \zshparrep
+  \repeat
+  \if \emptyargp{#3}%
+    \let \znext = \relax
+  \else
+    \def \znext {\zshapeparc #3\zmark}%
+  \fi
+  \znext}
+
+\def \zshapepard #1#2,#3,#4\zmark{%             dimen1 dimen-rest,width?,prev
+  \if \codeeqlp{#1}{+}%
+    \calculate \tdimena = {#4,+,#2}%
+  \else\if \codeeqlp{#1}{-}%
+    \calculate \tdimena = {#4,-,#2}%
+  \else\if \andp{\codeeqlp{#1}{=}}{#3}%
+    \calculate \tdimena = {\hsize,-,\zshpari}%
+  \else
+    \tdimena = #1#2\relax
+    \if \dimeqlp{\tdimena}{\naturalwidth}%
+      \calculate \tdimena = {\hsize,-,\zshpari}%
+    \fi
+  \fi\fi\fi
+  \if #3%
+    %%% Do we want to adjust the width by \leftskip or \rightskip?
+  \fi}
+
+
+%%%\definecount{\zshparct}{0}
+\definedimen{\zshpard}{0pt}
+\definedimen{\zshpare}{0pt}
+
+
+\def \shapepar #1{%                             {indent1,width1,...}
+  \if \emptyargp{#1}%
+    \error{empshape}{The argument to \string\shapepar cannot be empty}%
+  \fi
+  \gdef \zshpartoks {}%
+  \global\zshparct = 0
+  {\zshapepara #1,\zmark}%
+  \parshape = \zshparct\zshpartoks\relax}
+
+\def \zshapepara #1,#2,#3\zmark{%               indent,width,...\zmark
+  \zshpard = #1\relax
+  \xdef \zshpartoks {\zshpartoks \space \the\zshpard}%
+  \zshpare = #2\relax
+  \if \dimeqlp{\zshpare}{\naturalwidth}%
+    \zshpare = \hsize
+    \advance \zshpare by -\zshpard
+  \else
+    \advance \zshpare by \leftskip
+    \advance \zshpare by \rightskip
+  \fi
+  \xdef \zshpartoks {\zshpartoks \space \the\zshpare}%
+  \global\increment \zshparct
+  \if \emptyargp{#3}%
+    \let \znext = \relax
+  \else
+    \def \znext {\zshapepara #3\zmark}%
+  \fi
+  \znext}
+
+
+\def \hangalign #1#2#3{%                        {indent}{text1}{text2} 
+  \endgraf
+  {\setbox \zboxa = \hbox{#2}%
+   \tdimena = \wd\zboxa
+   \advance \tdimena by #1\relax
+   \shapepar{#1,\naturalwidth,\tdimena,\naturalwidth}%
+   \noindent \box\zboxa #3\par}}
+
+\def \hindent #1{%                              {indent}
+  \noindent \hspace{#1}%
+  \ignorespaces}
+
+%                       Adjustments
+%                       -----------
+
+
+%~ This page overrides the number of lines in a paragraph. The argument
+%~ specifies the number of lines and should start with a plus or
+%~ minus sign. TeX does not guarantee the change.
+
+\def \overrideparlength #1{%                            {lines} %^page_makeup
+  \looseness = #1\relax}
+
+
+%~ This command is used in the middle of a paragraph, on a line by
+%~ itself, to make an adjustment
+%~ between two lines. A typical use is to force a page break:
+%~   \adjustpar{\fullpagebreak}
+%~ There is no need to put a percent sign (|%|) after the command.
+
+\long\def \adjustpar #1{%                               {command} %^page_makeup
+  \vadjust{#1}%
+  \ignorespaces}
+
+
+% This command is used to adjust the title of a chapter, section, etc.
+% The argument looks like `\loc{commands}\loc{commands}...'
+% where each \loc is:
+%   \body       To adjust the title in the body of the text.
+%   \mark       To adjust the title in the mark (running heads and feet).
+%   \toc        To adjust the title in the table of contents.
+
+\def \zadjloc {\body}   % Normally, \adjusttitle should adjust body.
+
+\def \adjusttitle #1{%                                  {\loc{commands}...}
+  {\def \body ##1{}%
+   \def \mark ##1{}%
+   \def \toc ##1{}%
+   \expandafter\let \zadjloc = \zadjtitleb
+   #1}}
+
+\def \zadjtitleb #1{%
+  #1%
+  \def \znext {#1}%
+  \if \tokeqlp{\znext}{\nl}%
+    \let \znext = \ignorespaces
+  \else
+    \let \znext = \relax
+  \fi
+  \znext}
+
+% These macros use \lspspace so they do the right thing while letterspacing.
+
+\def \titlenl {\adjusttitle{\body{\nl}}\lspspace}
+\def \titletl {\adjusttitle{\body{\tl}}\lspspace}
+\def \tocnl   {\adjusttitle{\toc{\nl}}\lspspace}
+\def \toctl   {\adjusttitle{\toc{\tl}}\lspspace}
+
+
+% These definitions are used by the new title adjustment scheme,
+% but need to be present even when it is not in use.
+
+\chardef \zadjtitlenone     = 0
+\chardef \zadjtitlebody     = 1
+\chardef \zadjtitlemark     = 2
+\chardef \zadjtitletoc      = 3
+\chardef \zadjtitleminitoc  = 4
+
+\definecount{\zadjtitle}{\zadjtitlebody}

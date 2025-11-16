@@ -1,0 +1,437 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Register Facilities
+%
+% Synopsis:  This module provides facilities for defining and manipulating
+%            TeX registers.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   13 August 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Register Definition
+%                       -------- ----------
+
+
+% The following constant specifies the number of the first insert register
+% set.  Such a set is composed of a count, dimen, skip, and box.
+
+\chardef \zfirstinsert = 245
+
+% Establish counters to keep track of the most recently allocated
+% registers.  The registers are initialized to the first available
+% register.
+
+\count10 =  20            % Count registers.
+\count11 =   0            % Dimen registers.
+\count12 =   0            % Skip registers.
+\count13 =   0            % Muskip registers.
+\count14 =   1            % Box registers (Plain TeX uses box 0).
+\count15 =   0            % Toks registers.
+\count16 =   0            % Read streams.
+\count17 =   0            % Write streams.
+\count18 =   0            % Math families.
+\count19 = \zfirstinsert  % Insertion register sets.
+
+
+% There is one macro for each type of register, used to allocate one.
+
+\def \definecount #1#2{%                                {\name}{initial}
+  \zalloc{\count}{10}{\zfirstinsert}{\countdef}{#1}%
+  #1 = #2}
+
+\def \definedimen #1#2{%                                {\name}{initial}
+  \zalloc{\dimen}{11}{\zfirstinsert}{\dimendef}{#1}%
+  #1 = #2}
+
+\def \defineskip #1#2{%                                 {\name}{initial}
+  \zalloc{\skip}{12}{\zfirstinsert}{\skipdef}{#1}%
+  #1 = #2}
+
+\def \definemuskip #1#2{%                               {\name}{initial}
+  \zalloc{\muskip}{13}{255}{\muskipdef}{#1}%  Muskip 255 is scratch.
+  #1 = #2}
+
+\def \definebox #1{%                                    {\name}
+  \zalloc{\box}{14}{\zfirstinsert}{\chardef}{#1}}
+
+\def \definetoks #1{%                                   {\name}
+  \zalloc{\toks}{15}{256}{\toksdef}{#1}%
+  #1 = {}}
+
+\def \defineread #1{%                                   {\name}
+  \zalloc{\read}{16}{16}{\chardef}{#1}}
+
+\def \definewrite #1{%                                  {\name}
+  \zalloc{\write}{17}{16}{\chardef}{#1}}
+
+% Families are not defined directly by the user, but via \definetypestyle.
+
+\def \zdeffam #1{%                                      {\name}
+  \if \lssp{\count18}{15}%
+    \zalloc{\fam}{18}{16}{\chardef}{#1}%
+  \else
+    \global\chardef #1=\count18
+  \fi}
+
+\def \defineinsert #1{%                                 {\name}
+  \zalloc{\insert}{19}{255}{\chardef}{#1}}  % Registers 255 are scratch.
+
+
+\def \zalloc #1#2#3#4#5{%       {type}{counter}{limit}{\def-er}{\name}
+  \if \eqlp{\count#2}{#3}%
+    \error{noregsleft}{All `\string#1' registers have been allocated}%
+  \fi
+  \if \definedp{#5}%
+    \error{dupreg}{The register `\string#5' is already defined}%
+  \fi
+  \global#4 #5=\count#2
+  \global\increment {\count#2}}
+
+%                       Register Statistics
+%                       -------- ----------
+
+
+{\catcode`\_ = \catactive
+
+\gdef \zregstats {%
+  {\def _{\space}%
+   \writelog{}%
+   \writelog{Register Statistics:}%
+   \writelog{}%
+   \writelog{Type_____Used / Total}%
+   \writelog{----_____------------}%
+   \zrsone{Count_}{10}{\zfirstinsert}{}%
+   \zrsone{Dimen_}{11}{\zfirstinsert}{}%
+   \zrsone{Skip__}{12}{\zfirstinsert}{}%
+   \zrsone{Muskip}{13}{255}{}%
+   \zrsone{Box___}{14}{\zfirstinsert}{}%
+   \zrsone{Toks__}{15}{256}{}%
+   \zrsone{Read__}{16}{16}{}%
+   \zrsone{Write_}{17}{16}{}%
+   \zrsone{Family}{18}{256}{(15 for math)}%
+   \zrsone{Insert}{19}{255}{(starts at \the\zfirstinsert)}%
+   \writelog{}}}
+
+\gdef \zrsone #1#2#3#4{%                {name}{counter}{ex-limit}{comment}
+  \tcounta = #3
+  \advance \tcounta by -1
+  \writelog{#1___\the\count#2 _/_\the\tcounta_#4}}
+
+} % \catcode
+
+%                       Constant Registers
+%                       -------- ---------
+
+
+\definecount{\maxcount}{2147483647}
+\definecount{\mincount}{-\maxcount}
+\zremovePlaindef \maxdimen
+\definedimen{\maxdimen}{16383.99999pt}
+\definedimen{\mindimen}{-\maxdimen}
+\definedimen{\naturalwidth}{\mindimen}
+
+\defineskip{\centerindent}{0pt plus 10000pt}
+\let \centering = \centerindent
+
+\defineskip{\normalparfillskip}{0pt plus 1fil}
+
+\definebox{\voidbox}    % Permanently void box register.
+
+%                       Temporary Internal Registers
+%                       --------- -------- ---------
+
+
+\definecount{\tcounta}{0}
+\definecount{\tcountb}{0}
+\definecount{\tcountc}{0}
+
+\definedimen{\tdimena}{0pt}
+\definedimen{\tdimenb}{0pt}
+\definedimen{\tdimenc}{0pt}
+\definedimen{\tdimend}{0pt}
+
+\defineskip{\zskipa}{0pt}
+\defineskip{\zskipb}{0pt}
+\defineskip{\zskipc}{0pt}
+
+\definemuskip{\zmuskipa}{0mu}
+\definemuskip{\zmuskipb}{0mu}
+\definemuskip{\zmuskipc}{0mu}
+
+\definebox{\zboxa}
+\definebox{\zboxb}
+\definebox{\zboxc}
+
+\definetoks{\ztoksa}
+\definetoks{\ztoksb}
+\definetoks{\ztoksc}
+
+\defineread{\zreada}
+
+\definewrite{\zwritea}
+
+%                       Manipulating Boxes
+%                       ------------ -----
+
+
+\def \shiftboxbaseline #1#2{%                           {\box}{amount}
+  {\tdimena = #2%
+   \tdimenb = \ht#1%
+   \advance \tdimenb by \tdimena
+   \ht#1= \tdimenb
+   \tdimenb = \dp#1%
+   \advance \tdimenb by -\tdimena
+   \dp#1= \tdimenb}}
+
+%                       Lists
+%                       -----
+
+
+% These macros support the manipulation of lists in the following format:
+%
+%   \:{<element-0>}\:{<element-1>}\: ...
+%
+% All lists are global!
+
+% We need two toks registers, which will be used just for lists.
+
+\definetoks{\zlta}
+\definetoks{\zltb}
+
+
+\def \setlist #1=#2{%                           \listname = {value}
+  \zlta = \expandafter{#2}%
+  \xdef #1{\the\zlta}}
+
+\long\def \append #1#2{%                        {item}{\list-name}
+  {\zlta = {\:{#1}}%
+   \zltb = \expandafter{#2}%
+   \xdef #2{\the\zltb\the\zlta}}}
+
+\long\def \appendlf #1#2{%                      {\list-name}{item}
+  {\zlta = {\:{#2}}%
+   \zltb = \expandafter{#1}%
+   \xdef #1{\the\zltb\the\zlta}}}
+
+\long\def \prepend #1#2{%                       {item}{\list-name}
+  {\zlta = {\:{#1}}%
+   \zltb = \expandafter{#2}%
+   \xdef #2{\the\zlta\the\zltb}}}
+
+\let \push = \prepend
+
+\def \pop #1#2{%                                {\return-macro}{\list-name}
+  \expandafter\zpop #2\zmark#1#2}
+
+\long\def \zpop \:#1#2\zmark#3#4{%
+  \def #3{#1}%
+  \gdef #4{#2}}
+
+\def \listtop #1#2{%                            {\return-macro}{\list-name}
+  \expandafter\zlisttop #2\zmark#1}
+
+\long\def \zlisttop \:#1#2\zmark#3{%
+  \def #3{#1}}
+
+\definecount{\zmapldepth}{0}
+
+\def \maplist #1#2{%                            {body}{\listname}
+  \increment \zmapldepth
+  \withname\let{\zmapl\romannumeral\zmapldepth}=\:%
+  \long\def \:##1{#1}%
+  #2%
+  \expandafter\let
+    \expandafter\:\csname zmapl\romannumeral\zmapldepth\endcsname
+  \decrement \zmapldepth}
+
+\def \maplistlf #1#2{%                          {\listname}{body}
+  \increment \zmapldepth
+  \withname\let{\zmapl\romannumeral\zmapldepth}=\:%
+  \long\def \:##1{#2}%
+  #1%
+  \expandafter\let
+    \expandafter\:\csname zmapl\romannumeral\zmapldepth\endcsname
+  \decrement \zmapldepth}
+
+\def \exitmaplist {\def \:##1{}}
+
+\def \listlength #1#2{%                         {\result-count}{\list}
+  #1= 0
+  \maplist{\increment #1}{#2}}
+
+\def \member #1#2#3{%                           {\result-flag}{item}{\list}
+  \setflag #1= \false
+  \maplist{\stringeql{#1}{##1}{#2}\if #1\exitmaplist \fi}
+          {#3}}
+
+\def \commalist #1#2{%                          {\result-name}{comma-list}
+  \setlist #1={}%
+  \expandafter\zcomma #2,\zmark#1}
+
+\def \zcomma #1,#2\zmark#3{%
+  \if \notp{\emptyargp{#1}}\append{#1}{#3}\fi
+  \if \notp{\emptyargp{#2}}%
+    \def \znext {\zcomma #2\zmark#3}%
+  \else
+    \let \znext = \relax
+  \fi
+  \znext}
+
+\def \inclusionlist #1#2#3{%            {\result}{item}{inclusion-list}
+  \zincla {#1}{#2}#3\zmark}
+
+\let \all = \relax
+\let \allbut = \relax
+\def \zallname {\all}
+\def \zallbutname {\allbut}
+
+\def \zincla #1#2#3#4\zmark{%           {\result}{item}{token1}{tokens...}
+  \def \znext {#3}%
+  \if \tokeqlp{\znext}{\zallname}%
+    \setflag #1= \true
+  \else \if \tokeqlp{\znext}{\zallbutname}%
+    \commalist{\zincllist}{#4}%
+    \member{#1}{#2}{\zincllist}%
+    \setflag #1= {\notp{#1}}%
+  \else
+    \commalist{\zincllist}{#3#4}%
+    \member{#1}{#2}{\zincllist}%
+  \fi\fi}
+
+%                       New Expression Evaluation
+%                       --- ---------- ----------
+
+
+% These macros provide a rudimentary expression evaluation facility.
+% The accumulator can be a count, dimen, or skip register. The expression
+% is in the form {operand0,op1,operand1,op2,operand2,...}.
+%
+% WARNING: The \register cannot be used in the expression except possibly
+%          as the first operand.
+
+
+\definedimen{\zcalct}{0pt}
+
+
+\def \calculate #1=#2{%                         \register = {expression}
+  \let \zaccum = #1%
+  \zcalca =,#2,;,,\zmark}
+
+\def \gcalculate #1=#2{%                        \register = {expression}
+  \let \zaccum = #1%
+  \zcalca =,#2,;,,\zmark
+  \global \zaccum = \zaccum}
+
+\def \zcalca #1,#2,#3\zmark{%
+  \def \znext{\zcalca #3\zmark}%
+       \if #1=\zaccum = #2%                             % Assignment
+  \else\if #1+\advance \zaccum #2%                      % Addition
+  \else\if #1-\advance \zaccum -#2%                     % Subtraction
+  \else\if #1*\multiply \zaccum #2%                     % Multiplication
+  \else\if #1/\divide \zaccum #2%                       % Division
+  \else\if #1N\if \dimlssp{#2}{\zaccum}\zaccum = #2\fi  % Minimum
+  \else\if #1P\divide \zaccum 100                       % Percentage
+              \expandafter\zaccum #2\zaccum
+  \else\if #1R\zcalct = #2%                             % Ratio
+              \divide \zcalct by 4096
+              \divide \zaccum by \zcalct
+              \multiply \zaccum by 16\relax
+  \else\if #1S\zaccum = \thefactor#2\zaccum             % Scale
+  \else\if #1X\if \dimgtrp{#2}{\zaccum}\zaccum = #2\fi  % Maximum
+  \else\if #1;\let \znext = \relax                      % Done
+  \else
+    \error{invoper}{Invalid operator `#1' in expression}%
+  \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+  \znext}
+
+%                       Calculating Values
+%                       ----------- ------
+
+%%%\defineskip{\zcaccum}{0pt}
+%%%\setflag \zexprpos = \true
+%%%
+%%%\def \calculate #1=#2{%                         {\reg} = {expression}
+%%%  \commalist{\zexprlist}{#2}%
+%%%  \zcaccum = 0pt
+%%%  \def \zoper {+}%
+%%%  \setflag \zexprpos = \true
+%%%  \maplist{\zcalc{##1}}{\zexprlist}%
+%%%  #1=\zcaccum}
+%%%
+%%%\def \gcalculate #1=#2{%                        {\reg} = {expression}
+%%%  \commalist{\zexprlist}{#2}%
+%%%  \zcaccum = 0pt
+%%%  \def \zoper {+}%
+%%%  \setflag \zexprpos = \true
+%%%          \maplist{\zcalc{##1}}{\zexprlist}%
+%%%  \global #1=\zcaccum}
+%%%
+%%%\def \zcalc #1{%                                {token}
+%%%  \if \zexprpos
+%%%    \zcalcb{#1}%
+%%%    \setflag \zexprpos = \false
+%%%  \else
+%%%    \def \zoper {#1}%
+%%%    \setflag \zexprpos = \true
+%%%  \fi}
+%%%
+%%%\def \zcalcb #1{%                               {operand}
+%%%  \if \codeeqlp{\zoper}{+}%                     % Add.
+%%%    \advance \zcaccum by #1%
+%%%  \else\if \codeeqlp{\zoper}{-}%                % Subtract.
+%%%    \advance \zcaccum by -#1%
+%%%  \else\if \codeeqlp{\zoper}{*}%                % Multiply.
+%%%    \multiply \zcaccum by #1%
+%%%  \else\if \codeeqlp{\zoper}{/}%                % Divide.
+%%%    \divide \zcaccum by #1%
+%%%  \else\if \codeeqlp{\zoper}{P}%
+%%%     \divide \zcaccum by 100
+%%%     \expandafter \zcaccum #1\zcaccum
+%%%  \else\if \codeeqlp{\zoper}{R}%                % Compute ratio (in points).
+%%%    \zcalct = #1%
+%%%    \divide \zcalct by 4096
+%%%    \divide \zcaccum by \zcalct
+%%%    \multiply \zcaccum by 16\relax
+%%%  \else\if \codeeqlp{\zoper}{S}%                % Scale (in points).
+%%%    \zcaccum = \thefactor#1\zcaccum
+%%%  \else
+%%%    \error{invoper}{Invalid operator `\zoper' in expression}%
+%%%  \fi\fi\fi\fi\fi\fi\fi}
+
+%                       The Vertical Context
+%                       --- -------- -------
+
+
+% This is in here because we need registers.  Otherwise it would be
+% in ZZTEX.TEX
+
+
+\definecount{\zvcontextdepth}{0}
+
+\definetoks{\zeveryvcontext}
+\global\zeveryvcontext = {}
+
+
+\def \zdeclareeveryvcontext #1{%
+  \global\zeveryvcontext = \expandafter{\the\zeveryvcontext #1}}
+
+\def \zpushvcontext {%
+  \global\increment \zvcontextdepth
+  \withname\gdef{\zvcontextstack\romannumeral\zvcontextdepth}{}%
+  \the\zeveryvcontext}
+
+\def \zpopvcontext {%
+  {\globaldefs = 1\relax
+   \name{\zvcontextstack\romannumeral\zvcontextdepth}}%
+  \global\decrement \zvcontextdepth}
+
+\def \zsavevcontext #1{%
+  {\ztoksa = \expandafterthrice{%
+               \name{\zvcontextstack\romannumeral\zvcontextdepth}}%
+   \withname\xdef{\zvcontextstack\romannumeral\zvcontextdepth}%
+     {\the\ztoksa #1}}}

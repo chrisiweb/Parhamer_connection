@@ -1,0 +1,4 @@
+.stix-mathex
+htfcss:  stix-mathex-bold  font-weight: bold; font-family: 'STIXMathExtensions', serif;
+
+

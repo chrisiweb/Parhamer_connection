@@ -1,0 +1,170 @@
+\input ptb-utils
+
+\_checkloaded{key-value}
+
+\def\novalue{\novalue}
+
+\def\_update_lastkeys#1#2#3{%
+    \_xp\_xp\_xp\def\_xp\_xp\_xp#1\_xp\_xp\_xp{\_xp#1\_xp{\_xp{\_id#2}{#3}}}%
+}
+
+% #1: lastkeys, #2: key name, #3: key value
+\def\_vanilla_mapkey#1#2#3{%
+    \_xp\def\csname key@\_id#2\endcsname{#3}%
+    \_update_lastkeys{#1}{#2}{#3}%
+}
+
+\def\__mapkeys#1#2#3=#4=#5,{%
+    \def\_temp{#3}%
+    \ifx\_nul\_temp%
+    \else%
+        \_xp#1\_xp{\_xp#2\_xp}\_xp{\_id#3}{#4}%
+        \_afterfi{\_mapkeys{#1}{#2}}%
+    \fi%
+}
+
+\def\_mapkeys#1#2#3,{%
+    \__mapkeys{#1}{#2}#3==,%
+}
+
+% #1: setter, #2: lastkeys, #3: map
+\def\_mapkeys_with_setter#1#2#3{%
+    \def#2{}%
+    \def\_temp{#3}%
+    \ifx\_temp\empty%
+    \else%
+        \_afterfi{\_mapkeys{#1}{#2}#3,\_nul=,}%
+    \fi%
+}
+
+\def\getvalue#1{%
+    \csname key@#1\endcsname%
+}
+
+\def\__keyexists#1#2#3#4{%
+    \bgroup%
+    \def\_regA{#1}\def\_regB{#3}%
+    \ifx\_regA\_regB%
+        \egroup\def#2{#4}%
+    \else%
+        \egroup%
+    \fi%
+}
+
+\def\_keyexists#1#2#3{%
+    \ifx\_nul#3%
+    \else%
+        \__keyexists{#1}{#2}#3%
+        \_afterfi{\_keyexists{#1}{#2}}%
+    \fi%
+}
+
+\def\keyexists#1#2#3{%
+    \let#2=\_nul%
+    \def\_temp{\_keyexists{#1}{#2}}%
+    \_xp\_temp#3\_nul%
+}
+
+\def\ifkeyexists#1{%
+    \unless\ifx\_nul#1%
+}
+
+\def\_letnamedmacro#1#2{%
+    \_xp\let\csname #1\endcsname=#2%
+}
+
+\def\___setdefault#1#2{%
+    \def\_temp{#2}%
+    \unless\ifx\_temp\empty%
+        \_mapkeys_with_setter\_vanilla_mapkey\_settings{#2}%
+        \keyexists{default}\_keydefault\_settings%
+        \unless\ifx\_nul\_keydefault%
+            \def\_temp{\_xp\def\csname key@#1\endcsname}%
+            \_xp\_temp\_xp{\_keydefault}%
+            \keyexists{name}\_keyname\_settings%
+            \unless\ifx\_nul\_keyname%
+                \_xp\_xp\_xp\_letnamedmacro\_xp\_xp\_xp{\_xp\_keyname\_xp}\_xp{\csname key@#1\endcsname}%
+                %\_xp\_xp\_xp\let\_xp\_keyname\csname key@#1\endcsname%
+            \fi%
+        \else%
+            \keyexists{required}\_keyrequired\_settings%
+            \unless\ifx\_nul\_keyrequired%
+                \_xp\def\_xp\_requiredkeys\_xp{\_requiredkeys{#1}}%
+                \_xp\let\csname required@#1\endcsname=\_nul%
+            \fi%
+        \fi%
+    \fi%
+}
+
+\def\__setdefault#1{%
+    \ifx\_nul#1%
+    \else%
+        \___setdefault#1%
+        \_xp\__setdefault%
+    \fi%
+}
+
+\def\_setdefaults#1{%
+    \def\_requiredkeys{}%
+    \__setdefault#1\_nul%
+}
+
+\def\_vardef_mapkey#1#2#3{%
+    \def\_tempdef{\_xp\_vardef\csname key@\_id#2\endcsname}%
+    \_xp\_tempdef\_xp{\_varmap{#3}}%
+    \_update_lastkeys{#1}{#2}{#3}%
+}
+
+\def\_protected_mapkey#1#2#3{%
+    \keyexists{#2}\_keysettings\_keymappings%
+    \unless\ifx\_nul\_keysettings%
+        \let\_varmap=\_id%
+        \def\_vardef{\def}%
+        \let\_keyname=\_nul%
+        \unless\ifx\_keysettings\empty%
+            \_xp\_mapkeys_with_setter\_xp\_vanilla_mapkey\_xp\_settings\_xp{\_keysettings}%
+            \keyexists{mapping}\_varmap\_settings%
+            \ifx\_nul\_varmap%
+                \let\_varmap=\_id%
+            \fi%
+            \keyexists{definition}\_vardef\_settings%
+            \ifx\_nul\_vardef%
+                \def\_vardef{\def}%
+            \fi%
+            \keyexists{name}\_keyname\_settings%
+        \fi%
+        \_vardef_mapkey{#1}{#2}{#3}%
+        \_xp\let\csname required@#2\endcsname=\undefined%
+        \unless\ifx\_nul\_keyname%
+            %\_xp\_xp\_xp\let\_xp\_keyname\_xp=\csname key@#2\endcsname%
+            \_xp\_xp\_xp\_letnamedmacro\_xp\_xp\_xp{\_xp\_keyname\_xp}\_xp{\csname key@#2\endcsname}%
+        \fi%
+    \else%
+        \errhelp={Key `#2' supplied, but not present in key list}%
+        \errmessage{Invalid key supplied}%
+    \fi%
+}
+
+\def\_check_required#1{%
+    \def\_temp{#1}%
+    \unless\ifx\_nul\_temp%
+        \ifcsname required@#1\endcsname%
+            \errhelp={Key `#1' was required by the key list, but not supplied}%
+            \errmessage{Required key not defined}%
+        \fi%
+        \_xp\_check_required%
+    \fi%
+}
+
+
+\def\_check_required_supplied{%
+    \_xp\_check_required\_requiredkeys\_nul%
+}
+
+\def\mapkeys#1#2{%
+    \_mapkeys_with_setter\_vanilla_mapkey\_keymappings{#1}%
+    \_xp\_setdefaults\_xp{\_keymappings}%
+    \_mapkeys_with_setter\_protected_mapkey\lastkeys{#2}%
+    \_check_required_supplied%
+}
+

@@ -1,0 +1,128 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Hyphenation Facilities
+%
+% Synopsis:  This module provides the extra facilities for dealing with
+%            hyphenation and related matters.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   6 October 1990
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Hyphenating Words
+%                       ----------- -----
+
+
+\def \*{%
+  \discretionary{}{}{}}
+
+\def \hyphen{%
+  \nobreak -\zposthyph{2}}
+
+\def \slash {/\zposthyph{1}}
+
+
+% These macros are used in ZZHMODE to allow special characters to hyphenate.
+
+\def \zprehyph #1{%                                     {\parameter}
+  \ifcase #1%
+    \relax
+  \or
+    \relax
+  \else
+    \nobreak
+  \fi}
+
+\def \zposthyph #1{%                                    {\parameter}
+  \ifcase #1%
+    \relax
+  \or
+    \discretionary{}{}{}%
+  \else
+    \penalty \exhyphenpenalty \hskip 0pt\relax
+  \fi}
+
+%                       Displaying Hyphens
+%                       ---------- -------
+
+
+\def \showhyphens #1{%
+  \setbox\zboxa = \vbox{%
+    \hsize = \maxdimen
+    \parfillskip = 0pt
+    \pretolerance = -1
+    \tolerance = -1
+    \hbadness = 0pt
+    \showboxdepth = 0
+    \ #1}}
+
+%                       Hyphenation Exceptions
+%                       ----------- ----------
+
+
+\hyphenation{%
+ acad-e-my a-mi-no anag-no-sto-pou-los
+ an-a-lyse an-a-lysed an-a-lys-es
+ an-a-lys-ing analy-ses analy-sis a-no-ny-mi-ty
+ ap-pen-dix apple ap-pli-ca-tion ar-chive ar-chiv-ing ar-chiv-ist
+ arity aspect assume asyn-chro-nous asyn-chro-nous-ly
+ au-to-mat-ic au-to-ma-tion au-ton-o-mous
+ back-gam-mon berth-ing bio-che-mist bio-che-mists bio-med-i-cine
+ bio-poly-mer bio-poly-mers bit-map book-reader brows-ers
+ buff-er buff-er-ed buff-er-ing
+ cat-a-stroph-ic chi-ca-go ci-gar cig-a-rette cig-a-rettes
+ co-in-cide co-in-cides
+ co-iso-tro-pic col-umns com-pen-dium cor-vette cor-vettes
+ cross-over crypto-sys-tem crypto-sys-tems cur-vi-linear cy-to-cha-la-sin
+ data-base data-bases data-set data-sets date-stamp de-mon-strate de-mon-strates
+ der-i-va-tion dijk-stra di-lem-ma dis-tinc-tive
+ dump-ling dump-lings
+ eco-nom-ic eco-nom-ics econ-o-mies e-con-o-mist e-con-o-mists ec-ua-dor
+ ei-gen-space ei-gen-spaces elec-tro-dif-fu-sion en-gland
+ en-tre-pre-neur en-tre-pre-neurs en-tre-pre-neur-ship
+ e-pis-te-mol-o-gy e-pis-te-mo-log-i-cal
+ fashion fi-bo-nac-ci frame-work
+ geo-graph-ic ge-om-e-try geo-stro-phic graph-ics
+ he-mo-glo-bin hexa-dec-i-mal horse-rad-ish
+ ide-ol-o-gy ide-ol-o-gies ide-ol-o-gize idiom im-ped-ance im-plic-it
+ keynes-ian
+ leaf-lets li-chen life-style light-weight li-quid-i-ty li-thog-ra-phy lon-gi-tu-di-nal
+ look-ahead
+ ma-caque
+ mac-ro-eco-nom-ic mac-ro-eco-nom-ics mac-ro-eco-nom-ist mac-ro-eco-nom-ists
+ mac-ro-mol-e-cule mac-ro-mol-e-cules
+ man-u-script man-u-scripts mar-gin-al mas-sa-chu-setts
+ me-chan-i-cal me-di-um me-di-ter-ra-ne-an meta-bolic me-tab-o-lism
+ meta-lin-guis-tic met-a-phor met-a-phors met-a-phor-ic met-a-phor-i-cal
+ meth-od-ol-o-gy
+ mic-ro-eco-nom-ic mic-ro-eco-nom-ics mic-ro-eco-nom-ist mic-ro-eco-nom-ists
+ mini-tab mne-mon-ic meth-od-o-log-i-cal mol-ecule mol-ecules
+ mono-chrome mono-pole mono-poles mo-nop-o-ly
+ mono-sac-cha-rides mul-ti-pli-ca-tion mul-ti-pli-ca-tive
+ name-space noisi-ness noisy none-the-less not-with-stand-ing
+ often ol-i-gop-o-ly ol-i-gop-o-list-ic olym-pi-ad olym-pi-ads
+ om-e-lette om-e-lettes
+ op-er-and op-er-ands oper-ator over-view
+ paper pa-rab-o-la par-a-digm para-mag-ne-tic pa-ram-e-trized
+ patho-gen patho-gen-ic patho-gens people pe-ri-od per-suad-ed per-suad-ing
+ phoe-nix pho-neme pho-to-graphs pho-to-mi-cro-graph phys-i-co-chem-i-cal 
+ phys-ics piano pic-to-graph pic-to-graph pic-to-graph-ic poly-sac-cha-rides
+ Post-Script pov-er-ty pow-er prayer pre-dimmed pref-er-a-ble pref-er-a-bly
+ pri-meval pro-cess pro-ces-sor pro-cure-ment
+ pro-gram-ma-ble prop-o-si-tion py-thag-o-re-an
+ qua-drat-ic qua-lia
+ ra-tional real-ly rec-tan-gu-lar re-pack-age re-pack-aged rep-er-toire
+ re-start re-start-ed re-start-able
+ sa-li-ent sched-ul-ing sche-nec-ta-dy scoun-drel scoun-drels ser-geant ser-geants
+ sha-pir-o small-talk so-lo-ist spec-tros-co-py stag-horn ste-reo-spe-cif-ic
+ sto-chas-tic syn-chro-nous syn-chro-nous-ly
+ table tem-po-rar-ily theo-rem time-stamp time-stamps to-ma-to
+ un-pre-dict-able uti-li-za-tion
+ water wave-guide wave-guides weap-on weap-ons which-ever white-space wild-life
+ woman women woman-kind
+ xe-rog-ra-phy
+}

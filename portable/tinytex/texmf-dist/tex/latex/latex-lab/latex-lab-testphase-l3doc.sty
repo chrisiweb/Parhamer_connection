@@ -1,0 +1,393 @@
+%%
+%% This is file `latex-lab-testphase-l3doc.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-l3doc-tagging.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-l3doc-tagging.dtx
+\def\ltlabdoctaggingdate{2025-06-09}
+\def\ltlabdoctaggingversion{0.80c}
+
+\ProvidesExplPackage {latex-lab-testphase-l3doc} {2025-05-07} {0.80b}
+  { Tagging Support for the l3doc class }
+\IfClassLoadedF{l3doc}
+ {\PackageError{latex-lab-testphase-l3doc}{This~package~requires~the~l3doc~class!}{}}
+\IfDocumentMetadataF
+ {\PackageError{latex-lab-testphase-l3doc}{This~package~requires~the~PDF~management!}{}}
+
+\tagpdfsetup
+ {
+  role/new-tag=function/Sect,
+  role/new-tag=functionnames/Caption,
+  role/new-tag=functionname/Code,
+  role/new-tag=functionnamepart/Span,
+  role/new-tag=syntax/Sect,
+  role/new-tag=function-description/Div,
+  role/new-tag=macro/Sect,
+  role/new-tag=macronames/Caption,
+  role/new-tag=macroname/Span,
+  role/new-tag=variable/Sect,
+  role/new-tag=variablenames/Caption,
+  role/new-tag=variablename/Span,
+  role/new-tag=codelinenum/Span,
+  role/new-tag=part/H1
+ }
+\tl_new:N\l__codedoc_current_names_struct_tl
+\seq_new:N\g__codedoc_macroname_structnum_seq
+\cs_set_protected:Npn \__codedoc_function_typeset_start:
+  {
+    \par \bigskip
+    \tagstructbegin{tag=function}
+    \tagpdfparaOff
+    \noindent
+  }
+\cs_set_protected:Npn \__codedoc_typeset_functions:
+  { %
+    \small\ttfamily
+    \__codedoc_target:
+    \Hy@MakeCurrentHref { HD. \int_use:N \c@HD@hypercount }
+    \tagstructbegin{tag=functionnames}
+    \tagmcbegin{}
+    \tagpdfsetup{table/tagging=div}
+    \tl_set:Nn\l__tbl_rowtag_tl   {functionname}
+    \tl_set:Nn\l__tbl_celltag_tl   {functionnamepart}
+    \begin{tabular} [t] { @{} l @{} >{\hspace{\tabcolsep}} r @{} }
+      \toprule
+      \__codedoc_function_extra_labels:
+      \__codedoc_names_typeset:
+      \__codedoc_typeset_dates:
+      \bottomrule
+    \end{tabular}
+    \tagmcend
+    \tagstructend
+    \normalfont\normalsize\par
+  }
+\cs_set_protected:Npn \__codedoc_function_descr_start:w
+  {
+    \vcoffin_set:Nnw \l__codedoc_descr_coffin { \textwidth }
+     \tagpdfparaOn
+     \tagstructbegin{tag=function-description}
+     \tl_set:Ne\l__codedoc_current_names_struct_tl{\tag_get:n{struct_num}}
+     \noindent \ignorespaces
+  }
+\cs_set_protected:Npn \__codedoc_function_typeset_stop:
+  {
+    \par
+    \tagstructend % function-description
+    \tagstructend % function
+    \dim_set:Nn \prevdepth { \coffin_dp:N \l__codedoc_descr_coffin }
+    \allowbreak
+  }
+\cs_set_protected:Npn \__codedoc_syntax:w
+  {
+    \box_if_empty:NF \g__codedoc_syntax_box
+      { \msg_error:nn { l3doc } { multiple-syntax } }
+    \dim_set:Nn \l__codedoc_syntax_dim
+      {
+        \textwidth
+        \bool_if:NT \l__codedoc_long_name_bool
+          { + \marginparwidth - \l__codedoc_trial_width_dim }
+      }
+    \tag_mc_end_push:
+    \hbox_gset:Nw \g__codedoc_syntax_box
+      \tl_if_empty:NTF\l__codedoc_current_names_struct_tl
+       {
+         \tagstructbegin{tag=syntax}
+       }
+       {
+         \tagstructbegin{tag=syntax,firstkid,parent=\l__codedoc_current_names_struct_tl}
+       }
+      \small \ttfamily
+      \tagpdfsetup{table/tagging=false}
+      \tagpdfparaOff
+      \arrayrulecolor{white}
+      \begin{tabular} { @{} p{\l__codedoc_syntax_dim} @{} }
+        \toprule
+        \begin{minipage}[t]{\l__codedoc_syntax_dim}
+          \raggedright
+          \obeyspaces
+          \obeylines
+  }
+\cs_set_protected:Npn \__codedoc_syntax_end:
+  {
+       \end{minipage}
+      \end{tabular}
+      \arrayrulecolor{black}
+    \tagstructend
+    \hbox_gset_end:
+    \tag_mc_begin_pop:n{}
+    \bool_if:NF \l__codedoc_in_function_bool
+      {
+        \begin{quote}
+          \mode_leave_vertical:
+          \box_use_drop:N \g__codedoc_syntax_box
+        \end{quote}
+      }
+  }
+\cs_set_protected:Npn \__codedoc_macro_dump:
+  {
+    \int_compare:nNnF{\l__codedoc_nested_macro_int}>{1}
+     {
+       \begin{displayblock} [tag-name=macro,beginsep=\MacroTopsep]
+       \tagstructbegin{tag=macronames}
+       \tl_set:Ne \l__codedoc_current_names_struct_tl {\tag_get:n{struct_num}}
+       \seq_map_inline:Nn \g__codedoc_macroname_structnum_seq
+         {\tag_struct_use_num:n {##1}}
+       \seq_gclear:N \g__codedoc_macroname_structnum_seq
+       \tagstructend
+     }
+   \noindent\llap
+          { \tagmcend
+            \hbox_unpack_drop:N \l__codedoc_macro_index_box
+            \vtop to \baselineskip
+              {
+                \vbox_unpack_drop:N \l__codedoc_macro_box
+                \vss
+              }
+            \hspace{\labelsep}
+            \tagmcbegin{}
+          }
+   }
+\cs_set_protected:Npn \__codedoc_macro_typeset_one:nN #1#2
+  {
+    \tag_mc_end_push:
+    \vbox_set:Nn \l__codedoc_macro_box
+      {
+        \vbox_unpack_drop:N \l__codedoc_macro_box
+        \int_compare:nNnTF { \l__codedoc_nested_macro_int } = { 1 }
+         {
+           \tagstructbegin{tag=macroname,stash}
+            \seq_gput_right:Ne
+             \g__codedoc_macroname_structnum_seq{\tag_get:n{struct_num}}
+         }
+         {
+           \tagstructbegin{tag=macroname,parent=\l__codedoc_current_names_struct_tl}
+         }
+        \tagmcbegin{}
+        \hbox { \llap { \__codedoc_print_macroname:nN {#1} #2
+            \MacroFont \
+        } }
+        \tagmcend
+        \tagstructend
+      }
+    \tag_mc_begin_pop:n{}
+    \int_incr:N \l__codedoc_macro_int
+  }
+\cs_set_protected:Npn \__codedoc_macro_reset:
+  {
+    \tl_set:Nn \l__codedoc_override_module_tl { \q_no_value }
+    \ignorespaces
+  }
+\cs_set_protected:Npn \__codedoc_macro_end:
+  {
+    \__codedoc_macro_end_check_tested:
+    \int_compare:nNnT \l__codedoc_nested_macro_int = 1
+      {
+        \par \__codedoc_macro_end_style:n { \__codedoc_print_end_definition: }
+        \end{displayblock}
+      }
+  }
+\def\legacymacrocodesetup{%
+  \macro@font
+  \blank@linefalse \def\par{\ifblank@line
+                             \leavevmode \else \fi
+                             \blank@linetrue{\@@par}
+                             \penalty\interlinepenalty}
+   \obeylines
+   \@noligs
+   \let\do\@makeother \dospecials
+   \global\@newlistfalse
+   \global\@minipagefalse
+   \ifcodeline@index
+
+     \everypar{\global\advance\c@CodelineNo\@ne
+               \llap{\tagmcend\tagstructbegin{tag=codelinenum}
+               \tagmcbegin{}
+               \theCodelineNo\pdffakespace
+               \tagmcend\tagstructend
+               \tagmcbegin{}%
+               \ }%
+               \check@module}%
+   \else \everypar{\check@module}%
+   \fi
+   \tagtool{paratag=codeline}% check tagging
+   }
+\DeclareInstance{blockenv}{macrocode}{display}
+{
+  name           = macrocode,
+  tag-name       = verbatim,
+  tag-attr-class      = ,
+  tagging-recipe = standard,
+  inner-level-counter  = ,
+  increment-level = false,
+  setup-code     = ,
+  block-instance = verbatimblock ,
+  inner-instance = ,
+  final-code     = \legacymacrocodesetup ,
+  para-instance  = justify,
+  tagging-suppress-paras= true
+}
+\RenewDocumentEnvironment{macrocode}{!O{}}
+  {\UseInstance{blockenv}{macrocode}
+    {beginpenalty=\predisplaypenalty,
+     begin-skip=\MacrocodeTopsep,
+     leftmargin=\MacroIndent,
+     parindent=0pt,#1}%
+    \@setupverbinvisiblespace
+    \init@crossref
+    \frenchspacing \@vobeyspaces
+    \xmacro@code
+  }
+  {
+   \ifpm@module \endgroup \pm@modulefalse \fi
+   \everypar{}
+   \endblockenv
+   \close@crossref
+  }
+\long\def\@doc@env@#1#2#3{%
+   \tagpdfsetup{role/new-tag=#2/Sect}
+   \int_incr:N\l__codedoc_nested_macro_int
+   \int_compare:nNnF{\l__codedoc_nested_macro_int}>{1}
+    {\UseInstance{blockenv}{displayblock}
+     {level-increase=false,tag-name=#2,beginsep=\MacroTopsep}
+    \tagstructbegin{tag=macronames}
+    \tl_set:Ne \l__codedoc_current_names_struct_tl {\tag_get:n{struct_num}}
+    \tagstructend
+    }
+  \edef\saved@macroname{\string#3}%
+    \if #1%
+      \edef\saved@indexname{\expandafter\@gobble\saved@macroname}%
+      \expandafter\ifx
+                  \csname Code#2Index\endcsname
+                  \CodeMacroIndex
+      \else
+        \record@index@type@save
+          {\saved@indexname}{#2}%
+      \fi
+    \else
+      \let\saved@indexname\saved@macroname
+    \fi
+    \def\makelabel##1{\noindent\llap{
+      \tagmcend
+      \tagstructbegin{tag=macroname,parent=\l__codedoc_current_names_struct_tl}
+      \tagmcbegin{}
+      ##1\hspace{\itemsep}
+      \tagmcend
+      \tagstructend
+      \tagmcbegin{}
+      }}%
+    \int_compare:nNnTF{\l__codedoc_nested_macro_int}>{1}
+     {
+      \let\@tempa\@empty
+      \count@\macro@cnt
+      \loop\ifnum\count@>\z@
+        \edef\@tempa{\@tempa\hbox{\strut}}\advance\count@\m@ne
+      \repeat
+      \edef\makelabel##1{\noindent\llap{
+      \tagmcend
+      \tagstructbegin{tag=macroname,parent=\l__codedoc_current_names_struct_tl}
+      \tagmcbegin{}
+      \vtop to\baselineskip{\@tempa\hbox{##1\kern\labelsep}\vss}
+      \tagmcend
+      \tagstructend
+      \tagmcbegin{}
+      }}%
+      \advance\macro@cnt\@ne
+     }
+     { \macro@cnt\@ne }
+    \ifdoc@noprint
+    \else
+      \edef\@tempa{%
+        \noexpand\makelabel{
+        \noexpand\doc@providetarget
+        \noexpand\strut
+        \noexpand\@nameuse{Print#2Name}{\saved@macroname}}}%
+      \@tempa
+    \fi
+    \ifdoc@noindex\else
+      \global\advance\c@CodelineNo\@ne
+      \csname SpecialMain#2Index\expandafter\endcsname
+        \expandafter{\saved@macroname}\nobreak
+      \global\advance\c@CodelineNo\m@ne
+    \fi
+    \if#1\expandafter\DoNotIndex \expandafter {\saved@macroname}\fi
+    \ignorespaces}
+\def\doc@createenv#1#2#3{%
+  \@namedef{#3}{%
+    \@ifnextchar[%]
+    {\doc@env{#1}{#2}}{\doc@env{#1}{#2}[]}}%
+  \@namedef{end#3}{\endblockenv}%
+}
+\RenewDocElement[macrolike = false ,
+                idxtype   = env.  ,
+                idxgroup  = environments ,
+                printtype = \textit{env.}
+               ]{Env}{environment}
+\cs_if_exist:NT \__tag_patch_maketitle:
+ {
+   \cs_set_eq:NN \maketitle \__tag_patch_maketitle:
+ }
+
+\cs_gset:Npn \l@section #1#2
+  {
+    \ifnum \c@tocdepth >\z@
+      \addpenalty\@secpenalty
+      \addvspace{1.0em \@plus\p@}
+      \setlength\@tempdima{2.5em}  % was 1.5em
+      \begingroup
+        \parindent \z@ \rightskip \@pnumwidth
+        \parfillskip -\@pnumwidth
+        \leavevmode \bfseries
+        \advance\leftskip\@tempdima
+        \hskip -\leftskip
+        \UseHookWithArguments{contentsline/text/before}{4}
+           {\toclevel@section}{#1}{#2}{\@contentsline@destination}%
+        \csname contentsline@text@1@format\endcsname{#1}
+        \UseHookWithArguments{contentsline/text/after}{4}
+           {\toclevel@chapter}{#1}{#2}{\@contentsline@destination}%
+        \nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss
+        \UseHookWithArguments{contentsline/page/before}{4}
+        {\toclevel@section}{#1}{#2}{\@contentsline@destination}%
+        #2
+        \UseHookWithArguments{contentsline/page/after}{4}
+        {\toclevel@section}{#1}{#2}{\@contentsline@destination}%
+        }\par
+      \endgroup
+    \fi
+  }
+\AtBeginDocument
+  {
+    \cs_gset_eq:NN \verbatim \Verbatim
+    \cs_gset_eq:NN \endverbatim \endVerbatim
+  }
+\endinput
+%%
+%% End of file `latex-lab-testphase-l3doc.sty'.

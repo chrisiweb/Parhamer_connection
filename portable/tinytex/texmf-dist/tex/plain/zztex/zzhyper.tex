@@ -1,0 +1,185 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    PDF Hyperlink Facility
+%
+% Synopsis:  This module provides facilities for creating PDF hyperlinks
+%            in the document.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   12 March 2014
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Control Hyperlinking
+%                       ------- ------------
+
+
+% If hyperlinking is turned off, then we also clear the button color.
+
+\def \setPDFhyperlinks #1{%
+  \global\setflag \PDFhyperlinks = #1\relax
+  \if \notp{#1}\PDFbuttoncolor = {}\fi}
+
+%                       Hyperlink Marks
+%                       --------- -----
+
+
+% This macro generates a hyperlink mark that can be used as the target
+% of a button.
+
+\def \PDFmark #1{%
+  \if \PDFhyperlinks
+    \special{mark: #1}%
+    \if \vmodep \repeatpenalty \fi      % In case glue follows \special.
+  \fi}
+
+%                       Hyperlink Buttons
+%                       --------- -------
+
+
+\def \pagebutton #1#2{%                                         {folio}{text}
+  \if \PDFhyperlinks
+    \ztextbutton{P:#1}{#2}%
+    \if \emptytoksp{\PDFbuttoncolor}%
+      #2%
+    \else
+      \colortext{\the\PDFbuttoncolor}{#2}%
+    \fi
+  \else
+    #2%
+  \fi}
+
+\def \tagbutton #1#2{%                                          {tag}{text}
+  \if \PDFhyperlinks
+    \ztextbutton{T:#1}{#2}%
+    \if \emptytoksp{\PDFbuttoncolor}%
+      #2%
+    \else
+      \colortext{\the\PDFbuttoncolor}{#2}%
+    \fi
+  \else
+    #2%
+  \fi}
+
+\def \URLbutton #1#2{%                                          {URL}{text}
+  \if \PDFhyperlinks
+    \ztextbutton{#1}{#2}%
+    \if \emptytoksp{\PDFbuttoncolor}%
+      #2%
+    \else
+      \colortext{\the\PDFbuttoncolor}{#2}%
+    \fi
+  \else
+    #2%
+  \fi}
+
+\def \colorbuttontext {%
+  \if \andp{\PDFhyperlinks}{\notp{\emptytoksp{\PDFbuttoncolor}}}%
+    \color{\the\PDFbuttoncolor}%
+  \fi}
+
+\def \endcolorbuttontext {%
+  \if \andp{\PDFhyperlinks}{\notp{\emptytoksp{\PDFbuttoncolor}}}%
+    \endcolor
+  \fi}
+
+%                       Low-Level Button Macros
+%                       --------- ------ ------
+
+
+% These low-level macros do not check \PDFhyperlinks.
+
+
+\def \ztextbutton #1#2{%                                        {mark}{text}
+  \measuretextwidth{\tdimena}{#2}%
+  \zwidthbutton{#1}{\tdimena}}
+
+\def \zwidthbutton #1#2{%                                       {mark}{width-expr}
+  \calculate \tdimena = {#2}%
+  \if \hmodep
+    \smash{\lower .5ex \hbox{%
+      \special{button: \number\tdimena\space
+                       \number\normalbaselineskip\space #1}}}%
+  \else
+      \special{button: \number\tdimena\space
+                       \number\normalbaselineskip\space #1}%
+  \fi}
+
+\def \zURLbutton #1#2{%                                         {url}{text}
+  \measuretextwidth{\tdimena}{#2}%
+  \def \zurltext {#1}%
+  \smash{\lower .5ex \hbox{%
+    \special{button: \number\tdimena\space
+                     \number\normalbaselineskip\space
+                     \expandafter\zdefof \meaning\zurltext\zmark}}}}
+
+%                       Email Addresses and URLs
+%                       ----- --------- --- ----
+
+
+\def \zurlprefix {}
+
+
+\def \urltext #1#2{%                            {font}{break before .?}{url}
+  \bgroup
+    #1%
+    \setflag \zurldotbreak = #2%
+    \catcode `\& = \catactive
+    \catcode `\. = \catactive
+    \catcode `\/ = \catactive
+    \catcode `\@ = \catactive
+    \catcode `\_ = \catactive
+    \zurltexta}
+
+\def \zurltexta #1{%                            {url}
+  \zurltextb #1\-\-\zmark}
+
+\def \zurltextb #1\-#2\-#3\zmark{%              part1\-part2\-part3\zmark
+  \expandafter\def \expandafter\zfullurl \expandafter{\zurlprefix #1#2}%
+  \zurltextc{#1}%
+  \if \notp{\emptyargp{#2}}%
+    \break
+    \zurltextc{#2#3}%
+  \fi
+  \egroup
+  \gdef \zurlprefix {}}
+
+{\catcode `\& = \catactive
+ \catcode `\. = \catactive
+ \catcode `\/ = \catactive
+ \catcode `\@ = \catactive
+ \catcode `\_ = \catactive
+
+\gdef \zurltextc #1{%                           {url-text}
+  \def &{\ampersand \discretionary{}{}{}}%      % Break after &
+  \let \& = &%
+  \if \zurldotbreak
+    \def .{\discretionary{}{}{}\char"2E }%      % Break before .
+  \else
+    \def .{\char"2E \discretionary{}{}{}}%      % Break after .
+  \fi
+  \def /{\char"2F \discretionary{}{}{}}%        % Break after /
+  \def @{\atsign \discretionary{}{}{}}%         % Break after @
+  \let \@ = @%
+  \let _ = \underscore                          % Set _
+  \let ~ = \tilde                               % Set ~
+  \def \-{\discretionary{}{}{}}%                % No hyphenation
+  \if \PDFhyperlinks
+    \expandafter\zURLbutton \expandafter{\zfullurl}{#1}%
+  \fi
+  \colorbuttontext
+    #1%
+  \endcolorbuttontext}
+
+} % \catcode
+
+%                       Digital Object Identifiers
+%                       ------- ------ -----------
+
+
+\def \DOI {%                                                    {number}
+  \def \zurlprefix {http://dx.doi.org/}%
+  \ensurepar \url}

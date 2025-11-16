@@ -1,0 +1,82 @@
+%%
+%% This is file `latex-lab-testphase-new-or-2.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-new-or-2.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-new-or-2.dtx
+\def\ltlabneworIIdate{2025-05-10}
+\def\ltlabneworIIversion{0.86d}
+
+\ProvidesPackage{latex-lab-testphase-new-or-2}
+        [\ltlabneworIIdate\space v\ltlabneworIIversion\space
+         Changes to the output routine]
+\AssignSocketPlug {build/column/outputbox}{footnotes-floats}
+\def\@makecol@handlesplitfootnotes {%
+  \ifnum\insertpenalties>\z@
+    \@makecol@splitfootnotemessagehook
+  \fi
+}
+\let \@makecol@splitfootnotemessagehook \@empty
+\ExplSyntaxOn
+\NewTaggingSocketPlug{build/page/header}{default}
+   {
+     \__tag_hook_kernel_before_head:
+     #2
+     \__tag_hook_kernel_after_head:
+   }
+\AssignTaggingSocketPlug{build/page/header}{default}
+\NewTaggingSocketPlug{build/page/footer}{default}
+   {
+     \__tag_hook_kernel_before_foot:
+     #2
+     \__tag_hook_kernel_after_foot:
+   }
+\AssignTaggingSocketPlug{build/page/footer}{default}
+\NewTaggingSocketPlug{build/column/outputbox}{default}
+  {
+    \__tag_check_typeout_v:n { ====>~In~\token_to_str:N \@makecol
+                               \c_space_tl\the\c@page }
+    \tag_mc_add_missing_to_stream:Nn \@outputbox {main}
+  }
+\NewTaggingSocketPlug{build/column/footins}{default}
+   { \tag_mc_add_missing_to_stream:Nn \footins {footnote} }
+\sys_if_engine_luatex:F
+   {
+     \AssignTaggingSocketPlug{build/column/outputbox}{default}
+     \AssignTaggingSocketPlug{build/column/footins}{default}
+   }
+\ExplSyntaxOff
+\declare@file@substitution{footmisc.sty}{latex-lab-footmisc.ltx}
+\input{latex-lab-footnotes.ltx}
+\endinput
+%%
+%% End of file `latex-lab-testphase-new-or-2.sty'.

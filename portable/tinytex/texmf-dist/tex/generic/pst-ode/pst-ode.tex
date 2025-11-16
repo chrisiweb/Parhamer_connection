@@ -1,0 +1,293 @@
+%%
+%% This is file `pst-ode.tex',
+%%
+%% Alexander Grahn, (C) 2012--today
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License
+%%
+%% http://www.latex-project.org/lppl.txt
+%%
+%% `pst-ode' defines \pstODEsolve for integrating systems of first order
+%% ODEs using the Runge-Kutta-Fehlberg (RKF45) method with automatic
+%% step size adjustment
+%%
+\def\fileversion{0.19}
+\def\filedate{2024/01/04}
+
+\csname PSTODELoaded\endcsname
+\let\PSTODELoaded\endinput
+%
+% Requires some packages
+\ifx\PSTricksLoaded\endinput\else \input pstricks \fi
+%
+\message{`pst-ode' v\fileversion, \filedate\space (ag)}
+%
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+\pst@addfams{pst-ode}
+%% prologue for postcript
+\pstheader{pst-ode.pro}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% pstODEsolve
+%
+% LaTeX command for integrating systems of first order ODEs using the Runge-
+% Kutta-Fehlberg method with automatic step size adjustment;
+% values of the integration parameter `t' as well as the solution (= state)
+% vectors `x(t)' at output points are stored as a long list in a Postscript
+% object; its content can be plotted using the listplot* functions
+% of pst-plot and pst-3dplot packages.
+%
+% Optionally, the result can be written to a file (ps2pdf -dNOSAFER ...)
+%
+% Usage:
+%
+% \pstODEsolve[Options]
+%          {result}{output vector format}{ta}{tb}{number of output points}
+%          {initial cond.}{function}
+%
+% options:
+%   * append       result appended to <result> which must already exist (e. g.
+%                  from previous use of \pstODEsolve); usually the initial
+%                  condition vector argument is left empty in order to continue
+%                  integration from the last state
+%   * saveData     result is written to file <result>.dat
+%   * algebraic    (system of) ODE given in infix notation
+%   * algebraicIC  initial condition vector given in infix notation
+%   * algebraicT   integration interval limits ta, tb given in infix notation
+%   * algebraicN   accepting infix expression for number of output points
+%   * algebraicOutputFormat output vector format given in infix notation
+%   * algebraicAll output vector format, ta, tb, initial cond., function given
+%                  in infix notation
+%   * silent       suppress output of stepping information
+%   * varsteptol   relative tolerance for step size adjustment
+%   * dt0          first tentative integration step size, overrides output step
+%                  size (#4-#3)/(#5-1) used as default value
+%   * rk4          instead of RKF45, use 4th-order classical Runge-Kutta between
+%                  output points (without adaptive step size)
+%
+% arguments:
+%
+% #1: Postscript identifier taking the result as a long list of state vectors
+%     calculated at the output points
+% #2: output vector format, e. g. `(t) 0 1'; specifies which data to be written
+%     to #1; (t) (parentheses required) puts value of integration parameter `t'
+%     into the output list; 0, 1, 2, etc. specify the elements of the state
+%     vector to be put into the output list
+% #3: start value of integration parameter (ta)
+% #4: end value of integration parameter (tb)
+% #5: number of output points, including ta and tb; must be >= 2
+% #6: initial condition vector; if empty, continue integration from the last
+%     state vector of the previous \pstODEsolve usage or from state vector set
+%     by \pstODErestoreState macro
+% #7: right hand side of ODE system; if given in Postscript notation (algebraic=
+%     false), the function provided should pop (in reverse order!) the elements
+%     of the current state vector from the operand stack and push the first
+%     derivatives (right hand side of ODE system) back to it; inside the
+%     function, the integration parameter can be accessed using `t'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\define@boolkey[psset]{pst-ode}[PstODE@]{append}[true]{}%
+\define@boolkey[psset]{pst-ode}[PstODE@]{saveData}[true]{}%
+\define@boolkey[psset]{pst-ode}[PstODE@]{rk4}[true]{}%
+\define@boolkey[psset]{pst-ode}[PstODE@]{algebraicT}[true]{}%
+\define@boolkey[psset]{pst-ode}[PstODE@]{algebraicN}[true]{}%
+\define@boolkey[psset]{pst-ode}[PstODE@]{algebraicIC}[true]{}%
+\define@boolkey[psset]{pst-ode}[PstODE@]{algebraicOutputFormat}[true]{}%
+\define@boolkey[psset]{pst-ode}[PstODE@]{algebraicAll}[true]{}%
+\define@boolkey[psset]{pst-ode}[PstODE@]{silent}[true]{}%
+\define@key[psset]{pst-ode}{varsteptol}{\def\ode@varsteptol{#1}}%
+\define@key[psset]{pst-ode}{dt0}{\def\ode@dtInit{#1}}%
+\def\pstODEsolve{\def\pst@par{}\pst@object{pstODEsolve}}%
+\def\pstODEsolve@i#1#2#3#4#5#6#7{%
+  \pst@killglue%
+  \begingroup%
+  \use@par%
+  \def\filemode{w}%
+  \ifPstODE@append\def\filemode{a}\fi%
+  \edef\ode@ta{#3{}}%
+  \edef\ode@tb{#4{}}%
+  \edef\ode@N{#5{}}%
+  \edef\ode@init{#6{}}%
+  \edef\ode@init{\expandafter\ode@zapspace\ode@init\@nil}%
+  \edef\ode@arg{#7{}}%
+  \ifPstODE@algebraicAll%
+    \PstODE@algebraicTtrue%
+    \PstODE@algebraicNtrue%
+    \PstODE@algebraicICtrue%
+    \PstODE@algebraicOutputFormattrue%
+    \Pst@algebraictrue%
+  \fi%
+  \ifPstODE@algebraicOutputFormat\edef\ode@fmt{#2{}}\fi%
+  \pstVerb{
+    tx@odeDict begin
+    \ifPstODE@silent
+      /odeprint systemdict /pop get def
+    \else
+      /odeprint {0 cvs print flush} def
+      /odeprint load 0 256 string put
+    \fi
+    /ode@tol \ode@varsteptol\space def % rel. tolerance for step size adjustment
+    %process arguments
+    /rk4
+      \expandafter\csname ifPstODE@rk4\endcsname true\else false\fi\space
+    def
+    \ifPstODE@saveData /statefile (#1.dat) (\filemode) file def \fi
+    \ifPstODE@algebraicT
+      tx@Dict begin (\expandafter\ode@zapspace\ode@ta\@nil)
+        AlgParser cvx exec end ode@dict /tStart exch def end
+      tx@Dict begin (\expandafter\ode@zapspace\ode@tb\@nil)
+        AlgParser cvx exec end ode@dict /tEnd exch def end
+    \else
+      tx@Dict begin 1 dict begin #3 end end ode@dict /tStart exch def end
+      tx@Dict begin 1 dict begin #4 end end ode@dict /tEnd   exch def end
+    \fi%
+    \ifPstODE@algebraicN
+      tx@Dict begin (\expandafter\ode@zapspace\ode@N\@nil)
+        AlgParser cvx exec cvi end ode@dict /N exch def end
+    \else
+      tx@Dict begin 1 dict begin #5 cvi end end ode@dict /N exch def end
+    \fi
+    ode@dict /dt tEnd tStart sub N 1 sub div def end % output step size
+    \ifx\@empty\ode@init\@empty\else
+      \ifPstODE@algebraicIC
+        true setglobal globaldict /ode@laststate [
+          tx@Dict begin (\ode@init) AlgParser cvx
+          exec end
+        ] put false setglobal
+      \else
+        true setglobal
+        globaldict /ode@laststate [tx@Dict begin 1 dict begin #6 end end] put
+        false setglobal
+      \fi
+    \fi%
+    ode@dict /xlength ode@laststate length def end % number of equations
+    ode@dict /xlength1 xlength 1 add def end % number of equations plus 1
+    \ifPst@algebraic
+      /ODESET [% system of ODEs
+        10 array aload pop
+        (\expandafter\ode@zapspace\ode@arg\@nil) AlgParser aload pop
+        7 array aload pop
+      ]
+      dup 0 {tx@Dict begin 2 begin /x exch def /y x def} putinterval
+      % ensure local scope of user defined variables in #7, from BlueBook, p. 133
+      dup 2 1 dict put
+      dup dup length 7 sub {end end ode@dict xlength end array astore} putinterval
+      cvx bind def
+    \else
+      /ODESET {
+        aload pop tx@Dict begin 4 begin #7 end end ode@dict xlength end array astore
+      } bind def
+      /ODESET load 4 1 dict put
+    \fi
+    \ifPstODE@algebraicOutputFormat
+      /formatoutput [
+        13 array aload pop
+        (\expandafter\ode@zapspace\ode@fmt\@nil) AlgParser aload pop
+        /end cvx
+      ]
+      dup 0 {
+        /x ode@laststate def /y x def
+        /t ode@dict tcur end def
+        tx@Dict begin
+      } putinterval
+      cvx bind def
+    \else /formatoutput {[#2] assembleresult} def \fi
+    %perform ode integration
+    rk4 {
+      (\string\n pstODEsolve (RK4),) odeprint ( "o" output step:\string\n) odeprint
+    }{
+      (\string\n pstODEsolve (RKF45),\string\n) odeprint
+      (-/+ failed/successful step, "o" output step, "!" step size underflow (stop):\string\n) odeprint
+    } ifelse
+    ode@dict
+      /tcur tStart def % current parameter t value
+      /outStepCnt 1 def % output step counter
+      /tout tStart dt add def % next output t
+      %initial integration step size `ddt': either same as first output step
+      % size `dt' or last from previous solution (empty initial condition) or
+      % user provided (option `dt0')
+      \ifx\@empty\ode@init\@empty
+        \ode@dtInit\space 0 eq
+          {/ddt ode@ddt def}{/ddt \ode@dtInit\space def} ifelse
+      \else
+        \ode@dtInit\space 0 eq
+          {/ddt dt def}{/ddt \ode@dtInit\space def} ifelse
+      \fi
+      % for RK4, use output step size
+      rk4 {/ddt dt def} if
+    end
+    \ifPstODE@append\else
+      [
+        [formatoutput]
+        \ifPstODE@saveData dup writeresult \fi
+        aload pop
+        true setglobal
+      ]
+      globaldict exch /#1 exch cvx put
+      false setglobal
+      (o) odeprint
+    \fi
+    ode@dict N end 1 sub {
+      ode@laststate ODEINT [ exch aload pop true setglobal ]
+      globaldict exch /ode@laststate exch put false setglobal
+      [
+        #1 [formatoutput]
+        \ifPstODE@saveData dup writeresult \fi
+        aload pop
+        true setglobal
+      ]
+      globaldict exch /#1 exch cvx put
+      globaldict /ode@dt ode@dict dt end put
+      globaldict /ode@ddt ode@dict ddt end put
+      globaldict /ode@tcur ode@dict tcur end put
+      globaldict /ode@tout ode@dict tout end put
+      false setglobal
+    } repeat (\string\n) odeprint
+    \ifPstODE@saveData statefile closefile \fi
+    end % tx@odeDict
+  }%
+  \endgroup%
+  \ignorespaces%
+}
+
+\def\ode@zapspace#1#2\@nil{% helper for stripping spaces from argument
+  \ifx#1 \relax\else#1\fi%
+  \ifx\@empty#2\@empty\else\ode@zapspace#2\@nil\fi%
+}
+
+%macro for saving last state
+\def\pstODEsaveState#1{% #1: identifier
+  \pstVerb{
+    true setglobal
+    globaldict /#1@ode@laststate [ode@laststate cvx exec] cvx put
+    globaldict /#1@ode@dt   ode@dt   put
+    globaldict /#1@ode@ddt  ode@ddt  put
+    globaldict /#1@ode@tcur ode@tcur put
+    globaldict /#1@ode@tout ode@tout put
+    false setglobal
+  }%
+}
+
+%macro for restoring state
+\def\pstODErestoreState#1{% #1: identifier
+  \pstVerb{
+    true setglobal
+    globaldict /ode@laststate [#1@ode@laststate] put
+    globaldict /ode@dt   #1@ode@dt   put
+    globaldict /ode@ddt  #1@ode@ddt  put
+    globaldict /ode@tcur #1@ode@tcur put
+    globaldict /ode@tout #1@ode@tout put
+    false setglobal
+  }%
+}
+
+\psset[pst-ode]{append=false,saveData=false,algebraicIC=false,algebraicT=false,
+  algebraicN=false,silent=false,varsteptol=1e-6,algebraicOutputFormat=false,
+  algebraicAll=false,dt0=0,rk4=false
+}
+\psset{algebraic=false}
+\catcode`\@=\PstAtCode\relax
+
+%% END: pst-ode.tex
+\endinput

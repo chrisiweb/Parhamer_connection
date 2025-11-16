@@ -1,0 +1,35 @@
+\global\newtoks\lstCcolors
+\global\newtoks\_C_listingcommands
+
+\global\lstCcolors={
+    \definecolor{preprocessor}{rgb}{0 0 1}
+    \definecolor{special char}{rgb}{.7 0 .7}
+    \definecolor{keyword}{rgb}{1 0 0}
+    \definecolor{quote}{rgb}{.6 .6 0}
+}
+
+\global\_C_listingcommands={
+    \the\lstCcolors
+    \replace {\string\"} {{\string\"}}
+    \replacefromto "" {\mc{quote}{"#1"}}
+    \replacefromto {//}\n {\c{lst-comment}{//#1}\n}
+    \replacefromto {/*}{*/} {\mc{lst-comment}{/*#1*/}}
+    \replacefromto {\string#}\n {\c{preprocessor}{\string##1}\n}
+    \bgroup\lccode`?=`\{\lccode`!=`\}\lccode`.=`\%\lowercase{\egroup
+        \replace ?{\w\c{special char}{?}\w}%
+        \replace !{\w\c{special char}{!}\w}%
+        \replace .{\w\c{special char}{.}\w}%
+    }
+    \edef\_regA{{!@\string$\string^\string&*()-+=[];:,.<>/}}%$
+    \def\_regB#1{\replace{#1}{\w\c{special char}{#1}\w}}
+    \_xp\map\_xp\_regB\_regA
+    \def\_regB#1{\replace{\w#1\w}{\w\c{keyword}{#1}\w}}
+    \map\_regB{%
+        {auto}{bool}{break}{case}{char}{const}{continue}{default}{do}{double}{else}{enum}%
+        {extern}{false}{float}{for}{goto}{if}{inline}{int}{long}{NULL}{register}{restrict}%
+        {return}{short}{signed}{sizeof}{static}{struct}{switch}{true}{typedef}{union}%
+        {unsigned}{void}{volatile}{while}%
+    }
+    \def\_regB#1{\replace{\w#1}{\w\c{lst-number}{#1}\w}}
+    \map\_regB{0123456789}
+}

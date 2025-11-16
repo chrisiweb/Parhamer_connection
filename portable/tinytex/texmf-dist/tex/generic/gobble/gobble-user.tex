@@ -1,0 +1,31 @@
+\expandafter\ifx\csname gobble-user.tex loaded\endcsname\relax
+    \expandafter\def\csname gobble-user.tex loaded\endcsname{1}%
+\else
+    \expandafter\endinput
+\fi
+\input{gobble}
+\expandafter\edef\csname gobbletex@catcode\endcsname{%
+    \catcode`\noexpand\@=\the\catcode`\@%
+}%
+\catcode`\@=11
+\let\gobble\@gobble
+\let\gobbletwo\@gobbletwo
+\let\gobblethree\@gobblethree
+\let\gobblefour\@gobblefour
+\let\gobbleopt\@gobbleopt
+\let\gobbletwoopt\@gobbletwoopt
+\let\gobbleallopt\@gobbleallopt
+\let\gobbletwoopttwo\@gobbletwoopttwo
+\let\firstofone\@firstofone
+\let\firstoftwo\@firstoftwo
+\let\secondoftwo\@secondoftwo
+\let\firstofthree\@firstofthree
+\let\secondofthree\@secondofthree
+\let\thirdofthree\@thirdofthree
+\let\gobbletofi\@gobbletofi
+\let\gobbletoelse\@gobbletoelse
+\let\gobbletoor\@gobbletoor
+\gobbletex@catcode
+\endinput
+%%
+%% End of file `gobble-user.tex'.

@@ -1,0 +1,359 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Help Text
+%
+% Synopsis:  This file contains the help text for each error and
+%            warning signaled by ZzTeX.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   3 July 1990
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\long\def \definehelp #1#2{%                    {help-id}{text}
+  \withname\gdef{\=zH:#1}{#2}}
+
+
+\definehelp{adjheads}{
+  You must eliminate the inter-row space between two adjacent rows_
+  of column heads. This is done with the \closeuprows command.}
+
+\definehelp{altinv}{
+  The design alternative named above was specified with an_
+  invalid value in a \designalternative command.}
+
+\definehelp{altreq}{
+  The design alternative named above must be specifed with a_
+  \designalternative command preceding the \loaddesign in_
+  your root file. There is no default.}
+
+\definehelp{artpos}{
+  The \art command is in the wrong position relative to the_
+  \caption command.}
+
+\definehelp{blkcantnest}{
+  The file contains an occurence of the first block mentioned above_
+  nested inside the second block. This is not allowed.}
+
+\definehelp{blkinvnest}{
+  A command to end a block is not properly associated with the command_
+  to begin the block. For example, an \endtext is matched with a \list._
+  All blocks must be properly nested.}
+
+\definehelp{blkmustend}{
+  The file contains an occurence of the block ending command_
+  mentioned first, but it is not preceded by the block starting_
+  command mentioned second. Each block must have a starting command.}
+
+\definehelp{blkmustnest}{
+  The file contains an occurence of the first block mentioned above,_
+  but it is not nested inside the second block. The first block_
+  must be nested in the second.}
+
+\definehelp{cananchor}{
+  The object anchor specified mentioned above is invalid._
+  Valid anchors are 'a' -- 'h'.}
+
+\definehelp{celldecpt}{
+  The picutre for this decimal-aligned cell did not include a decimal_
+  point, but the number to be typeset does. You must include a_
+  decimal point in the template or remove it from the number.}
+
+\definehelp{citelet}{
+  It appears that you have used \let to define a \citexxx command_
+  in the design file. This done not work; use \def instead.}
+
+\definehelp{desjunk}{
+  The design file named above contains some paragraph (horizontal mode)_
+  text that should not be there.__
+  You probably left a percent sign off a comment.}
+
+\definehelp{divnotexist}{
+  The division specified in the message is not included with a_
+  \division command in the root file.}
+
+\definehelp{dupart}{
+  The art file named above is used more than once in the book.__
+  If a figure really is used more than once, you must copy it with
+  another name and change one of the \art commands.}
+
+\definehelp{dupreg}{
+  The register named above has already been defined with another_
+  \definexxx command.}
+
+\definehelp{divortah}{
+  The \overridetextareaheight command has been used to override the_
+  text area height, but the override crosses from one division to the next.__
+  If you continue from the warning, the override will be cancelled.}
+
+\definehelp{empshape}{
+  The \shapepar command must be specified with at least one pair of_
+  indent/width arguments. You have specified one with no arguments.}
+
+\definehelp{hereonlybot}{
+  ZzTeX cannot position the float `here' because there is already_
+  a float positioned at the bottom of the page. Floats must be_
+  positioned in order.}
+
+\definehelp{invindexlvl}{
+  The level specified in an indexing command must be 1, 2, or 3.}
+
+\definehelp{invoper}{
+  The operator shown above is not valid in the expression argument_
+  of the \calculate command.}
+
+\definehelp{invsubpart}{
+  The subpart argument to \markinfo(upcased) must be 1 or 2._
+  You have specified the invalid subpart number shown above.}
+
+\definehelp{locattr}{
+  The attributes of the index locator are not valid. You must specify_
+  at least one of \page or \text.}
+
+\definehelp{missbb}{
+  The specified art file does not have a bounding box comment, so_
+  ZzTeX cannot determine the size of the art.}
+
+\definehelp{misset}{
+  A tabular column template must begin with \set, so that the column
+  type will be correctly interpreted.}
+
+\definehelp{misstah}{
+  The value of \textareaheight must be established by the document_
+  design macro before \calculatetypeareaheight can be used.__
+  You can set it directly or calculate it with \calculatetextareaheight.}
+
+\definehelp{misstopskip}{
+  The value of \topskip must be established by the document design_
+  macro before \calculatetextareaheight can be used.}
+
+\definehelp{misstrim}{
+  The values of \trimwidth and \trimheight must be established by the_
+  document design macro before \calculateoffsets can be used}
+
+\definehelp{needheads}{
+  The \tabheadrule and \skipbelowcolhead commands require that the_
+  previous row is a row of heads.}
+
+\definehelp{negtabvsp}{
+  A negative \tabvspace will not work; it produces no spacing at all._
+  You must use \tabcloseup.}
+
+\definehelp{noartfile}{
+  You have requested the art file named above for an \art block,_
+  but the file does not exist.__
+  If you continue from this warning, the art space will be framed_
+  with corner marks and contain the name of the missing file.}
+
+\definehelp{nobblfile}{
+  You have requested a bibliography list with the \biblio command,_
+  but there is no bibliography item file.__
+  If you continue from this warning, the bibliography list will not_
+  be typeset. You must first run BibTeX to produce the item file.}
+  
+\definehelp{nodesfile}{
+  The design file named above is required for this book, but it_
+  does not exist.__
+  You may have misspelled the name of the design file in the_
+  \loaddesign command. If not, the design file must be created.}
+
+\definehelp{nodesign}{
+  The file contains a use of the block named above, but the_
+  book's design file does not contain a design macro_
+  for the block.__
+  It's possible you have misspelled the name of the block_
+  or its type (if any). If not, a design macro must be_
+  added to the design file.}
+
+\definehelp{nodivs}{
+  The \setdivisions command must specify one or more divisions to set.}
+
+\definehelp{noend}{
+  Do not use the \end command in ZzTeX. The root file is terminated_
+  with the \enddocument command.__
+  If you are trying to end a block, such as a \list block, you must_
+  use the corresponding ending command, such as \endlist.}
+
+\definehelp{nofloatpos}{
+  The \position parameter for a float does not specify any_
+  page positions for the float. The page positions are \alone,_
+  \bottom, \here, \separate, and \top. Without a page_
+  position, the float cannot be placed on the page.__
+  This error could be due to a missing position in the design file._
+  Or, you may have specified the \position parameter in a \with_
+  command on the float block and forgotten to include any of the_
+  page positions.__
+  If you continue, the float will be placed alone on a page. This_
+  message may appear again for the same float.}
+
+\definehelp{nofontset}{
+  The file has requested a font of the size and style mentioned above._
+  No font has been set for this size/style in the book's design file.__
+  You may have misspelled the name of the size or style. If not,_
+  the appropriate font must be established in the design file.}
+
+\definehelp{noheadfoot}{
+  The design file does not contain a definition for the header_
+  or footer format specified in the message. These definitions_
+  must be included in the design file.}
+
+\definehelp{noinclfile}{
+  The file mentioned above has been requested with an \include or_
+  \division command, but it does not exist.__
+  You may have misspelled the name of the file. If not, you must_
+  create it before processing the book again.__
+  If you continue from this error, ZzTeX will prompt you for another_
+  file name.}
+
+\definehelp{nomarks}{
+  The \markinfo command is being used to format a running head_
+  or foot, but no mark information has been provided for the_
+  current page.__
+  This only happens at the beginning of a book, before the first_
+  chapter or quasichapter. You may have set running heads and_
+  feet with \setrunners before the first chapter or quasichapter.}
+
+\definehelp{nomnpos}{
+  The \position parameter for a margin note does not specify any_
+  horizontal position for the float. The positions are \leftmargin,_
+  \rightmargin, and \outsidemargin.}
+
+\definehelp{noreftitle}{
+  The use of the \reftitle command has been disabled in the_
+  design file with the \allowreftitle document parameter.__
+  If you did not intend to use the \reftitle command, you must_
+  remove it from the file. If you need to use it, then modify_
+  the design file appropriately.}
+
+\definehelp{noregsleft}{
+  All of the available registers of the type specified in the_
+  message have been allocated for use, but a request for another_
+  such register has been made.}
+
+\definehelp{norelstyle}{
+  You have requested a type style related to the current style,_
+  but no such relation has been established. For example, the_
+  current style is \tt and you want to emphasize text with the_
+  \emph command, but no style for emphasizing monospaced text_
+  has been established.__
+  Use the \definestylerelation command to establish the appropriate_
+  relationship.}
+
+\definehelp{notaginfo}{
+  A \tag command has been specified in the current block, but_
+  the composite number and title has not been established yet.}
+
+\definehelp{notindexing}{
+  ZzTeX has encountered an indexing command (e.g., \xpage), but_
+  you have not included a \produceindex command in the root file._
+  At least one \produceindex command is required if the files contain_
+  indexing commands.__
+  If you continue from the warning, the index entries will be written_
+  to the log file.}
+
+\definehelp{notps}{
+  The feature show above is only available when you are producing_
+  PostScript output. It requires PostScript capabilities.}
+
+\definehelp{nowith}{
+  The \with modifier is not allowed on the command specified in the_
+  message. You must remove the \with modifier.__
+  If you continue from this warning, the \with will be ignored._
+  If you used \with on an \item command, use it on the \list_
+  command instead (it will apply to the entire list).}
+
+\definehelp{obsolete}{
+  The command named above is obsolete in this version of ZzTeX.}
+
+\definehelp{openblock}{
+  One or more blocks are in progress at the end of a chapter,_
+  appendix, or quasichapter. The names of the blocks are listed_
+  in messages preceding this warning.__
+  The problem is caused by missing \endxxx commands. For example,_
+  you have coded a list but forgotten the \endlist command. You_
+  will probably see the message `(\end occurred inside a group at_
+  level 1)' at the end of the log.}
+
+\definehelp{overortah}{
+  The \overridetextareaheight command has been used to override the_
+  text area height, but a previous override is still in progress.__
+  If you continue from the warning, the first command will be cancelled_
+  and the second one will take effect. However, the height of the current_
+  page may be incorrect.}
+
+\definehelp{pagepar}{
+  A command has been used to request a page break in the middle of_
+  a paragraph.__
+  You must terminate the paragraph before using the command.}
+
+\definehelp{plaintex}{
+  The Plain TeX command shown below cannot be used in ZzTeX.}
+
+\definehelp{scinmath}{
+  You have tried to use a special character that is not available_
+  in math mode.__
+  If you need it, use it in a \text command.}
+
+\definehelp{setminus}{
+  When using the MathTime fonts, it is better to use \setdiff than_
+  \setminus. If you really want to use \setminus, you will need_
+  to define it in the design file.}
+
+\definehelp{spectah}{
+  The design spec's text area height, as specified by \spectextareaheight,_
+  differs from the calculated text area height by more than 3 points._
+  You should contact the designer about this.}
+
+\definehelp{skipab}{
+  A sequence of elements in the book has resulted in a request_
+  for a `skip below an element' followed immediately by a_
+  `skip above an element'. Such a sequence is invalid.__
+  There is probably an error in the design file.}
+
+\definehelp{toomanyflt}{
+  There are more than the specified number of floats pending for_
+  page makeup. A float is pending for makeup when it has been_
+  encountered in a file but not yet placed on a page of the book.__
+  You must reorganize the file so that the floats are more spread_
+  out in the text, this giving ZzTeX an opportunity to place the_
+  floats on pages as soon as they are encountered.}
+
+\definehelp{undefat}{
+  The atsign command sequence specified above has not been defined_
+  in this block. It must be defined before you can use it.__
+  Use the \defineatsigncommand command to define the command.}
+
+\definehelp{undefflt}{
+  The float type specified above has not been defined. It must be_
+  defined before you can use it.__
+  Use the \definefloattype command to define the float.}
+
+\definehelp{unimpl}{
+  The ZzTeX feature mentioned above is not yet implemented.__
+  Please contact Windfall Software if you need the feature.}
+
+\definehelp{lockedfont}{
+  The font specified above is locked, which means it was not correctly_
+  installed with ZzTFM.__
+  Please contact Windfall Software to determine a remedy.}
+
+\definehelp{varmod}{
+  A variant definition must include between 1 and 8 modifier commands.__
+  Modifier commands are specified as a comma-separated list in the third_
+  argument to \definevariant.}
+
+\definehelp{xtran}{
+  An error flag from the XTran H converter is still present in this_
+  file. The flag message is shown in the above error message.__
+  You should fix the error flagged by XTran and remove the flag_
+  message from the source file.}
+
+\definehelp{zztran}{
+  An error flag from the ZzTran converter is still present in this_
+  file. The flag message is shown in the above error message.__
+  You should fix the error flagged by ZzTran and remove the flag_
+  message from the source file.}

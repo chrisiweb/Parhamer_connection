@@ -1,0 +1,122 @@
+%% $Id: pst-venn.sty 848 2018-12-04 09:25:49Z herbert $
+%%
+%% This is file `pst-venn.sty',
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN archives
+%% in directory macros/latex/base/lppl.txt.
+%%
+%% Herbert Voss <hvoss _at_ tug.org (Germany)
+%%
+%% DESCRIPTION:
+%% `pst-venn' is a package for Venn diagrams
+%
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{pstricks}
+\RequirePackage{pst-xkey}
+%
+\def\filedate{2018/12/04}
+\def\fileversion{0.01}
+\ProvidesPackage{pst-venn}[\filedate\ v\fileversion\ drawing Venn diagrams (hv)]
+%
+\pst@addfams{pst-venn}
+\define@key[psset]{pst-venn}{bgradius}[3]{\def\psVenn@bgradius{#1}}
+\define@key[psset]{pst-venn}{bgcolor}[blue!40]{\def\psVenn@bgcolor{#1}}
+\define@key[psset]{pst-venn}{fgcolor}[red!40]{\def\psVenn@fgcolor{#1}}
+\define@key[psset]{pst-venn}{vennfill}[solid]{\def\psVenn@fillstyle{#1}}
+\define@boolkey[psset]{pst-venn}[Pst@]{bgcircle}[true]{}
+
+\psset[pst-venn]{bgcircle,bgradius=3,bgcolor=blue!40,fgcolor=red!40,vennfill=solid}
+
+\def\psVenn{\pst@object{psVenn}}
+\def\psVenn@i(#1)(#2)(#3)#4#5{%
+  \begingroup
+  \use@par  
+  \ifPst@bgcircle\pscircle[fillstyle=solid,fillcolor=\psVenn@bgcolor](0,0){\psVenn@bgradius}\fi
+  \psVenn@ii(#1)(#2)(#3){#4}#5\@nil
+  \pscircle(#1){#4}% to get the clipped circle lines
+  \pscircle(#2){#4}
+  \pscircle(#3){#4}
+  \endgroup
+}
+\def\psVenn@ii(#1)(#2)(#3)#4#5#6\@nil{%
+  \ifcase#5 
+	\or %1
+	  \psclip[clipcommand=eoclip]{%
+	    \pscustom[linestyle=none]{%
+		  \psframe(-\maxdimen,-\maxdimen)(\maxdimen,\maxdimen)
+		  \pscircle(#2){#4}\pscircle(#3){#4}}%
+	    \pscustom[linestyle=none]{%
+		  \psframe(-\maxdimen,-\maxdimen)(\maxdimen,\maxdimen)
+		  \pscircle(#3){#4}}%
+      }%
+        \pscircle[fillstyle=\psVenn@fillstyle,fillcolor=\psVenn@fgcolor](#1){#4}
+      \endpsclip
+  \or %2
+      \psclip[clipcommand=eoclip]{%
+      	\pscustom[linestyle=none]{%
+      		\psframe(-\maxdimen,-\maxdimen)(\maxdimen,\maxdimen)
+      		\pscircle(#1){#4}\pscircle(#3){#4}}%
+      	\pscustom[linestyle=none]{%
+      		\psframe(-\maxdimen,-\maxdimen)(\maxdimen,\maxdimen)
+      		\pscircle(#3){#4}}%
+      }%
+      \pscircle[fillstyle=\psVenn@fillstyle,fillcolor=\psVenn@fgcolor](#2){#4}
+      \endpsclip
+ 	\or %3
+	  \psclip[clipcommand=eoclip]{%
+  	    \pscustom[linestyle=none]{%
+		  \psframe(-\maxdimen,-\maxdimen)(\maxdimen,\maxdimen)
+		  \pscircle(#1){#4}\pscircle(#2){#4}
+	    }%
+	    \pscustom[linestyle=none]{%
+		  \psframe(-\maxdimen,-\maxdimen)(\maxdimen,\maxdimen)
+		  \pscircle(#2){#4}
+	    }%
+      }%
+        \pscircle[fillstyle=\psVenn@fillstyle,fillcolor=\psVenn@fgcolor](#3){#4}
+      \endpsclip
+	\or %4
+	    \psclip[clipcommand=eoclip]{%
+	  	\pscustom[linestyle=none]{%
+	  		\psframe(-3,-3)(3,3)
+	  		\pscircle(#1){#4}\pscircle(#3){#4}}%
+	  	\pscustom[linestyle=none]{%
+	  		\psframe(-\maxdimen,-\maxdimen)(\maxdimen,\maxdimen)
+	  		\pscircle(#2){#4}}%
+	  }%
+	  \pscircle[fillstyle=\psVenn@fillstyle,fillcolor=\psVenn@fgcolor](#3){#4}
+	  \endpsclip
+	\or %5
+        \psclip[clipcommand=eoclip]{%
+        	\pscustom[linestyle=none]{%
+        		\psframe(-3,-3)(3,3)
+        		\pscircle(#1){#4}\pscircle(#2){#4}}%
+        	\pscustom[linestyle=none]{%
+        		\psframe(-\maxdimen,-\maxdimen)(\maxdimen,\maxdimen)
+        		\pscircle(#3){#4}}%
+        }%
+        \pscircle[fillstyle=\psVenn@fillstyle,fillcolor=\psVenn@fgcolor](#1){#4}
+        \endpsclip        
+	\or %6
+	  \psclip[clipcommand=eoclip]{%
+		\pscustom[linestyle=none]{%
+			\psframe(-3,-3)(3,3)
+			\pscircle(#2){#4}\pscircle(#3){#4}}%
+		\pscustom[linestyle=none]{%
+			\psframe(-\maxdimen,-\maxdimen)(\maxdimen,\maxdimen)
+			\pscircle(#1){#4}}%
+	}%
+	\pscircle[fillstyle=\psVenn@fillstyle,fillcolor=\psVenn@fgcolor](#2){#4}
+	\endpsclip
+	\or %7
+	  \psclip{\pscircle(#1){#4}\pscircle(#3){#4}}
+ 	    \pscircle[fillstyle=\psVenn@fillstyle,fillcolor=\psVenn@fgcolor](#2){#4}
+	  \endpsclip
+	\else
+	\fi
+  \ifx\relax#6\relax \def\next{}\else\def\next{\psVenn@ii(#1)(#2)(#3){#4}#6\@nil}\fi
+  \next
+}
+
+\endinput

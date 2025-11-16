@@ -1,0 +1,123 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Error Handling
+%
+% Synopsis:
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   13 August 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Remarks & Errors
+%                       ------- - ------
+
+
+\def \remark #1{%                               {text}
+  \messagenl{_ZzTeX: #1_}}
+
+\def \warning #1#2{%                            {help-id}{text}
+  \zsethelp{#1}%
+  \zerrmsg{warning}{#2}}
+
+\def \error #1#2{%                              {help-id}{text}
+  \zsethelp{#1}%
+  \zerrmsg{error}{#2}%
+  \remark{Continuing from an error may cause unpredictable results.}}
+
+\def \zzerror #1{%                              {text}
+  \zerrmsg{internal error}{#1}%
+  \remark{Continuing from an internal error will cause erroneous results.}}
+
+\def \zerrmsg #1#2{%                            {prefix}{text}
+  {\newlinechar = `\_%
+   \errmessage{ZzTeX #1: #2}}}
+
+%%%\def \zerrcontext #1{%
+%%%  \listtop{\znext}{\zblockstack}%
+%%%  \writelog{ZzTeX context: #1 \znext\space \the\typesizename
+%%%                           \the\typestyle \the\typeencoding.}}
+%%%
+%%%\def \context {%
+%%%  \zerrcontext{???}%
+%%%  \zend}
+
+%                       To-Do Facility
+%                       ----- --------
+
+
+\definecount{\ztodocount}{0}
+
+
+%~ The |\todo| command accepts a note that is stored in the composite
+%~ cross-reference file as a reminder of something that needs to
+%~ be done later. ZzExplore can display a list of the outstanding
+%~ to-dos.
+
+\long\def \todo #1{%                                    {note}
+  \zwritetodo{#1}%
+  \ztodo #1\zmark
+  \global\increment \ztodocount}
+
+\long\def \ztodo #1#2\zmark{%                           {char1}{rest of message}
+  \if \codeeqlp{#1}{!}%
+    {\errorcontextlines = 0
+     \def \znext {#2}%
+     \zerrmsg{to-do}{\expandafter\zdefof \meaning\znext\zmark\space
+                     [\the\divisionname]}}%
+  \else\if \codeeqlp{#1}{.}%
+    \def \znext {#2}%
+    \writelog{ZzTeX to-do: \expandafter\zdefof \meaning\znext\zmark\space
+                           [\the\divisionname]}%
+  \else\if \codeeqlp{#1}{?}%
+    \def \znext {#2}%
+    \messagenl{_ZzTeX to-do: To come: \expandafter\zdefof \meaning\znext\zmark\space 
+                             [\the\divisionname]_}%
+    \if \DVIWindoinuse \colorspecial{ifview color push rgb 1 0 0}\fi
+    ???%
+    \if \DVIWindoinuse \colorspecial{ifview color pop}\fi
+  \else
+    \def \znext {#1#2}%
+    \messagenl{_ZzTeX to-do: \expandafter\zdefof \meaning\znext\zmark\space
+                             [\the\divisionname]_}%
+  \fi\fi\fi}
+
+% Write a todo entry into the cross-reference file.
+
+\long\def \zwritetodo #1{%                      {message}
+  \zbeginhidewrite
+    \def \znext {#1}%
+    \edef \znext {\noexpand\xref{todo}{\noexpand\folio}{}
+                                {\expandafter\zdefof \meaning\znext\zmark}
+                                {\the\divisionname}}%
+    \znext
+   \zendhidewrite}
+
+% There is nothing to do with each entry in the cross-reference file
+% when it is loaded.
+
+\long\def \xreftodo #1#2#3#4{}
+
+% This macro is invoked at the end of the run.
+
+\def \ztodomsg {%
+  \if \posp{\ztodocount}%
+    \remark{Number of to-do reminders encountered: \the\ztodocount}%
+  \fi}
+
+
+%                       Help Text
+%                       ---- ----
+
+
+\def \zsethelp #1{%
+  \if \definedp{\=zH:#1}%
+    \global\errhelp = \expandafterthrice{\name{\=zH:#1}}%
+  \else
+    \global\errhelp = {No additional help is available.}%
+  \fi}
+
+

@@ -1,0 +1,391 @@
+%%
+%% This is file `latex-lab-testphase-firstaid.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-firstaid.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-firstaid.dtx (C) Copyright 2023-2025 LaTeX Project
+\def\ltlabfirstaiddate{2025-11-03}
+\def\ltlabfirstaidversion{0.85o}
+\ProvidesPackage {latex-lab-testphase-firstaid} [%
+   \ltlabfirstaiddate\space v\ltlabfirstaiddate\space
+   Temporary patches to external packages needed for the tagging project]
+\ExplSyntaxOn
+\providecommand\FirstAidNeededT[3]{
+  \exp_args:Ncx\str_if_eq:onF{ver@#1.#2}{#3}
+      { \typeout{==>~ First~ Aid~ for~ #1.#2~ no~ longer~ applied!^^J
+          \@spaces Expected:^^J
+          \@spaces\@spaces #3^^J
+          \@spaces but~ found:^^J
+          \@spaces\@spaces \use:c{ver@#1.#2}^^J
+          \@spaces so~ I'm~ assuming~ it~ got~ fixed.
+      } }
+  \exp_args:Ncx\str_if_eq:onT{ver@#1.#2}{#3}
+}
+\AddToHook{package/pgfrcs/after}
+ {\def\pgfutil@InputIfFileExists#1#2#3{\pgfutil@IfFileExists{#1}{\input{#1}\relax#2}{#3}}}
+\AddToHook{class/amsart/after}
+ {\def\@author{\authors}}
+\AddToHook{class/amsbook/after}
+ {\def\@author{\authors}}
+\AddToHook{class/amsproc/after}
+ {\def\@author{\authors}}
+\AddToHook{class/amsart/after}[latex-lab-testphase-firstaid/amsthm]
+ {\__tag_firstaid_amsthm:\__tag_firstaid_ams_abstract:}
+\AddToHook{class/amsbook/after}[latex-lab-testphase-firstaid/amsthm]
+ {\__tag_firstaid_amsthm:\__tag_firstaid_ams_abstract:}
+\AddToHook{class/amsproc/after}[latex-lab-testphase-firstaid/amsthm]
+ {\__tag_firstaid_amsthm:}
+\AddToHook{package/amsthm/after}[latex-lab-testphase-firstaid/amsthm]
+ {\__tag_firstaid_amsthm:}
+\cs_new_protected:Npn \__tag_firstaid_ams_abstract:
+  {
+\renewenvironment{abstract}{%
+  \ifx\maketitle\relax
+    \ClassWarning{\@classname}{Abstract~ should~ precede~
+      \protect\maketitle\space in~ AMS~ document~ classes;~ reported}%
+  \fi
+  \global\setbox\abstractbox=\vtop \bgroup
+    \normalfont\Small
+    \list{}{\labelwidth\z@
+      \leftmargin3pc \rightmargin\leftmargin
+      \listparindent\normalparindent \itemindent\z@
+      \parsep\z@ \@plus\p@
+      \let\fullwidthdisplay\relax
+    }%
+    \item[\hskip\labelsep\scshape\abstractname.]%
+}{%
+  \endlist
+  \par              % <--- added
+  \egroup
+  \ifx\@setabstract\relax \@setabstracta \fi
+}
+  }
+\cs_new_protected:Npn \__tag_firstaid_amsthm:
+  {
+    \def\@endtheorem{\endblockenv}
+    \RenewDocumentCommand\@thm{mmmO{}}{%
+      \ifhmode\unskip\unskip\par\fi
+      \normalfont
+      \let\thmheadnl\relax
+      \let\thm@swap\@gobble
+      \thm@notefont{\fontseries\mddefault\upshape}%
+      \thm@headpunct{.}% add period after heading
+      \thm@headsep 5\p@ plus\p@ minus\p@\relax
+      \thm@space@setup
+      ##1% style overrides
+      \@topsep \thm@preskip               % used by thm head
+      \@topsepadd \thm@postskip           % used by \@endparenv
+      \tl_set:Nn \l__block_thm_current_counter_tl{##2}
+      \tl_if_empty:nTF{##2}
+       {
+        \@begintheorem{##3}{}[##4]
+       }
+       {
+         \@kernel@refstepcounter{##2}
+         \@begintheorem{##3}{\csname the##2\endcsname}[##4]
+       }
+      }
+    \def\@begintheorem##1##2[##3]{%
+      \UseInstance{blockenv}{theorem}{begin-vspace=\thm@preskip}
+      \skip_set:Nn\l__block_topsepadd_skip { \thm@postskip }
+      \tag_socket_use:n {para/off}
+      \group_begin:
+        \normalfont
+        \the\thm@headfont \thm@indent
+        \tl_if_empty:NTF \l__block_thm_current_counter_tl
+           {\MakeLinkTarget[theorem]{}}
+           {\MakeLinkTarget{\l__block_thm_current_counter_tl}}
+        \@ifempty{##1}
+           {\let\thmname\@gobble}
+           {\def\thmname####1{\tag_socket_use:nnn {mc}{}{####1}}}%
+        \@ifempty{##2}
+           {\let\thmnumber\@gobble}
+           {\def\thmnumber####1
+             {\tag_socket_use:nnn{struct-mc}{tag=Lbl}{####1}}
+           }%
+        \@ifempty{##3}
+           {\let\thmnote\@gobble}
+           {\def\thmnote####1{\tag_socket_use:nnn {mc}{}{####1}}}%
+        \tag_socket_use:nnn{block/theorem/caption}{}
+         {
+           \thm@swap\swappedhead\thmhead{##1}{##2}{##3}%
+           \tag_socket_use:nnn {mc}{}{\the\thm@headpunct}
+         }
+        \thmheadnl % possibly a newline.
+      \group_end:
+       \tag_socket_use:n {para/on}
+       \tag_socket_use:n {para/begin}
+       \hskip\thm@headsep
+      \ignorespaces}
+    \def\thmhead@plain##1##2##3{%
+      \thmname{##1}
+      \thmnumber{
+        \@ifnotempty{##1}{~}\@upn{##2}
+       }%
+      \thmnote{\pdffakespace\space{\the\thm@notefont(##3)}}
+      }
+    \let\thmhead\thmhead@plain
+    \def\swappedhead##1##2##3{%
+      \thmnumber{##2}
+      \thmname{\@ifnotempty{##2}{\nobreakspace}##1}
+      \thmnote{\pdffakespace\space{\the\thm@notefont(##3)}}
+     }
+    \let\swappedhead@plain=\swappedhead
+    \renewcommand{\openbox}{\leavevmode
+      \hbox to.77778em{\pdf_bdc:nn{Span}{/ActualText<FEFF220E>}%
+      \pdffakespace\hfil\vrule
+      \vbox to.675em{\hrule width.6em\vfil\hrule}%
+      \vrule\hfil\pdf_emc:}}
+    \renewenvironment{proof}[1][\proofname]{\par
+      \pushQED{\qed}%
+      \UseInstance{blockenv}{theorem}{begin-vspace=6\p@\@plus6\p@}
+      \normalfont
+      \tag_socket_use:n {para/off}
+      \AddToHookNext{para/begin}
+       {
+        \tag_socket_use:nnn{block/theorem/caption}{}
+         {
+           \tag_socket_use:nnn {mc}{}
+            {\textit{##1\@addpunct{.}}}
+         }
+        \tag_socket_use:n {para/on}
+        \tag_socket_use:n {para/begin}
+        \pdffakespace\hspace{\labelsep}}
+      \ignorespaces
+    }{%
+      \popQED\endblockenv\par
+     }
+  }
+\ExplSyntaxOff
+\AddToHook{package/verse/after}[latex-lab-firstaid]{%
+  \FirstAidNeededT{verse}{sty}{2014/05/10 v2.4b verse typesetting}%
+   {%
+     \AtBeginDocument{%
+       \renewenvironment{verse}[1][\linewidth]{%
+         \stepcounter{verse@envctr}%
+         \setcounter{poemline}{0}\refstepcounter{poemline}%
+         \setcounter{vslineno}{1}%
+         \let\\=\@vscentercr
+         \list{}{\itemsep \z@
+                 \itemindent  -\vindent
+                 \listparindent\itemindent
+                 \parsep       \stanzaskip
+                 \ifdim #1 < \linewidth
+                   \rightmargin        \z@
+                   \setlength{\leftmargin}{\linewidth}%
+                   \addtolength{\leftmargin}{-#1}%
+                   \addtolength{\leftmargin}{-0.5\leftmargin}%
+                 \else
+                   \rightmargin        \leftmargin
+                 \fi
+                 \addtolength{\leftmargin}{\vindent}}%
+         \item[]%
+       }%
+       {\endlist}%
+     }%
+   }%
+}
+\AddToHook{package/cleveref/after}
+ {
+   \let\@makefntext\cref@old@makefntext
+   \AddToHook{cmd/@makefntext/before}{%
+    \cref@constructprefix{footnote}{\cref@result}%
+    \protected@edef\cref@currentlabel{%
+     [footnote][\arabic{footnote}][\cref@result]%
+    \p@footnote\@thefnmark}}
+ }
+\ExplSyntaxOn
+\AddToHook{package/booktabs/after}
+ {
+  \def\@cmidrulea{
+   \multispan\@cmidla
+   &\multispan\@cmidlb
+   \unskip\hskip\cmrkern@l
+  {
+   \tag_mc_begin:n{artifact}
+   \CT@arc@\leaders\hrule \@height\@thisrulewidth\hfill\kern\z@}
+   \hskip\cmrkern@r
+   \tag_mc_end: \int_gdecr:N \g__tbl_row_int
+   \cr}
+
+  \def\@cmidruleb{%
+    \multispan\@cmidlb
+    \unskip\hskip \cmrkern@l%
+   {
+    \tag_mc_begin:n{artifact}
+    \CT@arc@\leaders\hrule \@height\@thisrulewidth\hfill\kern\z@}
+    \hskip\cmrkern@r
+    \tag_mc_end: \int_gdecr:N \g__tbl_row_int
+    \cr}
+  }
+\ExplSyntaxOff
+
+\ExplSyntaxOn
+\AddToHook{package/fancyvrb/after}
+{
+    \def\FV@LeaveVMode{%
+      \if@noskipsec
+        \leavevmode
+      \else
+        \if@FV@ResetMargins\if@inlabel\leavevmode\fi\fi
+      \fi
+      \ifvmode
+        \@noparlisttrue
+        \__tag_gincr_para_main_begin_int:
+        \tag_struct_begin:n{tag=\l__tag_para_main_tag_tl}
+      \else
+        \bool_set_true:N\l__tag_para_flattened_bool
+        \@noparlistfalse
+        \unskip\par
+      \fi
+      }
+    \def\FV@List#1{%
+      \begingroup
+      \FV@UseKeyValues
+      \FV@LeaveVMode
+      \if@inlabel\else\setbox\@labels=\box\voidb@x\fi
+      \FV@ListNesting{#1}%
+      \FV@ListParameterHook
+      \FV@ListVSpace
+      \FV@SetLineWidth
+      \FV@InterLinePenalty
+      \let\FV@ProcessLine\FV@ListProcessLine@i
+      \FV@CatCodes
+      \FV@FormattingPrep
+      \FV@ObeyTabsInit
+      \cs_if_exist:NT \FV@BeginListFrame
+        {
+         \tag_mc_begin:n{artifact}
+         \FV@BeginListFrame
+         \tag_mc_end:
+        }
+      \tag_struct_begin:n{tag=verbatim}
+      }
+    \def\FV@EndList{%
+      \FV@ListProcessLastLine
+      \tag_struct_end:
+      \cs_if_exist:NT \FV@EndListFrame
+        {
+         \tag_mc_begin:n{artifact}
+         \FV@EndListFrame
+         \tag_mc_end:
+        }
+      \@endparenv
+      \endgroup
+      \@endpetrue
+      }
+    \def\FV@ListProcessLine#1{%
+      \hbox to \hsize{%
+        \kern\leftmargin
+        \hbox to \linewidth{%
+         \tag_struct_begin:n{tag=codeline}
+          \cs_if_exist:NT \FV@LeftListNumber
+           {
+             \tag_struct_begin:n{tag=Lbl}
+             \tag_mc_begin:n{}
+             \FV@LeftListNumber
+             \tag_mc_end:
+             \tag_struct_end:
+           }
+          \cs_if_exist:NT \FV@LeftListFrame
+           {
+             \tag_mc_begin:n{artifact}
+             \FV@LeftListFrame
+             \tag_mc_end:
+           }
+          \tag_mc_begin:n{}%
+          \FancyVerbFormatLine{#1}%
+          \tag_mc_end:
+          \tag_struct_end:\hss
+          \cs_if_exist:NT \FV@RightListFrame
+           {
+             \tag_mc_begin:n{artifact}
+             \FV@RightListFrame
+             \tag_mc_end:
+           }
+          \cs_if_exist:NT \FV@RightListNumber
+           {
+             \tag_struct_begin:n{tag=Lbl}
+             \tag_mc_begin:n{}
+             \FV@RightListNumber
+             \tag_mc_begin:n{}
+             \tag_struct_end:
+           }
+          }
+          \hss}}
+  }
+\ExplSyntaxOff
+\AddToHook{package/microtype/after}[firstaid]{%
+  \FirstAidNeededT{microtype}{sty}{2025/07/09 v3.2b
+   Micro-typographical refinements
+   (RS)}
+  {%
+    \def\MT@get@prot#1#2{%
+      \begingroup
+        \SuspendTagging{\MT@get@prot}%%added by firstaid
+        \setbox\MT@tempbox\vbox{%
+          \everypar{}%
+          \parfillskip=\z@skip
+          \hbadness\@M
+          \clubpenalty\z@
+          \widowpenalty\z@
+          \interlinepenalty\z@
+          \@newlistfalse
+          \MT@prot@hook
+          \begingroup
+            \MT@noindent #1\relax\MT@csq@eqgroup
+          \endgroup}%
+        \vbadness=\@M
+        \splittopskip=\z@
+        \vfuzz=\maxdimen
+        \setbox\MT@tempbox\vbox{%
+          \ifvbox\MT@tempbox
+            \global\setbox\MT@tempbox=\vsplit\MT@tempbox to \normalbaselineskip
+            \unvbox\MT@tempbox
+            \global\setbox\MT@tempbox=\lastbox
+          \fi
+        }%
+      \endgroup
+      \ifhbox\MT@tempbox
+        \@tempdima=\@nameuse{#2marginkern}\MT@tempbox\relax
+        \expandafter\ifdim\@tempdima=\z@ \else
+          \leavevmode
+          \MT@vinfo{|<< adding #2 margin kern for `#1':\MessageBreak
+            \the\@tempdima \on@line}%
+          \kern\@tempdima
+        \fi
+      \fi
+    }}
+ }
+\endinput
+%%
+%% End of file `latex-lab-testphase-firstaid.sty'.

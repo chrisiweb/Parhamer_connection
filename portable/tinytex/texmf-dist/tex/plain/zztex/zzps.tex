@@ -1,0 +1,251 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX PostScript Facilities
+%
+% Synopsis:  This module contains any and all facilities that rely on
+%            PostScript output.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   21 January 1994
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Extra Encoded Characters
+%                       ----- ------- ----------
+
+
+\def \PSbackslash       {\char 134\relax}
+\def \PSbar             {\char 138\relax}
+\def \PSbullet          {\char 142\relax}
+\def \PSbraceleft       {\char 137\relax}
+\def \PSbraceright      {\char 139\relax}
+\def \PScent            {\char 148\relax}
+\def \PScopyright       {\char 145\relax}
+\def \PScurrency        {\char 149\relax}
+\def \PSdagger          {\char 140\relax}
+\def \PSddagger         {\char 141\relax}
+\def \PSdollar          {\char 131\relax}
+\def \PSgreater         {\char 133\relax}
+\def \PSless            {\char 132\relax}
+\def \PSordfeminine     {\char 155\relax}
+\def \PSordmasculine    {\char 156\relax}
+\def \PSparagraph       {\char 143\relax}
+\def \PSperthousand     {\char 157\relax}
+\def \PSpolishL         {\char "A1\relax}
+\def \PSpolishl         {\char "A2\relax}
+\def \PSregistered      {\char 146\relax}
+\def \PSsection         {\char 144\relax}
+\def \PSsterling        {\char 158\relax}
+\def \PStrademark       {\char 147\relax}
+\def \PSunderscore      {\char 136\relax}
+\def \PSudquote         {\char 135\relax}
+\def \PSusquote         {\char 160\relax}
+\def \PSyen             {\char 159\relax}
+
+%                       Import EPS File
+%                       ------ --- ----
+
+
+% The illustration \special is compatible with DVIPSONE, and with TeXtures
+% if clip? is false.
+% The scale is interpreted as follows:
+%   <= 33.333: normal scale, 1.0 = 100%
+%    > 33.333: TeX scale factor, 1000 = 100%
+
+\def \specialimportartfile #1#2#3{%             {name}{scale}{clip?}
+  \special{illustration #1 scaled #2
+           \if #3clip\fi}}
+
+% This macro is a better variant of the preceding one. The scale
+% argument is a true scale specified in points.
+
+\def \specialplaceepsfile #1#2#3{%              {name}{scale}{clip?}
+  {\tdimena = #2%
+   \if \dimgtrp{\tdimena}{33.333pt}%            % Compensate for bizarre
+     \multiply \tdimena by 1000\relax           % design of scaled option.
+   \fi
+   \special{illustration #1 scaled \thefactor\tdimena
+            \if #3\space clip\fi}}}
+
+% This macro is used to import an EPS file for a glyph. The scale
+% is specified as a percentage IN POINTS.
+
+\def \specialplaceglyph #1#2#3{%                {name}{percentage}{clip?}
+  {\tdimena = #2%
+   \divide \tdimena by 100
+   \special{illustration #1 scaled \thefactor\tdimena
+            \if #3\space clip\fi}}}
+
+%                       Read EPS Bounding Box
+%                       ---- --- -------- ---
+
+
+\definedimen{\zbbxorigin}{0pt}
+\definedimen{\zbbyorigin}{0pt}
+
+
+{\catcode`\%=\catother
+\gdef \zpercent {%}
+} % \catcode
+
+\edef \zboundingbox {\zpercent\zpercent BoundingBox}
+\def \zatend {atend}
+\definecount{\zbbstate}{0}
+
+
+\def \zreadepsbb #1#2#3{%                       {\width}{\height}{file}
+  \def \zbbinfo {}%
+  \begingroup
+    \zsetepscatcodes
+    \openin \zreada #3\relax
+    \zbbstate = 0
+    \loop
+      \read \zreada to \zline
+      \ifeof \zreada
+        \zbbstate = 2
+      \else
+        \expandafter\zcheckbb \zline:.\zmark
+      \fi
+    \ifnum \zbbstate < 2 \repeat
+    \closein \zreada
+  \endgroup
+  \zsetbbsizes{#1}{#2}{#3}}
+
+\def \zsetepscatcodes {%
+  \catcoderange{0}{"1F}{\catcomment}%
+  \catcode `\^^I = \catspace
+  \catcode \endlinechar = \catendofline
+  \uncatcode{\false}{\false}{\false}%
+  \catcode `\: = \catother
+  \catcoderange{"7E}{"FF}{\catcomment}}
+
+\long \def \zcheckbb #1:#2#3\zmark{%
+  \def \znext {#1}%
+  \ifx \znext \zboundingbox
+    \zcheckatend #2#3()\zmark
+  \fi}
+
+\long \def \zcheckatend #1(#2)#3\zmark{%
+  \def \znext {#2}%
+  \ifx \znext \zatend
+    \zbbstate = 1
+  \else
+    \gdef \zbbinfo {#1}%
+    \ifnum \zbbstate = 0 \zbbstate = 2\fi
+  \fi}
+
+\def \zsetbbsizes #1#2#3{%
+  \if \emptydefp{\zbbinfo}%
+    \warning{missbb}{Art file `#3' has no bounding box}%
+    #1 = 20pc #2 = 10pc
+  \else
+    \expandafter \zcalcbb \zbbinfo \zmark{#1}{#2}%
+  \fi}
+
+\def \zcalcbb #1 #2 #3 #4 #5\zmark#6#7{%
+  \calculate #6= {#3pt,-,#1pt,+,1pt}%
+  \calculate #7= {#4pt,-,#2pt,+,1pt}%
+  \global\zbbxorigin = #1pt
+  \global\zbbyorigin = #2pt\relax}
+
+%                       Rotate Boxes
+%                       ------ -----
+
+
+\def \rotatebox #1#2{%                                  {\box}{degrees}
+  \special{CTM: push rotate #2}%
+  \box #1%
+  \special{CTM: pop}}
+
+\def \rotatetext #1#2{%                                 {text}{degrees}
+  \setbox \zboxa = \hbox{#1}%
+  \rotatebox{\zboxa}{#2}}
+
+%                       Colors
+%                       ------
+
+
+\def \colorspecial #1{%
+  \if \allowcolor
+    \special{#1}%
+  \fi}
+
+% These commands are called in the output routine to make sure that
+% everything added in the output routine is black.
+
+\def \zoutputbeginblack {%
+  \colorspecial{color push gray 0}}
+
+\def \zoutputendblack {%
+  \colorspecial{color pop}}
+
+%                       Color Block
+%                       ---- ------
+
+
+\defineblock{\color}{\endcolor}{\false}{}
+
+%~block color Type
+% \colorspec = {...}                    % Color specifier.
+%~end
+
+\definetoks{\colorspec}
+
+
+\def \color #1{%                                        {type}
+  \beginblockscope{color}%
+  \global\increment \colordepth
+  \processdesign{\color}{#1}%
+  \global\increment \colornumber
+  \colorspecial{color push}%
+  \the\colorspec\zmark
+  \if \vmodep \vpenalty{\breaknever}\fi}
+
+\def \endcolor {%
+  \global\decrement \colordepth
+  \endblockscope{color}%
+  \colorspecial{color pop}}
+
+
+\def \setcolor #1{%
+  \begingroup
+  \processdesign{\color}{#1}%
+  \the\colorspec\zmark
+  \endgroup}
+
+% Color specifiers:
+
+\def \cmykcolor #1 #2 #3 #4\zmark{%                     c m y k\zmark
+  \colorspecial{color cmyk #1 #2 #3 #4}}
+
+\def \graycolor #1\zmark{%                              gray\zmark
+  \colorspecial{color gray #1}}
+
+\def \rgbcolor #1 #2 #3\zmark{%                         r g b\zmark
+  \colorspecial{color rgb #1 #2 #3}}
+
+% Built-in colors:
+
+\def \colorblackdesign {%
+  \colorspec = {\graycolor 0}}
+
+\def \colorwhitedesign {%
+  \colorspec = {\graycolor 1}}
+
+\def \colorproofnotereddesign {%
+  \colorspec = {\rgbcolor .5 0 0}}
+
+% A useful shorthand:
+
+\def \colortext #1#2{%                                  {color}{text}
+  \color{#1}#2\endcolor}
+
+%                       TeXtures
+%                       --------
+
+
+\def \TeXtures {%
+  \input zztures\relax}

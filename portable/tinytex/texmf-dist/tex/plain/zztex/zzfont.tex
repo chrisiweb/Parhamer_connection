@@ -1,0 +1,453 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Font Facilities
+%
+% Synopsis:  This module contains all the macros necessary to define type
+%            sizes, styles, and fonts.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   28 August 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Baselines & Struts
+%                       --------- - ------
+
+
+\zremovePlaindef \strutbox
+\definebox{\strutbox}           % Strut for current type size.
+
+\def \strut {%
+  \relax
+  \if \mathmodep
+    \copy \strutbox
+  \else
+    \unhcopy \strutbox
+  \fi}
+
+\def \normalbaselines {%
+  \baselineskip = \the\baselinemultiplier\normalbaselineskip
+  \lineskiplimit = \normallineskiplimit
+  \lineskip = \normallineskip}
+
+%                       Type Style & Size Definition
+%                       ---- ----- - ---- ----------
+
+
+% The following character set encodings are available. Odd numbers
+% indicate italic; numbers > 20 indicate monospaced.
+
+\chardef \encoderoman         =  0      % Roman. %^encoding
+\chardef \encodeitalic        =  1      % Italic. %^encoding
+\chardef \encodemathitalic    =  3      % Math italic. %^encoding
+\chardef \encodemathsymbol    =  4      % Math symbols. %^encoding
+\chardef \encodemathextended  =  6      % Math extended symbols. %^encoding
+\chardef \encodematharrow     =  8      % Math arrows. %^encoding
+\chardef \encodeother         = 10      % Generic. %^encoding
+\chardef \encodemono          = 22      % Monospaced. %^encoding
+\chardef \encodemonoitalic    = 23      % Monospaced italic. %^encoding
+
+\setlist \zfsizelist = {}
+\setlist \zfstylelist = {}
+
+
+\def \definetypestyle #1#2{%                    {\name}{\encoding}
+  \append{#1}{\zfstylelist}%
+  \zfwithfam{\zdeffam}{#1}%
+  \zfwithmat{\def}{#1}{\zfl}{}%
+  \zfwithmat{\xdef}{#1}{\zen}{#2}}
+
+\def \definetypesize #1#2{%                     {\name}{size/baseline}
+  \append{#1}{\zfsizelist}%
+  \zdefsize #1#2/%
+  \zdefstrut #1#2/%
+  \zfbldsize{#1}}
+
+\def \zdefsize #1#2/#3/{%                       \name size/baseline/
+  \zfwithmat{\xdef}{#1}{\zsz}{#2pt}}
+
+\def \zdefstrut #1#2/#3/{%                      \name size/baseline/
+  {\calculate \tdimena = {#3pt,P,70}%
+   \tdimenb = #3pt\relax
+   \advance \tdimenb by -\tdimena
+   \zfwithmat{\xdef}{#1}{\zst}{height \the\tdimena\space depth \the\tdimenb}}}
+
+
+% A few useful predicates.
+
+\def \typestylep #1{%                                   {\style}
+  \xtokeqlp{\the\typestyle}{#1}}
+
+\def \italicencodingp {%
+  \oddp{\typeencoding}}
+
+\def \monoencodingp {%
+  \gtrp{\typeencoding}{20}}
+
+% Commands to set font parameters.
+
+\def \setstylefontparam #1#2#3{%                {\style}{param}{value}
+  \zfwithmat\maplistlf {#1}{\zfl}{%
+    \zfsetfp{##1}{#2}{#3}}}
+
+\def \setstylehyphenchar #1#2{%                 {\style}{number}
+  \setstylefontparam{#1}{-2}{#2}}
+
+\def \setstyleskewchar #1#2{%                   {\style}{number}
+  \setstylefontparam{#1}{-1}{#2}}
+
+\def \zfsetfp #1#2#3{%                          {font}{param}{value}
+  \if \eqlp{#2}{-2}%
+    \hyphenchar #1=#3\relax
+  \else\if \eqlp{#2}{-1}%
+    \skewchar #1=#3\relax
+  \else
+    \fontdimen#2#1=#3\relax
+  \fi\fi}
+
+%                       Style Relations
+%                       ----- ---------
+
+
+\def \definestylerelation #1#2#3{%              {\style}{\relation}{\style}
+  \zfwithmat{\gdef}{#1}{#2}{#3}%
+  \gdef #2{\bgroup \zfrelstyle{#2}%
+                   \if \italicencodingp \aftergroup \/\fi
+                   \let \znext}}
+
+\def \zfrelstyle #1{%                           {\relation}
+  \if \mathmodep
+    \ztoksa = \expandaftertwice{\zfmat\math#1}%
+    \expandafter\ifx \the\ztoksa\relax
+      \zfnorelstyle{math}{#1}%
+    \fi
+  \else
+    \ztoksa = \expandafterthrice{\expandafter\zfmat\the\typestyle#1}%
+    \expandafter\ifx \the\ztoksa\relax
+      \zfnorelstyle{\the\typestyle}{#1}%
+    \fi
+  \fi
+  \the\ztoksa}
+
+\def \zfnorelstyle #1#2{%
+  \error{norelstyle}
+        {The current `#1' style has no related style for `\string#2'}}
+
+%                       Font Definition
+%                       ---- ----------
+
+
+\setlist \ztfmlist = {}%
+
+
+\def \definefont #1#2{%                         {\name}{tfm at size}
+  \global\font #1 = #2\relax
+  \zregistertfm #2\zmark
+  \if \zcommonencoding
+    \if \andp{\dimposp{\fontdimen7#1}}{\dimlssp{\fontdimen7#1}{.1pt}}%
+      \fontdimen7#1 = \fontdimen2#1\relax       % Unlock it.
+    \else\if \dimeqlp{\fontdimen7#1}{\fontdimen2#1}
+      \relax                                    % Already unlocked.
+    \else
+      \error{lockedfont}{The TFM for font `#2' is locked}%
+    \fi\fi
+  \fi}
+
+\def \zregistertfm #1 #2\zmark{%                tfm at size\zmark
+  \member{\ztfmreg}{#1}{\ztfmlist}%
+  \if \notp{\ztfmreg}\append{#1}{\ztfmlist}\fi}  
+
+\def \fontinterwordspacing #1#2{%               {font}{factor}
+  \fontdimen2#1= #2\fontdimen2#1%
+  \fontdimen3#1= #2\fontdimen3#1%
+  \fontdimen4#1= #2\fontdimen4#1%
+  \fontdimen7#1= #2\fontdimen7#1}
+
+%                       Font Selection
+%                       ---- ---------
+
+
+\definetoks{\typesizename}              % Current type size name.
+\definedimen{\typesize}{0pt}            % Current type size in points.
+\definetoks{\typestyle}                 % Current type style.
+\definecount{\typeencoding}{0}          % Current type encoding.
+
+
+% Equal signs and by's have been omitted for the sake of efficiency.
+
+\def \setfont #1#2#3{%                          {\size}{\style}{\font}
+  \setfontmath{#1}{#2}{#3}{\nullfont}{\nullfont}}
+  
+\def \setfontmath #1#2#3#4#5{%  {\size}{\style}{\text}{\script}{\scriptscript}
+  \edef \zfam {\zffam{#2}}%
+  \zfwithmat{\xdef}{#1}{#2}{%
+    \textfont \zfam #3%
+    \scriptfont \zfam #4%
+    \scriptscriptfont \zfam #5%
+    \def \noexpand#2{%
+      \typestyle {\noexpand#2}%
+      \typeencoding \zfmat{#2}{\zen}%
+      #3%
+      \fam \zfam}}%
+  \zfbldsize{#1}%
+  \zfaddfont{#2}{#3}%
+  \zfaddfont{#2}{#4}%
+  \zfaddfont{#2}{#5}}
+
+\def \zfbldsize #1{%                            {\size}
+  {\gdef #1{}
+   \maplist{\zfaddstyle{#1}{##1}}{\zfstylelist}%
+   \ztoksa \expandafter{#1}%
+   \xdef #1{%
+     \typesizename {\noexpand#1}%
+     \typesize \zfmat{#1}{\zsz}%
+     \the\ztoksa
+     \setbox\strutbox \hbox{\vrule \zfmat{#1}{\zst} width 0pt}%
+     \normalbaselineskip \ht\strutbox
+     \advance \normalbaselineskip \dp\strutbox
+     \noexpand\normalbaselines
+     \typestyle {none}\nullfont \fam -1\relax}}}
+
+\def \zfaddstyle #1#2{%                                 {\size}{\style}
+  \ztoksa \expandafter{#1}%
+  \ztoksb \expandaftertwice{\zfmat{#1}{#2}}%
+  \expandafter\ifx \the\ztoksb\relax
+    \xdef #1{\the\ztoksa
+             \noexpand\zclearfam{\zffam{#2}}%
+             \def \noexpand#2{\noexpand\zfundef{\noexpand#1}{\noexpand#2}}}%
+  \else
+    \xdef #1{\the\ztoksa \the\ztoksb}%
+  \fi}
+
+\def \zfaddfont #1#2{%                                  {\style}{font}
+  \zfwithmat{\appendlf}{#1}{\zfl}{#2}}
+
+
+% This macro clears out a family so TeX can't set math in it.
+
+\def \zclearfam #1{%                                    {family}
+  \textfont #1 \nullfont
+  \scriptfont #1 \nullfont
+  \scriptscriptfont #1 \nullfont}
+
+% This macro is called if the user selects a type style that has no font
+% in the current size.
+
+\def \zfundef #1#2{%                                    {\size}{\style}
+  \error{nofontset}
+        {No font has been set for size `\string#1' style `\string#2'}}
+
+%                       Miscellaneous
+%                       -------------
+
+
+% The following definition allows the user to write:
+%   \withfont{\bf Hi there}
+
+\let \withfont = \relax
+
+% This macro helps with defining math fonts.
+
+\def \definemathfonts #1#2#3#4#5#6{%    {prefix}{rm-font}{mit}{msy}{mex}{size}
+  \edef \znext {%
+    \noexpand\definefont{\name{#1rm}}{#2 at #6}%
+    \noexpand\definefont{\name{#1mit}}{#3 at #6}%
+    \noexpand\definefont{\name{#1msy}}{#4 at #6}%
+    \noexpand\definefont{\name{#1mex}}{#5 at #6}}%
+  \znext}
+
+% This macro helps with setting math fonts.
+
+\def \setmathfonts #1#2#3#4{%           {\size}{\text}{\script}{\scriptscript}
+  \edef \znext {%
+    \noexpand\setfontmath{\noexpand#1}{\noexpand\rm}%
+                         {\name{#2rm}}{\name{#3rm}}{\name{#4rm}}%
+    \noexpand\setfontmath{\noexpand#1}{\noexpand\mit}%
+                         {\name{#2mit}}{\name{#3mit}}{\name{#4mit}}%
+    \noexpand\setfontmath{\noexpand#1}{\noexpand\msy}%
+                         {\name{#2msy}}{\name{#3msy}}{\name{#4msy}}%
+    \noexpand\setfontmath{\noexpand#1}{\noexpand\mex}%
+                         {\name{#2mex}}{\name{#2mex}}{\name{#2mex}}}%
+  \znext}
+
+%                       Measuring Things
+%                       --------- ------
+
+
+\definebox{\zmeasbox}
+
+
+\def \measureascenderheight #1{%                        {\dimen}
+  \zsetmeasbox{bdfhijklt}%
+  #1 = \ht\zmeasbox}
+
+\def \measurecapheight #1{%                             {\dimen}
+  \zsetmeasbox{ABCDEFGHIJKLMNOPQRSTUVWXYZ}%
+  #1 = \ht\zmeasbox}
+
+\def \measuredescenderdepth #1{%                        {\dimen}
+  \zsetmeasbox{gjpqy}%
+  #1 = \dp\zmeasbox}
+
+\def \measuredigitheight #1{%                           {\dimen}
+  \zsetmeasbox{0123456789}%
+  #1 = \ht\zmeasbox}
+
+\def \measuredigitwidth #1{%                            {\dimen}
+  \zsetmeasbox{0}%
+  #1 = \wd\zmeasbox}
+
+\def \measureemwidth #1{%                               {\dimen}
+  #1 = 1em}
+
+\def \measurespacewidth #1{%                            {\dimen}
+  #1 = \fontdimen2\font}
+
+\def \measurexheight #1{%                               {\dimen}
+  #1 = 1ex}
+
+\def \measuretextwidth #1#2{%                           {\dimen}{text}
+  \zsetmeasbox{#2}%
+  #1 = \wd\zmeasbox}
+
+\def \measuretextheight #1#2{%                          {\dimen}{text}
+  \zsetmeasbox{#2}%
+  #1 = \ht\zmeasbox}
+
+\def \measuretextdepth #1#2{%                           {\dimen}{text}
+  \zsetmeasbox{#2}%
+  #1 = \dp\zmeasbox}
+
+\def \zsetmeasbox #1{\setbox\zmeasbox = \hbox{#1}}
+
+\def \definewidthdimen #1#2{%                           {\dimen}{text}
+  \definedimen{#1}{0pt}%
+  \measuretextwidth{#1}{#2}}
+
+%                       Utilities
+%                       ---------
+
+
+\def \zfmat #1#2{%                              {\size}{\style}
+  \csname zf\expandafter\discardtok \string#1%
+            \expandafter\discardtok \string#2\endcsname}
+
+\def \zfwithmat #1#2#3{%                        {\command}{\size}{\style}
+  \expandafter#1\csname zf\expandafter\discardtok \string#2%
+                          \expandafter\discardtok \string#3\endcsname}
+
+
+\def \zffam #1{%                                {\style}
+  \csname \expandafter\discardtok \string#1fam\endcsname}
+
+\def \zfwithfam #1#2{%                          {\command}{\style}
+  \expandafter#1\csname \expandafter\discardtok \string#2fam\endcsname}
+
+%                       Built-in Styles
+%                       -------- ------
+
+
+\zremovePlaindef \itfam
+\zremovePlaindef \bffam
+\zremovePlaindef \ttfam
+
+                                             % Family  Name
+\definetypestyle{\rm}{\encoderoman}          %   0     RoMan
+\definetypestyle{\mit}{\encodemathitalic}    %   1     Math ITalic
+\definetypestyle{\msy}{\encodemathsymbol}    %   2     Math SYmbol
+\definetypestyle{\mex}{\encodemathextended}  %   3     Math EXtended symbol
+\definetypestyle{\cal}{\encoderoman}         %   4     CALigraphic letters
+\definetypestyle{\bbb}{\encoderoman}         %   5     BlackBoard Bold
+\definetypestyle{\it}{\encodeitalic}         %   6     ITalic
+\definetypestyle{\bf}{\encoderoman}          %   7     Bold Face
+\definetypestyle{\bi}{\encodeitalic}         %   8     Bold Italic
+\definetypestyle{\tt}{\encodemono}           %   9     monospaced (TypewriTer)
+
+% Note: style \math is reserved for math mode.
+
+\definestylerelation{\math}{\bbbold}{\bbb}
+\definestylerelation{\math}{\bold}{\bf}
+\definestylerelation{\rm}{\bold}{\bf}
+\definestylerelation{\it}{\bold}{\bi}
+\definestylerelation{\math}{\callig}{\cal}
+\definestylerelation{\rm}{\callig}{\cal}
+\definestylerelation{\rm}{\emph}{\it}
+\definestylerelation{\it}{\emph}{\rm}
+\definestylerelation{\bf}{\emph}{\bi}
+\definestylerelation{\bi}{\emph}{\bf}
+\definestylerelation{\math}{\fraktur}{\frk}
+\definestylerelation{\tt}{\meta}{\it}
+\definestylerelation{\math}{\roman}{\rm}
+\definestylerelation{\rm}{\roman}{\rm}
+\definestylerelation{\it}{\roman}{\rm}
+\definestylerelation{\bf}{\roman}{\rm}
+\definestylerelation{\tt}{\roman}{\rm}
+\definestylerelation{\rm}{\smallcaps}{\sc}
+
+% We do not define any sizes or fonts.  They just take up memory.
+
+%                       Doodad Font
+%                       ------ ----
+
+
+\def \zrequiredoodad #1#2{%                             {\name}{size}
+  \if \undefinedp{\zfdoodad#2}%
+    \withname\definefont {\zfdoodad#2}{zztexorn at #2}%
+  \fi
+  \edef \znext {\let \noexpand#1\name{\zfdoodad#2}}%
+  \znext}
+
+%                       Font Style Summary
+%                       ---- ----- -------
+
+
+{\catcode`\_ = \catactive
+
+\gdef \zfontsummary #1{%                                {font-list?}
+  {\def _{\space}%
+   \writelog{}%
+   \writelog{Type Styles:}%
+   \writelog{}%
+   \writelog{Name_____Math Family}%
+   \writelog{----_____-----------}%
+   \maplist{\zfsone{##1}}{\zfstylelist}%
+   \if #1%
+     \writelog{}%
+     \maplist{\writelog{ZzTeX: Font used: ##1}}{\ztfmlist}%
+   \fi
+   \writelog{}}}
+
+\gdef \zfsone #1{%
+  \tcounta = \name{#1fam}%
+  \writelog{\string #1______%
+            \if \lssp{\tcounta}{10}%
+              _\number\tcounta
+            \else\if \lssp{\tcounta}{15}%
+              \number\tcounta
+            \else
+              ---%
+            \fi\fi}}
+
+}% \catcode
+
+%                       TFM List File
+%                       --- ---- ----
+
+
+\definewrite{\ztfmlistfile}
+
+
+\def \zopentfmlist {%
+  \if \zcommonencoding
+    \immediate\openout \ztfmlistfile = tfmlist.zzz\relax
+    \immediate\write \ztfmlistfile {\jobname}%
+  \fi}
+
+\def \zwritetfmlist {%
+  \if \zcommonencoding
+    \maplist{\immediate\write \ztfmlistfile {##1}}{\ztfmlist}%
+    \immediate\closeout \ztfmlistfile
+  \fi}

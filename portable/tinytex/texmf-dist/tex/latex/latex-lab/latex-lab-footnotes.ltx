@@ -1,0 +1,566 @@
+%%
+%% This is file `latex-lab-footnotes.ltx',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-footnotes.dtx  (with options: `kernel')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-footnotes.dtx
+\def\ltlabfootnotedate{2025-07-04}
+\def\ltlabfootnoteversion{0.8o}
+
+\ProvidesFile{latex-lab-footnotes.ltx}
+             [\ltlabfootnotedate\space v\ltlabfootnoteversion\space
+               changes to the footnote interfaces]
+%% alterations not covered:
+
+\ExplSyntaxOn
+\prop_new:N \l__fnote_tmpa_prop
+\tl_new:N   \l__fnote_tmpa_tl
+\tl_new:N  \l_fnote_type_tl
+\tl_set:Nn \l_fnote_type_tl {default}
+\bool_new:N       \l_fnote_link_bool
+\bool_set_true:N  \l_fnote_link_bool
+\tl_new:N  \l_fnote_link_type_tl
+\tl_set:Nn \l_fnote_link_type_tl {link}
+\tl_new:N \l__fnote_linktarget_tl
+\tl_new:N \l__fnote_currentlabel_tl
+
+\seq_new:N  \l__fnote_currentrefs_seq
+\bool_new:N       \l__fnote_autodetect_bool
+\bool_set_true:N  \l__fnote_autodetect_bool
+\tl_new:N  \l__fnote_currentstruct_tl
+\tl_set:Nn \l__fnote_currentstruct_tl {2}
+\cs_generate_variant:Nn \hook_gput_code:nnn{nne}
+\cs_generate_variant:Nn \tag_struct_use:n {e}
+\cs_new_protected:Npn \fnote_step_fnmark:nn #1#2 {
+  \tl_if_novalue:nTF {#1}
+    {
+      \stepcounter {#2}
+      \protected@xdef \@thefnmark { \use:c { the#2 } }
+    }
+    {
+     \group_begin:
+        \int_set:cn { c@#2 }{ #1 }
+        \unrestored@protected@xdef \@thefnmark { \use:c { the#2 } }
+     \group_end:
+    }
+}
+\cs_new_protected:Npn \fnote_set_fnmark:nn #1#2 {
+  \tl_if_novalue:nTF {#1}
+    {
+      \protected@xdef \@thefnmark { \use:c { the#2 } }
+    }
+    {
+     \group_begin:
+        \int_set:cn { c@#2 }{ #1 }
+        \unrestored@protected@xdef \@thefnmark { \use:c { the#2 } }
+     \group_end:
+    }
+}
+\NewMirroredHookPair{fnmark/before}{fnmark/after}
+\NewHook{fnmark}
+\NewHook{fnmark/begin}
+\NewHook{fnmark/end}
+\NewMirroredHookPair{fntext/before}{fntext/after}
+\NewHook{fntext}
+\NewHook{fntext/para}
+\NewHook{fntext/begin}
+\NewHook{fntext/end}
+\bool_new:N        \g_fnote_debug_bool
+
+\cs_new_protected:Npn \DebugFNotesOn  { \bool_gset_true:N  \g_fnote_debug_bool  }
+\cs_new_protected:Npn \DebugFNotesOff { \bool_gset_false:N  \g_fnote_debug_bool }
+\cs_new_protected:Npn \__fnote_debug_footnotemark:
+  {
+    \bool_if:NT \g_fnote_debug_bool
+       {
+         \hook_log:n {fnmark/before}
+         \hook_log:n {fnmark}
+         \hook_log:n {fnmark/begin}
+         \hook_log:n {fnmark/end}
+         \hook_log:n {fnmark/after}
+         \cs_gset_eq:NN \__fnote_debug_footnotemark: \prg_do_nothing:
+       }
+  }
+\cs_new_protected:Npn \__fnote_debug_footnotetext:
+  {
+    \bool_if:NT \g_fnote_debug_bool
+       {
+         \socket_log:n {fntext/process}
+         \socket_log:n {fntext/make}
+         \socket_log:n {fntext/begin}
+         \socket_log:n {fntext/end}
+         \socket_log:n {fntext/mark}
+         \socket_log:n {fntext/text}
+         \socket_log:n {tagsupport/fnmark}
+         \socket_log:n {tagsupport/fntext/begin}
+         \socket_log:n {tagsupport/fntext/end}
+         \socket_log:n {tagsupport/fntext/mark}
+         \socket_log:n {tagsupport/fntext/text}
+         \hook_log:n {fntext/before}
+         \hook_log:n {fntext}
+         \hook_log:n {fntext/para}
+         \hook_log:n {fntext/begin}
+         \hook_log:n {fntext/end}
+         \hook_log:n {fntext/after}
+         \cs_gset_eq:NN \__fnote_debug_footnotetext: \prg_do_nothing:
+       }
+  }
+\cs_new_protected:Npn \fnote_footnotemark: {
+  \__fnote_debug_footnotemark:
+  \hook_use:n {fnmark/before}
+  \leavevmode
+  \ifhmode
+    \edef\@x@sf{\the\spacefactor}
+    \hook_use:n {fnmark}
+    \nobreak
+  \fi
+  \hook_use:n {fnmark/begin}
+  \tag_socket_use:nnn {fnmark}{}{ \socket_use:n{fnmark/link}{\@makefnmark} }
+  \__fnote_footnotemark_finish:
+}
+\cs_new_protected:Npn \__fnote_footnotemark_default_finish: {
+  \UseHook{fnmark/end}
+  \ifhmode
+    \spacefactor \@x@sf \relax
+  \fi
+  \UseHook{fnmark/after}
+}
+\cs_new_eq:NN \__fnote_footnotemark_finish: \__fnote_footnotemark_default_finish:
+\NewTaggingSocket{fnmark}{2}
+\cs_set_eq:NN  \@footnotemark \fnote_footnotemark:
+\cs_new_protected:Npn \fnote_footnotetext:n #1 {
+  \__fnote_debug_footnotetext:
+  \hook_use:n {fntext/before}
+  \tag_socket_use:n {fntext/begin}
+  \socket_use:nn {fntext/process}
+    {
+    \hook_use:n {fntext}
+    \reset@font
+    \footnotesize
+    \interlinepenalty\interfootnotelinepenalty
+    \splittopskip\footnotesep
+    \splitmaxdepth \dp\strutbox
+    \floatingpenalty \@MM
+    \hsize\columnwidth
+    \@parboxrestore
+    \UseTaggingSocket{para/restore}
+    \parindent 1em     % typical default used in \@makefntext moved up here
+    \def\@currentcounter{footnote}
+    \protected@edef \@currentlabel { \p@footnote \@thefnmark }
+    \hook_use:n {fntext/para}
+    \color@begingroup
+      \socket_use:nn {fntext/make}
+        {
+          \socket_use:n {fntext/begin}%
+          \hook_use:n {fntext/begin}
+          \ignorespaces
+          #1
+          \hook_use:n {fntext/end}
+          \socket_use:n {fntext/end}
+        }
+      \par
+    \color@endgroup
+  }
+  \tag_socket_use:n{fntext/end}
+  \hook_use:n {fntext/after}
+}
+\NewSocket    {fntext/process}{1}
+\NewSocketPlug{fntext/process}{default}{ \insert\footins {#1} }
+\NewSocketPlug{fntext/process}{side}   { \marginpar {#1} }
+\AssignSocketPlug{fntext/process}{default}
+\NewSocket    {fntext/make}{1}
+\NewSocketPlug{fntext/make}{default}{ \@makefntext {#1} }
+\NewSocketPlug{fntext/make}{para}
+{
+  \setbox\FN@tempboxa\hbox{\@makefntext{#1}}%
+  \dp\FN@tempboxa\z@
+  \ht\FN@tempboxa
+  \dimexpr\wd\FN@tempboxa *%
+             \footnotebaselineskip /\columnwidth\relax
+  \box\FN@tempboxa
+}
+\AssignSocketPlug{fntext/make}{default}
+\NewSocket    {fntext/begin}{0}
+\NewSocketPlug{fntext/begin}{default}{ \rule\z@\footnotesep }
+\AssignSocketPlug{fntext/begin}{default}
+\NewSocket    {fntext/end}{0}
+\NewSocketPlug{fntext/end}{default}{ \@finalstrut\strutbox }
+\NewSocketPlug{fntext/end}{para}
+  {%
+           \strut
+           \penalty-10\relax
+           \hskip\footglue
+  }
+\AssignSocketPlug{fntext/end}{default}
+\NewTaggingSocket{fntext/begin}{0}
+\NewTaggingSocket{fntext/end}{0}
+\AddToHook{begindocument}
+  {
+    \cs_set_eq:NN \@footnotetext \fnote_footnotetext:n
+  }
+\newdimen\footnotemargin
+\footnotemargin\maxdimen         % no value given
+
+\AtBeginDocument
+  {
+    \ifdim \footnotemargin=\maxdimen
+      \setlength\footnotemargin{1.8em}
+    \fi
+  }
+\cs_new_protected:Npn \fnote_makefntext:n #1 {
+  \noindent
+  \socket_use:n{fntext/mark/link}
+  \tag_socket_use:nnn {fntext/mark} {} { \socket_use:n  {fntext/mark} }
+  \tag_socket_use:nnn {fntext/text} {} { \socket_use:nn {fntext/text}{#1} }
+}
+\NewSocket    {fntext/mark}{0}
+\NewSocketPlug{fntext/mark}{default}{
+   \ifdim\footnotemargin>\z@
+     \hb@xt@ \footnotemargin{\hss\@makefnmark}
+   \else
+     \ifdim\footnotemargin=\z@
+       \llap{\@makefnmark}
+     \else
+     \ifdim\footnotemargin=-\maxdimen
+          \@makefnmark
+       \else
+          \llap{\hb@xt@ -\footnotemargin{\@makefnmark\hss}}
+       \fi
+     \fi
+   \fi
+}
+\AssignSocketPlug{fntext/mark}{default}
+\NewSocket    {fntext/text}{1}
+\NewTaggingSocket{fntext/mark}{2}
+\NewTaggingSocket{fntext/text}{2}
+\newcommand\old@std@class@makefntext[1]{%
+    \parindent 1em%
+    \noindent
+    \hb@xt@1.8em{\hss\@makefnmark}#1}
+\tl_new:N \l__fnote_patch_tl
+\cs_new_eq:NN \__fnote_tmp:w \ERROR
+
+\cs_new_protected:Npn \__fnote_patch:
+  {
+    \tl_set:No \l__fnote_patch_tl { \@makefntext { \UseTaggingSocket{fntext/text}{}{##1} } }
+    \tl_if_in:NnTF \l__fnote_patch_tl { \hbox }
+      { \cs_set_eq:NN \__fnote_tmp:w \__fnote_patch_hbox:w }
+      {
+        \tl_if_in:NnTF \l__fnote_patch_tl { \hb@xt@ }
+          { \cs_set_eq:NN \__fnote_tmp:w \__fnote_patch_hb@xt@:w }
+          {
+            \tl_if_in:NnTF \l__fnote_patch_tl { \makebox }
+              { \cs_set_eq:NN \__fnote_tmp:w \__fnote_patch_makebox:w }
+              {
+                \tl_if_in:NnTF \l__fnote_patch_tl { \@makefnmark }
+                  { \cs_set_eq:NN \__fnote_tmp:w \__fnote_patch_@makefnmark:w }
+                  { \ERROR
+                    \cs_set_eq:NN \__fnote_tmp:w \exp_stop_f: }
+              }
+          }
+      }
+    \tl_set:Nf \l__fnote_patch_tl
+      { \exp_after:wN \__fnote_tmp:w \l__fnote_patch_tl }
+    \cs_set:Npn \__fnote_tmp:w { \long \def \@makefntext ####1 }
+    \exp_after:wN \__fnote_tmp:w \exp_after:wN { \l__fnote_patch_tl }
+  }
+\cs_new:Npn \__fnote_patch_hbox:w #1 \hbox #2 #
+  { \exp_stop_f: #1 \@makefntext@processX { \hbox #2 } }
+\cs_new:Npn \__fnote_patch_hb@xt@:w #1 \hb@xt@ #2 #
+  { \exp_stop_f: #1 \@makefntext@processX { \hb@xt@ #2 } }
+\cs_new:Npn \__fnote_patch_makebox:w #1 \makebox #2 #
+  { \exp_stop_f: #1 \@makefntext@processX { \makebox #2 } }
+\cs_new:Npn \__fnote_patch_@makefnmark:w #1 \@makefnmark
+  { \exp_stop_f: #1 \@makefntext@processX { \use:n } { \@makefnmark } }
+\cs_new:Npn \@makefntext@processX #1#2
+  {
+    \socket_use:n{fntext/mark/link}
+    \UseTaggingSocket{fntext/mark}{}{#1{#2}}
+  }
+
+\AddToHook{begindocument}
+  {
+    \cs_if_eq:NNF\@makefntext \fnote_makefntext:n
+     {
+       \cs_if_eq:NNTF \@makefntext \old@std@class@makefntext
+         {
+           \cs_set_eq:NN \@makefntext \fnote_makefntext:n
+         }
+         {
+           \cs_if_eq:NNF \@makefntext \footmisc@hang@makefntext
+                         { \__fnote_patch: }
+         }
+     }
+  }
+
+\DeclareDocumentCommand\footnotetext {o+m}
+  {
+    \fnote_set_fnmark:nn {#1} \@mpfn
+    \@footnotetext {#2}
+  }
+\DeclareDocumentCommand\footnote {o+m}
+  {
+    \fnote_step_fnmark:nn {#1} \@mpfn
+    \cs_set_eq:NN \__fnote_footnotemark_finish: \prg_do_nothing:
+    \@footnotemark
+    \cs_set_eq:NN \__fnote_footnotemark_finish: \__fnote_footnotemark_default_finish:
+    \@footnotetext {#2}
+    \__fnote_footnotemark_finish:
+  }
+
+\DeclareDocumentCommand\footnotemark {o}
+  {
+    \fnote_step_fnmark:nn {#1} { footnote }
+    \@footnotemark
+  }
+
+\DeclareDocumentCommand\footref {m}
+  {
+    \begingroup
+      \unrestored@protected@xdef\@thefnmark{\ref*{#1}}%
+    \endgroup
+    \bool_set_false:N  \l__fnote_autodetect_bool
+    \tl_set:Nn \l__fnote_currentlabel_tl {#1}
+    \@footnotemark
+    \bool_set_true:N  \l__fnote_autodetect_bool
+  }
+\NewSocketPlug{fntext/process}{mp}
+ {
+   \global\setbox\@mpfootins\vbox{%
+    \unvbox\@mpfootins
+    #1
+    }
+ }
+\AddToHook{class/memoir/before}
+  { \let\new@std@class@makecol\@makecol }
+\AddToHook{class/memoir/after}
+  {
+    \cs_set_eq:NN  \@footnotemark \fnote_footnotemark:
+    \cs_set_eq:NN  \@makefntext\old@std@class@makefntext
+    \cs_set_eq:NN  \@makecol\new@std@class@makecol
+  }
+\AddToHook{package/setspace/after}
+   {\let \@footnotetext \fnote_footnotetext:n
+    \AddToHook{fntext}[setspace]{\let\baselinestretch\setspace@singlespace}}
+\def\hyper@nopatch@footnote{}
+\AtBeginDocument
+  {
+   \providecommand\hyper@linkstart{\@gobbletwo}
+   \providecommand\hyper@linkend{\@empty}
+  }
+\AtBeginDocument
+ {
+   \@ifpackageloaded{hyperref}
+     {
+       \AssignSocketPlug{fnmark/link}{link}
+       \AssignSocketPlug{fntext/mark/link}{link}
+       \legacy_if:nF{Hy@hyperfootnotes}{\bool_set_false:N \l_fnote_link_bool}
+     }
+     {
+       \bool_set_false:N \l_fnote_link_bool
+     }
+ }
+\int_new:N \g_fnote_id_int
+\AddToHook{fntext/before}{\int_gincr:N\g_fnote_id_int}
+
+\property_new:nnnn {fnote/struct}{now}{1}{\l__fnote_currentstruct_tl}
+\property_new:nnnn {fnote/id}{now}{1}{\int_use:N\g_fnote_id_int}
+\cs_new_protected:Npn \__fnote_label_hook:e #1 {}
+\AddToHookWithArguments{label}{ \__fnote_label_hook:e{#1}}
+\AddToHook{fntext/begin}
+ {
+   \cs_set_protected:Npn \__fnote_label_hook:e #1
+    {
+      \property_record:ee {__fnote/#1} {fnote/struct,fnote/id}
+    }
+ }
+\cs_new_protected:Npn \fnote_class_new:nn #1 #2 % #1 name, #2 options
+ {
+   \prop_new:c { g__fnote_currentmarks_struct_#1_prop }
+   \prop_new:c { g__fnote_currentmarks_id_#1_prop }
+ }
+
+\fnote_class_new:nn {default}{}
+\cs_new_protected:Npn \fnote_mark_struct_gput:nn #1 #2 % #1 the representation of the mark, #2 type
+ {
+   \prop_gput:cen { g__fnote_currentmarks_struct_#2_prop }
+     { \tag_get:n{struct_num} }
+     { #1 }
+ }
+\cs_new_protected:Npn \fnote_mark_id_gput:nn #1 #2 % #1 the representation of the mark, #2 type
+ {
+   \prop_gput:cen { g__fnote_currentmarks_id_#2 _prop }
+     { \int_use:N\g_fnote_id_int }
+     { #1 }
+ }
+\cs_generate_variant:Nn \fnote_mark_struct_gput:nn {no,oo}
+\cs_generate_variant:Nn \fnote_mark_id_gput:nn {no,oo}
+\cs_new_protected:Npn \fnote_mark_gpop_all:nnnN #1 #2 #3 #4
+  {
+    \seq_clear:N #4
+    \prop_set_eq:Nc     \l__fnote_tmpa_prop { g__fnote_currentmarks_#1_#3_prop }
+    \prop_map_inline:Nn \l__fnote_tmpa_prop
+      {
+        \tl_if_eq:nnT {#2} { ##2 }
+          {
+            \seq_put_right:Nn #4 { ##1 }
+            \prop_gremove:cn { g__fnote_currentmarks_#1_#3_prop } {##1}
+          }
+      }
+  }
+\cs_generate_variant:Nn\fnote_mark_gpop_all:nnnN  {nooN}
+\NewSocket{fnmark/link}{1}
+\NewSocketPlug{fnmark/link}{link}
+ {
+   \int_gincr:N\g_fnote_id_int
+   \bool_if:NTF \l__fnote_autodetect_bool
+     {
+        \fnote_mark_id_gput:oo {\@thefnmark}{\l_fnote_type_tl}
+        \tl_set:Ne \l__fnote_linktarget_tl {footnote*.\int_use:N\g_fnote_id_int}
+     }
+     {
+       \tl_set:Ne \l__fnote_linktarget_tl
+         {footnote*.\property_ref:ee {__fnote/\l__fnote_currentlabel_tl} {fnote/id}}
+     }
+   \bool_if:NTF \l_fnote_link_bool
+     {
+       \exp_args:No
+          \hyper@linkstart
+          { \l_fnote_link_type_tl }
+          { \l__fnote_linktarget_tl }
+          #1
+          \hyper@linkend
+      }
+      { #1 }
+  }
+\NewTaggingSocketPlug{fnmark}{FEMark}
+  {
+    \tag_mc_end_push:
+    \tag_struct_begin:n { tag=footnotemark }
+     \bool_if:NF \l__fnote_autodetect_bool
+      {
+        \hook_gput_code:nne {tagpdf/finish/before} {tagpdf/footnote}
+         {
+           \exp_not:N\fnote_gput_refs:ee
+            { \tag_get:n{struct_num} }
+            { \property_ref:ee{ __fnote/\l__fnote_currentlabel_tl } {fnote/struct} }
+         }
+      }
+     \tag_mc_begin:n{tag=Lbl}
+     \bool_if:NT \l__fnote_autodetect_bool
+      {
+        \fnote_mark_struct_gput:oo {\@thefnmark}{\l_fnote_type_tl}
+      }
+    #2
+    \tag_mc_end:
+    \tag_struct_end:
+    \tag_mc_begin_pop:n{}
+   }
+\AssignTaggingSocketPlug{fnmark}{FEMark}
+
+\cs_new_protected:Npn \__fnote_gput_ref:nn #1 #2 %#1 the structure number receiving the ref #2
+  {
+    \tag_struct_gput:nnn {#1}{ref_num}{#2}
+  }
+\cs_new_protected:Npn \fnote_gput_refs:nn #1 #2 % pair of structure numbers
+  {
+    \__fnote_gput_ref:nn {#1}{#2}
+    \__fnote_gput_ref:nn {#2}{#1}
+  }
+\cs_generate_variant:Nn \fnote_gput_refs:nn {ee}
+\NewTaggingSocketPlug{fntext/begin}{FENote}
+  {
+    \tag_mc_end_push:
+    \tag_check_child:nnTF {FENote}{pdf2}
+      {
+        \tag_struct_begin:n { tag=footnote }
+      }
+      {
+        \tag_struct_begin:n
+          {
+            tag=footnote,
+            parent=\int_max:nn{2}{\tag_get:n{current_Sect}+0}
+          }
+      }
+    \tl_set:Ne \l__fnote_currentstruct_tl { \tag_get:n{struct_num} }
+    \bool_if:NTF \l__fnote_autodetect_bool
+      {
+        \fnote_mark_gpop_all:nooN {struct}{ \@thefnmark }{ \l_fnote_type_tl } \l__fnote_currentrefs_seq
+       \seq_map_inline:Nn \l__fnote_currentrefs_seq
+         {
+           \fnote_gput_refs:ee {##1}{ \l__fnote_currentstruct_tl }
+         }
+      }
+      {%no auto
+
+      }
+  }
+\NewTaggingSocketPlug{fntext/end}{FENote}
+  {
+    \tag_struct_end:
+    \tag_mc_begin_pop:n{}
+  }
+\AssignTaggingSocketPlug{fntext/begin}{FENote}
+\AssignTaggingSocketPlug{fntext/end}{FENote}
+\NewSocket{fntext/mark/link}{0}
+\NewSocketPlug{fntext/mark/link}{link}
+  {
+    \fnote_mark_gpop_all:nooN {id}{ \@thefnmark }{ \l_fnote_type_tl } \l__fnote_currentrefs_seq
+    \seq_map_inline:Nn\l__fnote_currentrefs_seq {\MakeLinkTarget*{footnote*.##1}}
+    \MakeLinkTarget*{footnote*.\int_use:N\g_fnote_id_int}
+  }
+
+\NewTaggingSocketPlug{fntext/mark}{FENoteLbl}
+  {
+    \tag_mc_end_push:
+     \tag_struct_begin:n { tag=footnotelabel,parent=\l__fnote_currentstruct_tl,firstkid }
+      \tag_mc_begin:n { tag=Lbl }
+       #2
+      \tag_mc_end:
+     \tag_struct_end:
+    \tag_mc_begin_pop:n{}
+  }
+\AssignSocketPlug{tagsupport/fntext/mark}{FENoteLbl}
+\NewTaggingSocketPlug{fntext/text}{FENotetext}
+  {
+    \tag_mc_end_push:
+    \tag_mc_begin:n{}
+    #2
+    \tag_mc_end:
+    \tag_mc_begin_pop:n{}
+  }
+\AssignTaggingSocketPlug{fntext/text}{FENotetext}
+
+\ExplSyntaxOff
+\endinput
+%%
+%% End of file `latex-lab-footnotes.ltx'.

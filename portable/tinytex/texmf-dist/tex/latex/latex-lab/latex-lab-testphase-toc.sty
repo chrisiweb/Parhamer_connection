@@ -1,0 +1,539 @@
+%%
+%% This is file `latex-lab-testphase-toc.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-toc.dtx  (with options: `header')
+%% latex-lab-toc-kernel-changes.dtx  (with options: `package')
+%% latex-lab-toc.dtx  (with options: `package')
+%% latex-lab-toc-hyperref-changes.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-toc.dtx (C) Copyright 2022-2025 LaTeX Project
+\def\ltlabtocdate{2025-07-02}
+\def\ltlabtocversion{0.85h}
+\ProvidesExplPackage {latex-lab-testphase-toc} {\ltlabtocdate} {\ltlabtocversion}
+  { Code related to the tagging of toc-like lists}
+%% File: latex-lab-toc-kernel-changes.dtx (C) Copyright 2022-2025 LaTeX Project
+\def\ltlabkerneldate{2025-07-09}
+\def\ltlabkernelversion{0.85i}
+\RequirePackage{latex-lab-kernel-changes}
+\def\contentsline#1#2#3#4%
+  {%
+    \UseTaggingSocket{toc/contentsline/before}{{#1}{#2}{#3}{#4}}%
+    \gdef\@contentsline@destination{#4}%
+    \csname l@#1\endcsname{#2}{#3}%
+    \UseTaggingSocket{toc/contentsline/after}{{#1}{#2}{#3}{#4}}%
+  }
+\def\addcontentsline#1#2#3{% #1=toc extension, #2= heading type, tag
+    \addtocontents{#1}{%
+      \protect\contentsline{#2}{#3}{\thepage}{\@currentHref}\protected@file@percent
+    }}
+\def\@starttoc#1{%
+  \begingroup
+    \makeatletter
+    \UseTaggingSocket{toc/starttoc/before}{#1}%
+    \@input{\jobname.#1}%
+    \UseTaggingSocket{toc/starttoc/after}{#1}%
+    \if@filesw
+      \expandafter\newwrite\csname tf@#1\endcsname
+      \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
+    \fi
+    \@nobreakfalse
+  \endgroup}
+\NewMirroredHookPairWithArguments{contentsline/number/before}{contentsline/number/after}{1}%
+\NewMirroredHookPairWithArguments{contentsline/text/before}{contentsline/text/after}{4}%
+\NewMirroredHookPairWithArguments{contentsline/page/before}{contentsline/page/after}{4}%
+\def\@dottedtocline#1#2#3#4#5{%
+  \ifnum #1>\c@tocdepth \else
+    \vskip \z@ \@plus.2\p@
+    {\leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
+     \parindent #2\relax\@afterindenttrue
+     \interlinepenalty\@M
+     \leavevmode
+     \@tempdima #3\relax
+     \advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
+     \UseHookWithArguments{contentsline/text/before}{4}{#1}{#4}{#5}{\@contentsline@destination}%
+     \csname contentsline@text@#1@format\endcsname{#4}%
+     \UseHookWithArguments{contentsline/text/after}{4}{#1}{#4}{#5}{\@contentsline@destination}%
+     \nobreak
+     \UseTaggingSocket{toc/leaders/before}\SuspendTagging{toc/leaders}%
+       \leaders\hbox{$\m@th
+         \mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+          mu$}\hfill
+     \ResumeTagging{toc/leaders}\UseTaggingSocket{toc/leaders/after}%
+     \nobreak
+     \hb@xt@\@pnumwidth{\hfil\normalfont \normalcolor
+     \UseHookWithArguments{contentsline/page/before}{4}{#1}{#4}{#5}{\@contentsline@destination}%
+     #5%
+     \UseHookWithArguments{contentsline/page/after}{4}{#1}{#4}{#5}{\@contentsline@destination}%
+                        \kern-\p@\kern\p@}%
+     \par}%
+  \fi}
+\def\numberline#1{\hb@xt@\@tempdima{%
+  \UseHookWithArguments{contentsline/number/before}{1}{#1}%
+  #1\hfil
+  \UseHookWithArguments{contentsline/number/after}{1}{#1}%
+  }}
+\AddToHook{class/article/after}
+ {
+  \renewcommand*\l@part[2]{% as in contentsline: content, page
+  \ifnum \c@tocdepth >-2\relax
+    \addpenalty\@secpenalty
+    \addvspace{2.25em \@plus\p@}%
+    \setlength\@tempdima{3em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      {\leavevmode
+       \large \bfseries
+       \UseHookWithArguments{contentsline/text/before}{4}
+         {\toclevel@part}{#1}{#2}{\@contentsline@destination}%
+       \csname contentsline@text@-1@format\endcsname{#1}%
+       \UseHookWithArguments{contentsline/text/after}{4}
+         {\toclevel@part}{#1}{#2}{\@contentsline@destination}%
+       \hfil
+       \hb@xt@\@pnumwidth{\hss
+       \UseHookWithArguments{contentsline/page/before}{4}
+         {\toclevel@part}{#1}{#2}{\@contentsline@destination}%
+       #2%
+       \UseHookWithArguments{contentsline/page/after}{4}
+         {\toclevel@part}{#1}{#2}{\@contentsline@destination}%
+                          \kern-\p@\kern\p@}}\par
+       \nobreak
+    \endgroup
+  \fi}
+\renewcommand*\l@section[2]{%
+  \ifnum \c@tocdepth >\z@
+    \addpenalty\@secpenalty
+    \addvspace{1.0em \@plus\p@}%
+    \setlength\@tempdima{1.5em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode \bfseries
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+       \UseHookWithArguments{contentsline/text/before}{4}
+        {\toclevel@section}{#1}{#2}{\@contentsline@destination}%
+       \csname contentsline@text@1@format\endcsname{#1}%
+       \UseHookWithArguments{contentsline/text/after}{4}
+        {\toclevel@section}{#1}{#2}{\@contentsline@destination}%
+       \nobreak\hfil
+      \nobreak\hb@xt@\@pnumwidth{\hss
+      \UseHookWithArguments{contentsline/page/before}{4}
+        {\toclevel@section}{#1}{#2}{\@contentsline@destination}%
+       #2%
+      \UseHookWithArguments{contentsline/page/after}{4}
+        {\toclevel@section}{#1}{#2}{\@contentsline@destination}%
+      \kern-\p@\kern\p@}\par
+    \endgroup
+  \fi}
+ }
+\AddToHook{class/report/after}
+ {
+    \renewcommand*\l@part[2]{%
+     \ifnum \c@tocdepth >-2\relax
+       \addpenalty{-\@highpenalty}%
+       \addvspace{2.25em \@plus\p@}%
+       \setlength\@tempdima{3em}%
+       \begingroup
+         \parindent \z@ \rightskip \@pnumwidth
+         \parfillskip -\@pnumwidth
+         {\leavevmode
+          \large \bfseries
+          \UseHookWithArguments{contentsline/text/before}{4}
+            {\toclevel@part}{#1}{#2}{\@contentsline@destination}%
+          \csname contentsline@text@-1@format\endcsname{#1}%
+          \UseHookWithArguments{contentsline/text/after}{4}
+            {\toclevel@part}{#1}{#2}{\@contentsline@destination}%
+          \hfil
+          \hb@xt@\@pnumwidth{\hss
+          \UseHookWithArguments{contentsline/page/before}{4}
+            {\toclevel@part}{#1}{#2}{\@contentsline@destination}%
+          #2%
+          \UseHookWithArguments{contentsline/page/after}{4}
+            {\toclevel@part}{#1}{#2}{\@contentsline@destination}%
+                             \kern-\p@\kern\p@}}\par
+          \nobreak
+       \endgroup
+     \fi}
+   \renewcommand*\l@chapter[2]{%
+     \ifnum \c@tocdepth >\m@ne
+       \addpenalty{-\@highpenalty}%
+       \vskip 1.0em \@plus\p@
+       \setlength\@tempdima{1.5em}%
+       \begingroup
+         \parindent \z@ \rightskip \@pnumwidth
+         \parfillskip -\@pnumwidth
+         \leavevmode \bfseries
+         \advance\leftskip\@tempdima
+         \hskip -\leftskip
+         \UseHookWithArguments{contentsline/text/before}{4}
+           {\toclevel@chapter}{#1}{#2}{\@contentsline@destination}%
+         \csname contentsline@text@0@format\endcsname
+           {#1}%
+         \UseHookWithArguments{contentsline/text/after}{4}
+           {\toclevel@chapter}{#1}{#2}{\@contentsline@destination}%
+          \nobreak\hfil
+         \nobreak\hb@xt@\@pnumwidth{\hss
+          \UseHookWithArguments{contentsline/page/before}{4}
+            {\toclevel@chapter}{#1}{#2}{\@contentsline@destination}%%
+          #2%
+          \UseHookWithArguments{contentsline/page/after}{4}
+            {\toclevel@chapter}{#1}{#2}{\@contentsline@destination}%%
+                                    \kern-\p@\kern\p@}\par
+         \penalty\@highpenalty
+       \endgroup
+     \fi}
+ }
+\AddToHook{class/book/after}
+ {
+    \renewcommand*\l@part[2]{%
+     \ifnum \c@tocdepth >-2\relax
+       \addpenalty{-\@highpenalty}%
+       \addvspace{2.25em \@plus\p@}%
+       \setlength\@tempdima{3em}%
+       \begingroup
+         \parindent \z@ \rightskip \@pnumwidth
+         \parfillskip -\@pnumwidth
+         {\leavevmode
+          \large \bfseries
+          \UseHookWithArguments{contentsline/text/before}{4}
+            {\toclevel@part}{#1}{#2}{\@contentsline@destination}%%
+          \csname contentsline@text@-1@format\endcsname{#1}%
+          \UseHookWithArguments{contentsline/text/after}{4}
+            {\toclevel@part}{#1}{#2}{\@contentsline@destination}%%
+          \hfil
+          \hb@xt@\@pnumwidth{\hss
+          \UseHookWithArguments{contentsline/page/before}{4}
+            {\toclevel@part}{#1}{#2}{\@contentsline@destination}%%
+          #2%
+          \UseHookWithArguments{contentsline/page/after}{4}
+            {\toclevel@part}{#1}{#2}{\@contentsline@destination}%%
+                             \kern-\p@\kern\p@}}\par
+          \nobreak
+       \endgroup
+     \fi}
+   \renewcommand*\l@chapter[2]{%
+     \ifnum \c@tocdepth >\m@ne
+       \addpenalty{-\@highpenalty}%
+       \vskip 1.0em \@plus\p@
+       \setlength\@tempdima{1.5em}%
+       \begingroup
+         \parindent \z@ \rightskip \@pnumwidth
+         \parfillskip -\@pnumwidth
+         \leavevmode \bfseries
+         \advance\leftskip\@tempdima
+         \hskip -\leftskip
+         \UseHookWithArguments{contentsline/text/before}{4}
+          {\toclevel@chapter}{#1}{#2}{\@contentsline@destination}%
+         \csname contentsline@text@0@format\endcsname
+           {#1}%
+         \UseHookWithArguments{contentsline/text/after}{4}
+          {\toclevel@chapter}{#1}{#2}{\@contentsline@destination}%
+          \nobreak\hfil
+         \nobreak\hb@xt@\@pnumwidth{\hss
+          \UseHookWithArguments{contentsline/page/before}{4}
+           {\toclevel@chapter}{#1}{#2}{\@contentsline@destination}%
+          #2%
+          \UseHookWithArguments{contentsline/page/after}{4}
+           {\toclevel@chapter}{#1}{#2}{\@contentsline@destination}%
+                                    \kern-\p@\kern\p@}\par
+         \penalty\@highpenalty
+       \endgroup
+     \fi}
+ }
+%% File: latex-lab-toc.dtx (C) Copyright 2022-2025 LaTeX Project
+\def\ltlabtocdate{2025-07-02}
+\def\ltlabtocversion{0.85h}
+\tl_new:N \l__tag_toc_tmpa_tl
+\int_new:N \g__tag_toc_level_int
+\seq_new:N \g__tag_toc_stack_seq
+
+\cs_new_protected:Npn \__tag_toc_starttoc_init:n #1
+ {
+    \bool_set_false:N \l__tag_para_bool
+    \seq_gclear:N \g__tag_toc_stack_seq
+    \int_gset:Nn  \g__tag_toc_level_int {-100}
+    \tag_struct_begin:n{tag=TOC,title=#1}
+ }
+\NewTaggingSocketPlug{toc/starttoc/before}{default}
+ {
+   \__tag_toc_starttoc_init:n{#1}
+ }
+\AssignTaggingSocketPlug{toc/starttoc/before}{default}
+\cs_new_protected:Npn \__tag_toc_starttoc_finalize:
+ {
+    \int_step_inline:nn
+      {\seq_count:N \g__tag_toc_stack_seq }
+      {\tag_struct_end:}
+    \tag_struct_end:
+    \seq_gclear:N \g__tag_toc_stack_seq
+ }
+\NewTaggingSocketPlug{toc/starttoc/after}{default}
+ {
+   \__tag_toc_starttoc_finalize:
+ }
+\AssignTaggingSocketPlug{toc/starttoc/after}{default}
+\cs_new_protected:Npn \__tag_toc_end:n #1
+ {
+   \seq_get:NNT\g__tag_toc_stack_seq \l__tag_toc_tmpa_tl
+     {
+       \bool_lazy_and:nnT
+         {
+           \str_if_eq_p:ee{\tl_head:N\l__tag_toc_tmpa_tl}{TOC}
+         }
+         {
+           \int_compare_p:nNn {#1}<{\tl_tail:N \l__tag_toc_tmpa_tl}
+         }
+         {
+           \seq_gpop:NN\g__tag_toc_stack_seq \l__tag_toc_tmpa_tl
+           \tag_struct_end:
+           \__tag_toc_end:n{#1}
+         }
+     }
+ }
+\cs_generate_variant:Nn \__tag_toc_end:n {e}
+\cs_new_protected:Npn \__tag_toc_contentsline_begin:nnnn #1 #2 #3 #4
+  %#1 level, #2 content, #3 page number (unused) #4 destination
+  {
+     \ExpandArgs{c}\providecommand { toclevel@#1 }{ 1 } %  just in case ...
+     \int_compare:nNnF { \use:c{toclevel@#1} } > {\use:c{c@tocdepth}}
+      {
+        \bool_lazy_and:nnT
+          { \int_compare_p:nNn { \g__tag_toc_level_int } > {-100} }
+          { \int_compare_p:nNn { \use:c{toclevel@#1} }   > { \g__tag_toc_level_int } }
+          {
+            \seq_gpush:Ne \g__tag_toc_stack_seq {{TOC}\use:c{toclevel@#1}}
+            \tag_struct_begin:n{tag=TOC}
+          }
+        \int_compare:nNnT
+          { \use:c{toclevel@#1} } < { \g__tag_toc_level_int }
+          {
+            \__tag_toc_end:e { \use:c{toclevel@#1} }
+          }
+        \int_gset:Nn \g__tag_toc_level_int { \use:c{toclevel@#1} }
+        \group_begin:
+         \text_declare_expand_equivalent:Nn \numberline \use_none:n
+         \exp_args:Ne
+         \tag_struct_begin:n{tag=TOCI,title={\text_purify:n {#2}}}
+         \tag_struct_gput:nnn { \tag_get:n {struct_num} }{ref_dest}{#4}
+         \seq_gpush:Ne \g__tag_toc_stack_seq {{TOCI}\use:c{toclevel@#1}}
+        \group_end:
+     }
+  }
+\NewTaggingSocketPlug{toc/contentsline/before}{default}
+  {
+    \__tag_toc_contentsline_begin:nnnn #1
+  }
+\AssignTaggingSocketPlug{toc/contentsline/before}{default}
+\msg_new:nnn {tag}{toc-no-TOCI}{Missing~TOCI~structure~on~toc~stack}
+
+\cs_new_protected:Npn \__tag_toc_contentsline_end:nnnn #1 #2 #3 #4
+  {
+    \int_compare:nNnF { \use:c{toclevel@#1} } > {\use:c{c@tocdepth}}
+      {
+        \seq_gpop:NNT \g__tag_toc_stack_seq\l__tag_tmpa_tl
+          {
+            \str_if_eq:eeTF{\tl_head:N\l__tag_tmpa_tl}{TOCI}
+             {
+               \tag_struct_end:
+             }
+             {
+               \msg_warning:nn{tag}{toc-no-TOCI}
+             }
+          }
+      }
+  }
+\NewTaggingSocketPlug{toc/contentsline/after}{default}
+  {
+    \__tag_toc_contentsline_end:nnnn #1
+  }
+\AssignTaggingSocketPlug{toc/contentsline/after}{default}
+\AddToHook{contentsline/text/before}[tagpdf]{%
+  \tag_struct_begin:n{tag=Reference}%
+  \tag_mc_begin:n{tag=Reference}}
+\AddToHook{contentsline/text/after}[tagpdf]{%
+  \tag_mc_end:}
+\AddToHook{contentsline/page/before}[tagpdf]{%
+  \tag_mc_begin:n{tag=Reference}}
+\AddToHook{contentsline/page/after}[tagpdf]{%
+  \tag_mc_end:
+  \tag_struct_end:} %Reference
+\AddToHook{contentsline/number/before}[tagpdf]{%
+  \tag_mc_end:
+  \tag_struct_begin:n{tag=Lbl}%
+  \tag_mc_begin:n{tag=Lbl}}
+\AddToHook{contentsline/number/after}[tagpdf]{%
+  \tag_mc_end:
+  \tag_struct_end:
+  \tag_mc_begin:n{tag=Reference}}
+\NewTaggingSocketPlug{toc/leaders/before}{artifact}
+ {\tag_mc_begin:n{artifact}\nobreak}
+\NewTaggingSocketPlug{toc/leaders/after}{artifact}
+ {\nobreak\tag_mc_end:}
+\AssignTaggingSocketPlug{toc/leaders/before}{artifact}
+\AssignTaggingSocketPlug{toc/leaders/after}{artifact}
+%% File: latex-lab-toc-hyperref-changes.dtx (C) Copyright 2022-2025 LaTeX Project
+\def\ltlabtochyperdate{2025-05-10}
+\def\ltlabtochyperversion{0.85b}
+\def\hyper@nopatch@toc{}
+\AddToHook{package/hyperref/after}
+ {
+   \@ifpackagelater{hyperref}{2023-02-07}{}
+   {\PackageWarning{latex-lab-testphase-toc-tagging}{hyperref too old}{}}
+ }
+\ExplSyntaxOn
+\AddToHook{package/hyperref/after}
+ {
+   \AddToHookWithArguments{contentsline/text/before}[hyp]
+     {
+       \tl_if_blank:nF {#2}%text
+        {
+          \tl_if_blank:nF {#4}%destination
+            {
+              \int_case:nnF {\Hy@linktoc}
+                {
+                  {0}{} %none
+                  {1}{\hyper@linkstart{link}{#4}} %section
+                  {2}{} %page
+                }
+                {\hyper@linkstart{link}{#4}} %all
+            }
+          }
+      }
+    \AddToHookWithArguments{contentsline/text/after}[hyp]
+      {
+        \tl_if_blank:nF {#2}
+         {
+           \tl_if_blank:nF {#4}
+             {
+               \int_case:nnF {\Hy@linktoc}
+                 {
+                   {0}{} %none
+                   {1}{\hyper@linkend} %section
+                   {2}{} %page
+                 }
+                 {\hyper@linkend} %all
+             } % none
+           }
+       }
+
+    \AddToHookWithArguments{contentsline/page/before}[hyp]
+      {
+        \tl_if_blank:nF {#3}
+         {
+           \tl_if_blank:nF {#4} %
+             {
+               \int_case:nnF {\Hy@linktoc}
+                 {
+                   {0}{} %none
+                   {1}{} %section
+                   {2}{\hyper@linkstart{link}{#4}} %page
+                 }
+                 {\hyper@linkstart{link}{#4}} %all
+             } % none
+           }
+       }
+   \AddToHookWithArguments{contentsline/page/after}[hyp]
+      {
+        \tl_if_blank:nF {#3}
+         {
+           \tl_if_blank:nF {#4}
+             {
+               \int_case:nnF {\Hy@linktoc}
+                 {
+                   {0}{} %none
+                   {1}{} %section
+                   {2}{\hyper@linkend} %page
+                 }
+                 {\hyper@linkend} %all
+             } % none
+           }
+       }
+    \AddToHookWithArguments{cmd/addcontentsline/before}[hyp]
+     {%
+       \Hy@addcontentsline@addbookmark
+         {#1}
+         {#2}
+         {#3}%
+     }
+   }
+\ExplSyntaxOff
+\newcommand\Hy@addcontentsline@addbookmark[3]%#1 toc type, #2 level, #3 content
+  {%
+   \ifx\@currentHref\@empty
+    \Hy@Warning{%
+      No destination for bookmark of \string\addcontentsline,%
+      \MessageBreak destination is added%
+     }%
+    \phantomsection
+  \fi
+  \begingroup
+    \expandafter\ifx\csname toclevel@#2\endcsname\relax
+      \begingroup
+        \def\Hy@tempa{#1}%
+        \ifx\Hy@tempa\Hy@bookmarkstype
+          \Hy@WarningNoLine{%
+            bookmark level for unknown #2 defaults to 0%
+          }%
+        \else
+          \Hy@Info{bookmark level for unknown #2 defaults to 0}%
+        \fi
+      \endgroup
+      \expandafter\gdef\csname toclevel@#2\endcsname{0}%
+    \fi
+    \edef\Hy@toclevel{\csname toclevel@#2\endcsname}%
+    \Hy@writebookmark{\csname the#2\endcsname}%
+      {#3}%
+      {\@currentHref}%
+      {\Hy@toclevel}%
+      {#1}%
+    \ifHy@verbose
+      \begingroup
+        \def\Hy@tempa{#3}%
+        \@onelevel@sanitize\Hy@tempa
+        \let\temp@online\on@line
+        \let\on@line\@empty
+        \Hy@Info{%
+          bookmark\temp@online:\MessageBreak
+          thecounter {\csname the#2\endcsname}\MessageBreak
+          text {\Hy@tempa}\MessageBreak
+          reference {\@currentHref}\MessageBreak
+          toclevel {\Hy@toclevel}\MessageBreak
+          type {#1}%
+        }%
+      \endgroup
+    \fi
+   \endgroup
+  }
+\endinput
+%%
+%% End of file `latex-lab-testphase-toc.sty'.

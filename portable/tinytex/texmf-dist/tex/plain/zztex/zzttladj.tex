@@ -1,0 +1,78 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX New Title Adjustment Scheme
+%
+% Synopsis:  The new title adjustment scheme is an improvement over the
+%            original scheme provided by \adjusttitle.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   9 July 1997
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Title Adjustment Commands
+%                       ----- ---------- --------
+
+
+%~ This command provides an adjustment to the enclosing title
+%~ when it appears in the body of the book. The argument text
+%~ is included only when the title appears in the body.
+
+\def \adjustbodytitle #1{%                              {text} %^title_adj
+  \if \eqlp{\zadjtitle}{\zadjtitlebody}#1\fi}
+
+%~ This command provides an adjustment to the enclosing title
+%~ when it appears in a running head or foot. The argument text
+%~ is included only when the title appears in a runner.
+
+\def \adjustmarktitle #1{%                              {text} %^title_adj
+  \if \eqlp{\zadjtitle}{\zadjtitlemark}#1\fi}
+
+%~ This command provides an adjustment to the enclosing title
+%~ when it appears in the table of contents. The argument text
+%~ is included only when the title appears in the ToC.
+
+\def \adjusttoctitle #1{%                               {text} %^title_adj
+  \if \eqlp{\zadjtitle}{\zadjtitletoc}#1\fi}
+
+%~ This command provides an adjustment to the enclosing title
+%~ when it appears in a mini-Toc. The argument text
+%~ is included only when the title appears in a mini-ToC.
+
+\def \adjustminitoctitle #1{%                           {text} %^title_adj
+  \if \eqlp{\zadjtitle}{\zadjtitleminitoc}#1\fi}
+
+\def \adjusttitle {%
+  \error{obsolete}{The \noexpand\adjusttitle command is obsolete}}
+
+%                       Common Adjustment Commands
+%                       ------ ---------- --------
+
+
+%~ This command is equivalent to |\adjustbodytitle{\nl}|.
+
+\def \titlenl;{\adjustbodytitle{\nl}}                   %^title_adj
+
+%~ This command is equivalent to |\adjustbodytitle{\tl}|.
+
+\def \titletl;{\adjustbodytitle{\tl}}                   %^title_adj
+
+%~ This command is equivalent to |\adjusttoctitle{\nl}|.
+
+\def \tocnl;{\adjusttoctitle{\nl}}                      %^title_adj
+
+%~ This command is equivalent to |\adjusttoctitle{\tl}|.
+
+\def \toctl;{\adjusttoctitle{\tl}}                      %^title_adj
+
+%~ This command is equivalent to |\adjustminitoctitle{\nl}|.
+
+\def \minitocnl;{\adjustminitoctitle{\nl}}              %^title_adj
+
+%~ This command is equivalent to |\adjustminitoctitle{\tl}|.
+
+\def \minitoctl;{\adjustminitoctitle{\tl}}              %^title_adj
+

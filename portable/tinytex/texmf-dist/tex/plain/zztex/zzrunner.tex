@@ -1,0 +1,98 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX New Running Head/Foot Scheme
+%
+% Synopsis:  The new running head/foot scheme is an improvement over the
+%            original scheme.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   26 November 1997
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Data Structures
+%                       ---- ----------
+
+
+\def \zdefrun {normal}
+
+\setlist \zrunlist = {}
+
+\setflag \zoverrun = \false
+
+\def \zcurback   {%
+  \if \definedp \backgroundnormalformat \backgroundnormalformat \fi}
+\def \zcurheader {\headernormalformat}
+\def \zcurfooter {\footernormalformat}
+
+%                       Specify Runners
+%                       ------- -------
+
+
+%~ This command discards any current runner styles and sets up to use style
+%~ *style1* on the current page, *style2* on the next, *style3* on the one after
+%~ that, and so forth. The last style specified is used as the style for all
+%~ subsequent pages (it becomes the default style). No spaces are allowed in the
+%~ list.
+
+\def \setrunners #1{%                                   {style1,style2,style3,...} %^runners
+  {\if \zoverrun \pop{\zoverstyle}{\zrunlist}\fi
+   \commalist{\zrunlist}{#1}%
+   \maplist{\gdef \zdefrun {##1}}{\zrunlist}%
+   \if \zoverrun \expandafter\overriderunners\expandafter{\zoverstyle}\fi
+   \zsetcurrun}}
+
+%~ This command overrides the style for the current page, using style *style*
+%~ instead. After the current page, runner styles revert to those established
+%~ by the last |\setrunners| command.
+
+\def \overriderunners #1{%                              {style} %^runners
+  \if \notp{\emptylistp{\zrunlist}}%
+    \pop{\znext}{\zrunlist}%
+  \fi
+  \push{#1}{\zrunlist}%
+  \global\setflag \zoverrun = \true
+  \zsetcurrun}
+
+%~ This command is simply a shorthand for |\overriderunners{blind}|.
+
+\def \blindrunners {%                                   %^runners
+  \overriderunners{blind}}
+
+%                       Internal Common Macros
+%                       -------- ------ ------
+
+
+\def \zsetrunnerstoks #1{%                              {\token-reg}
+  \expandafter\setrunners\expandafter{\the#1}}
+
+\def \zoverriderunnerstoks #1{%                         {\token-reg}
+  \expandafter\overriderunners\expandafter{\the#1}}
+
+\def \zoldrunners #1{}
+
+%                       Output Routine Interface
+%                       ------ ------- ---------
+
+
+\def \zsetcurrun {%
+  \if \emptylistp{\zrunlist}%
+    \edef \znext {\zdefrun}%
+  \else
+    \listtop{\znext}{\zrunlist}%
+  \fi
+  \ztoksa = \expandaftertwice{\name{\background\znext format}}%
+  \xdef \zcurback {%
+    \noexpand\if \noexpand\definedp\the\ztoksa \the\ztoksa \noexpand\fi}%
+  \ztoksa = \expandaftertwice{\name{\header\znext format}}%
+  \xdef \zcurheader {\the\ztoksa}%
+  \ztoksa = \expandaftertwice{\name{\footer\znext format}}%
+  \xdef \zcurfooter {\the\ztoksa}}
+
+\def \znextpagerunners {%
+   \if \notp{\emptylistp{\zrunlist}}\pop{\znext}{\zrunlist}\fi
+   \zsetcurrun
+   \global\setflag \zoverrun = \false}

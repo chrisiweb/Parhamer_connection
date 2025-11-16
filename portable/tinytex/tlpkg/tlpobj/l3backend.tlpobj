@@ -1,6 +1,6 @@
 name l3backend
 category Package
-revision 75878
+revision 76637
 shortdesc LaTeX3 backend drivers
 longdesc This package forms parts of expl3, and contains the code used
 longdesc to interface with backends (drivers) across the expl3 codebase.
@@ -8,12 +8,12 @@ longdesc The functions here are defined differently depending on the
 longdesc engine in use. As such, these are distributed separately from
 longdesc l3kernel to allow this code to be updated on an independent
 longdesc schedule.
-containersize 16524
-containerchecksum 006e815181e360b9c6e471d6e0ba7a212498b5cd2ca35b44e53ea7f86d27331d7ff2a2afc54a1e46fa72220e7ce8925c84cb8282193b28c815df872dc022609f
-doccontainersize 853140
-doccontainerchecksum bbd391aa3d3dfc05c9d649332df54c2cb1eb0a9040a025eeff74b18b16f03c21fe1ea22d0e7c167d1f3f72f0f3b0147a6233c58f678f8377e793d1131e2f5a5d
-srccontainersize 34344
-srccontainerchecksum 7623fe00bc93637c4af20f1b0712363384c9c0638e8cf54c9be9d5f2bcd7030d1198af93dd32e2fc04815c35b6c3e2aa826578b5292dab78e460495769cc1054
+containersize 16548
+containerchecksum 849f79310e3936ecf3958c16c838f345bd8d9fc3c6a90a149942f3dfc60c55476e2b218ab11652841a0242f011c3a48516b8c1ca3ce9c18d6a167ea19ce5bdf7
+doccontainersize 853612
+doccontainerchecksum bc3b6fc394260fd5929122dc43f9f94cf501ba844004bbb2740b27a11485de1099b1c123c76c154dbb966150591cde101a7066cfed8bccdeffcb145b16f4317f
+srccontainersize 34428
+srccontainerchecksum 5b08c7486b8c6e48009de83529753d3fc0ebe1cc2bef51946a8eabe9a355e14e2a8e486646b2af00abc2b2595731a51d9650fa9e32e9c7e190479abb55f4d8fc
 runfiles size=51
  texmf-dist/dvips/l3backend/l3backend-dvips.pro
  texmf-dist/tex/latex/l3backend/l3backend-dvipdfmx.def

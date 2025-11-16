@@ -1,0 +1,483 @@
+%% $Id: pst-vehicle.data 376 2021-12-29 12:28:42Z herbert $
+%%
+%% This is file `ListVehicles.tex',
+%%
+%% IMPORTANT NOTICE:
+%%
+%% Package `pst-vehicle.tex'
+%%
+%% Thomas Söll
+%% with the collaboration of
+%% Juergen Gilg
+%% Manuel Luque
+%% HErbert Voß (bugfixes)
+%%
+%% This program can redistributed and/or modified under %%
+%% the terms of the LaTeX Project Public License        %%
+%% Distributed from CTAN archives in directory          %%
+%% macros/latex/base/lppl.txt; either version 1.3c of   %%
+%% the License, or (at your option) any later version.  %%
+%%
+%% DESCRIPTION:
+%%   `pst-vehicle' is a PSTricks package
+%%
+%%
+\newpsstyle{segway}{rB=1.4,backwheel=\segWheel}
+\newpsstyle{unicycle}{rB=1.6,backwheel=\SpokesWheelB}
+\newpsstyle{tractor}{d=4,rB=1.4,rF=1.0}
+\newpsstyle{truck}{backwheel=\TruckWheel,frontwheel=\TruckWheel,d=6.28,rB=1.9,rF=1.9}
+\newpsstyle{bike}{backwheel=\SpokesWheelB,frontwheel=\SpokesWheelB,d=5.8,rB=1.6,rF=1.6}
+%\wheelA,\wheelB,\wheelC,\segWheel,\arrowWheel,\TruckWheel,\TractorFrontWheel,\TractorRearWheel,\SpokesWheelCrossed,\SpokesWheelA
+\def\Bike{% ------------------------------ Vehicle  Nr. 1: normal bike ----------------------------
+  \rput{!phiB}(0,0){% ------------ backwheel --- Hinterrad
+    \pst@backwheel
+  }%
+  \rput{!phiF}(!/rB rF def AF1x AF1y){%------ frontwheel --- Vorderrad
+    \pst@frontwheel
+  }%
+  \rput(!0 rB neg){%
+    \psline[linewidth=3pt](2.5,1.95)(0,1.7)%
+    \psline[linewidth=3pt](2.5,1.25)(0,1.45)%
+    \rput{!phiB Gang div}(!2.5 rB){%   Kurbel
+      \pscircle*(0,0){0.4}%
+      \psline[linewidth=4pt](-0.3,-0.9)(0.3,0.9)%
+      \rput{!phiB Gang div neg}(-0.3,-0.9){\psline[linewidth=4pt](0,0)(-0.3,0)}%
+      \rput{!phiB Gang div neg}(0.3,0.9){\psline[linewidth=4pt](0,0)(0.3,0)}%
+    }%
+    \psline[linewidth=5pt](5.8,1.6)(4.75,4.85)(3.8,4.85)%
+    \psline[linewidth=5pt](0,1.6)(2.5,1.6)(5.2,3.65)%
+    \psline[linewidth=5pt](0,1.6)(1.6,4.05)(5,4.05)%
+    \psline[linewidth=5pt](2.5,1.6)(1.5,4.45)%
+    \psline[linewidth=7pt](0.8,4.45)(2,4.45)%
+    \pspolygon[linecolor=\pslinecolor,fillstyle=solid,fillcolor=\pslinecolor](5.05,3.85)(5.65,4.1)(5.65,3.6)%
+  }%
+}%
+
+\def\HighWheeler{% ------------------------------ Vehicle  Nr. 2: high wheeler -- Hochrad  Nr 2 ----------
+                  %------ pedal behind the frontwheel -- Pedal hinter dem Rad ---------------------------------------
+  \rput{!phiF 5 mul Gang div}(!AF1x AF1y){%
+    \psline[linewidth=3pt,border=0.5pt,bordercolor=white](0,0)(1.15;135)
+    \rput{!phiF 5 mul Gang div 180 add neg}(1.11;135){%
+      \pspolygon*[linearc=0.08,border=0.5pt,bordercolor=white](-0.25,0.06)(-0.1,0.08)(-0.08,0.16)(0.08,0.16)(0.1,0.08)(0.25,0.06)%
+                                     (0.25,-0.06)(0.1,-0.08)(0.08,-0.16)(-0.08,-0.16)(-0.1,-0.08)(-0.25,-0.06)%
+    }%
+    \pscircle[linewidth=0.75pt,dimen=outer,linecolor=white](1.1;135){0.075}
+  }%  
+  %--------------------------------------------------------------------------------------------
+  \rput{!phiF}(!AF1x AF1y){% % frontwheel -----  Vorderrad
+    \multido{\iA=0+10}{36}{%
+      \rput(0,0){\psline[linewidth=0.7pt,border=0.35pt,bordercolor=white](0,0)(!rF \iA\space PtoC)}%
+    }%
+    \pscircle[linewidth=7.5pt,dimen=outer](0,0){!rF}%
+    \pscircle[linewidth=0.6pt,dimen=outer,linecolor=white](0,0){!rF 0.955 mul}%
+    \pscircle*(0,0){0.3}%
+    \pscircle*[linecolor=white](0,0){0.2}%
+    \pscircle*(0,0){0.14}%
+  }%
+  %-------------------------------------------------------------------------------------------------
+  \rput{!phiF}(!AF1x AF1y){%
+    \pscircle*(0,0){0.14}%
+    \pscircle[linewidth=0.6pt,linecolor=white](0,0){0.07}%
+  }%
+  %--------------------------------------------------------------------------------------------------
+  \rput{!phiB}(0,0){%  backwheel ------  Hinterrad
+    \multido{\iA=0+24}{15}{%
+      \rput(0,0){\psline[linewidth=0.7pt,border=0.35pt,bordercolor=white](0,0)(!rB \iA\space PtoC)}%
+    }%
+    \pscircle[linewidth=4.3pt,dimen=outer](0,0){!rB}%
+    \pscircle[linewidth=0.6pt,dimen=outer,linecolor=white](0,0){!rB 0.91 mul}%
+    \pscircle*[linewidth=0.5pt](0,0){0.14}%
+  }%
+  %-------- front to back connection -- Verbindung vordere Gabel zur Hinterachse ----------------------
+  \rput(!AF1x AF1y){\pnode(!rF 1.06 mul 170 PtoC){ZA}}%
+  \let\myfillcolor\pslinecolor
+  \rput(!AF1x AF1y){%
+    \pscustom[linewidth=0.4pt,linecolor=white,fillstyle=solid,fillcolor=\myfillcolor]{%
+      \parametricplot[linewidth=0.5pt]{88}{10}{-(rF+0.36)*cos(Pi*t/180)|(rF+0.36)*sin(Pi*t/180)}%
+      \psarc(!AF1x 0.1 sub neg AF1y 0.03 add neg){0.08}{200}{300}
+      \parametricplot[linewidth=0.5pt]{10}{88}{-(rF+0.08-(t-100)*0.0353*2.5/78)*cos(Pi*t/180)|(rF+0.08-(t-100)*0.0353*2.5/78)*sin(Pi*t/180)}
+      \closepath
+    }%
+  }%
+  \rput(0,0){%
+    \pscircle[linestyle=none,fillstyle=solid,fillcolor=\pslinecolor](0,0){0.08}%
+    \pscircle[linewidth=0.9pt,linecolor=white](0,0){0.08}%
+  }
+  %--------------------------------------------------------------------------------------------------
+  %-------front part and handle bar --- Vordere Gabel und Lenker -------------------------------------------
+  \rput{1.5}(!AF1x AF1y){%
+    \psline[linewidth=5.5pt,border=0.5pt,bordercolor=white](0,0.1)(!0 rF 1.265 mul)%
+    \pscircle*[linewidth=0.6pt](!0 rF 1.28 mul){0.075}%
+    \psline[linewidth=5.5pt,linecolor=white](!0 rF 1.265 mul)(!0 rF 1.27 mul)
+    \psline[linewidth=3pt,linearc=0.02](!0 rF 1.24 mul)(!0.193 rF 1.24 mul)(!0.33 rF 1.31 mul)(!0.38 rF 1.31 mul)
+    \psline[linewidth=4.7pt,linearc=0.02,linecap=1,border=0.5pt,bordercolor=white](!0.42 rF 1.32 mul)(!0.455 rF 1.22 mul)
+    \pscircle*[linewidth=0.6pt](!0.455 rF 1.223 mul){0.145}%
+    \pscircle[linecolor=white,linewidth=0.5pt](!0.455 rF 1.223 mul){0.085}%
+    \pscircle[linecolor=white,linewidth=0.65pt](!0.455 rF 1.223 mul){0.15}%
+    \psline[linewidth=5.5pt,linecolor=white](!0 rF 1.208 mul)(!0 rF 1.211 mul)
+    \psline[linewidth=8.5pt](!0 rF 1.186 mul)(!0 rF 1.208 mul)
+    \psline[linewidth=5.5pt,linecolor=white](!0 rF 1.183 mul)(!0 rF 1.186 mul)
+  }%
+  %--------------------------------------------------------------------------------------------------
+  %--------- pedal in front of the frontwheel --- Pedal vor dem Rad ---------------------------------------------------------------
+  \rput{!phiF 5 mul Gang div 180 add}(!AF1x AF1y){%
+    \psline[linewidth=3pt,border=0.5pt,bordercolor=white](0.12;135)(1.15;135)
+    \rput{!phiF 5 mul Gang div 180 add neg}(1.11;135){%
+       \pspolygon*[linearc=0.08,border=0.5pt,bordercolor=white]%
+                 (-0.25,0.06)(-0.1,0.08)(-0.08,0.16)(0.08,0.16)(0.1,0.08)(0.25,0.06)%
+                 (0.25,-0.06)(0.1,-0.08)(0.08,-0.16)(-0.08,-0.16)(-0.1,-0.08)(-0.25,-0.06)%
+    }
+    \pscircle[linewidth=0.75pt,dimen=outer,linecolor=white](1.1;135){0.075}
+    \psline[linewidth=3pt](0,0)(0.12;135)
+    \pscircle[linecolor=white,linewidth=0.3pt](0,0){0.065}%
+  }
+  %---------------------------------------------------------------------------------
+  \rput(2,5.87){%
+    %--------- special garniture frontwheel ---- Geschweifte Linie am Vorderrad -------------------------------------------------------
+    \rput(0,0){%
+      \pscustom[linewidth=1pt]{%
+        \psarc(3.16,1.53){0.1}{0}{180}
+        \psbezier(3.06,1.2)(3.2,1.05)(3.5,1.05)
+        \psbezier(3.63,1.05)(3.6,1.16)(3.53,1.17)
+      }%
+      \pscircle*[linewidth=0.6pt](3.2,1.5){0.075}%
+      \psellipse*[rot=0,linewidth=0.6pt](3.47,1.15)(0.085,0.05)%
+    }%
+    %------------ part of saddle ------ Sattelhalterung -----------------------------------------------------------
+    \pscircle*[linewidth=0.6pt](2.63,1.6){0.068}%
+    \rput(0,0){%
+      \pscustom[showpoints=true,linewidth=1pt]{%
+        \psarcn(2.66,1.63){0.097}{235}{10}
+        \psbezier(2.8,1.3)(2.1,1.32)(1.4,1.32)
+        \psbezier(1.1,1.32)(0.9,1.1)(0.82,1)
+        \psbezier(0.74,0.9)(0.6,0.54)(0.3,0.54)
+        \psbezier(0.15,0.54)(0.17,0.7)(0.17,0.7)
+        \psarcn(0.31,0.7){0.14}{180}{0}
+        \psbezier(0.44,0.61)(0.34,0.61)(0.32,0.61)
+      }%
+      \pscircle*[linewidth=0.6pt](0.33,0.673){0.075}%
+    }%
+    \rput(0,0){%
+      \pscustom[showpoints=true,linewidth=1pt]{%
+        \psbezier(0.35,0.53)(0.3,0.45)(0.1,0.48)(0.1,0.4)
+        \psbezier(0.1,0.31)(0.18,0.345)(0.19,0.39)
+      }%
+      \psellipse*[rot=50,linewidth=0.6pt](0.2,0.4)(0.055,0.03)%
+    }%
+    %-------------------------------------------------------------------------------------------------------
+    %------------------ saddle ----- Sattel ----------------------------------------------------------------
+    \rput(0,0){%
+      \pscustom[showpoints=true,linewidth=0.4pt,fillstyle=solid,fillcolor=\pslinecolor]{%
+        \psbezier(1.34,1.25)(1.42,1.25)(1.43,1.25)(1.58,1.25)
+        \psbezier(1.58,1.35)(1.62,1.38)(1.65,1.4)% <<----- Start the white line -- Startpunkt für die weiße Linie
+        \psbezier(1.7,1.37)(1.8,1.38)(1.91,1.38)
+        \psbezier(1.98,1.38)(2.35,1.48)(2.35,1.55)
+        \psbezier(2.35,1.59)(2.2,1.6)(2.15,1.6)
+        \psbezier(2.05,1.6)(1.8,1.55)(1.74,1.55)
+        \psbezier(1.56,1.55)(1.41,1.75)(1.1,1.75)
+        \psbezier(0.9,1.75)(0.79,1.65)(0.79,1.59)
+        \lineto(0.835,1.59)
+        \psbezier(0.83,1.5)(1.12,1.45)(1.2,1.42)
+        \psbezier(1.25,1.4)(1.34,1.38)(1.34,1.25)
+        \closepath
+      }%
+      \psbezier[linecolor=white,linewidth=0.6pt](0.8,1.584)(1.1,1.75)(1.4,1.58)(1.67,1.38)
+    }%
+  }%
+}%
+
+\def\Truck{% \psset{radH=1.9,radV=1.9,d=6.28,vehicle=\Truck,ownvehicle=\ownTestB,frontwheel=\segWheel,backwheel=\segWheel}
+% ------------------------------ Vehicle Nr. 3: truck -----------------------------------
+\rput(0,-2){%
+\pscustom[linecolor=blue,fillstyle=solid,fillcolor=blue!20]{%
+\psline(8.6,2)(8.38,2)
+\psarc(6.28,2){2.1}{0}{180}
+\psline(4.18,2)(2.1,2)
+\psarc(0,2){2.1}{0}{180}
+\psline(-2,2)(-2.2,2)
+\moveto(-2.2,2)
+\psline[linearc=0.2](-2.2,4.4)(2.5,4.4)(2.5,6)(4.4,6)(5.2,4.4)(7.8,4)(8.6,2)
+\moveto(4.2,5.7)
+\pspolygon[linearc=0.1](4.4,5.7)(2.8,5.7)(2.8,4.2)(5.1,4.2)
+}%
+\pswedge[fillstyle=solid,fillcolor=gray!20](6.28,2){2.1}{0}{180}
+\pswedge[fillstyle=solid,fillcolor=gray!20](0,2){2.1}{0}{180}
+\psarc[doubleline=true,doublecolor=blue!50](0,2){2.1}{0}{180}
+\psarc[doubleline=true,doublecolor=blue!50](6.28,2){2.1}{0}{180}
+% le phare
+\pswedge[linecolor=blue,fillstyle=solid,fillcolor=blue!20](8.65,3){0.4}{90}{270}
+% le conducteur
+\pstVerb{%
+    /r1 0.4 def
+    /a1 -50 def
+    /b1 50 def
+% r2=r1*sqrt(2-sin(2*a1))
+    /r2 r1 2 1 a1 cos sub mul sqrt mul def
+    /b2 a1 sin neg 1 a1 cos sub atan def
+}%
+\rput(3.8,4.6){
+\pscustom[fillstyle=solid,fillcolor={[RGB]{253 191 183}}]{\psarc(0,0){!r1}{20}{-20}
+           \psarc(!r1 0){0.075}{-90}{90}
+           \closepath}
+\psarcn(!r1 0){!r2}{!b2 180 add}{!b2 180 add b1 sub}
+\pscircle*(0.2,0.1){0.05}
+\psarc(0.2,0.1){0.1}{60}{130}
+\psarc(-0.1,0){0.1}{120}{240}
+\pscustom[fillstyle=solid,fillcolor=red]{\psarc(0,0){!r1}{60}{160}\closepath}
+\pcline[nodesepB=1](!r1 60 cos mul r1 60 sin mul)(!r1 160 cos mul r1 160 sin mul)}
+}%
+\rput{!phiB}(0,0){% ----------- backwheel --- Hinterrad
+\pst@backwheel
+}%
+\rput{!phiF}(!/rB rF def AF1x AF1y){%----- frontwheel --- Vorderrad
+\pst@frontwheel
+}%
+}%
+
+%%%%%%%%%% Le tracteur %%%%%%%%%%%%
+\definecolor{couleurtracteur}{RGB}{130 196 108}
+\def\Tractor{% le tracteur seul
+\psset{fillcolor=couleurtracteur}
+\pscustom[fillstyle=solid]{%
+\psline(!rB 160 cos mul rB 160 sin mul)(!rB 1.25 mul 160 cos mul rB 1.25 mul 160 sin mul)(-0.8,1.6)(1.2,1.5)(1.7,0.6)(1.7,0)(! rB 0)
+\psarc(0,0){!rB}{0}{160}
+\closepath}
+\pscustom[fillstyle=solid]{
+\psline(1.4,1.14)(1.7,0.6)(1.7,-0.6)(2.4,-0.6)(2.4,-0.4)(3,-0.4)
+\psarcn(!dA12 rF rB sub){!rF}{180}{126.87}
+\psline(!dA12 rF 126.87 cos mul add rF rB sub rF 126.87 sin mul add)(2.4,0.4)(2.4,1.6)(2,1.14)(1.4,1.14)
+\closepath}
+\psline[linecolor=blue](2.4,1.6)(2,2.8)(0.4,2.8)(0.2,1.55)
+\pscustom[fillstyle=solid]{%
+\psline(2,2.8)(0.4,2.8)(0.2,1.55)(-0.2,1.57)(0.2,3.1)(1.932,3.004)
+\closepath}
+\pscustom[fillstyle=solid]{%
+\psline(!dA12 rF 126.87 cos mul add rF rB sub rF 126.87 sin mul add)(2.4,0.4)(2.4,1.6)(4,1.4)(!dA12 rF 80 cos mul add rF rB sub rF 80 sin mul add)
+\psarc(!dA12 rF rB sub){!rF}{80}{126.87}
+\closepath}
+\pscustom[fillstyle=solid]{%
+\psline(3.9,1.43)(3.9,1.8)(3.7,1.8)(3.7,1.4555)
+\closepath}
+\pspolygon[fillstyle=solid,fillcolor=magenta](4,1.8)(3.6,1.8)(3.8,2)
+\psline(2.4,-0.4)(1.7,-0.4)
+\psdiamond[linejoin=1,fillstyle=solid,fillcolor=lightgray,doubleline](2.55,1)(0.12,0.2)
+\rput(3.3,1){\textsf{\textbf{Renault}}}%
+\rput{!phiB}(0,0){% ----------- backwheel --- Hinterrad
+%\pst@backwheel
+\TractorRearWheel
+}%
+\rput{!phiF}(!AF1x AF1y){%----- frontwheel --- Vorderrad
+%\pst@frontwheel
+\TractorFrontWheel
+}%
+}
+
+\def\Segway{% ------------------------------ Vehicle Nr. 4: Segway -----------------------------------
+\rput{!gamma neg}(0,0){%
+\psframe*(-0.6,1)(0.2,4.5)
+\rput{-10}(-0.8,0){\psframe*[framearc=0.6](-0.9,4.3)(0.4,7.4)}
+\pscircle*(0.3,8.2){0.78}
+\psline[linewidth=7pt](1,0.5)(2.1,5.2)
+%% ARM
+\psline[linewidth=12pt](2.1,5.4)(0.6,5.8)(0.2,6.8)
+\pscircle*(2.1,5.4){0.3}
+\pscircle[linecolor=white](2.1,5.4){0.25}
+\psarc[linewidth=5pt](0,0){1.55}{0}{180}
+%% la ROUE
+}%
+\rput{!phiB}(0,0){% ----------- backwheel --- Hinterrad
+\pst@backwheel
+}%
+}%
+
+\def\UniCycle{% ------------------------------ Vehicle UniCycle -----------------------------------
+\rput{!gamma neg}(0,0){%
+\rput{!phiB 180 add}(0,0){%!phiB
+\rput{!phiB 180 add neg}(0,1){\psframe*[linecolor=black!80,framearc=0.15,linestyle=none,linewidth=0pt](-0.25,-0.1)(0.25,0.1)}%!phiB neg
+\pscustom[linecolor=black!80,linewidth=0.015,fillstyle=solid,fillcolor=black!60]{%
+\psarc(0,1){0.11}{0}{180}
+\psbezier(-0.11,0.95)(-0.08,0.8)(-0.08,0.7)
+\lineto(-0.08,0.4)
+\psbezier(-0.08,0.25)(-0.12,0.05)(-0.12,0)
+\psarc(0,0){0.12}{180}{0}
+\psbezier(0.12,0.05)(0.08,0.25)(0.08,0.4)
+\lineto(0.08,0.7)
+\psbezier(0.08,0.8)(0.11,0.95)(0.11,1)
+\closepath
+}%
+\pscircle[linecolor=black!90,linewidth=0.015](0,1){0.09}%
+\pscircle*[linecolor=black](0,1){0.02}
+}
+\rput{!phiB}(0,0){% ----------- backwheel --- Hinterrad
+\pst@backwheel
+}%
+%--- Gabel nach oben und Sattel
+\rput{0}(0,0){%!gamma neg
+\psframe*[linecolor=black!80,framearc=0.1,linestyle=none,linewidth=0pt](-0.085,2.9)(0.085,4)
+\psframe*[linecolor=black!90,framearc=0.1,linestyle=none,linewidth=0pt](-0.1,1.9)(0.1,3)
+\psframe*[linecolor=black,framearc=0.1,linestyle=none,linewidth=0pt](-0.16,2.85)(0.12,3.05)
+\psframe*[linecolor=black!80,framearc=0.15,linestyle=none,linewidth=0pt](-0.12,0)(0.12,2)
+%------------ Sattel ----------------------
+\pspolygon[fillstyle=solid,fillcolor=black!90,linearc=0.1,linestyle=none](-0.7,4)(1,4)(1,4.4)(0.6,4.35)(-0.2,4.35)(-0.7,4.4)
+}%
+%Pedale vorne
+\rput{!phiB}(0,0){%!phiB
+\pscustom[linecolor=black!80,linewidth=0.015,fillstyle=solid,fillcolor=black!60]{%
+\psarc(0,1){0.11}{0}{180}
+\psbezier(-0.11,0.95)(-0.08,0.8)(-0.08,0.7)
+\lineto(-0.08,0.4)
+\psbezier(-0.08,0.25)(-0.12,0.05)(-0.12,0)
+\psarc(0,0){0.12}{180}{0}
+\psbezier(0.12,0.05)(0.08,0.25)(0.08,0.4)
+\lineto(0.08,0.7)
+\psbezier(0.08,0.8)(0.11,0.95)(0.11,1)
+\closepath
+}%
+\rput{!phiB neg}(0,1){\psframe*[linecolor=black!80,framearc=0.15,linestyle=none,linewidth=0pt](-0.25,-0.1)(0.25,0.1)}%!phiB neg
+\pscircle[linecolor=black!60,linewidth=0.015](0,1){0.09}%
+\pscircle*[linecolor=black](0,1){0.02}
+\pscircle[linecolor=black,linewidth=0.015](0,0){0.1}%
+\pscircle*[linecolor=black](0,0){0.02}
+}%
+}%
+}%
+
+\def\SelfDefinedVehicle{% ------------- Vehicle Nr. 5: self defined vehicle --  Eigenes Fahrzeug Nr 5
+\pst@ownvehicle
+\rput{!phiB}(0,0){% ----------- backwheel --- Hinterrad
+\pst@backwheel
+}%
+\rput{!phiF}(!/rB rF def AF1x AF1y){%----- frontwheel --- Vorderrad
+\pst@frontwheel
+}%
+}%
+
+\def\wheelA{%
+\multido{\iA=0+36}{10}{%
+\rput(0,0){\psline[linewidth=2pt](0,0)(!rB \iA\space PtoC)}%
+}%
+\pscircle[linewidth=5pt,dimen=outer](0,0){!rB}%
+\pscircle*(0,0){0.25}%
+}%
+
+\def\wheelB{%
+  \multido{\iA=0+36, \rA=0.0+0.1}{10}{%
+    \definecolor{couleurrayons}{hsb}{\rA, 1, 1 }%
+    \rput(0,0){\psline[linecolor=couleurrayons,linewidth=2pt](0,0)(!rB 0.9 mul \iA\space PtoC)}
+  }%
+  \pscircle[linewidth=5pt,dimen=outer](0,0){!rB}%
+  \pscircle*(0,0){0.25}%
+}%
+
+\def\wheelC{%
+  \pscircle[fillstyle=solid,fillcolor=gray!20,dimen=outer](0,0){!rB}%
+  \multido{\iA=0+36,\rA=0.0+0.1}{10}{%
+    \definecolor{couleurrayons}{hsb}{\rA, 1, 1 }%
+    \rput(0,0){\psline[linecolor=couleurrayons,linewidth=2pt](0,0)(!rB 0.9 mul \iA\space PtoC)}
+  }%
+  \pscircle[linewidth=15pt,dimen=outer](0,0){!rB}%
+  \pscircle*(0,0){0.25}%
+}%
+
+\def\wheelD{%
+  \multido{\iA=0+36,\rA=0.0+0.1}{10}{%
+    \definecolor{couleurrayons}{hsb}{\rA, 1, 1 }%
+    \rput(0,0){\psline[linecolor=couleurrayons,linewidth=1pt](0,0)(!rB \iA\space PtoC)}
+  }%
+  \pscircle[linewidth=1pt,dimen=outer](0,0){!rB}%
+  \pscircle*(0,0){0.1}%
+}
+
+\def\arrowWheel{%
+\pscircle*(0,0){!rB}
+\pscircle*[linecolor=white](0,0){0.2}
+\multido{\iA=0+30}{12}{%
+\psline[linecolor=white](0,0)(!rB 0.7 mul \iA\space PtoC)
+}%
+\pscircle[linecolor=white,linewidth=2pt](0,0){!rB 0.7 mul}
+\psline[linecolor=magenta,linewidth=1.5pt]{->}(0,0)(!rB -90 PtoC)
+}%
+
+\def\TruckWheel{%
+\pscircle*(0,0){!rB}
+\pscircle*[linecolor=white](0,0){0.2}
+\multido{\iA=0+30}{12}{%
+\psline[linecolor=white](0,0)(!rB 0.65 mul \iA\space PtoC)
+}%
+\pscircle[linecolor=white,linewidth=2pt](0,0){!rB 0.65 mul}
+}%
+
+\def\segWheel{%
+\pscircle*(0,0){!rB}
+\pscircle*[linecolor=white](0,0){0.2}
+\multido{\iA=0+30}{12}{%
+\psline[linecolor=white](0,0)(!rB 0.9 mul \iA\space PtoC)
+}%
+\pscircle[linecolor=white,linewidth=2pt](0,0){!rB 0.9 mul}
+}%
+
+\def\SpokesWheelCrossed{
+\multido{\iM=0+40,\iJ=60+40}{10}{\psline[linewidth=0.1](!rB 0.16 mul \iM\space PtoC)(!rB \iJ\space PtoC)
+                                 \psline[linewidth=0.1](!rB 0.16 mul \iM\space PtoC)(!rB \iJ\space 10 add PtoC)}
+\pscircle[fillstyle=solid,fillcolor=white,linewidth=0.1]{!rB 0.16 mul 0.2 add}
+\multido{\i=0+40}{9}{\pscircle[linestyle=dashed,linecolor=gray!50](!rB 0.16 mul \i\space PtoC){! 0.1 rB 0.16 mul mul}
+                     \pscircle*(!rB 0.16 mul \i\space 20 add PtoC){! 0.1 rB 0.16 mul mul}}
+\multido{\iM=20+40,\iJ=-30+40}{10}{\psline[linewidth=0.1](!rB 0.16 mul \iM\space PtoC)(!rB \iJ\space PtoC)
+                                   \psline[linewidth=0.1](!rB 0.16 mul \iM\space PtoC)(!rB \iJ\space 10 sub PtoC)}
+\pscircle[dimen=outer,linewidth=0.5,linecolor=black!90]{!rB}%
+\pscircle[dimen=outer,linewidth=0.1,linecolor=white]{!rB 0.3 sub}%
+}
+
+\def\SpokesWheelA{
+\multido{\iM=0+40,\iJ=60+40}{10}{\psline[linewidth=0.025](!rB 0.1 mul \iM\space PtoC)(!rB \iJ\space PtoC)
+                                 \psline[linewidth=0.025](!rB 0.1 mul \iM\space PtoC)(!rB \iJ\space 10 add PtoC)}
+\pscircle[fillstyle=solid,fillcolor=white,linewidth=0.025]{!rB 0.1 mul 0.1 add}
+\multido{\i=0+40}{9}{\pscircle[linewidth=0.025,linecolor=gray!50](!rB 0.1 mul \i\space PtoC){! 0.03 rB 0.16 mul mul}
+                     \pscircle*[linewidth=0.025](!rB 0.1 mul \i\space 20 add PtoC){! 0.03 rB 0.16 mul mul}}
+\multido{\iM=20+40,\iJ=-30+40}{10}{\psline[linewidth=0.025](!rB 0.1 mul \iM\space PtoC)(!rB \iJ\space PtoC)
+                                   \psline[linewidth=0.025](!rB 0.1 mul \iM\space PtoC)(!rB \iJ\space 10 sub PtoC)}
+\pscircle[dimen=outer,linewidth=0.2,linecolor=black!90]{!rB}%
+\pscircle[dimen=outer,linewidth=0.02,linecolor=white]{!rB 0.15 sub}%
+}
+
+\def\SpokesWheelB{
+  \multido{\iM=0+40,\iJ=60+40}{10}{%
+    \psline[linewidth=0.015,linecolor=black!80](!rB 0.11 mul \iM\space PtoC)(!rB \iJ\space PtoC)
+    \psline[linewidth=0.015,linecolor=black!80](!rB 0.11 mul \iM\space PtoC)(!rB \iJ\space 10 add PtoC)%
+  }%
+  \pscircle[fillstyle=solid,fillcolor=white,linewidth=0.025,linecolor=black!80]{!rB 0.11 mul 0.06 add}%
+  \multido{\i=0+40}{9}{%
+    \pscircle[linewidth=0.01,linecolor=black!50](!rB 0.11 mul \i\space PtoC){! 0.09 rB 0.16 mul mul}%
+    \pscircle*[linewidth=0.01,linecolor=black](!rB 0.11 mul \i\space 20 add PtoC){! 0.09 rB 0.16 mul mul}%
+  }%
+  \multido{\iM=20+40,\iJ=-30+40}{10}{%
+    \psline[linewidth=0.015,linecolor=black!80](!rB 0.11 mul \iM\space PtoC)(!rB \iJ\space PtoC)%
+    \psline[linewidth=0.015,linecolor=black!80](!rB 0.11 mul \iM\space PtoC)(!rB \iJ\space 10 sub PtoC)%
+  }%
+  \psline[linewidth=0.04,linecolor=black!90](!rB 0.3 sub -85 PtoC)(!rB 0.4 sub -85 PtoC)%
+  \psline[linewidth=0.048,linecolor=black!90](!rB 0.4 sub -85 PtoC)(!rB 0.44 sub -85 PtoC)%
+  \pscircle[dimen=outer,linewidth=0.3,linecolor=black!90]{!rB}%
+  \pscircle[dimen=outer,linewidth=0.09,linecolor=gray!20]{!rB 0.18 sub}%
+}
+
+\def\TractorFrontWheel{%
+  \pscircle*(0,0){0.25}%
+  % 0.5=rF/2 0.2=rF/5
+  \pscircle[linewidth=0.5,dimen=outer](0,0){!rF}
+  \multido{\iA=0+36}{10}{\psline[linewidth=2pt,linecolor=red](0,0)(!rF 2 div \iA\space PtoC)(!rF \iA\space PtoC)}%
+  \pscircle[dimen=outer,linewidth=0.3,linecolor={[rgb]{0.95 0.95 0}}](0,0){!rF 2 div}
+  \pscircle(0,0){!rF 5 div}
+  \multido{\iA=0+36}{10}{\psline[linewidth=2pt](0,0)(!rF 2 div \iA\space PtoC)}%
+}%
+
+\def\TractorRearWheel{%
+  \pscircle*(0,0){0.25}%
+  % 0.7=rB/2 0.28=rb/5
+  \pscircle[linewidth=0.7,dimen=outer](0,0){!rB}
+  \multido{\iA=0+36}{10}{%
+    \psline[linewidth=2pt,linecolor=red](0,0)(!rB 2 div \iA\space PtoC)(!rB \iA\space PtoC)% 
+  }%
+  \pscircle[dimen=outer,linewidth=0.42,linecolor={[rgb]{0.95 0.95 0}}](0,0){!rB 2 div}
+  \pscircle(0,0){!rB 5 div}
+  \multido{\iA=0+36}{10}{\psline[linewidth=2pt](0,0)(!rB 2 div \iA\space PtoC)}%
+}% 

@@ -1,0 +1,68 @@
+%%
+%% This is file `expkv.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% expkv.dtx  (with options: `pkg')
+%% 
+%% ----------------------------------------------------------------
+%% expkv-bundle -- an expandable key=val implementation and friends
+%% E-mail: jspratte@yahoo.de
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
+%% ----------------------------------------------------------------
+%% 
+%% Copyright (C) 2020-2024 Jonathan P. Spratte
+%% 
+%% This  work may be  distributed and/or  modified under  the conditions  of the
+%% LaTeX Project Public License (LPPL),  either version 1.3c  of this license or
+%% (at your option) any later version.  The latest version of this license is in
+%% the file:
+%% 
+%%   http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%%   Jonathan P. Spratte.
+%% 
+%% This work consists of the files  expkv-bundle.ins
+%%                                  expkv.dtx
+%%                                  expkv-cs.dtx
+%%                                  expkv-def.dtx
+%%                                  expkv-opt.dtx
+%%                                  expkv-pop.dtx
+%% and the derived files            expkv.sty
+%%                                  expkv.tex
+%%                                  t-expkv.tex
+%%                                  expkv-cs.sty
+%%                                  expkv-cs.tex
+%%                                  t-expkv-cs.tex
+%%                                  expkv-def.sty
+%%                                  expkv-def.tex
+%%                                  t-expkv-def.tex
+%%                                  expkv-opt.sty
+%%                                  expkv-pop.sty
+%%                                  expkv-pop.tex
+%%                                  t-expkv-pop.tex
+%% 
+%% as well as any documentation files shipped with it.
+%% 
+\def\ekv@tmp
+  {%
+    \ProvidesFile{expkv.tex}%
+      [\ekvDate\space v\ekvVersion\space an expandable key=val implementation]%
+  }
+\input{expkv.tex}
+\ProvidesPackage{expkv}%
+  [\ekvDate\space v\ekvVersion\space an expandable key=val implementation]
+\let\ekv@tmp\@empty
+\DeclareOption{all}
+  {%
+    \def\ekv@tmp
+      {\RequirePackage{expkv-pop,expkv-cs,expkv-def,expkv-opt}}%
+  }
+\ProcessOptions\relax
+\ekv@tmp
+%% 
+%%
+%% End of file `expkv.sty'.

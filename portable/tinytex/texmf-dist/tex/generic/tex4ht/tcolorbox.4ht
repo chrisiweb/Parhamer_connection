@@ -1,0 +1,146 @@
+% tcolorbox.4ht (2025-09-14-08:32), generated from tex4ht-4ht.tex
+% Copyright 2020-2025 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2025-09-14-08:32}
+
+
+% use custom counter that increments for every \tcolorbox
+\newcounter{:tcbcolcount}
+
+\ExplSyntaxOn
+\def\:tempa{%
+  \stepcounter{:tcbcolcount}%
+  % save text and background colors for use in CSS
+  \get:xcolorcss{tcbcolbacktitle}\:tcbcolbacktitle%
+  \get:xcolorcss{tcbcoltitle}\:tcbcoltitle%
+  \get:xcolorcss{tcbcolback}\:tcbcolback%
+  \get:xcolorcss{tcbcolframe}\:tcbcolframe%
+  \get:xcolorcss{tcbcolupper}\:tcbcolupper%
+  % make unique ID for this box
+  \gdef\:tcbcolid{tcolobox-\arabic{:tcbcolcount}}
+  % Open box
+  \a:tcolorbox%
+  % set label if it exists
+  \ifdefined\tcolorbox:label:key%
+    \let\@currentlabel\tcolorbox:currentlabel% at this moment, \@currentlabel has wrong value
+    %\o:tcb@set@label:{\tcolorbox:label:key}%
+    \AnchorLabel% save cross-ref destination
+    \o:__tcobox_label:n:{\tcolorbox:label:key}%
+    \global\let\tcolorbox:label:key\undefined%
+  \fi%
+  % open title
+  \b:tcolorbox%
+  \ifx\kvtcb@title\@empty\else
+    \kvtcb@before@title\kvtcb@title\kvtcb@after@title%
+  \fi
+  % close title and open main box
+  \c:tcolorbox%
+  \box\tcb@upperbox%
+  % deal with lower box, if it is set
+  \iftcb@hasLower%
+    % the paragraph opened in the upper box can be unclosed, it needs to be closed before
+    % we insert the lower box. It caused issues in the past:
+    % https://github.com/michal-h21/make4ht/issues/142#issuecomment-1891507567
+    % but when we moved the \RecallEndP here, it seems to work
+    \RecallEndP
+    \a:tcolorlowerbox%
+    \box\tcb@lowerbox%
+    \b:tcolorlowerbox%
+  \fi%
+  % We need to close box in \tcb@endboxanddraw
+}
+\ExplSyntaxOff
+
+\HLet\tcb@drawcolorbox\:tempa
+% overwrite other versions of box drawing macros
+\HLet\tcb@drawcolorbox@standalone\:tempa
+\HLet\tcb@drawcolorbox@breakable\:tempa
+
+% save the state of paragraph before opening the content box
+\pend:def\tcb@set@@upper@and@lower{\SaveEndP}
+
+% we need to close tcolorbox environment here,
+% in the box. otherwise, last paragraph end
+% would be ignored and we would get invalid XML
+\def\:tempb{\d:tcolorbox\o:tcb@endboxanddraw:}
+\HLet\tcb@endboxanddraw\:tempb
+
+% this should correctly close tcolorbox after the \tcbox command
+\append:defIII\tcb@ox{\d:tcolorbox}
+
+% tcolorbox supports libraries, but it loads them
+% in a way that doesn't register them for the use
+% with .4ht files.
+% this fix is for tcblistingscore.code.tex
+\NewConfigure{tcblisting}{1}
+\def\:tempb{\o:endtcblisting:\d:tcolorbox\a:tcblisting}
+\HLet\endtcblisting\:tempb
+
+
+% this code prevents emptying of the box title when
+% some Tcolorbox options are used
+\def\:tempb{}
+\HLet\tcb@detach@title@code\:tempb
+
+% require end of paragraph before Tcolorbox
+\long\def\:tempb[#1]{\EndP\o:tcb@@icolorbox:[#1]}
+\HLet\tcb@@icolorbox\:tempb
+
+
+\NewConfigure{tcolorbox}{4}
+\NewConfigure{tcolorlowerbox}{2}
+
+% we need to save current label for a later use
+\def\:tempa#1{%
+  \xdef\tcolorbox:label:key{#1}%
+  \global\let\tcolorbox:currentlabel\@currentlabel%
+}
+
+\ExplSyntaxOn
+%\HLet\tcb@set@label\:tempa
+\HLet\__tcobox_label_label:n\:tempa
+\HLet\__tcobox_label_zlabel:n\:tempa
+\HLet\__tcobox_label:n\:tempa
+\ExplSyntaxOff
+
+\pend:def\tcb@minipage{\SaveEndP}
+\pend:def\tcb@minipage@top{\SaveEndP}
+\pend:def\tcb@minipage@bottom{\SaveEndP}
+\pend:def\tcb@minipage@center{\SaveEndP}
+
+
+\AfterEndPreamble{%
+  % fix \nameref support
+  \def\:tempa#1{%
+    \gdef\NR:Title{\a:newlabel{#1}}%
+    \o:tcb@gettitle:{#1}%
+  }%
+  \HLet\tcb@gettitle\:tempa
+}
+
+
+\ifdefined\tcb@manual@entry
+\Hinput{tcolorbox.documentation}
+\fi
+
+\Hinput{tcolorbox}
+\endinput
+
+
+
+

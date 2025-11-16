@@ -1,0 +1,207 @@
+\input ptb-pdfData
+\input pdfDstruct/ptb-hyperlinks
+\input pdfDstruct/ptb-tableofcontents
+\_checkloaded{indexes}
+
+\createarray{index_listing}
+
+%\def\_addtoindex#1#2{%
+%    \def\_temp{#2}%
+%    \ifx\_temp\empty%
+%        \expanded{\noexpand\_rappendarray{\noexpand\gotoanchor{index@anchor@\the\indexcnt}{\@defaultindexval}}}{index@#1@pages}%
+%    \else%
+%        \expanded{\noexpand\_rappendarray{\noexpand\gotoanchor{index@anchor@\the\indexcnt}{#2}}}{index@#1@pages}%
+%    \fi%
+%}
+
+\def\_rfindarray#1#2{\findarray{#2}{#1}}
+\def\_runiqueappendarray#1#2{\uniqueappendarray{#2}{#1}}
+
+\newcount\indexcnt
+%\def\_indexize#1[#2]{{%
+%    \globalsetters%
+%    \anchor{index@anchor@\the\indexcnt}%
+%    \lowercase{\def\_temp{#1}}%
+%    \_xp\_rfindarray\_xp{\_temp}{index_listing}{\_regA}%
+%    \ifx\@return@value\False%
+%        \_xp\_rappendarray\_xp{\_temp}{index_listing}%
+%    \fi%
+%    \unless\ifcsname arr@index@\_temp @pages\endcsname%
+%        \createarray{index@\_temp @pages}%
+%    \fi%
+%    \_xp\_addtoindex\_xp{\_temp}{#2}%
+%    \global\advance\indexcnt by 1\relax%
+%}}
+%
+%\def\indexize#1{\_ifnextchar[ {\_indexize{#1}}{\_indexize{#1}[]}}
+
+\def\_lowercasedef#1#2{%
+    \lowercase{\def#1{#2}}%
+}
+
+\def\_indexize{{%
+    \globalsetters%
+    \anchor{index@anchor@\the\indexcnt}%
+    \_xp\_runiqueappendarray\_xp{\_category}{index_listing}%
+    \ensurearray{index@category@\_category}%
+    \unless\ifx\_item\empty%
+        \_xp\_runiqueappendarray\_xp{\_item}{index@category@\_category}%
+    \fi%
+    \ensurearray{index@\_category:\_item}%
+    \_xp\_rappendarray\_xp{\_value}{index@\_category:\_item}%
+    %\_xp\_addtoindex\_xp{\_category}{#2}%
+    \global\advance\indexcnt by 1\relax%
+}}
+
+\def\indexize#1{%
+    \mapkeys{%
+        category={%
+            name=_category,
+            definition=\_lowercasedef,
+            required%
+        },
+        item={%
+            name=_item,
+            definition=\_lowercasedef,
+            default=%
+        },
+        value={%
+            name=_value,
+            required%
+        },
+        expand value,
+        add hyperlink%
+    }{#1}%
+    \keyexists{expand value}{\_regA}\lastkeys%
+    \unless\ifx\_regA\_nul%
+        \edef\_value{\_value}%
+    \fi%
+    \keyexists{add hyperlink}{\_regA}\lastkeys%
+    \unless\ifx\_regA\_nul%
+        \_xp\def\_xp\_value\_xp{\_xp\unexpanded\_xp{\_value}}%
+        \edef\_value{\noexpand\gotoanchor{index@anchor@\the\indexcnt}{\_value}}%
+    \fi%
+    \_indexize%
+}
+
+\def\_seealso{{%
+    \globalsetters%
+    \_xp\_runiqueappendarray\_xp{\_category}{index_listing}%
+    \unless\ifx\_item\empty%
+        \ensurearray{index@category@\_category}%
+        \_xp\_runiqueappendarray\_xp{\_item}{index@category@\_category}%
+    \fi%
+    \ensurearray{index@\_category:\_item @see-also}%
+    \_xp\_rappendarray\_xp{\_dest}{index@\_category:\_item @see-also}%
+}}
+
+\def\seealso#1{%
+    \mapkeys{%
+        category={%
+            name=_category,
+            definition=\_lowercasedef,
+            required%
+        },
+        item={%
+            name=_item,
+            definition=\_lowercasedef,
+            default=%
+        },
+        dest={%
+            name=_dest,
+            required%
+        },
+        hyperlink={
+            name=_hlink%
+        },
+        index link%
+    }{#1}%
+    \keyexists{hyperlink}{\_regA}\lastkeys%
+    \unless\ifx\_regA\_nul%
+        \_xp\def\_xp\_dest\_xp{\_xp\unexpanded\_xp{\_dest}}%
+        \keyexists{index link}{\_regA}\lastkeys%
+        \ifx\_regA\_nul%
+            \edef\_dest{\noexpand\gotoanchor{\_hlink}{\_dest}}%
+        \else%
+            \edef\_dest{\noexpand\gotoanchor{index@\_hlink @anchor}{\_dest}}%
+        \fi%
+    \fi%
+    \_seealso%
+}
+
+\newif\ifsecondcol
+\newbox\firstcol
+\newdimen\ohsize    \ohsize=\hsize
+
+\unless\ifcsname makeheadline\endcsname
+    \def\makeheadline{}
+    %\def\makefootline{\hbox to\hsize{\baselineskip=24pt \lineskiplimit=0pt\hfil\thepage\hfil}}
+    \def\makefootline{}
+\fi
+
+\def\twocoloutput{%
+    \ifsecondcol%
+        \shipout\vbox{\makeheadline\hbox to\ohsize{\box\firstcol\hfil\box255}\hsize=\ohsize\makefootline}%
+        \global\secondcolfalse%
+    \else%
+        \global\setbox\firstcol=\vbox{\box255}%
+        \global\secondcoltrue%
+    \fi%
+    \unless\ifnum\outputpenalty>-\@MM
+        \ifsecondcol \null\eject\fi
+    \fi%
+}
+
+\def\_titlecase#1{\uppercase{#1}}
+\def\titlecase#1{\_titlecase#1}
+
+% #1: category #2: type
+\def\print_index_type#1#2#3{%
+    \par\quitvmode%
+    {%
+        \advance\leftskip by .5cm\relax
+        \kern-.5cm\titlecase{#2}\anchor{index@#1:#2@anchor}: 
+        \ifcsname arr@index@#1:#2\endcsname
+            \quitvmode\printarray{index@#1:#2}\par
+        \fi%
+        \ifcsname arr@index@#1:#2@see-also\endcsname%
+            {\advance\leftskip by .25cm\relax
+            \quitvmode\kern-.25cm\relax See also: \printarray{index@#1:#2@see-also}\par}%
+        \fi%
+    }%
+}
+
+% #1: category
+\def\print_index_category#1#2{%
+    \par\quitvmode{%
+        \advance\leftskip by .5cm\relax
+        \kern-.5cm\titlecase{#1}\anchor{index@#1:@anchor}: 
+        \ifcsname arr@index@#1:\endcsname%
+            \printarray{index@#1:}\par%
+        \fi%
+        \ifcsname arr@index@category@#1\endcsname%
+            \sortarr{index@category@#1}{index@category@#1}\_cmp_str%
+            \arraymap{index@category@#1}{\print_index_type{#1}}\par%
+        \fi%
+        \ifcsname arr@index@#1:@see-also\endcsname%
+            \par{\advance\leftskip .25cm\relax
+            \quitvmode\kern-.25cm See also: \printarray{index@#1:@see-also}\par}%
+        \fi%
+    }%
+}
+
+\def\index{%
+    {%\hsize=0.4\hsize%
+    \parindent=\z@%
+    %\output={\twocoloutput}%
+    \section{Index}%
+    \sortarr{index_listing}{index_listing}\_cmp_str%
+    \arraymap{index_listing}\print_index_category%
+    \par\vfill\penalty-\@MM\eject}%
+}
+
+\def\@defaultindexval{\the\pageno}
+\def\_addtoindex#1[#2]{\indexize{category=#1, item=#2, value=\@defaultindexval, expand value, add hyperlink}}
+\def\addtoindex#1{\_ifnextchar[ {\_addtoindex{#1}}{\_addtoindex{#1}[]}}
+
+

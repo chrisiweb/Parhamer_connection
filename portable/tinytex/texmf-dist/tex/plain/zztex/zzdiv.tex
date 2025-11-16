@@ -1,0 +1,128 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Division Facilities
+%
+% Synopsis:  This module contains the macros to support divisions, which
+%            allow a book to be processed in pieces.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   24 September 1990
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Divisions
+%                       ---------
+
+
+\def \zdivext {tex}
+
+\definetoks{\divisionname}      % Name of current division.
+\definetoks{\zdivreq}           % Divisions requested with \setdivisions.
+\zdivreq = {\all}
+\definetoks{\zdivset}           % Divisions set.
+\setlist \zdivset = {}
+
+
+%~ This command is used in the book's root file to specify
+%~ the list of divisions that should be processed by ZzTeX.
+%~ All other divisions are not processed. If the command
+%~ does not appear in the root file, all divisions are processed.
+
+\def \setdivisions #1{%                         {division,...}
+  \if \emptyargp{#1}%
+    \warning{nodivs}{The \noexpand\setdivisions command does not specify any divisions} 
+  \else
+    \global\zdivreq = {#1}%
+  \fi}
+
+%~ This command is used in the book's root file to specify the
+%~ name of a book division file (e.g., |chap01|, |appa|). The order
+%~ of these commands determines the order of the divisions.
+
+\def \division #1{%                             {division}
+  \global\divisionname = {#1}%
+  \edef \znext {\noexpand\inclusionlist\noexpand\zset{#1}{\the\zdivreq}}%
+  \znext
+  \if \zset
+    \remark{Starting division `\the\divisionname'.}%
+    \push{#1}{\zdivset}%
+    \freshpage{\short\floats\any}%
+    \setcolumnnumber{1}%
+    \zxdivinit{#1}{\true}%
+    \zindexdivinit{#1}%
+    \zmndivinit
+    \zpndivinit
+    \zframedivinit
+    \zmrdivinit
+    \zfltdivinit
+    \include{#1.\zdivext}%
+    \endgraf
+    \freshpage{\short\floats\any}%
+    \zortahdivfinal
+    \zindexdivfinal
+    \zxdivfinal{#1}%
+  \else
+    \zxdivinit{#1}{\false}%
+    {\globaldefs = 1 \name{\=zS:#1}}%          % Invoke snapshot.
+  \fi
+  \global\divisionname = \expandafter{\jobname}}
+
+% This macro is invoked at the end of the document.
+
+\def \zdivmsg {%
+  \edef \znext {\the\zdivreq}%
+  \edef \znextfirst {\expandafter\zdivmsga \znext\zmark}%
+  \if \tokeqlp{\znext}{\zallname}%
+    \remark{The entire book was processed.}%
+  \else\if \tokeqlp{\znextfirst}{\zallbutname}%
+    \relax
+  \else
+    \commalist{\zreqlist}{\the\zdivreq}%
+    \maplist{\zdivmsgb{##1}}{\zreqlist}%
+  \fi\fi}
+
+\def \zdivmsga #1#2\zmark{#1}
+
+\def \zdivmsgb #1{%
+  \member{\zexists}{#1}{\zdivset}%
+  \if \notp{\zexists}%
+    \warning{divnotexist}{The requested division `#1' does not exist}%
+  \fi}
+
+%                       Division Snapshots
+%                       -------- ---------
+
+
+\setlist \zsnaplist = {}        % List of registers to be snapshot.
+
+
+\def \declaresnapitem #1{%                              {\name}
+  \append{#1}{\zsnaplist}}
+
+
+\def \ztakesnap {%
+  \let \zmodesave = \xrefmode
+  \let \xrefmode = \xrefsnapmode
+  \def \znext {}%
+  \maplist{\zsnapone{##1}}{\zsnaplist}%
+  \ztoksa = \expandafter{\znext}%
+  \edef \znext {\noexpand\xref{snap}{\noexpand\folio}{}%
+                                    {\the\ztoksa}{\the\divisionname}}%
+  \znext
+  \let \xrefmode = \zmodesave}
+
+\def \zsnapone #1{%                             {\register}
+  \ztoksa = \expandafter{\znext}%
+  \edef \znext {\the\ztoksa \noexpand#1\the#1}}
+
+
+% Store division snapshot information in a special name in the tag namespace.
+
+\def \xrefsnap #1#2#3#4{%                       {}{}{code}{division}
+  \ifnum \xrefmode=\xrefloadtagmode
+    \if \undefinedp{\=zS:#4}\withname{\gdef}{\=zS:#4}{}\fi
+    \withname\xdef{\=zS:#4}{\name{\=zS:#4}#3}%
+  \fi}

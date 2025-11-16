@@ -1,0 +1,1247 @@
+%%
+%% This is file `expkv.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% expkv.dtx  (with options: `tex')
+%% 
+%% ----------------------------------------------------------------
+%% expkv-bundle -- an expandable key=val implementation and friends
+%% E-mail: jspratte@yahoo.de
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
+%% ----------------------------------------------------------------
+%% 
+%% Copyright (C) 2020-2024 Jonathan P. Spratte
+%% 
+%% This  work may be  distributed and/or  modified under  the conditions  of the
+%% LaTeX Project Public License (LPPL),  either version 1.3c  of this license or
+%% (at your option) any later version.  The latest version of this license is in
+%% the file:
+%% 
+%%   http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%%   Jonathan P. Spratte.
+%% 
+%% This work consists of the files  expkv-bundle.ins
+%%                                  expkv.dtx
+%%                                  expkv-cs.dtx
+%%                                  expkv-def.dtx
+%%                                  expkv-opt.dtx
+%%                                  expkv-pop.dtx
+%% and the derived files            expkv.sty
+%%                                  expkv.tex
+%%                                  t-expkv.tex
+%%                                  expkv-cs.sty
+%%                                  expkv-cs.tex
+%%                                  t-expkv-cs.tex
+%%                                  expkv-def.sty
+%%                                  expkv-def.tex
+%%                                  t-expkv-def.tex
+%%                                  expkv-opt.sty
+%%                                  expkv-pop.sty
+%%                                  expkv-pop.tex
+%%                                  t-expkv-pop.tex
+%% 
+%% as well as any documentation files shipped with it.
+%% 
+\expandafter\ifx\csname ekvVersion\endcsname\relax
+\else
+  \expandafter\endinput
+\fi
+\begingroup
+  \edef\ekvtmpa{\string\expanded}
+  \edef\ekvtmpb{\meaning\expanded}
+  \expandafter
+\endgroup
+\ifx\ekvtmpa\ekvtmpb
+  \expandafter\let\csname ekv@expanded\endcsname\expanded
+  \expandafter\let\csname ekv@unexpanded\endcsname\unexpanded
+\else
+  \begingroup
+    \edef\ekvtmpa{\string\expanded}
+    \edef\ekvtmpb{\meaning\normalexpanded}
+    \expandafter
+  \endgroup
+  \ifx\ekvtmpa\ekvtmpb
+    \expandafter\let\csname ekv@expanded\endcsname\normalexpanded
+    \expandafter\let\csname ekv@unexpanded\endcsname\normalunexpanded
+  \else
+    \errmessage
+      {expkv Error: e-TeX and the \noexpand\expanded primitive required}%
+    \expandafter\endinput
+  \fi
+\fi
+\def\ekvVersion{2.1}
+\def\ekvDate{2024-12-26}
+\csname ekv@tmp\endcsname
+\expandafter\chardef\csname ekv@tmp\endcsname=\catcode`\@
+\catcode`\@=11
+\begingroup
+  \edef\ekv@tmpa{\string \lastnamedcs}
+  \edef\ekv@tmpb{\meaning\lastnamedcs}
+  \ifx\ekv@tmpa\ekv@tmpb
+    \def\ekv@if@lastnamedcs{\long\def\ekv@if@lastnamedcs##1##2{##1}}
+  \else
+    \def\ekv@if@lastnamedcs{\long\def\ekv@if@lastnamedcs##1##2{##2}}
+  \fi
+  \expandafter
+\endgroup
+\ekv@if@lastnamedcs
+\def\ekv@empty{}
+\long\def\@gobble#1{}
+\long\def\@gobbletwo#1#2{}
+\long\def\@gobblethree#1#2#3{}
+\long\def\@firstofone#1{#1}
+\long\def\@firstoftwo#1#2{#1}
+\long\def\@secondoftwo#1#2{#2}
+\long\def\ekv@fi@gobble\fi\@firstofone#1{\fi}
+\long\def\ekv@fi@firstofone\fi\@gobble#1{\fi#1}
+\long\def\ekv@fi@firstoftwo\fi\@secondoftwo#1#2{\fi#1}
+\long\def\ekv@fi@secondoftwo\fi\@firstoftwo#1#2{\fi#2}
+\def\ekv@gobble@mark\ekv@mark{}
+\long\def\ekv@gobbleto@stop#1\ekv@stop{}
+\long\def\ekv@gobble@from@mark@to@stop\ekv@mark#1\ekv@stop{}
+\long\def\ekv@ifempty#1%
+  {%
+    \ekv@ifempty@\ekv@ifempty@A#1\ekv@ifempty@B\ekv@ifempty@true
+      \ekv@ifempty@A\ekv@ifempty@B\@secondoftwo
+  }
+\long\def\ekv@ifempty@#1\ekv@ifempty@A\ekv@ifempty@B{}
+\long\def\ekv@ifempty@true\ekv@ifempty@A\ekv@ifempty@B\@secondoftwo#1#2{#1}
+\long\def\ekv@ifempty@false\ekv@ifempty@A\ekv@ifempty@B\@firstoftwo#1#2{#2}
+\long\def\ekv@ifempty@true@F\ekv@ifempty@A\ekv@ifempty@B\@firstofone#1{}
+\long\def\ekv@ifempty@true@F@gobble\ekv@ifempty@A\ekv@ifempty@B\@firstofone#1#2%
+  {}
+\long\def\ekv@ifempty@true@F@gobbletwo
+    \ekv@ifempty@A\ekv@ifempty@B\@firstofone#1#2#3%
+  {}
+\long\def\ekv@ifblank#1%
+  {\ekv@ifblank@#1\ekv@stop\ekv@ifblank@false\ekv@stop\@firstoftwo}
+\long\def\ekv@ifblank@\ekv@mark#1#2\ekv@stop{}
+\long\def\ekv@ifblank@false\ekv@stop\@firstoftwo#1#2{#2}
+\def\ekv@ifblank@gobbletrue\ekv@stop#1{}
+\long\def\ekv@ifatmostone#1%
+  {\ekv@ifatmostone@#1\ekv@stop\ekv@ifblank@false\ekv@stop\@firstoftwo}
+\long\def\ekv@ifatmostone@#1#2#3\ekv@stop{}
+\ekv@if@lastnamedcs
+  {%
+    \long\def\ekv@ifdefined#1{\ifcsname#1\endcsname\ekv@ifdef@\fi\@secondoftwo}
+    \def\ekv@ifdef@\fi\@secondoftwo
+      {%
+        \fi
+        \expandafter\ifx\lastnamedcs\relax
+          \ekv@fi@secondoftwo
+        \fi
+        \@firstoftwo
+      }
+  }
+  {%
+    \long\def\ekv@ifdefined#1%
+      {%
+        \ifcsname#1\endcsname\ekv@ifdef@\fi\ekv@ifdef@false#1\endcsname\relax
+          \ekv@fi@secondoftwo
+        \fi
+        \@firstoftwo
+      }
+    \def\ekv@ifdef@\fi\ekv@ifdef@false{\fi\expandafter\ifx\csname}
+    \long\def\ekv@ifdef@false
+        #1\endcsname\relax\ekv@fi@secondoftwo\fi\@firstoftwo#2#3%
+      {#3}
+  }
+\def\ekv@strip#1%
+  {%
+    \long\def\ekv@strip##1%
+      {%
+        \ekv@strip@a
+          ##1\ekv@nil
+          \ekv@mark#1%
+          #1\ekv@nil
+      }%
+    \long\def\ekv@strip@a##1\ekv@mark#1{\ekv@strip@b##1\ekv@mark}%
+  }
+\ekv@strip{ }
+\long\def\ekv@strip@b#1 \ekv@nil{\ekv@strip@c#1\ekv@nil}
+\long\def\ekv@strip@c\ekv@mark#1\ekv@nil\ekv@mark#2\ekv@nil#3{#3{#1}}
+\def\ekv@strip@key#1%
+  {%
+    \long\def\ekv@strip@key##1{\ekv@strip@key@a##1\ekv@nil\ekv@mark#1#1\ekv@nil}
+    \long\def\ekv@strip@key@a##1\ekv@mark#1{\ekv@strip@key@b##1\ekv@mark}
+  }
+\ekv@strip@key{ }
+\long\def\ekv@strip@key@b#1 \ekv@nil{\ekv@strip@key@c#1\ekv@nil}
+\long\def\ekv@strip@key@c\ekv@mark#1\ekv@nil\ekv@mark#2\ekv@nil#3%
+  {\expandafter#3\detokenize{#1}\ekv@mark{#1}}
+\let\ekv@zero\z@
+\long\def\ekv@exparg#1#2%
+  {\ekv@expanded{\ekv@unexpanded{#1}\expandafter}\expandafter{#2}}
+\long\def\ekv@expandafter#1{\ekv@expanded{\ekv@unexpanded{#1}\expandafter}}
+\long\def\ekv@exparg@#1#2{#2{#1}}%
+\long\def\ekv@expandedarg#1#2{\ekv@expanded{\ekv@unexpanded{#1}{#2}}}
+\long\def\ekv@fexparg#1#2%
+  {%
+    \ekv@expanded{\ekv@unexpanded{#1}\expandafter}\expandafter
+      {\romannumeral`\^^@#2}%
+  }
+\long\def\ekv@expargtwice#1#2{\expandafter\ekv@expargtwice@\expandafter{#2}{#1}}
+\def\ekv@expargtwice@{\expandafter\ekv@exparg@\expandafter}
+\begingroup
+\def\ekvcsvloop#1{%
+\endgroup
+\long\def\ekvcsvloop##1##2%
+  {\ekv@csv@loop@active{##1}\ekv@mark##2#1\ekv@stop#1}
+\long\def\ekv@csv@loop@active##1##2#1%
+  {%
+    \ekv@gobble@from@mark@to@stop##2\ekv@csv@loop@active@end\ekv@stop
+    \ekv@csv@loop{##1}##2,\ekv@stop,%
+  }%
+\long\def\ekv@csv@loop@active@end
+    \ekv@stop
+    \ekv@csv@loop##1\ekv@mark\ekv@stop,\ekv@stop,%
+  {}%
+}
+\catcode`\,=13
+\ekvcsvloop,
+\def\ekv@csv@loop#1%
+  {%
+    \long\def\ekv@csv@loop##1##2,%
+      {%
+        \ekv@gobble@from@mark@to@stop##2\ekv@csv@loop@end\ekv@stop
+        \ekv@ifblank@##2\ekv@stop\ekv@ifblank@gobbletrue
+          \ekv@stop\ekv@csv@loop@blank
+        #1\ekv@csv@loop@do{##1}%
+      }%
+  }
+\expandafter\ekv@csv@loop\expandafter{\ekv@strip{#2}}
+\long\def\ekv@csv@loop@do#1#2{\ekv@unexpanded{#2{#1}}\ekv@csv@loop{#2}\ekv@mark}
+\def\ekv@csv@loop@end#1%
+  {%
+    \long\def\ekv@csv@loop@end
+        \ekv@stop
+        \ekv@ifblank@\ekv@mark\ekv@stop\ekv@stop\ekv@ifblank@gobbletrue
+        \ekv@stop\ekv@csv@loop@blank
+        #1\ekv@csv@loop@do##1%
+      {\ekv@csv@loop@active{##1}\ekv@mark}%
+  }
+\expandafter\ekv@csv@loop@end\expandafter{\ekv@strip{\ekv@mark\ekv@stop}}
+\long\expandafter\def\expandafter\ekv@csv@loop@blank
+    \ekv@strip{\ekv@mark#1}\ekv@csv@loop@do#2%
+  {\ekv@csv@loop{#2}\ekv@mark}
+\def\ekv@name@set#1{ekv#1(}
+\long\def\ekv@name@key#1{#1)}
+\long\ekv@expandedarg{\def\ekv@name#1#2}%
+  {%
+    \ekv@unexpanded\expandafter{\ekv@name@set{#1}}%
+    \ekv@unexpanded\expandafter{\ekv@name@key{\detokenize{#2}}}%
+  }
+\def\ekv@undefined@set#1{! expkv Error: Set `#1' undefined.}
+\protected\ekv@expandedarg{\def\ekv@checkvalid#1#2}%
+  {%
+    \ekv@unexpanded\expandafter{\ekv@ifempty{#1}}%
+    \ekv@unexpanded
+      {{%
+        \def\ekv@tmp{}%
+        \ekv@errm{empty set name not allowed}%
+      }}%
+      {%
+        \ekv@unexpanded\expandafter{\ekv@ifempty{#2}}%
+        \ekv@unexpanded
+          {%
+            {%
+              \def\ekv@tmp{}%
+              \ekv@errm{empty key name not allowed}%
+            }%
+            \@secondoftwo
+          }%
+      }%
+    \ekv@unexpanded{\@gobble}%
+  }
+\ekv@expargtwice{\long\def\ekvifdefined#1#2}%
+  {\expandafter\ekv@ifdefined\expandafter{\ekv@name{#1}{#2}}}
+\ekv@expargtwice{\long\def\ekvifdefinedNoVal#1#2}%
+  {\expandafter\ekv@ifdefined\expandafter{\ekv@name{#1}{#2}N}}
+\def\ekvdef#1#2#3#4#5#6%
+  {%
+    \protected\long\def\ekvdef##1##2##3%
+      {#1{\expandafter\def\csname#2\endcsname####1{##3}#4}}%
+    \protected\long\def\ekvdefNoVal##1##2##3%
+      {#1{\expandafter\def\csname#2N\endcsname{##3}#4}}%
+    \protected\long\def\ekvlet##1##2##3%
+      {#1{\expandafter\let\csname#2\endcsname##3#4}}%
+    \protected\long\def\ekvletNoVal##1##2##3%
+      {#1{\expandafter\let\csname#2N\endcsname##3#4}}%
+    \ekv@expargtwice{\protected\long\def\ekv@defunknown##1##2##3##4}%
+      {%
+        \romannumeral
+        \ekv@exparg
+          {\ekv@zero\ekv@checkvalid{##3}.}%
+          {%
+            \expandafter\expandafter\expandafter
+            \def\expandafter\csname\ekv@name{##3}{}u##1\endcsname##2{##4}%
+            #6%
+          }%
+      }%
+    \ekv@expargtwice{\protected\long\def\ekv@letunknown##1##2##3}%
+      {%
+        \romannumeral
+        \ekv@exparg
+          {\ekv@zero\ekv@checkvalid{##2}.}%
+          {%
+            \expandafter\expandafter\expandafter
+            \let\expandafter\csname\ekv@name{##2}{}u##1\endcsname##3%
+            #5%
+          }%
+      }%
+    \protected\long\def\ekvletkv##1##2##3##4%
+      {%
+        #1%
+          {%
+            \expandafter\let\csname#2\expandafter\endcsname
+            \csname#3\endcsname
+            #4%
+          }%
+      }%
+    \protected\long\def\ekvletkvNoVal##1##2##3##4%
+      {%
+        #1%
+          {%
+            \expandafter\let\csname#2N\expandafter\endcsname
+            \csname#3N\endcsname
+            #4%
+          }%
+      }%
+  }
+\edef\ekvdefNoVal
+  {%
+    {\ekv@unexpanded\expandafter{\ekv@checkvalid{#1}{#2}}}%
+    {\ekv@unexpanded\expandafter{\ekv@name{#1}{#2}}}%
+    {\ekv@unexpanded\expandafter{\ekv@name{#3}{#4}}}%
+    {%
+      \ekv@unexpanded{\expandafter\ekv@defsetmacro\csname}%
+      \ekv@unexpanded\expandafter{\ekv@undefined@set{#1}\endcsname{#1}}%
+    }%
+    {%
+      \ekv@unexpanded{\expandafter\ekv@defsetmacro\csname}%
+      \ekv@unexpanded\expandafter{\ekv@undefined@set{#2}\endcsname{#2}}%
+    }%
+    {%
+      \ekv@unexpanded{\expandafter\ekv@defsetmacro\csname}%
+      \ekv@unexpanded\expandafter{\ekv@undefined@set{#3}\endcsname{#3}}%
+    }%
+  }
+\expandafter\ekvdef\ekvdefNoVal
+\ekv@exparg{\protected\long\def\ekvdefunknown#1#2}%
+  {\ekv@defunknown{}{##1##2##3}{#1}{#2}}
+\ekv@exparg{\protected\long\def\ekvdefunknownNoVal#1#2}%
+  {\ekv@defunknown{N}{##1##2}{#1}{#2}}
+\ekv@exparg{\protected\long\def\ekvletunknown#1#2}%
+  {\ekv@letunknown{}{#1}{#2}}
+\ekv@exparg{\protected\long\def\ekvletunknownNoVal#1#2}%
+  {\ekv@letunknown{N}{#1}{#2}}
+\let\ekv@defunknown\ekv@undefined
+\let\ekv@letunknown\ekv@undefined
+\protected\def\ekv@defredirectunknown#1#2#3#4#5#6%
+  {%
+    \begingroup
+    \edef\ekv@tmp
+      {%
+        \ekvcsvloop#1{#6}%
+        \ekv@unexpanded{#2}%
+        {\ekvcsvloop{}{#5,#6}}%
+      }%
+    \ekv@expargtwice
+      {\endgroup\long#3{#5}}%
+      {\expandafter#4\ekv@tmp\ekv@stop}%
+  }
+\ekv@exparg{\protected\def\ekvredirectunknown#1#2}%
+  {%
+    \ekv@defredirectunknown
+      \ekv@redirect@kv
+      \ekv@err@redirect@kv@notfound
+      \ekvdefunknown
+      \ekv@redirectunknown@aux
+      {#1}{#2}%
+  }
+\ekv@exparg{\protected\def\ekvredirectunknownNoVal#1#2}%
+  {%
+    \ekv@defredirectunknown
+      \ekv@redirect@k
+      \ekv@err@redirect@k@notfound
+      \ekvdefunknownNoVal
+      \ekv@redirectunknownNoVal@aux
+      {#1}{#2}%
+  }
+\def\ekv@redirectunknown@aux#1{#1{##1}{##2}}
+\def\ekv@redirectunknownNoVal@aux#1{#1{##1}}
+\let\ekv@defredirectunknown\ekv@undefined
+\def\ekv@redirect@k#1#2#3#4%
+  {%
+    \ekv@if@lastnamedcs
+      {%
+        \def\ekv@redirect@k##1##2##3%
+          {%
+            \ifcsname#1\endcsname\ekv@redirect@k@a\fi
+            ##3{##1}%
+          }%
+        \def\ekv@redirect@k@a\fi{\fi\expandafter\ekv@redirect@k@b\lastnamedcs}%
+        \long\def\ekv@redirect@kv##1##2##3##4%
+          {%
+            \ifcsname#2\endcsname\ekv@redirect@kv@a\fi\@gobble{##1}%
+            ##4{##1}{##2}%
+          }%
+        \def\ekv@redirect@kv@a\fi\@gobble
+          {\fi\expandafter\ekv@redirect@kv@b\lastnamedcs}%
+      }
+      {%
+        \def\ekv@redirect@k##1##2##3%
+          {%
+            \ifcsname#1\endcsname\ekv@redirect@k@a\fi\ekv@redirect@k@a@
+              #1\endcsname
+            ##3{##1}%
+          }%
+        \def\ekv@redirect@k@a@#3\endcsname{}%
+        \def\ekv@redirect@k@a\fi\ekv@redirect@k@a@
+          {\fi\expandafter\ekv@redirect@k@b\csname}%
+        \long\def\ekv@redirect@kv##1##2##3##4%
+          {%
+            \ifcsname#2\endcsname\ekv@redirect@kv@a\fi\ekv@redirect@kv@a@
+              #2\endcsname{##1}%
+            ##4{##1}{##2}%
+          }%
+        \long\def\ekv@redirect@kv@a@#4\endcsname##3{}%
+        \def\ekv@redirect@kv@a\fi\ekv@redirect@kv@a@
+          {\fi\expandafter\ekv@redirect@kv@b\csname}%
+      }%
+  }
+\def\ekv@redirect@kv#1\detokenize#2#3\ekv@stop{\ekv@unexpanded{#1#2#3}}
+\edef\ekv@redirect@kv
+  {%
+    {\expandafter\ekv@redirect@kv\ekv@name{#2}{#1}N\ekv@stop}%
+    {\expandafter\ekv@redirect@kv\ekv@name{#3}{#2}\ekv@stop}%
+    {\expandafter\ekv@redirect@kv\ekv@name{#1}{#2}N\ekv@stop}%
+    {\expandafter\ekv@redirect@kv\ekv@name{#1}{#2}\ekv@stop}%
+  }
+\expandafter\ekv@redirect@k\ekv@redirect@kv
+\def\ekv@redirect@k@b#1%
+  {\ifx\relax#1\ekv@redirect@k@c\fi\ekv@redirect@k@d#1}
+\def\ekv@redirect@k@c\fi\ekv@redirect@k@d#1{\fi}
+\def\ekv@redirect@k@d#1#2\ekv@stop{#1}
+\def\ekv@redirect@kv@b#1%
+  {\ifx\relax#1\ekv@redirect@kv@c\fi\ekv@redirect@kv@d#1}
+\long\def\ekv@redirect@kv@c\fi\ekv@redirect@kv@d#1#2{\fi}
+\long\def\ekv@redirect@kv@d#1#2#3\ekv@stop{#1{#2}}
+\edef\ekv@defsetmacro
+  {%
+    \ekv@unexpanded{\ifx#1\relax\edef#1##1}%
+      {%
+        \ekv@unexpanded\expandafter{\ekv@name@set{#2}}%
+        \ekv@unexpanded\expandafter{\ekv@name@key{##1}}%
+      }%
+    \ekv@unexpanded{\fi}%
+  }
+\ekv@exparg{\protected\def\ekv@defsetmacro#1#2}{\ekv@defsetmacro}
+\ekv@expargtwice{\def\ekvifdefinedset#1}%
+  {\expandafter\ekv@ifdefined\expandafter{\ekv@undefined@set{#1}}}
+\def\ekv@ifexp#1#2%
+  {%
+    \long\def\ekv@ifexp@split@o@or@other
+        ##1: ##2\ekv@stop##3%
+        ##4#1##5\ekv@stop##6%
+        ##7#2##8\ekv@stop##9%
+      {##9##6##3##1\ekv@stop##2}%
+    \long\def\ekv@ifexp@split@a@or@l
+        ##1#1##2\ekv@stop##3%
+        ##4#2##5\ekv@stop##6%
+      {##6##3##1\ekv@stop##2}%
+    \long\def\ekv@ifexp@split@a##1#1##2\ekv@stop##3%
+      {##3##1\ekv@stop##2}%
+    \long\def\ekv@ifexp@split@l##1#2##2\ekv@stop##3%
+      {##3##1\ekv@stop##2}%
+    \long\def\ekv@ifexp##1%
+      {%
+        \ekv@ifexp@split@o@or@other
+          ##1\ekv@nil\ekv@stop\ekv@ifexp@o
+          : \ekv@stop\ekv@ifexp@none
+          ##1\ekv@stop\ekv@ifexp@a#1\ekv@stop{}%
+          ##1\ekv@stop\ekv@ifexp@l#2\ekv@stop{}%
+      }%
+    \long\def\ekv@ifexp@o##1\ekv@stop
+      {\ekv@ifexp@done{##1}\ekv@mark}%
+    \long\def\ekv@ifexp@none
+        ##1\ekv@nil\ekv@stop\ekv@ifexp@o\ekv@stop
+        ##2##3%
+      {##3}%
+    \def\ekv@ifexp@a##1%
+      {%
+        \ekv@ifexp@a@i
+          ##1\ekv@ifexp@a@ii
+          \ekv@ifexp@none\ekv@ifexp@a@or@o
+      }%
+    \def\ekv@ifexp@a@i##1\ekv@ifexp@none{}%
+    \long\def\ekv@ifexp@a@ii
+        \ekv@ifexp@none\ekv@ifexp@a@or@o
+        ##1#1##2\ekv@stop\ekv@ifexp@o\ekv@stop
+      {\ekv@ifexp@done{##1}\ekv@mark##2}%
+    \long\def\ekv@ifexp@a@or@o##1\ekv@stop
+      {%
+        \ekv@ifexp@split@a
+          ##1\ekv@nil\ekv@stop\ekv@ifexp@a@not@o
+          #1\ekv@stop\ekv@ifexp@o@not@a
+      }%
+    \long\def\ekv@ifexp@a@not@o##1\ekv@stop
+      {\ekv@ifexp@a@not@o@{##1}\ekv@mark}
+    \long\def\ekv@ifexp@a@not@o@
+        ##1##2\ekv@nil#1\ekv@stop\ekv@ifexp@o@not@a
+      {\ekv@ifexp@done{##1}##2: }%
+    \long\def\ekv@ifexp@o@not@a
+        ##1\ekv@nil\ekv@stop\ekv@ifexp@a@not@o\ekv@stop
+      {\ekv@ifexp@done{##1}\ekv@mark}%
+    \def\ekv@ifexp@l##1%
+      {%
+        \ekv@ifexp@l@i
+          ##1\ekv@ifexp@l@ii
+          \ekv@ifexp@none{}%
+          ##1\ekv@ifexp@l@or@o
+          \ekv@ifexp@o
+        \ekv@ifexp@l@or@a
+      }%
+    \def\ekv@ifexp@l@i
+        ##1\ekv@ifexp@none##2%
+        ##3\ekv@ifexp@o
+      {##2}%
+    \long\def\ekv@ifexp@l@ii
+        \ekv@ifexp@l@or@a##1#2##2\ekv@stop
+        \ekv@ifexp@o\ekv@stop#2\ekv@stop##3%
+      {\ekv@ifexp@done{##1}\ekv@mark##2}%
+    \long\def\ekv@ifexp@l@or@o
+        \ekv@ifexp@o\ekv@ifexp@l@or@a
+        ##1\ekv@stop
+      {%
+        \ekv@ifexp@split@l
+          ##1\ekv@nil\ekv@stop\ekv@ifexp@l@not@o
+          #2\ekv@stop\ekv@ifexp@o@not@l
+      }%
+    \long\def\ekv@ifexp@l@not@o##1\ekv@stop
+      {\ekv@ifexp@l@not@o@{##1}\ekv@mark}
+    \long\def\ekv@ifexp@l@not@o@
+        ##1##2\ekv@nil#2\ekv@stop\ekv@ifexp@o@not@l
+        ##3#2\ekv@stop##4%
+      {\ekv@ifexp@done{##1}##2: ##3}%
+    \long\def\ekv@ifexp@o@not@l
+        ##1\ekv@nil\ekv@stop\ekv@ifexp@l@not@o\ekv@stop
+        ##2#2\ekv@stop##3%
+      {\ekv@ifexp@done{##1}\ekv@mark##2}%
+    \def\ekv@ifexp@l@or@a##1%
+      {%
+        \ekv@ifexp@a@i
+          ##1\ekv@ifexp@l@or@a@not@o
+          \ekv@ifexp@none
+        \ekv@ifexp@l@or@a@or@o
+      }%
+    \long\def\ekv@ifexp@l@or@a@not@o
+        \ekv@ifexp@none\ekv@ifexp@l@or@a@or@o
+        ##1#1%
+      {%
+        \ekv@ifexp@split@l
+          ##1\ekv@nil\ekv@stop\ekv@ifexp@l@not@a
+          #2\ekv@stop\ekv@ifexp@a@not@l
+      }%
+    \long\def\ekv@ifexp@l@not@a##1\ekv@stop
+      {\ekv@ifexp@l@not@a@{##1}\ekv@mark}%
+    \long\def\ekv@ifexp@l@not@a@
+        ##1##2\ekv@nil#2\ekv@stop\ekv@ifexp@a@not@l
+        ##3\ekv@stop\ekv@ifexp@o\ekv@stop#2\ekv@stop##4%
+      {\ekv@ifexp@done{##1}##2#1##3}%
+    \long\def\ekv@ifexp@a@not@l
+        ##1\ekv@nil\ekv@stop\ekv@ifexp@l@not@a\ekv@stop
+        ##2\ekv@stop\ekv@ifexp@o\ekv@stop#2\ekv@stop##3%
+      {\ekv@ifexp@done{##1}\ekv@mark##2}%
+    \long\def\ekv@ifexp@l@or@a@or@o##1\ekv@stop
+      {%
+        \ekv@ifexp@split@a@or@l
+          ##1\ekv@nil\ekv@stop\ekv@ifexp@a@not@l@or@o
+          #1\ekv@stop\ekv@ifexp@o@not@l@or@a
+          ##1\ekv@stop\ekv@ifexp@l@or@a@or@o@i#2\ekv@stop{}%
+      }%
+    \long\def\ekv@ifexp@o@not@l@or@a
+        ##1\ekv@nil\ekv@stop\ekv@ifexp@a@not@l@or@o\ekv@stop
+        ##2#2\ekv@stop##3%
+      {\ekv@ifexp@done{##1}\ekv@mark##2}%
+    \long\def\ekv@ifexp@a@not@l@or@o##1\ekv@stop
+      {\ekv@ifexp@a@not@l@or@o@{##1}\ekv@mark}
+    \long\def\ekv@ifexp@a@not@l@or@o@
+        ##1##2\ekv@nil##3#2\ekv@stop##4%
+      {\ekv@ifexp@done{##1}##2: ##3}%
+    \def\ekv@ifexp@l@or@a@or@o@i##1%
+      {%
+        \ekv@ifexp@l@or@a@or@o@ii
+          ##1\ekv@ifexp@l@or@a@or@o@iii
+          \ekv@ifexp@o@not@l@or@a
+        \ekv@ifexp@why
+      }%
+    \def\ekv@ifexp@l@or@a@or@o@ii
+        ##1\ekv@ifexp@o@not@l@or@a
+      {}%
+    \long\def\ekv@ifexp@l@or@a@or@o@iii
+        \ekv@ifexp@o@not@l@or@a\ekv@ifexp@why
+        ##1#2%
+      {\ekv@ifexp@l@or@a@or@o@iv{##1}\ekv@mark}%
+    \long\def\ekv@ifexp@l@or@a@or@o@iv
+        ##1##2\ekv@nil\ekv@stop\ekv@ifexp@a@not@l@or@o\ekv@stop
+        #2\ekv@stop##3##4#2\ekv@stop##5%
+      {\ekv@ifexp@done{##1}##2: ##4}%
+    \long\def\ekv@ifexp@why##1\ekv@stop
+      {%
+        \ekv@ifexp@split@l
+          ##1\ekv@nil\ekv@stop\ekv@ifexp@why@l
+          #2\ekv@stop\ekv@ifexp@why@a
+      }%
+    \long\def\ekv@ifexp@why@l##1\ekv@stop
+      {\ekv@ifexp@why@l@i{##1}\ekv@mark}
+    \long\def\ekv@ifexp@why@l@i
+        ##1##2\ekv@nil#2\ekv@stop\ekv@ifexp@why@a
+      {\ekv@ifexp@why@l@ii{##1}##2#1}
+    \long\def\ekv@ifexp@why@l@ii
+        ##1##2\ekv@nil#2\ekv@stop##3##4#2\ekv@stop##5%
+      {\ekv@ifexp@done{##1}##2: ##4}%
+    \long\def\ekv@ifexp@why@a
+        ##1\ekv@nil\ekv@stop\ekv@ifexp@why@l\ekv@stop
+        ##2\ekv@nil#2\ekv@stop##3##4#2\ekv@stop##5%
+      {\ekv@ifexp@done{##1}\ekv@mark##2: ##4}%
+    \ekv@exparg{\long\def\ekv@ifexp@done##1##2\ekv@nil}%
+      {%
+        \@firstofone
+          {\ekv@ifexp@done@test##1\ekv@nil\ekv@ifexp@panic} \ekv@nil{}%
+          ##2\ekv@stop\ekv@ifexp@done@{##1}{##2}\ekv@stop\@secondoftwo
+      }
+    \long\def\ekv@ifexp@done@test##1 ##2\ekv@nil##3##4##5##6\ekv@stop{##3}
+    \ekv@exparg{\long\def\ekv@ifexp@done@##1##2\ekv@stop\@secondoftwo##3}%
+      {\ekv@strip{##2}{##3{##1}}}%
+    \long\def\ekv@ifexp@panic##1\@secondoftwo##2##3{##3}
+  }
+\begingroup
+  \catcode`\~=13
+  \lccode`\~=`\:
+  \catcode`\z=11
+  \lccode`\z=`\:
+\lowercase{\endgroup
+\ekv@ifexp{~ }{z }}
+\begingroup
+\def\ekvset#1#2{%
+\endgroup
+\ekv@exparg{\long\def\ekvset##1##2}%
+  {%
+    \expandafter\expandafter\expandafter
+    \ekv@set\expandafter\csname\ekv@undefined@set{##1}\endcsname
+      \ekv@mark##2#1\ekv@stop#1{}%
+  }
+\long\def\ekv@set##1##2#1%
+  {%
+    \ekv@gobble@from@mark@to@stop##2\ekv@endset\ekv@stop
+    \ekv@set@other##1##2,\ekv@stop,%
+  }
+\long\def\ekv@endset\ekv@stop\ekv@set@other##1\ekv@mark\ekv@stop,\ekv@stop,##2%
+  {##2}
+\long\def\ekv@eq@other@or@active
+    ##1=##2\ekv@mark##3%
+    ##4#2##5\ekv@mark##6%
+  {##6##3##1\ekv@stop\ekv@mark##2}
+\long\def\ekv@eq@other##1=##2\ekv@mark##3{##3##1\ekv@stop\ekv@mark##2}
+\long\def\ekv@eq@active##1#2##2\ekv@mark##3{##3##1\ekv@stop\ekv@mark##2}
+\long\def\ekv@set@other##1##2,%
+  {%
+    \ekv@gobble@from@mark@to@stop##2\ekv@endset@other\ekv@stop
+    \ekv@eq@other@or@active
+      ##2\ekv@nil\ekv@mark\ekv@set@eq@other
+      =\ekv@mark\ekv@set@noeq
+      ##2\ekv@mark\ekv@set@eq@active
+      #2\ekv@mark{}%
+    ##1%
+    \ekv@mark
+  }
+\ekv@exparg{\long\def\ekv@set@next@other##1##2\ekv@set@other##3##4,}%
+  {\ekv@set@other{##3}{##4},}
+\ekv@exparg{\long\def\ekv@endset@other
+    \ekv@stop\ekv@eq@other@or@active
+    \ekv@mark\ekv@stop\ekv@nil\ekv@mark\ekv@set@eq@other
+    =\ekv@mark\ekv@set@noeq
+    \ekv@mark\ekv@stop\ekv@mark\ekv@set@eq@active#2\ekv@mark##1%
+    ##2##3#1}%
+  {\ekv@set{##2}{##3}#1}
+\ekv@exparg{\long\def\ekv@set@eq@other##1\ekv@stop}%
+  {\ekv@strip@key{##1}\ekv@set@pair}
+\def\ekv@set@if@noeq##1\ekv@set@noeq{}
+\def\ekv@set@eq@active##1%
+  {\ekv@set@if@noeq##1\ekv@set@eq@active@\ekv@set@noeq\ekv@set@eq@mixed}
+\ekv@exparg{\long\def\ekv@set@eq@active@
+    \ekv@set@noeq\ekv@set@eq@mixed
+    ##1#2##2\ekv@mark
+    \ekv@set@eq@other\ekv@stop\ekv@mark#2\ekv@mark##3}%
+  {\ekv@strip@key{##1}\ekv@set@pair\ekv@mark##2}
+\long\def\ekv@set@eq@mixed##1\ekv@stop
+  {%
+    \ekv@eq@active##1\ekv@nil\ekv@mark\ekv@set@eq@mixed@a
+      #2\ekv@mark\ekv@set@eq@mixed@o
+  }
+\ekv@exparg{\long\def\ekv@set@eq@mixed@o
+    ##1\ekv@nil\ekv@mark\ekv@set@eq@mixed@a\ekv@stop\ekv@mark
+    ##2\ekv@nil#2\ekv@mark##3}%
+  {\ekv@strip@key{##1}\ekv@set@pair##2\ekv@nil}
+\ekv@exparg{\long\def\ekv@set@eq@mixed@a
+    ##1\ekv@stop
+    ##2\ekv@nil#2\ekv@mark\ekv@set@eq@mixed@o\ekv@mark
+    ##3#2\ekv@mark##4}%
+  {\ekv@strip@key{##1}\ekv@set@pair##2=##3}
+\ekv@expandedarg
+  {%
+    \long\def\ekv@set@noeq
+      ##1\ekv@nil\ekv@mark\ekv@set@eq@other\ekv@stop\ekv@mark
+  }%
+  {%
+    \ekv@unexpanded
+      {%
+        \ekv@ifblank@##1\ekv@stop\ekv@ifblank@gobbletrue
+          \ekv@stop\ekv@set@was@blank
+      }%
+    \ekv@unexpanded\expandafter{\ekv@strip@key{##1}\ekv@set@key}%
+  }
+\ekv@exparg{\long\expandafter\def\expandafter\ekv@set@was@blank
+    \ekv@strip@key{\ekv@mark##1}\ekv@set@key
+    ##2##3,}%
+  {\ekv@set@other{##2}{##3},}
+\long\def\ekvbreak##1##2\ekv@stop#1##3{##1}
+\long\def\ekvbreakPreSneak ##1##2\ekv@stop#1##3{##1##3}
+\long\def\ekvbreakPostSneak##1##2\ekv@stop#1##3{##3##1}
+\long\def\ekvsneak##1##2\ekv@stop#1##3{##2\ekv@stop#1{##3##1}}
+\long\def\ekvsneakPre##1##2\ekv@stop#1##3{##2\ekv@stop#1{##1##3}}
+\long\def\ekvparse##1##2##3%
+  {%
+    \ekv@unexpanded\ekv@expanded
+      {{\ekv@parse{##1}{##2}\ekv@mark##3#1\ekv@stop#1}}%
+  }
+\long\def\ekv@parse##1##2##3#1%
+  {%
+    \ekv@gobble@from@mark@to@stop##3\ekv@endparse\ekv@stop
+    \ekv@parse@other{##1}{##2}##3,\ekv@stop,%
+  }
+\long\def\ekv@endparse\ekv@stop\ekv@parse@other##1\ekv@mark\ekv@stop,\ekv@stop,%
+  {}
+\long\def\ekv@parse@other##1##2##3,%
+  {%
+    \ekv@gobble@from@mark@to@stop##3\ekv@endparse@other\ekv@stop
+    \ekv@eq@other@or@active
+      ##3\ekv@nil\ekv@mark\ekv@parse@eq@other
+      =\ekv@mark\ekv@parse@noeq
+      ##3\ekv@mark\ekv@parse@eq@active#2\ekv@mark{}%
+    {##1}{##2}%
+    \ekv@mark
+  }
+\ekv@exparg{\long\def\ekv@endparse@other
+    \ekv@stop\ekv@eq@other@or@active
+    \ekv@mark\ekv@stop\ekv@nil\ekv@mark\ekv@parse@eq@other
+    =\ekv@mark\ekv@parse@noeq
+    \ekv@mark\ekv@stop\ekv@mark\ekv@parse@eq@active#2\ekv@mark##1%
+    ##2##3##4#1}%
+  {\ekv@parse{##2}{##3}{##4}#1}
+\ekv@exparg{\long\def\ekv@parse@eq@other##1\ekv@stop}%
+  {\ekv@strip{##1}\ekv@parse@pair}%
+\def\ekv@parse@if@noeq##1\ekv@parse@noeq{}
+\def\ekv@parse@eq@active##1%
+  {%
+    \ekv@parse@if@noeq##1\ekv@parse@eq@active@\ekv@parse@noeq
+    \ekv@parse@eq@mixed
+  }
+\ekv@exparg{\long\def\ekv@parse@eq@active@
+    \ekv@parse@noeq\ekv@parse@eq@mixed
+    ##1#2##2\ekv@mark
+    \ekv@parse@eq@other\ekv@stop\ekv@mark#2\ekv@mark##3}%
+  {\ekv@strip{##1}\ekv@parse@pair\ekv@mark##2}
+\long\def\ekv@parse@eq@mixed##1\ekv@stop
+  {%
+    \ekv@eq@active##1\ekv@nil\ekv@mark\ekv@parse@eq@mixed@a
+      #2\ekv@mark\ekv@parse@eq@mixed@o
+  }
+\ekv@exparg{\long\def\ekv@parse@eq@mixed@a
+    ##1\ekv@stop
+    ##2\ekv@nil#2\ekv@mark\ekv@parse@eq@mixed@o\ekv@mark
+    ##3#2\ekv@mark##4}%
+  {\ekv@strip{##1}\ekv@parse@pair##2=##3}
+\ekv@exparg{\long\def\ekv@parse@eq@mixed@o
+    ##1\ekv@nil\ekv@mark\ekv@parse@eq@mixed@a\ekv@stop\ekv@mark
+    ##2\ekv@nil#2\ekv@mark##3}%
+  {\ekv@strip{##1}\ekv@parse@pair##2\ekv@nil}
+\ekv@expandedarg
+  {%
+    \long\def\ekv@parse@noeq
+      ##1\ekv@nil\ekv@mark\ekv@parse@eq@other\ekv@stop\ekv@mark
+  }%
+  {%
+    \ekv@unexpanded
+      {%
+        \ekv@ifblank@##1\ekv@stop\ekv@ifblank@gobbletrue
+          \ekv@stop\ekv@parse@was@blank
+      }%
+    \ekv@unexpanded\expandafter{\ekv@strip{##1}\ekv@parse@key}%
+  }
+\ekv@exparg{\long\expandafter\def\expandafter\ekv@parse@was@blank
+    \ekv@strip{\ekv@mark##1}\ekv@parse@key
+    ##2##3##4,}%
+  {\ekv@parse@other{##2}{##3}{##4},}
+\ekv@exparg{\long\def\ekv@parse@pair##1##2\ekv@nil}%
+  {\ekv@strip{##2}\ekv@parse@pair@{##1}}
+\ekv@exparg{\long\def\ekv@parse@pair@##1##2##3##4}%
+  {%
+    \ekv@ifexp{##2}%
+      {\ekv@expansion@parse@pair{##1}{##4}}%
+      {\ekv@unexpanded{##4{##2}{##1}}}%
+    \ekv@parse@other{##3}{##4}%
+  }
+\ekv@exparg{\long\def\ekv@parse@key##1##2}%
+  {%
+    \ekv@ifexp{##1}%
+      {\ekv@expansion@parse@key{##2}}%
+      {\ekv@unexpanded{##2{##1}}}%
+    \ekv@parse@other{##2}%
+  }
+}
+\catcode`\,=13
+\catcode`\==13
+\ekvset,=
+\edef\ekvsetSneaked
+  {%
+    \ekv@unexpanded{\ekvsneak{#2}}%
+    \ekv@unexpanded\expandafter{\ekvset{#1}{#3}}%
+  }
+\ekv@expargtwice{\long\def\ekvsetSneaked#1#2#3}{\ekvsetSneaked}
+\ekv@exparg{\def\ekvchangeset#1}%
+  {%
+    \expandafter\expandafter\expandafter
+    \ekv@changeset\expandafter\csname\ekv@undefined@set{#1}\endcsname\ekv@empty
+  }
+\long\def\ekv@changeset#1#2\ekv@set@other#3{#2\ekv@set@other#1}
+\def\ekvmorekv#1%
+  {%
+    \long\def\ekvmorekv##1%
+      {%
+        \expandafter\ekv@morekv\ekv@expanded
+          {{\ekv@morekv@loop\ekv@empty##1\ekv@stop\ekv@morekv@done#1}}%
+        \ekv@empty
+      }%
+    \long\def\ekv@parse@more##1\@gobble##2%
+      {%
+        \expandafter\ekv@parse@more@\ekv@expanded
+          {{\ekv@morekv@loop\ekv@empty##1\ekv@stop\ekv@morekv@done#1}}%
+      }%
+    \long\def\ekv@parse@more@##1\ekv@parse@other##2##3\ekv@mark
+      {\ekv@parse@other{##2}{##3}\ekv@mark##1,}%
+    \long\def\ekv@morekv##1##2\ekv@set@other##3\ekv@mark
+      {##2\ekv@set@other##3\ekv@mark##1,}
+    \long\def\ekv@morekv@loop##1#1%
+      {\ekv@morekv@wrap##1\ekv@stop,\ekv@morekv@loop\ekv@empty}%
+    \long\def\ekv@morekv@wrap##1\ekv@stop{\ekv@unexpanded\expandafter{##1}}%
+    \def\ekv@morekv@done\ekv@stop,\ekv@morekv@loop\ekv@empty{}%
+  }
+\begingroup\catcode`\,=13 \@firstofone{\endgroup\ekvmorekv,}
+\protected\def\ekv@def@expansion@rule#1#2#3#4%
+  {%
+    \long\expandafter\def\csname ekv@expansion@rule@#1\endcsname##1#2%
+      {#3\ekv@expansion@rule@#4}%
+  }
+\protected\def\ekv@def@expansion@rule@ea#1#2%
+  {\ekv@def@expansion@rule{#1}{#2}\expandafter}
+\long\def\ekv@expansion@csname#1\ekv@stop
+  {%
+    ekv@expansion@rule@%
+    \ifcsname ekv@expansion@rule@#1\endcsname
+      #1%
+    \else
+      \ekv@err@undefined@expansion{#1}%
+    \fi
+  }
+\long\def\ekv@expansion@rule@#1#2%
+  {\csname\expandafter\ekv@expansion@csname\string#2\ekv@stop\endcsname{#1}}
+\ekv@exparg
+  {%
+    \long\expandafter
+    \def\csname ekv@expansion@rule@\string\ekv@mark\endcsname
+      #1\ekv@stop#2#3#4#5%
+  }%
+  {%
+    \romannumeral\ekv@exparg{\expandafter\ekv@zero\ekv@ifempty{#3}{#5{#2}{#1}}}%
+      {\ekv@ifempty{#2}{#4{#1}}{\ekv@err@val@no@reinsert{#2}}}%
+  }
+\ekv@def@expansion@rule@ea{o}{}{\expandafter{#1}}
+\ekv@def@expansion@rule@ea{e}{}{\ekv@expanded{{#1}}}
+\ekv@def@expansion@rule@ea{c}{}{\csname#1\endcsname}
+\ekv@def@expansion@rule@ea{f}{}{\expandafter{\romannumeral`\^^@#1}}
+\ekv@exparg{\ekv@def@expansion@rule{s}{}}{\ekv@strip{\ekv@mark#1}}{}
+\ekv@def@expansion@rule{b}{}{}{{{#1}}}
+\ekv@def@expansion@rule{\string\r}{#2\ekv@stop#3#4}{}{{#1}#2\ekv@stop{#3}{#4r}}
+\ekv@def@expansion@rule@ea{g}{}{\expandafter{\@gobble#1}}
+\ekv@def@expansion@rule{p}{#2}{}{{#2#1}}
+\ekv@def@expansion@rule{P}{#2}{}{{#1#2}}
+\long\def\ekv@expansion@rule@V#1%
+  {%
+    \ifx\relax#1\ekv@err@erroneous@variable{#1}\ekv@expansion@@clean@V\fi
+    \ekv@expansion@@V{#1}%
+  }
+\ekv@expandedarg{\long\def\ekv@expansion@rule@v#1}%
+  {%
+    \ekv@unexpanded{\ekv@ifdefined{#1}%
+      {\expandafter\ekv@expansion@@V\csname#1\endcsname}}%
+      {%
+        \ekv@unexpanded{\expandafter\ekv@err@erroneous@variable\ekv@expanded}%
+          {{\expandafter\@gobble\string\\#1}}%
+        \ekv@unexpanded{\ekv@expansion@rule@}{}%
+      }%
+  }
+\ekv@exparg{\long\def\ekv@expansion@rule@r#1#2\ekv@stop#3#4}%
+  {\ekv@expansion@rule@v{#1}#2\ekv@stop{#3}{#4r}}
+\ekv@exparg{\long\def\ekv@expansion@rule@R#1#2\ekv@stop#3#4}%
+  {\ekv@expansion@rule@V{#1}#2\ekv@stop{#3}{#4r}}
+\long\def\ekv@expansion@@V#1%
+  {%
+    \expandafter\ifx\noexpand#1#1%
+      \ekv@fi@firstoftwo
+    \fi
+    \@secondoftwo
+    {\expandafter\ekv@expansion@rule@\expandafter{\the#1}}%
+    {\expandafter\ekv@expansion@rule@\expandafter{#1}}%
+  }
+\long\def\ekv@expansion@@clean@V\fi\ekv@expansion@@V#1%
+  {\fi\ekv@expansion@rule@{}}
+\ekv@def@expansion@rule{\string\key}{#2#3\ekv@stop#4}%
+  {}{{#4}#2\ekv@key@after\ekv@stop{#1}{}{#3}}
+\ekv@exparg{\ekv@def@expansion@rule{\string\ekv@key@after}{\ekv@stop#2#3#4}}%
+  {\ekv@ifempty{#3}{}\ekv@err@key@no@reinsert}
+  {{#2}#4\ekv@stop{#1}}
+\ekv@if@lastnamedcs
+  {%
+    \long\def\ekv@set@pair#1\ekv@mark#2#3\ekv@nil#4%
+      {%
+        \ifcsname#4{#1}\endcsname\expandafter\ekv@set@pair@\lastnamedcs\fi
+        \ekv@set@pair@undefined{#3}{#1}{#2}%
+        \ekv@set@other#4%
+      }
+    \ekv@exparg{\long\def\ekv@set@pair@undefined#1#2#3\ekv@set@other#4}%
+      {%
+        \romannumeral
+        \ekv@exparg
+          {\expandafter\ekv@zero\ekv@ifexp{#3}}%
+          {\ekv@strip{#1}\ekv@expansion@set@pair}%
+          {%
+            \ifcsname#4{}u\endcsname\expandafter\ekv@set@pair@u\lastnamedcs\fi
+            \ekv@set@pair@no@u{#1}{#2}{#3}%
+          }%
+        \ekv@set@other#4%
+      }
+  }
+  {%
+    \long\def\ekv@set@pair#1\ekv@mark#2#3\ekv@nil#4%
+      {%
+        \ifcsname#4{#1}\endcsname
+          \expandafter\ekv@set@pair@\csname#4{#1}\endcsname
+        \fi
+        \ekv@set@pair@undefined{#3}{#1}{#2}%
+        \ekv@set@other#4%
+      }
+    \ekv@exparg{\long\def\ekv@set@pair@undefined#1#2#3\ekv@set@other#4}%
+      {%
+        \romannumeral
+        \ekv@exparg
+          {\expandafter\ekv@zero\ekv@ifexp{#3}}%
+          {\ekv@strip{#1}\ekv@expansion@set@pair}%
+          {%
+            \ifcsname#4{}u\endcsname
+              \expandafter\ekv@set@pair@u\csname#4{}u\endcsname
+            \fi
+            \ekv@set@pair@no@u{#1}{#2}{#3}%
+          }%
+        \ekv@set@other#4%
+      }
+  }
+\ekv@expandedarg{\long\def\ekv@set@pair@#1\fi\ekv@set@pair@undefined#2}%
+  {%
+    \ekv@unexpanded{\fi\ifx#1\relax\ekv@set@pair@relax\fi}%
+    \ekv@unexpanded\expandafter{\ekv@strip{#2}#1\ekv@set@next@other}%
+  }
+\ekv@expandafter{\long\def\ekv@set@pair@relax\fi}%
+    \ekv@strip{#1}#2\ekv@set@next@other
+  {\fi\ekv@set@pair@undefined{#1}}
+\ekv@expandedarg{\long\def\ekv@set@pair@u#1\fi\ekv@set@pair@no@u#2}%
+  {%
+    \ekv@unexpanded
+      {%
+        \fi
+        \ifx\relax#1%
+          \ekv@set@pair@u@relax
+        \fi
+      }%
+    \ekv@unexpanded\expandafter{\ekv@strip{#2}#1}%
+  }
+\ekv@expandafter{\long\def\ekv@set@pair@u@relax\fi}\ekv@strip{\ekv@mark#1}#2%
+  {\fi\ekv@set@pair@no@u.}
+\long\def\ekv@set@pair@no@u#1#2#3\ekv@set@other#4%
+  {%
+    \ekv@ifdefined{#4{#2}N}%
+      \ekv@err@noarg
+      \ekv@err@unknown
+        #4{#2}{#3}%
+    \ekv@set@other#4%
+  }
+\ekv@if@lastnamedcs
+  {%
+    \long\def\ekv@set@key#1\ekv@mark#2#3%
+      {%
+        \ifcsname#3{#1}N\endcsname\expandafter\ekv@set@key@\lastnamedcs\fi
+        \ekv@set@key@undefined{#1}{#2}%
+        \ekv@set@other#3%
+      }
+    \ekv@exparg{\long\def\ekv@set@key@undefined#1#2\ekv@set@other#3}%
+      {%
+        \ekv@ifexp{#2}%
+          \ekv@expansion@set@key
+          {%
+            \ifcsname#3{}uN\endcsname\expandafter\ekv@set@key@u\lastnamedcs\fi
+            \ekv@set@key@no@u{#1}{#2}%
+          }%
+        \ekv@set@other#3%
+      }
+  }
+  {%
+    \long\def\ekv@set@key#1\ekv@mark#2#3%
+      {%
+        \ifcsname#3{#1}N\endcsname
+          \expandafter\ekv@set@key@\csname#3{#1}N\endcsname
+        \fi
+        \ekv@set@key@undefined{#1}{#2}%
+        \ekv@set@other#3%
+      }
+    \ekv@exparg{\long\def\ekv@set@key@undefined#1#2\ekv@set@other#3}%
+      {%
+        \ekv@ifexp{#2}%
+          \ekv@expansion@set@key
+          {%
+            \ifcsname#3{}uN\endcsname
+              \expandafter\ekv@set@key@u\csname#3{}uN\endcsname
+            \fi
+            \ekv@set@key@no@u{#1}{#2}%
+          }%
+        \ekv@set@other#3%
+      }
+  }
+\long\def\ekv@set@key@#1\fi\ekv@set@key@undefined
+  {\fi\ifx#1\relax\ekv@set@key@relax\fi#1\ekv@set@next@other}
+\long\def\ekv@set@key@relax\fi#1\ekv@set@next@other{\fi\ekv@set@key@undefined}
+\long\def\ekv@set@key@u#1\fi\ekv@set@key@no@u
+  {\fi\ifx\relax#1\ekv@set@key@u@relax\fi#1}
+\def\ekv@set@key@u@relax\fi#1{\fi\ekv@set@key@no@u}
+\long\def\ekv@set@key@no@u#1#2\ekv@set@other#3%
+  {%
+    \ekv@ifdefined{#3{#1}}%
+      \ekv@err@reqval
+      \ekv@err@unknown
+        #3{#1}{#2}%
+    \ekv@set@other#3%
+  }
+\long\def\ekv@expansion@set@key#1#2#3%
+  {%
+    \ekv@expansion@rule@{#2}#1\ekv@mark\ekv@stop{}{}\ekvmorekv
+    \ekv@expansion@set@key@
+  }
+\long\def\ekv@expansion@set@key@#1#2\ekv@set@other#3%
+  {\expandafter\ekv@set@key\detokenize{#2}\ekv@mark{#2}#3}
+\long\def\ekv@expansion@set@pair#1#2#3#4%
+  {%
+    \ekv@expansion@rule@{#1}#2\ekv@mark\ekv@stop{#3}{}\ekvmorekv
+    \ekv@expansion@set@pair@
+  }
+\long\def\ekv@expansion@set@pair@#1#2\ekv@set@other#3%
+  {\expandafter\ekv@set@pair\detokenize{#1}\ekv@mark{#1}\ekv@mark{#2}\ekv@nil#3}
+\long\def\ekv@expansion@parse@key#1#2#3#4%
+  {%
+    \ekv@expansion@rule@{#3}#2\ekv@mark\ekv@stop{}{}\ekv@parse@more
+    \ekv@expansion@parse@key@\@gobble{#1}%
+  }
+\long\def\ekv@expansion@parse@key@#1#2\@gobble#3{\ekv@unexpanded{#3{#2}}}
+\long\def\ekv@expansion@parse@pair#1#2#3#4#5%
+  {%
+    \ekv@expansion@rule@{#1}#3\ekv@mark\ekv@stop{#4}{}\ekv@parse@more
+    \ekv@expansion@parse@pair@\@gobble{#2}%
+  }
+\long\def\ekv@expansion@parse@pair@#1#2\@gobble#3{\ekv@unexpanded{#3{#1}{#2}}}
+\ekv@exparg{\protected\def\ekvsetdef#1#2}%
+  {%
+    \romannumeral
+    \ekv@exparg{\expandafter\ekv@zero\ekv@exparg{\def#1##1}}%
+      {\ekvset{#2}{##1}}%
+  }
+\ekv@exparg{\protected\def\ekvsetSneakeddef#1#2}%
+  {%
+    \romannumeral
+    \ekv@exparg{\expandafter\ekv@zero\ekv@exparg{\def#1##1##2}}%
+      {\ekvsetSneaked{#2}{##1}{##2}}%
+  }
+\ekv@exparg{\protected\long\def\ekvsetdefSneaked#1#2#3}%
+  {%
+    \romannumeral
+    \ekv@exparg{\expandafter\ekv@zero\ekv@exparg{\def#1##1}}%
+      {\ekvsetSneaked{#2}{#3}{##1}}%
+  }
+\begingroup
+\catcode`\^^@=2
+\@firstofone{\endgroup
+  \def\ekv@alignsafe{\romannumeral\iffalse{\fi`^^@ }
+}
+\begingroup
+\catcode`\^^@=1
+\@firstofone{\endgroup
+  \edef\ekv@endalignsafe{\ekv@unexpanded{\romannumeral`^^@\iffalse}\fi} }
+}
+\begingroup
+\def\ekvoptarg#1#2{%
+\endgroup
+\def\ekvoptarg{#1\ekv@optarg@a}
+\long\def\ekv@optarg@a##1##2##3%
+  {%
+    \ekv@optarg@if\ekv@mark##3\ekv@mark\ekv@optarg@b\ekv@mark[\ekv@mark
+    #2%
+    \@firstofone{ ##1}{##2}{##3}%
+  }%
+\def\ekvoptargTF{#1\ekv@optargTF@a}
+\long\def\ekv@optargTF@a##1##2##3%
+  {%
+    \ekv@optarg@if\ekv@mark##3\ekv@mark\ekv@optargTF@b{##1}\ekv@mark[\ekv@mark
+    #2%
+    \@firstofone{ ##2}{##3}%
+  }
+\@firstofone{\long\def\ekv@optarg@b
+    \ekv@mark[\ekv@mark\romannumeral`##1\fi} \@firstofone##2##3##4##5]%
+  {#2##2{##5}}
+\@firstofone{\long\def\ekv@optargTF@b
+    ##1\ekv@mark[\ekv@mark\romannumeral`##2\fi} \@firstofone##3##4##5]%
+  {#2 ##1{##5}}
+}
+\ekv@exparg
+  {\ekv@exparg\ekv@strip{\expandafter\ekv@mark\ekv@alignsafe}\ekvoptarg}%
+  \ekv@endalignsafe
+\long\def\ekv@optarg@if#1\ekv@mark[\ekv@mark{}
+\long\def\ekv@ifstar#1#2#3%
+  {%
+    \ekv@ifatmostone{#3}%
+      {\if*\string#3\ekv@fi@firstoftwo\fi}%
+      {}%
+    \@secondoftwo
+      {#1}%
+      {#2{#3}}%
+  }
+\protected\long\def\ekvcompile
+  {%
+    \ekv@alignsafe
+    \ekv@ifstar{\ekv@compile{}}{\ekv@compile{\expandafter\expandafter}}%
+  }
+\def\ekv@compile#1#2#3#{\ekv@compile@{#1}{#2#3}}
+\def\ekv@compile@#1#2#3{#2#3}
+\ekv@exparg{\protected\long\def\ekv@compile@#1#2#3#4}%
+  {%
+    \expandafter\ekv@expanded\expandafter
+      {%
+        \romannumeral\ekv@expargtwice{\ekv@zero\def\ekv@unexpanded{#2}}%
+          {%
+            \expandafter\ekv@compile@
+            \ekvparse
+              {\ekv@compile@key{#1}{#3}}%
+              {\ekv@compile@pair{#1}{#3}}%
+              {#4}%
+          }%
+      }%
+    \ekv@endalignsafe
+  }
+\ekv@exparg{\long\def\ekv@compile@key#1#2#3}%
+  {%
+    \ekvifdefinedNoVal{#2}{#3}%
+      {\ekv@unexpanded#1\expandafter{\csname\ekv@name{#2}{#3}N\endcsname}}%
+      {%
+        \ekv@ifdefined{\ekv@name{#2}{}uN}
+          {%
+            \ekv@unexpanded#1\expandafter
+              {%
+                \csname\ekv@name{#2}{}uN\expandafter\endcsname
+                  \expandafter{\detokenize{#3}}{#3}%
+              }%
+          }%
+          {%
+            \ekvifdefined{#2}{#3}%
+              {\ekv@err{missing value for `#3' in set `#2'}}%
+              {\ekv@err{unknown key `#3' in set `#2'}}%
+          }%
+      }%
+  }
+\ekv@exparg{\long\def\ekv@compile@pair#1#2#3#4}%
+  {%
+    \ekvifdefined{#2}{#3}%
+      {\ekv@unexpanded#1\expandafter{\csname\ekv@name{#2}{#3}\endcsname{#4}}}%
+      {%
+        \ekv@ifdefined{\ekv@name{#2}{}u}%
+          {%
+            \ekv@unexpanded#1\expandafter
+              {%
+                \csname\ekv@name{#2}{}u\ekv@expanded{\endcsname
+                  {\ekv@unexpanded{#4}}{\detokenize{#3}}}{#3}%
+              }%
+          }%
+          {%
+            \ekvifdefinedNoVal{#2}{#3}%
+              {\ekv@err{unwanted value for `#3' in set `#2'}}%
+              {\ekv@err{unknown key `#3' in set `#2'}}%
+          }%
+      }%
+  }
+\def\ekv@err@cleanup\par{}
+\def\ekv@err@collect#1%
+  {%
+    \def\ekv@err@collect##1\par##2%
+      {%
+        \expandafter
+        \ekv@err@cleanup
+        #1! ##2 Error: ##1\par
+      }%
+    \def#1##1\thanks@jfbu{}%
+  }
+\def\ekverr{ }
+\expandafter\ekv@err@collect\csname <an-expandable-macro>^^J%
+  completed due to above exception. \ekverr If the error^^J%
+  summary is \ekverr not comprehensible \ekverr see the package^^J%
+  documentation.^^J%
+  I will try to recover now. \ekverr If you're in inter-^^J%
+  active mode hit <return> \ekverr at the ? prompt and I^^J%
+  continue hoping recovery\endcsname
+\long\def\ekverr#1#2{\expandafter\ekv@err@collect\detokenize{#2}\par{#1}}
+\ekv@exparg{\long\def\ekv@err#1}{\ekverr{expkv}{#1}}
+\protected\long\def\ekv@errm#1{\errmessage{expkv Error: #1}}
+\long\def\ekv@err@common #1#2{\expandafter\ekv@err@common@\string#2{#1}}
+\ekv@exparg{\long\def\ekv@err@common@#1`#2' #3.#4#5}%
+  {\ekv@err{#4 `#5' in set `#2'}}
+\ekv@exparg{\long\def\ekv@err@unknown#1#2}{\ekv@err@common{unknown key}{#1}}
+\ekv@exparg{\long\def\ekv@err@noarg#1#2}%
+  {\ekv@err@common{unwanted value for}{#1}}
+\ekv@exparg{\long\def\ekv@err@reqval#1#2}%
+  {\ekv@err@common{missing value for}{#1}}
+\ekv@exparg{\long\def\ekv@err@redirect@kv@notfound#1#2#3\ekv@stop}%
+  {\ekv@err{no key `#2' in sets #3}}
+\ekv@exparg{\def\ekv@err@redirect@k@notfound#1#2\ekv@stop}%
+  {\ekv@err{no NoVal key `#1' in sets #2}}
+\ekv@exparg{\def\ekv@err@undefined@expansion#1\fi}%
+  {\expandafter\fi\ekv@err{Undefined expansion rule `#1'}}
+\ekv@exparg{\def\ekv@err@erroneous@variable#1}%
+  {\ekv@err{Erroneous variable `#1' used}}
+\ekv@exparg{\def\ekv@err@key@no@reinsert}%
+  {\ekv@err{Reinsertion in \key expansion forbidden}}
+\ekv@exparg{\def\ekv@err@val@no@reinsert#1}%
+  {\ekv@err{Reinsertion with key `#1' forbidden}}
+\catcode`\@=\ekv@tmp
+%% 
+%%
+%% End of file `expkv.tex'.

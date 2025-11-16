@@ -1,0 +1,72 @@
+%% $Id: pst-antiprism.tex 730 2018-02-13 17:50:37Z herbert $
+%% Package `pst-antiprism.tex'
+%%
+%% This program can be redistributed and/or modified under
+%% the terms of the LaTeX Project Public License Distributed
+%% from CTAN archives in directory macros/latex/base/lppl.txt.
+%%
+%% DESCRIPTION: 3d representation of an antiprism
+%%
+%% Author  :   <manuel.luque27@gmail.com>
+%% Author  :   <hvoss@tug.org>
+%%
+\csname PSTANTIPRISMLoaded\endcsname
+\let \PSTANTIPRISMLoaded\endinput
+% Require PSTricks and pst-solides3d
+\ifx\PSTricksLoaded\endinput       \else\input pstricks.tex\fi
+\ifx\PSTSOLIDESIIIDLoaded\endinput \else\input pst-solides3d.tex\fi
+\ifx\PSTXKeyLoaded\endinput        \else\input pst-xkey.tex\fi
+
+\def\fileversion{0.02}
+\def\filedate{2018/02/07}
+\message{`PST' v\fileversion, \filedate}
+
+\edef\PstAtCode{\the\catcode`\@} \catcode`\@=11\relax
+
+\pst@addfams{pst-antiprism}
+
+\pstheader{pst-antiprism.pro}
+
+\addtosolideslistobject{antiprism,antiprism-fan}
+
+\define@key[psset]{pst-antiprism}{n}{\def\pst@antiprism@n{#1 }} % nombre de cotes des polygones
+% Mesh of the bases of the antiprism
+\define@boolkey[psset]{pst-antiprism}[Pst@]{meshbases}[true]{} %
+\define@boolkey[psset]{pst-antiprism}[Pst@]{colored}[true]{} %
+\define@boolkey[psset]{pst-antiprism}[Pst@]{fan}[true]{} %
+\psset[pst-antiprism]{n=5,meshbases=true,colored=false,fan=false}
+\psset[pst-solides3d]{a=1}
+%
+\def\psAntiprism{\pst@object{psAntiprism}}
+\def\psAntiprism@i{%
+  \pst@killglue
+  \begingroup
+  \use@keep@par
+  \ifPst@colored
+    \addbefore@par{%
+      fcol= 
+        0 1 \pst@antiprism@n 2 mul 1 sub {/i exch def  i (i \pst@antiprism@n 2 mul div 1 1 sethsbcolor)} for    % le tour complet
+        \pst@antiprism@n 2 mul 1 \pst@antiprism@n 3 mul 1 sub {/i exch def  i (i \pst@antiprism@n 2 mul sub \pst@antiprism@n 2 mul div 1 1 sethsbcolor)} for 
+        \pst@antiprism@n 3 mul 1 \pst@antiprism@n 4 mul 1 sub {/i exch def  i (i \pst@antiprism@n 2 mul sub \pst@antiprism@n 2 mul div 1 1 sethsbcolor)} for,
+        opacity=0.9
+    }%
+  \fi
+  \use@par
+  \addto@pscode{
+    \tx@optionssolides
+    SolidesDict begin
+    /n@ \pst@antiprism@n def
+    /meshbases \ifPst@meshbases true \else  false \fi def
+    end
+  }%
+  \ifPst@fan\psSolid[object=antiprism-fan]\else\psSolid[object=antiprism]\fi
+%  \use@pscode
+  \showpointsfalse
+  \endgroup
+  \ignorespaces
+}% % fin de la commande PSTricks
+
+
+\catcode`\@=\PstAtCode\relax
+%
+\endinput 

@@ -1,0 +1,256 @@
+\input ptb-utils
+\_checkloaded{arrays}
+\input pdfData/ptb-stack
+
+\def\createarray#1{%
+    \_xp\currdef\csname arr@#1\endcsname{}%
+    \_xp\currdef\csname arr@#1@len\endcsname{0}%
+}
+
+\def\arrayexists#1{%
+    \ifcsname arr@#1\endcsname%
+        \let\@return@value=\True%
+    \else%
+        \let\@return@value=\False%
+    \fi%
+}
+
+\def\ensurearray#1{%
+    \unless\ifcsname arr@#1\endcsname%
+        \createarray{#1}%
+    \fi%
+}
+
+\def\localizearray#1{%
+    \_xp\localize\csname arr@#1\endcsname%
+    \_xp\localize\csname arr@#1@len\endcsname%
+}
+
+\long\def\appendarray#1#2{%
+    \def\_uregA{\_xp\currdef\csname arr@#1\endcsname}%
+    \_xp\_xp\_xp\_uregA\_xp\_xp\_xp{\csname arr@#1\endcsname\_arr_index{#2}}%
+    \_xp\curredef\csname arr@#1@len\endcsname{\the\numexpr\csname arr@#1@len\endcsname+1\relax}%
+}
+
+\long\def\prependarray#1#2{%
+    \def\_uregA{\_xp\currdef\csname arr@#1\endcsname}%
+    \def\_uregB{\_arr_index{#2}}%
+    \_xp\_xp\_xp\_xp\_xp\_xp\_xp\_uregA\_xp\_xp\_xp\_xp\_xp\_xp\_xp{\_xp\_xp\_xp\_uregB\csname arr@#1\endcsname}%
+    \_xp\curredef\csname arr@#1@len\endcsname{\the\numexpr\csname arr@#1@len\endcsname+1\relax}%
+}
+
+\long\def\appendarraymany#1#2{%
+    \map{\appendarray{#1}}{#2}%
+}
+
+\long\def\_appendarrayvalue#1#2#3{\appendarray{#1}{{#3}{#2}}}
+\long\def\appendarraymanyvalued#1#2#3{\map{\_appendarrayvalue{#1}{#2}}{#3}}
+
+\def\arraylen#1{%
+    \csname arr@#1@len\endcsname%
+}
+
+\def\getarraylen#1#2{%
+    \_xp\let\_xp#2\csname arr@#1@len\endcsname%
+}
+
+\def\executearray#1{\csname arr@#1\endcsname}
+
+\def\arraymap#1#2{%
+    \def\_mac_arr_cnt{0}%
+    \beginscope%
+    \localize\_arr_index%
+    \long\def\_arr_index##1{%
+        \beginscope%
+        \localize\_mac_arr_cnt%
+        #2{##1}{\_mac_arr_cnt}%
+        \edef\_mac_arr_cnt{\the\numexpr\_mac_arr_cnt+1\relax}%
+        \endscope%
+    }%
+    \csname arr@#1\endcsname%
+    \endscope%
+}
+
+\newcount\_arr_cnt
+\newcount\_arr_cntB
+\def\indexarray#1#2#3{%
+    \let#3=\_nul%
+    \long\def\_arr_index##1{%
+        \ifnum\_arr_cnt=#2 %
+            \def#3{##1}
+        \fi%
+        \advance\_arr_cnt by 1 %
+    }
+    \csname arr@#1\endcsname%
+}
+
+\def\removearray#1#2#3{%
+    \_arr_cnt=0 %
+    \let#3=\_nul%
+    \_xp\let\_xp\_regA\csname arr@#1\endcsname%
+    \createarray{#1}%
+    \def\_arr_index##1{%
+        \ifnum\_arr_cnt=#2 %
+            \def#3{##1}%
+        \else%
+            \appendarray{#1}{##1}%
+        \fi
+        \advance\_arr_cnt by 1 %
+    }%
+    \_regA%
+}
+
+\def\removeitemarray#1#2{%
+    \def\_temp{#2}%
+    \_xp\let\_xp\_regA\csname arr@#1\endcsname%
+    \createarray{#1}%
+    \def\_arr_index##1{%
+        \def\_tempA{##1}%
+        \unless\ifx\_temp\_tempA%
+            \appendarray{#1}{##1}%
+        \fi%
+    }%
+    \_regA%
+}
+
+\long\def\__printarray#1#2#3{%
+    #1{#2}%
+    \unless\ifnum\_arr_cnt=\_temp%
+        ,
+    \fi%
+}
+
+\def\_printarray#1[#2]{%
+    \getarraylen{#1}\_temp%
+    \edef\_temp{\the\numexpr \_temp-1\relax}%
+    \arraymap{#1}{\__printarray{#2}}%
+}
+
+\def\printarray#1{\_ifnextchar[ {\_printarray{#1}}{\_printarray{#1}[\relax]}}
+
+\def\copyarray#1#2{%
+    \def\_temp{\csname arr@#2\endcsname}%
+    \_xp\_xp\_xp\_xp\_xp\_xp\_xp\let\_xp\_temp\csname arr@#1\endcsname%
+    \def\_temp{\csname arr@#2@len\endcsname}%
+    \_xp\_xp\_xp\_xp\_xp\_xp\_xp\let\_xp\_temp\csname arr@#1@len\endcsname%
+}
+
+\def\_concatenatearray#1#2#3#4#5{%
+    \_xp\currdef\csname arr@#5\endcsname{#1#2}%
+    \_xp\curredef\csname arr@#5@len\endcsname{\the\numexpr\csname arr@#3@len\endcsname + \csname arr@#4@len\endcsname\relax}%
+}
+
+\def\concatenatearrays#1#2#3{%
+    \def\_temp{\csname arr@#1\endcsname}%
+    \_xp\_xp\_xp\_concatenatearray\_xp\_xp\_xp{\_xp\_temp\_xp}\_xp{\csname arr@#2\endcsname}{#1}{#2}{#3}%
+}
+
+\def\createmarray#1{\_xp\currdef\csname marr@#1@len\endcsname{0}}
+
+\def\localizemarray#1{%
+    \_xp\localize\csname marr@#1@len\endcsname%
+    \_arr_cnt=0 %
+    \loop\ifnum\_arr_cnt < \csname marr@#1@len\endcsname %
+        \_xp\localize\csname marr@#1@idx@\the\_arr_cnt\endcsname%
+        \advance\_arr_cnt by 1 %
+    \repeat%
+}
+
+\def\appendmarray#1#2{%
+    \_xp\currdef\csname marr@#1@idx@\csname marr@#1@len\endcsname\endcsname{#2}%
+    \_xp\curredef\csname marr@#1@len\endcsname{\the\numexpr\csname marr@#1@len\endcsname + 1\relax}%
+}
+
+\def\_rappendmarray#1#2{\appendmarray{#2}{#1}}
+\def\_rappendarray#1#2{\appendarray{#2}{#1}}
+
+\def\printmarray#1{%
+    \_arr_cnt=0 %
+    \loop\ifnum\_arr_cnt < \csname marr@#1@len\endcsname %
+        (\csname marr@#1@idx@\the\_arr_cnt\endcsname)%
+        \advance\_arr_cnt by 1 %
+        \ifnum\_arr_cnt < \csname marr@#1@len\endcsname %
+            , %
+        \fi%
+    \repeat%
+}
+
+\def\convertarray#1#2{%
+    \createmarray{#2}%
+    \_xp\curredef\csname marr@#2@len\endcsname{\csname arr@#1@len\endcsname}%
+    \_arr_cnt=0 %
+    \def\_arr_index##1{%
+        \_xp\currdef\csname marr@#2@idx@\the\_arr_cnt\endcsname{##1}%
+        \advance\_arr_cnt by 1 %
+    }%
+    \csname arr@#1\endcsname%
+}
+
+\def\convertmarray#1#2{%
+    \createarray{#2}%
+    %\_xp\edef\csname arr@#2@len\endcsname{\csname marr@#1@len\endcsname}%
+    \_arr_cnt=0 %
+    \loop\ifnum\_arr_cnt < \csname marr@#1@len\endcsname %
+        \_xp\_rappendarray\_xp{\csname marr@#1@idx@\the\_arr_cnt\endcsname}{#2}%
+        \advance\_arr_cnt by 1 %
+    \repeat%
+}
+
+\def\copymarray#1#2{%
+    \createmarray{#2}%
+    \_arr_cnt=0 %
+    \loop\ifnum\_arr_cnt < \csname marr@#1@len\endcsname %
+        \_xp\_xp\_xp\_rappendmarray\_xp\_xp\_xp{\csname marr@#1@idx@\the\_arr_cnt\endcsname}{#2}%
+        \advance\_arr_cnt by 1 %
+    \repeat%
+}
+
+%   #1: name of array
+%   #2: text to initialize array to
+%   #3: macro for creating array
+%   #4: macro for appending to array
+\def\_init_array#1#2#3#4{%
+    #3{#1}%
+    \commap{#4{#1}}{#2}%
+}
+
+\def\initarray#1#2{%
+    \_init_array{#1}{#2}\createarray\appendarray%
+}
+
+\def\initmarray#1#2{%
+    \_init_array{#1}{#2}\createmarray\appendmarray%
+}
+
+\def\findarray#1#2{%
+    \def\_regA{#2}%
+    \let\@return@value=\False%
+    \def\_arr_index##1{%
+        \def\_regB{##1}%
+        \ifx\_regA\_regB%
+            \let\@return@value=\True%
+        \fi%
+    }%
+    \csname arr@#1\endcsname%
+}
+
+\def\uniqueappendarray#1#2{%
+    \findarray{#1}{#2}%
+    \ifx\@return@value\False%
+        \appendarray{#1}{#2}%
+    \fi%
+}
+
+\def\findmarray#1#2#3{%
+    \def\_regA{#2}
+    \let\@return@value=\False%
+    \_arr_cnt=0 %
+    \loop\ifnum\_arr_cnt < \csname arr@#1@len\endcsname %
+        \ifx\_regA\csname arr@#1@idx@\the\_arr_cnt\endcsname%
+            \let\@return@value=\True%
+            \_xp\let\_xp#3\csname arr@#1@idx@\the\_arr_cnt\endcsname%
+        \fi%
+        \advance\_arr_cnt by 1 %
+    \repeat%
+}
+

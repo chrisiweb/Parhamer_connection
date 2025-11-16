@@ -1,0 +1,41 @@
+% enotez.4ht (2023-10-31-12:28), generated from tex4ht-4ht.tex
+% Copyright 2023 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2023-10-31-12:28}
+
+\NewConfigure{enotezmark}{2}
+\NewConfigure{enotezback}{2}
+\NewConfigure{enmark}{2}
+% patch commands that print note numbers, so we can add links
+\ExplSyntaxOn
+% \:currentnoteid contains the note number
+\protected\def\:tempa #1#2{\def\:currentnoteid{#1}\a:enotezmark\o:enotez_write_mark:nn:{#1}{#2}\b:enotezmark}
+\HLet\enotez_write_mark:nn\:tempa
+
+\protected\def\:tempa#1{\def\:currentnoteid{#1}\a:enotezback\o:enotez_write_list_number:n:{#1}\b:enotezback}
+\HLet\enotez_write_list_number:n\:tempa
+
+% enmark has issue with spurious space after note number, but space is missing after dot.
+\cs_set:Npn   \enmark #1 {\a:enmark#1\unskip\b:enmark}
+\Configure{enmark}{}{.}
+
+\ExplSyntaxOff
+
+\Hinput{enotez}
+\endinput
+

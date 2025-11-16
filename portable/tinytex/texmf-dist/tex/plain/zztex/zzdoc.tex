@@ -1,0 +1,500 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Document Facilities
+%
+% Synopsis:
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   9 September 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Loading Design Files
+%                       ------- ------ -----
+
+
+\def \bookauthor {}
+\def \booktitle {}
+\def \bookpublisher {}
+\def \bookISBN {}
+
+
+\def \loaddesign #1{%                                   {file-list}
+  \zdtinit
+  \zloadinifile
+  \global\divisionname = \expandafter{\jobname}%
+  \setfoliostyle{\arabic}%              % Initialize various options that
+  \setsentencespacing{\false}%          $ might be set in the design file.
+  \setmathspaces{4mu plus .4mu minus .75mu}
+                {4mu plus .4mu minus .75mu}
+                {4mu plus .4mu minus .75mu}%
+  \protectcitecommands
+  \commalist{\zdeslist}{#1}%
+  \maplist{\zinputdes{##1}}{\zdeslist}%
+  \textsize\rm                          % In case \documentdesign resets
+                                        % \normallineskip[limit].
+  \if \DVIWindorules \setflag \DVIWindoinuse = \true \fi %%% Temporary.
+  \if \newbiblio \input zzbiblio \else \input zzbibtex \fi
+  \if \rangep{\newmath}{1}{2}\input zznewmath\relax \fi
+  \if \newrunners \input zzrunner\relax \fi
+  \if \zerop{\tabularversion}%
+    \tabularversion = \if \newtabular 2\else 1\fi\relax
+  \fi
+  \if \neqlp{\tabularversion}{3}\input zztabularv\the\tabularversion\relax \fi
+  \if \newtitleadjustment \input zzttladj\relax \fi}
+
+\def \zinputdes #1{%                            {design-file}
+  \checkfile{\znext}{#1.zzd}%
+  \if \znext
+    \input #1.zzd\relax
+  \else
+    \error{nodesfile}{The design file `#1.zzd' is missing}
+    \zend
+  \fi
+  \if \orp{\hmodep}{\posp{\pagetotal}}
+    \error{desjunk}
+          {The design file `#1.zzd' has some spurious junk in it}
+  \fi
+  \textsize\rm                  % So \documentdesign macro can use it.
+  \documentdesign}
+
+\def \announcedesign #1{%                       {title}
+  \remark{Loading design file `#1'._}}
+
+\def \bookdata #1#2#3#4{%                       {author}{title}{publisher}{ISBN}
+  \gdef \bookauthor {#1}%
+  \gdef \booktitle {#2}%
+  \gdef \bookpublisher {#3}%
+  \gdef \bookISBN {#4}}
+
+%~ Deprecated in favor of |\bookdata|.
+
+\def \bookinfo #1#2#3{%                         {author}{title}{publisher}
+  \gdef \bookauthor {#1}%
+  \gdef \booktitle {#2}%
+  \gdef \bookpublisher {#3}}
+
+\def \commonencoding {%
+  \input zzcomenc\relax
+  \global\setflag \zcommonencoding = \true}
+
+\def \protectcitecommands {%
+  \let \cite      = \citeleterror
+  \let \citeauthr = \citeleterror
+  \let \citeyear  = \citeleterror
+  \let \nocite    = \citeleterror}
+
+\def \citeleterror {%
+  \error{citelet}{Cannot use \noexpand\let to define \noexpand\cite commands}}
+
+%                       Design Alternatives
+%                       ------ ------------
+
+
+% Design alternatives are deprecated.
+
+\def \designalternative #1#2{%                  {\name}{choice}
+  \withname\gdef{\=zA:\string#1}{#2}}
+
+\def \definedesignalternative #1#2#3{%          {\name}{required?}{choice1,...}
+  \definecount{#1}{-1}%
+  \if \undefinedp{\=zA:\string#1}%
+    \if #2%
+      \error{altreq}{The design alternative `\string#1' must be specified}%
+    \else
+      \zdefalt{#1}#3,\zmark
+    \fi
+  \fi
+  \commalist{\zaltlist}{#3}%
+  \tcounta = -1\relax
+  \maplist{\zcompalt{#1}{##1}}{\zaltlist}%
+  \if \negp{#1}%
+    \error{altinv}{The design alternative `\string#1' is invalid}%
+  \fi}
+
+\def \zdefalt #1#2,#3\zmark{%                   {\name}choice1,...\zmark
+  \designalternative{#1}{#2}}
+
+\def \zcompalt #1#2{%                           {\name}{choice}
+  \increment \tcounta
+  \stringeql{\znext}{\name{\=zA:\string#1}}{#2}%
+  \if \znext \global#1 = \tcounta \fi \relax}
+
+\let \altcase = \ifcase
+
+%                       Document Parameters
+%                       -------- ----------
+
+
+% The following PDF document information options are available.
+
+\chardef \PDFinfodefault = 0
+\chardef \PDFinfofull    = 1
+\chardef \PDFinfocomp    = 2
+\chardef \PDFinfonone    = 3
+
+
+% Integer parameters:
+
+\adjdemerits = 10000            % Adjacent incompatible lines.
+\binoppenalty = 700             % Line break after binary operator.
+%\brokenpenalty = 0             % See \even and \oddbrokenpenalty.
+\clubpenalty = 500              % Club line at bottom of page.
+\defaulthyphenchar = `\-        % Default hyphen character.
+\defaultskewchar = -1           % Default skew character.
+\delimiterfactor = 941          % Math delimiter size factor.
+\displaywidowpenalty = 500      % Widow line above math display.
+\definecount{\dollarhyph}{0}    % 0: no hyphenation after dollar signs;
+                                % 1: hyphenate after, but nowhere else;
+                                % 2: hyphenate after and other places.
+\doublehyphendemerits = 80000   % Consecutive hyphenated lines.
+\errorcontextlines = 8          % Maximum error context line pairs.
+\definecount{\evenbrokenpenalty}{3000}  % Column breaks after hyphenated
+                                        % line, but on same spread.
+\exhyphenpenalty = 0            % Line break after explicit hyphen.
+\finalhyphendemerits = 10000    % Penultimate hyphenated line.
+\hbadness = 1000                % Above which bad hboxes are shown.
+\hyphenpenalty = 50             % Line break after discretionary hyphen.
+\interlinepenalty = 0           % Between lines of a paragraph.
+\language = 0                   % Current set of hyphenation rules.
+\lefthyphenmin = 2              % Shortest fragment at beginning of
+                                % hyphenated word.
+\linepenalty = 10               % Increment at each line break.
+\definecount{\lineslong}{0}     % Number of lines page can go long.
+\definecount{\linesperpage}{0}  % Number of lines per page.
+\definecount{\linesshort}{0}    % Number of lines page can go short.
+\definecount{\maxbottomcolumnfloats}{1} % Floats at column bottom.
+\definecount{\maxbottompagefloats}{1}   % Floats at page bottom.
+\definecount{\maxtopcolumnfloats}{1}    % Floats at column top.
+\definecount{\maxtoppagefloats}{1}      % Floats at page top.
+\definecount{\mintextpercent}{10} % Percent of page that must have text.
+\newlinechar = -1               % Newline character for \write.
+\definecount{\newmath}{0}       % Revision level of math---DEPRECATED.
+\definecount{\oddbrokenpenalty}{10000}  % Spread breaks after
+                                        % hyphenated line.
+\definecount{\PDFinfo}{\PDFinfodefault} % Include document info in final PDF file.
+\pretolerance = 400             % Badness tolerated before hyphenation.
+\relpenalty = 500               % Line break after relation operator.
+\righthyphenmin = 3             % Shortest fragment at end of hypenated word.
+\definecount{\shrinkpercent}{10}        % Percentage shrink is of nominal.
+\definecount{\stretchpercent}{25}       % Percentage of the maximum stretch.
+\definecount{\tabularversion}{0}        % Version of tabular facility.
+\tolerance = \pretolerance      % Badness tolerated after hyphenation.
+\tracinglostchars = 1           % Positive to trace lost characters.
+\definecount{\tracingpagemakeup}{0}     % Positive to trace page makeup.
+\tracingstats = 1               % Positive to trace memory statistics.
+\uchyph = 1                     % Positive to hyphenate Capitalized words.
+\definecount{\underscorehyph}{1}        % See \dollarhyph.
+\vbadness = 2000                % Above which bad vboxes are shown.
+\widowpenalty = 10000           % Widow line at top of page.
+\definecount{\xrefcites}{0}     % Cross-reference \cite's:
+                                %   0: no
+                                %   1: simple xref entry
+                                %   2: custom xref entry
+
+% Flag Parameters:
+
+\setflag \allowcolor = \true            % Allow color specials?
+\setflag \allowreftitle = \false        % Allow use of \reftitle?
+\setflag \baselinetoprules = \true      % Rules at page top sit on baseline?
+\setflag \DVIWindoinuse = \false        % Generate DVIWindo-specific goodies?
+\setflag \DVIWindorules = \false        % Display page makeup rules? [deprecated]
+\setflag \forceepsbb = \false           % Force reading of EPS bounding box?
+\setflag \indexcites = \false           % \cite generates indexing command?
+\setflag \newbiblio = \false            % Use new biblio facility?
+\setflag \newdots = \false              % Use new \xdots commands?
+\setflag \newrunners = \false           % Use new runners scheme?
+\setflag \newtabular = \false           % Use new tabular module? [deprecated]
+\setflag \newtitleadjustment = \false   % Use new title adjustment scheme?
+\setflag \PDFhyperlinks = \false        % Generate PDF hyperlinks?
+\setflag \raggedbottom = \false         % Ragged-bottom pages?
+\setflag \risingbottomfloats = \false   % Bottom floats rise up on page?
+\setflag \risingfootnotes = \false      % Footnotes rise up on page?
+\setflag \topdeltaadjustment = \false   % Use \topdelta?
+\setflag \zcommonencoding = \false      % Set with \commonencoding command.
+
+% Dimension Parameters:
+
+\boxmaxdepth = \maxdimen        % Maximum depth of explicit vboxes.
+\delimitershortfall = 4pt       % Maximum math delimiter shortfall.
+\emergencystretch = 4pt         % Emergency stretchability of each line.
+\definedimen{\evenbleedshift}{0pt}      % Bleed shift for versos.
+\definedimen{\eveninnermargin}{0pt}     % Inner margin (gutter) for versos.
+\definedimen{\evenlefttextmargin}{0pt}  % Left text margin for versos.
+\definedimen{\evenoutermargin}{0pt}     % Outer margin for versos.
+\definedimen{\evenrighttextmargin}{0pt} % Right text margin for versos.
+\definedimen{\footerheight}{0pt}        % Height of footer box.
+\definedimen{\headerheight}{0pt}        % Height of running head.
+\definedimen{\headmargin}{0in}          % Head (top) margin.
+\hfuzz = 0.33pt                 % Overrun before overfull hbox messages.
+\hoffset = 0pt                  % Overall horizontal offset.
+\zremovePlaindef \jot
+\definedimen{\jot}{3pt}         % Increment for opening up math displays.
+\lineskiplimit = 0pt            % Threshold where \lineskip is used
+                                % instead of \baselineskip.
+\let \linewidth = \hsize        % Alternate name for \hsize.
+\maxdepth = 4pt                 % Maximum depth of boxes on main pages.
+\zremovePlaindef \normallineskiplimit
+\definedimen{\normallineskiplimit}{0pt} % Normal line skip limit.
+\nulldelimiterspace = 1.2pt             % Width of a null delimiter.
+\definedimen{\oddbleedshift}{0pt}       % Bleed shift for rectos.
+\definedimen{\oddinnermargin}{0pt}      % Inner margin (gutter) for rectos.
+\definedimen{\oddlefttextmargin}{0pt}   % Left text margin for rectos.
+\definedimen{\oddoutermargin}{0pt}      % Outer margin for rectos.
+\definedimen{\oddrighttextmargin}{0pt}  % Right text margin for rectos.
+\overfullrule = 6pt             % Width of rule appended to overfull boxes.
+\parindent = 0pt                % Width of paragraph indent.
+\definedimen{\parrag}{0pt}      % Raggedness of paragraph lines.
+\scriptspace = .25pt            % Extra space after a sub/superscript.
+\splitmaxdepth = \maxdimen      % Maximum depth of boxes on split pages.
+\definedimen{\standardbleed}{.125in}    % Standard bleed required by press.
+\definedimen{\standardindent}{0pt}      % Standard indentation amount.
+\definedimen{\textareaheight}{\mindimen}% Height of text area.
+\definedimen{\textmeasure}{0pc}         % Width of text area.
+\let \textareawidth = \textmeasure
+\definedimen{\topdelta}{0pt}            % \topskip - height(first line).
+\definedimen{\trimheight}{0in}          % Trimmed paper height.
+\definedimen{\trimwidth}{0in}           % Trimmed paper width.
+\definedimen{\trimplusbleedheight}{0in} % Trim plus bleed top and bottom.
+\definedimen{\trimplusbleedwidth}{0in}  % Trim plus bleed both sides.
+\definedimen{\typeareaheight}{\mindimen}% Height of type area.
+\definedimen{\typeareawidth}{0pt}       % Width of type area.
+\vfuzz = 0.5pt                  % Overrun before overfull vbox messages.
+\voffset = 0pt                  % Overall vertical offset.
+
+% Skip (glue) Parameters:
+
+\leftskip = 0pt                 % At left end of paragraph lines.
+\lineskip = 0pt                 % When \baselineskip isn't possible.
+\zremovePlaindef \normalbaselineskip
+\defineskip{\normalbaselineskip}{0pt}   % Normal baseline distance.
+\zremovePlaindef \normallineskip
+\defineskip{\normallineskip}{0pt}       % Normal line skip limit.
+\parfillskip = 0pt plus 1fil    % Additional \rightskip at paragraph end.
+\parskip = 0pt                  % Above paragraphs.
+\rightskip = 0pt                % At right end of lines.
+\spaceskip = 0pt                % Between words (if nonzero).
+\splittopskip = 10pt            % At top of split pages.
+\defineskip{\standardskip}{0pt} % Standard skip above/below elements.
+\topskip = \mindimen            % At top of main pages.
+\xspaceskip = 0pt               % Between sentences (if nonzero).
+
+% Muskip (mu glue) Parameters:
+
+\definemuskip{\fracbarhang}{0mu}        % Fraction bar overhang.
+\thinmuskip = 0mu               % Math space after punctuation.
+\medmuskip = 0mu                % Math space around binary operators.
+\thickmuskip = 0mu              % Math space around relational operators.
+
+% Token list parameters:
+
+\definetoks{\annotationfont}    % Font for annotations (e.g., proof identification).
+\annotationfont = {cmssi10 at 7pt}
+\definetoks{\baselinemultiplier}% Multiplier for baselines.
+\baselinemultiplier = {1}
+\definetoks{\decimalpoint}      % Decimal point character.
+\decimalpoint = {.}
+\definetoks{\PDFbuttoncolor}    % Color of hyperlinked text.
+\definetoks{\matrixspread}      % Baseline multiplier for matrices.
+\matrixspread = {1.0}
+
+% The following parameters are fixed and hidden from the user.
+
+\mathsurround = 0pt             % Space around a math formula in text.
+
+%                       Parameter Calculation
+%                       --------- -----------
+
+
+\def \calculatetextareaheight #1{%                              {lines}
+  \relax
+  \if \dimnegp{\topskip}%
+    \error{misstopskip}{The value of \string\topskip must be set}%
+  \fi
+  {\global\linesperpage = #1\relax
+   \tcounta = #1\relax
+   \decrement \tcounta
+   \textareaheight = \the\tcounta\baselineskip
+   \global\advance \textareaheight by \topskip
+   \measurecapheight{\topdelta}%
+   \measureascenderheight{\tdimena}%
+   \if \dimgtrp{\tdimena}{\topdelta}\topdelta = \tdimena \fi
+   \advance \topdelta by -\topskip
+   \global\negate \topdelta}}
+
+\def \calculatetypeareaheight #1#2{%                    {head-height}{head-b/b}
+  \relax
+  \if \dimnegp{\textareaheight}%
+    \error{misstah}{The value of \string\textareaheight must be set}%   
+  \fi
+  {\typeareaheight = \textareaheight
+   \advance \typeareaheight by -\topskip
+   \advance \typeareaheight by #1\relax
+   \advance \typeareaheight by #2\relax
+   \global\advance \typeareaheight by \footerheight
+   \headerheight = #1\relax
+   \advance \headerheight by #2\relax
+   \global\advance \headerheight by -\topskip}}
+
+\def \calculateoffsets #1#2{%                   {sheet-width}{sheet-height}
+  \relax
+  \if \andp{\dimposp{\trimwidth}}{\dimposp{\trimheight}}%
+    \hoffset = #1\relax
+    \advance \hoffset by -\trimwidth
+    \divide \hoffset by 2
+    \advance \hoffset by -1in
+    \voffset = #2\relax
+    \advance \voffset by -\trimheight
+    \divide \voffset by 2
+    \advance \voffset by -1in\relax
+  \else
+    \error{misstrim}{The values of \string\trimwidth and
+                     \string\trimheight must be set}%
+  \fi}
+
+\def \calculatepdfoffsets #1#2#3{%      {virtual-width}{virtual-height}{bleeds?}
+  \relax
+  \if \andp{\dimposp{\trimwidth}}{\dimposp{\trimheight}}%
+    \hoffset = -1in
+    \if #3\advance \hoffset by \standardbleed \fi
+    \calculate \voffset = {#2,-,\trimheight,-,1in}%
+    \if #3\advance \voffset by -\standardbleed \fi
+  \else
+    \error{misstrim}{The values of \string\trimwidth and
+                     \string\trimheight must be set}%
+  \fi}
+
+\def \setskip #1=#2#3#4{%        \parameter = {nominal}{max-stretch}{[shrink]}
+  \tdimena = #2\relax
+  \calculate \tdimenb = {#3,P,\stretchpercent}%
+  \if \emptyargp{#4}%
+    \calculate \tdimenc = {\tdimena,P,\shrinkpercent}%
+  \else
+    \tdimenc = #4\relax
+  \fi
+  #1 = \the\tdimena plus \the\tdimenb minus \the\tdimenc\relax}
+
+\def \fromtrim #1{%                             \setskip or \register
+  \if \tokeqlp{#1}{\setskip}%
+    \let \znext = \zfromtrima
+  \else
+    \def \zfromtrimreg {#1}%
+    \let \znext = \zfromtrimb
+  \fi
+  \znext}
+
+\def \zfromtrima #1=#2#3#4{%
+  \setskip #1={#2}{#3}{#4}%
+  \advance #1 by -\headmargin}
+  
+\def \zfromtrimb {%
+  \afterassignment\zfromtrimc \zfromtrimreg}
+
+\def \zfromtrimc {%
+  \advance \zfromtrimreg by -\headmargin}
+
+%                       Document Block
+%                       -------- -----
+
+
+\def \document {%
+  % There is no point to embedding the entire document in a group.
+  % \documentdesign was already invoked by \loaddesign.
+  \zpushblock{document}%
+  \xdef \znext {%
+    \noexpand\definefont \noexpand\zannofont{\the\annotationfont}}
+  \znext
+  \zfontsummary{\false}%
+  \zopentfmlist
+  \zwritePDFinfo
+  \zpageinit
+  \zpushvcontext
+  \setparrag{\parrag}%
+  \zxrefinit
+  \zbiblioinit
+  \zindexinit
+  \zfloatinit
+  \setpagecolumns{}{1}{0pt}%
+  \if \definedp{\documentprolog}\documentprolog \fi}
+
+\def \enddocument {%
+  \endgraf
+  \if \definedp{\documentepilog}\documentepilog \fi
+  \closeanychapter
+  \closeanysection
+  \zpopblock{document}%
+  \freshpage{\short\floats\any}%
+  \zindexfinal
+  \zxreffinal
+%%%  \zbibfinal
+  \zmissingartmsg
+  \ztagsummary
+  \zpopvcontext
+  \zlayoutsummary
+  \zfontsummary{\true}%
+  \zwritetfmlist
+  \if \posp{\tracingstats}\zregstats \fi
+  \zfeaturewarns
+  \ztodomsg
+  \zdivmsg
+  \zproofidfile
+  \zend}
+
+\def \zfeaturewarns {%
+  \messagenl{_}%
+  \if \zoverlayset
+    \remark{Overlays are present on each page.}%
+  \fi
+  \zproofident}
+
+\def \zproofident {%
+  \zproofidentline
+  \if \emptytoksp{\zproofid}%
+    \messagenl{|  No proof identification.}%
+  \else
+    \messagenl{|  \the\zproofid\space\space
+                  \number\year/\number\month/\number\day\space
+                  \formattime\space\space\space
+                  \inicompositor}%
+  \fi
+  \zproofidentline}
+
+\def \zproofidentline {%
+  \messagenl{+-----------------------------------------------------------------------------_}}
+
+%                       Write PDF Document Information
+%                       ----- --- -------- -----------
+
+
+\def \zwritePDFinfo {%
+  \ifcase \PDFinfo
+    \relax
+  \or
+    \special{PDF: Title \booktitle}%
+    \special{PDF: Author \bookauthor}%
+    \special{PDF: Subject}%
+    \special{PDF: Keywords Publisher: \bookpublisher,
+                           Compositor: \inicompositor}%
+  \or
+    \special{PDF: Title}%
+    \special{PDF: Author}%
+    \special{PDF: Subject}%
+    \special{PDF: Keywords Compositor: \inicompositor}%
+  \or
+    \special{PDF: Title}%
+    \special{PDF: Author}%
+    \special{PDF: Subject}%
+    \special{PDF: Keywords}%
+  \fi}
+
+%                       Disable \end
+%                       ------- ----
+
+
+\let \zend = \end
+
+\def \end {%
+  \error{noend}{Do not use the TeX \string\end\space command}}

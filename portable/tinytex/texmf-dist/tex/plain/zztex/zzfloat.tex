@@ -1,0 +1,1164 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Float Facilities
+%
+% Synopsis:  This module contains the float and caption blocks, as well as
+%            all the code required to support the scheduling of floats.
+%
+% Notes:     The broadside capability was implemented by Richard A. Wells and
+%            integrated into ZzTeX on 9/7/94.
+%
+% Author:    Richard A. Wells & Paul C. Anagnostopoulos
+% Created:   7 March 1990
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Data Structures
+%                       ---- ----------
+
+
+\definecount{\zfltcount}{0}
+\def \zfloatfreeq {}
+\def \zfloatpendq {}
+
+
+\def \zdeffloat #1#2{%                          {\float}{\float-box}
+  \definebox{#2}%
+  \zfreefloat{#1}{#2}%
+  \global\increment \zfltcount}
+
+\def \zgetfloat #1{%                            {\float}
+  \if \emptydefp{\zfloatfreeq}%
+    \error{toomanyflt}
+          {More than `\the\zfltcount' floats remain for page makeup}%
+  \else
+    \pop{#1}{\zfloatfreeq}%
+  \fi}
+
+\def \zfreefloat #1#2{%                         {\float}{\float-box}
+  \gdef #1{\def \zcurfloatbox {#2}}%
+  \append{#1}{\zfloatfreeq}}
+
+\zdeffloat{\zflta}{\zfltboxa}
+\zdeffloat{\zfltb}{\zfltboxb}
+\zdeffloat{\zfltc}{\zfltboxc}
+\zdeffloat{\zfltd}{\zfltboxd}
+\zdeffloat{\zflte}{\zfltboxe}
+\zdeffloat{\zfltf}{\zfltboxf}
+\zdeffloat{\zfltg}{\zfltboxg}
+\zdeffloat{\zflth}{\zfltboxh}
+\zdeffloat{\zflti}{\zfltboxi}
+\zdeffloat{\zfltj}{\zfltboxj}
+\zdeffloat{\zfltk}{\zfltboxk}
+\zdeffloat{\zfltl}{\zfltboxl}
+\zdeffloat{\zfltm}{\zfltboxm}
+\zdeffloat{\zfltn}{\zfltboxn}
+\zdeffloat{\zflto}{\zfltboxo}
+\zdeffloat{\zfltp}{\zfltboxp}
+\zdeffloat{\zfltq}{\zfltboxq}
+\zdeffloat{\zfltr}{\zfltboxr}
+\zdeffloat{\zflts}{\zfltboxs}
+\zdeffloat{\zfltt}{\zfltboxt}
+\zdeffloat{\zfltu}{\zfltboxu}
+\zdeffloat{\zfltv}{\zfltboxv}
+\zdeffloat{\zfltw}{\zfltboxw}
+\zdeffloat{\zfltx}{\zfltboxx}
+\zdeffloat{\zflty}{\zfltboxy}
+\zdeffloat{\zfltz}{\zfltboxz}
+
+% There is an insert class for each of the two places where floats
+% can go.  
+
+\defineinsert{\ztopcolinsert}           % Floats at top of column.
+\count\ztopcolinsert = 1000
+\dimen\ztopcolinsert = \maxdimen
+\skip\ztopcolinsert = 0pt
+\defineinsert{\zbotcolinsert}           % Floats at bottom of column.
+\count\zbotcolinsert = 1000
+\dimen\zbotcolinsert = \maxdimen
+\skip\zbotcolinsert = 0pt
+
+
+% We need a dimension register to capture box depths.
+
+\definedimen{\zfloatdp}{0pt}
+
+%                       Float Types
+%                       ----- -----
+
+
+\setlist \zfloattypelist = {}
+
+
+\def \definefloattype #1#2#3{%                  {type}{toc-level}{association}
+  \if \emptyargp{#3}%
+    \withname\definecount{\float#1number}{0}%
+    \withname\declaresnapitem{\float#1number}%
+  \else
+    \edef \znext {%
+      \global\withname\let{\float#1number}=\name{\float#3number}}%
+    \znext
+  \fi
+  \withname\gdef{\zflt#1lvl}{#2}%
+  \append{#1}{\zfloattypelist}}
+
+
+\def \resetfloatnumbers {%
+  \maplist{\global\name{\float##1number}=0\relax}{\zfloattypelist}}
+
+
+% Predefined float types (don't forget an index locator for each one).
+
+\definefloattype{algorithm}{101}{}
+\definefloattype{figure}{102}{}
+\definefloattype{table}{103}{}
+\definefloattype{listing}{104}{}
+\definefloattype{sidebar}{105}{}
+
+%                       Float Block
+%                       ----- -----
+
+
+\defineblock{\float}{\endfloat}{\false}{}
+
+%~block float Type
+% \aboveskip = glue                     % Space b/b above float.
+% \def \beginformat {...}               % Beginning of float formatter.
+% \belowskip = glue                     % Space b/b below float.
+% \def \comptextformat {...}            % Composite number text formatter.
+% \continue = integer                   % Continued or continuation.
+% \def \endformat {...}                 % End of float formatter.
+% \leftindent = dimen                   % Horizontal fudge for all floats.
+% \pageplacement = {...}                % Overriding page placement.
+% \position = {...}                     % Position (see below).
+% \runners = {style}                    % Runners for a page of floats.
+% \topfloatfudge = dimen                % Vertical fudge for topmost float.
+% \width = dimen                        % Explicit width for float.
+%~end
+
+\definetoks{\pageplacement}
+\definedimen{\topfloatfudge}{0pt}
+
+% These derived parameters are needed here and by \caption.  They may
+% also be useful to the user.
+
+\definecount{\floatpage}{0}
+\definedimen{\floatshift}{0pt}
+\definedimen{\floatwidth}{0pt}
+
+\definecount{\zdivfltcounter}{0}        % Count floats in each division.
+\definebox{\zfltbroadbox}
+
+
+% Floats are packaged up in a vbox using \vtop, so that the float box
+% has the same height as the first thing inside.  This improves the
+% chances that a float at the top of a page will be positioned correctly.
+
+\def \float #1{%                        {type}
+  \if \undefinedp{\float#1number}%
+    \error{undefflt}{Float type `#1' has not been defined}%
+  \fi
+  \endgraf
+  \blockcantbein{\float}{\float}%
+  \blockcantbein{\float}{\multicolumn}%
+  \beginblockscope{float}%
+  \global\increment \floatdepth
+  \global\increment \zdivfltcounter
+  \whichpage{\floatpage}{zF:\the\divisionname-\the\zdivfltcounter}%
+  \def \beginformat {}%                         %~default soft
+  \continue = 0                                 %~default with
+  \def \comptextformat {}%                      %~default soft
+  \setflag \continuation = \false               % Deprecated
+  \def \endformat {}%                           %~default soft
+  \leftindent = 0pt                             %~default soft
+  \pageplacement = {}%                          %~default with
+  \runners = {normal}%                          %~default soft
+  \zoldrunners{\normalheader\normalfooter}%
+  \width = \naturalwidth                        %~default soft
+  \processdesign{\float}{#1}%
+  \zsetcontinue                                 % Handle old \continuation.
+  \if \notp{\continuationp}\global\withname\increment{\float#1number}\fi
+  \global\withname\floatnumber{\float#1number}%
+  \setcomptext{\floatcomptext}%
+  \def \zcurflttype {#1}%
+  \edef \zcurfltlvl {\name{\zflt\zcurflttype lvl}}%
+  \parindent = 0pt
+  \parrag = 0pt
+  \parskip = 0pt
+  \zparsefltpos{\the\position}%
+  \if \notp{\emptytoksp{\pageplacement}}%
+    \zparsefltpagepos{\the\pageplacement}%
+  \fi
+  \if \zfltposhere
+    \penalty \breakallowed                      % Synchronize main list.
+    \zparsefltpos{\the\position}%               % Recalculate global stuff.
+    \if \notp{\emptytoksp{\pageplacement}}
+      \zparsefltpagepos{\the\pageplacement}%
+    \fi
+  \fi
+  \zcalcfltparams
+  \zgetfloat{\zcurfloat}%
+  \zcurfloat
+  \global\setbox \zcurfloatbox = \vtop \bgroup
+    \zpushvcontext
+    \setindentation{0pt}{0pt}%
+    \settextwidth{\floatwidth}%
+    \settaginfo{\the\floatcomptext}{}%          % Set tag info without title.
+    \setsubtagnumber{0}%
+    \beginformat}
+
+\def \endfloat {%
+    \endgraf
+    \endformat
+    \global\zfloatdp = \prevdepth
+    \tagpageonly{\uniquetag{zF}{\the\zdivfltcounter}}%
+    \zpopvcontext
+  \egroup % \vtop
+  \expandafter\xdef \zcurfloat {%
+    \def \noexpand\zcurfloatid {\zcurflttype\space \the\floatnumber}%
+    \def \noexpand\zcurfloatbox {\zcurfloatbox}%
+    \zfloatdp = \the\zfloatdp
+    \aboveskip = \the\aboveskip
+    \belowskip = \the\belowskip
+    \leftindent = \the\leftindent
+    \position = {\the\position}%
+    \pageplacement = {\the\pageplacement}%
+    \runners = {\the\runners}%
+    \floatshift = \the\floatshift
+    \topfloatfudge = \the\topfloatfudge}%
+  \expandafter\append \zcurfloat{\zfloatpendq}%
+  \zschedulefloats{\znext}{\false}{\false}%
+  \if \gtrp{\znext}{99}%
+    \zfltpage{\zpenfloatpage}%
+  \fi
+  \global\decrement \floatdepth
+  \endblockscope{float}}
+
+%~ This |\float| modifier forces an alone float.
+
+\def \alonefloat {%                                     %^modifier
+  \with{\pageplacement={\alone}}}
+
+%~ This |\float| modifier forces a bottom float.
+
+\def \bottomfloat {%                                    %^modifier
+  \with{\pageplacement={\bottom}}}
+
+%~ This |\float| modifier forces a broadside float.
+
+\def \broadsidefloat {%                                 %^modifier
+  \with{\pageplacement={\broadside}}}
+
+%~ This |\float| modifier forces a here float.
+
+\def \herefloat {%                                      %^modifier
+  \with{\pageplacement={\here}}}
+
+%~ This |\float| modifier forces a separate float.
+
+\def \separatefloat {%                                  %^modifier
+  \with{\pageplacement={\separate}}}
+
+%~ This |\float| modifier allows the float to occupy the
+%~ running head area. Any running head is deleted.
+
+\def \userharea {%                                      %^modifier
+  \with{\runners={blind}%
+        \advance \topfloatfudge by -\headerheight}}
+
+\def \adjusttopfloatfudge #1{%
+  \global\advance \topfloatfudge by #1\relax}
+
+\def \piggybackfloat {%
+  \edef \znext {\noexpand\global\noexpand\increment
+                  \name{\float\zcurflttype number}}%
+  \znext
+  \edef \znext {\floatnumber = \name{\float\zcurflttype number}}%
+  \znext}
+
+%                       Controlling Floats
+%                       ----------- ------
+
+
+% This macro is invoked at the beginning of each division.
+
+\def \zfltdivinit {%
+  \global\zdivfltcounter = 0\relax}
+
+
+\setflag \zschedflts = \true
+
+\def \deferfloats #1{%                                  {boolean}
+  \global\setflag \zschedflts = {\notp{#1}}}
+
+
+%                       Scheduling Tools
+%                       ---------- -----
+
+
+% These counters keep track of the number of floats scheduled for the
+% current page.
+
+\definecount{\ztopcolfloats}{0}         % Number of top column floats.
+\definecount{\zbotcolfloats}{0}         % Number of bottom column floats.
+\definecount{\zfloatsinserted}{0}       % Total number of floats.
+\definetoks{\zfltrunners}               % Runners for first float on page.
+
+% This macro initializes for handling floats on a new page.
+
+\def \zfloatinit {%
+  \global\setflag \zschedflts = \true
+  \global\ztopcolfloats = 0
+  \global\zbotcolfloats = 0
+  \zfltrunners = {}}
+
+% These macros simply hide some of the details to make the \zsched*
+% macros easier to read.
+
+\def \ztallytopfloat {%
+  \if \orp{\notp{\zfltposmargonly}}{\posp{\ztopcolfloats}}%
+    \global\increment \ztopcolfloats
+  \fi}
+
+\def \zforcenewpage{%
+  \global\zfloatsinserted = 101\relax}
+
+\let \zquitscheding = \exitmaplist
+
+\def \zsetfloattall{%
+  \zmakefloatalone
+  \setflag \zfloattall = \true
+  \tracepagemakeup{Float is too tall for column; positioning `alone'.}}
+
+\def \zmakefloatalone{%
+  \setflag \zfltposalone = \true
+  \setflag \zfltposbottom = \false
+  \setflag \zfltposhereonly = \false
+  \setflag \zfltposhere = \false
+  \setflag \zfltposseparate = \false
+  \setflag \zfltpostop = \false}
+
+\def \zmakefloattop{%
+  \setflag \zfltposalone = \false
+  \setflag \zfltposbottom = \false
+  \setflag \zfltposhereonly = \false
+  \setflag \zfltposhere = \false
+  \setflag \zfltposseparate = \false
+  \setflag \zfltpostop = \true}
+
+%                       Float Scheduler
+%                       ----- ---------
+
+
+% return-count  is a counter passed in by the caller that we should
+%               set at the end of \zschedulefloats to indicate how
+%               many floats were emitted during this call.  A value
+%               greater than 99 indicates that a new page should be
+%               FORCED (e.g. for alone floats) by the output routine.
+% during-output?  is a flag indicating that the caller is
+%                 part of the output routine.
+% flushing?       A flag indicating whether we are flushing floats.
+
+\def \zschedulefloats #1#2#3{%      {return-count}{during-output?}{flushing?}
+  \tracepagemakeup{[Scheduling \if #2floats during output%
+                               \else float when encountered\fi.}%
+  \tracepagemakeup{Page total: \the\pagetotal; goal: \the\pagegoal.}%
+  % Reset our counter
+  \global\zfloatsinserted = 0
+  \if \zschedflts
+    \if \emptydefp{\zfloatpendq}%
+      \tracepagemakeup{There are no floats to be scheduled.}%
+    \else
+      \endgraf
+      \zinitfloatfit{#2}%
+      {\setflag \zschedfirstseparate = \true
+       \setflag \zschedseparateloop = \false
+       \maplist{\zschedone{#2}{#3}{##1}}{\zfloatpendq}}%
+    \fi
+  \else
+    \tracepagemakeup{Floats are deferred now.}%
+  \fi
+  \tracepagemakeup{Float scheduling complete;
+                   floats inserted: \the\zfloatsinserted.]}%
+  \xdef #1{\the\zfloatsinserted}}
+
+
+\def \zschedone #1#2#3{%                {during-output?}{flushing?}{\float}
+  #3%
+  \zparsefltpos{\the\position}%
+  \if \notp{\emptytoksp{\pageplacement}}
+    \zparsefltpagepos{\the\pageplacement}%
+  \fi
+  \if #2%                               % If flushing floats, force float
+    \setflag \zfltposbottom = \false    % to a `separate'.
+    \setflag \zfltpostop = \false
+    \setflag \zfltposseparate = \true
+  \fi
+  \tracepagemakeup{Trying to schedule \zcurfloatid;
+                   size: \the\ht\zcurfloatbox+\the\dp\zcurfloatbox.}%
+  \if \orp{\andp{\zfltposeven}{\oddpagep}}%
+          {\andp{\zfltposodd}{\evenpagep}}%
+    \tracepagemakeup{Float is deferred until appropriate even/odd page.}%
+    \zquitscheding
+  \else
+    \setflag \zfloatunsched = \true
+    \setflag \zfloattall = \false
+    % The following macros attempt, in order of priority, to schedule
+    % the current float.  Each macro may set up state that causes
+    % the subsequent macro(s) to do nothing.
+    \zschedhereonly{#1}%
+    \zschedhere{#1}%
+    \zschedalone{#1}%
+    \zschedbroadside{#1}%
+    \zschedseparate{#1}%
+    \zschedtop{#1}%
+    \zschedbottom{#1}%
+    \if \zfloattall % Schedule as `alone'.
+      \zschedalone{#1}%
+    \fi
+    \if \zfloatunsched
+      \tracepagemakeup{Float could not be scheduled.}%
+      % This exits a \maplist call to \zschedone.
+      \zquitscheding
+    \else
+      % Remove the current float from the queue...
+      \pop{\zcurfloat}{\zfloatpendq}%
+      % ...and free up the associated data structures.
+      \expandaftertwice\zfreefloat \expandafter\zcurfloat\zcurfloatbox 
+    \fi
+  \fi}
+
+%                       Fitting a Float
+%                       ------- - -----
+
+
+% These registers are used in float fitting.  They contain,
+% respectively, the amount of vertical space used up by floats for
+% the current page and the maximum space available for floats.
+
+\definedimen{\zfloatpageused}{0pt}
+\definedimen{\zfloatmaxavail}{0pt}
+
+
+% Macro to initialize the above parameters (called in \zschedulefloats). 
+
+\def\zinitfloatfit #1{%                         {during-output?}
+  \if #1
+    \zfloatpageused = 0pt
+    % Effectively: zfloatmaxavail = (100-mintextpercent) * vsize
+    \calculate \tcounta = {100,-,\mintextpercent}%
+    \calculate \zfloatmaxavail = {\vsize,P,\tcounta}%
+  \else
+    % Effectively: zfloatpageused = max(pagetotal, vsize * mintextpercent)
+    \calculate \zfloatpageused = {\vsize,P,\mintextpercent,X,\pagetotal}%
+    \zfloatmaxavail = \pagegoal
+  \fi}
+
+
+% The spacing above and below a float is fairly complicated.
+% In this table, h is the height of the float, d is the depth.
+%
+%   Position    Sequence     Above                  Below
+%
+%   \alone      only         \topskip - h +         none
+%                              \topfloatfudge
+%   \bottom     first        \aboveskip - h         none
+%               rest         min(\aboveskip,        none
+%                                \belowskip) - h
+%
+%   \separate   first        \topskip - h +         none
+%                              \topfloatfudge
+%               rest         min(\aboveskip,        none
+%                                \belowskip) - h
+%   \top        first        \topskip - h +         \belowskip - \topskip - d
+%                              \topfloatfudge
+%               rest         min(\aboveskip,        \belowskip - \topskip - d
+%                                \belowskip) - h
+
+
+% Here and broadside floats are handled differently, below in \zfitfloathere
+% and \zfitfloatbroadside
+
+\def \zfitfloat #1#2#3#4#5{%    {result-flag}{top?}{aboveskip-first}
+                           %    {aboveskip-rest}{belowskip}
+  {\if \zfltposmargonly
+     \tcounta = 0               % Margin float should act as first one.
+   \else
+     \tcounta = \if #2\ztopcolfloats \else \zbotcolfloats \fi
+   \fi
+   \zskipa = \if \zerop{\tcounta}#3\else #4\fi
+   \advance \zskipa by -\ht\zcurfloatbox
+   \if \andp{#2}{\zerop{\tcounta}}\advance \zskipa by \topfloatfudge \fi 
+   \tdimena = \zskipa
+   \advance \tdimena by \ht\zcurfloatbox
+   \advance \tdimena by \dp\zcurfloatbox
+   \tdimenb = #5\advance \tdimena by \tdimenb
+   \tdimenc = \zfloatpageused
+   \if \notp{\zfltposmargonly}\advance \tdimenc by \tdimena \fi
+   \tracepagemakeup{Requires: \the\tdimena;
+                    available: \the\zfloatmaxavail;
+                    used: \the\zfloatpageused.}%
+   \if \dimlssp{\tdimenc}{\zfloatmaxavail}%
+     \if \andp{\notp{#2}}{\zfltposmargonly}%
+       \insert \zbotcolinsert {%
+         \vbox to 0pt{%
+           \vss
+           \moveright \floatshift \box\zcurfloatbox
+           \vskip -\dp\zcurfloatbox}}%
+     \else
+       \insert \if #2\ztopcolinsert \else \zbotcolinsert \fi {%
+         \vskip \zskipa
+         \moveright \floatshift \box\zcurfloatbox
+         \nobreak
+         \if \zfltposmargonly
+           \vskip \tdimenb
+           \nobreak
+           \vskip -\tdimena
+         \else
+           \vskip #5\relax
+         \fi}%
+     \fi
+     \if \emptytoksp{\zfltrunners}%
+       \global\zfltrunners = \expandafter{\the\runners}%
+     \fi
+     \global\increment \zfloatsinserted
+     \global\zfloatpageused = \tdimenc
+     \global\setflag #1= \true
+   \else
+     \global\setflag #1= \false
+   \fi}}
+
+\def \zfitfloathere #1#2#3{%            {result-flag}{aboveskip}{belowskip}
+  {\tdimena = #2\relax
+   \advance \tdimena by \dp\zcurfloatbox
+   \advance \tdimena by #3\relax
+   \tracepagemakeup{Requires: \the\tdimena;
+                    page total: \the\pagetotal;
+                    page goal: \the\pagegoal.}%
+   \advance \tdimena by \pagetotal
+   \if \dimlssp{\tdimena}{\pagegoal}%
+     \bbskipabove{\breaknever}{#2}%
+     \fakepar
+     \moveright \floatshift \box\zcurfloatbox
+     \prevdepth = \zfloatdp
+     \bbskipbelow{\breakallowed}{#3}%
+     \global\increment \zfloatsinserted
+     \global\setflag #1= \true
+   \else
+     \global\setflag #1= \false
+   \fi}}
+
+\def \zfitfloatbroadside {%
+  {% We know there are no other floats on the the topcolumn when
+   % this is called (by \zschedbroadside only) and we don't have to
+   % worry about fixing up the vertical position at the end of the
+   % page.
+   %
+   % Compute the space required
+   %   Start with the topskip
+   \tdimena = \topfloatfudge
+   %   Add the *width* (since the box will be rotated)
+   \advance \tdimena by \wd\zcurfloatbox
+   \tracepagemakeup{Requires: \the\tdimena;
+                    broadside floats always fit.}%
+   \insert \ztopcolinsert {%
+     % vskip the top float fudge
+     \vskip \topfloatfudge
+     % save the width for unskipping later
+     \tdimenb = \wd\zcurfloatbox
+     % vskip the *width* of the box to do the position translation
+     % that we can't do with PostScript
+     \vskip \tdimenb
+     % Put our hbox in a vbox, so we can "lower" it rather than move
+     % it right (since it will be rotated)
+     \global\setbox\zfltbroadbox = \vbox{%
+       \vskip\floatshift % replaces \moveright in other floats
+       \box\zcurfloatbox}%
+     \rotatebox{\zfltbroadbox}{90}%
+     % Undo vertical skip so that insert doesn't cause additional page
+     \vskip -\tdimenb}%
+   \if \emptytoksp{\zfltrunners}%
+     \global\zfltrunners = \expandafter{\the\runners}%
+   \fi
+   \global\increment \zfloatsinserted
+   \global\zfloatpageused = \tdimena}}
+
+%                       Individual Schedulers
+%                       ---------- ----------
+
+
+% This is a temporary register used in calls to \zfitfloat where the
+% fit needs to take into account more than one skip value (such as
+% both the \aboveskip and \belowskip).  In that case this dimen is
+% used as a temp to hold the sum of the skip values.
+
+\defineskip{\zfloatabove}{0pt}
+\defineskip{\zfloatbelow}{0pt}
+\definedimen{\zfloatextraskip}{0pt}
+
+
+% This scheduler is called for floats with position `here' and no others.
+
+\def\zschedhereonly #1{%                        {during-output?}
+  \if \andp{\zfloatunsched}{\zfltposhereonly}%
+    \tracepagemakeup{Float is to be positioned `here' only.}%
+    \if \zschedseparateloop
+      \tracepagemakeup{Making up a page of separates; quit.}%
+      \zforcenewpage
+      \zquitscheding
+    \else
+      \if #1% during output:
+        \tracepagemakeup{Float moved to top of this page.}%
+        \zmakefloattop
+      \else % when encountered:
+        \if \posp{\zbotcolfloats}%
+          \error{hereonlybot}{Cannot position float `here'; already floats
+                              at bottom.}%
+        \else\if \dimzerop{\pagetotal}%
+          \tracepagemakeup{Float at top of column: schedule as `top' float.}%
+          \zmakefloattop
+        \else
+          \zfitfloathere{\zfloatfits}{\aboveskip}{\belowskip}%
+          \if \zfloatfits
+            \tracepagemakeup{Float inserted here.}%
+            \setflag \zfloatunsched = \false
+          \else
+            \tracepagemakeup{Float does not fit here.}%
+            \zforcenewpage
+            \zquitscheding
+          \fi
+        \fi\fi
+      \fi
+    \fi
+  \fi}
+
+
+% This scheduler is called for floats with position `here' along with at
+% least one other page position.
+
+\def\zschedhere #1{%                            {during-output?}
+  \if \andp{\zfloatunsched}{\zfltposhere}%
+    \tracepagemakeup{Float can be positioned `here'.}%
+    \if \zschedseparateloop
+      \tracepagemakeup{Making up a page of separates; quit.}%
+      \zforcenewpage
+      \zquitscheding
+    \else
+      \if #1% during output:
+        \relax
+      \else % when encountered:
+        \if \posp{\zbotcolfloats}%
+          \tracepagemakeup{There are already floats positioned `bottom'.}%
+        \else\if \dimzerop{\pagetotal}%
+          \tracepagemakeup{Float at top of column: schedule as `top' float.}%
+          \zmakefloattop
+        \else
+          \zfitfloathere{\zfloatfits}{\aboveskip}{\belowskip}%
+          \if \zfloatfits
+            \tracepagemakeup{Float inserted here.}%
+            \setflag \zfloatunsched = \false
+          \else
+            \tracepagemakeup{Float does not fit here.}%
+          \fi
+        \fi\fi
+      \fi
+    \fi
+  \fi}
+
+
+\def \zschedalone #1{%                          {during-output?}
+  \if \andp{\zfloatunsched}{\zfltposalone}%
+    \tracepagemakeup{Float can be positioned `alone'.}%
+    \if \zschedseparateloop
+      \tracepagemakeup{Making up a page of separates; quit.}%
+      \zforcenewpage
+      \zquitscheding
+    \else
+      \if \orp{#1}{\dimzerop{\pagetotal}}%
+        \if \firstcolumnp % building new page
+          \if \zerop{\zfloatsinserted}% no floats on this page, yet
+            \dp\zcurfloatbox = 0pt      % Make it fit.
+            \zfitfloat{\zfloatfits}{\true}{\topskip}{999pt}{0pt}%
+            \if \zfloatfits
+              \ztallytopfloat
+              \tracepagemakeup{Inserted on a page by itself.}%
+              \zforcenewpage
+              \setflag \zfloatunsched = \false
+              \zquitscheding
+            \fi
+          \else % wait for next time
+            \tracepagemakeup{Already floats in this column; quit.}%
+            \zquitscheding
+          \fi
+        \else% still in the middle of a page
+          \tracepagemakeup{Not in first column of page; quit.}%
+          \zquitscheding
+        \fi
+      \else % As encountered, and page not empty.
+        \tracepagemakeup{Must wait for new page; quit.}%
+        \zquitscheding
+      \fi
+    \fi
+  \fi}
+
+\def \zschedbroadside #1{%                          {during-output?}
+  \if \andp{\zfloatunsched}{\zfltposbroadside}%
+    \tracepagemakeup{Float can be positioned `broadside'.}%
+    \if \zschedseparateloop
+      \tracepagemakeup{Making up a page of separates; quit.}%
+      \zforcenewpage
+      \zquitscheding
+    \else
+      \if \orp{#1}{\dimzerop{\pagetotal}}%
+        \if \firstcolumnp % building new page
+          \if \zerop{\zfloatsinserted}% no floats on this page, yet
+            % Broadside floats "always" fit.  The output will have to be
+            % inspected.
+            \zfitfloatbroadside
+            \ztallytopfloat
+            \tracepagemakeup{Inserted on a page by itself.}%
+            \zforcenewpage
+            \setflag \zfloatunsched = \false
+            \zquitscheding
+          \else % wait for next time
+            \tracepagemakeup{Already floats on this page; quit.}%
+            \zquitscheding
+          \fi
+        \else% still in the middle of a page
+          \tracepagemakeup{Not in first column of page; quit.}%
+          \zquitscheding
+        \fi
+      \else % As encountered, and page not empty.
+        \tracepagemakeup{Must wait for new page; quit.}%
+        \zquitscheding
+      \fi
+    \fi
+  \fi}
+
+
+\def\zschedseparate #1{%                        {during-output?}
+  \if \andp{\zfloatunsched}{\zfltposseparate}%
+    \tracepagemakeup{Float can be positioned `separate'.}%
+    % If a separate float is called when encountered, we don't do anything.
+    \if #1% during output
+      \if \firstcolumnp % building a new page
+        \if \zschedfirstseparate
+          \if \zerop{\zfloatsinserted}% no floats on this page, yet
+            \zfloatmaxavail = \vsize % Entire page is available now.
+            \zfitfloat{\zfloatfits}{\true}{\topskip}{999pt}{0pt}%
+            \if \zfloatfits
+              \ztallytopfloat
+              \setflag \zfloatunsched = \false
+              \zforcenewpage % This is a page of separates now.
+              \tracepagemakeup{Inserted at the top of a new page.}%
+              \setflag \zschedfirstseparate = \false
+              \setflag \zschedseparateloop = \true
+            \else
+              \zsetfloattall
+            \fi
+          \else % wait for next time
+            \tracepagemakeup{Page already has other floats on it.}%
+            \zquitscheding
+          \fi
+        \else % Subsequent separates.
+          \zfloatabove = \if \dimlssp{\aboveskip}{\belowskip}\aboveskip
+                                                       \else \belowskip \fi
+          \zfitfloat{\zfloatfits}{\true}{999pt}{\zfloatabove}{0pt}%
+          \if \zfloatfits
+            \ztallytopfloat
+            \setflag \zfloatunsched = \false
+            \tracepagemakeup{Inserted on a page with other separates.}%
+          \else
+            \zquitscheding
+            \tracepagemakeup{Does not fit on this page; start new page.}%
+          \fi
+        \fi
+      \else% still in the middle of a page
+        \tracepagemakeup{Must wait for new page; quit;}%
+        \zquitscheding
+      \fi
+    \else% when encountered
+      \tracepagemakeup{Must wait for new page; quit.}%
+      \zquitscheding
+    \fi 
+  \fi}
+
+
+\def\zschedtop#1{%                      {during-output?}
+  \if \andp{\andp{\zfloatunsched}{\zfltpostop}}
+           {\orp{\notp{\zfltposfollow}}{#1}}%
+    \tracepagemakeup{Float can be positioned `top'.}%
+    \if \zschedseparateloop
+      \tracepagemakeup{Making up a page of separates; quit.}%
+      \zforcenewpage
+      \zquitscheding
+    \else
+      \if \lssp{\ztopcolfloats}{\maxtopcolumnfloats}%
+        \zfloatabove = \if \dimlssp{\aboveskip}{\belowskip}\aboveskip
+                                                     \else \belowskip \fi
+        \advance \zfloatabove by -\belowskip
+        \advance \zfloatabove by \topskip
+        \zfloatbelow = \belowskip
+        \tdimena = \topskip
+        \advance \zfloatbelow by -\tdimena
+        \advance \zfloatbelow by -\zfloatdp
+        \zfitfloat{\zfloatfits}{\true}{\topskip}{\zfloatabove}{\zfloatbelow}%
+        \if \zfloatfits
+          \ztallytopfloat
+          \tracepagemakeup{Inserted at top of column.}%
+          \setflag \zfloatunsched = \false
+        \else
+          \if \andp{#1}{\zerop{\zfloatsinserted}}\zsetfloattall \fi
+        \fi
+      \fi
+    \fi
+  \fi}
+
+\def \zschedbottom#1{%                          {during-output?}
+  \if \andp{\zfloatunsched}{\zfltposbottom}%
+    \tracepagemakeup{Float can be positioned `bottom'.}%
+    \if \zschedseparateloop
+      \tracepagemakeup{Making up a page of separates; quit.}%
+      \zforcenewpage
+      \zquitscheding
+    \else
+      \if \lssp{\zbotcolfloats}{\maxbottomcolumnfloats}%
+        \zfloatbelow = \if \dimlssp{\aboveskip}{\belowskip}\aboveskip
+                                                     \else \belowskip \fi
+        \zfitfloat{\zfloatfits}{\false}{\aboveskip}{\zfloatbelow}{0pt}%
+        \if \zfloatfits
+          \if \notp{\zfltpostopafterbot}%
+            \global\ztopcolfloats = \maxtopcolumnfloats
+          \fi
+          \global\increment \zbotcolfloats
+          \tracepagemakeup{Inserted at bottom of column.}%
+          \setflag \zfloatunsched = \false
+        \else
+          \if \andp{#1}{\zerop{\zfloatsinserted}}\zsetfloattall \fi
+        \fi
+      \fi
+    \fi
+  \fi}
+
+%                       Captions
+%                       --------
+
+
+\defineblock{\caption}{\endcaption}{\false}{}
+
+%~block caption Type
+% \aboveskip = glue             % Space b/b above caption.
+% \setflag \allowintoc = flag   % Allow caption in ToC.
+% \belowskip = glue             % Space b/b below caption.
+% \captionfudge = dimen         % Fudge for \aboveskip.
+% \def \comptextformat {...}    % (No longer used with captions.)
+% \difficulty = integer         % Level of difficulty.
+% \leftindent = glue            % Left indentation.
+% \legendfont = {...}           % Font for optional legend.
+% \def \legendformat ##1{...}   % Legend formatter.
+% \numberfont = {...}           % Font for float number.
+% \parindent = dimen            % Paragraph indent.
+% \parrag = dimen               % Paragraph raggedness.
+% \parskip = glue               % Paragraph skip.
+% \position = {...}             % Position (see below).
+% \rightindent = glue           % Right indentation.
+% \style = {...}                % Heading style.
+% \titlefont = {...}            % Font for caption title.
+% \def \titleformat ##1{...}    % Title formatter.
+% \width = dimen                % Width of caption text.
+%~end
+
+\definedimen{\captionfudge}{0pt}
+\definetoks{\legendfont}
+
+\definebox{\zcapbox}
+\definedimen{\zcapshift}{0pt}
+
+%~ This marker indicates that the following text is the legend or
+%~ credit for the caption.
+
+\definemarker{\legend}
+
+
+\def \caption #1{%                              {title with optional \legend}
+  \blockmustbein{\caption}{\float}%
+  \blockcantbein{\caption}{\caption}%
+  \beginblockscope{caption}%
+  \global\increment \captiondepth
+  \captionfudge = 0pt                           %~default with
+  \def \comptextformat {}%                      %~default hard
+  \style = {Initial cap/lowercase}%             %~default soft
+  \difficulty = 0                               %~default with
+  \processdesign{\caption}{\zcurflttype}%
+  \global\increment \captionnumber
+  \if \notp{\emptydefp{\comptextformat}}%
+    \error{capcomptext}{The \string\comptextformat\space parameter is no
+                        longer used in captions}
+  \fi
+  \captionformat #1\legend\zmark
+  \if \andp{\allowintoc}{\notp{\continuationp}}\zcaptoc #1\legend\zmark \fi
+  \endcaption
+  \zcaptag #1\legend\zmark}%                    % Reset tag info with title.
+
+\def \endcaption {%
+  \global\decrement \captiondepth
+  \endblockscope{caption}}
+
+\def \captionformat #1\legend#2\zmark{%
+  \the\numberfont
+  \setbox\zcapbox = \vtop{%
+    \zpushvcontext
+    \setindentation{\leftindent}{\rightindent}%
+    \settextwidth{\width}%
+    \setparrag{\parrag}%
+    \if \emptyargp{#2}%
+      \titleformat{#1}%
+    \else
+      \let \legend = \relax           % So it won't interfere with formatting.
+      \titleformat{#1\the\legendfont \legendformat{#2}}%
+    \fi       
+    \endgraf
+    \global\zfloatdp = \prevdepth
+    \zpopvcontext}%
+  \zparsecappos{\the\position}%
+  \zcalccapitems
+  \bbskipabove{\breaknever}{\aboveskip}%
+  \noindent \kern \zcapshift \box\zcapbox \par
+  \prevdepth = \zfloatdp
+  \bbskipbelow{\breaknever}{\belowskip}}
+
+\def \zcaptoc #1\legend#2\zmark{%
+  \tocentry{\the\floatcomptext}{#1}{\zcurfltlvl}}
+
+\def \zcaptag #1\legend#2\zmark{%
+  \settaginfo{\the\floatcomptext}{#1}}
+
+%                       Position Handling
+%                       -------- --------
+
+
+% This macro sets up variables that specify the position of a float,
+% according to the \position design parameter:
+%
+%   \alone              Place float on a page by itself.
+%   \anypage            Place float on any page.
+%   \any                (synonym for \anypage)
+%   \bottom             Place float at the bottom of a page.
+%   \broadside          Place float broadside (alone, rotated 90 degrees).
+%   \evenpage           Place float on an even page.
+%   \follow             Float must follow its position in the text.
+%   \here               Place float exactly where it appears.
+%   \ifevenpage         Use next position only on even page.
+%   \ifoddpage          Use next position only on odd page.
+%   \leftmargin         Shift float to left margin.
+%   \margin             Same as \leftmargin.
+%   \marginonly         Float fits in the margin and does not occupy any
+%                         vertical space on the page.
+%   \nofollow           Float need not follow its position in the text.
+%   \oddpage            Place float on an odd page.
+%   \outsidemargin      Shift float to outside margin.
+%   \rightmargin        Shift float to right margin.
+%   \separate           Place float on a page with floats only.
+%   \textarea           Leave float at left edge of text area.
+%   \text               (synonym for \textarea)
+%   \top                Place float at the top of a page.
+%   \topafterbottom     Okay to schedule \top float after \bottom.
+
+
+\definecount{\zfltposshift}{0}
+
+
+\def \zparsefltpos #1{%                                 {options...}
+  {\zclearfltpagepos
+   \global\setflag \zfltposmargonly = \false
+   \global\zfltposshift = 0\relax
+   \zsetupfltpageopts
+   \def \ifevenpage   ##1{\if \evenp{\floatpage}##1\fi}%
+   \def \ifoddpage    ##1{\if \oddp{\floatpage}##1\fi}%
+   \def \leftmargin   {\global\zfltposshift=1\relax}%
+   \let \margin       = \leftmargin
+   \def \marginonly   {\global\setflag\zfltposmargonly=\true}%
+   \def \outsidemargin{\ifevenpage{\leftmargin}\ifoddpage{\rightmargin}}%
+   \def \rightmargin  {\global\zfltposshift=2\relax}%
+   \def \textarea     {\global\zfltposshift=0\relax}%
+   \let \text         = \textarea
+   \global\floatpage = \floatpage
+   #1%
+   \global\setflag \zfltposhereonly = \zfltposhere
+   \global\setflag \zfltposok = \zfltposhere
+   \if \orp{\zfltposalone}
+           {\orp{\zfltposbottom}
+                {\orp{\zfltposbroadside}
+                     {\orp{\zfltposseparate}
+                          {\zfltpostop}}}}%
+     \global\setflag \zfltposhereonly = \false
+     \global\setflag \zfltposok = \true
+   \fi
+   \if \zfltposhereonly \setflag \zfltposhere = \false \fi
+   \if \notp{\zfltposok}%
+     \warning{nofloatpos}{No page position has been specified for a float}%
+     \global\setflag \zfltposalone = \true
+   \fi}}
+
+\def \zparsefltpagepos #1{%                             {options...}
+  {\zclearfltpagepos
+   \zsetupfltpageopts
+   #1%
+   \global\setflag \zfltposhereonly = \zfltposhere
+   \if \orp{\zfltposalone}
+           {\orp{\zfltposbottom}{\orp{\zfltposseparate}{\zfltpostop}}}%
+     \global\setflag \zfltposhereonly = \false
+   \fi
+   \if \zfltposhereonly \global\setflag \zfltposhere = \false \fi}}
+
+\def \zclearfltpagepos {%
+  \global\setflag \zfltposalone = \false
+  \global\setflag \zfltposbottom = \false
+  \global\setflag \zfltposbroadside = \false
+  \global\setflag \zfltposeven = \false
+  \global\setflag \zfltposfollow = \false
+  \global\setflag \zfltposhere = \false
+  \global\setflag \zfltposodd = \false
+  \global\setflag \zfltposseparate = \false
+  \global\setflag \zfltpostop = \false
+  \global\setflag \zfltpostopafterbot = \false}
+
+\def \zsetupfltpageopts {%
+  \def \alone          {\global\setflag\zfltposalone=\true}%
+  \def \anypage        {\global\setflag\zfltposeven=\false
+                        \global\setflag\zfltposodd=\false}%
+  \let \any            = \anypage
+  \def \bottom         {\global\setflag\zfltposbottom=\true}%
+  \def \broadside      {\global\setflag\zfltposbroadside=\true}%
+  \def \evenpage       {\global\setflag\zfltposeven=\true}%
+  \def \follow         {\global\setflag\zfltposfollow=\true}%
+  \def \here           {\global\setflag\zfltposhere=\true}%
+  \def \nofollow       {\global\setflag\zfltposfollow=\false}%
+  \def \oddpage        {\global\setflag\zfltposodd=\true}%
+  \def \separate       {\global\setflag\zfltposseparate=\true}%
+  \def \top            {\global\setflag\zfltpostop=\true}%
+  \def \topafterbottom {\global\setflag\zfltpostopafterbot=\true}}
+
+\def \zcalcfltparams {%
+  \floatshift = 0pt\relax
+  % Set \floatshift
+  \ifcase \zfltposshift
+    \relax
+  \or
+    \floatshift = \if \evenp{\floatpage}-\evenlefttextmargin
+                                  \else -\oddlefttextmargin \fi \relax
+  \or
+    \floatshift = \textmeasure
+  \else
+    \zzerror{Invalid value for float `\string\zfltposshift'}%
+  \fi
+  \advance \floatshift by \leftindent
+
+  % Set \floatwidth.  Default of \naturalwidth is handled differently
+  % for broadsides than for non-broadsides.  If \width not default, use
+  % it without modification.
+
+  \if \dimeqlp{\width}{\naturalwidth}%
+    \if \zfltposbroadside
+      \floatwidth = \textareaheight \relax
+    \else
+      \floatwidth = \textmeasure \relax
+      \ifcase \zfltposshift
+        \relax
+      \or
+        \advance \floatwidth by -\floatshift
+      \or
+        \floatwidth = \if \evenp{\floatpage}\evenrighttextmargin
+                                      \else \oddrighttextmargin \fi \relax
+      \else
+        \zzerror{Invalid value for float `\string\zfltposshift'}%
+      \fi
+    \fi
+  \else
+    \floatwidth = \width \relax
+  \fi}
+
+
+% This macro sets up variables that specify the position of a caption,
+% according to the \position design parameter:
+%
+%   \above              Caption is placed above the figure.
+%   \below              Caption is placed below the figure.
+%   \follow             Caption follows left edge of float.
+%   \ifevenpage         Use next position only on even page.
+%   \ifoddpage          Use next position only on odd page.
+%   \leftmargin         Force caption in left margin.
+%   \margin             Same as \leftmargin
+%   \outsidemargin      Shift caption to outside margin.
+%   \rightmargin        Force caption in right margin.
+%   \rise               Caption rises up from bottom of figure.
+%   \separate           Caption is separate from figure.
+%   \sink               Caption sinks down from top of figure.
+%   \textarea           Force caption at left edge of text area.
+%   \text               (synonym for \textarea)
+%   \textarearight      Force caption at right edge of text area.
+%   \textright          (synonym for \textarearight)
+
+
+\definecount{\zcapposshift}{0}
+\definecount{\zcapposvflow}{0}
+
+\def \zparsecappos #1{%                                 {options...}
+  {\global\setflag \zcapposabove = \true
+   \global\zcapposvflow = 0\relax
+   \global\zcapposshift = 0\relax
+   \def \above           {\global\setflag\zcapposabove=\true}%
+   \def \below           {\global\setflag\zcapposabove=\false}%
+   \def \follow          {\global\zcapposshift=4\relax}%
+   \def \ifevenpage      ##1{\if \evenp{\floatpage}##1\fi}%
+   \def \ifoddpage       ##1{\if \oddp{\floatpage}##1\fi}%
+   \def \leftmargin      {\global\zcapposshift=1\relax}%
+   \let \margin          = \leftmargin
+   \def \outsidemargin   {\ifevenpage{\leftmargin}\ifoddpage{\rightmargin}}%
+   \def \rightmargin     {\global\zcapposshift=2\relax}%
+   \def \rise            {\global\zcapposvflow=1\relax}%
+   \def \separate        {\global\zcapposvflow=0\relax}%
+   \def \sink            {\global\zcapposvflow=2\relax}%
+   \def \textarea        {\global\zcapposshift=0\relax}%
+   \let \text            = \textarea
+   \def \textarearight   {\global\zcapposshift=3\relax}%
+   \let \textright       = \textarearight
+   #1}}
+
+\def \zcalccapitems {%
+  \ifcase \zcapposshift
+    \zcapshift = 0pt
+  \or
+    \zcapshift = \if \evenp{\floatpage}-\evenlefttextmargin
+                                 \else -\oddlefttextmargin \fi \relax
+  \or
+    \zcapshift = \textmeasure
+  \or
+    \zcapshift = \textmeasure
+    \advance \zcapshift by -\wd\zcapbox
+  \or
+    \zcapshift = \floatshift
+  \else
+    \zzerror{Invalid value for caption `\string\zcapposshift'}%
+  \fi
+  \advance \zcapshift by -\floatshift
+  % Captions in broadsides *always* follow, i.e. \zcapshift is 0pt
+  \if \zfltposbroadside
+    \zcapshift = 0pt\relax
+  \fi
+  \ifcase \zcapposvflow
+    \relax
+  \or
+    \forcenextbbskip
+    \aboveskip = -\dp\zcapbox
+    \advance \aboveskip by \zfloatdp
+    \advance \aboveskip by \captionfudge
+  \or
+    \advance \belowskip by -\dp\zcapbox
+    \advance \belowskip by -\captionfudge
+  \else
+    \zzerror{Invalid value for caption `\string\zcapposvflow'}%
+  \fi}

@@ -1,0 +1,379 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Indexing Facilities, version 1
+%
+% Synopsis:  This file contains the tools for producing an index.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   20 May 2006
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Index Version
+%                       ----- -------
+
+
+\def \indexversion #1{%
+  \input zzindexv#1\relax}
+
+%                       Define Index Locator Types
+%                       ------ ----- ------- -----
+
+
+% This list contains the definition of each locator. New ones must be
+% added to the end, and any program looking at the definitions must assume
+% that duplicates may exist, and that the last one prevails.
+
+\def \zixloclist {}
+
+
+%~ This command is deprecated in favor of |\definelocator|.
+
+\def \definelocatortype #1#2#3#4#5#6{%  {name}{attributes}{precedence}
+                                     %  {beginning-punc}{templates}
+                                     %  {ending-punc}
+  {\setflag \pg = \true
+   \let \page = \relax
+   \def \nopage {\setflag \pg = \false}%
+   \setflag \txt = \false
+   \def \text {\setflag \txt = \true}%
+   \let \notext = \relax
+   #2%
+   \def \bpunc {#4}%
+   \def \temp {#5}%
+   \def \epunc {#6}%
+   \edef \znext {%
+     \noexpand\append{{#1}{\pg}{\txt}{#3}%
+                      {\expandafter\zdefof \meaning\bpunc\zmark}%
+                      {\expandafter\zdefof \meaning\temp\zmark}%
+                      {\expandafter\zdefof \meaning\epunc\zmark}}}%
+   \znext{\zixloclist}%
+   \if \txt
+     \withname\gdef{\x#1}##1##2{\zixindex{#1}{##1}{S}{##2}}%
+     \if \pg
+       \withname\gdef{\x#1begin}##1##2{\zixindex{#1}{##1}{B}{##2}}%
+       \withname\gdef{\x#1end}##1##2{\zixindex{#1}{##1}{E}{##2}}%
+     \fi
+   \else
+     \withname\gdef{\x#1}##1{\zixindex{#1}{##1}{S}{}}%
+     \if \pg
+       \withname\gdef{\x#1begin}##1{\zixindex{#1}{##1}{B}{}}%
+       \withname\gdef{\x#1end}##1{\zixindex{#1}{##1}{E}{}}%
+     \fi
+   \fi}}
+
+
+% This command is deprecated.
+
+\def \defineindexlocator #1#2#3#4#5#6{% {name}{attributes}{precedence}
+                                      % {punctuation}{single-template}
+                                      % {range-template}
+}
+
+%                       Builtin Locator Types
+%                       ------- ------- -----
+
+
+% Precedences 0--1 and 6--9 are reserved for specific books.
+
+\definelocatortype{term}{\page\notext}{2.3}
+                           {, |}{\bold{~P}|\bold{~P--~Q}|, }{. |}
+\definelocatortype{biblio}{\page\notext}{2.5}
+                           {, |}{~P|~P--~Q|, }{. |}
+\definelocatortype{cite}{\page\notext}{2.5}
+                           {, |}{~P|~P--~Q|, }{. |}
+\definelocatortype{page}{\page\notext}{2.5}
+                           {, |}{~P|~P--~Q|, }{. |}
+\definelocatortype{figure}{\page\notext}{2.7}
+                           {, |}{~P\+\emph{f}|~P--~Q\+\emph{f}|, }{. |}
+\definelocatortype{glossary}{\page\notext}{2.7}
+                           {, |}{~P\+\emph{g}|~P--~Q\+\emph{g}|, }{. |}
+\definelocatortype{note}{\page\notext}{2.8}
+                           {, |}{~P\+\emph{n}|~P--~Q\+\emph{n}|, }{. |}
+\definelocatortype{sidebar}{\page\notext}{2.7}
+                           {, |}{~P\+\emph{s}|~P--~Q\+\emph{s}|, }{. |}
+\definelocatortype{table}{\page\notext}{2.7}
+                           {, |}{~P\+\emph{t}|~P--~Q\+\emph{t}|, }{. |}
+\definelocatortype{see}{\nopage\text}{3}
+                           {. |\See\ }{~T||; }{. |}
+\definelocatortype{seealso}{\nopage\text}{4}
+                           {. |\Seealso\ }{~T||; }{. |}
+\definelocatortype{consult}{\nopage\text}{5}
+                           {. |\Consult\ }{~T||; }{. |}
+
+%                       Index Preparation File
+%                       ----- ----------- ----
+
+
+% The \produceindex command must appear before the \document command.
+
+\setflag \zindexing = \false
+
+
+\def \produceindex #1#2{%                               {type}{prep-file}
+  {\processdesign{\index}{#1}%
+   \immediate\openout \zwritea = #2.zzh\relax
+   \immediate\write \zwritea {root \jobname}%
+   \immediate\write \zwritea {type #1}%
+   \immediate\write \zwritea {divisions {\the\divisions}}%
+   \immediate\write \zwritea {locators {\the\locators}}%
+   \immediate\write \zwritea {\the\indexparams}%
+   \maplist{\immediate\write \zwritea {define-locator ##1}}{\zixloclist}%
+   \immediate\closeout \zwritea}%
+  \global\setflag \zindexing = \true}
+
+%                       Index File Handling
+%                       ----- ---- --------
+
+\definewrite{\zixrootfile}
+\definewrite{\zixdivfile}
+\setflag \zixdivopen = \false
+
+
+\def \zindexinit {%
+  \if \zindexing
+    \immediate\openout \zixrootfile = \jobname.zzi\relax
+    \immediate\write \zixrootfile 
+      {\zcomment Raw index entry file for book `\jobname'.}%
+  \fi}
+
+\def \zindexfinal {%
+  \if \zindexing
+    \immediate\write \zixrootfile {\zcomment [end]}%
+    \immediate\closeout \zixrootfile
+  \fi}
+
+\def \zindexdivinit #1{%                                {division}
+  \if \zindexing
+    \immediate\openout \zixdivfile = #1.zzi\relax
+    \immediate\write \zixdivfile
+      {\zcomment Raw index entry file for book `\jobname', division `#1'.}%
+    \global\setflag \zixdivopen = \true
+  \fi}
+
+\def \zindexdivfinal {%
+  \if \zixdivopen
+    \immediate\write \zixdivfile {\zcomment [end]}%
+    \immediate\closeout \zixdivfile
+    \global\setflag \zixdivopen = \false
+  \fi}
+
+%                       Generate Index Entry
+%                       -------- ----- -----
+
+
+% This macro is called from the indexing macros generated by
+% \definelocatortype.
+
+\def \zixindex #1#2#3#4{%                  {locator}{level}{page-code}{text}
+  \tcounta = #2\relax
+  \if \notp{\rangep{\tcounta}{1}{3}}%
+    \error{invindexlvl}{Invalid index level '#2' specified}%
+    \tcounta = 1
+  \fi
+  \name{\zixindex\romannumeral\tcounta}{#1}{#2}{#3}{#4}}
+
+\def \zixindexi #1#2#3#4#5{%
+  \zixindexw{#1}{#2}{#3}{#4}{#5}{}{}{\noexpand\folio}}
+\def \zixindexii #1#2#3#4#5#6{%
+  \zixindexw{#1}{#2}{#3}{#4}{#5}{#6}{}{\noexpand\folio}}
+\def \zixindexiii #1#2#3#4#5#6#7{%
+  \zixindexw{#1}{#2}{#3}{#4}{#5}{#6}{#7}{\noexpand\folio}}
+
+\catcode"B8 = \catother
+
+\gdef \zixindexw #1#2#3#4#5#6#7#8{% {locator}{level}{page-code}{text}
+                                  % {heading1}{heading2}{heading3}{page}
+  \if \notp{\zindexing}%
+    \warning{notindexing}{An indexing command was encountered,
+                          but no \string\produceindex}%
+  \fi
+  \zbeginhidewrite
+    \def \zhdx {#5}%
+    \def \zhdy {#6}%
+    \def \zhdz {#7}%
+    \def \ztxt {#4}%
+    \edef \znext {#1^^b8%
+                  #2^^b8%
+                  \expandafter\zdefof \meaning\zhdx\zmark^^b8%
+                  \expandafter\zdefof \meaning\zhdy\zmark^^b8%
+                  \expandafter\zdefof \meaning\zhdz\zmark^^b8%
+                  #3^^b8%
+                  #8^^b8%
+                  \expandafter\zdefof \meaning\ztxt\zmark}%
+    \write \if \zixdivopen \zixdivfile \else \zixrootfile \fi
+      \expandafter{\znext}%
+    \if \vmodep \repeatpenalty \fi      % In case glue follows write.
+  \zendhidewrite}
+
+\catcode"B8 = \catinvalid
+
+%                       Discussion of Index Formatting
+%                       ---------- -- ----- ----------
+
+
+% An index is formatted inside an index block, which is more or less
+% like a text block. Within the index block are occurences of the
+% \indexentry macro, one for each entry. In addition, the
+% \alphabreak macro can be used to produce breaks preceding the `A'
+% entries, `B' entries, etc.
+%
+% In an index block, parts 4 and 5 of the mark are used to remember
+% index entries so they can be carried forward to subsequent columns
+% or pages. The mark is used as follows:
+%
+%   Part  Subpart  Usage
+%     4      1     Boolean, true if in the midst of a first-level entry.
+%     4      2     The first-level entry text.
+%     5      1     Boolean, true if in the midst of a second-level entry.
+%     5      2     The second-level entry text.
+
+%                       Index Block
+%                       ----- -----
+
+
+\defineblock{\index}{\endindex}{\false}{}
+
+%~block index Type
+% \def \alphaformat ##1{...}            % Alpha break formatter.
+% \bodyfont = {\size\style}             % Body font.
+% \clubpenalty = penalty                % Club penalty is often different.
+% \columngutter = glue                  % Column gutter.
+% \divisions = {...}                    % Which divisions to include.
+% \leftindent = glue                    % Left indentation.
+% \locators = {...}                     % Which locators to include.
+% \indexparams = {...}                  % Parameters for index generator.
+% \parhang = glue                       % Paragraph hang.
+% \parindent = dimen                    % Paragraph indent.
+% \parrag = dimen                       % Paragraph raggedness.
+% \parskip = glue                       % Paragraph skip. 
+% \position = {...}                     % Position and number of columns.
+% \rightindent = glue                   % Right indentation.
+%~end
+
+\definetoks{\locators}
+\definetoks{\indexparams}
+
+\definecount{\previndexlevel}{0}
+\definecount{\zixcols}{0}
+
+
+\def \index #1{%                                        {type}
+  \blockcantbein{\index}{\index}%
+  \beginblockscope{index}%
+  \global\increment \indexdepth
+  \clubpenalty = \breakallowed          %~default soft
+  \parskip = 0pt                        %~default soft
+  \processdesign{\index}{#1}%
+  \global\increment \indexnumber
+  \def \zixtype {#1}%
+  \zixparsepos
+  \indexformat}
+
+\def \indexformat {%
+  \the\bodyfont
+  \alterindentation{\leftindent}{\rightindent}%
+  \setparrag{\parrag}%
+  \setpagecolumns{\zixpageuse}{\the\zixcols}{\columngutter}%
+  \everycolumn = {\zixcarryover}%
+  \begingroup
+    \let \zfullcolumnbreak = \fullcolumnbreak
+    \let \fullcolumnbreak = \indexbreak
+    \let \shortcolumnbreak = \indexbreak
+    \global\previndexlevel = 0\relax}
+
+\def \endindex {%
+    \endgraf                    % End last entry.
+    \vbox{}%                    % Force start of column if not already.
+  \endgroup
+  \clearindexmarks
+  \everycolumn = {}%
+  \setpagecolumns{\usetextmeasure}{1}{0pt}%
+  \global\decrement \indexdepth
+  \endblockscope{index}}
+
+\def \zixparsepos {%
+  \zixcols = 1
+  \let \oneup = \relax
+  \def \twoup {\zixcols = 2}%
+  \def \threeup {\zixcols = 3}%
+  \def \zixpageuse {\usetextmeasure}%
+  \let \textarea = \relax
+  \def \typearea {\def \zixpageuse {\usetypewidth}}%
+  \let \leftmargin = \typearea
+  \the\position}
+
+%                       Index Entries
+%                       ----- -------
+
+
+\setflag \zixbreak = \false
+
+
+\def \indexentry #1#2#3{%                       level{heading}{locators}
+  \endgraf
+  \ifcase #1%
+  \or                                           % Level 1 heading:
+    \clearindexmarks
+    \zixmaybebreak
+    \hangindent = \parhang \hangafter = 1
+    {\name{\index\zixtype entryiformat}{#2\setmarkinfo{4}{\true}{#2}}{#3}}%
+%%%    \setmarkinfo{4}{\true}{#2}%
+  \or                                           % Level 2 heading:
+    \setmarkinfo{5}{\false}{}%
+    \zixmaybebreak
+    \hangindent = \parhang \hangafter = 1
+    {\name{\index\zixtype entryiiformat}{#2\setmarkinfo{5}{\true}{#2}}{#3}}%
+%%%    \setmarkinfo{5}{\true}{#2}%
+  \or                                           % Level 3 heading:
+    \zixmaybebreak
+    \hangindent = \parhang \hangafter = 1
+    {\name{\index\zixtype entryiiiformat}{#2}{#3}}%
+  \fi
+  \global\previndexlevel = #1\relax}
+
+\def \alphabreak #1{%                           {text}
+  \endgraf
+  \clearindexmarks
+  \zixmaybebreak
+  \alphaformat{#1}%
+  \endgraf}
+
+\def \indexbreak {%
+  \setflag \zixbreak = \true}
+
+\def \clearindexmarks {%
+  \setmarkinfo{4}{\false}{}%
+  \setmarkinfo{5}{\false}{}}
+
+\def \zixmaybebreak {%
+  \if \zixbreak
+    \zfullcolumnbreak
+    \setflag \zixbreak = \false
+  \fi}
+
+
+% This macro is invoked at the beginning of each column to perform
+% any first- and second-level entry carryovers. It only includes
+% carryovers on the first column of versos.
+
+\def \zixcarryover {%
+  \if \andp{\evenpagep}{\firstcolumnp}%
+    {\setflag \znext = {\markinfo{\bottommark}{4}{1}}%
+     \if \znext
+       \hangindent = \parhang \hangafter = 1
+       \name{\index\zixtype carryiformat}{\markinfo{\bottommark}{4}{2}}%
+       \setflag \znext = {\markinfo{\bottommark}{5}{1}}%
+       \if \znext
+         \hangindent = \parhang \hangafter = 1
+         \name{\index\zixtype carryiiformat}{\markinfo{\bottommark}{5}{2}}%
+       \fi
+       \endgraf
+       \tdimena = \zoutputcoldepth              % Compensate for depth of
+       \advance \tdimena by -\prevdepth         % previous column v. depth
+       \kern \tdimena                           % of carryover line(s).
+     \fi}%
+  \fi}

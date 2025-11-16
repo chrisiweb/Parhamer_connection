@@ -106,7 +106,7 @@
 \DeclareCurrentRelease{}{2021-11-15}
 
 \ProvidesPackage{multicol}
-          [2025/05/25 v2.0a  multicolumn formatting (FMi)]
+          [2025/10/21 v2.0b  multicolumn formatting (FMi)]
 
 \DeclareOption{twocolumn}
    {\PackageWarning{multicol}{May not work
@@ -1131,8 +1131,6 @@
   \__mc_update_page_structures:
   \__mc_debug_marks:n { \__mark_status:nn {#1} {\the\col@number} }
 }
-\cs_set:Npn \leftmark {\mark_use_last:nn{page}{2e-left}}
-\cs_set:Npn \rightmark {\mark_use_first:nn{page}{2e-right}}
 \NewSocket{tagsupport/page@sofar}{0}
 \NewSocketPlug {tagsupport/page@sofar}{default}
   {

@@ -1,0 +1,245 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX Cross-Referencing Facilities
+%
+% Synopsis:
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   19 September 1989
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Data Structures
+%                       ---- ----------
+
+
+\definewrite{\zxrootfile}
+
+\definewrite{\zxdivfile}
+\setflag \zxdivopen = \false
+
+\definewrite{\zxcompfile}
+\setflag \zxcompavail = \false
+
+\chardef \xrefbadmode       = 0         % Invalid mode.
+\chardef \xrefrunmode       = 1         % Normal running environment.
+\chardef \xrefsnapmode      = 2         % Taking a division snapshot.
+\chardef \xrefcopymode      = 3         % Copying cross-reference files.
+\chardef \xrefloadmodes     = 4         % Beginning of load modes:
+\chardef \xrefloadtagmode   = 5         % Load tag definitions.
+\chardef \xrefloadtocmode   = 6         % Load table of contents.
+\chardef \xrefloadauxmode   = 7         % Create BibTeX auxiliary file.
+\chardef \xrefloadendmode   = 8         % Load endnotes.
+\chardef \xrefloadcitemode  = 9         % Load citation folios.
+
+\let \xrefmode = \xrefbadmode           % Default mode.
+
+%                       Comment Lines
+%                       ------- -----
+
+
+{\catcode`\%=\catother
+\gdef \zcomment {%\space}
+} % \catcode
+
+
+\def \zxwritecomment #1#2#3{%                   {file}{keyword}{values}
+  \immediate\write #1 {\zcomment #2: #3}}
+
+%                       Initialization
+%                       --------------
+
+
+\def \zxrefinit {%
+  \zxcompinit
+  \zxopenroot
+  \let \xrefmode = \xrefrunmode}
+
+\def \zxcompinit {%
+  \checkfile{\zxcompavail}{\jobname.zzc}%
+  \if \zxcompavail
+    \zxloadcomp{\xrefloadtagmode}%
+  \else
+    \checkfile{\zxcompavail}{\jobname.zzx}%
+    \if \zxcompavail
+      \zxgencomp
+      \zxloadcomp{\xrefloadtagmode}%
+    \else
+      \remark{There is no cross-reference file available for this run.}% 
+    \fi
+  \fi}
+
+\def \zxopenroot {%
+  \immediate\openout \zxrootfile = \jobname.zzx\relax
+  \zxwritecomment{\zxrootfile}{root}{\jobname}}
+
+%                       Division Handling
+%                       -------- --------
+
+
+\def \zxdivinit #1#2{%                          {division-name}{setting-it?}
+  \immediate\write \zxrootfile {\noexpand\zinputzzx{#1}}%
+  \if #2%
+    \immediate\openout \zxdivfile = #1.zzx\relax
+    \global\setflag \zxdivopen = \true
+    \zxwritecomment{\zxdivfile}{division}{#1}%
+    \immediate\write \zxdivfile
+      {\noexpand\xref{div}{}{}{}{\the\divisionname}\zcomment}%
+  \fi}
+
+% There is nothing to do with each entry in the cross-reference file.
+
+\def \xrefdiv #1#2#3#4{}
+
+
+\def \zxdivfinal #1{%
+  \if \zxdivopen
+    \ztakesnap
+    \zxwritecomment{\zxdivfile}{end}{#1}%
+    \immediate\closeout \zxdivfile
+    \global\setflag \zxdivopen = \false
+  \fi}
+
+%                       Finalization
+%                       ------------
+
+
+\def \zxreffinal {%
+  \zxwritecomment{\zxrootfile}{end}{\jobname}%
+  \immediate\closeout \zxrootfile
+  \zxgencomp}
+
+%                       Generate Composite File
+%                       -------- --------- ----
+
+
+\def \zxgencomp {%
+  \remark{Generating composite cross-reference file:}%
+  \immediate\openout \zxcompfile = \jobname.zzc\relax
+  \zxwriteinfo{\true}{jobname}{\jobname}{}%
+  \zxwriteinfo{\true}{time}{\number\year.\number\month.\number\day}{\formattime}%
+  \zxwriteinfo{\true}{version}{\ZzTeXversion}{}%
+  \zxwriteinfo{\true}{author}{\bookauthor}{}%
+  \zxwriteinfo{\true}{title}{\booktitle}{}%
+  \zxwriteinfo{\true}{publisher}{\bookpublisher}{}%
+  \zxwriteinfo{\true}{ISBN}{\bookISBN}{}%
+  \zxwriteinfo{\true}{art-root}{\zartroot}{}%
+  \zxwriteinfo{\true}{place-art}{\zplaceart}{}%
+  \zxwriteinfo{\true}{PDF-hyperlinks}{\PDFhyperlinks}{}%
+  \zxwriteinfo{\true}{proof}{\the\zproofid}{}%
+  \zxwriteinfo{\true}{compositor}{\ininame}{\iniorganization}%
+  \zxwriteinfo{\true}{trim}{\the\trimwidth}{\the\trimheight}%
+  \zxwriteinfo{\true}{head-margin}{\the\headmargin}{}%
+  \zxwriteinfo{\true}{inner-margin}{\the\eveninnermargin}{\the\oddinnermargin}%
+  \let \zxmodesave = \xrefmode
+  \let \xrefmode = \xrefcopymode
+  \input \jobname.zzx\relax
+  \let \xrefmode = \zxmodesave
+  \zxwritecomment{\zxcompfile}{end}{\jobname}%
+  \immediate\closeout \zxcompfile}
+
+% This macro writes an information entry in the composite cross-reference
+% file.
+
+\def \zxwriteinfo #1#2#3#4{%            {composite?}{key}{value1}{value2}
+  \if #1%
+    \immediate\write \zxcompfile {\noexpand\xref{info}{}{#2}{#3}{#4}\zcomment}%
+  \else
+    \zbeginhidewrite
+      \edef \znext {\noexpand\xref{info}{\noexpand\folio}%
+                                        {#2}%
+                                        {#3}
+                                        {#4}}%
+      \znext
+    \zendhidewrite
+  \fi}
+
+%%%  \immediate\write #1{\noexpand\xref{info}{#2}{#3}{#4}{\noexpand\folio}\zcomment}}
+
+% There is nothing to do when info entries are executed.
+
+\def \xrefinfo #1#2#3#4{}
+
+% This macro is used in the root cross-reference file to suck in the
+% division cross-reference files.
+
+\def \zinputzzx #1{%
+  \checkfile{\znext}{#1.zzx}%
+  \if \znext \input #1.zzx \fi}
+
+%                       Load Composite File
+%                       ---- --------- ----
+
+
+\def \zxloadcomp #1{%                                   {xref-mode}
+  \if \zxcompavail
+    \let \zxmodesave = \xrefmode
+    \let \xrefmode =#1%
+    \input \jobname.zzc\relax
+    \let \xrefmode = \zxmodesave
+  \fi}
+
+\def \zxloadothercomp #1#2{%                            {file}{xref-mode}
+  \let \zxmodesave = \xrefmode
+  \let \xrefmode = #2%
+  \input #1\relax
+  \let \xrefmode = \zxmodesave}
+
+\def \loadrelatedxref #1{%                              {file}
+  \zxloadothercomp{#1}{\xrefloadtagmode}}
+
+%                       Cross-Reference Macro
+%                       --------------- -----
+
+
+% Here's how the arguments are treated in each of the modes:
+%
+%   Mode        type        page        arg3        title       arg5
+%
+%   load        expanded    --- passed to appropriate \xrefxxx macro ---
+%   copy        expanded    expanded    expanded    unexpanded  expanded
+%   run         expanded    unexpanded  expanded    unexpanded  expanded
+%   snap        expanded    expanded    expanded    expanded    expanded
+
+% This macro is written for speed.
+
+\long\def \xref #1#2#3#4#5{%           {type}{page-number}{arg3}{title}{arg5}
+  \ifnum \xrefmode>\xrefloadmodes
+    \name{\xref#1}{#2}{#3}{#4}{#5}%
+  \else\ifnum \xrefmode=\xrefcopymode
+    {\def \zxtitle {#4}%
+     \immediate\write \zxcompfile {\noexpand\xref{#1}{#2}{#3}%
+               {\expandafter\zdefof \meaning\zxtitle\zmark}{#5}\zcomment}}%
+    \name{\xref#1}{#2}{#3}{#4}{#5}% In case they want to do something.
+  \else\ifnum \xrefmode=\xrefrunmode
+    {\def \zxtitle {#4}%
+     \edef \znext {\noexpand\noexpand\noexpand\xref
+                     {#1}{\noexpand#2}{#3}%
+                     {\expandafter\zdefof \meaning\zxtitle\zmark}{#5}}%
+     \expandafter\zxwrite\expandafter{\znext\zcomment}}%
+    \if \vmodep \repeatpenalty \fi % In case glue follows write.
+  \else\ifnum \xrefmode=\xrefsnapmode
+    \immediate\zxwrite{\noexpand\xref{#1}{#2}{#3}{#4}{#5}\zcomment}%
+  \else
+    \zxnomode
+  \fi\fi\fi\fi}
+
+\def \zxwrite {%
+  \if \zxdivopen \write \zxdivfile \else \write \zxrootfile \fi}
+
+\def \zxnomode {%
+  \zzerror{No cross-reference mode is set}}
+
+%                       Page Hints
+%                       ---- -----
+
+
+\def \pagehint #1{%
+  \xref{hint}{\noexpand\folio}{}{#1}{}}
+
+% There is nothing to do when hint entries are executed.
+
+\def \xrefhint #1#2#3#4{}

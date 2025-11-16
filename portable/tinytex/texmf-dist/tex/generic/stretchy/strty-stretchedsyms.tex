@@ -1,0 +1,632 @@
+%% S. Lurp --- STRETCHY --- MIT License
+\bgroup
+\setbox0=\vbox{\offinterlineskip\hbox{$\displaystyle\int$}\null}
+\setbox1=\hbox to.5\wd0{\vbox to.5\ht0{\vss\copy0}\hss}
+%\setbox2=\hbox to.5\wd0{\hss\vbox to.5\ht0{\copy0\vss}}
+\pdfxform1 \xdef\strty@intbot{\the\pdflastxform}
+%\pdfxform2 \xdef\strty@inttop{\the\pdflastxform}
+\egroup
+
+\newbox\strty@intbotbox
+\newbox\strty@inttopbox
+
+\bgroup
+\setbox0=\hbox{\pdfrefxform\strty@intbot}
+\global\setbox\strty@intbotbox=\vbox to7.5pt{\vss\hbox{\pdfrefxform\strty@intbot}}
+\global\setbox\strty@inttopbox=\vbox to7.5pt{%
+    \hbox{%
+        \pdfliteral{%
+            q \strty@pttrans\space
+            -1 0 0 -1 \strty@nopt{\wd0} \strty@nopt{\ht0} cm%
+        }%
+        \rlap{\pdfrefxform\strty@intbot}%
+        \pdfliteral{Q}%
+        \kern\wd0%
+    }%
+\vss}
+\egroup
+
+\def\strty@xint#1#2#3{%
+    \hbox{%\lower8.11pt
+    \vbox{\offinterlineskip%
+        \hbox{%
+            \kern\dimexpr\wd\strty@intbotbox + .18\dimexpr#1-\ht\strty@inttopbox-\ht\strty@intbotbox\relax-1pt\relax%
+            \copy\strty@inttopbox%
+            \raise5pt\hbox{$\scriptstyle#2$}%
+        }%
+        \moveright\dimexpr\wd\strty@intbotbox-.5pt\relax\hbox{%
+            \vrule width0pt height\dimexpr#1-\ht\strty@inttopbox-\ht\strty@intbotbox\relax depth0pt%
+            \pdfliteral{%
+                \strty@pttrans\space
+                0 0 m
+                1 w
+                \strty@nopt{.18\dimexpr#1-\ht\strty@inttopbox-\ht\strty@intbotbox\relax}
+                    \strty@nopt{#1-\ht\strty@inttopbox-\ht\strty@intbotbox} l S
+            }%
+        }%
+        \hbox{\copy\strty@intbotbox$\scriptstyle#3$}%
+    }%
+}}
+
+\def\xint#1#2#3{{%
+    \setbox0=\hbox{$\displaystyle#3$}%
+    \lower\dp0\strty@xint{\dimexpr\ht0+\dp0\relax}{#1}{#2}%
+    \copy0\relax%
+}}
+
+\newbox\strty@sumtop
+\newbox\strty@sumbot
+\bgroup
+\setbox0=\vbox{\offinterlineskip\hbox{$\displaystyle\sum$}\null}
+\def\strty@trans#1#2{{\strty@mult\strty@ptm{#1}}{\strty@mult\strty@ptm{#2}}}
+\setbox1=\hbox{\pdfliteral{%
+    q
+    \strty@p{.55}{14.5} m
+    \strty@p{8}{14.5} l
+    \strty@p{8}{5} l
+    \strty@p{15}{5} l
+    \strty@p{15}{16} l
+    \strty@p{.55}{16} l
+    h
+    W
+    n
+}\rlap{\copy0}\pdfliteral{Q}\kern\wd0}%
+\global\setbox\strty@sumtop=\vbox to1.49pt{\box1\vss}
+\setbox1=\hbox{\pdfliteral{%
+    q
+    \strty@p{1.9}{0} m
+    \strty@p{15}{0} l
+    \strty@p{15}{5} l
+    \strty@p{8}{5} l
+    \strty@p{8}{1.86} l
+    \strty@p{1.9}{1.86} l
+    h
+    W
+    n
+}\rlap{\copy0}\pdfliteral{Q}\kern\wd0}%
+\global\setbox\strty@sumbot=\vbox to1.86pt{\vss\box1}
+\egroup
+
+\def\strty@xvsum#1{\hbox{%
+    \strty@setpttrans%
+    \vbox to#1{%
+        \offinterlineskip%
+        \copy\strty@sumtop%
+        \vfil%
+        \copy\strty@sumbot%
+        \pdfliteral{
+            1 j 1 J
+            \strty@p{1.9}{1.86} m
+            \strty@p{7.05}{\strty@nopt{.5#1}} l
+            \strty@p{2.35}{\strty@nopt{#1-1.4pt}} l
+            \strty@p{.55}{\strty@nopt{#1-1.4pt}} l
+            \strty@p{5.85}{\strty@nopt{.5#1-.65pt}} l
+            \strty@p{.55}{1} l
+            \strty@p{2}{1} l
+            \strty@p{2}{1.86} l
+            h
+            f
+        }%
+    }%
+}}
+
+\def\xvsum#1#2#3{\begingroup%
+    \setbox0=\hbox{$\displaystyle#3$}%
+    \mathop{\lower\dp0\strty@xvsum{\dimexpr\ht0+\dp0\relax}}%
+    \limits^{#1}_{#2}%
+    \copy0%
+\endgroup}
+
+\newbox\strty@sumleft
+\newbox\strty@sumright
+\bgroup
+\setbox0=\vbox{\offinterlineskip\hbox{$\displaystyle\sum$}\null}
+\def\strty@trans#1#2{{\strty@mult\strty@ptm{#1}}{\strty@mult\strty@ptm{#2}}}
+\setbox1=\hbox{\pdfliteral{%
+    q
+    .1 w
+    \strty@p{0}{16} m
+    \strty@p{5.85}{16} l
+    \strty@p{5.85}{10} l
+    \strty@p{8}{10} l
+    \strty@p{8}{6} l
+    \strty@p{5.85}{6} l
+    \strty@p{5.85}{0} l
+    \strty@p{0}{0} l
+    h
+    W
+    n
+}\rlap{\copy0}\pdfliteral{Q}\kern\wd0}%
+\global\setbox\strty@sumleft=\hbox to5.85pt{\copy1\hss}
+\setbox1=\hbox{\pdfliteral{%
+    q
+    .1 w
+    \strty@p{7.5}{16} m
+    \strty@p{7.5}{0} l
+    \strty@p{15}{0} l
+    \strty@p{15}{16} l
+    h
+    W
+    n
+}\rlap{\copy0}\pdfliteral{Q}\kern\wd0}%
+\global\setbox\strty@sumright=\hbox to6.9444pt{\hss\copy1}
+\egroup
+
+\def\strty@xhsum#1{\hbox to#1{%
+    \def\strty@trans##1##2{{\strty@mult\strty@ptm{##1}}{\strty@mult\strty@ptm{##2}}}%
+    \pdfliteral{
+        \strty@p{5.85}{15} m
+        \strty@p{\strty@nopt{#1-\wd\strty@sumright}}{15} l
+        \strty@p{\strty@nopt{#1-\wd\strty@sumright}}{14.52} l
+        \strty@p{5.85}{14.52} l
+        h
+        f
+        \strty@p{5.85}{1} m
+        \strty@p{\strty@nopt{#1-\wd\strty@sumright}}{1} l
+        \strty@p{\strty@nopt{#1-\wd\strty@sumright}}{1.86} l
+        \strty@p{5.85}{1.86} l
+        h
+        f
+    }%
+    \copy\strty@sumleft\hfil\copy\strty@sumright%
+}}
+
+\def\xhsum#1#2{\begingroup%
+    \setbox0=\hbox{$\scriptstyle#1$}%
+    \setbox1=\hbox{$\scriptstyle#2$}%
+    \edef\strty@wd{\the\strty@maxdim{\wd0}{\wd1}}%
+    \mathop{\lower5.5pt\strty@xhsum\strty@wd}\limits^{#1}_{#2}%
+\endgroup}
+
+\newbox\strty@sumtrcorner
+\newbox\strty@sumbrcorner
+\bgroup
+\def\strty@trans#1#2{{\strty@mult\strty@ptm{#1}}{\strty@mult\strty@ptm{#2}}}
+\setbox0=\vbox{\offinterlineskip\hbox{$\displaystyle\sum$}\null}
+\setbox1=\hbox{\pdfliteral{%
+    q
+    .1 w
+    \strty@p{7.5}{16} m
+    \strty@p{7.5}{8} l
+    \strty@p{15}{8} l
+    \strty@p{15}{16} l
+    h
+    W
+    n
+}\rlap{\copy0}\pdfliteral{Q}\kern\wd0}%
+\global\setbox\strty@sumtrcorner=\vbox to1.49pt{\hbox to6.9444pt{\hss\copy1}\vss}
+\setbox1=\hbox{\pdfliteral{%
+    q
+    .1 w
+    \strty@p{7.5}{0} m
+    \strty@p{7.5}{8} l
+    \strty@p{15}{8} l
+    \strty@p{15}{0} l
+    h
+    W
+    n
+}\rlap{\copy0}\pdfliteral{Q}\kern\wd0}%
+\global\setbox\strty@sumbrcorner=\vbox to1.86pt{\vss\hbox to6.9444pt{\hss\copy1}}
+\egroup
+
+\def\strty@xhvsum#1#2{%
+    \vbox to#1{%
+        \def\strty@trans##1##2{{\strty@mult\strty@ptm{##1}}{\strty@mult\strty@ptm{##2}}}%
+        \offinterlineskip%
+        \hbox to#2{\hfil\copy\strty@sumtrcorner}%
+        \vfil
+        \hbox to#2{\hfil\copy\strty@sumbrcorner}%
+        \pdfliteral{
+            1 j 1 J
+            \strty@p{1.9}{1.86} m
+            \strty@p{7.05}{\strty@nopt{.5#1}} l
+            \strty@p{2.35}{\strty@nopt{#1-1.48pt}} l
+            \strty@p{\strty@nopt{#2-\wd\strty@sumtrcorner}}{\strty@nopt{#1-1.48pt}} l
+            \strty@p{\strty@nopt{#2-\wd\strty@sumtrcorner}}{\strty@nopt{#1-1pt}} l
+            \strty@p{.55}{\strty@nopt{#1-1pt}} l
+            \strty@p{.55}{\strty@nopt{#1-1.48pt}} l
+            \strty@p{5.85}{\strty@nopt{.5#1-.65pt}} l
+            \strty@p{.55}{1} l
+            \strty@p{\strty@nopt{#2-\wd\strty@sumbrcorner}}{1} l
+            \strty@p{\strty@nopt{#2-\wd\strty@sumbrcorner}}{1.86} l
+            h
+            f
+        }%
+    }%
+}
+
+\def\xhvsum#1#2#3{\begingroup%
+    \setbox0=\hbox{$\displaystyle#3$}%
+    \setbox1=\hbox{$\scriptstyle#1$}%
+    \setbox2=\hbox{$\scriptstyle#2$}%
+    \edef\strty@wd{\the\strty@maxdim{\wd1}{\wd2}}%
+    \mathop{\lower\dp0\strty@xhvsum{\dimexpr\ht0+\dp0\relax}{\strty@wd}}%
+    \limits^{#1}_{#2}%
+    \copy0%
+\endgroup}
+
+\newbox\strty@strtA
+\newbox\strty@strtB
+\newbox\strty@strtC
+\newbox\strty@strtD
+\newbox\strty@strtE
+\newbox\strty@strtF
+
+\def\strty@hstretch#1#2#3#4{%
+    \@xp\def\csname#1\endcsname##1{%
+        \hbox to##1{%
+            \setbox\strty@strtA=\hbox{#2}%
+            \setbox\strty@strtB=\hbox{#3}%
+            \def\strty@trans####1####2{%
+                {\strty@mult\strty@ptm{%
+                    \strty@add{\strty@mult{\strty@nopt{##1-\wd\strty@strtA-\wd\strty@strtB}}{####1}}{\strty@nopt{\wd\strty@strtA}}}%
+                }%
+                {\strty@mult\strty@ptm{####2}}%
+            }%
+            \pdfliteral{#4}%
+            \copy\strty@strtA\hss\copy\strty@strtB%
+        }%
+    }%
+}
+
+\def\strty@vstretch#1#2#3#4{%
+    \@xp\def\csname#1\endcsname##1{%
+        \vbox to##1{%
+            \setbox\strty@strtA=\hbox{#2}%
+            \setbox\strty@strtB=\hbox{#3}%
+            \copy\strty@strtA\vss\copy\strty@strtB%
+            \def\strty@trans####1####2{%
+                {\strty@mult\strty@ptm{####1}}%
+                {\strty@mult\strty@ptm{%
+                    \strty@add{\strty@mult{\strty@nopt{##1-\ht\strty@strtA-\ht\strty@strtB}}{####2}}{\strty@nopt{\ht\strty@strtB}}}%
+                }%
+            }%
+            \pdfliteral{#4}%
+        }%
+    }%
+}
+
+\def\strty@hvstretch#1#2#3#4#5#6#7#8{% name, tl, tr, bl, br, tcode, bcode, vcode
+    \@xp\def\csname#1\endcsname##1##2{%
+        \vbox to##2{%
+            \setbox\strty@strtA=\hbox{#2}%
+            \setbox\strty@strtB=\hbox{#3}%
+            \setbox\strty@strtC=\hbox{#4}%
+            \setbox\strty@strtD=\hbox{#5}%
+            \setbox\strty@strtE=\hbox to##1{%
+                \def\strty@trans####1####2{%
+                    {\strty@mult\strty@ptm{%
+                        \strty@add{\strty@mult{%
+                            \strty@nopt{##1-\wd\strty@strtA-\wd\strty@strtB}}%
+                            {####1}%
+                        }%
+                        {\strty@nopt{\wd\strty@strtA}}%
+                    }}%
+                    {\strty@mult\strty@ptm{####2}}%
+                }%
+                \pdfliteral{
+                    #6
+                }%
+                \copy\strty@strtA\hss\copy\strty@strtB%
+            }%
+            \setbox\strty@strtF=\hbox to##1{%
+                \def\strty@trans####1####2{%
+                    {\strty@mult\strty@ptm{%
+                        \strty@add{\strty@mult{%
+                            \strty@nopt{##1-\wd\strty@strtC-\wd\strty@strtD}}%
+                            {####1}%
+                        }%
+                        {\strty@nopt{\wd\strty@strtC}}%
+                    }}%
+                    {\strty@mult\strty@ptm{####2}}%
+                }%
+                \pdfliteral{
+                    #7
+                }%
+                \copy\strty@strtC\hss\copy\strty@strtD%
+            }%
+            \copy\strty@strtE\vss\copy\strty@strtF%
+            \def\strty@trans####1####2{%
+                {\strty@mult\strty@ptm{%
+                    \strty@mult{\strty@nopt{##1}}{####1}%
+                }}%
+                {\strty@mult\strty@ptm{%
+                    \strty@add{\strty@mult{%
+                        \strty@nopt{##2-\ht\strty@strtE-\ht\strty@strtF}}%
+                        {####2}%
+                    }%
+                    {\strty@nopt{\ht\strty@strtF}}%
+                }}%
+            }
+            \pdfliteral{
+                #8
+            }%
+        }%
+    }%
+}
+
+\bgroup
+\setbox0=\vbox{\offinterlineskip\hbox{$\displaystyle\bigcup$}\null}
+\setbox1=\hbox to.5\wd0{\copy0\hss}
+\setbox2=\hbox to.5\wd0{\hss\copy0}
+\setbox3=\vbox to.5\ht0{\copy0\vss}
+\setbox4=\vbox to.5\ht0{\vss\copy0}
+\pdfxform1 \xdef\strty@bigcupleft{\pdfrefxform\the\pdflastxform}
+\pdfxform2 \xdef\strty@bigcupright{\pdfrefxform\the\pdflastxform}
+\pdfxform3 \xdef\strty@bigcuptop{\pdfrefxform\the\pdflastxform}
+\pdfxform4 \xdef\strty@bigcupbot{\pdfrefxform\the\pdflastxform}
+\setbox0=\hbox{\strty@bigcuptop}
+\setbox1=\hbox to.5\wd0{\copy0\hss}
+\setbox2=\hbox to.5\wd0{\hss\copy0}
+\setbox3=\hbox{\strty@bigcupbot}
+\setbox4=\hbox to.5\wd3{\copy3\hss}
+\setbox5=\hbox to.5\wd3{\hss\copy3}
+\pdfxform1 \xdef\strty@bigcuptl{\pdfrefxform\the\pdflastxform}
+\pdfxform2 \xdef\strty@bigcuptr{\pdfrefxform\the\pdflastxform}
+\pdfxform4 \xdef\strty@bigcupbl{\pdfrefxform\the\pdflastxform}
+\pdfxform5 \xdef\strty@bigcupbr{\pdfrefxform\the\pdflastxform}
+\egroup
+
+\strty@hstretch{strty@hbigcup@sym}{\strty@bigcupleft}{\strty@bigcupright}{
+    \strty@p{0}{1} m
+    \strty@p{1}{1} l
+    \strty@p{1}{1.83} l
+    \strty@p{0}{1.83} l
+    h
+    f
+}
+
+\def\xhbigcup#1#2{\begingroup%
+    \setbox0=\hbox{$\scriptstyle#1$}%
+    \setbox1=\hbox{$\scriptstyle#2$}%
+    \edef\strty@wd{\the\strty@maxdim{\wd0}{\wd1}}%
+    \mathop{\lower5.5pt\strty@hbigcup@sym\strty@wd}\limits^{\copy0}_{\copy1}%
+\endgroup}
+
+\strty@vstretch{strty@vbigcup@sym}{\strty@bigcuptop}{\strty@bigcupbot}{
+    \strty@p{.55}{0} m
+    \strty@p{.55}{1} l
+    \strty@p{1.4}{1} l
+    \strty@p{1.4}{0} l
+    h
+    f
+    \strty@p{10.54}{0} m
+    \strty@p{10.54}{1} l
+    \strty@p{9.71}{1} l
+    \strty@p{9.71}{0} l
+    h
+    f
+}
+
+\def\xvbigcup#1#2#3{\begingroup%
+    \setbox0=\hbox{$\scriptstyle#1$}%
+    \setbox1=\hbox{$\scriptstyle#2$}%
+    \setbox2=\hbox{$\displaystyle#3$}%
+    \mathop{\lower\dp2\strty@vbigcup@sym{\dimexpr\ht2+\dp2\relax}}\limits^{\copy0}_{\copy1}%
+    \copy2%
+\endgroup}
+
+\strty@hvstretch{strty@hvbigcup@sym}\strty@bigcuptl\strty@bigcuptr\strty@bigcupbl\strty@bigcupbr{}{
+    \strty@p{0}{1} m
+    \strty@p{1}{1} l
+    \strty@p{1}{1.83} l
+    \strty@p{0}{1.83} l
+    h
+    f
+}{
+    \strty@pd{0}{0}{.56pt}{0pt} m
+    \strty@pd{0}{1}{.56pt}{0pt} l
+    \strty@pd{0}{1}{1.39pt}{0pt} l
+    \strty@pd{0}{0}{1.39pt}{0pt} l
+    h
+    f
+    \strty@pd{1}{0}{-.57pt}{0pt} m
+    \strty@pd{1}{1}{-.57pt}{0pt} l
+    \strty@pd{1}{1}{-1.4pt}{0pt} l
+    \strty@pd{1}{0}{-1.4pt}{0pt} l
+    h
+    f
+}
+
+\def\xhvbigcup#1#2#3{\begingroup%
+    \setbox0=\hbox{$\scriptstyle#1$}%
+    \setbox1=\hbox{$\scriptstyle#2$}%
+    \setbox2=\hbox{$\displaystyle#3$}%
+    \edef\strty@wd{\the\strty@maxdim{\wd0}{\wd1}}%
+    \mathop{\lower\dp2\strty@hvbigcup@sym\strty@wd{\dimexpr\ht2+\dp2\relax}}\limits^{\copy0}_{\copy1}%
+    \copy2%
+\endgroup}
+
+\bgroup
+\setbox0=\vbox{\offinterlineskip\hbox{$\displaystyle\bigcap$}\null}
+\setbox1=\hbox to.5\wd0{\copy0\hss}
+\setbox2=\hbox to.5\wd0{\hss\copy0}
+\setbox3=\vbox to.5\ht0{\copy0\vss}
+\setbox4=\vbox to.5\ht0{\vss\copy0}
+\pdfxform1 \xdef\strty@bigcapleft{\pdfrefxform\the\pdflastxform}
+\pdfxform2 \xdef\strty@bigcapright{\pdfrefxform\the\pdflastxform}
+\pdfxform3 \xdef\strty@bigcaptop{\pdfrefxform\the\pdflastxform}
+\pdfxform4 \xdef\strty@bigcapbot{\pdfrefxform\the\pdflastxform}
+\setbox0=\hbox{\strty@bigcaptop}
+\setbox1=\hbox to.5\wd0{\copy0\hss}
+\setbox2=\hbox to.5\wd0{\hss\copy0}
+\setbox3=\hbox{\strty@bigcapbot}
+\setbox4=\hbox to.5\wd3{\copy3\hss}
+\setbox5=\hbox to.5\wd3{\hss\copy3}
+\pdfxform1 \xdef\strty@bigcaptl{\pdfrefxform\the\pdflastxform}
+\pdfxform2 \xdef\strty@bigcaptr{\pdfrefxform\the\pdflastxform}
+\pdfxform4 \xdef\strty@bigcapbl{\pdfrefxform\the\pdflastxform}
+\pdfxform5 \xdef\strty@bigcapbr{\pdfrefxform\the\pdflastxform}
+\egroup
+
+\strty@hstretch{strty@hbigcap@sym}{\strty@bigcapleft}{\strty@bigcapright}{
+    \strty@p{0}{15} m
+    \strty@p{1}{15} l
+    \strty@p{1}{14.17} l
+    \strty@p{0}{14.17} l
+    h
+    f
+}
+
+\def\xhbigcap#1#2{\begingroup
+    \setbox0=\hbox{$\scriptstyle#1$}%
+    \setbox1=\hbox{$\scriptstyle#2$}%
+    \edef\strty@wd{\the\strty@maxdim{\wd0}{\wd1}}%
+    \mathop{\lower5.5pt\strty@hbigcap@sym\strty@wd}\limits^{\copy0}_{\copy1}%
+\endgroup}
+
+\strty@vstretch{strty@vbigcap@sym}{\strty@bigcaptop}{\strty@bigcapbot}{
+    \strty@p{.55}{0} m
+    \strty@p{.55}{1} l
+    \strty@p{1.4}{1} l
+    \strty@p{1.4}{0} l
+    h
+    f
+    \strty@p{10.54}{0} m
+    \strty@p{10.54}{1} l
+    \strty@p{9.71}{1} l
+    \strty@p{9.71}{0} l
+    h
+    f
+}
+
+\def\xvbigcap#1#2#3{\begingroup%
+    \setbox0=\hbox{$\scriptstyle#1$}%
+    \setbox1=\hbox{$\scriptstyle#2$}%
+    \setbox2=\hbox{$\displaystyle#3$}%
+    \mathop{\lower\dp2\strty@vbigcap@sym{\dimexpr\ht2+\dp2\relax}}\limits^{\copy0}_{\copy1}%
+    \copy2%
+\endgroup}
+
+\strty@hvstretch{strty@hvbigcap@sym}\strty@bigcaptl\strty@bigcaptr\strty@bigcapbl\strty@bigcapbr{
+    \strty@p{0}{7} m
+    \strty@p{1}{7} l
+    \strty@p{1}{6.17} l
+    \strty@p{0}{6.17} l
+    h
+    f
+}{}{
+    \strty@pd{0}{0}{.56pt}{0pt} m
+    \strty@pd{0}{1}{.56pt}{0pt} l
+    \strty@pd{0}{1}{1.39pt}{0pt} l
+    \strty@pd{0}{0}{1.39pt}{0pt} l
+    h
+    f
+    \strty@pd{1}{0}{-.57pt}{0pt} m
+    \strty@pd{1}{1}{-.57pt}{0pt} l
+    \strty@pd{1}{1}{-1.4pt}{0pt} l
+    \strty@pd{1}{0}{-1.4pt}{0pt} l
+    h
+    f
+}
+
+\def\xhvbigcap#1#2#3{\begingroup%
+    \setbox0=\hbox{$\scriptstyle#1$}%
+    \setbox1=\hbox{$\scriptstyle#2$}%
+    \setbox2=\hbox{$\displaystyle#3$}%
+    \edef\strty@wd{\the\strty@maxdim{\wd0}{\wd1}}%
+    \mathop{\lower\dp2\strty@hvbigcap@sym\strty@wd{\dimexpr\ht2+\dp2\relax}}\limits^{\copy0}_{\copy1}%
+    \copy2%
+\endgroup}
+
+\bgroup
+\setbox0=\vbox{\offinterlineskip\hbox{$\displaystyle\prod$}\null}
+\setbox1=\hbox to.5\wd0{\copy0\hss}
+\setbox2=\hbox to.5\wd0{\hss\copy0}
+\setbox3=\vbox to.5\ht0{\copy0\vss}
+\setbox4=\vbox to.5\ht0{\vss\copy0}
+\pdfxform1 \xdef\strty@prodleft{\pdfrefxform\the\pdflastxform}
+\pdfxform2 \xdef\strty@prodright{\pdfrefxform\the\pdflastxform}
+\pdfxform3 \xdef\strty@prodtop{\pdfrefxform\the\pdflastxform}
+\pdfxform4 \xdef\strty@prodbot{\pdfrefxform\the\pdflastxform}
+\setbox0=\hbox{\strty@prodtop}%
+\setbox1=\hbox{\strty@prodbot}%
+\setbox2=\hbox to.5\wd0{\copy0\hss}
+\setbox3=\hbox to.5\wd0{\hss\copy0}
+\setbox4=\hbox to.5\wd1{\copy1\hss}
+\setbox5=\hbox to.5\wd1{\hss\copy1}
+\pdfxform2 \xdef\strty@prodtl{\pdfrefxform\the\pdflastxform}
+\pdfxform3 \xdef\strty@prodtr{\pdfrefxform\the\pdflastxform}
+\pdfxform4 \xdef\strty@prodbl{\pdfrefxform\the\pdflastxform}
+\pdfxform5 \xdef\strty@prodbr{\pdfrefxform\the\pdflastxform}
+\egroup
+
+\strty@hstretch{strty@xhprod@sym}{\strty@prodleft}{\strty@prodright}{
+    \strty@p{0}{15} m
+    \strty@p{1}{15} l
+    \strty@p{1}{14.45} l
+    \strty@p{0}{14.45} l
+    h
+    f
+}
+
+\def\xhprod#1#2{\begingroup
+    \setbox0=\hbox{$\scriptstyle#1$}%
+    \setbox1=\hbox{$\scriptstyle#2$}%
+    \edef\strty@wd{\the\strty@maxdim{\wd0}{\wd1}}%
+    \mathop{\lower5.5pt\strty@xhprod@sym\strty@wd}\limits^{\copy0}_{\copy1}%
+\endgroup}
+
+\strty@vstretch{strty@xvprod@sym}{\strty@prodtop}{\strty@prodbot}{
+    \strty@p{2.2}{0} m
+    \strty@p{2.2}{1} l
+    \strty@p{3.74}{1} l
+    \strty@p{3.74}{0} l
+    h
+    f
+    \strty@p{9.04}{0} m
+    \strty@p{9.04}{1} l
+    \strty@p{10.57}{1} l
+    \strty@p{10.57}{0} l
+    h
+    f
+}
+
+\def\xvprod#1#2#3{\begingroup
+    \setbox0=\hbox{$\displaystyle#3$}%
+    \mathop{\lower\dp0\strty@xvprod@sym{\dimexpr\ht0+\dp0\relax}}\limits^{#1}_{#2}%
+    \copy0%
+\endgroup}
+
+\def\strty@xhvprod@sym#1#2{%
+    \vbox to#2{%
+        \strty@setpttrans%
+        \hbox to#1{%
+            \pdfliteral{
+                \strty@p{6}{7} m
+                \strty@p{\strty@nopt{#1-6pt}}{7} l
+                \strty@p{\strty@nopt{#1-6pt}}{6.46} l
+                \strty@p{6}{6.46} l
+                h
+                f
+            }%
+            \strty@prodtl\hss\strty@prodtr%
+        }%
+        \vss%
+        \hbox to#1{\strty@prodbl\hss\strty@prodbr}%
+        \pdfliteral{
+            \strty@p{2.2}{8} m
+            \strty@p{2.2}{\strty@nopt{#2-8pt}} l
+            \strty@p{3.74}{\strty@nopt{#2-8pt}} l
+            \strty@p{3.74}{8} l
+            h
+            f
+            \strty@p{\strty@nopt{#1-2.21pt}}{8} m
+            \strty@p{\strty@nopt{#1-2.21pt}}{\strty@nopt{#2-8pt}} l
+            \strty@p{\strty@nopt{#1-3.74pt}}{\strty@nopt{#2-8pt}} l
+            \strty@p{\strty@nopt{#1-3.74pt}}{8} l
+            h
+            f
+        }%
+    }%
+}
+
+\def\xhvprod#1#2#3{\mathop{
+    \setbox0=\hbox{$\scriptstyle#1$}%
+    \setbox1=\hbox{$\scriptstyle#2$}%
+    \setbox2=\hbox{$\displaystyle#3$}%
+    \edef\strty@wd{\the\strty@maxdim{\wd0}{\wd1}}%
+    \mathop{\lower\dp2\strty@xhvprod@sym{\strty@wd}{\dimexpr\ht2+\dp2\relax}}\limits^{\copy0}_{\copy1}%
+    \copy2%
+}}
+

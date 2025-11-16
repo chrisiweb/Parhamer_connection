@@ -1,0 +1,153 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    Redefinitions for Common Encoding
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Redefine accents.
+
+\def \"#1{{\accent 8 #1}}               %~ Umlaut accent. %^accent
+
+\def \.#1{{\accent 11 #1}}              %~ Dot accent. %^accent
+
+\def \H #1{{\accent 12 #1}}             %~ Long Hungarian umlaut accent. %^accent
+
+\def \^#1{{\accent 7 #1}}               %~ Circumflex accent. %^accent
+
+\def \g #1{%                            %~ Ogonek accent. %^accent
+  \setbox \zboxa = \hbox{#1}%
+  \if \dimeqlp{\ht\zboxa}{1ex}%
+    \accent 14 #1%
+  \else
+    {\ooalign{\hidewidth \char 14 \hidewidth \cr
+              \unhbox \zboxa}}%
+  \fi}
+
+\def \~#1{{\accent 15 #1}}              %~ Tilde accent. %^accent
+
+
+% Redefine standard ASCII characters.
+
+\def \udquote {%                        %~ Undirected double quote. %^named_char
+  \ensurepar
+  \char "22\relax}
+
+\def \dollar {%                         %~ Dollar sign. %^named_char
+  \zprehyph{\dollarhyph}%
+  \char "24\relax
+  \zposthyph{\dollarhyph}}
+
+\let \$ = \dollar
+
+\def \less {%                           %~ Less-than sign. %^named_char
+  \ensurepar
+  \char "3C\relax}
+
+\let \< = \relax
+
+\def \greater {%                        %~ Greater-than sign. %^named_char
+  \ensurepar
+  \char "3E\relax}
+
+\let \> = \relax
+
+\def \backslash {%                      %~ Backslash. %^named_char
+  \ensurepar
+  \if \mathmodep
+    \zmbackslash
+  \else
+    \char "5C\relax
+  \fi}
+
+\let \\ = \backslash
+
+\def \underscore {%                     %~ Underscore. %^named_char
+  \ensurepar
+  \zprehyph{\underscorehyph}%
+  \char "5F\relax
+  \zposthyph{\underscorehyph}}
+
+\let \_ = \underscore
+
+\def \lbrace {%                         %~ Left brace. %^named_char
+  \relax
+  \if \mathmodep
+    \zmlbrace
+  \else
+    \char "7B\relax
+  \fi}
+
+\let \{ = \lbrace
+
+\def \verticalbar {%                    %~ Vertical bar. %^named_char
+  \ensurepar
+  \char "7C\relax}
+
+\def \rbrace {%                         %~ Right brace. %^named_char
+  \relax
+  \if \mathmodep
+    \zmrbrace
+  \else
+    \char "7D\relax
+  \fi}
+
+\let \} = \rbrace
+
+
+% Define additional special characters.
+
+\def \specialchar #1#2{%                                {text-char}{math-char}
+  \ensurepar
+  \if \mathmodep
+    \if \emptyargp{#2}%
+      \error{scinmath}{Cannot use that special character in math mode}%
+    \else
+      #2\relax
+    \fi
+  \else
+    #1\relax
+  \fi}
+
+% Decided not to make these two characters pseudo-ligatures.
+
+\def \exclamdown   {\specialchar{\char 142}{}}          %~ Upside-down exclamation.
+\def \questiondown {\specialchar{\char 143}{}}          %~ Upside-down question mark.
+
+\def \bullet       {\specialchar{\char 150}{\zmbullet}} %~ Bullet.
+\def \cent         {\specialchar{\char 151}{}}          %~ Cent sign.
+\let \cents = \cent
+\def \copyright    {\specialchar{\char 152}{}}          %~ Copyright symbol.
+\def \currency     {\specialchar{\char 153}{}}          %~ Currency symbol.
+\def \dagger       {\specialchar{\char 154}{\zmdagger}} %~ Dagger.
+\def \ddagger      {\specialchar{\char 155}{\zmddagger}}%~ Double dagger.
+\def \degree       {\specialchar{\char 156}{^\circ}}    %~ Degree sign.
+\let \degrees = \degree
+\def \Edh          {\specialchar{\char 157}{}}          %~ Uppercase Edh.
+\def \edh          {\specialchar{\char 158}{}}          %~ Lowercase edh.
+\def \euro         {\specialchar{\char 159}{}}          %~ Euro symbol.
+\def \florin       {\specialchar{\char 160}{}}          %~ Florin.
+\def \lguill       {\specialchar{\char 161}{}}          %~ Left guillemot.
+\def \rguill       {\specialchar{\char 162}{}}          %~ Right guillemot.
+\def \L            {\specialchar{\char 163}{}}          %~ Uppercase Polish L.
+\def \l            {\specialchar{\char 164}{}}          %~ Lowercase Polish l.
+\def \minus        {\specialchar{\char 165}{}}          %~ Minus sign.
+\def \P            {\specialchar{\char 166}{}}          %~ Paragraph symbol (pilcrow).
+\def \perthousand  {\specialchar{\char 167}{}}          %~ Per thousand symbol.
+\def \usquote      {\specialchar{\char 168}{}}          %~ Undirected single quote.
+\def \registered   {\specialchar{$^\roman{\char 169}$}{}} %~ Registered symbol.
+\def \S            {\specialchar{\char 170}{}}          %~ Section sign.
+\def \SS           {\specialchar{\char 170\kern -.1em\char 170}{}} %~ Double section sign.
+\def \sterling     {\specialchar{\char 171}{}}          %~ Pound sterling symbol.
+\def \Thorn        {\specialchar{\char 172}{}}          %~ Uppercase Thorn.
+\def \thorn        {\specialchar{\char 173}{}}          %~ Lowercase thorn.
+\def \trademark    {\specialchar{$^\roman{\char 174}$}{}} %~ Trademark symbol.
+\def \yen          {\specialchar{\char 175}{}}          %~ Yen symbol.
+
+% Redefine a few math things.
+
+\definemathchar{\zmdagger}{\classbinop}{\rmfam}{9A}
+\definemathchar{\zmddagger}{\classbinop}{\rmfam}{9B}

@@ -1,0 +1,935 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX General Text Facilities
+%
+% Synopsis:  This module contains definitions for blocks that are used to
+%            format text.
+%
+% Notes:     The tabbing facility was implemented by Richard A. Wells and
+%            integrated into ZzTeX on 8/16/94.
+% 
+% Authors:   Paul C. Anagnostopoulos and Richard A. Wells
+% Created:   14 March 1990
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Text Block
+%                       ---- -----
+
+
+\defineblock{\text}{\endtext}{\false}{}
+\resetinvcontext{\text}
+
+%~block text Type, Level
+% \abovepenalty = integer               % Penalty above text.
+% \aboveskip = glue                     % Space b/b above text.
+% \def \beginformat {...}               % Beginning of text formatter.
+% \belowpenalty = integer               % Penalty below text.
+% \belowskip = glue                     % Space b/b below text.
+% \bodyfont = {font}                    % Body font.
+% \def \calloutformat ##1{...}          % Callout formatter.
+% \calloutnumber = integer              % Number of first callout.
+% \def \callouttext {...}               % Callout text or \arg.
+% \defaulttabwidth = dimen              % Default repeating tab width.
+% \setflag \enabletabbing = flag        % Enable tabbing commands.
+% \def \endformat {...}                 % End of text formatter.
+% \leftindent = glue                    % Left indentation.
+% \parindent = dimen                    % Paragraph indentation.
+% \parrag = dimen                       % Paragraph raggedness.
+% \parskip = glue                       % Paragraph skip.
+% \rightindent = glue                   % Right indentation.
+% \textcolor = {...}                    % Color of text.
+% \setflag \verbatimlines = flag        % Treat line breaks verbatim.
+% \width = dimen                        % Line width.
+%~end
+
+\definecount{\calloutnumber}{0}
+\setflag \enabletabbing = \false
+\definedimen{\defaulttabwidth}{0pt}
+\setflag \verbatimlines = \false
+
+
+\def \text #1{%                                         {type}
+  \beginblockscope{text}%
+  \global\increment \textdepth
+  \abovepenalty = \breakgood                            %~default hard
+  \def \beginformat {}%                                 %~default soft
+  \belowpenalty = \breakgood                            %~default hard
+  \calloutnumber = 1                                    %~default with
+  \def \callouttext {\number\calloutnumber}%            %~default soft
+  \defaulttabwidth = \mindimen                          %~default soft
+  \setflag \enabletabbing = \false                      %~default soft
+  \def \endformat {}%                                   %~default soft
+  \textcolor = {}%                                      %~default soft
+  \setflag \verbatimlines = \false                      %~default soft
+  \processdesign{\text}{#1\romannumeral\textdepth}%
+  \global\increment \textnumber
+  \textformat
+  \def \zarg {\arg}%
+  \if \tokeqlp{\callouttext}{\zarg}%
+    \defineatsigncommand @##{\ztextcoformat}%
+  \else
+    \defineatsigncommand @##{\ztextcoformat{\callouttext}}%
+  \fi
+  \if \emptytoksp{\textcolor}%
+    \bgroup
+  \else
+    \color{\the\textcolor}%
+  \fi
+    \if \enabletabbing \ztabinittabbing \fi
+    \if \verbatimlines \obeylines \fi
+    \if \enabletabbing \ztabstarttabbing \fi}
+
+\def \endtext {%
+    % Must really be \par, not \endgraf, because might be redefined
+    % for tabbing.
+    \if \notp{\verbatimlines}%
+      % In \verbatimlines the line preceding \endtext{...} will put
+      % out a final \par, but if not we have to do it here.
+      \par
+    \fi
+    \if \enabletabbing \ztabfinaltabbing \fi
+  \if \emptytoksp{\textcolor}%
+    \egroup
+  \else
+    \endcolor
+  \fi
+  \futurelet\nexttoken \zendtext}
+
+\def \zendtext {%
+  \endtextformat
+  \global\decrement \textdepth
+  \endblockscope{text}%
+  \parnext}
+
+\def \textformat {%
+  \endgraf
+  \the\bodyfont
+  \bbskipabove{\abovepenalty}{\aboveskip}%
+  \alterindentation{\leftindent}{\rightindent}%
+  \settextwidth{\width}%
+  \setparrag{\parrag}%
+  \beginformat}
+
+\def \endtextformat {%
+  \endformat
+  \bbskipbelowblockpar{\nexttoken}{\belowpenalty}{\belowskip}}
+
+\def \ztextcoformat #1{%                                {text}
+  \calloutformat{#1}%
+  \global\increment \calloutnumber}
+
+%                       Tabbing Commands
+%                       ------- --------
+
+% These commands are available in a text block if \enabletabbing is turned on.
+
+
+% \ztabinitalizetabbing
+% - Redefines \par
+% - Defines the @ commands for tabbing.  (The real work is done in the
+%   in the \ztabcmd* macros, defined below.)
+% - Initializes variables
+
+\def \ztabinittabbing {%
+  % Redefine \par to ship out the tabbed line, \endgraf it and start a
+  % new tabbed line
+  \let \par = \ztabpar
+  % Define tabbing commands
+  \def \adjusttabbing ##1{\ztabadjusttabbing{##1}}%
+  \defineatsigncommand @.{\ztabcmdset}%
+  \defineatsigncommand @>{\ztabcmdforwards}%
+  \defineatsigncommand @+{\ztabcmdindent}%
+  \defineatsigncommand @-{\ztabcmdoutdent}%
+  \defineatsigncommand @D{\ztabcmddiscard}%
+  \defineatsigncommand @C{\ztabcmdclear}%
+  \defineatsigncommand @E##1{\ztabcmdevery{##1}}%
+  % Initialize variables
+  \if \verbatimlines
+    % The line with \text{...} will put out the first \par, so we
+    % want to skip it.
+    \ztabdiscardtrue
+  \else
+    \ztabdiscardfalse
+  \fi
+  \global\ztabindentlevel=0\relax
+  % Clear all tab stops
+  \ztabcmdclear}
+
+\def \ztabparfinishpreviousline {%
+          % Set state checked by \ztabendtabcell
+          \ztabatnltrue
+          % End last tab cell with \ztabnltrue
+          \ztabendtabcell
+        \egroup% closes inner group started below in \ztabmaketabbedline
+      \egroup% closes outer group started below in \ztabmaketabbedline
+      % Unless discarding, deposit the line and remove the last box
+      \if \notp{\ztabdiscardp}%
+        \unvbox\zboxa\lastbox
+      \else
+        % Clear discarding flag
+        \ztabdiscardfalse
+      \fi
+    \endgroup% closes outermost group started by \ztabmaketabbedline
+    % We should be back in vertical mode now.
+    %
+    % Reset \ztabsbox.  The new value is the set of tbd boxes
+    % followed by the done boxes.  If not all of the tbd boxes were
+    % used this should result in the same set of boxes as the
+    % previous value of \ztabsbox.  However, if the tbd boxes were used up
+    % then the done boxes may contain additional boxes built on the fly.
+    \setbox\ztabsbox\hbox{\unhbox\ztabstbdbox\unhbox\ztabsdonebox}}
+
+\def \ztabparstartnextline {%
+  \ztabmaketabbedline}
+
+\def \ztabpar {% macro used instead of \par in tabbing
+  \ztabparfinishpreviousline
+  \endgraf
+  \ztabparstartnextline}
+
+\def \ztabstarttabbing {%
+  \ztabparstartnextline}
+
+\def \ztabfinaltabbing {%
+  % Discard and finish last tabbed line started by last \ztabpar
+  \ztabdiscardtrue
+  \ztabparfinishpreviousline}
+
+
+
+% Variables shared by \ztab* macros
+
+% Counts and dimens for building tab boxes
+\definecount{\ztabindentlevel}{0}
+\definecount{\ztabindentcounter}{0}
+\definedimen{\ztabcolwidth}{0pt}
+\definedimen{\ztabtabpos}{0pt}
+\definedimen{\ztabdimenii}{0pt}
+
+% Conditionals
+%   atnlp: are we at a \nl in tab processing?
+\def \ztabatnlfalse {\global\setflag \ztabatnlp=\false}%
+\def \ztabatnltrue {\global\setflag \ztabatnlp=\true}%
+%   discardp: are we discarding this line's output?
+\def \ztabdiscardfalse {\global\setflag \ztabdiscardp=\false}%
+\def \ztabdiscardtrue {\global\setflag \ztabdiscardp=\true}%
+%   settingp: are we setting?
+\def \ztabsettingfalse {\global\setflag \ztabsettingp=\false}%
+\def \ztabsettingtrue {\global\setflag \ztabsettingp=\true}%
+%   tabbingp: are we tabbing?
+\def \ztabtabbingfalse {\global\setflag \ztabtabbingp=\false}%
+\def \ztabtabbingtrue {\global\setflag \ztabtabbingp=\true}%
+
+
+% Boxes to hold the tabs
+\definebox{\ztabsbox}% hbox of hboxes for each tab column
+\definebox{\ztabstbdbox}% hbox of hbox tab columns still "to be done"
+\definebox{\ztabsdonebox}% hbox of hbox tab columns already done
+\definebox{\ztabsindentbox}% hbox of indents
+
+
+% The macros that implement the tabbing commands.  \ztabcmd* are the
+% top-level macros called by the @ commands.  Other \ztab* macros are
+% helpers.
+
+\def \ztabcmdset {%
+  % Set state checked by \ztabendtabcell
+  \ztabsettingtrue
+  % End the current cell with \ztabsettingtrue
+  \ztabendtabcell
+  % Start the next cell
+  \ztabbegintabcell\noindent\ignorespaces}%
+
+\def \ztabcmdforwards {%
+  % Set state checked by \ztabendtabcell
+  \ztabtabbingtrue
+  % End the current cell with \ztabsettingtrue
+  \ztabendtabcell
+  % Start the next cell
+  \ztabbegintabcell\noindent\ignorespaces}%
+
+\def \ztabcmdindent {\global\increment \ztabindentlevel\relax}%
+
+
+\def \ztabcmdoutdent {%
+  \global\decrement \ztabindentlevel\relax
+  \if \negp{\ztabindentlevel}%
+     \zzerror{Attempt to tab dedent (with \string@-) to left of left margin}%
+  \fi}
+
+\def \ztabcmddiscard {%
+  \ztabdiscardtrue}%
+
+\def \ztabcmdclear {%                      {boolean: initialization}
+  % First clear all boxes
+  \ztabcleartabboxes
+  % Surprise!  Clearing tabs might actually set them, if \defaulttabwidth
+  % has been set in the design
+  \if \neqlp{\defaulttabwidth}{\mindimen}%
+    \ztabcmdevery{\defaulttabwidth}%
+  \else
+    % Must clear indent level since we've cleared all tabs (note that
+    % we intentionally leave indent level alone if there is a
+    % \defaulttabwidth!)
+    \global\ztabindentlevel=0\relax
+  \fi\ignorespaces}%
+
+\def \ztabcmdevery #1{%
+  % First clear all tabs
+  \ztabcleartabboxes
+  % Set new tab columns of the specified width into \ztabsbox
+  \ztabsettabs{#1}%
+  % Re-init the boxes used by \ztabmaketabbedline
+  \ztabinittabboxes{\true}% Flag indicates this is a re-init
+  \ignorespaces}
+
+  
+% Implementation of the above commands
+
+  
+\def \ztabinittabboxes #1{% Init the tab boxes            {boolean: re-init}
+  % First copy \ztabsbox into \ztabstbdbox and clear \ztabsdonebox
+  \global\setbox\ztabstbdbox\copy\ztabsbox
+  \global\setbox\ztabsdonebox\null
+  % Put all of the indent boxes that might be built into an hbox
+  % which we will emit later, but just before processing cells
+  \global\setbox\ztabsindentbox\hbox%
+  \bgroup%
+    % Initialize counter for loop
+    \ztabindentcounter=0\relax
+    % Iterate \ztabindentlevel times, moving tabboxes from \ztabstbdbox to
+    % \ztabsdone, maybe emitting hboxes per indent
+    \if \lssp{\ztabindentcounter}{\ztabindentlevel}%
+      \loop
+        \increment \ztabindentcounter\relax% increment loop counter
+        % Pull \lastbox off of \ztabstbdbox
+        \global\setbox\ztabstbdbox\hbox{%
+          \unhbox\ztabstbdbox
+          \global\setbox\zboxb\lastbox}%
+        \ifvoid\zboxb
+          % This is a problem.  Not allowed to indent past set tabs.
+          \zzerror{Attempt to tab indent (with \string@+, [\the\ztabindentlevel]) past set tabs}%
+        \else
+          % Nothing wrong with the box:  push it on \ztabsdonebox
+          % and maybe emit it
+          \global\setbox\ztabsdonebox\hbox{\copy\zboxb\unhbox\ztabsdonebox}%
+          \if \notp{#1}% Not re-initializing
+            \box\zboxb
+          \fi
+        \fi
+        % Loop test
+      \if \lssp{\ztabindentcounter}{\ztabindentlevel}\repeat
+    \fi
+  % End hbox
+  \egroup}
+
+\def \ztabcleartabboxes {% Clear the tab boxes and indent level
+  \setbox\ztabsbox\null
+  \global\setbox\ztabstbdbox\null
+  \global\setbox\ztabsdonebox\null}
+
+\def \ztabsettabs #1{% Deposit tab stops of a specified width in \ztabsbox
+  \ztabcolwidth=#1\relax
+  \ztabtabpos=0pt\relax
+  % Loop while \ztabtabpos is less than \hsize, setting another tab
+  \loop
+    \ztabsetanother
+  \if \dimlssp{\ztabtabpos}{\hsize}\repeat}
+
+\def \ztabsetanother {% Helper for \ztabsettabs, immediately preceding
+  % Advance the counter
+  \advance \ztabtabpos by \ztabcolwidth
+  % Set another tab by "pushing" another hbox into the \ztabsbox hbox
+  % followed by its old set of hboxes
+  \setbox\ztabsbox\hbox{\hbox to\ztabcolwidth{}\unhbox\ztabsbox}}
+
+\def \ztabmaketabbedline {% Build a line of tabbed text
+  % Start outermost group that redefines \nl
+  \begingroup
+    % Inittab boxes (this also builds \ztabsindentbox)
+    \ztabinittabboxes{\false}% Flag indicates NOT a re-init
+    % \nl is a synonym for modified \par
+    \let\nl=\par
+    % \zboxa will contain the entire tabbed line in a vbox.
+    % (It is unvboxed in \nl and may be discarded if a @D is encountered.)
+    \setbox\zboxa\vbox%
+    % start outer group closed by \nl that holds state of \ztabatnlp
+    \bgroup%
+      % don't want to indent a tabbed line
+      \noindent
+      % Init conditionals
+      \ztabatnlfalse
+      \ztabsettingfalse
+      \ztabtabbingfalse
+      % start inner group closed by \nl that surrounds set of tabboxes
+      % and uses \zboxc as an hbox for the current cell.
+      \bgroup%
+        % emit indentation box
+        \box\ztabsindentbox
+        % start the first cell
+        \ztabbegintabcell}
+        % material for a cell will follow here and be ended by
+        % either a @ command or \nl, all of which will deposit
+        % \ztabendtabcell.  The @ commands will begin another tab cell and
+        % \nl will also finish all of the groups started by
+        % \ztabmaketabbedline and put out the line.
+
+\def \ztabbegintabcell {%
+  % \zboxc contains an hbox as the current cell of tabbed material.
+  % (It is deposited at the end of \ztabendtabcell.)
+  \setbox\zboxc\hbox%
+  \bgroup% opens group closed in \ztabendtabcell
+    \ignorespaces}
+
+\def \ztabendtabcell {%
+  \if \ztabatnlp
+    % Processing last cell in this row.  Close group opened in
+    % \ztabbegintabcell w/o bothering to re-set tabboxes.
+    \egroup
+  \else
+    % Close this cell's group (opened in \ztabbegintabcell) with \hss,
+    % since this is not the last cell.
+    \hss\egroup
+    % "Pop" current tabbox from \ztabstbdbox, measure it, deposit tabbed
+    % material into properly sized box and then "push" tabbox onto \ztabsdonebox
+    %   "Pop" from the end of \ztabstbdbox using \lastbox into \zboxb
+    \global\setbox\ztabstbdbox\hbox{%
+      \unhbox\ztabstbdbox
+      \global\setbox\zboxb\lastbox}%
+    %   Process the current tabbox
+    \ifvoid\zboxb
+      \if \ztabtabbingp
+        \zzerror{Attempt to tab (with \string@>) past set tabs}%
+      \else
+        % The current tabbox is void, so we set it to a box that is the
+        % natural width of \zboxc (which contains the cell material).
+        \global\setbox\zboxb\hbox to\wd\zboxc{}%
+      \fi
+    \else
+      \if \ztabsettingp
+        % Re-set previously stored tabbox to natural width of the cell (\zboxc)
+        \global\setbox\zboxb\hbox to\wd\zboxc{}%
+      \fi
+      % Re-deposit the cell material into \zboxc using the width of the
+      % current tabbox.
+      \setbox\zboxc\hbox to\wd\zboxb{\unhbox\zboxc}%
+    \fi
+    %   "Push" the current tabbox measure onto the \ztabsdonebox set of boxes.
+    %   (Note that this might have come from \ztabstbdbox or been measured from
+    %   \zboxc if there were no more tabboxes, so this is where an "on-the-fly"
+    %   tab is added to \ztabsdone, which will later be copied back into
+    %   \ztabsbox for the next line.)
+    \global\setbox\ztabsdonebox\hbox{\box\zboxb\unhbox\ztabsdonebox}%
+  \fi
+  % Clear conditional variables
+  \ztabsettingfalse
+  \ztabtabbingfalse
+  % emit box for this cell
+  \box\zboxc}
+
+\def \ztabadjusttabbing #1{%                    {vertical-mode material}
+  % Close and discard currently open tabbed line (empty, but started
+  % by end of previous line).
+  \ztabcmddiscard
+  \ztabparfinishpreviousline
+  % Insert vertical material
+  #1\relax
+  % If in verbatimlines must set this line to be discarded by
+  % the newline which ends the \adjusttabbing{...} line, which will also
+  % start the next line.
+  \if \verbatimlines
+    \ztabdiscardtrue
+  \fi
+  % Start next tabbed line
+  \ztabparstartnextline}
+
+%                       Builtin Text Blocks
+%                       ------- ---- ------
+
+% The following text block formats text in a completely normal fashion.
+% It can be used with \with to make small changes to the text format.
+
+\def \textnormalidesign {%
+  \calculate \aboveskip = {\enclosingbaselineskip,+,\enclosingparskip}%
+  \belowskip = \aboveskip
+  \bodyfont = {}%
+  \leftindent = \enclosingleftss
+  \parindent = \enclosingparindent
+  \parrag = \enclosingparrag
+  \parskip = \enclosingparskip
+  \rightindent = \enclosingrightss
+  \setflag \verbatimlines = \false
+  \width = \naturalwidth}
+
+\def \textnormaliidesign {%
+  \textnormalidesign}
+\def \textnormaliiidesign {%
+  \textnormalidesign}
+\def \textnormalivdesign {%
+  \textnormalidesign}
+
+\def \setflushingleft {%
+  \leftindent = 0pt
+  \parfillskip = \normalparfillskip
+  \parindent = 0pt
+  \rightindent = 0pt
+  \width = \naturalwidth}
+
+
+% This text block centers text relative to the current left and right
+% indentation.
+
+\def \textcenteridesign {%
+  \textnormalidesign
+  \setcentering}
+
+\def \textcenteriidesign {%
+  \textcenteridesign}
+\def \textcenteriiidesign {%
+  \textcenteridesign}
+\def \textcenterivdesign {%
+  \textcenteridesign}
+
+\def \setcentering {%
+  \leftindent = \centerindent
+  \parfillskip = 0pt
+  \parindent = 0pt
+  \rightindent = \centerindent
+  \width = \naturalwidth}
+
+
+% This text block positions text flush right.
+
+\def \textflushrightidesign {%
+  \textnormalidesign
+  \setflushingright}
+
+\def \textflushrightiidesign {%
+  \textflushrightidesign}
+\def \textflushrightiiidesign {%
+  \textflushrightidesign}
+\def \textflushrightivdesign {%
+  \textflushrightidesign}
+
+\def \setflushingright {%
+  \leftindent = \centerindent
+  \parfillskip = 0pt
+  \parindent = 0pt
+  \rightindent = 0pt
+  \width = \naturalwidth}
+
+% This text block squares off the last line of paragraphs.
+
+\def \textflushendidesign {%
+  \textnormalidesign
+  \parfillskip = 0pt}
+
+\def \textflushendiidesign {%
+  \textflushendidesign}
+\def \textflushendiiidesign {%
+  \textflushendidesign}
+\def \textflushendivdesign {%
+  \textflushendidesign}
+
+\def \flushendpar {%
+  \zskipa = \parfillskip
+  \parfillskip = 0pt
+  \par
+  \parfillskip = \zskipa}
+
+% This text block sets text in the full type width.
+
+\def \texttypeareaidesign {%
+  \textnormalidesign
+  \leftindent = -\oddlefttextmargin
+  \width = \typeareawidth}
+
+\def \texttypeareaiidesign {%
+  \texttypeareaidesign}
+
+% This command centers a single line or sets multiple lines in block format.
+
+\def \centerorblockpar #1#2{%                           {width}{text}
+  \measuretextwidth{\tdimena}{#2}%
+  \if \dimlssp{\tdimena}{#1}%
+    \centerline{#2}%
+  \else
+    \noindent #2\par
+  \fi}
+
+%                       Code Block
+%                       ---- -----
+
+
+\defineblock{\code}{\endcode}{\false}{}
+
+%~block code Type
+% \abovepenalty = integer               % Penalty above code.
+% \aboveskip = glue                     % Space b/b above code.
+% \setflag \allowbreaks = boolean       % Page breaks allowed?
+% \setflag \allowatsigncommands = boolean       % Allow at-sign commands.
+% \setflag \allowcallouttag = boolean   % Allow \tag for callout numbers.
+% \setflag \allowTeXcommands = boolean  % Allow commands with \ { }
+% \setflag \allowTeXmath = boolean      % Allow math with $ _ ^
+% \setflag \autocallout = boolean       % Automatically number lines?
+% \def \beginformat {...}               % Beginning of code formatter.
+% \belowpenalty = integer               % Penalty below code.
+% \belowskip = glue                     % Space b/b below code.
+% \bodyfont = {...}                     % Font for text.
+% \def \calloutformat ##1{...}          % Callout formatter.
+% \calloutnumber = integer              % Number of first callout.
+% \def \callouttext {...}               % Callout text or \arg.
+% \codegapskip = glue                   % Standard code gap (see \codegap).
+% \def \endformat {...}                 % End of code formatter.
+% \hfuzz = dimen                        % Amount text can exceed \hsize.
+% \indentcolumns = integer              % Standard indentation amount.
+% \leftindent = glue                    % Left indentation.
+% \metafont = {font}                    % Font for metasyntactic names.
+% \rightindent = glue                   % Right indentation.
+% \textcolor = {...}                    % Color of text.
+% \setflag \verbatimchars = flag        % Take all characters verbatim?
+% \setflag \verbatimspaces = flag       % Take all spaces verbatim?
+% \width = dimen                        % Width of code.
+%~end
+
+\defineskip{\codegapskip}{0pt}
+\definecount{\indentcolumns}{0}
+\definetoks{\metafont}
+
+\definecount{\codelinenumber}{0}
+
+\definecount{\zcodehyph}{0}             % To remember hyphen character.
+
+\def \code #1{%                                 {type}
+  \blockcantbein{\code}{\code}%
+  \beginblockscope{code}%
+  \global\increment \codedepth
+  \abovepenalty = \breakgood                    %~default hard
+  \setflag \allowatsigncommands = \false        %~default soft
+  \setflag \allowcallouttag = \false            %~default soft
+  \setflag \allowTeXcommands = \true            %~default soft
+  \setflag \allowTeXmath = \false               %~default soft
+  \setflag \autocallout = \false                %~default soft
+  \def \beginformat {}%                         %~default soft
+  \belowpenalty = \breakbetter                  %~default hard
+  \calloutnumber = 1                            %~default with
+  \def \callouttext {\number\calloutnumber}%    %~default soft
+  \codegapskip = \mindimen                      %~default soft
+  \def \endformat {}%                           %~default soft
+  \indentcolumns = 3                            %~default soft
+  \textcolor = {}%                              %~default soft
+  \setflag \verbatimchars = \true               %~default soft
+  \setflag \verbatimspaces = \true              %~default soft
+  \codelinenumber = 1\relax
+  \processdesign{\code}{#1}%
+  \global\increment \codenumber
+  \codeformat
+  \let \par = \zcodepar
+  \obeylines
+  \if \verbatimspaces \obeyspaces \fi
+  \let \zrealincl = \include
+  \let \include = \zcodeincl
+  \let \zrealfn = \footnote
+  \let \footnote = \zcodefn
+  \def \zarg {\arg}%
+  \if \tokeqlp{\callouttext}{\zarg}%
+    \def \!{\zcodecoformat}%
+  \else
+    \def \!{\zcodecoformat{\callouttext}}%
+  \fi
+  \settaginfo{}{}%                      % No tag information so far.
+  \if \notp{\emptytoksp{\textcolor}}\color{\the\textcolor}\fi
+  \begingroup                           % So we can undo the following things.
+    \if \autocallout \everyparagraph = {\!}\fi
+    \if \verbatimchars
+      \uncatcode{\allowTeXcommands}{\allowatsigncommands}{\allowTeXmath}
+    \fi
+    \zcodeflushline}
+
+{\catcode`\^^M = \catactive
+\gdef \zcodeflushline #1^^M{}%
+
+\gdef \endcode^^M{%
+%%%    \columnbreak{\breakallowed}%        % Allow break after last line.
+  \endgroup                             % Undo the \uncatcode,
+  \if \notp{\emptytoksp{\textcolor}}\endcolor \fi%
+  \futurelet\nexttoken \zendcode}%      % and grab onto the next character.
+} % \catcode
+
+\def \zendcode {%
+  \hyphenchar\font = \zcodehyph
+  \setlist \zcodeadjlist = {}%
+  \endformat
+  \forcenextpenalty
+  \bbskipbelowblockpar{\nexttoken}{\belowpenalty}{\belowskip}%
+  \global\decrement \codedepth
+  \endblockscope{code}%
+  \parnext}
+
+\def \codeformat {%
+  \endgraf
+  \alterindentation{\leftindent}{\rightindent}%
+  \settextwidth{\width}%
+  \setparrag{0pt}%
+  \the\bodyfont
+  \zcodehyph = \hyphenchar\font
+  \hyphenchar\font = -1
+  \parskip = 0pt \parindent = 0pt
+  \bbskipabove{\abovepenalty}{\aboveskip}
+  \beginformat}
+
+\def \zcodepar {%
+  \increment \codelinenumber
+  \if \hmodep
+    \endgraf
+    \if \notp{\allowbreaks}\nobreak \relax \fi     
+    \zchkcodeadj
+  \else
+    \if \notp{\allowbreaks}\nobreak \relax \fi
+    \zchkcodeadj
+    \vskip \baselineskip
+  \fi}
+
+% This macro allows the compositor to noninvasively adjust pages between
+% lines of code.
+
+\setlist \zcodeadjlist = {}
+
+\long\def \codeadjustment #1#2{%                {line-number}{commands}
+  \append{{#1}{#2}}{\zcodeadjlist}}
+
+\long\def \zchkcodeadj {%
+  \maplist{\zchkcodeadjb##1}{\zcodeadjlist}}
+
+\long\def \zchkcodeadjb #1#2{%                  {line-number}{commands}
+  \if \eqlp{#1}{\codelinenumber}%
+    #2\relax
+  \fi}
+
+\def \zcodecoformat #1{%                                {text}
+  \ensurepar
+  {\ztoksa = {}%
+   \zcodecocln #1\zmark
+   \calloutformat{\the\ztoksa}}%
+  \if \allowcallouttag \settaginfo{#1}{???}\fi
+  \global\increment \calloutnumber}
+
+\def \zcodecocln #1#2\zmark{%
+  \ifx #1\ \else \ztoksa = \expandafter{\the\ztoksa#1}\fi
+  \if \notp{\emptyargp{#2}}\zcodecocln #2\zmark \fi}
+
+%                       Code Tools
+%                       ---- -----
+
+
+%~ This command is used to place a math expression in a
+%~ code block that doesn't allow dollar signs.
+
+\def \codemath {%                                       $math$ %^code
+  $%
+  \catcodemath
+  \let \znext = }                                       % Discard opening $.
+
+%~ This command produces a vertical ellipsis in code,
+%~ with optional text explaining the omission.
+
+\def \codeellipsis #1{%                                 {text} %^code
+  \ensurepar
+  {\lower .85\baselineskip \hbox{%
+     \vbox{\baselineskip = .5\baselineskip \lineskiplimit = 0pt
+           \kern \baselineskip \hbox{.}\hbox{.}\hbox{.}\kern \baselineskip}}%
+   \unbreakable\quad {\the\metafont #1}}}%
+
+{\catcode`\^^M = \catactive
+
+% The \include macro is redefined to use this version, which eats
+% the newline at the end of the line.
+
+\gdef \zcodeincl #1^^M{\zrealincl{#1}}%
+
+% The \footnote macro is redefined so that it turns off \obeylines.
+
+\gdef \zcodefn {%
+  \bgroup%
+    \let ^^M = \space%
+    \zcodefnb}%
+
+\gdef \zcodefnb #1{%
+    \zrealfn{#1}%
+  \egroup}%
+
+%~ This command allows a vertical adjustment between two lines
+%~ of code. A typical use would be
+%~   \adjustcode{\fullpagebreak}
+
+\gdef \adjustcode #1#2^^M{#1}%                          {command} %^code
+
+%~ Blank lines in code should be produced with this command.
+%~ A regular blank line produces too much space.
+
+\gdef \codegap #1^^M{%                                  %^code
+  \if \dimnegp{\codegapskip}%
+    \vspace{\baselineskip}%
+  \else%
+    \vspace{\codegapskip}%
+  \fi}%
+
+} % \catcode
+
+%                       Code Fragment
+%                       ---- --------
+
+
+%~ A "code fragment" is a short sequence of program code in the running text.
+%~ Most books use |\mono|, which is defined in terms of this command.
+
+\def \codefragment #1#2#3#4{%                   {prefix}{suffix}{font}{text}
+  {#1%
+   \measurespacewidth{\tdimena}%
+   #3%
+   \if \monoencodingp \spaceskip = 1.2\tdimena \fi
+   \relax #4%
+   #2}}
+
+%                       Multicolumn Block
+%                       ----------- -----
+
+
+\defineblock{\multicolumn}{\endmulticolumn}{\false}{}
+
+%~block multicolumn Type
+% \abovepenalty = integer               % Penalty above block.
+% \aboveskip = glue                     % Visual space above block.
+% \belowpenalty = integer               % Penalty below block. 
+% \belowskip = glue                     % Visual space below block.
+% \brokenpenalty = penalty              % For hyphenation at bottom of column.
+% \columngutter = dimen                 % Width of column gutter.
+% \columnrulecolor = {color}            % Color of rule separating columns.
+% \columnrulewidth = dimen              % Width of rule.
+% \columns = integer                    % Number of columns.
+% \setflag \flushbottom = flag          % Should bottoms be flush?
+% \leftindent = glue                    % Indentation for left edge.
+% \margins = {left,right,top,bottom}    % Four margins.
+% \parrag = dimen                       % Paragraph raggedness.
+% \setflag \preservelistdepth = flag    % Preserve list depth?
+% \siderulecolor = {color}              % Color of rules on sides.
+% \siderulewidth = dimen                % Width of rules.
+% \vshift = dimen                       % Vertical shift for entire element.
+% \width = dimen                        % Width of each column.
+%~end
+
+\definetoks{\columnrulecolor}
+\definedimen{\columnrulewidth}{0pt}
+\definecount{\columns}{0}
+\definetoks{\margins}
+\definetoks{\siderulecolor}
+\definedimen{\siderulewidth}{0pt}
+
+\definebox{\zmctext}
+\definecount{\zmccolumn}{0}
+\definecount{\zentrylistdepth}{0}
+\definebox{\zmccoli}
+\definebox{\zmccolii}
+\definebox{\zmccoliii}
+\definebox{\zmccoliv}
+\definebox{\zmccolv}
+\definebox{\zmccolvi}
+\definebox{\zmccolvii}
+\definebox{\zmccolviii}
+\definedimen{\zmcmaxht}{0pt}
+\definebox{\zmcbox}
+
+
+\def \multicolumn #1{%                                  {type}
+  \beginblockscope{multicolumn}%
+  \global\increment \multicolumndepth
+  \abovepenalty = \breakgood                            %~default hard
+  \belowpenalty = \breakgood                            %~default hard
+  \brokenpenalty = \breaknever                          %~default soft
+  \setflag \preservelistdepth = \false                  %~default soft
+  \vshift = 0pt                                         %~default soft
+  \processdesign{\multicolumn}{#1}%
+  \global\increment \multicolumnnumber
+  \expandafter\zmcparse \the\margins\zmark
+  \setbox \zmctext = \vtop\bgroup
+    \zentrylistdepth = \listdepth
+    \zpushvcontext
+    \if \preservelistdepth \global\listdepth = \zentrylistdepth \fi
+    \settextwidth{\width}%
+    \setparrag{\parrag}}
+
+\def \endmulticolumn {%
+    \endgraf
+    \zpopvcontext
+  \egroup % \vtop
+  \zbuildmc
+  \global\decrement \multicolumndepth
+  \endblockscope{multicolumn}}
+
+\def \zbuildmc {%
+  \splitmaxdepth = \dp\strutbox
+  \vbadness = 10000                             % Do we want this?
+  \setbox \zmctext = \vbox{%
+    \vskip \splittopskip
+    \vskip -\ht\zmctext
+    \unvbox \zmctext
+    \unskip \unpenalty \unskip}%
+  \zbuildmca
+  \zbuildmcb
+  \bbskipabove{\abovepenalty}{\aboveskip}%
+  \hfuzz=999pc
+  \hindent{\leftindent} \lower \vshift \box\zmcbox \par
+  \prevdepth = 0pt                              % Nothing better to do.
+  \bbskipbelowblock{\belowpenalty}{\belowskip}}
+
+\def \zbuildmca {%
+  \zmccolumn = \columns
+  \zmcmaxht = 0pt
+  \loop
+    \calculate \tdimena =
+      {\ht\zmctext,-,\splittopskip,/,\zmccolumn,+,\splittopskip}%
+    \setbox \name{\zmccol\romannumeral\zmccolumn} = 
+      \if \onep{\zmccolumn}\box\zmctext \else
+          \vsplit \zmctext to \tdimena \fi
+    \tdimena = \ht\name{\zmccol\romannumeral\zmccolumn}%
+    \if \dimgtrp{\tdimena}{\zmcmaxht}\zmcmaxht = \tdimena \fi
+    \decrement \zmccolumn
+  \if \posp{\zmccolumn}\repeat}
+
+\def \zbuildmcb {%
+  \setbox \zmcbox = \hbox{%
+    \vrule width \siderulewidth
+    \hskip -\siderulewidth
+    \hskip \zmcleft
+    \zmccolumn = \columns
+    \loop
+      \tdimena = \dp\name{\zmccol\romannumeral\zmccolumn}%
+      \setbox \zboxa = \vbox to \zmcmaxht {%
+        \unvbox \name{\zmccol\romannumeral\zmccolumn}%
+        \if \notp{\flushbottom}\vfil \fi
+        \vskip -\tdimena
+        \vskip \zmcbottom}%
+      \calculate \tdimena = {\ht\zboxa,-,\splittopskip}%
+      \lower \tdimena \hbox{\box\zboxa}%
+      \if \gtrp{\zmccolumn}{1}%
+        \hskip .5\columngutter
+        \hskip -.5\columnrulewidth
+        \vrule width \columnrulewidth
+        \hskip -.5\columnrulewidth
+        \hskip .5\columngutter
+      \fi
+      \decrement \zmccolumn
+    \if \posp{\zmccolumn}\repeat
+    \hskip \zmcright
+    \hskip -\siderulewidth
+    \vrule width \siderulewidth}}
+
+\def \zmcparse #1,#2,#3,#4\zmark{%
+  \def \zmcleft {#1\relax}%
+  \def \zmcright {#2\relax}%
+  \splittopskip = #3\relax
+  \def \zmcbottom {#4\relax}}

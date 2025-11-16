@@ -1,6 +1,6 @@
 name babel
 category Package
-revision 76459
+revision 76799
 shortdesc Multilingual support for LaTeX, LuaLaTeX, XeLaTeX, and Plain TeX
 longdesc Babel is the multilingual environment for LaTeX (tailored for
 longdesc LuaTeX, pdfTeX and XeTeX), and sometimes Plain. Its aim is to
@@ -15,13 +15,13 @@ longdesc files, with tools providing precise control over hyphenation
 longdesc and line breaking, captions, date formats (across various
 longdesc calendars), spacing, transliteration, numbering and other
 longdesc locale-specific typographical rules.
-containersize 240216
-containerchecksum 6a1c753c905cb79977849531125188e920c7b8e1bac75599414e122fafc04447f3511436af4b9c597ed93ec1add6e57fc985af3d90e5fef8e2c36a12795c3938
-doccontainersize 1164868
-doccontainerchecksum 4a9fbc4ab09ced6b517ba259f3ef6f87bd8896840cf1f38bb05c4d54952cc413f371b95acfe258a4db46872cb5e30f868fd5ca1b2fd8cdba5034bf58b7961f34
-srccontainersize 936968
-srccontainerchecksum a94010ad8645546fe6867888c41622a20fd7e63bcd982d8dedd4a4c381ad0e94303cb4176ba3a9193acd4a6288da0301a4419f85b16a1552e0b5cd906e507490
-runfiles size=1323
+containersize 241968
+containerchecksum 1b7fcf1b1661487d3157cc154f497128cabd75b618016c8201024c45c511f6434c509c57483c015bce7529d9d641fb286c58802281cde9d8f84e4f1c76d60677
+doccontainersize 1168216
+doccontainerchecksum 5108e591bbe98ebc3aad65a40de0a0dcac22a981c0db407eda778dfc27df4943bc4384fa34c346a64145b8bf2a1178f8bc6aea4a6debc6057dd33900ff87e11c
+srccontainersize 952504
+srccontainerchecksum 9d20113178e3f436625b125d6d79540581de52c1d9595ceeb9c1705d1b9af9babbae64c1b94f81d7b04920f7d0a1f7e22d9515245205c1b003b8cde04943a958
+runfiles size=1340
  texmf-dist/makeindex/babel/bbglo.ist
  texmf-dist/makeindex/babel/bbind.ist
  texmf-dist/tex/generic/babel/UKenglish.sty
@@ -264,9 +264,6 @@ runfiles size=1323
  texmf-dist/tex/generic/babel/locale/de/babel-german-switzerland.tex
  texmf-dist/tex/generic/babel/locale/de/babel-german-traditional.tex
  texmf-dist/tex/generic/babel/locale/de/babel-german.tex
- texmf-dist/tex/generic/babel/locale/de/babel-naustrian.tex
- texmf-dist/tex/generic/babel/locale/de/babel-ngerman.tex
- texmf-dist/tex/generic/babel/locale/de/babel-nswissgerman.tex
  texmf-dist/tex/generic/babel/locale/de/babel-swisshighgerman.tex
  texmf-dist/tex/generic/babel/locale/dje/babel-dje.ini
  texmf-dist/tex/generic/babel/locale/dje/babel-zarma.tex
@@ -274,7 +271,6 @@ runfiles size=1323
  texmf-dist/tex/generic/babel/locale/doi/babel-doi.ini
  texmf-dist/tex/generic/babel/locale/dsb/babel-dsb.ini
  texmf-dist/tex/generic/babel/locale/dsb/babel-lowersorbian.tex
- texmf-dist/tex/generic/babel/locale/dsb/babel-lsorbian.tex
  texmf-dist/tex/generic/babel/locale/dua/babel-dua.ini
  texmf-dist/tex/generic/babel/locale/dua/babel-duala.tex
  texmf-dist/tex/generic/babel/locale/dv/babel-divehi.tex
@@ -289,6 +285,7 @@ runfiles size=1323
  texmf-dist/tex/generic/babel/locale/ee/babel-ewe.tex
  texmf-dist/tex/generic/babel/locale/egy/babel-ancientegyptian.tex
  texmf-dist/tex/generic/babel/locale/egy/babel-egy.ini
+ texmf-dist/tex/generic/babel/locale/el/babel-el-monoton.ini
  texmf-dist/tex/generic/babel/locale/el/babel-el-polyton.ini
  texmf-dist/tex/generic/babel/locale/el/babel-el.ini
  texmf-dist/tex/generic/babel/locale/el/babel-greek.tex
@@ -421,7 +418,6 @@ runfiles size=1323
  texmf-dist/tex/generic/babel/locale/hr/babel-hr.ini
  texmf-dist/tex/generic/babel/locale/hsb/babel-hsb.ini
  texmf-dist/tex/generic/babel/locale/hsb/babel-uppersorbian.tex
- texmf-dist/tex/generic/babel/locale/hsb/babel-usorbian.tex
  texmf-dist/tex/generic/babel/locale/hu/babel-hu.ini
  texmf-dist/tex/generic/babel/locale/hu/babel-hungarian.tex
  texmf-dist/tex/generic/babel/locale/hu/babel-magyar.tex
@@ -437,6 +433,26 @@ runfiles size=1323
  texmf-dist/tex/generic/babel/locale/ii/babel-sichuanyi.tex
  texmf-dist/tex/generic/babel/locale/inh/babel-ingush.tex
  texmf-dist/tex/generic/babel/locale/inh/babel-inh.ini
+ texmf-dist/tex/generic/babel/locale/invalid/babel-bahasa.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-bahasai.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-bahasam.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-brazil.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-classiclatin.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-ecclesiasticlatin.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-friulan.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-indon.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-lsorbian.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-melayu.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-naustrian.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-ngerman.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-nswissgerman.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-polutonikogreek.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-portuges.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-russianb.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-samin.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-serbianc.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-ukraineb.tex
+ texmf-dist/tex/generic/babel/locale/invalid/babel-usorbian.tex
  texmf-dist/tex/generic/babel/locale/is/babel-icelandic.tex
  texmf-dist/tex/generic/babel/locale/is/babel-is.ini
  texmf-dist/tex/generic/babel/locale/isv/babel-interslavic.tex
@@ -518,9 +534,7 @@ runfiles size=1323
  texmf-dist/tex/generic/babel/locale/ky/babel-ky.ini
  texmf-dist/tex/generic/babel/locale/ky/babel-kyrgyz.tex
  texmf-dist/tex/generic/babel/locale/la/babel-classicallatin.tex
- texmf-dist/tex/generic/babel/locale/la/babel-classiclatin.tex
  texmf-dist/tex/generic/babel/locale/la/babel-ecclesiasticallatin.tex
- texmf-dist/tex/generic/babel/locale/la/babel-ecclesiasticlatin.tex
  texmf-dist/tex/generic/babel/locale/la/babel-la-x-classic.ini
  texmf-dist/tex/generic/babel/locale/la/babel-la-x-ecclesia.ini
  texmf-dist/tex/generic/babel/locale/la/babel-la-x-medieval.ini
@@ -776,7 +790,6 @@ runfiles size=1323
  texmf-dist/tex/generic/babel/locale/sd/babel-sindhi-sind.tex
  texmf-dist/tex/generic/babel/locale/sd/babel-sindhi.tex
  texmf-dist/tex/generic/babel/locale/se/babel-northernsami.tex
- texmf-dist/tex/generic/babel/locale/se/babel-samin.tex
  texmf-dist/tex/generic/babel/locale/se/babel-se.ini
  texmf-dist/tex/generic/babel/locale/seh/babel-seh.ini
  texmf-dist/tex/generic/babel/locale/seh/babel-sena.tex
@@ -836,7 +849,6 @@ runfiles size=1323
  texmf-dist/tex/generic/babel/locale/sr/babel-serbian-latn-xk.tex
  texmf-dist/tex/generic/babel/locale/sr/babel-serbian-latn.tex
  texmf-dist/tex/generic/babel/locale/sr/babel-serbian.tex
- texmf-dist/tex/generic/babel/locale/sr/babel-serbianc.tex
  texmf-dist/tex/generic/babel/locale/sr/babel-sr-Cyrl-BA.ini
  texmf-dist/tex/generic/babel/locale/sr/babel-sr-Cyrl-ME.ini
  texmf-dist/tex/generic/babel/locale/sr/babel-sr-Cyrl-XK.ini
@@ -908,6 +920,7 @@ runfiles size=1323
  texmf-dist/tex/generic/babel/locale/uga/babel-ugaritic.tex
  texmf-dist/tex/generic/babel/locale/uk/babel-uk.ini
  texmf-dist/tex/generic/babel/locale/uk/babel-ukrainian.tex
+ texmf-dist/tex/generic/babel/locale/und/babel-und-x-nil.ini
  texmf-dist/tex/generic/babel/locale/und/babel-und.ini
  texmf-dist/tex/generic/babel/locale/ur/babel-ur.ini
  texmf-dist/tex/generic/babel/locale/ur/babel-urdu.tex
@@ -1037,4 +1050,4 @@ catalogue-contact-repository https://github.com/latex3/babel
 catalogue-ctan /macros/latex/required/babel/base
 catalogue-license lppl1.3
 catalogue-topics multilingual expl3
-catalogue-version 25.13
+catalogue-version 25.15

@@ -1,0 +1,60 @@
+% tokmap.tex, version 1.0
+
+% Copyright (C) 2025 plante
+% This package is released under the LaTeX Project Public License (LPPL) 1.3c.
+
+% tokmap: iterate over a token list expandably, without dropping spaces or braced groups.
+
+% Usage: `\tokmap <command> { <tokens> }` applies command over the token list tokens.
+% Space tokens, left and right braces are replaced with the marker tokens `\tokmap@space`,
+% `\tokmap@bgroup`, and `\tokmap@egroup` respectively (who are `\ifx`-equal to themselves
+% exclusively). For convenience, command may contain multiple tokens.
+% It is assumed that `{` and `}` are the only characters with category codes 1
+% (beginning of group) and 2 (end of group) respectively.
+% Expandable.
+
+% This package may be used in LaTeX by `\usepackage{tokmap}`, or
+% in plain TeX and other formats by `\input{tokmap}`.
+
+% See the visualtoks package for an example application.
+
+
+
+\ifdefined\tokmap
+	\expandafter\endinput
+\fi
+\edef\next{\catcode`\noexpand\@=\the\catcode`\@\space}
+\catcode`\@=11
+
+\long\def\tokmap#1#2{\iffalse{\fi \tokmapA{#1}#2{\tokmap@nil}\tokmap@nil \iffalse}\fi}
+\long\def\tokmapA#1#2#{%
+	\tokmapB\tokmapC{#1}#2 \tokmap@nil \tokmap@nil
+	\tokmapD{#1}%
+}
+\long\def\tokmapB#1 #2\tokmap@nil{%
+	\if\relax\detokenize{#2}\relax \expandafter\@firstoftwo \else \expandafter\@secondoftwo \fi
+		{#1\tokmap@nil}%
+		{\tokmapB#1\tokmap@space#2\tokmap@nil}%
+}
+\long\def\tokmapC#1#2{%
+	\ifx\tokmap@nil#2\expandafter\tokmapE\fi
+	#1{#2}\tokmapC{#1}%
+}
+\long\def\tokmapD#1#2{%
+	\if\relax\detokenize\expandafter{\tokmapE#2\tokmap@nil}\relax \else \expandafter\tokmapE \fi
+	#1\tokmap@bgroup\tokmap{#1}{#2}#1\tokmap@egroup
+	\tokmapA{#1}%
+}
+\long\def\tokmapE#1\tokmap@nil{}
+
+\protected\def\tokmap@bgroup{\noexpand\tokmap@bgroup}
+\protected\def\tokmap@egroup{\noexpand\tokmap@egroup}
+\protected\def\tokmap@space {\noexpand\tokmap@space}
+\protected\def\tokmap@nil{\noexpand\tokmap@nil}
+
+\ifx\@firstoftwo\@undefined  \long\def\@firstoftwo#1#2{#1} \fi
+\ifx\@secondoftwo\@undefined \long\def\@secondoftwo#1#2{#2}\fi
+
+\next
+
+\endinput

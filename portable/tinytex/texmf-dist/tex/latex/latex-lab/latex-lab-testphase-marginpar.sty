@@ -1,0 +1,124 @@
+%%
+%% This is file `latex-lab-testphase-marginpar.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-marginpar.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-marginpar.dtx
+%%
+\def\ltlabmarginpardate{2025-07-23}
+\def\ltlabmarginparversion{0.85h}
+
+\ProvidesExplPackage {latex-lab-testphase-marginpar} {\ltlabmarginpardate} {\ltlabmarginparversion}
+  {Changes related to the tagging of the margin notes}
+\int_new:N \g__kernel_marginpar_int
+\cs_new_protected:Npn\__tag_get_marginpar_parent_aux:nn #1 #2
+ {
+   \str_if_eq:eeT{\use_ii:nn #1}{Part}{\seq_put_right:Nn\l__tag_tmpa_seq {#2}}
+   \str_if_eq:eeT{\use_ii:nn #1}{Sect}{\seq_put_right:Nn\l__tag_tmpa_seq {#2}}
+ }
+\cs_new_protected:Npn \__tag_get_marginpar_parent:N #1
+ {
+   \seq_clear:N\l__tag_tmpa_seq
+   \seq_map_pairwise_function:NNN
+     \g__tag_struct_tag_stack_seq
+     \g__tag_struct_stack_seq
+     \__tag_get_marginpar_parent_aux:nn
+   \seq_put_right:Nn\l__tag_tmpa_seq {2}
+   \seq_get_left:NN \l__tag_tmpa_seq #1
+ }
+\cs_generate_variant:Nn \tag_struct_begin:n {e}
+\NewTaggingSocketPlug{marginpar/begin}{default}
+  {
+   \if_mode_horizontal:
+    \tag_mc_end:
+    \__tag_get_marginpar_parent:N \l__tag_tmpa_tl
+    \tag_struct_begin:e{tag=Aside,parent=\l__tag_tmpa_tl}%
+   \else:
+    \tag_struct_begin:n{tag=Aside}%
+   \fi:
+  }
+\NewTaggingSocketPlug{marginpar/end}{default}
+  {
+    \tag_struct_end:
+    \if_mode_horizontal: \tag_mc_begin:n{} \fi:
+  }
+\AssignTaggingSocketPlug{marginpar/begin}{default}
+\AssignTaggingSocketPlug{marginpar/end}{default}
+
+\long\def \@savemarbox #1#2{%
+  \UseTaggingSocket{marginpar/begin}
+  \global\setbox #1%
+    \color@vbox
+      \vtop{%
+        \hsize\marginparwidth
+        \@parboxrestore
+        \@marginparreset
+        #2\par
+        \@minipagefalse
+        \outer@nobreak
+        }%
+    \color@endbox
+   \UseTaggingSocket{marginpar/end}
+}
+\long\def\@ympar#1{%
+  \@savemarbox\@marbox{#1}%
+  \global\setbox\@currbox\copy\@marbox
+  \tag_suspend:n{\@ympar}
+  \@xympar
+  \tag_resume:n{\@ympar}}
+\long\def\@xmpar[#1]#2{%
+  \int_gincr:N\g__kernel_marginpar_int
+  \property_if_recorded:eTF { tag_marginpar-opt-\int_use:N\g__kernel_marginpar_int }
+    {
+     \@savemarbox\@marbox {#1
+       \property_record:ee
+         { tag_marginpar-opt-\int_use:N\g__kernel_marginpar_int }{page}
+       }%
+     \tag_suspend:n{\@xmpar}
+     \@savemarbox\@currbox{#2}%
+     \tag_resume:n{\@xmpar}
+    }
+    {
+     \@savemarbox\@currbox{#2}%
+     \tag_suspend:n{\@xmpar}
+     \@savemarbox\@marbox{#1
+       \property_record:ee
+         { tag_marginpar-opt-\int_use:N\g__kernel_marginpar_int }{page}}
+     \tag_resume:n{\@xmpar}
+    }
+  \tag_suspend:n{\@xmpar}
+  \@xympar
+  \tag_resume:n{\@xmpar}
+  }
+\endinput
+%%
+%% End of file `latex-lab-testphase-marginpar.sty'.

@@ -1,0 +1,89 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX MathTime Font Support
+%
+% Synopsis:  This module contains various definitions and redefinitions
+%            necessary to use the MathTime fonts by The TeXplorators Corp.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   24 March 1993
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Type Styles
+%                       ---- ------
+
+\setstyleskewchar{\mit}{"2D}
+
+%                       Redefine Text Accents
+%                       -------- ---- -------
+
+
+\def \t #1{%                                    %~ Tie-after accent. %^accent
+  {\edef \znext {\the\font}\the\textfont2 \accent "41 \znext #1}}
+
+%                       Redefine Math Characters
+%                       -------- ---- ----------
+
+
+\zmchar \Gamma                  \classord \mitfam {30}
+\zmchar \Delta                  \classord \mitfam {31}
+\zmchar \Theta                  \classord \mitfam {32}
+\zmchar \Lambda                 \classord \mitfam {33}
+\zmchar \Xi                     \classord \mitfam {34}
+\zmchar \Pi                     \classord \mitfam {35}
+\zmchar \Sigma                  \classord \mitfam {36}
+\zmchar \Upsilon                \classord \mitfam {37}
+\zmchar \Phi                    \classord \mitfam {38}
+\zmchar \Psi                    \classord \mitfam {39}
+\zmchar \Omega                  \classord \mitfam {7F}
+
+\zmchar \varkappa               \classord \mitfam {7E}
+
+\zmchar {`+}                    \classbinop \msyfam {43}
+\zmchar \compose                \classbinop \msyfam {42}
+\zmchar \capprod                \classbinop \msyfam {5A}
+\zmchar \cupprod                \classbinop \msyfam {59}
+% Do not define \zmdagger and \zmddagger.
+\zmchar \setdiff                \classbinop \msyfam {58}
+
+\zmchar \triangleleft           \classbinop \msyfam {47}
+\zmchar \triangleright          \classbinop \msyfam {46}
+
+\zmchar {`=}                    \classrel \msyfam {44}
+
+\zmchar {`(}                    \classopen \mitfam {2E}
+\definemathdelimiter {`(}       \classord \mitfam {2E} \mexfam {00}
+
+\zmchar {`)}                    \classclose \mitfam {2F}
+\definemathdelimiter {`)}       \classord \mitfam {2F} \mexfam {01}
+
+\def \hbar {\mathord{h \llap{$\mathchar"024E \mkern 3.5mu$}}}
+
+\def \acute   {\zmtaccent{024B}{7013}}          %~ Acute accent. %^math_accent
+\def \bar     {\zmtaccent{024E}{7016}}          %~ Bar accent. %^math_accent
+\def \breve   {\zmtaccent{024D}{7015}}          %~ Breve accent. %^math_accent
+\def \check   {\zmtaccent{024C}{7014}}          %~ Check accent. %^math_accent
+\def \ddot    {\zmtaccent{0252}{????}}          %~ Double dot accent. %^math_accent
+\def \dot     {\zmtaccent{0250}{700B}}          %~ Dot accent. %^math_accent
+\def \grave   {\zmtaccent{024A}{7012}}          %~ Grave accent. %^math_accent
+\def \zmhat   {\zmtaccent{024F}{7007}}          %~ Hat accent. %^math_accent
+\def \zmtilde {\zmtaccent{0251}{700F}}          %~ Tilde accent. %^math_accent
+\def \vec     {\mathaccent "0245\relax}         %~ Vector accent. %^math_accent
+\def \widebar {\mathaccent "0253\relax}         %~ Wide bar accent. %^math_accent
+
+\def \zmtaccent #1#2{%
+  \if \eqlp{\fam}{-1}%
+    \mathaccent "#1\relax
+  \else
+    \mathaccent "#2\relax
+  \fi}
+
+%                       Redefine General Tools
+%                       -------- ------- -----
+
+
+\zmchar \Relbar \classrel \msyfam {48}

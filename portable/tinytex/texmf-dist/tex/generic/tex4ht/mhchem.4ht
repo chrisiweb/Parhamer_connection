@@ -1,0 +1,234 @@
+% mhchem.4ht (2024-03-01-14:08), generated from tex4ht-4ht.tex
+% Copyright 2024 TeX Users Group
+% Copyright 2015-2021 Martin Hensel
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2024-03-01-14:08}
+
+\ExplSyntaxOn
+% basic mhchem containers
+\NewConfigure{mhchemce}{2}
+\NewConfigure{mhchemcf}{2}
+
+\pend:def\__mhchem_output_begin_ce:{\a:mhchemce}
+\append:def\__mhchem_output_end_ce:{\b:mhchemce}
+\pend:def\__mhchem_output_begin_cf:{\a:mhchemcf}
+\append:def\__mhchem_output_end_cf:{\b:mhchemcf}
+
+% alternative version of coreFivd
+
+\NewConfigure{mhchemisotope}{3}
+
+\NewConfigure{mhchemsub}{2}
+
+\NewConfigure{mhchemsup}{2}
+
+\NewConfigure{mhchemsupsub}{3}
+
+\cs_set_protected:Npn \__mhchem_output_coreFivefourht:nnnnnnn #1#2#3#4#5#6#7
+  {
+    \bool_if:nT
+      { \tl_if_empty_p:n {#7}  &&  ! \tl_if_empty_p:n {#5} }
+      { \bool_set_true:N \l__mhchem_option_superscriptsStacked_bool }
+
+    \tl_if_empty:nF {#1#2}
+      {
+        \a:mhchemisotope
+        \__mhchem_output_withFont:n { #1 }
+        \b:mhchemisotope
+        \__mhchem_output_withFont:n { #2 }
+        \c:mhchemisotope
+      }
+    \__mhchem_output_withFont:n { #3 }
+    \bool_if:NTF \l__mhchem_option_superscriptsStacked_bool
+      {
+        \tl_if_empty:nTF {#4#5#7}
+          {
+            \tl_if_empty:nF {#6}
+              {
+                \a:mhchemsub
+                \__mhchem_output_withFont:n { #6 }
+                \b:mhchemsub
+              }
+          }
+          {
+            \tl_if_empty:nTF {#6}
+              {
+                \a:mhchemsup
+                \__mhchem_output_withFont:n { #4#5#7 }
+                \b:mhchemsup
+              }
+              {
+                \a:mhchemsupsub
+                \__mhchem_output_withFont:n { #4#5#7 }
+                \c:mhchemsupsub
+                \__mhchem_output_withFont:n { #6 }
+                \b:mhchemsupsub
+             }
+          }
+      }
+      {
+        \tl_if_empty:nF {#4}
+          {
+            \a:mhchemsup
+            \__mhchem_output_withFont:n { #4 }
+            \b:mhchemsup
+          }
+    \tl_if_empty:nF {#6}
+      {
+            \a:mhchemsub
+            \__mhchem_output_withFont:n { #6 }
+            \b:mhchemsub
+      }
+        \tl_if_empty:nF {#5#7}
+          {
+            \a:mhchemsup
+            \__mhchem_output_withFont:n { #5#7 }
+            \b:mhchemsup
+          }
+      }
+  }
+
+% replace original coreFive with our alternative version. it will work in picture math
+\HLet\__mhchem_output_coreFive:nnnnnnn\__mhchem_output_coreFivefourht:nnnnnnn
+
+\cs_set_protected:Npn \__mhchem_output_withFontfourht:n #1  %. output #1 as math or text
+  {
+    \bool_if:NTF \l__mhchem_output_isMathMode_bool
+      { \begingroup\mathrm {#1}\endgroup }
+      { \begingroup\text {#1}\endgroup }
+  }
+
+\HLet\__mhchem_output_withFont:n\__mhchem_output_withFontfourht:n
+
+\NewConfigure{mhchemoperator}{2}
+
+\def\:tempa#1#2{%
+ \cs_set_protected:Npn\:tempb:{#2}%
+ \HLet#1\:tempb:%
+}
+
+\:tempa \__mhchem_output_skipAfterAmount: {\HCode { ~ } }  % space for copy & paste
+\:tempa \__mhchem_output_skipBeforeStateOfAggregation: {}
+\:tempa \__mhchem_output_minus: {\HCode{&\#x2212;}} % minus
+\:tempa \__mhchem_output_operatorPlus:{ \HCode {\a:mhchemoperator + \b:mhchemoperator  }}
+\:tempa \__mhchem_output_operatorMinus:{ \HCode {\a:mhchemoperator&\#x2212; \b:mhchemoperator }} % minus
+\:tempa \__mhchem_output_operatorEquals:{ \HCode {\a:mhchemoperator =  \b:mhchemoperator }}
+\:tempa \__mhchem_output_operatorPlusMinus:{\HCode {\a:mhchemoperator &\#xB1; \b:mhchemoperator }} % plusmn
+\:tempa \__mhchem_output_electronDot: { \HCode {&\#x2022;} } % bull
+\:tempa \__mhchem_output_additionCompound: { \HCode {&\#xB7;} } % middot
+\:tempa \__mhchem_output_excited: { \HCode { &\#x2731; } }
+\:tempa \__mhchem_output_commaDecimal: { , }
+\:tempa \__mhchem_output_commaEnumeration: {,\HCode {&\#x2009;} } % thinsp
+\:tempa \__mhchem_output_commaEnumerationSmall: {,\HCode{&\#x2009;} } % thinsp
+
+\:tempa \__mhchem_output_bond_single: { \HCode { \a:mhchemoperator&\#x2212;\b:mhchemoperator}}
+\:tempa \__mhchem_output_bond_double: { \HCode { \a:mhchemoperator=\b:mhchemoperator}}
+\:tempa \__mhchem_output_bond_triple: { \HCode { \a:mhchemoperator&\#x2261;\b:mhchemoperator}}
+
+% todo: add MathML support for these
+\:tempa \__mhchem_output_bond_half:{\a:mhchembondhalf}
+\:tempa \__mhchem_output_bond_oneAndHalf:{\a:mhchembondoneandhalf}
+\:tempa \__mhchem_output_bond_twoAndHalf:{\a:mhchembondtwoandhalf}
+\:tempa \__mhchem_output_bond_twoAndHalff:{\a:mhchembondtwoandhalff}
+
+\:tempa \__mhchem_output_bond_dotdotdot: { \HCode { &\#xB7;&\#xB7;&\#xB7;} } % &middot;&middot;&middot;
+\:tempa \__mhchem_output_bond_dotdotdotdot: { \HCode { &\#xB7;&\#xB7;&\#xB7;&\#xB7;} } %  &middot;&middot;&middot;&middot;
+\:tempa \__mhchem_output_bond_rightArrow: { \HCode {\a:mhchemoperator &\#x2192;\b:mhchemoperator } }
+\:tempa \__mhchem_output_bond_leftArrow: {\HCode {\a:mhchemoperator &\#x2190;\b:mhchemoperator }}
+
+
+\NewConfigure{mhchembondhalf}{1}
+\NewConfigure{mhchembondoneandhalf}{1}
+\NewConfigure{mhchembondtwoandhalf}{1}
+\NewConfigure{mhchembondtwoandhalff}{1}
+
+
+\NewConfigure{mhchemarrow}{2}
+\NewConfigure{mhchemarrowabove}{2}
+
+\NewConfigure{mhchemarrowyields}{1}
+\NewConfigure{mhchemarrowyieldsLeft}{1}
+\NewConfigure{mhchemarrowyieldsLeftRight}{1}
+\NewConfigure{mhchemarrowmesomerism}{1}
+\NewConfigure{mhchemarrowequilibrium}{1}
+\NewConfigure{mhchemarrowequilibriumRight}{1}
+\NewConfigure{mhchemarrowequilibriumLeft}{1}
+
+
+
+
+\cs_set_protected:Npn \__mhchem_arrow_deployfourht:nnnnn #1#2#3#4#5
+  {
+    \a:mhchemarrow
+    \tl_if_empty:nF {#3#5}
+      {
+        \a:mhchemarrowabove
+        \str_case:nnF {#2}
+          {
+            {   } { \ce { #3 } }
+            { M } { \ensuremath { #3 } }
+            { T } { \text { #3 } }
+            { C } { \ce { #3 } }
+          }
+          { \msg_error:nnn { mhchem } { unexpected-arrow-type } {#2} }
+          \b:mhchemarrowabove
+      }
+    \str_case:nnF {#1}
+      {
+        { yields } {\a:mhchemarrowyields }
+        { yieldsLeft } {\a:mhchemarrowyieldsLeft }
+        { yieldsLeftRight } {\a:mhchemarrowyieldsLeftRight }  % todo: improve
+        { esomerism } {\a:mhchemarrowesomerism }  % todo: improve
+        { equilibrium } {\a:mhchemarrowequilibrium }  % todo: improve
+        { equilibriumRight } {\a:mhchemarrowequilibriumRight }  % todo: improve
+        { equilibriumLeft } {\a:mhchemarrowequilibriumLeft }  % todo: improve
+      }
+      { \msg_error:nnn { mhchem } { unexpected-arrow-type } {#1} }
+    \tl_if_empty:nF {#3#5}
+      {
+        \a:mhchemarrowabove
+        \str_case:nnF {#2}
+          {
+            {   } { \ce { #5 } }
+            { M } { \ensuremath { #5 } }
+            { T } { \text { #5 } }
+            { C } { \ce { #5 } }
+          }
+          { \msg_error:nnn { mhchem } { unexpected-arrow-type } {#2} }
+        \b:mhchemarrowabove
+      }
+    \b:mhchemarrow
+  }
+
+\HLet\__mhchem_arrow_deploy:nnnnn\__mhchem_arrow_deployfourht:nnnnn
+
+\ExplSyntaxOff
+
+
+% Additional configurations for MathML
+
+% print mathml command or html, depending on if we are inside mathml or not
+\newcommand\:mhmathmlorhtml[2]{\ifmathml\a:mathml #1\else #2\fi}
+\newcommand\:mhonlyinmathml[1]{\ifmathml #1\fi}
+
+
+
+
+\Hinput{mhchem}
+\endinput
+

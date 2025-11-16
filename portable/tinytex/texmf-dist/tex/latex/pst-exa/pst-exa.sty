@@ -1,0 +1,312 @@
+% $Id: pst-exa.sty 113 2014-09-24 11:14:36Z herbert $
+%% BEGIN pst-exa.tex
+%%
+%% Code and image side by side or on top of
+%% each other with PSTricks.
+%%
+%% COPYRIGHT 2015- by Herbert Voss, <hvoss@tug.org>
+%%                    Pablo Gonz\'{a}lez Luengo <pablogonz@yahoo.com>
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN
+%% archives in directory macros/latex/base/lppl.txt.
+%%
+%
+\NeedsTeXFormat{LaTeX2e}
+\def\filedate{2017/09/11}
+\def\fileversion{v0.06}
+\ProvidesPackage{pst-exa}[\filedate\space\fileversion\space]
+\RequirePackage{etoolbox}
+\RequirePackage{xcolor}
+\RequirePackage{showexpl}%
+\RequirePackage{accsupp}
+\RequirePackage{changepage}%
+\RequirePackage{tcolorbox}%
+\tcbuselibrary{listings,breakable,skins,xparse}%
+\newcommand*{\noaccsupp}[1]{\BeginAccSupp{ActualText={}}#1\EndAccSupp{}}
+\renewcommand*\SX@Info{}%
+% Colors
+\definecolor{hellgelb}{rgb}{1,1,0.8}
+\definecolor{colKeys}{rgb}{0,0,1}
+\definecolor{colIdentifier}{rgb}{0,0,0}
+\definecolor{colComments}{rgb}{1,0,0}
+\definecolor{colString}{rgb}{0,0.5,0}
+% patch listings (etoolbox)
+\patchcmd{\lsthk@SelectCharTable}{`)}{``}{}{}
+% Define PSTexa languaje and common options
+\lstdefinelanguage{PSTexa}{
+    language=PSTricks,%
+    texcsstyle=*\color{blue},%
+    basicstyle=\ttfamily\small,%
+    columns=flexible,%
+    identifierstyle=\color{colIdentifier},%
+    keywordstyle=\color{colKeys},%
+    stringstyle=\color{colString},%
+    showspaces=false,%
+    showstringspaces=false,%
+    numberstyle=\tiny,%
+    breaklines=true,%
+    tabsize=4,%
+    breakautoindent=true,%
+    extendedchars=true, %
+    keepspaces=true,%
+    commentstyle=\color{colComments},%
+    morekeywords={psellipseAB,pnodes,postcript,psRing},%
+    morecomment=[l]\%,%
+    morestring=[b]"%,
+  }[keywords,tex,comments]%
+% end PSTexa languaje
+% Bolean
+\newif\ifpstexa@swpl % swpl: true, tcb: false
+\newif\ifmypack@pdf  % option pdf
+% Options
+\DeclareOption{swpl}{\pstexa@swpltrue}
+\DeclareOption{tcb}{\pstexa@swplfalse}
+\DeclareOption{pdf}{\mypack@pdftrue}
+% Proces options
+\ProcessOptions*
+% Star code for swpl option
+\ifpstexa@swpl
+% Environment for code
+\lstnewenvironment{PSTcode}
+  {%
+\lstset{
+    language=PSTexa,%
+    frame=single,%
+    numbers=left,%
+    numbersep=1em,%
+    numberstyle=\tiny\color{black!75}\noaccsupp,%
+    rulecolor=\color{black!67},%
+    framesep=\fboxsep,%
+    framerule=\fboxrule,%
+    xleftmargin=\dimexpr\fboxsep+\fboxrule\relax,%
+    xrightmargin=\dimexpr\fboxsep+\fboxrule\relax,%
+    backgroundcolor=\color[rgb]{1,1,0.8},%
+% literateee
+literate=*{\{}{{\textcolor{blue}{\{}}}{1}
+    {\}}{{\textcolor{blue}{\}}}}{1}
+    {[}{{\textcolor{blue}{[}}}{1}
+    {]}{{\textcolor{blue}{]}}}{1}
+    {(}{{\textcolor{blue}{(}}}{1}
+    {)}{{\textcolor{blue}{)}}}{1}
+    {\$}{{\textcolor{red}{\$}}}{1}
+    {\#}{{\textcolor{red}{\#}}}{1}%,
+ }% close lstset
+ }%
+{}% close PSTcode
+
+% Change position for images
+\renewcommand*\SX@resultInput{%
+  \ifx\SX@graphicname\@empty
+    \begingroup
+      \MakePercentComment\makeatother\catcode`\^^M=5\relax
+      \SX@@preset\SX@preset
+      \if@SX@rangeaccept
+       \let\SX@tempa=\SX@input
+      \else
+       \let\SX@tempa=\input
+      \fi
+      \SX@tempa{\SX@codefile}\par%
+    \endgroup
+  \else
+    \begin{center}
+      \expandafter\includegraphics\expandafter[\SX@graphicparam]{\SX@graphicname}
+    \end{center}
+  \fi
+}% end change postition
+% PSTexample definition in swpl
+ \lstnewenvironment{PSTexample}[1][]
+ {%
+ \lstset{%
+    language=PSTexa,%
+    frame=single,%
+    numbers=left,%
+    numbersep=1em,%
+    numberstyle=\tiny\color{black!75}\noaccsupp,%
+    rulecolor=\color{black!67},%
+    framesep=\fboxsep,%
+    framerule=\fboxrule,%
+    xleftmargin=\dimexpr\fboxsep+\fboxrule\relax,%
+    xrightmargin=\dimexpr\fboxsep+\fboxrule\relax,%
+    backgroundcolor=\color[rgb]{1,1,0.8},%
+% literate for swpl, need inside the explpreset
+    explpreset={
+% literate
+literate=*{\{}{{\textcolor{blue}{\{}}}{1}
+    {\}}{{\textcolor{blue}{\}}}}{1}
+    {[}{{\textcolor{blue}{[}}}{1}
+    {]}{{\textcolor{blue}{]}}}{1}
+    {(}{{\textcolor{blue}{(}}}{1}
+    {)}{{\textcolor{blue}{)}}}{1}
+    {\$}{{\textcolor{red}{\$}}}{1}
+    {\#}{{\textcolor{red}{\#}}}{1},%
+    codefile=\jobname.swpl,%
+    hsep=\columnsep,%
+    vsep=15pt,%
+    pos=l,%
+    wide=false,%
+    rframe={},%
+    preset=\centering,%
+    } % close explpreset
+ } % close lstset
+  \@temptokena{#1}%
+   \begingroup
+     \advance\c@ltxexample\@ne \advance\c@lstlisting\@ne
+     \expandafter\lstset\expandafter{\SX@explpreset,#1}%
+     \edef\x{\endgroup
+       \def\noexpand\SX@codefile{\SX@codefile}%
+       \def\noexpand\SX@graphicname{\SX@graphicname}%
+       \def\noexpand\SX@graphicparam{\SX@graphicparam}}%
+   \x
+   \xdef\SX@@explpreset{\the\@temptokena,codefile=\SX@codefile,
+     graphic={[\SX@graphicparam]{\SX@graphicname}}}%
+   \setbox\@tempboxa=\hbox\bgroup% Warum noetig?
+   \lst@BeginWriteFile{\SX@codefile}%
+% Change position for images
+ }
+ {%
+   \lst@EndWriteFile\egroup
+   \SX@put@code@result
+  }% close environment
+% end swpl code
+\else
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Star code for tcb option %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define style for tcolorbox
+\lstdefinestyle{pstexample}{%
+    language=PSTexa,%
+    framesep=\fboxsep,%
+    framerule=\fboxrule,%
+    xleftmargin=\dimexpr\fboxsep+\fboxrule\relax,%
+    xrightmargin=\dimexpr\fboxsep+\fboxrule\relax,%
+% literateee
+literate=*{\{}{{\textcolor{blue}{\{}}}{1}
+    {\}}{{\textcolor{blue}{\}}}}{1}
+    {[}{{\textcolor{blue}{[}}}{1}
+    {]}{{\textcolor{blue}{]}}}{1}
+    {(}{{\textcolor{blue}{(}}}{1}
+    {)}{{\textcolor{blue}{)}}}{1}
+    {\$}{{\textcolor{red}{\$}}}{1}
+    {\#}{{\textcolor{red}{\#}}}{1}%,
+         }
+% Set options for tcb using pgfkeys
+\tcbset{
+    hwidth/.store in=\hwidth,% width left/right
+    hwidth=0.5\linewidth,% set default
+    graphic/.style 2 args={comment={\includegraphics[#1]{#2}}},% image coment
+    pos/.is choice,% Define pos=t,b,l,r
+    numbers/.is choice,% Define number=true,false,etc
+    after=\par,%
+    fcolor/.style={colframe=#1},% Frame color
+    tcolor/.style={colbacktitle=#1},,% Colback title color
+    bcolor/.style={colback=#1},% Background color
+    scolor/.style={drop fuzzy shadow=#1},% Shadow color
+    hsep/.style={sidebyside gap=#1},% Horizontal sep
+    vsep/.style={middle=#1}%,% Vertical sep
+    }
+% Config pos=t,b,l,r for pdftex
+%\ifpdf
+\ifmypack@pdf
+\tcbset{
+    pos/r/.style={listing outside comment,righthand width=\hwidth},%
+    pos/l/.style={comment outside listing,lefthand width=\hwidth},%
+    pos/b/.style={listing above comment},%
+    pos/t/.style={comment above listing},%
+    pos/e/.code={\ifoddpage\tcbset{pos=l}\else\tcbset{pos=r}\fi}%,
+    }
+% Config pos=t,b,l,r xetex/latex
+\else
+\tcbset{
+    pos/r/.style={listing outside text,righthand width=\hwidth},%
+    pos/l/.style={text outside listing,lefthand width=\hwidth},%
+    pos/b/.style={listing above text},%
+    pos/t/.style={text above listing},%
+    pos/e/.code={\ifoddpage\tcbset{pos=l}\else\tcbset{pos=r}\fi},
+    }
+\fi % close pdf option for tcb
+% Star common code for tcb
+\tcbset{
+numbers/true/.style={%
+    listing options={%
+ style=pstexample,%
+ numbers=left,%
+ numbersep=0.5em,%
+ framesep=\fboxsep,%
+ framerule=\fboxrule,%
+ xleftmargin=-\dimexpr\fboxsep-\fboxrule\relax,%
+ xrightmargin=\dimexpr\fboxsep+\fboxrule\relax,%
+ numberstyle=\tiny\color{black!75}\noaccsupp,%
+     }% close listings options
+    },% close numbers true
+numbers/none/.style={%
+    listing options={%
+ style=pstexample,%
+ xleftmargin=-1.5em,%
+ xrightmargin=-\dimexpr\fboxsep-\fboxrule\relax,%
+ numbers=none
+ }% close listings options
+    },% close numbers none
+numbers/out/.style={%
+    listing options={%
+ style=pstexample,%
+ xleftmargin=-1.5em,%
+ numbers=left,%
+        numbersep=1em,%
+ numberstyle=\tiny\color{black!75}\noaccsupp,%
+ }% close listings options
+    },% close numbers out
+numbers/fancy/.style={
+    overlay={\begin{tcbclipinterior}\fill[red!20!blue!20!white] (frame.south west)%
+ rectangle ([xshift=12pt]frame.north west);\end{tcbclipinterior}},%
+    listing options={%
+ style=pstexample,%
+ numbers=left,%
+ numbersep=0.85em,%
+        xleftmargin=0em,%
+ numberstyle=\tiny\color{black!75}\noaccsupp,%
+ }% close listings options
+    }%,%
+} % close tcb settings
+% Default PSTexample environment style
+\tcbset{
+psexample/.style={%
+    enhanced,%
+    autoparskip,
+    center lower,%
+    drop fuzzy shadow=gray,%
+    hsep=\columnsep,%
+    vsep=15pt,%
+    title style={draw=none,fill=none},%
+    pos=l,%
+    numbers=true,%
+    tcolor=black!67,%
+    bcolor=hellgelb,%
+    fcolor=black!67,%
+    top=-2.5mm,bottom=-2.5mm,boxsep=3pt,%
+    fonttitle=\bfseries\small,boxrule=0.8pt
+    }% close psexample settings
+} % close tcbset
+% Default PSTexample environment style
+\tcbset{
+pscode/.style={%
+    enhanced,%
+    autoparskip,
+    arc=0mm,%
+    drop fuzzy shadow=gray,%
+    title style={draw=none,fill=none},%
+    listing only,
+    numbers=out,%
+    bcolor=hellgelb,%
+    fcolor=black!67,%
+    top=-2.5mm,bottom=-2.5mm,boxsep=3pt,%
+    fonttitle=\bfseries\small,boxrule=0.8pt
+    }% close psexample settings
+}
+% Define PSTexample environment
+\NewTCBListing{PSTexample}{O{}}{psexample,#1}
+\NewTCBListing{PSTcode}{O{}}{pscode,#1}
+%% end PSTexample environment
+\fi
+\endinput
+

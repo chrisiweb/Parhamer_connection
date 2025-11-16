@@ -1,0 +1,91 @@
+%% S. Lurp --- STRETCHY --- MIT License
+\bgroup
+\setbox0=\hbox{\vrule height4.481pt width\z@ depth.13pt e}
+\setbox1=\vbox to.5\ht0{\copy0\vss}
+\setbox2=\vbox to.5\ht0{\vss\copy0}
+\pdfxform1 \xdef\strty@etop{\pdfrefxform\the\pdflastxform}
+\pdfxform2 \xdef\strty@ebot{\pdfrefxform\the\pdflastxform}
+\setbox1=\hbox to2.372pt{\strty@etop\hss}
+\setbox2=\hbox to\dimexpr\wd0-2.372pt\relax{\hss\strty@etop}
+\pdfxform1 \xdef\strty@etl{\pdfrefxform\the\pdflastxform}
+\pdfxform2 \xdef\strty@etr{\pdfrefxform\the\pdflastxform}
+\egroup
+
+\def\strty@e#1{%
+    \vbox{\offinterlineskip%
+        \hbox to#1{%
+            \setbox0=\hbox{\strty@etl}%
+            \setbox1=\hbox{\strty@etr}%
+            \def\strty@trans##1##2{%
+                {\strty@mult\strty@ptm{%
+                    \strty@add{\strty@mult{%
+                        \strty@nopt{#1-\wd0-\wd1}}%
+                        {##1}%
+                    }%
+                    {\strty@nopt{\wd0}}%
+                }}
+                {\strty@mult\strty@ptm{##2}}
+            }%
+            \pdfliteral{
+                \strty@p{0}{2.023} m
+                \strty@p{1}{2.023} l
+                \strty@p{1}{2.24} l
+                \strty@p{0}{2.24} l
+                h
+                f
+                \strty@p{0}{.074} m
+                \strty@p{1}{.074} l
+                \strty@p{1}{.284} l
+                \strty@p{0}{.284} l
+                h
+                f
+            }%
+            \strty@etl\hss\strty@etr%
+        }%
+        \hbox{\strty@ebot}%
+    }%
+}
+
+\bgroup
+\setbox0=\hbox{\vrule height\z@ width\z@ depth.13pt t}
+\setbox1=\vbox to.5\ht0{\copy0\vss}
+\setbox2=\vbox to.5\ht0{\vss\copy0}
+\pdfxform1 \xdef\strty@topt{\pdfrefxform\the\pdflastxform}
+\pdfxform2 \xdef\strty@bott{\pdfrefxform\the\pdflastxform}
+\egroup
+
+\def\strty@t#1#2{%
+    \lower\dimexpr#2-6.151pt\relax\vbox to#2{%
+        \offinterlineskip%
+        \setbox0=\hbox{\strty@topt}%
+        \setbox1=\hbox{\strty@bott}%
+        \strty@setpttrans%
+        \hbox to#1{%
+            \pdfliteral{
+                \strty@p{0}{.92} m
+                \strty@p{\strty@nopt{#1}}{.92} l
+                \strty@p{\strty@nopt{#1}}{1.23} l
+                \strty@p{\strty@mult{.5}{\strty@nopt{#1}}}{1.23} l
+                \strty@p{\strty@mult{.5}{\strty@nopt{#1}}}{1.14} l
+                \strty@p{0}{1.14} l
+                h
+                f
+            }%
+            \hss\strty@topt\hss%
+        }%
+        \vss%
+        \pdfliteral{%
+            \strty@p{\strty@nopt{\strty@mult{.5}{\strty@nopt{#1}}pt-.905pt}}{0} m
+            \strty@p{\strty@nopt{\strty@mult{.5}{\strty@nopt{#1}}pt-.905pt}}{\strty@nopt{#2-\ht0-\ht1}} l
+            \strty@p{\strty@nopt{\strty@mult{.5}{\strty@nopt{#1}}pt-.215pt}}{\strty@nopt{#2-\ht0-\ht1}} l
+            \strty@p{\strty@nopt{\strty@mult{.5}{\strty@nopt{#1}}pt-.215pt}}{0} l
+            h
+            f
+        }%
+        \hbox to#1{%
+            \hss\strty@bott\hss%
+        }%
+    }%
+}
+
+\def\stretchylogo{Str\strty@e{10pt}\strty@t{10pt}{20pt}chy}

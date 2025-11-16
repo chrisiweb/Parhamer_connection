@@ -1,0 +1,65 @@
+% ulem.4ht (2022-05-01-08:25), generated from tex4ht-4ht.tex
+% Copyright 2001-2009 Eitan M. Gurari
+% Copyright 2009-2022 TeX Users Group
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any
+% later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions
+% of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer of this work
+% is the TeX4ht Project <http://tug.org/tex4ht>.
+%
+% If you modify this program, changing the
+% version identification would be appreciated.
+\immediate\write-1{version 2022-05-01-08:25}
+
+
+\def\:ulemchoose#1#2{\relax\ifmmode\csname a:#1-math\endcsname#2\csname b:#1-math\endcsname\else\csname a:#1\endcsname#2\csname b:#1\endcsname\fi}
+
+\NewConfigure{uline}{2}
+\NewConfigure{uline-math}{2}
+\def\:tempa#1{\:ulemchoose{uline}{#1}}
+\HLet\uline\:tempa
+
+\NewConfigure{uuline}{2}
+\NewConfigure{uuline-math}{2}
+\def\:tempa#1{\:ulemchoose{uuline}{#1}}
+\HLet\uuline\:tempa
+
+\NewConfigure{sout}{2}
+\NewConfigure{sout-math}{2}
+\def\:tempa#1{\:ulemchoose{sout}{#1}}
+\HLet\sout\:tempa
+
+\NewConfigure{xout}{2}
+\NewConfigure{xout-math}{2}
+\def\:tempa#1{\:ulemchoose{xout}{#1}}
+\HLet\xout\:tempa
+
+\NewConfigure{uwave}{2}
+\NewConfigure{uwave-math}{2}
+\def\:tempa#1{\:ulemchoose{uwave}{#1}}
+\HLet\uwave\:tempa
+
+\NewConfigure{dashuline}{2}
+\NewConfigure{dashuline-math}{2}
+\def\:tempa#1{\:ulemchoose{dashuline}{#1}}
+\HLet\dashuline\:tempa
+
+\NewConfigure{dotuline}{2}
+\NewConfigure{dotuline-math}{2}
+\def\:tempa#1{\:ulemchoose{dotuline}{#1}}
+\HLet\dotuline\:tempa
+
+\def\:temp{\z@}
+\HLet\ULthickness\:temp
+
+\Hinput{ulem}
+\endinput
+

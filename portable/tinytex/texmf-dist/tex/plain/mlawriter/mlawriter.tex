@@ -1,0 +1,78 @@
+% -*- mode: TeX -*-
+% The MLA style for plain TeX, Version 1.1.0 2023-07-05
+% MLA stands for Modern Language Association
+% written by LdBeth
+% CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
+% letter paper 8.5in * 11in, 1in margin
+\hsize = 6.5truein
+\vsize = 9truein
+\hoffset = 0pt
+\voffset = 0pt
+% "Times New Roman" font
+\font\twelverm = utmr8t at 12pt
+\font\twelveit = utmri8t at 12pt
+\font\twelvebf = utmb8t at 12pt
+\font\twelvesl = utmro8t at 12pt
+% page number
+\nopagenumbers
+\catcode`\@=11
+% headerline
+\def\setheader#1{\headline={\hfill #1 \folio}}
+% redefine plain TeX headline
+\def\makeheadline{\vbox to 0pt{\vskip-.5in
+        \line{\vbox to12pt{}\the\headline}\vss}
+        \nointerlineskip}
+% miscsettings
+%\interlinepenalty5000
+% format date
+\def\today{\number\day\space\ifcase\month\or
+  January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or December\fi
+  \space\number\year}
+\newskip\@flushglue \@flushglue = 0pt plus 1fil
+\def\centering{%
+  \rightskip\@flushglue\leftskip\@flushglue
+  \parindent=\z@\parfillskip=\z@skip}
+\long\def\settitle#1{%
+\begingroup\centering #1\par\endgroup}
+% mla macro
+\outer\def\mla\name#1 #2\teacher#3\course#4\date#5\title{%
+  \setheader{#2}
+  \begingroup
+  \let\rm=\twelverm \let\bf=\twelvebf
+  \let\it=\twelveit \let\sl=\twelvesl 
+  % double space, 24 lines per page
+  \baselineskip = 28pt minus 1pt
+  \parskip = 0pt
+  \parindent = .5in
+  % no hyphenation
+  \pretolerance = 10000\hbadness = 10000
+  \hyphenpenalty= 9999 \exhyphenpenalty= 9999
+  \frenchspacing
+  \raggedright
+  \rm
+  \noindent #1 #2\par
+  \noindent #3\par
+  \noindent #4\par
+  \noindent #5\par
+  \settitle
+  }
+\outer\def\endmla{\endgroup}
+% quote paragraph macro
+\outer\def\quote{\par\begingroup\noindent\leftskip = .5in }
+\outer\def\endquote{\par\endgroup\noindent}
+% url macro
+\def\url{\begingroup\catcode`\/=\active\activ@url}
+{\catcode`\/=\active
+\global\def\activ@url#1{%
+\def/{\char`\/\penalty-100}%
+<#1>\endgroup}}
+% bib entry
+\outer\def\citepage#1{%
+\vfil\eject
+\begingroup
+\parindent=\z@
+\everypar={\hangindent.5in}
+\centerline{#1}}
+\def\endcite{\par\endgroup}
+\catcode`\@=\active

@@ -1,0 +1,58 @@
+\input ptb-utils
+
+\_checkloaded{counters}
+
+\input ptb-arrays
+
+%   Makes counter #1 dependent on #2
+\def\adddependentcounter#1#2{%
+    \def\_regA{#1}\def\_regB{#2}%
+    \ifx\_regA\_regB%
+        \errhelp={Making a counter dependent on itself will result in an infinite loop whenever it is altered}%
+        \errmessage{A counter cannot be dependent on itself}%
+    \fi%
+    \appendarray{count@#2@dependents}{#1}%
+}
+
+\def\_createcounter#1[#2]{%
+    \commap{\adddependentcounter{#1}}{#2}%
+}
+
+\def\createcounter#1{%
+    \_xp\newcount\csname count@#1\endcsname%
+    \currset\csname count@#1\endcsname=0\relax%
+    \createarray{count@#1@dependents}%
+    \_ifnextchar[ {\_createcounter{#1}}{}%
+}
+
+\def\_zerocounter#1#2{%
+    \currset\csname count@#1\endcsname=\z@%
+    \zerodependents{#1}%
+}
+
+\def\zerodependents#1{%
+    \arraymap{count@#1@dependents}\_zerocounter%
+}
+
+\def\setcounter#1#2{%
+    \currset\csname count@#1\endcsname=#2\relax%
+    \zerodependents{#1}%
+}
+
+\def\advancecounter#1#2{%
+    \currset\advance\csname count@#1\endcsname by #2\relax%
+    \zerodependents{#1}%
+}
+
+\def\advanceicounter#1#2{%
+    \currset\advance\count\csname count@#1\endcsname by #2\relax%
+}
+
+\def\seticounter#1#2{%
+    \currset\count\csname count@#1\endcsname=#2\relax%
+}
+
+\def\counter#1{%
+    \csname count@#1\endcsname%
+}
+

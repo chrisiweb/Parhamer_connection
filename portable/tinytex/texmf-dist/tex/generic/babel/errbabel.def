@@ -74,6 +74,12 @@
     Perhaps you misspelled it or your installation\\%
     is not complete}%
    {Your command will be ignored, type <return> to proceed}
+\bbl@errmessage{invalid-ini-name}
+     {'#1' not valid with the 'ini' mechanism.\\%
+      I think you want '#2' instead. You may continue,\\%
+      but you should fix the name. See the babel manual\\%
+      for the available locales with 'provide'}%
+     {See the manual for further details.}
 \bbl@errmessage{shorthand-is-off}
    {I can't declare a shorthand turned off (\string#2)}
    {Sorry, but you can't use shorthands which have been\\%
@@ -85,9 +91,10 @@
     I will ignore your instruction}%
    {You may proceed, but expect unexpected results}
 \bbl@errmessage{not-a-shorthand-b}
-   {I can't switch '\string#2' on or off--not a shorthand}%
-   {This character is not a shorthand. Maybe you made\\%
-    a typing mistake? I will ignore your instruction.}
+   {I can't switch '\string#2' on or off--not a shorthand\\%
+    This character is not a shorthand. Maybe you made\\%
+    a typing mistake?}%
+   {I will ignore your instruction.}
 \bbl@errmessage{unknown-attribute}
    {The attribute #2 is unknown for language #1.}%
    {Your command will be ignored, type <return> to proceed}
@@ -149,21 +156,37 @@
 \bbl@errmessage{bidi-only-lua}
    {The bidi method 'basic' is available only in\\%
     luatex. I'll continue with 'bidi=default', so\\%
-    expect wrong results}%
+    expect wrong results.\\%
+    Suggested actions:\\%
+    * If possible, switch to luatex, as xetex is not\\%
+      recommend anymore.\\
+    * If you can’t, try 'bidi=bidi' with xetex.\\%
+    * With pdftex, only 'bidi=default' is available.}%
    {See the manual for further details.}
 \bbl@errmessage{multiple-bidi}
-   {Multiple bidi settings inside a group}%
-   {I'll insert a new group, but expect wrong results.}
+   {Multiple bidi settings inside a group\\%
+    I'll insert a new group, but expect wrong results.\\%
+    Suggested action:\\%
+    * Add a new group where appropriate.}
+   {See the manual for further details.}
 \bbl@errmessage{unknown-package-option}
-   {Unknown option '\CurrentOption'. Either you misspelled it\\%
-    or the language definition file \CurrentOption.ldf\\%
-    was not found%
-    \bbl@tempa}
+   {Unknown option '\CurrentOption'.\\%
+    Suggested actions:\\%
+    * Make sure you haven’t misspelled it\\%
+    * Check in the babel manual that it's supported\\%
+    * If supported and it's a language, you may\\%
+    \space\space  need in some distributions a separate\\%
+    \space\space  installation\\%
+    * If installed, check there isn’t an old\\%
+    \space\space version of the required files in your system}
    {Valid options are, among others: shorthands=, KeepShorthandsActive,\\%
     activeacute, activegrave, noconfigs, safe=, main=, math=\\%
     headfoot=, strings=, config=, hyphenmap=, or a language name.}
 \bbl@errmessage{config-not-found}
-   {Local config file '\bbl@opt@config.cfg' not found}%
+   {Local config file '\bbl@opt@config.cfg' not found.\\%
+    Suggested actions:\\%
+    * Make sure you haven’t misspelled it in config=\\%
+    * Check it exists and it’s in the correct path}%
    {Perhaps you misspelled it.}
 \bbl@errmessage{late-after-babel}
    {Too late for \string\AfterBabelLanguage}%

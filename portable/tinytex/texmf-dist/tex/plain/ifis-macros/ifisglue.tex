@@ -1,0 +1,93 @@
+% This file is part of the CTAN package named ifis-macros.
+% 
+%   ifisdimension.tex: provide macro \ifisdim to check if a given
+%                      input is a valid dimension for \TeX.
+%   Usage: \ifisdim <argument>\Boolend <true branch>\else <false branch>\fi
+%
+%   Copyright (C) 2025  Udo Wermuth (author)
+%
+%   This program is free software: you can redistribute it and/or modify
+%   it under the terms of the GNU General Public License as published by
+%   the Free Software Foundation, either version 3 of the License, or
+%   (at your option) any later version.
+%
+%   This program is distributed in the hope that it will be useful,
+%   but WITHOUT ANY WARRANTY; without even the implied warranty of
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   GNU General Public License for more details.
+%
+%   You should have received a copy of the GNU General Public License
+%   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%
+\input ifisdimension.tex % reuse \ifisdim
+\catcode`\@=11
+\newif\ifIImuglue % true: input might be muglue
+\newif\ifII@sofar % true: glue/muglue OK so far
+%% helper macros
+\def\II@kwlc #1{% `plus/minus/fil' to letters
+ \if#1fF\else\if#1FF\else % keep hex. digit `F'
+ \if#1pp\else\if#1Pp\else % otherwise lowercase
+ \if#1ll\else\if#1Ll\else
+ \if#1uu\else\if#1Uu\else
+ \if#1ss\else\if#1Ss\else
+ \if#1mm\else\if#1Mm\else
+ \if#1ii\else\if#1Ii\else
+ \if#1nn\else\if#1Nn\else\if#1W \II@endkwlc
+ \else #1\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+ \fi\fi\fi\fi\II@kwlc}% the `W' stops with a ` '
+\def\II@endkwlc #1\II@kwlc{\fi\fi\fi\fi\fi\fi\fi
+ \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+% split the glue into its components
+\def\II@kwminus #1minus#2 #3\II@end{% get shrink
+ \def\II@X{#3}\ifx\II@X\empty \def\II@skipx{#1}%
+ \else \def\II@skipx{#1 }\fi \def\II@sh{#2 }}
+\def\II@kwplus #1plus#2 #3\II@end{% get stretch
+ \def\II@st{#2 }\ifx\II@st\space \def\II@nw{#1}%
+ \else \def\II@nw{#1 }\fi}
+% replace `Fil', `Fill', `Filll', `mu' by `pt'
+\def\II@uchg{\advance\II@cnt by 1 }%S3.4's count
+\def\II@fil #1Fi#2 #3\II@end#4#5{% get order of
+% #4's value, extracted from `#1fi#2 #3', in #5
+% and replace a <fil dimen> in #4 with unit pt
+ \def#5{#2}\ifx#5\II@l \def#4{#1pt }\II@uchg
+ \else\ifx#5\II@ll \def#4{#1pt }\II@uchg
+ \else\ifx#5\II@lll \def#4{#1pt }\II@uchg
+ \else\def#5{}\fi\fi\fi}
+\def\II@l{l}\def\II@ll{ll}\def\II@lll{lll}
+\def\II@mu #1mu#2\II@end#3{% change mu to pt for
+ \def\II@X{#2}%      #3, extracted from `#1mu#2'
+ \ifx\II@X\empty\else \def#3{#1pt }\II@uchg\fi}
+%% main macro
+\def\ifisglue #1\Boolend{\II@sofarfalse\II@cnt=0
+ \edef\II@skip{\II@kwlc #1W}%                 S1
+ \edef\II@skip{\expandafter\II@kwlc\II@skip W}%
+ \expandafter\II@kwminus\II@skip minus \II@end
+ \expandafter\II@kwplus\II@skipx plus \II@end%S2
+ \expandafter\II@mu\II@nw mu\II@end\II@nw % S3.1
+ \def\II@sto{}\ifx\II@st\space \II@uchg   % S3.2
+ \else \expandafter\II@mu\II@st mu\II@end\II@st
+  \ifx\II@X\empty \expandafter
+   \II@fil\II@st Fi \II@end\II@st\II@sto \fi\fi
+ \def\II@sho{}\ifx\II@sh\space \II@uchg   % S3.3
+ \else \expandafter\II@mu\II@sh mu\II@end\II@sh
+  \ifx\II@X\empty \expandafter
+   \II@fil\II@sh Fi \II@end\II@sh\II@sho \fi\fi
+ \ifnum\II@cnt=3 \IImugluetrue            % S3.4
+ \else \IImugluefalse \fi
+ \expandafter\ifisdim \II@nw\Boolend      % S4.1
+  \II@sofartrue \fi
+ \ifII@sofar \ifx\II@st\space             % S4.2
+  \else\expandafter\ifisdim \II@st\Boolend
+   \else \II@sofarfalse \fi\fi\fi
+ \ifII@sofar \ifx\II@sh\space             % S4.3
+  \else\expandafter\ifisdim \II@sh\Boolend
+   \else \II@sofarfalse \fi\fi\fi
+ \ifII@sofar                              % S4.4
+  % use a different pattern for the macro's wlog
+  \wlog{=*= start ignore}\batchmode\begingroup
+  \setbox0=\hbox{\II@font \ifIImuglue \muskip255
+   \else \skip255 \fi=#1}\xdef\II@wd{\the\wd0}%
+  \endgroup\IIcurrentmode\wlog{=*= stop ignore}%
+  \ifdim\II@wd=0pt \else \II@sofarfalse   % S4.5
+ \fi\fi \ifII@sofar}
+\catcode`\@=12

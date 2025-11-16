@@ -1,0 +1,129 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Module:    ZzTeX New Mathematics Facilities
+%
+% Synopsis:  This file provides the mathematics facilities for "new math"
+%            version 4.
+%
+% Author:    Paul C. Anagnostopoulos
+% Created:   24 September 2003
+%
+% Copyright 1989--2020 by Paul C. Anagnostopoulos
+% under The MIT License (opensource.org/licenses/MIT)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                       Document Parameters
+%                       -------- ----------
+
+
+\delimitershortfall = 2pt
+
+%                       Math Spaces
+%                       ---- ------
+
+
+\setmathspaces{4mu plus .25mu minus .5mu}
+              {4mu plus .25mu minus .5mu}
+              {4mu plus .25mu minus .5mu}%
+
+%                       Math Font Selections
+%                       ---- ---- ----------
+
+
+\outer\def \ComputerModernmathfonts {%
+  \input zzcmmath\relax
+  \setmathpunctuationstyle{\mit}{\rm}}
+
+\outer\def \Lucidamathfonts #1{%                        {arrows?}
+  \setflag \zusemar = #1\relax
+  \input zzlucida\relax
+  \setmathpunctuationstyle{\mit}{\rm}}
+
+\outer\def \MathTimefonts #1{%                          {text face is Times?}
+  \input zzmtime\relax
+  \if #1%
+    \setmathpunctuationstyle{\mit}{\rm}%
+  \else
+    \setmathpunctuationstyle{\rm}{\rm}%
+  \fi}
+
+\outer\def \Stonemathfonts {%
+  \setmathpunctuationstyle{\rm}{\rm}}
+
+%                       Punctuation Style
+%                       ----------- -----
+
+
+% Here we deal with the style for comma, period, semicolon, and colon.
+% The default punctuation style for all four is \rm.
+
+
+% This macro defines the math characters \zmperiod, \zmcomma,
+% colon, and semicolon to use the specified style.
+% If the style is \mit, then it's different.
+
+\def \setmathpunctuationstyle #1#2{%                    {\style1}{\style2}
+  {\zmstyfam = \name{#1fam}%
+   \if \eqlp{\zmstyfam}{\mitfam}%
+     \definemathchar {`.} \classord  \mitfam {3A}
+     \definemathchar {`,} \classpunc \mitfam {3B}
+   \else
+     \definemathchar {`.} \classactive \rmfam {00}
+     \definemathchar {`,} \classactive \rmfam {00}
+     \definemathchar {\zmperiod} \classord  \zmstyfam {2E}
+     \definemathchar {\zmcomma}  \classpunc \zmstyfam {2C}
+   \fi
+   \zmstyfam = \name{#2fam}%
+   \definemathchar {`;} \classpunc \zmstyfam {3B}
+   \definemathchar {`:} \classrel  \zmstyfam {3A}}}
+
+% When period and comma are active in math, this is what they do.
+
+{
+\catcode `\. = \catactive
+\gdef .{\mathpalette\zmactperiod{}}
+
+\catcode `\, = \catactive
+\gdef ,{\mathpalette\zmactcomma{}}
+}
+
+\def \zmactperiod #1#2{%
+  \mathord{\hbox to .275em{\hfil $#1\zmperiod$\kern .06em\hfil}}}
+
+\def \zmactcomma #1#2{%
+  \mathpunct{\hbox to .331em{\kern .045em $#1\zmcomma$\hfil}}}
+
+%                       Dot-Related Commands
+%                       ----------- --------
+
+
+\def \cdotp {\mathpunct{\vcenter{\hbox{$.$}}}}
+
+\def \ldotp {\mathpunct{.}}
+
+\def \cdots {\mathinner{\cdotp\cdotp\cdotp}}
+
+\def \ddots {%
+  \vbox{\baselineskip = 4pt \lineskiplimit = 0pt
+        \hbox{.}%
+        \hbox{\kern .4em .}%
+        \hbox{\kern .8em .}%
+        \vskip -.25ex}}
+
+\def \ldots {\mathinner{\ldotp\ldotp\ldotp}}
+
+\def \vdots {%
+  \vbox{\baselineskip = 4pt \lineskiplimit = 0pt
+        \hbox{.}%
+        \hbox{.}%
+        \hbox{.}%
+        \vskip -.25ex}}
+
+%                       Colon Commands
+%                       ----- --------
+
+
+\def \maps {\mathpunct{:}}
+
+\let \colon = \maps

@@ -1,0 +1,73 @@
+%%
+%% This is file `latex-lab-mathpkg.ltx',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-mathpkg.dtx  (with options: `kernel')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2025 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-mathpkg.dtx
+\ProvidesFile{latex-lab-mathpkg.ltx}
+        [2025-06-20 v0.1c mathpkg adaptions]
+\AddToHook{package/breqn/after}{
+   \RegisterMathEnvironment{dmath}
+   \RegisterMathEnvironment{dgroup*}
+   \AddToHook{env/dmath/begin}{\tagpdfparaOff}
+   \AddToHook{env/dgroup*/begin}{\tagpdfparaOff}
+}
+\AddToHook{package/cases/before}{\RequirePackage{amsmath}}
+\AddToHook{package/cases/after}{
+  \RegisterMathEnvironment{subnumcases}
+}
+\ExplSyntaxOn
+\AddToHook{package/bm/after}
+ {
+   \def\bm@pmb@@#1#2#3{{%
+     \hbox_set:Nn\l__math_tmpa_box{$\m@th#1#3$}%
+     \dimen@#2\wd\tw@
+     \rlap{\box_use:N\l__math_tmpa_box}%
+     \tag_mc_end:\tag_mc_begin:n{artifact}
+     \tag_mc_reset_box:N\l__math_tmpa_box
+     \kern\dimen@
+     \raise1.5\dimen@\rlap{\box_use:N\l__math_tmpa_box}%
+     \kern\dimen@
+     \box_use_drop:N\l__math_tmpa_box
+     \tag_mc_end:\tag_mc_begin:n{}%
+     }}
+ }
+\ExplSyntaxOff
+\AddToHook{package/accents/before}{\RequirePackage{amsmath}}
+\AddToHook{package/cleveref/before}{\RequirePackage{amsmath}}
+\AddToHook{package/esint/before}{\RequirePackage{amsmath}}
+\AddToHook{package/grmath/before}{\RequirePackage{amsmath}}
+\AddToHook{package/mathabx/before}{\RequirePackage{amsmath}}
+\AddToHook{package/wasysym/before}{\RequirePackage{amsmath}}
+\endinput
+%%
+%% End of file `latex-lab-mathpkg.ltx'.

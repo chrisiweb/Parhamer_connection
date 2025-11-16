@@ -1,0 +1,343 @@
+%%
+%% This is file `schemata.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% schemata.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2025 by Charles P. Schaum <charles[dot]schaum@comcast.net>
+%% 
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3 of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%% 
+%%    https://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3 or later is part of all distributions of LaTeX version
+%% 2005/12/01 or later.
+%% 
+\expandafter\ifx \csname schemataLaTeX\endcsname\relax
+  \def\schemataLaTeX{LaTeX2e}\fi
+\ifx\fmtname\schemataLaTeX
+\expandafter\NeedsTeXFormat\expandafter{\schemataLaTeX}[2005/12/01]
+\ProvidesPackage{schemata}
+  [2025/08/27 1.5 generic package to aid construction of topical categories]
+\else
+\catcode`@=11\relax
+\fi
+\edef\@schemata@LaTeX{\schemataLaTeX}
+\newbox\@schemata@rhs%
+\newbox\@schemata@lhs%
+\newdimen\@schemata@rheight%
+\newdimen\@schemata@lheight%
+\newdimen\@schemata@one%
+\newdimen\@schemata@two%
+\newdimen\@schemata@three%
+\newif\if@schemata@LCBox%
+\newif\if@schemata@SWBox%
+\newif\if@schemata@LNudge%
+\newif\if@schemata@RNudge%
+\ifx\fmtname\@schemata@LaTeX
+  \DeclareOption{braces}%
+    {\let\@schemata@LD\lbrace%
+     \let\@schemata@RD\rbrace}
+  \DeclareOption{brackets}%
+    {\let\@schemata@LD\lbrack%
+     \let\@schemata@RD\rbrack}
+  \DeclareOption{parens}%
+    {\let\@schemata@LD(%
+     \let\@schemata@RD)}
+  \DeclareOption{groups}%
+    {\let\@schemata@LD\lgroup%
+     \let\@schemata@RD\rgroup}
+  \ExecuteOptions{braces}%
+  \ProcessOptions\relax
+\else
+  \let\@schemata@LD\lbrace%
+  \let\@schemata@RD\rbrace%
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\DoBraces}%
+    {\let\@schemata@LD\lbrace%
+     \let\@schemata@RD\rbrace}
+\else
+  \def\DoBraces%
+    {\let\@schemata@LD\lbrace%
+     \let\@schemata@RD\rbrace}
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\DoBrackets}%
+    {\let\@schemata@LD\lbrack%
+     \let\@schemata@RD\rbrack}
+\else
+  \def\DoBrackets%
+    {\let\@schemata@LD\lbrack%
+     \let\@schemata@RD\rbrack}
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\DoParens}%
+    {\let\@schemata@LD(%
+     \let\@schemata@RD)}
+\else
+  \def\DoParens%
+    {\let\@schemata@LD(%
+     \let\@schemata@RD)}
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\DoGroups}%
+    {\let\@schemata@LD\lgroup%
+     \let\@schemata@RD\rgroup}
+\else
+  \def\DoGroups%
+    {\let\@schemata@LD\lgroup%
+     \let\@schemata@RD\rgroup}
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\LCschema}{\@schemata@LCBoxtrue}
+\else
+  \def\LCschema{\@schemata@LCBoxtrue}
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\UCschema}{\@schemata@LCBoxfalse}
+\else
+  \def\UCschema{\@schemata@LCBoxfalse}
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\SwitchSB}{\@schemata@SWBoxtrue}%
+\else
+  \def\SwitchSB{\@schemata@SWBoxtrue}
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\NudgeSB}[1][right]{\@schemata@NudgeSB[#1]}
+\else
+  \def\NudgeSB{\futurelet\@schemata@testchar\@schemata@N@dgeSB}
+  \def\@schemata@N@dgeSB{%
+    \ifx[\@schemata@testchar
+      \let\next\@schemata@NudgeSB%
+    \else
+      \let\next\@schemata@@NudgeSB%
+    \fi
+    \next%
+  }%
+  \def\@schemata@@NudgeSB{\@schemata@NudgeSB[right]}
+\fi
+\def\@schemata@NudgeSB[#1]{%
+  \edef\@schemata@NudgeTest{#1}%
+  \def\@schemata@NudgeDefault{right}%
+  \ifx\@schemata@NudgeTest\@schemata@NudgeDefault
+    \@schemata@RNudgetrue%
+  \else
+    \@schemata@LNudgetrue%
+  \fi
+}
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand{\SBNudgeFactor}{\kern0.2em}
+\else
+  \def\SBNudgeFactor{\kern0.2em}
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\schemabox}[2][0pt]{\@schemata@schemabox[#1]{#2}}
+\else
+  \def\schemabox{\futurelet\@schemata@testchar\@schemata@schemab@x}
+  \def\@schemata@schemab@x{%
+    \ifx[\@schemata@testchar
+      \let\next\@schemata@schemabox%
+    \else
+      \let\next\@schemata@@schemab@x%
+    \fi
+    \next%
+  }%
+  \def\@schemata@@schemab@x#1{\@schemata@schemabox[0pt]{#1}}
+\fi
+\def\@schemata@schemabox[#1]#2{%
+  \ifinner
+    \if@schemata@LCBox
+      \def\@schemata@Adj{}%
+      \if@schemata@SWBox\def\@schemata@Adj{\strut}\fi
+    \else
+      \def\@schemata@Adj{\strut}%
+      \if@schemata@SWBox\def\@schemata@Adj{}\fi
+    \fi
+    \if@schemata@RNudge
+      \let\@schemata@NudgeR\SBNudgeFactor%
+    \else
+      \def\@schemata@NudgeR{}%
+    \fi
+    \if@schemata@LNudge
+      \let\@schemata@NudgeL\SBNudgeFactor%
+    \else
+      \def\@schemata@NudgeL{}%
+    \fi
+    \ifdim#1<1pt
+      \def\\{\@schemata@NudgeR\egroup%
+        \hbox\bgroup\@schemata@NudgeL\ignorespaces }%
+      \vbox{\hbox\bgroup%
+        \@schemata@Adj\@schemata@NudgeL\ignorespaces #2%
+        \@schemata@NudgeR\egroup}%
+    \else
+      \def\\{\hfil\egroup%
+        \hbox to #1\bgroup\@schemata@NudgeL\ignorespaces }%
+      \vbox{\hbox to #1\bgroup%
+        \@schemata@Adj\@schemata@NudgeL\ignorespaces #2%
+        \hfil\egroup}%
+    \fi
+  \else
+    #2%
+  \fi
+  \@schemata@SWBoxfalse%
+  \@schemata@RNudgefalse%
+  \@schemata@LNudgefalse%
+}
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand{\schema}[3][open]{%
+    \@schemata@schema[#1]{#2}{#3}}
+\else
+  \long\def\schema{\futurelet\@schemata@testchar\@schemata@schem@}
+  \long\def\@schemata@schem@{%
+    \ifx[\@schemata@testchar
+      \let\next\@schemata@schema%
+    \else
+      \let\next\@schemata@@schem@%
+    \fi
+    \next%
+  }%
+  \long\def\@schemata@@schem@#1#2{%
+    \@schemata@schema[open]{#1}{#2}}
+\fi
+\long\def\@schemata@schema[#1]#2#3{%
+  \edef\@schemata@option{#1}%
+  \def\@schemata@open{open}%
+  \ifx\@schemata@option\@schemata@open
+    \setbox\@schemata@rhs=\vbox{#3}%
+    \@schemata@rheight=\ht\@schemata@rhs%
+    \advance\@schemata@rheight\dp\@schemata@rhs%
+    \advance\@schemata@rheight by 1.44265ex%
+    \hbox{$\vcenter{#2}%
+      \@schemata@lbrace{\@schemata@rheight}%
+      \vcenter{#3}$}%
+  \else
+    \setbox\@schemata@lhs=\vbox{#2}%
+    \@schemata@lheight=\ht\@schemata@lhs%
+    \advance\@schemata@lheight\dp\@schemata@lhs%
+    \advance\@schemata@lheight by 1.44265ex%
+    \hbox{$\vcenter{#2}%
+      \kern-0.2em\@schemata@rbrace{\@schemata@lheight}%
+      \vcenter{#3}$}%
+  \fi
+}
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand{\Schema}[5][open]{%
+    \@schemata@Schema[#1]{#2}{#3}{#4}{#5}}
+\else
+  \long\def\Schema{\futurelet\@schemata@testchar\@schemata@Schem@}
+  \long\def\@schemata@Schem@{%
+    \ifx[\@schemata@testchar
+      \let\next\@schemata@Schema%
+    \else
+      \let\next\@schemata@@Schem@%
+    \fi
+    \next%
+  }%
+  \long\def\@schemata@@Schem@#1#2#3#4{%
+    \@schemata@Schema[open]{#1}{#2}{#3}{#4}}
+\fi
+\long\def\@schemata@Schema[#1]#2#3#4#5{%
+  \edef\@schemata@option{#1}%
+  \def\@schemata@open{open}%
+  \@schemata@one=#2%
+  \ifx\@schemata@option\@schemata@open
+    \hbox{$\vcenter{\vskip1.44265\@schemata@one#4}%
+      \@schemata@biglbrace{#2}{#3}\vcenter{#5}$}%
+  \else
+    \hbox{$\vcenter{\vskip1.44265\@schemata@one#4}\kern-0.2em%
+      \@schemata@bigrbrace{#2}{#3}\vcenter{#5}$}%
+  \fi
+}
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\@schemata@lbrace}[1]{%
+    \ifmmode
+      \left.\vcenter{\vbox to #1{\vfil}}\right\@schemata@LD%
+    \fi
+  }
+\else
+  \def\@schemata@lbrace#1{%
+    \ifmmode
+      \left.\vcenter{\vbox to #1{\vfil}}\right\@schemata@LD%
+    \fi
+  }
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\@schemata@rbrace}[1]{%
+    \ifmmode
+      \left\@schemata@RD\vcenter{\vbox to #1{\vfil}}\right.%
+    \fi
+  }
+\else
+  \def\@schemata@rbrace#1{%
+    \ifmmode
+      \left\@schemata@RD\vcenter{\vbox to #1{\vfil}}\right.%
+    \fi
+  }
+\fi
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\@schemata@biglbrace}[2]{%
+    \@schemata@@biglbrace{#1}{#2}}
+\else
+  \def\@schemata@biglbrace#1#2{%
+    \@schemata@@biglbrace{#1}{#2}}
+\fi
+\def\@schemata@@biglbrace#1#2{%
+  \@schemata@one=#1%
+  \@schemata@two=#2%
+  \@schemata@three=-\@schemata@two%
+  \ifdim\@schemata@three>\@schemata@two%
+    \@schemata@two=\@schemata@three\fi
+  \ifdim\@schemata@one<0pt
+    \ifmmode\vcenter{\hbox{$\left.%
+      \vbox to 1.44265\@schemata@two{\vfil}%
+      \right\@schemata@LD%
+      \atop\vbox to -1.44265\@schemata@one{\vfil}$}}\fi
+  \else
+    \ifmmode\vcenter{\hbox{$\vbox to 1.44265\@schemata@one{\vfil}%
+      \atop\left.%
+      \vbox to 1.44265\@schemata@two{\vfil}%
+      \right\@schemata@LD$}}\fi
+  \fi
+}
+\ifx\fmtname\@schemata@LaTeX
+  \newcommand*{\@schemata@bigrbrace}[2]{%
+    \@schemata@@bigrbrace{#1}{#2}%
+  }
+\else
+  \def\@schemata@bigrbrace#1#2{%
+    \@schemata@@bigrbrace{#1}{#2}%
+  }
+\fi
+\def\@schemata@@bigrbrace#1#2{%
+  \@schemata@one=#1%
+  \@schemata@two=#2%
+  \@schemata@three=-\@schemata@two%
+  \ifdim\@schemata@three>\@schemata@two%
+    \@schemata@two=\@schemata@three\fi
+  \ifdim\@schemata@one<0pt
+    \ifmmode\vcenter{\hbox{$\left.%
+      \vbox to 1.44265\@schemata@two{\vfil}%
+      \right\@schemata@RD%
+      \atop\vbox to -1.44265\@schemata@one{\vfil}$}}\fi
+  \else
+    \ifmmode\vcenter{\hbox{$\vbox to 1.44265\@schemata@one{\vfil}%
+      \atop\left.%
+      \vbox to 1.44265\@schemata@two{\vfil}%
+      \right\@schemata@RD$}}\fi
+  \fi
+}
+\ifx\fmtname\@schemata@LaTeX\else
+  \catcode`@=12\relax
+\fi
+\endinput
+%%
+%% End of file `schemata.sty'.

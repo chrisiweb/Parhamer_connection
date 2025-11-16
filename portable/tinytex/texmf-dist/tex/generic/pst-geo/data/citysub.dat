@@ -1,0 +1,1068 @@
+/CitySub[
+%Albany NY
+[2559 -4425]
+%Annapolis MD
+[2339 -4589]
+%Atlanta GA
+[2025 -5063]
+%Augusta ME
+[2658 -4186]
+%Austin TX
+[1816 -5864]
+%Baton Rouge LA
+[1826 -5471]
+%Bismarck ND
+[2808 -6047]
+%Boise ID
+[2617 -6971]
+%Boston MA
+[2542 -4264]
+%Calgary ALBERTA
+[3062 -6842]
+%Carson City NV
+[2350 -7186]
+%Charleston WV
+[2301 -4898]
+%Cheyenne WY
+[2468 -6289]
+%Columbia SC
+[2040 -4866]
+%Columbus OH
+[2397 -4980]
+%Concord NH
+[2592 -4292]
+%Denver CO
+[2384 -6299]
+%Des Moines IA
+[2495 -5617]
+%Dover DE
+[2357 -4533]
+%Frankfort KY
+[2292 -5094]
+%Halifax NOVA SCOTIA
+[2678 -3815]
+%Harrisburg PA
+[2416 -4612]
+%Hartford CT
+[2506 -4361]
+%Helena MT
+[2795 -6722]
+%Honolulu HI
+[1279 -9472]
+%Indianapolis IN
+[2386 -5170]
+%Jackson MS
+[1937 -5411]
+%Jefferson City MO
+[2310 -5526]
+%Juneau AK
+[3497 -8071]
+%Lansing MI
+[2564 -5073]
+%Lincoln NB
+[2449 -5764]
+%Little Rock AR
+[2084 -5536]
+%Madison WI
+[2584 -5363]
+%Montgomery AL
+[1942 -5177]
+%Montpelier VT
+[2656 -4355]
+%Nashville TN
+[2170 -5207]
+%Oklahoma City OK
+[2128 -5851]
+%Olympia WA
+[2826 -7374]
+%Phoenix AZ
+[2007 -6724]
+%Pierre SD
+[2662 -6020]
+%Providence RI
+[2510 -4285]
+%Quebec QUEBEC
+[2812 -4273]
+%Raleigh NC
+[2087 -4716]
+%Regina SASKATCHEWAN
+[3026 -6277]
+%Richmond VA
+[2252 -4646]
+%Sacramento CA
+[2315 -7289]
+%Salem OR
+[2697 -7411]
+%Salt Lake City UT
+[2446 -6713]
+%Santa Fe NM
+[2141 -6416]
+%Springfield IL
+[2368 -5378]
+%St John NEW BRUNSWICK
+[2723 -3988]
+%St John's NEWFOUNDLAND
+[2854 -3163]
+%St Paul MN
+[2697 -5587]
+%Tallahassee FL
+[1826 -5056]
+%Topeka KS
+[2343 -5739]
+%Toronto ONTARIO
+[2620 -4765]
+%Trenton NJ
+[2413 -4486]
+%Victoria BRITISH COLOMBIA
+[2905 -7401]
+%Whitehorse YUKON TERR
+[3643 -8106]
+%Winnipeg MANITOBA
+[2993 -5825]
+%Yellowknife NORTHWEST TERR
+[3746 -6867]
+%erdeen
+[3428 -125]
+%Acapulco
+[1013 -5993]
+%Adak
+[3109 -10601]
+%Adana
+[2221 2117]
+%Adelaide
+[-2096 8316]
+%Agana GUAM (USA)
+[801 8686]
+%Agawam
+[2524 -4357]
+%Akron
+[2465 -4891]
+%Alamagordo
+[1973 -6356]
+%Alborg
+[3421 597]
+%Albuquerque
+[2105 -6400]
+%Alesund
+[3752 368]
+%Alexandria
+[1871 1793]
+%Alexandria
+[2328 -4623]
+%Alicante
+[2300 -31]
+%Alice Springs
+[-1426 8036]
+%Allentown
+[2436 -4528]
+%Altoona
+[2441 -4704]
+%Amarillo
+[2113 -6111]
+%Anchorage
+[3670 -8990]
+%Ann Arbor
+[2537 -5025]
+%Antofagasta
+[-1421 -4220]
+%Antwerp
+[3073 265]
+%Archangel
+[3875 2440]
+%Arsuk
+[3673 -2890]
+%Ascension (UK)
+[-478 -883]
+%Ashville
+[2136 -4953]
+%Aspen
+[2353 -6410]
+%Atlantic City
+[2362 -4466]
+%Auckland
+[-2210 10487]
+%Augsburg
+[2902 653]
+%Avon
+[2508 -4370]
+%Baghlan
+[2174 4126]
+%Bakersfield
+[2122 -7141]
+%Baku AZERBAIJAN
+[2426 2990]
+%Baltimore
+[2357 -4597]
+%Banff
+[3070 -6935]
+%Bangor
+[2689 -4126]
+%Barcelona
+[2485 131]
+%Bari
+[2467 1010]
+%Basel
+[2852 451]
+%Battle Creek
+[2539 -5111]
+%Bay City
+[2616 -5033]
+%Bellingham
+[2926 -7349]
+%Bend
+[2644 -7277]
+%Benton Harbor
+[2527 -5186]
+%Bergen
+[3624 320]
+%Big Sur
+[2177 -7309]
+%Bilbao
+[2594 -177]
+%Billings
+[2739 -6510]
+%Biloxi
+[1822 -5345]
+%Birmingham
+[2011 -5209]
+%Birmingham
+[3149 -112]
+%Blackpool
+[3228 -182]
+%Boda
+[4039 868]
+%Bolzano
+[2791 679]
+%Bombay
+[1137 4360]
+%Boone
+[2173 -4901]
+%Bora Bora SOCIETY ISLES (FRANCE)
+[-992 -9107]
+%Bordeaux
+[2690 -34]
+%Bournemouth
+[3043 -118]
+%Bowling Green
+[2219 -5186]
+%Bozeman
+[2739 -6662]
+%Bremen
+[3186 527]
+%Brest
+[2903 -269]
+%Bridgeport
+[2471 -4392]
+%Brisbane
+[-1648 9181]
+%Bristol
+[2195 -4932]
+%Bristol
+[3086 -155]
+%Brownsville
+[1555 -5848]
+%Brunswick
+[1869 -4889]
+%Buffalo
+[2573 -4734]
+%Burlingame
+[2255 -7340]
+%Burlington
+[2669 -4393]
+%Butte
+[2761 -6752]
+%Cairns
+[-1015 8742]
+%Calcutta
+[1354 5301]
+%Cambridge
+[2314 -4565]
+%Canton
+[1388 6795]
+%Cape Town
+[-2035 1106]
+%Capri
+[2448 854]
+%Cardiff
+[3088 -189]
+%Caribou
+[2812 -4081]
+%Casablanca
+[2017 -458]
+%Casper
+[2571 -6377]
+%Cedar City
+[2261 -6784]
+%Cedar Rapids
+[2519 -5498]
+%Chapel Hill
+[2155 -4742]
+%Charleston
+[1967 -4796]
+%Charlottesville
+[2282 -4708]
+%Charlottetown
+[2774 -3787]
+%Cherbourg
+[2980 -95]
+%Chicago
+[2513 -5258]
+%Chico
+[2383 -7309]
+%Chihuahua
+[1717 -6363]
+%Christ
+[-2612 10357]
+%Chunking
+[1774 6391]
+%Churchill
+[3529 -5645]
+%Cincinnati
+[2347 -5071]
+%Clearwater
+[1678 -4968]
+%Cleveland
+[2491 -4893]
+%Colon
+[562 -4793]
+%Coos Bay
+[2561 -7447]
+%Cork
+[3116 -508]
+%Cut Bank
+[2917 -6739]
+%Dallas
+[1967 -5807]
+%Danbury
+[2483 -4408]
+%Darwin
+[-745 7853]
+%Davao
+[427 7537]
+%Dayton
+[2386 -5064]
+%Denpasar
+[-525 6913]
+%Detroit
+[2540 -4984]
+%Dijon
+[2839 303]
+%Diomede Islands
+[3945 -10140]
+%Duluth
+[2806 -5525]
+%Durango
+[1441 -6283]
+%Durango
+[2236 -6436]
+%Durban
+[-1792 1862]
+%Dusseldorf
+[3074 407]
+%Eastville
+[2241 -4555]
+%Eau Claire
+[2687 -5489]
+%Edmonton
+[3212 -6812]
+%El Paso
+[1907 -6388]
+%Elat
+[1773 2096]
+%Elizabeth
+[2440 -4452]
+%Elizabethton
+[2180 -4933]
+%Ellington
+[2514 -4348]
+%Elmira
+[2526 -4609]
+%Endicott
+[2527 -4564]
+%Erie
+[2527 -4804]
+%Eugene
+[2642 -7385]
+%Eureka
+[2447 -7448]
+%Evansville
+[2279 -5254]
+%Fairbanks
+[3887 -8863]
+%Fall River
+[2502 -4269]
+%Faro
+[2221 -424]
+%Flagstaff
+[2113 -6679]
+%Flint
+[2579 -5037]
+%Florence
+[2626 674]
+%Frankfurt
+[3007 521]
+%Frederick
+[2365 -4644]
+%Frederickton
+[2744 -4000]
+%Fredricksburg
+[2297 -4647]
+%Freiburg
+[2879 470]
+%Ft Lauderdale
+[1567 -4808]
+%Ft Worth
+[1966 -5840]
+%Funchal MADEIRA (PORTUGAL)
+[1958 -1015]
+%Gainesville
+[1779 -4939]
+%Galapagos Isles (ECUADOR)
+[-15 -5460]
+%Galway
+[3197 -542]
+%Gao
+[975 -2]
+%Gary
+[2496 -5240]
+%Gaza
+[1890 2067]
+%Geneva
+[2573 -4619]
+%Geneva
+[2774 369]
+%Georgetown GRAND CAYMAN (UK)
+[1157 -4883]
+%Gibraltar (UK)
+[2168 -339]
+%Glasgow
+[3352 -256]
+%Goteborg
+[3461 716]
+%Granada
+[2231 -204]
+%Grand Rapids
+[2578 -5156]
+%Gravenhage
+[3125 259]
+%Graz
+[2825 920]
+%Great Falls
+[2848 -6676]
+%Gstaad
+[2788 438]
+%Guadalajara
+[1240 -6201]
+%Guantanamo (USA)
+[1203 -4507]
+%Haddonfield
+[2394 -4502]
+%Hagerstown
+[2372 -4663]
+%Haifa
+[1924 2101]
+%Haiphong
+[1252 6400]
+%Hamburg
+[3213 601]
+%Hamilton
+[2585 -4757]
+%Hamilton BERMUDA (UK)
+[1938 -3888]
+%Hampton
+[2221 -4581]
+%Hannover
+[3139 585]
+%Harbin
+[2749 7598]
+%Herat
+[2069 3733]
+%Hermosillo
+[1742 -6657]
+%Hobart
+[-2569 8834]
+%Hof
+[3019 715]
+%Honiara (Guadalcanal) SOLOMON ISLES
+[-566 9596]
+%Hot Springs
+[2071 -5583]
+%Houston
+[1786 -5722]
+%Huambo
+[-765 946]
+%Huntington
+[2304 -4946]
+%Huntsville
+[2117 -5195]
+%Ibiza (SPAIN)
+[2335 87]
+%Imphal
+[1488 5637]
+%Innsbruck
+[2836 687]
+%Inverness
+[3449 -254]
+%Iraklion CRETE (GREECE)
+[2120 1508]
+%Isfahan
+[1962 3102]
+%Istanbul
+[2461 1738]
+%Jacksonville
+[1820 -4899]
+%Jaffna
+[581 4802]
+%Jan Mayen (NORWAY)
+[4264 -493]
+%Jiddah
+[1289 2345]
+%Jizan
+[1013 2554]
+%Johannesburg
+[-1463 1682]
+%Juarez
+[1904 -6386]
+%Kansas City(KS)
+[2347 -5677]
+%Kansas City (MO)
+[2346 -5675]
+%Karachi
+[1492 4019]
+%Karlsruhe
+[2940 504]
+%Kassel
+[3019 570]
+%Keene
+[2576 -4337]
+%Kelso
+[2764 -7348]
+%Ketchikan
+[3320 -7900]
+%Key West
+[1473 -4908]
+%Kings Beach
+[2355 -7201]
+%Knoxville
+[2158 -5034]
+%Koblenz
+[3020 455]
+%Kochi
+[2014 8024]
+%Kodiak
+[3469 -9140]
+%Koln
+[3056 418]
+%Kota
+[360 6959]
+%Kowloon
+[1340 6850]
+%Krakow
+[3004 1198]
+%Kupang
+[-611 7415]
+%Kyoto
+[2100 8146]
+%La Paz
+[1450 -6618]
+%Laconia
+[2611 -4288]
+%Lae
+[-402 8826]
+%Lahore
+[1897 4460]
+%Laredo
+[1651 -5971]
+%Largo
+[1674 -4967]
+%Las Palmas CANARY ISLES (SPAIN)
+[1683 -909]
+%Las Vegas
+[2170 -6909]
+%Le Havre
+[2969 6]
+%Le Mans
+[2880 11]
+%Leipzig
+[3080 743]
+%Lexington
+[2282 -5070]
+%Limerick
+[3160 -516]
+%Limoges
+[2756 76]
+%Liverpool
+[3203 -179]
+%Ljubilana
+[2763 871]
+%Llasa
+[1790 5446]
+%Logan
+[2504 -6709]
+%London
+[2579 -4874]
+%Lone Pine
+[2197 -7084]
+%Los Angeles
+[2043 -7095]
+%Louisville
+[2296 -5146]
+%Lugano
+[2761 538]
+%Lutherville
+[2366 -4597]
+%Luzern
+[2822 497]
+%Lyon
+[2744 291]
+%Mackay
+[-1270 8955]
+%Mackinaw City
+[2747 -5084]
+%Macon
+[1970 -5017]
+%Madras
+[785 4817]
+%Magnetic Pole
+[4645 -6058]
+%Malaga
+[2203 -274]
+%Manaus
+[-184 -3604]
+%Manchester
+[2579 -4283]
+%Manchester
+[3207 -135]
+%Mandalay
+[1321 5758]
+%Manila
+[875 7257]
+%Marseille
+[2598 322]
+%Martinsburg
+[2368 -4678]
+%Masqat
+[1409 3517]
+%Mecca
+[1286 2390]
+%Medellin
+[375 -4534]
+%Melbourne
+[-2269 8698]
+%Memphis
+[2109 -5403]
+%Menominee
+[2707 -5259]
+%Merida
+[1257 -5367]
+%Merritt Island
+[1706 -4845]
+%Messina
+[2291 931]
+%Metz
+[2947 371]
+%Miami
+[1547 -4811]
+%Milan
+[2727 551]
+%Milwaukee
+[2582 -5276]
+%Minneapolis
+[2698 -5597]
+%Minsk BYELORUSSIA
+[3234 1653]
+%Mombasa
+[-248 2380]
+%Monterrey
+[1543 -6020]
+%Montreal
+[2732 -4414]
+%Morioka
+[2383 8471]
+%Morristown
+[2453 -4468]
+%Mt Isa
+[-1243 8374]
+%Mt Rushmore
+[2632 -6212]
+%Mt Vernon
+[2455 -4430]
+%Munich
+[2888 694]
+%Murmansk
+[4136 1985]
+%Nagasaki
+[1967 7791]
+%Nanking
+[1924 7127]
+%Nantes
+[2832 -95]
+%Naples
+[2451 856]
+%Nashua
+[2566 -4283]
+%Natchez
+[1892 -5485]
+%New Haven
+[2479 -4375]
+%New London
+[2480 -4326]
+%New Orleans
+[1797 -5404]
+%New York
+[2446 -4438]
+%Niagara Falls
+[2585 -4743]
+%Nogales
+[1880 -6656]
+%Nome
+[3869 -9932]
+%Norfolk
+[2211 -4577]
+%Nottingham
+[3177 -68]
+%Nurnberg
+[2966 664]
+%Nuuk
+[3855 -3102]
+%Ocala
+[1745 -4940]
+%Odessa
+[2788 1846]
+%Ogden
+[2473 -6718]
+%Old Faithful
+[2667 -6649]
+%Omsk
+[3300 4342]
+%Oran
+[2141 -32]
+%Orlando
+[1712 -4883]
+%Orviedo
+[2602 -351]
+%Osaka
+[2081 8129]
+%Padua
+[2710 712]
+%Palma MAJORCA (S
+[2374 159]
+%Palo Alto
+[2246 -7328]
+%Palu
+[-46 7191]
+%Papeete (Tahiti) SOCIETY ISLES (FRANCE)
+[-1050 -8974]
+%Pendelton
+[2690 -7103]
+%Peoria
+[2441 -5375]
+%Perth
+[-1917 6952]
+%Peshawar
+[2042 4295]
+%Philadelphia
+[2397 -4510]
+%Pittsburgh
+[2426 -4799]
+%Pittsford
+[2581 -4651]
+%Pocatello
+[2573 -6746]
+%Pompano Beach
+[1574 -4808]
+%Pontianak
+[-2 6559]
+%Port Arthur
+[1793 -5638]
+%Port Hedland
+[-1220 7118]
+%Port Huron
+[2578 -4976]
+%Port of Spain
+[640 -3691]
+%Port Sudan
+[1137 2232]
+%Portland
+[2619 -4216]
+%Portland
+[2731 -7361]
+%Porto
+[2468 -502]
+%Pribilof Island.
+[3427 -10217]
+%Prince Albert
+[3190 -6345]
+%Prince Rupert
+[3258 -7814]
+%Prudhoe Bay
+[4218 -8903]
+%Pueblo
+[2310 -6278]
+%Qandahar
+[1900 3942]
+%Rawson
+[-2617 -3907]
+%Recife
+[-481 -2093]
+%Red Deer
+[3134 -6827]
+%Redding
+[2435 -7343]
+%Rehoboth
+[2323 -4505]
+%Reims
+[2956 241]
+%Reno
+[2371 -7189]
+%Richland
+[2777 -7157]
+%Riga LATVIA
+[3416 1446]
+%Rijeka
+[2719 868]
+%Rio de Janeiro
+[-1375 -2592]
+%Riverside
+[2037 -7043]
+%Roanoke
+[2237 -4796]
+%Roanoke Rapids
+[2188 -4659]
+%Rochester
+[2585 -4656]
+%Rock Springs
+[2494 -6553]
+%Rockford
+[2537 -5344]
+%Rockville
+[2345 -4629]
+%Roslyn
+[2449 -4418]
+%Rotterdam
+[3095 269]
+%Rovaniem
+[3992 1547]
+%Rutland
+[2617 -4378]
+%Saga
+[1996 7818]
+%Saipan
+[912 8746]
+%Salisbury
+[2302 -4536]
+%Salonika
+[2438 1377]
+%Salzburg
+[2868 784]
+%Samsun
+[2474 2180]
+%San Angelo
+[1889 -6026]
+%San Antonio
+[1765 -5910]
+%San Diego
+[1963 -7031]
+%San Francisco
+[2267 -7345]
+%San Luis Obispo
+[2066 -7178]
+%Santa Cruz
+[2218 -7321]
+%Santa Monica
+[2041 -7109]
+%Sao Paulo
+[-1413 -2798]
+%Sapporo
+[2583 8467]
+%Saskatoon
+[3128 -6395]
+%Sault Ste Marie
+[2792 -4941]
+%Sausalito
+[2272 -7346]
+%Savannah
+[1925 -4865]
+%Scranton
+[2485 -4540]
+%Seattle
+[2855 -7336]
+%Sevastapol
+[2675 2010]
+%Shanghai
+[1874 7282]
+%Shenyeng
+[2508 7407]
+%Sheridan
+[2688 -6416]
+%Shihezi
+[2662 5160]
+%Shreveport
+[1951 -5625]
+%Sitka
+[3424 -8119]
+%South Bend
+[2500 -5175]
+%Southfield
+[2549 -4997]
+%Split
+[2610 988]
+%Spokane
+[2861 -7033]
+%Springfield
+[2527 -4355]
+%St Augustine
+[1793 -4879]
+%St Gallen
+[2845 565]
+%St Helena (UK)
+[-955 -343]
+%St Lawrence Island
+[3798 -10230]
+%St Louis
+[2318 -5413]
+%St Moritz
+[2790 590]
+%St Petersburg
+[1666 -4958]
+%St Petersburg (Leningrad)
+[3596 1819]
+%St Pierre
+[2807 -3372]
+%Starnberg
+[2880 680]
+%Stornaway
+[3493 -384]
+%Stuttgart
+[2927 551]
+%Suffield
+[2518 -4359]
+%Surabaya
+[-432 6765]
+%Sydney
+[2771 -3612]
+%Sydney
+[-2032 9073]
+%Syracuse
+[2584 -4569]
+%Tabriz
+[2286 2776]
+%Tacloban
+[674 7500]
+%Tacoma
+[2840 -7347]
+%Tampa
+[1676 -4947]
+%Tampico
+[1333 -5855]
+%Tarpon Springs
+[1685 -4964]
+%Tel Aviv
+[1924 2087]
+%Texarkana
+[2005 -5642]
+%Tientsin
+[2346 7033]
+%Tijuana
+[1951 -7021]
+%Timbuktu
+[1004 -181]
+%Toledo
+[2499 -5013]
+%Torshavn FAEROE ISLES (DENMARK)
+[3720 -406]
+%Tottori
+[2128 8053]
+%Toulouse
+[2622 88]
+%Townsville
+[-1155 8809]
+%Towson
+[2364 -4596]
+%Tralee
+[3136 -582]
+%Trieste
+[2740 831]
+%Tromso
+[4179 1148]
+%Turin
+[2704 461]
+%Tuscon
+[1934 -6658]
+%Ukiah
+[2348 -7393]
+%Ulan Ude
+[3113 6532]
+%Utica
+[2587 -4514]
+% Vaasa
+[3785 1304]
+%Vaduz
+[2828 571]
+%Valencia
+[2369 -38]
+%Valparaiso
+[-1982 -4299]
+%Vancouver
+[2956 -7386]
+%Venice
+[2726 739]
+%Vera Cruz
+[1151 -5768]
+%Vernon
+[2509 -4349]
+%Vero Beach
+[1658 -4823]
+%Victoria HONG KONG (UK)
+[1350 6840]
+%Vladivostok
+[2590 7918]
+%Waco
+[1892 -5830]
+%Waterbury
+[2494 -4383]
+%Watertown
+[2636 -4555]
+%Webster
+[2588 -4676]
+%Wedel
+[3215 583]
+%Wewak
+[-220 8614]
+%Wheeling
+[2403 -4842]
+%Wichita Falls
+[2033 -5911]
+%Williamsport
+[2506 -4621]
+%Wilmington
+[2384 -4532]
+%Winchester
+[2351 -4690]
+%Woodbridge
+[2320 -4634]
+%Worcester
+[2536 -4308]
+%Wrangell
+[3385 -7940]
+%Xining
+[2194 6104]
+%Yakima
+[2797 -7230]
+%Yakutsk
+[3719 7798]
+%Yokohama
+[2114 8377]
+%York
+[2398 -4605]
+%Yuma
+[1964 -6877]
+%Zagreb
+[2747 958]
+%Zomba
+[-900 2160]
+%Zurich
+[2915 -6543]
+%Zurich
+[2842 512]
+]def

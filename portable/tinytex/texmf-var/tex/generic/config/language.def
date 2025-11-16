@@ -33,10 +33,6 @@
 \addlanguage{british}{loadhyph-en-gb.tex}{}{2}{3}
 \addlanguage{UKenglish}{loadhyph-en-gb.tex}{}{2}{3}
 \addlanguage{usenglishmax}{loadhyph-en-us.tex}{}{2}{3}
-% from hyphen-french:
-\addlanguage{french}{loadhyph-fr.tex}{}{2}{2}
-\addlanguage{patois}{loadhyph-fr.tex}{}{2}{2}
-\addlanguage{francais}{loadhyph-fr.tex}{}{2}{2}
 %%% No changes may be made beyond this point.
 
 \uselanguage {USenglish}             %%% This MUST be the last line of the file.

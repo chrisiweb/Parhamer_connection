@@ -1,0 +1,515 @@
+%%
+%% This is file `expkv-opt.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% expkv-opt.dtx  (with options: `pkg')
+%% 
+%% ----------------------------------------------------------------
+%% expkv-bundle -- an expandable key=val implementation and friends
+%% E-mail: jspratte@yahoo.de
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
+%% ----------------------------------------------------------------
+%% 
+%% Copyright (C) 2020-2024 Jonathan P. Spratte
+%% 
+%% This  work may be  distributed and/or  modified under  the conditions  of the
+%% LaTeX Project Public License (LPPL),  either version 1.3c  of this license or
+%% (at your option) any later version.  The latest version of this license is in
+%% the file:
+%% 
+%%   http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%%   Jonathan P. Spratte.
+%% 
+%% This work consists of the files  expkv-bundle.ins
+%%                                  expkv.dtx
+%%                                  expkv-cs.dtx
+%%                                  expkv-def.dtx
+%%                                  expkv-opt.dtx
+%%                                  expkv-pop.dtx
+%% and the derived files            expkv.sty
+%%                                  expkv.tex
+%%                                  t-expkv.tex
+%%                                  expkv-cs.sty
+%%                                  expkv-cs.tex
+%%                                  t-expkv-cs.tex
+%%                                  expkv-def.sty
+%%                                  expkv-def.tex
+%%                                  t-expkv-def.tex
+%%                                  expkv-opt.sty
+%%                                  expkv-pop.sty
+%%                                  expkv-pop.tex
+%%                                  t-expkv-pop.tex
+%% 
+%% as well as any documentation files shipped with it.
+%% 
+\IfFormatAtLeastTF{2021/05/01}
+  {}
+  {%
+    \ifx\pkgcls@targetlabel\@empty
+      \ifnum\requestedLaTeXdate=\pkgcls@targetdate
+        \pkgcls@parse@date@arg{=v0.1}%
+      \fi
+    \fi
+  }
+\DeclareRelease{v0.1}{2020/10/10}{expkv-opt-2020-10-10.sty}
+\DeclareCurrentRelease{v0.2}{2021/04/04}
+\newcommand*\ekvoVersion{1.1}
+\newcommand*\ekvoDate{2024-12-16}
+\ProvidesPackage{expkv-opt}
+  [%
+    \ekvoDate\space v\ekvoVersion\space
+    parse class and package options with expkv%
+  ]
+\RequirePackage{expkv}
+\protected\long\def\ekvo@CurrentOption@loop#1#2%
+  {%
+    \ekvo@CurrentOption@loop@#2\ekv@set@other\ekv@mark#1,\ekv@stop,\ekvo@tail
+  }
+\long\def\ekvo@CurrentOption@loop@#1\ekv@set@other#2,%
+  {%
+    \ekv@gobble@from@mark@to@stop#2\ekvo@end@loop\ekv@stop
+    \ekv@ifblank{#2}%
+      {}%
+      {%
+        \edef\CurrentOption{\unexpanded\expandafter{\ekv@gobble@mark#2}}%
+        #1{#2}%
+      }%
+    \ekvo@CurrentOption@loop@#1\ekv@set@other\ekv@mark
+  }
+\long\def\ekvo@end@loop#1\ekvo@tail{}
+\def\ekvo@ifx@TF#1#2{\ifx#1#2\ekv@fi@firstoftwo\fi\@secondoftwo}
+\def\ekvo@ifx@T#1#2{\ifx#1#2\ekv@fi@firstofone\fi\@gobble}
+\def\ekvo@ifx@F#1#2{\ifx#1#2\ekv@fi@gobble\fi\@firstofone}
+\protected\def\ekvo@do@with@set#1#2%
+  {%
+    \ekvifdefinedset{#1}%
+      {%
+        \expandafter
+        \let\expandafter\ekvo@name\csname\ekv@undefined@set{#1}\endcsname
+        \def\ekvo@setname{#1}%
+        #2%
+      }%
+      {\ekvo@err@undefined@set{#1}}%
+  }
+\protected\long\def\ekvo@handle@undefined@k@pkg#1%
+  {%
+    \ekv@ifdefined{\ekvo@name{#1}}%
+      {\ekvo@err@value@required{#1}}%
+      {\ekvo@err@undefined@key{#1}}%
+  }
+\def\ekvo@handle@undefined@kv@pkg#1#2%
+  {%
+    \ekv@ifdefined{\ekvo@name{#1}N}%
+      {\ekvo@err@value@forbidden{#1}}%
+      {\ekvo@err@undefined@key{#1}}%
+  }
+\long\def\ekvo@addto@unused@one#1{\ekvo@do@unusedoptionlist\ekvo@addnewto@list}
+\long\def\ekvo@addto@unused@two#1#2{\ekvo@do@unusedoptionlist\ekvo@addnewto@list}
+\long\def\ekvo@rmfrom@unused@one#1%
+  {%
+    \ekvo@ifx@F\@unusedoptionlist\@empty
+      {\ekvo@do@unusedoptionlist\ekvo@rmfrom@list}%
+  }
+\long\def\ekvo@rmfrom@unused@two#1#2%
+  {%
+    \ekvo@ifx@F\@unusedoptionlist\@empty
+      {\ekvo@do@unusedoptionlist\ekvo@rmfrom@list}%
+  }
+\protected\def\ekvo@do@unusedoptionlist#1%
+  {%
+    \let\ekvo@unpreparedCurrentOption\CurrentOption
+    \edef\CurrentOption
+      {\expandafter\ekvo@prepare@unusedoption\CurrentOption=\ekv@mark}%
+    #1\@unusedoptionlist
+    \let\CurrentOption\ekvo@unpreparedCurrentOption
+  }
+\def\ekvo@prepare@unusedoption{\ekvo@prepare@unusedoption@a\@empty}
+\def\ekvo@prepare@unusedoption@a#1%
+  {%
+    \long\def\ekvo@prepare@unusedoption@a##1=##2\ekv@mark
+      {%
+        \ekvo@prepare@unusedoption@b##1\ekv@stop
+          \ekv@mark\ekvo@prepare@unusedoption@b
+          #1\ekv@mark\ekvo@prepare@unusedoption@c
+      }%
+  }
+\ekvo@prepare@unusedoption@a{ }
+\long\def\ekvo@prepare@unusedoption@b#1 #2\ekv@mark#3{#3#1#2\ekv@mark#3}
+\long\def\ekvo@prepare@unusedoption@c
+    #1\ekv@stop
+    \ekv@mark\ekvo@prepare@unusedoption@b\ekv@mark\ekvo@prepare@unusedoption@c
+  {\unexpanded\expandafter{#1}}
+\protected\def\ekvo@set@handlers@local
+  {%
+    \ifx\@currext\@clsextension
+      \unless\ifx\@classoptionslist\relax
+        \expandafter
+        \ifx
+            \csname @raw@opt@\@currname.\@currext\endcsname
+            \@raw@classoptionslist
+          \unless\ifx\@unusedoptionlist\@empty
+            \let\ekvo@handle@defined@k\ekvo@rmfrom@unused@one
+            \let\ekvo@handle@defined@kv\ekvo@rmfrom@unused@two
+          \fi
+        \fi
+      \fi
+    \fi
+    \ekvo@if@need@handlers
+      {%
+        \ifx\@currext\@clsextension
+          \ifx\@classoptionslist\relax
+            \let\ekvo@handle@undefined@k\@gobble
+            \let\ekvo@handle@undefined@kv\@gobbletwo
+          \else
+            \expandafter
+            \ifx
+                \csname @raw@opt@\@currname.\@currext\endcsname
+                \@raw@classoptionslist
+              \let\ekvo@handle@undefined@k\ekvo@addto@unused@one
+              \let\ekvo@handle@undefined@kv\ekvo@addto@unused@two
+            \else
+              \let\ekvo@handle@undefined@k\@gobble
+              \let\ekvo@handle@undefined@kv\@gobbletwo
+            \fi
+          \fi
+        \else
+          \let\ekvo@handle@undefined@k\ekvo@handle@undefined@k@pkg
+          \let\ekvo@handle@undefined@kv\ekvo@handle@undefined@kv@pkg
+        \fi
+      }%
+  }
+\protected\def\ekvo@set@handlers@global
+  {%
+    \unless\ifx\@unusedoptionlist\@empty
+      \let\ekvo@handle@defined@k\ekvo@rmfrom@unused@one
+      \let\ekvo@handle@defined@kv\ekvo@rmfrom@unused@two
+    \fi
+    \ekvo@if@need@handlers
+      {%
+        \let\ekvo@handle@undefined@k\@gobble
+        \let\ekvo@handle@undefined@kv\@gobbletwo
+      }%
+  }
+\protected\def\ekvo@set@handlers@list
+  {%
+    \ekvo@if@need@handlers
+      {%
+        \let\ekvo@handle@undefined@k\@gobble
+        \let\ekvo@handle@undefined@kv\@gobbletwo
+      }%
+  }
+\let\ekvo@if@need@handlers\@firstofone
+\protected\long\def\ekvo@dont@need@handlers#1%
+  {%
+    \let\ekvo@if@need@handlers\@firstofone
+  }%
+\let\ekvo@handle@defined@k\@gobble
+\let\ekvo@handle@defined@kv\@gobbletwo
+\protected\def\ekvo@process@common#1#2#3%
+  {%
+    #1{\ekvo@do@with@set{#3}{#2}}%
+  }
+\protected\def\ekvo@process@list#1%
+  {%
+    \expandafter\ekvo@CurrentOption@loop\expandafter{#1}\ekvo@parse
+  }
+\long\def\ekvo@parse#1%
+  {%
+    \ekv@eq@other#1\ekv@nil\ekv@mark\ekvo@parse@kv
+      =\ekv@mark\ekvo@parse@k
+  }
+\long\def\ekvo@parse@kv#1\ekv@stop#2\ekv@nil=\ekv@mark\ekvo@parse@k
+  {\ekv@strip{#2}{\ekv@strip{#1}\ekvo@parse@kv@}}
+\long\def\ekvo@parse@kv@#1#2%
+  {%
+    \ekv@ifexp{#1}%
+      {\ekvo@expansion@kv{#2}}%
+      {\ekvo@set@kv{#1}{#2}}%
+  }
+\long\def\ekvo@expansion@kv#1#2#3#4%
+  {%
+    \ekv@expansion@rule@{#1}#2\ekv@mark\ekv@stop{#3}{}%
+      {\ekvo@handle@defined@kv{#3}{#1}\ekvmorekv}%
+    \ekvo@expansion@kv@
+  }
+\long\def\ekvo@expansion@kv@#1#2{\ekvo@set@kv{#1}{#2}}
+\long\def\ekvo@parse@k#1\ekv@nil\ekv@mark\ekvo@parse@kv\ekv@stop\ekv@mark
+  {\ekv@strip{#1}\ekvo@parse@k@}
+\long\def\ekvo@parse@k@#1%
+  {%
+    \ekv@ifexp{#1}%
+      \ekvo@expansion@k
+      {\ekvo@set@k{#1}}%
+  }
+\long\def\ekvo@expansion@k#1#2#3%
+  {%
+    \ekv@expansion@rule@{#2}#1\ekv@mark\ekv@stop{}{}%
+      {\ekvo@handle@defined@k{#2}\ekvmorekv}%
+    \ekvo@expansion@k@
+  }
+\long\def\ekvo@expansion@k@#1#2{\ekvo@set@k{#2}}
+\protected\def\ekvo@set@k#1%
+  {%
+    \ekv@ifdefined{\ekvo@name{#1}N}%
+      {%
+        \ekvo@handle@defined@k{#1}%
+        \csname\ekvo@name{#1}N\endcsname
+      }%
+      {\ekvo@handle@undefined@k{#1}}%
+  }
+\protected\def\ekvo@set@kv#1#2%
+  {%
+    \ekv@ifdefined{\ekvo@name{#1}}%
+      {%
+        \ekvo@handle@defined@kv{#1}{#2}%
+        \csname\ekvo@name{#1}\endcsname{#2}%
+      }%
+      {\ekvo@handle@undefined@kv{#1}{#2}}%
+  }
+\protected\def\ekvo@addto@list#1%
+  {%
+    \ekvo@ifx@TF#1\@empty
+      {\let#1\CurrentOption}%
+      {%
+        \edef#1%
+          {%
+            \unexpanded\expandafter{#1},%
+            \unexpanded\expandafter{\CurrentOption}%
+          }%
+      }%
+  }
+\protected\def\ekvo@addnewto@list#1%
+  {%
+    \ekvo@ifx@TF#1\@empty
+      {\let#1\CurrentOption}%
+      {%
+        \ekvo@if@in@list#1%
+          {}%
+          {%
+            \edef#1%
+              {%
+                \unexpanded\expandafter{#1},%
+                \unexpanded\expandafter{\CurrentOption}%
+              }%
+          }%
+      }%
+  }
+\protected\def\ekvo@if@in@list#1%
+  {%
+    \ekvo@ifx@TF#1\@empty
+      \@secondoftwo
+      {%
+        \let\ekvo@curropt\CurrentOption
+        \let\ekvo@if@in@list@result\@secondoftwo
+        \expandafter\ekvo@CurrentOption@loop\expandafter{#1}\ekvo@if@in@list@
+        \let\CurrentOption\ekvo@curropt
+        \ekvo@if@in@list@result
+      }%
+  }
+\protected\long\def\ekvo@if@in@list@#1%
+  {%
+    \ekvo@ifx@T\ekvo@curropt\CurrentOption
+      {%
+        \let\ekvo@if@in@list@result\@firstoftwo
+        \ekvo@end@loop
+      }%
+  }
+\protected\def\ekvo@rmfrom@list#1%
+  {%
+    \ekvo@ifx@F#1\@empty
+      {%
+        \let\ekvo@tmp@list\@empty
+        \let\ekvo@curropt\CurrentOption
+        \expandafter\ekvo@CurrentOption@loop\expandafter{#1}\ekvo@rmfrom@list@
+        \let\CurrentOption\ekvo@curropt
+        \let#1\ekvo@tmp@list
+      }%
+  }
+\protected\long\def\ekvo@rmfrom@list@#1%
+  {%
+    \ekvo@ifx@F\CurrentOption\ekvo@curropt
+      {\ekvo@addto@list\ekvo@tmp@list}%
+  }
+\protected\def\ekvo@err@undefined@key#1%
+  {%
+    \ekvo@pkg@cls@error
+      {Undefined option `\detokenize{#1}'}%
+      {The used option was not defined. Perhaps you misspelled it?}%
+  }
+\protected\def\ekvo@err@value@required#1%
+  {%
+    \ekvo@pkg@cls@error
+      {Missing value for option `\detokenize{#1}'}%
+      {The used option requires a value or you misspelled its name.}%
+  }
+\protected\def\ekvo@err@value@forbidden#1%
+  {%
+    \ekvo@pkg@cls@error
+      {Unwanted value for option `\detokenize{#1}'}%
+      {The used option doesn't support a value or you misspelled its name.}%
+  }
+\protected\def\ekvo@err@undefined@set#1%
+  {%
+    \PackageError{expkv-opt}%
+      {Undefined set `#1'}%
+      {The set for which you try to parse options isn't defined in expkv.}%
+  }
+\protected\def\ekvo@pkg@cls@error
+  {%
+    \ekvo@ifx@TF\@currext\@clsextension
+      \ClassError
+      \PackageError
+        \@currname
+  }
+\protected\def\ekvoProcessOptions#1%
+  {%
+    \ekvo@if@need@handlers
+      {%
+        \ekvoProcessGlobalOptions{#1}%
+        \ekvoProcessLocalOptions {#1}%
+        \ekvoProcessFutureOptions{#1}%
+        \@gobbletwo
+      }%
+    \@firstofone
+      {%
+        \let\ekvo@tmpa\ekvo@handle@undefined@k
+        \let\ekvo@tmpb\ekvo@handle@undefined@kv
+        \ekvoUseUnknownHandlers\ekvo@tmpa\ekvo@tmpb
+        \ekvoProcessGlobalOptions{#1}%
+        \ekvoUseUnknownHandlers\ekvo@tmpa\ekvo@tmpb
+        \ekvoProcessLocalOptions {#1}%
+        \ekvoUseUnknownHandlers\ekvo@tmpa\ekvo@tmpb
+        \ekvoProcessFutureOptions{#1}%
+        \let\ekvo@tmpa\ekvo@undefined
+        \let\ekvo@tmpb\ekvo@undefined
+      }%
+  }
+\protected\def\ekvoProcessLocalOptions
+  {%
+    \ekvo@process@common
+      {\ekv@ifdefined{@raw@opt@\@currname.\@currext}\@firstofone\@gobble}%
+      {%
+        \ekvo@set@handlers@local
+        \expandafter
+        \ekvo@process@list\csname @raw@opt@\@currname.\@currext\endcsname
+        \AtEndOfPackage{\let\@unprocessedoptions\relax}%
+      }%
+  }
+\protected\def\ekvoProcessGlobalOptions
+  {%
+    \ekvo@process@common{\ekvo@ifx@F\@classoptionslist\relax}%
+      {%
+        \ekvo@set@handlers@global
+        \ekvo@process@list\@raw@classoptionslist
+        \let\ekvo@handle@defined@k\@gobble
+        \let\ekvo@handle@defined@kv\@gobbletwo
+      }%
+  }
+\IfFormatAtLeastTF{2022/11/01}
+  {%
+    \protected\def\ekvoProcessFutureOptions#1%
+      {%
+        \ekvo@if@need@handlers\@gobbletwo
+        \@firstofone
+          {%
+            \expandafter\let
+              \csname ekvo@future@undefined@k@\@currname.\@currext\endcsname
+              \ekvo@handle@undefined@k
+            \expandafter\let
+              \csname ekvo@future@undefined@kv@\@currname.\@currext\endcsname
+              \ekvo@handle@undefined@kv
+          }%
+        \protected\expandafter
+        \xdef\csname opt@handler@\@currname.\@currext\endcsname
+          {\ekv@unexpanded{\ekvo@future{#1}}}%
+      }
+    \protected\def\ekvo@future
+      {%
+        \ekvo@process@common
+          {\ekv@ifdefined{@raw@opt@\@currname.\@currext}\@firstofone\@gobble}%
+          {%
+            \ekvo@set@handlers@future
+            \expandafter\ekvo@process@list
+              \csname @raw@opt@\@currname.\@currext\endcsname
+            \AtEndOfPackage{\let\@unprocessedoptions\relax}%
+          }%
+      }
+    \protected\def\ekvo@set@handlers@future
+      {%
+        \expandafter\let\expandafter
+          \ekvo@handle@undefined@k
+          \csname
+            \ekv@ifdefined{ekvo@future@undefined@k@\@currname.\@currext}%
+              {ekvo@future@undefined@k@\@currname.\@currext}%
+              {ekvo@handle@undefined@k@pkg}%
+          \endcsname
+        \expandafter\let\expandafter
+          \ekvo@handle@undefined@kv
+          \csname
+            \ekv@ifdefined{ekvo@future@undefined@kv@\@currname.\@currext}%
+              {ekvo@future@undefined@kv@\@currname.\@currext}%
+              {ekvo@handle@undefined@kv@pkg}%
+          \endcsname
+      }
+  }
+  {%
+    \protected\def\ekvoProcessFutureOptions#1%
+      {%
+        \PackageWarning{expkv-opt}%
+          {LaTeX-kernel is too old to process future options.\@gobbletwo}%
+        \protected\gdef\ekvoProcessFutureOptions##1{}%
+      }%
+  }
+\protected\def\ekvoProcessOptionsList#1%
+  {%
+    \ekvo@process@common{\ekvo@ifx@F#1\@empty}%
+      {%
+        \ekvo@set@handlers@list
+        \ekvo@process@list#1%
+      }%
+  }
+\protected\def\ekvoUseUnknownHandlers
+  {%
+    \let\ekvo@if@need@handlers\ekvo@dont@need@handlers
+    \@ifstar\ekvoUseUnknownHandlers@s\ekvoUseUnknownHandlers@n
+  }
+\protected\def\ekvoUseUnknownHandlers@s
+  {%
+    \long\def\ekvo@handle@undefined@k##1%
+      {%
+        \ekv@ifdefined{\ekvo@name{}uN}%
+          {%
+            \csname\ekvo@name{}uN\expandafter\endcsname\expandafter
+              {\detokenize{##1}}{##1}%
+          }%
+          {}%
+      }%
+    \long\def\ekvo@handle@undefined@kv##1##2%
+      {%
+        \ekv@ifdefined{\ekvo@name{}u}%
+          {%
+            \csname\ekvo@name{}u\ekv@expanded{\endcsname
+              {\ekv@unexpanded{##2}}{\detokenize{##1}}}{##1}%
+          }%
+          {}%
+      }%
+  }
+\protected\def\ekvoUseUnknownHandlers@n#1#2%
+  {%
+    \let\ekvo@handle@undefined@k#1\relax
+    \let\ekvo@handle@undefined@kv#2\relax
+  }
+\@onlypreamble\ekvoProcessOptions
+\@onlypreamble\ekvoProcessLocalOptions
+\@onlypreamble\ekvoProcessGlobalOptions
+\@onlypreamble\ekvoProcessFutureOptions
+\@onlypreamble\ekvoProcessOptionsList
+\@onlypreamble\ekvoUseUnknownHandlers
+%% 
+%%
+%% End of file `expkv-opt.sty'.

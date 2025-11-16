@@ -1,0 +1,33 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                   %%
+%% This is file `pst-moire.sty'                                      %%
+%%                                                                   %%
+%% IMPORTANT NOTICE:                                                 %%
+%%                                                                   %%
+%% Package `pst-moire'                                               %%
+%%                                                                   %%
+%% Jürgen Gilg, Manuel Luque, Jean-Michel Sarlat                     %%
+%%                                                                   %%
+%% Copyright (C) 2018                                                %%
+%%                                                                   %%
+%% This program can redistributed and/or modified under              %%
+%% the terms of the LaTeX Project Public License                     %%
+%% Distributed from CTAN archives in directory                       %%
+%% macros/latex/base/lppl.txt; either version 1.3c of                %%
+%% the License, or (at your option) any later version.               %%
+%%                                                                   %%
+%% DESCRIPTION:                                                      %%
+%%   `pst-moire' is a PSTricks package to draw moire patterns        %%
+%%                                                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{pstricks}
+\ProvidesPackage{pst-moire}[2018/11/22 package wrapper for
+  pst-moire]
+\input{pst-moire.tex}
+\ProvidesFile{pst-moire.tex}
+  [\filedate\space v\fileversion\space `PST-moire']
+\IfFileExists{pst-moire.pro}{%
+   \ProvidesFile{pst-moire.pro}
+     [2018/11/22 v. 2.1,  PostScript prologue file]
+     \@addtofilelist{pst-moire.pro}}{}%
+\endinput

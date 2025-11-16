@@ -1,4 +1,4 @@
-# $Id: TLUtils.pm 74083 2025-02-17 23:49:58Z karl $
+# $Id: TLUtils.pm 76753 2025-11-04 09:09:18Z preining $
 # TeXLive::TLUtils.pm - the inevitable utilities for TeX Live.
 # Copyright 2007-2025 Norbert Preining, Reinhard Kotucha
 # This file is licensed under the GNU General Public License version 2
@@ -8,7 +8,7 @@ use strict; use warnings;
 
 package TeXLive::TLUtils;
 
-my $svnrev = '$Revision: 74083 $';
+my $svnrev = '$Revision: 76753 $';
 my $_modulerevision = ($svnrev =~ m/: ([0-9]+) /) ? $1 : "unknown";
 sub module_revision { return $_modulerevision; }
 
@@ -2725,6 +2725,18 @@ sub unpack {
 
   if (!defined($what)) {
     return (0, "nothing to unpack");
+  }
+
+  # Shortcut for tar file, which can only be local and are backups when
+  # auto_backup == 0
+  if ($what =~ m/\.tar$/) {
+    if (untar($what, $target, 1)) {
+      my $pkg = $what;
+      $pkg =~ s/\.tar$//;
+      return (1, "$pkg");
+    } else {
+      return (0, "untar failed");
+    }
   }
 
   my $decompressorType;

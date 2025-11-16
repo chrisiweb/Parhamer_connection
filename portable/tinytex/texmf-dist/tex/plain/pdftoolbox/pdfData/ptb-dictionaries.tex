@@ -1,0 +1,26 @@
+\input ptb-utils
+
+\_checkloaded{dictionaries}
+
+\input pdfData/ptb-arrays
+
+\def\createdict#1{%
+    \createarray{dict@#1@keys}%
+}
+
+\def\adddict#1#2#3{%
+    \_xp\def\csname dict@#1@key@#2\endcsname{#3}%
+    \findarray{dict@#1@keys}{#2}{\_regC}%
+    \ifx\@return@value\False%
+        \appendarray{dict@#1@keys}{#2}%
+    \fi%
+}
+
+\def\indexdict#1#2{%
+    \csname dict@#1@key@#2\endcsname%
+}
+
+\def\keyindict#1#2{%
+    \findarray{dict@#1@keys}{#2}{\_regC}%
+}
+
