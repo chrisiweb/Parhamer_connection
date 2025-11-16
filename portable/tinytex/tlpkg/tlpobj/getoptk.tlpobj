@@ -1,0 +1,20 @@
+name getoptk
+category Package
+revision 23567
+shortdesc Define macros with sophisticated options
+longdesc The package provides a means of defining macros whose options
+longdesc are taken from a dictionary, which includes options which
+longdesc themselves have arguments. The package was designed for use
+longdesc with Plain TeX; its syntax derives from that of the \hbox,
+longdesc \hrule, etc., TeX primitives.
+containersize 4180
+containerchecksum 6a2e543d0997c52155807d0d2641af9714cb09531286a58bcb2d5fec0e70c694edb7d603a250281a641610d1c39495d5f93417da5cfea7a86da1fd53a98ef77f
+doccontainersize 278344
+doccontainerchecksum fba54e8acd4f494c4e859c8705cb97923e477ed909720adb8c4735c527c3b13799ad74ac1700099bfa282144f2b38358b890bc52d4ae4a9e16699c2d0e10619c
+runfiles size=4
+ texmf-dist/tex/plain/getoptk/getoptk.tex
+ texmf-dist/tex/plain/getoptk/guide.tex
+catalogue-ctan /macros/plain/contrib/getoptk
+catalogue-license other-free
+catalogue-topics macro-def
+catalogue-version 1.0

@@ -1,0 +1,22 @@
+name metatex
+category Package
+revision 15878
+shortdesc Incorporate Metafont pictures in TeX source
+longdesc METATeX is a set of plain TeX and Metafont macros that you can
+longdesc use to define both the text and the figures in a single source
+longdesc file. Because METATeX sets up two way communication, from TeX
+longdesc to Metafont and back from Metafont to TeX, drawing dimensions
+longdesc can be controlled by TeX and labels can be located by Metafont.
+longdesc Only standard features of TeX and Metafont are used, but two
+longdesc runs of TeX and one of Metafont are needed.
+containersize 3388
+containerchecksum 8d438cf0f3bd375c169681b242b7f00dca96cd3bcfb167c6aa664e27dba59eefb53a6d28ef537802d584b17bc578b1d63ca25799146ee6d986bc647ae1b0af2d
+doccontainersize 137060
+doccontainerchecksum 3c2918a3bbb30b4abe2395baf32ed2fd5fb1ce3541f86250f0c4037aeb127fe7e90cfced87144d564813a437b39b184503ea9a2c0c61b979907db74d91860677
+runfiles size=2
+ texmf-dist/tex/plain/metatex/metatex.tex
+catalogue-also emp
+catalogue-ctan /macros/plain/contrib/metatex
+catalogue-license gpl
+catalogue-topics graphics-inline
+catalogue-version 1.1

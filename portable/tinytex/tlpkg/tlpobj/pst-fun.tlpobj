@@ -1,0 +1,22 @@
+name pst-fun
+category Package
+revision 17909
+shortdesc Draw "funny" objects with PSTricks
+longdesc This is a PSTricks related package for drawing funny objects,
+longdesc like ant, bird, fish, kangaroo, ... Such objects may be useful
+longdesc for testing other PSTricks macros and/or packages. (Or they can
+longdesc be used for fun...)
+containersize 24440
+containerchecksum 68d0c52bb40354a72b2eb14d2c10a18266badedd452a57e4c2a9aaad343b94f5c13f89853962e85c94ebed9274e87c44cc4ac1fd0203ec54097f71e5c4a15fdb
+doccontainersize 380444
+doccontainerchecksum b4f498e3f9d97be8fb8918abe5139d431656b52ac592ce9f3155c6dc7afcea17e51996dbb275968950dfae179b336ef923b2d88efb4b77506c64b5c775920d38
+srccontainersize 932
+srccontainerchecksum 4cdd6ea161216ee5d8be410b96749ae52d212e75691de0a9012ee6f0b5044d14c5be4e8615a6bc3b3b22f8a8fa99a75977fb264730ae64218b20898444793dd7
+runfiles size=22
+ texmf-dist/dvips/pst-fun/pst-fun.pro
+ texmf-dist/tex/generic/pst-fun/pst-fun.tex
+ texmf-dist/tex/latex/pst-fun/pst-fun.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-fun
+catalogue-license lppl
+catalogue-topics frivolous pstricks
+catalogue-version 0.04

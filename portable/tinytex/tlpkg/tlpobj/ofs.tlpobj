@@ -1,0 +1,57 @@
+name ofs
+category Package
+revision 16991
+shortdesc Macros for managing large font collections
+longdesc OFS (Olsak's Font System) is a set of Plain TeX and LaTeX
+longdesc macros for managing large font collections; it has been used by
+longdesc Czech/Slovak users for many years. Main features include:
+longdesc Mapping from long names of fonts to the metric file name. The
+longdesc user can specify only exact long names in documents. Support
+longdesc for many font encodings. Printing of catalogues of fonts and
+longdesc test samples of font families; the interactive macro \showfonts
+longdesc shows all font families you have installed via OFS. The user
+longdesc interface is the same for Plain TeX and for LaTeX, but the
+longdesc implementation differs: the LaTeX variant of OFS uses NFSS, but
+longdesc the Plain variant implements its own font management (which may
+longdesc even be better than NFSS) Support for math fonts including TX
+longdesc fonts.
+containersize 52908
+containerchecksum 347dc05e8742fa09679e3f16465077b0bbf5e34a4be5a5c2e1da094ad22c0e69ff9f4abb4aacb9be2c698b27da7e169adb0c1840da3e56b277514a9f9631dd02
+doccontainersize 689980
+doccontainerchecksum 13f7fd3ab4cb31ae521827b703cf4c3a0c796b6a33f46b2a24a2a8c488e92d6039a9b136440b00b6a0aba14a2dbad832b777cd5a3aa120ccfc4888ee147954e7
+runfiles size=93
+ texmf-dist/tex/generic/ofs/a117.tex
+ texmf-dist/tex/generic/ofs/a35.sty
+ texmf-dist/tex/generic/ofs/a35.tex
+ texmf-dist/tex/generic/ofs/allfonts.sty
+ texmf-dist/tex/generic/ofs/allfonts.tex
+ texmf-dist/tex/generic/ofs/amsfn.tex
+ texmf-dist/tex/generic/ofs/mtfn.tex
+ texmf-dist/tex/generic/ofs/ofs-6a.tex
+ texmf-dist/tex/generic/ofs/ofs-6c.tex
+ texmf-dist/tex/generic/ofs/ofs-6k.tex
+ texmf-dist/tex/generic/ofs/ofs-6s.tex
+ texmf-dist/tex/generic/ofs/ofs-6t.tex
+ texmf-dist/tex/generic/ofs/ofs-6x.tex
+ texmf-dist/tex/generic/ofs/ofs-6y.tex
+ texmf-dist/tex/generic/ofs/ofs-8c.tex
+ texmf-dist/tex/generic/ofs/ofs-8t.tex
+ texmf-dist/tex/generic/ofs/ofs-8x.tex
+ texmf-dist/tex/generic/ofs/ofs-8z.tex
+ texmf-dist/tex/generic/ofs/ofs-ams.tex
+ texmf-dist/tex/generic/ofs/ofs-cm.tex
+ texmf-dist/tex/generic/ofs/ofs-mt.tex
+ texmf-dist/tex/generic/ofs/ofs-ps.tex
+ texmf-dist/tex/generic/ofs/ofs-px.tex
+ texmf-dist/tex/generic/ofs/ofs-slt.tex
+ texmf-dist/tex/generic/ofs/ofs-tx.tex
+ texmf-dist/tex/generic/ofs/ofs.sty
+ texmf-dist/tex/generic/ofs/ofs.tex
+ texmf-dist/tex/generic/ofs/ofsdef.tex
+ texmf-dist/tex/generic/ofs/pantyk.tex
+ texmf-dist/tex/generic/ofs/txfn.tex
+catalogue-also plnfss font-selection fontch
+catalogue-contact-home http://petr.olsak.net/ofs.html
+catalogue-ctan /macros/generic/ofs
+catalogue-license knuth
+catalogue-topics font-sel plain-ext

@@ -1,0 +1,17 @@
+name abbr
+category Package
+revision 15878
+shortdesc Simple macros supporting abreviations for Plain and LaTeX
+longdesc The package provides some simple macros to support
+longdesc abbreviations in Plain TeX or LaTeX. It allows writing (e.g.)
+longdesc \<TEX> instead of \TeX, hence frees users from having to escape
+longdesc space after parameterless macros.
+containersize 2628
+containerchecksum 4b5d504cc9438ceb97a6935e66a6eaeb494eb76eb313bed275b1f1a829690569972feec048132e12b5849f398d0a4b291bc5f9ce8462031846ec46bc88ebab3c
+doccontainersize 852
+doccontainerchecksum 7080dea132581fdb0803b4ecfdcf4fd5ed5a689bd7e0c7b7b699ef5b3faeab908042f1704cb553ce38e7f37d9facf7d22a74ac71e2cbd269298f35666367f41a
+runfiles size=2
+ texmf-dist/tex/generic/abbr/abbr.tex
+catalogue-ctan /macros/generic/abbr
+catalogue-license pd
+catalogue-topics abbrev shortcut

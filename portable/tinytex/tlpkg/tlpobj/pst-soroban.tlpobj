@@ -1,0 +1,18 @@
+name pst-soroban
+category Package
+revision 15878
+shortdesc Draw a Soroban using PSTricks
+longdesc The package uses PSTricks to draw a Japanese abacus, or
+longdesc soroban. The soroban is still used in Japan today.
+containersize 1652
+containerchecksum c21d3f0e19c4cfcf79563e23e760178de6e39f1f42147f534946fef315c0514968548b30d24eb345f4f2c5cb7807fef4f0d45d8e345e9523806ce1e054d8cf11
+doccontainersize 84524
+doccontainerchecksum b7c1422ac43df949426581f7dbe749300093ce2d20145df768e21e893b9d2c419ffa8ab16c60fa509f09317bee4c7f80bed4920b92a5f9f2e9289eb93cec5eec
+srccontainersize 824
+srccontainerchecksum 49fb276ae7277b1508ecdcc3132d103e26204f314f8779a556335e1875dd5c3c6768b6b152264ba5643d2c39eb275f7ef193ecb6a292135abba2d60be508d654
+runfiles size=2
+ texmf-dist/tex/latex/pst-soroban/pst-soroban.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-soroban
+catalogue-license lppl
+catalogue-topics diagram pstricks
+catalogue-version 1.0

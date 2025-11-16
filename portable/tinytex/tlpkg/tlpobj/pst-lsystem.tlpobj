@@ -1,0 +1,20 @@
+name pst-lsystem
+category Package
+revision 49556
+shortdesc Create images based on a L-system
+longdesc pst-lsystem is a PSTricks based package for creating images
+longdesc based on a L-system. A L-system (Lindenmayer system) is a set
+longdesc of rules which can be used to model the morphology of a variety
+longdesc of organisms or fractals like the Kochflake or Hilbert curve.
+containersize 2564
+containerchecksum 0da3611c401895f508b6963c46f781863ab6b42ced2addf3413b74ff1c14daf42cdfb5c166072e18427871ed6d06c5cfe3b185f0af30cb25db2f346828ee1682
+doccontainersize 2763276
+doccontainerchecksum 0b277cd979f4a12abb57b8e6d2562b156bba74e0ca46da10da17a6bc505c6747592b5f19c5a3e9b72f99bffabcb45298663c6dca33c875c923408646c4c5f6d8
+runfiles size=4
+ texmf-dist/dvips/pst-lsystem/pst-lsystem.pro
+ texmf-dist/tex/generic/pst-lsystem/pst-lsystem.tex
+ texmf-dist/tex/latex/pst-lsystem/pst-lsystem.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-lsystem
+catalogue-license lppl
+catalogue-topics pstricks graphics-use
+catalogue-version 0.02

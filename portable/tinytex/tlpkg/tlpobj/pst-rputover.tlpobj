@@ -1,0 +1,17 @@
+name pst-rputover
+category Package
+revision 44724
+shortdesc Place text over objects without obscuring background colors
+longdesc This is a PSTricks package which allows to place text over
+longdesc objects without obscuring background colors.
+containersize 2600
+containerchecksum 3bd94d3a37fc8bbabba547a0072618c6e2bd2f6052f95cd4dd8cb973f64c4e97d0c7ef72fbe425df032aacbb8cb109b0eb06ee304b725ddcda6489da2c893934
+doccontainersize 85380
+doccontainerchecksum 16bc8c2500c19cdaeb701da98e4de0ffdc13116a0ed5802beae395e9664ee16acc6341db7d2c3ea7b2a16b0afac35503cd5a53e1ce1fbd67598be4c890b317d9
+runfiles size=3
+ texmf-dist/tex/generic/pst-rputover/pst-rputover.tex
+ texmf-dist/tex/latex/pst-rputover/pst-rputover.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-rputover
+catalogue-license lppl1.3c
+catalogue-topics pstricks
+catalogue-version 1.0

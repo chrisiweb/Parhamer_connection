@@ -1,0 +1,21 @@
+name uml
+category Package
+revision 17476
+shortdesc UML diagrams in LaTeX
+longdesc A PSTricks related package for writing UML (Unified Modelling
+longdesc Language) diagrams in LaTeX. Currently, it implements a subset
+longdesc of class diagrams, and some extra constructs as well. The
+longdesc package cannot be used together with pst-uml.
+containersize 6564
+containerchecksum b20da85c7166f8aec4309af3ab0b1319f37ada1513ff502555794b1721ac8c3f551afcdf49a58bf5c3c5e666e48962075f7711a45de003245584541175a6a470
+doccontainersize 381984
+doccontainerchecksum d81393e3b6d9efc0177478e562dc0a22323e3e5913d7592cdb6ec595d525238e154d2a599380521652eda4fe75b12006cfdc907715b0a9d461f8df60ed27986b
+srccontainersize 39836
+srccontainerchecksum afc5aa7db53b82f6063abca35d8cde75659682525d939e2f55c375b89fa4cc196bca8852c91d12f7daae939c053f4c9ecf99b326361f051847e660af5afe3ef7
+runfiles size=8
+ texmf-dist/tex/latex/uml/uml.sty
+catalogue-also pst-uml
+catalogue-ctan /graphics/pstricks/contrib/uml
+catalogue-license lppl
+catalogue-topics uml pstricks
+catalogue-version 0.11

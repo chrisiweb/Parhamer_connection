@@ -1,0 +1,14 @@
+name epigram
+category Package
+revision 20513
+shortdesc Display short quotations
+longdesc The package determines (on the basis of the width of the text
+longdesc of the epigram, laid out on a single line) whether to produce a
+longdesc line or a displayed paragraph.
+containersize 852
+containerchecksum 8952dbb6f7c573028b1f9621cd9c947a264847e59e1ead9547d386d71c2c15ab5f9c26088568b023030645b02191c9b72d827a80706ca1570785876c6acac6f0
+runfiles size=1
+ texmf-dist/tex/generic/epigram/epigram.tex
+catalogue-ctan /macros/generic/misc/epigram.tex
+catalogue-license pd
+catalogue-topics epigram

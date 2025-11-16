@@ -1,0 +1,27 @@
+name collargs
+category Package
+revision 70689
+shortdesc Collect arguments of any command
+longdesc This is a cross-format package providing a command which can
+longdesc determine the argument scope of any command whose argument
+longdesc structure conforms to xparse's argument specification. It was
+longdesc implemented as an auxiliary package of Advice ... which in turn
+longdesc was implemented as an auxiliary package of Memoize. This is why
+longdesc it is, somewhat unconventionally, documented alongside that
+longdesc package. This applies to both the manual and the documented
+longdesc code listing.
+containersize 8596
+containerchecksum b55c95585cc2486ea69e83689322ca6e5842a2c285ead5a88f23d42df108c6698de7f2a897fd0f2be34865b8329ae0d35a3437a30eb880919ce58dffebc1e9c2
+doccontainersize 8160
+doccontainerchecksum 09f8a17955a26a862eae9a57b019dd96f7d8ea87cd8e3751256823d0794666ce0185c32888d0d986a0ae446f30c4609535972e06ec619645c12c3f79e9b9faa4
+srccontainersize 25208
+srccontainerchecksum 678b5d23fefbeee88f6035fafe26e4a7c3093422dde585c8f268caa15b1d0e1894776d476ce12162487aa6a2f5259d3dcc2191cee439d1b2751fbc3048d386f8
+runfiles size=33
+ texmf-dist/tex/context/third/collargs/t-collargs.tex
+ texmf-dist/tex/latex/collargs/collargs.sty
+ texmf-dist/tex/plain/collargs/collargs.tex
+catalogue-contact-repository https://github.com/sasozivanovic/memoize
+catalogue-ctan /macros/generic/collargs
+catalogue-license lppl1.3c
+catalogue-topics macro-supp macro-gen
+catalogue-version 1.2.0

@@ -1,0 +1,96 @@
+MnSymbolS-Bold10 0 90
+'' '' .notdef 0  % generated from MnSymbolS-Bold10, 2022-07-07-15:12
+'' ''            % Copyright 2022 TeX Users Group
+'' ''            %
+'' ''            % This work may be distributed and/or modified under the
+'' ''            % conditions of the LaTeX Project Public License, either
+'' ''            % version 1.3c of this license or (at your option) any
+'' ''            % later version. The latest version of this license is in
+'' ''            %   http://www.latex-project.org/lppl.txt
+'' ''            % and version 1.3c or later is part of all distributions
+'' ''            % of LaTeX version 2005/12/01 or later.
+'' ''            %
+'' ''            % This work has the LPPL maintenance status "maintained".
+'' ''            %
+'' ''            % The Current Maintainer of this work
+'' ''            % is the TeX4ht Project <http://tug.org/tex4ht>.
+'' ''            %
+'' ''            % If you modify this program, changing the
+'' ''            % version identification would be appreciated.
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'A' '' A 65
+'B' '' B 66
+'C' '' C 67
+'D' '' D 68
+'E' '' E 69
+'F' '' F 70
+'G' '' G 71
+'H' '' H 72
+'I' '' I 73
+'J' '' J 74
+'K' '' K 75
+'L' '' L 76
+'M' '' M 77
+'N' '' N 78
+'O' '' O 79
+'P' '' P 80
+'Q' '' Q 81
+'R' '' R 82
+'S' '' S 83
+'T' '' T 84
+'U' '' U 85
+'V' '' V 86
+'W' '' W 87
+'X' '' X 88
+'Y' '' Y 89
+'Z' '' Z 90
+MnSymbolS-Bold10 0 90
+htfcss:  MnSymbolS-Bold10  font-weight: bold; font-family: 'MnSymbol', serif;
+
+

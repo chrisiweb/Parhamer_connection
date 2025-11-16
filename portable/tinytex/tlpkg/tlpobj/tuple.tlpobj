@@ -1,0 +1,31 @@
+name tuple
+category Package
+revision 76790
+shortdesc Expandable operations for tuples of numbers
+longdesc This package provides expandable operations for tuples of
+longdesc numbers: len, sum, min, max, mean, med, quantile, standard
+longdesc deviation, get item, position of item sort, add or set(*)
+longdesc items, filter, operations, composition(*), split(*), formatting
+longdesc and display All with a concise syntax that is easy and
+longdesc intuitive to use : object.method1.method2... (*): unexpandable
+longdesc method
+longdesc ---------------------------------------------------------------
+longdesc -------- Cette extension met a disposition des operations
+longdesc developpables pour les tuples de nombres : len, sum, min, max,
+longdesc mean, med, quantile, ecart type, get item, position d'un
+longdesc element tri, ajout ou modification(*) d'elements, filtre,
+longdesc operations, composition(*), coupure(*), formattage et affichage
+longdesc Le tout avec une syntaxe concise et d'un usage facile et
+longdesc intuitif : object.methode1.methode2... (*) : methode non
+longdesc developpable
+containersize 10504
+containerchecksum 67f584607c004aac157b2ed397bd9358a379b18e18ebc6aa39a86f34640fc340ea94eadd16451f1a349c804c937c5d3c94f61ed2e2c043aeb49c485767af8976
+doccontainersize 271480
+doccontainerchecksum a48ec47d286122f7384f2c958f3aeaa18ebbb4f2543812037573a0da282c016ae33b22217c0c83831acbd2a9eb228d3073de8c1343cb53daee68caeab65ad329
+runfiles size=13
+ texmf-dist/tex/generic/tuple/tuple.sty
+ texmf-dist/tex/generic/tuple/tuple.tex
+catalogue-ctan /macros/generic/tuple
+catalogue-license lppl1.3c
+catalogue-topics maths numbers calculation macro-gen
+catalogue-version 0.2

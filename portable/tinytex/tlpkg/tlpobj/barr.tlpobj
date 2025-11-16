@@ -1,0 +1,18 @@
+name barr
+category Package
+revision 38479
+catalogue diagxy
+shortdesc Diagram macros by Michael Barr
+longdesc Diagxy is a general diagramming package, useful for diagrams in
+longdesc a number of mathematical disciplines. Diagxy is a development
+longdesc of an earlier (successful) package to use the facilities of the
+longdesc xypic bundle.
+containersize 8104
+containerchecksum 6bd398efda5027e3b762b817ce777adb9bb1c8e593ca04386adedeab7dc26ba382058ccfa3c281ef8612fcc50c9b719e7f881dcde0cfec041cf4b2cd05f238f8
+doccontainersize 414908
+doccontainerchecksum 6600ecadc60fdd00e4d894969a84118265b5c5d07e9a411d3f01887fd1e94c481b117cbda80451774294dbb989a61379b16fe3ba5c3b8363a9a2485b76752aed
+runfiles size=13
+ texmf-dist/tex/generic/barr/diagxy.tex
+catalogue-ctan /macros/generic/diagrams/diagxy
+catalogue-license lppl1.3
+catalogue-topics diagram-comm

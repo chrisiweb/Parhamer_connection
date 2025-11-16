@@ -1,0 +1,19 @@
+name pst-layout
+category Package
+revision 29803
+shortdesc Page layout macros based on PSTricks packages
+longdesc The package provides a means of creating elaborate
+longdesc ("pseudo-tabular") layouts of material, typically to be
+longdesc overlaid on an included graphic. The package requires a recent
+longdesc version of the package pst-node and some other pstricks-related
+longdesc material.
+containersize 3780
+containerchecksum 6d4c06efe0d0095ba52eeee25ffdaf44f836e1e41840d8098e25c6fd3b5ee79d28663ef7f02ddd7d1ba21228bf4f9bd5a66548e3aef642a49cc9aab5b4b24fba
+doccontainersize 82676
+doccontainerchecksum fa32cd065979fcaf2105372155ae8debb399a0f930d6b85e7ca4a69d8b76bc0d7fb717ebdc8fa4c9794ea03268c2079b93e0bd6453155bf5925defb75cf05e08
+runfiles size=3
+ texmf-dist/tex/latex/pst-layout/pst-layout.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-layout
+catalogue-license lppl
+catalogue-topics layout table pstricks
+catalogue-version .95

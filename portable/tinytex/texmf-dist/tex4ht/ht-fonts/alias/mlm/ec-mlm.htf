@@ -1,0 +1,19 @@
+.lm-ec
+htfcss: ec-mlmbo  font-style: oblique;
+htfcss: ec-mlmbx  font-weight: bold;
+htfcss: ec-mlmbxi  font-style:italic; font-weight: bold;
+htfcss: ec-mlmbxo  font-style: oblique; font-weight: bold;
+htfcss: ec-mlmri  font-style:italic;
+htfcss: ec-mlmro  font-style: oblique;
+htfcss: ec-mlmss  font-family: sans-serif;
+htfcss: ec-mlmssbo  font-family: sans-serif; font-style: oblique; font-weight: bold;
+htfcss: ec-mlmssbx  font-family: sans-serif; font-weight: bold;
+htfcss: ec-mlmssdc  font-family: sans-serif;
+htfcss: ec-mlmssdo  font-family: sans-serif; font-style: oblique;
+htfcss: ec-mlmsso  font-family: sans-serif; font-style: oblique;
+htfcss: ec-mlmssq  font-family: sans-serif;
+htfcss: ec-mlmssqbo  font-family: sans-serif; font-style: oblique; font-weight: bold;
+htfcss: ec-mlmssqbx  font-family: sans-serif; font-weight: bold;
+htfcss: ec-mlmssqo  font-family: sans-serif; font-style: oblique;
+htfcss: ec-mlmcsc font-variant: small-caps;
+

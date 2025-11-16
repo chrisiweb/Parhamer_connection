@@ -1,0 +1,131 @@
+wncyr 0 127
+'&#x040A;'        ''        0  %
+'&#x0409;'        ''        1  % wncyr.htf                  2024-03-05-08:30 %
+'&#x040F;'       ''         2  % Copyright 2000-2009 Eitan Gurari %
+'&#x042D;'         ''       3  % Copyright 2010-2021 TeX Users Group %
+'&#x0406;'         ''       4  %
+'&#x0404;'         ''       5  % This work may be distributed and/or modified under the conditions
+'&#x0402;'         ''       6  % of the LaTeX Project Public License, either version 1.3 of this
+'&#x040B;'         ''       7  % license or (at your option) any later version. The latest version
+'&#x045A;'        ''        8  % of this license is in http://www.latex-project.org/lppl.txt and
+'&#x0459;'        ''        9  % version 1.3 or later is part of all distributions of LaTeX version
+'&#x045F;'       ''         10 % 2003/12/01 or later.
+'&#x044D;'         ''       11 % This work has the LPPL maintenance status "maintained".
+'&#x0456;'         ''       12 % Current Maintainer of this work is the TeX4ht Project.
+'&#x0454;'         ''       13 %
+'&#x0452;'         ''       14 % If you modify this file, changing the
+'&#x045B;'         ''       15 % version identification would be appreciated.
+'&#x042E;'        ''        16 %
+'&#x0416;'       ''         17 % tex4ht@tug.org
+'&#x0419;'       ''         18 % https://tug.org/tex4ht
+'&#x0401;'     ''           19 %
+'&#x0474;'         ''       20 
+'&#x0472;'       ''           21
+'&#x0405;'         ''            22
+'&#x042F;'         ''           23
+'&#x044E;'        ''           24
+'&#x0436;'       ''           25
+'&#x0439;'       ''           26
+'&#x0451;'     ''            27
+'&#x0475;'         ''            28
+'&#x0473;'       ''           29
+'&#x0455;'         ''            30
+'&#x044F;'         ''           31
+'&#x00A8;'     ''            32 ADDED: Diaeresis
+'!'         ''            33
+'&#x201D;'   ''            34 # CHANGED: Right double quotation mark
+'&#x0462;'         ''           35 Yat: CHANGED: Capital Yat
+'&#x02D8;'          ''            36 ADDED: Breve
+'%'         ''            37
+'&#x00B4;'          ''            38  ADDED: Acute accent
+'&#x2019;'     ''            39 # ADDED: Right single quotation mark
+'&#x0028;'         ''            40
+'&#x0029;'         ''            41
+'*'       ''           42
+'&#x0463;'         ''b          43 miniscule Yat; CHANGED: Small yat
+','         ''            44
+'-'         ''            45
+'.'         ''            46
+'/'         ''            47
+'0'      ''            48
+'1'      ''            49
+'2'      ''            50
+'3'      ''            51
+'4'      ''            52
+'5'      ''            53
+'6'      ''            54
+'7'      ''            55
+'8'      ''            56
+'9'      ''            57
+':'          ''           58
+';'          ''           59
+'&#x00AB;'      ''           60
+'&#x0131;'          ''           61 CORRECTED
+'&#x00BB;'      ''           62
+'?'          ''           63
+'&#x02D8;'           ''           64 ADDED: BREVE
+'&#x0410;'          ''          65
+'&#x0411;'          ''          66
+'&#x0426;'        ''          67
+'&#x0414;'        ''         68
+'&#x0415;'          ''          69
+'&#x0424;'        ''          70
+'&#x0413;'         ''          71
+'&#x0425;'          ''          72
+'&#x0418;'          ''          73
+'&#x0408;'          ''          74
+'&#x041A;'          ''          75
+'&#x041B;'        ''          76
+'&#x041C;'          ''          77
+'&#x041D;'          ''          78
+'&#x041E;'          ''          79
+'&#x041F;'        ''          80
+'&#x0427;'          ''          81
+'&#x0420;'          ''          82
+'&#x0421;'          ''          83
+'&#x0422;'          ''          84
+'&#x0423;'          ''          85
+'&#x0412;'          ''          86
+'&#x0429;'        ''          87
+'&#x0428;'        ''          88
+'&#x042B;'         ''          89
+'&#x0417;'          ''          90
+'&#x005B;'          ''           91
+'&#x201C;'    ''           92 ADDED: Left double quotation mark
+'&#x005D;'          ''           93
+'&#x042C;'          ''          94
+'&#x042A;'          ''          95
+'&#x2018;'    ''          96 ADDED: Left single quotation mark
+'&#x0430;'          ''           97
+'&#x0431;'          ''          98
+'&#x0446;'         ''         99
+'&#x0434;'         ''        100
+'&#x0435;'          ''         101
+'&#x0444;'          ''         102
+'&#x0433;'         ''         103
+'&#x0445;'          ''         104
+'&#x0438;'          ''         105
+'&#x0458;'          ''         106
+'&#x043A;'          ''         107
+'&#x043B;'         ''         108
+'&#x043C;'          ''         109
+'&#x043D;'          ''         110
+'&#x043E;'          ''         111
+'&#x043F;'        ''         112
+'&#x0447;'          ''         113
+'&#x0440;'          ''         114
+'&#x0441;'          ''         115
+'&#x0442;'          ''         116
+'&#x0443;'          ''         117
+'&#x0432;'          ''         118
+'&#x0449;'        ''        119
+'&#x0448;'         ''         120
+'&#x044B;'         ''         121
+'&#x0437;'          ''         122
+'&#x2013;'          ''          123
+'&#x2014;'      ''          124 em dash
+'&#x2116;'     ''         125 Numero sign
+'&#x044C;'          ''         126
+'&#x044A;'          ''         127
+wncyr 0 127
+

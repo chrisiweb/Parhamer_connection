@@ -1,0 +1,37 @@
+name plnfss
+category Package
+revision 15878
+shortdesc Font selection for Plain TeX
+longdesc Plnfss is a set of macros to provide easy font access (somewhat
+longdesc similar to NFSS but with some limitations) with Plain TeX.
+longdesc Plnfss can automatically make use of PSNFSS fd files, i.e.,
+longdesc when an Adobe Type 1 is used the relevant fd file will be
+longdesc loaded automatically. For cmr-like fonts (ec, vnr, csr or plr
+longdesc fonts), a special format called pfd (plain fd) is required and
+longdesc must be loaded manually. See ot1cmr.pfd for further
+longdesc information.
+containersize 6652
+containerchecksum 0ae352953c5981b791379d9da9b61ad8837c22053f3371f351152078f4dce6b12615ed771987115cc094613ddeb0c275568e1d7404f321516418d218d9c68473
+doccontainersize 7696
+doccontainerchecksum 9569a4f77dead68ad8c76794f03e6ffe147e1801324291fc13487b05051fcb7f307971e65edf66024c169411cee9b2940eb4daac4d073773e67f2f303b364870
+runfiles size=17
+ texmf-dist/tex/plain/plnfss/MIKmathf.tex
+ texmf-dist/tex/plain/plnfss/ams.pfd
+ texmf-dist/tex/plain/plnfss/il2cm.pfd
+ texmf-dist/tex/plain/plnfss/il2cmr.pfd
+ texmf-dist/tex/plain/plnfss/ly1lm.pfd
+ texmf-dist/tex/plain/plnfss/ot1cm.pfd
+ texmf-dist/tex/plain/plnfss/ot1cmr.pfd
+ texmf-dist/tex/plain/plnfss/ot4cm.pfd
+ texmf-dist/tex/plain/plnfss/plnfss.tex
+ texmf-dist/tex/plain/plnfss/qxlm.pfd
+ texmf-dist/tex/plain/plnfss/t1lm.pfd
+ texmf-dist/tex/plain/plnfss/t5cm.pfd
+ texmf-dist/tex/plain/plnfss/t5cmr.pfd
+ texmf-dist/tex/plain/plnfss/t5lm.pfd
+ texmf-dist/tex/plain/plnfss/ts1lm.pfd
+catalogue-also ofs font-selection fontch
+catalogue-ctan /macros/plain/plnfss
+catalogue-license lppl
+catalogue-topics font-sel plain-ext
+catalogue-version 1.1

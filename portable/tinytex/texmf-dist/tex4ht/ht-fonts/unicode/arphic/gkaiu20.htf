@@ -1,0 +1,45 @@
+gkaiu20 20 59
+'&#x2014;' '' emdash 20         % generated from gkaiu20.tfm, 2023-02-05-20:38
+'' ''                           % Copyright 2023 TeX Users Group
+'&#x2016;' '' uni2016 22        %
+'' ''                           % This work may be distributed and/or modified under the
+'&#x2018;' '' quoteleft 24      % conditions of the LaTeX Project Public License, either
+'&#x2019;' '' quoteright 25     % version 1.3c of this license or (at your option) any
+'' ''                           % later version. The latest version of this license is in
+'' ''                           %   http://www.latex-project.org/lppl.txt
+'&#x201C;' '' quotedblleft 28   % and version 1.3c or later is part of all distributions
+'&#x201D;' '' quotedblright 29  % of LaTeX version 2005/12/01 or later.
+'' ''                           %
+'' ''                           % This work has the LPPL maintenance status "maintained".
+'' ''                           %
+'' ''                           % The Current Maintainer of this work
+'' ''                           % is the TeX4ht Project <http://tug.org/tex4ht>.
+'' ''                           %
+'' ''                           % If you modify this program, changing the
+'' ''                           % version identification would be appreciated.
+'&#x2026;' '' ellipsis 38
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x2030;' '' perthousand 48
+'' ''
+'&#x2032;' '' minute 50
+'&#x2033;' '' second 51
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x203B;' '' uni203B 59
+gkaiu20 20 59
+htfcss:  gkaiu20  font-family: 'AR PL KaitiM GB', serif;
+
+

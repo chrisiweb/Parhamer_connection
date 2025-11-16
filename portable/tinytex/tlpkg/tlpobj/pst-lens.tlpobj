@@ -1,0 +1,20 @@
+name pst-lens
+category Package
+revision 15878
+shortdesc Lenses with PSTricks
+longdesc This PSTricks package provides a really rather simple command
+longdesc \PstLens that will draw a lens. Command parameters provide a
+longdesc remarkable range of effects.
+containersize 2060
+containerchecksum 406bc53d476d47d464f7fb318e75a5aeac85cf4239ab916e91728f5d8c0c05a9fd4c4fbc24b4b058f1c15d1ee4c6a0d45511b8cf6b288bf10163523b2bed0f37
+doccontainersize 453808
+doccontainerchecksum 8d29f5014e0bae5d1fb22483ca3231e3631c76820be080b3a588660f868ece861c2d816291656a45c8a33356b992cd6e2396e9d73f4ab316b877b2ed8b778f7e
+srccontainersize 10572
+srccontainerchecksum 7546475681934697c5fbe287d9d0c81c4532cfb07537ce0184addac26a3c29e4a37da5e12d9ac3e64f83436c07ccd9ca360ca276f77cefbb9c23c740b15bab65
+runfiles size=2
+ texmf-dist/tex/generic/pst-lens/pst-lens.tex
+ texmf-dist/tex/latex/pst-lens/pst-lens.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-lens
+catalogue-license lppl
+catalogue-topics optics pstricks
+catalogue-version 1.02

@@ -1,0 +1,29 @@
+name pitex
+category Package
+revision 24731
+shortdesc Documentation macros
+longdesc The bundle provides macros that the author uses when writing
+longdesc documentation (for example, that of the texapi and yax
+longdesc packages). The tools could be used by anyone, but there is no
+longdesc documentation, and the macros are subject to change without
+longdesc notice.
+containersize 22664
+containerchecksum dcc4280ef914ba66210ce471dc276042070b3246bc95ecb93b3d8af55393f49921a1d5e6851223299831344503dfc77fc2893f4cf1b78351dad40058979c20aa
+doccontainersize 110192
+doccontainerchecksum c3765f6acd4a147ffd2c216b1cda58e5e6ac8dc1202b444fe80d0dd69449b01df3eb17069842ef745e76e88371bf71c178d06c5ad2bc85e3427726bb30b74002
+runfiles size=27
+ texmf-dist/tex/plain/pitex/base.ptxlua
+ texmf-dist/tex/plain/pitex/blocks.ptx
+ texmf-dist/tex/plain/pitex/files.ptx
+ texmf-dist/tex/plain/pitex/fonts.ptx
+ texmf-dist/tex/plain/pitex/fonts.ptxlua
+ texmf-dist/tex/plain/pitex/inserts.ptx
+ texmf-dist/tex/plain/pitex/lua.ptx
+ texmf-dist/tex/plain/pitex/output.ptx
+ texmf-dist/tex/plain/pitex/pitex.tex
+ texmf-dist/tex/plain/pitex/references.ptx
+ texmf-dist/tex/plain/pitex/sections.ptx
+ texmf-dist/tex/plain/pitex/verbatim.ptx
+catalogue-ctan /macros/plain/contrib/pitex
+catalogue-license lppl
+catalogue-topics doc-supp

@@ -1,0 +1,28 @@
+name tracklang
+category Package
+revision 74576
+shortdesc Language and dialect tracker
+longdesc The tracklang package is provided for package developers who
+longdesc want a simple interface to find out which languages the user
+longdesc has requested through packages such as babel or polyglossia.
+longdesc This package does not provide any translations! Its purpose is
+longdesc simply to track which languages have been requested by the
+longdesc user. Generic TeX code is in tracklang.tex for non-LaTeX users.
+containersize 20424
+containerchecksum 3aece7850f88053d583d6163db549662fea03fa84410a5cd9f1e76f4e508bdfbae663f36bd87eef39059fe2bd4123c6b0bae804237029d8abcde9c02d3c873a9
+doccontainersize 1791404
+doccontainerchecksum 4410db03472b5c14c8ecffdb492ebb158d06266632e3e270e68f5b7830288880b5051d4408a59837480e4348dfa123d53646911e7e70c20d2b6ca0378c525f24
+srccontainersize 36520
+srccontainerchecksum e15564438901abeab703a3502a27084e18313366b3266eb6ee272dbe5fd429dee55b1ba8bdcf776233bec57d4dd24586732663c1e850d701b38d2cc2a9fbf4da
+runfiles size=50
+ texmf-dist/tex/generic/tracklang/tracklang-region-codes.tex
+ texmf-dist/tex/generic/tracklang/tracklang-scripts.tex
+ texmf-dist/tex/generic/tracklang/tracklang.tex
+ texmf-dist/tex/latex/tracklang/tracklang-scripts.sty
+ texmf-dist/tex/latex/tracklang/tracklang.sty
+catalogue-contact-bugs https://www.dickimaw-books.com/bugtracker.php?search_category=tracklang
+catalogue-contact-support https://www.dickimaw-books.com/faq.php?action=view&category=tracklang
+catalogue-ctan /macros/generic/tracklang
+catalogue-license lppl1.3
+catalogue-topics package-devel class-supp multilingual
+catalogue-version 1.6.6

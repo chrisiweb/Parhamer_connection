@@ -1,0 +1,15 @@
+name pst-qtree
+category Package
+revision 15878
+shortdesc Simple syntax for trees
+longdesc The package provides a qtree-like front end for PSTricks.
+containersize 1844
+containerchecksum 5bbb7fdd477850e4e6c2bc395665c50668a427cbe176122d160fdfc2aa2f322ed83ec43929dd185fa1dec439bec3f5de719aa8d640d0bc498aa7ac9f9089cd5b
+doccontainersize 24596
+doccontainerchecksum 4a0bba9fa7072e5860403c3b22a23947045106fd4b89781af848d17afbc5ac456c77617979ebcb80afe07620ab8b990e868c688301c4637804d32790fa4bd7f4
+runfiles size=2
+ texmf-dist/tex/generic/pst-qtree/pst-qtree.tex
+ texmf-dist/tex/latex/pst-qtree/pst-qtree.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-qtree
+catalogue-license gpl
+catalogue-topics tree

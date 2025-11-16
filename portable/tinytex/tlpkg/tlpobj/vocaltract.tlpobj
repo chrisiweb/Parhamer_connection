@@ -1,0 +1,22 @@
+name vocaltract
+category Package
+revision 25629
+shortdesc Visualise the vocal tract using LaTeX and PSTricks
+longdesc The package enables the user to visualise the vocal tract. The
+longdesc vocal tract (in the package) is manipulated by a vector of
+longdesc articulation parameters according to the S. Maeda model.
+longdesc Animation may be achieved by providing a sequence of vectors
+longdesc over time (e.g., from Matlab). A sequence of vectors for
+longdesc certain German phonemes is embedded in the package, which
+longdesc allows for animation when no other vector is available. The
+longdesc package's graphics are produced using pstricks.
+containersize 9208
+containerchecksum 7daa3923a6b9d84a1fae2c9bd63404c2fb4dfe3866f897895deb9ab85f33649427b38ce5e34552bbbbd8704da1fac55822a747747a0c522728e605638831df8c
+doccontainersize 15924
+doccontainerchecksum 36aa01a5be9da9a23e3a4de63fb14a39beda4a42cd2615f75f942abff677e71f2a4f640773d27556ef246a99004c3a1aa68caac9435957152cfda96707d79787
+runfiles size=11
+ texmf-dist/tex/latex/vocaltract/VocalTract.sty
+catalogue-ctan /graphics/pstricks/contrib/vocaltract
+catalogue-license lppl
+catalogue-topics graphics-use pstricks
+catalogue-version 1

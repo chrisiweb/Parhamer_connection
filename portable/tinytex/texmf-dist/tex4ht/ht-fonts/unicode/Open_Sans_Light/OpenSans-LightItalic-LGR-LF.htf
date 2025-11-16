@@ -1,0 +1,261 @@
+OpenSans-LightItalic-LGR-LF 0 255
+'&#x2013;' '' endash 0              % generated from OpenSans-LightItalic-LGR-LF.tfm, 2022-03-17-11:26
+'&#x0386;' '' Alphatonos 1          % Copyright 2022 TeX Users Group
+'&#xFFFD;' '' uniFFFD 2             %
+'&#xFFFD;' '' uniFFFD 3             % This work may be distributed and/or modified under the
+'&#xFFFD;' '' uniFFFD 4             % conditions of the LaTeX Project Public License, either
+'&#xFFFD;' '' uniFFFD 5             % version 1.3c of this license or (at your option) any
+'&#xFFFD;' '' uniFFFD 6             % later version. The latest version of this license is in
+'&#xFFFD;' '' uniFFFD 7             %   http://www.latex-project.org/lppl.txt
+'&#x03B9;' '' iota 8                % and version 1.3c or later is part of all distributions
+'&#x0391;&#x03B9;' '' Alpha iota 9  % of LaTeX version 2005/12/01 or later.
+'&#x0397;&#x03B9;' '' Eta iota 10   %
+'&#x03A9;' '' uni03A9 iota 11       % This work has the LPPL maintenance status "maintained".
+'&#x0388;' '' Epsilontonos 12       %
+'&#x0389;' '' Etatonos 13           % The Current Maintainer of this work
+'&#x038A;' '' Iotatonos 14          % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x038C;' '' Omicrontonos 15       %
+'&#x038E;' '' Upsilontonos 16       % If you modify this program, changing the
+'&#x038F;' '' Omegatonos 17         % version identification would be appreciated.
+'&#xFFFD;' '' uniFFFD 18
+'&#xFFFD;' '' uniFFFD 19
+'' ''
+'&#xFFFD;' '' uniFFFD 21
+'&#xFFFD;' '' uniFFFD 22
+'&#xFFFD;' '' uniFFFD 23
+'&#x20AC;' '' Euro 24
+'&#x2030;' '' perthousand 25
+'' ''
+'&#xFFFD;' '' uniFFFD 27
+'&#x2018;' '' quoteleft 28
+'&#x2019;' '' quoteright 29
+'&#x02D8;' '' breve 30
+'&#x00AF;' '' macron 31
+'&#xFFFD;' '' uniFFFD 32
+'!' '' exclam 33
+'&#x00A8;' '' dieresis 34
+'&#x0385;' '' dieresistonos 35
+'&#xFFFD;' '' uniFFFD 36
+'%' '' percent 37
+'' ''
+'&#x0384;' '' tonos 39
+'(' '' parenleft 40
+')' '' parenright 41
+'*' '' asterisk 42
+'+' '' plus 43
+',' '' comma 44
+'-' '' hyphen 45
+'.' '' period 46
+'/' '' slash 47
+'0' '' zero 48
+'1' '' one.pnum 49
+'2' '' two 50
+'3' '' three 51
+'4' '' four 52
+'5' '' five 53
+'6' '' six 54
+'7' '' seven 55
+'8' '' eight 56
+'9' '' nine 57
+':' '' colon 58
+'&#x0387;' '' anoteleia 59
+'&#xFFFD;' '' uniFFFD 60
+'&#xFFFD;' '' uniFFFD 61
+'&#xFFFD;' '' uniFFFD 62
+';' '' semicolon 63
+'&#xFFFD;' '' uniFFFD 64
+'&#x0391;' '' Alpha 65
+'&#x0392;' '' Beta 66
+'&#xFFFD;' '' uniFFFD 67
+'&#x0394;' '' uni0394 68
+'&#x0395;' '' Epsilon 69
+'&#x03A6;' '' Phi 70
+'&#x0393;' '' Gamma 71
+'&#x0397;' '' Eta 72
+'&#x0399;' '' Iota 73
+'&#x0398;' '' Theta 74
+'&#x039A;' '' Kappa 75
+'&#x039B;' '' Lambda 76
+'&#x039C;' '' Mu 77
+'&#x039D;' '' Nu 78
+'&#x039F;' '' Omicron 79
+'&#x03A0;' '' Pi 80
+'&#x03A7;' '' Chi 81
+'&#x03A1;' '' Rho 82
+'&#x03A3;' '' Sigma 83
+'&#x03A4;' '' Tau 84
+'&#x03A5;' '' Upsilon 85
+'' '' dasiaoxia 86
+'&#x03A9;' '' uni03A9 87
+'&#x039E;' '' Xi 88
+'&#x03A8;' '' Psi 89
+'&#x0396;' '' Zeta 90
+'[' '' bracketleft 91
+'&#xFFFD;' '' uniFFFD 92
+']' '' bracketright 93
+'&#xFFFD;' '' uniFFFD 94
+'&#xFFFD;' '' uniFFFD 95
+'&#xFFFD;' '' uniFFFD 96
+'&#x03B1;' '' alpha 97
+'&#x03B2;' '' beta 98
+'&#x03C2;' '' sigma1 99
+'&#x03B4;' '' delta 100
+'&#x03B5;' '' epsilon 101
+'&#x03D5;' '' phi 102
+'&#x03B3;' '' gamma 103
+'&#x03B7;' '' eta 104
+'&#x03B9;' '' iota 105
+'&#x03B8;' '' theta 106
+'&#x03BA;' '' kappa 107
+'&#x03BB;' '' lambda 108
+'&#x03BC;' '' uni03BC 109
+'&#x03BD;' '' nu 110
+'&#x03BF;' '' omicron 111
+'&#x03C0;' '' pi 112
+'&#x03C7;' '' chi 113
+'&#x03C1;' '' rho 114
+'&#x03C3;' '' sigma 115
+'&#x03C4;' '' tau 116
+'&#x03C5;' '' upsilon 117
+'' '' .notdef 118
+'&#x03C9;' '' omega 119
+'&#x03BE;' '' xi 120
+'&#x03C8;' '' psi 121
+'&#x03B6;' '' zeta 122
+'&#x00AB;' '' guillemotleft 123
+'&#xFFFD;' '' uniFFFD 124
+'&#x00BB;' '' guillemotright 125
+'~' '' asciitilde 126
+'&#x2014;' '' emdash 127
+'&#xFFFD;' '' uniFFFD 128
+'&#xFFFD;' '' uniFFFD 129
+'&#xFFFD;' '' uniFFFD 130
+'&#xFFFD;' '' uniFFFD 131
+'&#xFFFD;' '' uniFFFD 132
+'&#xFFFD;' '' uniFFFD 133
+'&#xFFFD;' '' uniFFFD 134
+'&#xFFFD;' '' uniFFFD 135
+'&#x03AC;' '' alphatonos 136
+'&#xFFFD;' '' uniFFFD 137
+'&#xFFFD;' '' uniFFFD 138
+'&#xFFFD;' '' uniFFFD 139
+'&#xFFFD;' '' uniFFFD 140
+'&#xFFFD;' '' uniFFFD 141
+'&#xFFFD;' '' uniFFFD 142
+'&#xFFFD;' '' uniFFFD 143
+'&#xFFFD;' '' uniFFFD 144
+'&#xFFFD;' '' uniFFFD 145
+'&#xFFFD;' '' uniFFFD 146
+'&#xFFFD;' '' uniFFFD 147
+'&#xFFFD;' '' uniFFFD 148
+'&#xFFFD;' '' uniFFFD 149
+'&#xFFFD;' '' uniFFFD 150
+'' ''
+'&#xFFFD;' '' uniFFFD 152
+'&#xFFFD;' '' uniFFFD 153
+'&#xFFFD;' '' uniFFFD 154
+'' ''
+'&#xFFFD;' '' uniFFFD 156
+'&#xFFFD;' '' uniFFFD 157
+'&#xFFFD;' '' uniFFFD 158
+'' ''
+'&#x03AE;' '' etatonos 160
+'&#xFFFD;' '' uniFFFD 161
+'&#xFFFD;' '' uniFFFD 162
+'&#xFFFD;' '' uniFFFD 163
+'&#xFFFD;' '' uniFFFD 164
+'&#xFFFD;' '' uniFFFD 165
+'&#xFFFD;' '' uniFFFD 166
+'&#xFFFD;' '' uniFFFD 167
+'&#xFFFD;' '' uniFFFD 168
+'&#xFFFD;' '' uniFFFD 169
+'&#xFFFD;' '' uniFFFD 170
+'&#xFFFD;' '' uniFFFD 171
+'&#xFFFD;' '' uniFFFD 172
+'&#xFFFD;' '' uniFFFD 173
+'&#xFFFD;' '' uniFFFD 174
+'&#xFFFD;' '' uniFFFD 175
+'&#xFFFD;' '' uniFFFD 176
+'&#xFFFD;' '' uniFFFD 177
+'&#xFFFD;' '' uniFFFD 178
+'&#xFFFD;' '' uniFFFD 179
+'&#xFFFD;' '' uniFFFD 180
+'&#xFFFD;' '' uniFFFD 181
+'&#xFFFD;' '' uniFFFD 182
+'&#xFFFD;' '' uniFFFD 183
+'&#x03CE;' '' omegatonos 184
+'&#xFFFD;' '' uniFFFD 185
+'&#xFFFD;' '' uniFFFD 186
+'&#xFFFD;' '' uniFFFD 187
+'&#xFFFD;' '' uniFFFD 188
+'&#xFFFD;' '' uniFFFD 189
+'&#xFFFD;' '' uniFFFD 190
+'&#xFFFD;' '' uniFFFD 191
+'&#xFFFD;' '' uniFFFD 192
+'&#xFFFD;' '' uniFFFD 193
+'&#xFFFD;' '' uniFFFD 194
+'&#xFFFD;' '' uniFFFD 195
+'&#xFFFD;' '' uniFFFD 196
+'&#xFFFD;' '' uniFFFD 197
+'&#xFFFD;' '' uniFFFD 198
+'' ''
+'&#xFFFD;' '' uniFFFD 200
+'&#xFFFD;' '' uniFFFD 201
+'&#xFFFD;' '' uniFFFD 202
+'&#xFFFD;' '' uniFFFD 203
+'&#xFFFD;' '' uniFFFD 204
+'&#xFFFD;' '' uniFFFD 205
+'&#xFFFD;' '' uniFFFD 206
+'&#xFFFD;' '' uniFFFD 207
+'&#x03AF;' '' iotatonos 208
+'&#xFFFD;' '' uniFFFD 209
+'&#xFFFD;' '' uniFFFD 210
+'&#xFFFD;' '' uniFFFD 211
+'&#x03CD;' '' upsilontonos 212
+'&#xFFFD;' '' uniFFFD 213
+'&#xFFFD;' '' uniFFFD 214
+'&#xFFFD;' '' uniFFFD 215
+'&#xFFFD;' '' uniFFFD 216
+'&#xFFFD;' '' uniFFFD 217
+'&#xFFFD;' '' uniFFFD 218
+'&#x03AA;' '' Iotadieresis 219
+'&#xFFFD;' '' uniFFFD 220
+'&#xFFFD;' '' uniFFFD 221
+'&#xFFFD;' '' uniFFFD 222
+'&#x03AB;' '' Upsilondieresis 223
+'&#xFFFD;' '' uniFFFD 224
+'&#xFFFD;' '' uniFFFD 225
+'&#xFFFD;' '' uniFFFD 226
+'&#xFFFD;' '' uniFFFD 227
+'&#xFFFD;' '' uniFFFD 228
+'&#xFFFD;' '' uniFFFD 229
+'&#xFFFD;' '' uniFFFD 230
+'&#xFFFD;' '' uniFFFD 231
+'&#x03AD;' '' epsilontonos 232
+'&#xFFFD;' '' uniFFFD 233
+'&#xFFFD;' '' uniFFFD 234
+'&#xFFFD;' '' uniFFFD 235
+'&#x03CC;' '' omicrontonos 236
+'&#xFFFD;' '' uniFFFD 237
+'&#xFFFD;' '' uniFFFD 238
+'&#xFFFD;' '' uniFFFD 239
+'&#x03CA;' '' iotadieresis 240
+'&#xFFFD;' '' uniFFFD 241
+'&#x0390;' '' iotadieresistonos 242
+'&#xFFFD;' '' uniFFFD 243
+'&#x03CB;' '' upsilondieresis 244
+'&#xFFFD;' '' uniFFFD 245
+'&#x03B0;' '' upsilondieresistonos 246
+'&#xFFFD;' '' uniFFFD 247
+'&#xFFFD;' '' uniFFFD 248
+'&#xFFFD;' '' uniFFFD 249
+'&#xFFFD;' '' uniFFFD 250
+'&#xFFFD;' '' uniFFFD 251
+'&#xFFFD;' '' uniFFFD 252
+'' ''
+'&#xFFFD;' '' uniFFFD 254
+'&#xFFFD;' '' uniFFFD 255
+OpenSans-LightItalic-LGR-LF 0 255
+htfcss:  OpenSans-LightItalic-LGR-LF  font-style: italic; font-family: 'Open Sans Light', sans-serif;
+
+

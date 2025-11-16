@@ -1,0 +1,13 @@
+name pst-support
+category Package
+revision 15878
+shortdesc Assorted support files for use with PSTricks
+longdesc An appropriate set of job options, together with process
+longdesc scripts for use with TeXnicCenter/
+containersize 432
+containerchecksum 05ddd6f09d603a2a6887f03aa3da0374ad061e2ab52ad25f0036192179f985f3695b0248c602607172c94c55cd9d2bb453e8f145d73f133bf79a881ccb1daacc
+doccontainersize 6580
+doccontainerchecksum ab2adb2c06d4f7f4b4a4fbfec59e1fc8d6b9f4ccff5aacc29f0a1524759fc1f0792640e8cc301e614477ad45261bbedb3ede93de2463e0a655aeff846561c185
+catalogue-ctan /graphics/pstricks/pst-support
+catalogue-license lppl
+catalogue-topics compilation

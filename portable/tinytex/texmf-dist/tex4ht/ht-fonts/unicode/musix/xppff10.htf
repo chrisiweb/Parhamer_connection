@@ -1,0 +1,26 @@
+xppff10 102 122
+'f' '1' f 102  % generated from xppff10.tfm, 2022-11-24-12:10
+'' '1'         % Copyright 2022 TeX Users Group
+'' '1'         %
+'' '1'         % This work may be distributed and/or modified under the
+'' '1'         % conditions of the LaTeX Project Public License, either
+'' '1'         % version 1.3c of this license or (at your option) any
+'' '1'         % later version. The latest version of this license is in
+'m' '1' m 109  %   http://www.latex-project.org/lppl.txt
+'' '1'         % and version 1.3c or later is part of all distributions
+'' '1'         % of LaTeX version 2005/12/01 or later.
+'p' '1' p 112  %
+'' '1'         % This work has the LPPL maintenance status "maintained".
+'' '1'         %
+'s' '1' s 115  % The Current Maintainer of this work
+'' '1'         % is the TeX4ht Project <http://tug.org/tex4ht>.
+'' '1'         %
+'' '1'         % If you modify this program, changing the
+'' '1'         % version identification would be appreciated.
+'' '1'
+'' '1'
+'z' '1' z 122
+xppff10 102 122
+htfcss:  xppff10  font-family: 'xppff10', serif;
+
+

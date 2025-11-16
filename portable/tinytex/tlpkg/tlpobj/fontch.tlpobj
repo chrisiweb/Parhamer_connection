@@ -1,0 +1,33 @@
+name fontch
+category Package
+revision 17859
+shortdesc Changing fonts, sizes and encodings in Plain TeX
+longdesc The fontch macros allow the user to change font size and family
+longdesc anywhere in a plain TeX document. Sizes of 8, 10, 12, 14, 20
+longdesc and 24 points are available. A sans serif family (\sf) is
+longdesc defined in addition to the families already defined in plain
+longdesc TeX. Optional support for Latin Modern T1 and TS1 fonts is
+longdesc given. There are macros for non-latin1 letters and for most TS1
+longdesc symbols. Math mode always uses CM fonts. A command for
+longdesc producing doubled-spaced documents is also provided. The
+longdesc present version of the package is designed to deal with the
+longdesc latest release of the Latin Modern fonts version 1.106.
+longdesc Unfortunately, it can no longer support earlier versions of the
+longdesc fonts, so an obsolete version of the package is retained for
+longdesc users who don't yet have access to the latest version of the
+longdesc fonts.
+containersize 15420
+containerchecksum c8354fbcb6a13f2f874dd3df71f23ee1fcefdaaa1eab5166f35001811b9788ea2b53e5d5653437071d02978dc94b0a658bca5e2cfe825a0315d3389446b6c138
+doccontainersize 80572
+doccontainerchecksum a7c5f6622414d943a20745f7b02c3859d43d4f4ec0f9ffd3b2baec34e142c01474d8827c7b0fe5d1bebfa25d33224b26cd876e3457b7179097fd9539cb9d9444
+runfiles size=21
+ texmf-dist/tex/plain/fontch/DSmac.tex
+ texmf-dist/tex/plain/fontch/TS1mac.tex
+ texmf-dist/tex/plain/fontch/bsymbols.tex
+ texmf-dist/tex/plain/fontch/fontch.tex
+ texmf-dist/tex/plain/fontch/fontch_doc.tex
+catalogue-also font-selection ofs plnfss
+catalogue-ctan /macros/plain/contrib/fontch
+catalogue-license lppl
+catalogue-topics font-sel plain-ext
+catalogue-version 2.2

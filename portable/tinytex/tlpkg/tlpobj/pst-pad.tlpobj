@@ -1,0 +1,24 @@
+name pst-pad
+category Package
+revision 15878
+shortdesc Draw simple attachment systems with PSTricks
+longdesc The package collects a set of graphical elements based on
+longdesc PStricks that can be used to facilitate display of attachment
+longdesc systems such as two differently shaped surfaces with or without
+longdesc a fluid wedged in between. These macros ease the display of wet
+longdesc adhesion models and common friction systems such as boundary
+longdesc lubrication, elastohydrodynamic lubrication and hydrodynamic
+longdesc lubrication.
+containersize 4408
+containerchecksum cf519f69dfd1003ab17a4a67f309336442bf35497cd0102e346ab8537865540c314666fbf01cf6e3e106ce922fd8922ac4bbb5b20ee90a7ce24a7a98ee974006
+doccontainersize 137484
+doccontainerchecksum 0a2206d3ef84dce88d3e0ea7899fb623d12f7f6a820298b031ff76044eb9ec49bb09f70f6ee0b00018fcc02f6260d67ee58c8a06a48ddbfd2e5b17f52d374830
+srccontainersize 640
+srccontainerchecksum ffd5ef230c25a731e5127cda390b60fdc275d53a833f8fd02ef8fda7b959d7ef5e2074637af603f1e510cd558cb3de22245bc34f91bb7114269425d3b4db211f
+runfiles size=6
+ texmf-dist/tex/generic/pst-pad/pst-pad.tex
+ texmf-dist/tex/latex/pst-pad/pst-pad.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-pad
+catalogue-license lppl
+catalogue-topics graphics-use pstricks
+catalogue-version 0.3b

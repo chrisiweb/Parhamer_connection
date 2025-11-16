@@ -1,0 +1,75 @@
+name zztex
+category Package
+revision 55862
+shortdesc A full-featured TeX macro package for producing books, journals, and manuals
+longdesc The ZzTeX macro package is a full-featured TeX macro package
+longdesc specially designed for producing books, journals, and manuals.
+longdesc Development of the package began in 1989. Since then, about 500
+longdesc textbooks and journals have been produced with it for a variety
+longdesc of publishers. Numerous authors have used the package to
+longdesc produce subsequent editions of their books. ZzTeX runs under
+longdesc Plain TeX. The only documentation available for the package is
+longdesc contained in the zz*.dat files that accompany the TeX files.
+containersize 101724
+containerchecksum eb325564ee9e001e0e5ff79b6e3cc9f22f5b9b100ef021552f54953802edbce1e4b1295ff4590832f959386db7a63aaf8e31dc2d61b38e5c8a140082ca423e83
+doccontainersize 47816
+doccontainerchecksum bd2a3a42b62da61db572058b4731161425545374584a575607f11bb2302aa2ce900b694aaf06562f4c9eb9046c80c4fbf5b50233f6d0526fac787c213070d542
+runfiles size=169
+ texmf-dist/tex/plain/zztex/zzart.tex
+ texmf-dist/tex/plain/zztex/zzbiblio.tex
+ texmf-dist/tex/plain/zztex/zzbibtex.tex
+ texmf-dist/tex/plain/zztex/zzblock.tex
+ texmf-dist/tex/plain/zztex/zzcmmath.tex
+ texmf-dist/tex/plain/zztex/zzcomenc.tex
+ texmf-dist/tex/plain/zztex/zzdiv.tex
+ texmf-dist/tex/plain/zztex/zzdoc.tex
+ texmf-dist/tex/plain/zztex/zzerror.tex
+ texmf-dist/tex/plain/zztex/zzfloat.tex
+ texmf-dist/tex/plain/zztex/zzfont.tex
+ texmf-dist/tex/plain/zztex/zzfront.tex
+ texmf-dist/tex/plain/zztex/zzhelp.tex
+ texmf-dist/tex/plain/zztex/zzhmode.tex
+ texmf-dist/tex/plain/zztex/zzhmodeb.tex
+ texmf-dist/tex/plain/zztex/zzhyper.tex
+ texmf-dist/tex/plain/zztex/zzhyph.tex
+ texmf-dist/tex/plain/zztex/zzindexv1.tex
+ texmf-dist/tex/plain/zztex/zzindexv2.tex
+ texmf-dist/tex/plain/zztex/zzio.tex
+ texmf-dist/tex/plain/zztex/zzlist.tex
+ texmf-dist/tex/plain/zztex/zzltrspc.tex
+ texmf-dist/tex/plain/zztex/zzlucida.tex
+ texmf-dist/tex/plain/zztex/zzmath.tex
+ texmf-dist/tex/plain/zztex/zzmathv3.tex
+ texmf-dist/tex/plain/zztex/zzmathv4.tex
+ texmf-dist/tex/plain/zztex/zzmathv5.tex
+ texmf-dist/tex/plain/zztex/zzmathv6.tex
+ texmf-dist/tex/plain/zztex/zzmerge.tex
+ texmf-dist/tex/plain/zztex/zzmisc.tex
+ texmf-dist/tex/plain/zztex/zzmtime.tex
+ texmf-dist/tex/plain/zztex/zznewmath.tex
+ texmf-dist/tex/plain/zztex/zznote.tex
+ texmf-dist/tex/plain/zztex/zzoverlay.tex
+ texmf-dist/tex/plain/zztex/zzpage.tex
+ texmf-dist/tex/plain/zztex/zzplain.tex
+ texmf-dist/tex/plain/zztex/zzprog.tex
+ texmf-dist/tex/plain/zztex/zzps.tex
+ texmf-dist/tex/plain/zztex/zzreg.tex
+ texmf-dist/tex/plain/zztex/zzrunner.tex
+ texmf-dist/tex/plain/zztex/zzsect.tex
+ texmf-dist/tex/plain/zztex/zztabbing.tex
+ texmf-dist/tex/plain/zztex/zztabularv1.tex
+ texmf-dist/tex/plain/zztex/zztabularv2.tex
+ texmf-dist/tex/plain/zztex/zztabularv3.tex
+ texmf-dist/tex/plain/zztex/zztag.tex
+ texmf-dist/tex/plain/zztex/zztex.tex
+ texmf-dist/tex/plain/zztex/zztext.tex
+ texmf-dist/tex/plain/zztex/zzttladj.tex
+ texmf-dist/tex/plain/zztex/zztures.tex
+ texmf-dist/tex/plain/zztex/zzver.tex
+ texmf-dist/tex/plain/zztex/zzvmode.tex
+ texmf-dist/tex/plain/zztex/zzxref.tex
+catalogue-contact-home http://www.windfall.com
+catalogue-ctan /macros/plain/contrib/zztex
+catalogue-license mit
+catalogue-topics book-pub journalpub
+catalogue-version 17.7

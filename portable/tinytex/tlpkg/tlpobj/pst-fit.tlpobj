@@ -1,0 +1,18 @@
+name pst-fit
+category Package
+revision 70686
+shortdesc Macros for curve fitting
+longdesc The package uses PSTricks to fit curves to: Linear Functions;
+longdesc Power Functions; exp Function; Log_{10} and Log_e functions;
+longdesc Recip; Kings Law data; Gaussian; and 4th order Polynomial
+containersize 8188
+containerchecksum a853f5f60fcdb6ab1c9cc37c66a0d2d0a6014dd84bf9e379554e1349aeea22b4bc6c19c3e4cbc12570380c5beae5f14bc5a2eaf301751ad9079d010449db7217
+doccontainersize 131236
+doccontainerchecksum 90b1595d7cb91305747b635971ebb5ebf3ee46d31400ef58e14125c10471b65fbc61cc9041b4072cf62846cb288466656cfac543f36789c2e869203823da1b92
+runfiles size=11
+ texmf-dist/tex/generic/pst-fit/pst-fit.tex
+ texmf-dist/tex/latex/pst-fit/pst-fit.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-fit
+catalogue-license lppl
+catalogue-topics graphics-supp
+catalogue-version 0.03

@@ -1,0 +1,17 @@
+name lambda-lists
+category Package
+revision 31402
+shortdesc Lists in TeX's mouth
+longdesc These list-processing macros avoid the reassignments employed
+longdesc in the macros shown in Appendix D of the TeXbook: all the
+longdesc manipulations take place in what Knuth is pleased to call
+longdesc "TeX's mouth".
+containersize 1548
+containerchecksum caeb3a547eb68d3e255d729cb6ec390cfaeb3bd9d4b4b6e8f877140fe24f4ee3ff0ddccd4107fa836faf5163d3d71209fed4a9e052d3329ff22a892d62b43b92
+doccontainersize 130024
+doccontainerchecksum 846c403f99194a19cd21e4d7367a1b43a8ad608055315bb36a1113fb37dd3d922dd8c5cb8474ae52ed3006be520b7e9023680e85f0dbb17f69a41c8c17e81a5c
+runfiles size=1
+ texmf-dist/tex/plain/lambda-lists/lambda.sty
+catalogue-ctan /macros/generic/lambda-lists
+catalogue-license lppl
+catalogue-topics macro-supp

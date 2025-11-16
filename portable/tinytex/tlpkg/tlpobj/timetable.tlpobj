@@ -1,0 +1,14 @@
+name timetable
+category Package
+revision 15878
+shortdesc Generate timetables
+longdesc A highly-configurable package, with nice output and simple
+longdesc input. The macros use a radix sort mechanism so that the order
+longdesc of input is not critical.
+containersize 7400
+containerchecksum caee17cfe1a4bae7bae4479066e2f869e6ccee34d28a8952bed7a1409bd9ecb27adfd005f0e824d8ddacbd0e65762da79f9ea5b04d0332d643749ef36b908946
+runfiles size=10
+ texmf-dist/tex/plain/timetable/timetable.tex
+catalogue-ctan /macros/plain/contrib/timetable
+catalogue-license lppl
+catalogue-topics timetable

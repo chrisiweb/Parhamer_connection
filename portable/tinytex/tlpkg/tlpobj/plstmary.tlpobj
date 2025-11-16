@@ -1,0 +1,16 @@
+name plstmary
+category Package
+revision 31088
+shortdesc St. Mary's Road font support for plain TeX
+longdesc The package provides commands to produce all the symbols of the
+longdesc St Mary's Road fonts, in a Plain TeX environment.
+containersize 2224
+containerchecksum 72d54627fd8a10215ae9fe417423c46240997f865da8b4f4b976290ded7fbb0360477db27f140bed0ceb4dfc57c42a23fe5ce780ec5eeebb9b3e30b372adfe9e
+doccontainersize 152416
+doccontainerchecksum 6e5c425b7d484bbe187eef030fbc9d6a0ad50d6d8e22c5f08d3762cf8082b434de8a4c5d13251d90a016715c9a85aa82dd2637abb6e17a6973a08514baeef7fd
+runfiles size=2
+ texmf-dist/tex/plain/plstmary/stmary.tex
+catalogue-ctan /macros/plain/contrib/plstmary
+catalogue-license pd
+catalogue-topics font-supp-symbol
+catalogue-version 0.5c

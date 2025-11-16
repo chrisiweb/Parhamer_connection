@@ -1,0 +1,20 @@
+name pst-eps
+category Package
+revision 15878
+shortdesc Create EPS files from PSTricks figures
+longdesc Pst-eps is a PSTricks-based package for exporting PSTricks
+longdesc images 'on the fly' to encapsulated PostScript (EPS) image
+longdesc files, which can then be read into a document in the usual way.
+containersize 2968
+containerchecksum 90be1124bd22958b0a9cbb45a3b76513e514131c416c98d7f70ca101e7841980c33bd8380e888054cedb873143aad168b0dc25918d9e241f763b9be3ea1a76d6
+doccontainersize 78588
+doccontainerchecksum 70542680c550bc11bef851cfcd12010e17f35dd75adfa390ffadc7b920c2b357594ca514fcdeaafcf1bfcf1b9e622b23c680adbc64ae4787fa96ff94f9a62add
+srccontainersize 816
+srccontainerchecksum 97e2adee4ce93de77d4d46946795565dfa0e0da188fd686bf96917b1220661510c1777fb7d025ac6dfca816bb8575487d45b180e4e35cade21353dcf4a8e5540
+runfiles size=3
+ texmf-dist/tex/generic/pst-eps/pst-eps.tex
+ texmf-dist/tex/latex/pst-eps/pst-eps.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-eps
+catalogue-license lppl
+catalogue-topics graphics-prep pstricks
+catalogue-version 1.0

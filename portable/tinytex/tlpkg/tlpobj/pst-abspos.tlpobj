@@ -1,0 +1,20 @@
+name pst-abspos
+category Package
+revision 15878
+shortdesc Put objects at an absolute position
+longdesc The (PSTricks-related) package provides a command
+longdesc \pstPutAbs(x,y) to put an object at an arbitrary absolute (or
+longdesc even a relative) position on the page.
+containersize 2004
+containerchecksum b56bed1fedb14fe7cc455fe4e87ec51085e8e09132ff5dbe52083701cdd0d63f2e6dac2ab55838fbefd8e7de9666d0239e9fba712573a51dce2804d31ab140c6
+doccontainersize 57048
+doccontainerchecksum 77754a1c27c083f60c2836483a60bfb6b4c826783d5acd16b1eaa9b7fe7aba8820886442ed28a5b334929a3f21f0f1b4487c7403f8dbfc3ad3cfc08407e35229
+srccontainersize 944
+srccontainerchecksum faf4f7e2b94bd66d19be75c307c8a6b20a2c779a8e6783096b41e7b4da66ab07f7ecbaaedfa668c09089bea9c2c79af4cbc12aeafe949cb729c589989206cd0c
+runfiles size=3
+ texmf-dist/tex/generic/pst-abspos/pst-abspos.tex
+ texmf-dist/tex/latex/pst-abspos/pst-abspos.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-abspos
+catalogue-license lppl
+catalogue-topics layout pstricks
+catalogue-version 0.2

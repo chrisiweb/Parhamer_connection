@@ -1,0 +1,18 @@
+name autoaligne
+category Package
+revision 66655
+shortdesc Align terms and members in math expressions
+longdesc This package allows to align terms and members between lines
+longdesc containing math expressions.
+containersize 9444
+containerchecksum b590b6f43bf17d54595c3adcc6de0e5c6780efd8ee68efaa5c2990f3e9e79ad6844397d6c7695d3ab66d72d4eb592c1455e4234f7a40efdbf4c788bc45216442
+doccontainersize 356128
+doccontainerchecksum d043ed183b3e30d35f7d4e6a5b5f094ae5bddb4e2265294c02c0888cf2e78fceb16b14cabb5b5d759b5397f58da1111d5fa590aab89a59ce13e3e13fb2e3dc91
+runfiles size=9
+ texmf-dist/tex/generic/autoaligne/autoaligne-fr.tex
+ texmf-dist/tex/generic/autoaligne/autoaligne.sty
+ texmf-dist/tex/generic/autoaligne/autoaligne.tex
+catalogue-ctan /macros/generic/autoaligne
+catalogue-license lppl1.3c
+catalogue-topics maths alignment alignment-supp
+catalogue-version 1.5

@@ -1,0 +1,27 @@
+name abstyles
+category Package
+revision 76790
+catalogue abstyles-orig
+shortdesc Adaptable BibTeX styles
+longdesc A family of modifications of the standard BibTeX styles whose
+longdesc behaviour may be changed by changing the user document, without
+longdesc change to the styles themselves. The package is largely used
+longdesc nowadays in its adaptation for working with Babel.
+containersize 7976
+containerchecksum 438c0e0d52eecfd67b80b85c9d6d43ead0d497e50c3e4b2dd709a3be92a0654ed181eb169818519dc1502d99b9c64985a57e0f12e65649e7658863857af2b0f4
+doccontainersize 145936
+doccontainerchecksum bee9170955091cc23211731e5d0f67d93e80435279198334c1c501bfb0b24d8664bf33406644e0af177b0485a7738b1634f6c61313de0910f59600ecbe0fa99d
+runfiles size=33
+ texmf-dist/bibtex/bib/abstyles/acompat.bib
+ texmf-dist/bibtex/bib/abstyles/jourabbr.bib
+ texmf-dist/bibtex/bib/abstyles/jourfull.bib
+ texmf-dist/bibtex/bst/abstyles/aabbrv.bst
+ texmf-dist/bibtex/bst/abstyles/aalpha.bst
+ texmf-dist/bibtex/bst/abstyles/anotit.bst
+ texmf-dist/bibtex/bst/abstyles/aplain.bst
+ texmf-dist/bibtex/bst/abstyles/aunsnot.bst
+ texmf-dist/bibtex/bst/abstyles/aunsrt.bst
+ texmf-dist/tex/generic/abstyles/apreambl.tex
+catalogue-ctan /biblio/bibtex/contrib/abstyles
+catalogue-license other-free
+catalogue-topics bibtex-supp

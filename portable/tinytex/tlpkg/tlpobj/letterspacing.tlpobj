@@ -1,0 +1,18 @@
+name letterspacing
+category Package
+revision 54266
+shortdesc Letter spacing
+longdesc Space out the letters of text; the command is
+longdesc \letterspace<\hbox modifier>{<text>}: the text is placed in an
+longdesc \hbox of the specified size, and space is inserted between each
+longdesc glyph to make the text fit the box. Note that letterspacing is
+longdesc not ordinarily considered acceptable in modern typesetting of
+longdesc English.
+containersize 5180
+containerchecksum 30fdc0f87976feb698b9736e9deb6726746e4c25e4ed4a4637ff26699e171738be6447e8e2d02d154cf57944aa988208ee97859c0a7fac784d55fa6ef889b86c
+runfiles size=4
+ texmf-dist/tex/generic/letterspacing/letterspacing.tex
+catalogue-also soul
+catalogue-ctan /macros/generic/misc/letterspacing.tex
+catalogue-license knuth
+catalogue-topics letterspace

@@ -1,0 +1,21 @@
+name pst-bar
+category Package
+revision 64331
+shortdesc Produces bar charts using PSTricks
+longdesc The package uses pstricks to draw bar charts from data stored
+longdesc in a comma-delimited file. Several types of bar charts may be
+longdesc drawn, and the drawing parameters are highly customizable. No
+longdesc external packages are required except those that are part of
+longdesc the standard PSTricks distribution.
+containersize 3892
+containerchecksum a4ca273cf21aade2adb15a8fae3d7aae9b24f4cc4a81002cfe0471aed7b5cc7be516aae26151a8bd2d98171f5524686105f3576df8cb0ecc6e16d690907f7156
+doccontainersize 142976
+doccontainerchecksum 7b090d51bd669c3b252f002855d60f008054f12966d01cffdf6163e4360fd88fc064459d42d756737b1a915d87ffb8f789900be480eb7be1f3925389e2873f58
+runfiles size=6
+ texmf-dist/dvips/pst-bar/pst-bar.pro
+ texmf-dist/tex/generic/pst-bar/pst-bar.tex
+ texmf-dist/tex/latex/pst-bar/pst-bar.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-bar
+catalogue-license lppl
+catalogue-topics genchart pstricks
+catalogue-version 0.93

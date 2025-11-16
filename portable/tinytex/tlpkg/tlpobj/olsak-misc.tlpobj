@@ -1,0 +1,34 @@
+name olsak-misc
+category Package
+revision 74906
+shortdesc Collection of plain TeX macros written by Petr Olsak
+longdesc This is a collection of various single-file plain TeX macros
+longdesc written by Petr Olsak. The documentation is included in each
+longdesc file separately. booklet.tex: re-orders PDF pages and collects
+longdesc them for booklet printing circu.tex: features from
+longdesc circuitikz.sty enableda cnv.tex: conversion of texts
+longdesc cnv-pu.tex: example of usage of cnv.tex --- pdf outlines in
+longdesc Unicode cnv-word.tex: example of usage of cnv.tex --- word to
+longdesc word conversion eparam.tex: Full expansion during parameter
+longdesc scanning fun-coffee.tex: generates splotches in the document
+longdesc openclose.tex: repairs balanced text between \Open ...\Close
+longdesc pair qrcode.tex: QR code generated at TeX level scanbase.tex:
+longdesc parser of text-style mysql outputs scancsv.tex: parser of CSV
+longdesc format seplist.tex: macros with alternative separators of a
+longdesc parameter xmlparser.tex: parser of XML language
+containersize 29376
+containerchecksum 28ee0bf078d50d4fcdfff63f76f19c6234b44c0e9c43097c7ef3ba084b7321404ff65fa3d8f0302a8fac3afc0a7c72f4dd77998719ff0a99fff78a940d90e553
+doccontainersize 43992
+doccontainerchecksum 38042431fcc38939c8149a4a0d212fd81467d9c3bd8721828d972c1c340a415de01bfb9bba0ea90922632c676fbce82471a417028d8c65f7ebae55a525665f95
+runfiles size=35
+ texmf-dist/tex/generic/olsak-misc/booklet.tex
+ texmf-dist/tex/generic/olsak-misc/cropmarks.tex
+ texmf-dist/tex/generic/olsak-misc/qrcode.tex
+ texmf-dist/tex/generic/olsak-misc/scanbase.tex
+ texmf-dist/tex/generic/olsak-misc/scancsv.tex
+ texmf-dist/tex/generic/olsak-misc/xmlparser.tex
+catalogue-contact-home http://petr.olsak.net/ftp/olsak/makra/
+catalogue-ctan /macros/generic/olsak-misc
+catalogue-license pd
+catalogue-topics misc-support
+catalogue-version Apr. 2025

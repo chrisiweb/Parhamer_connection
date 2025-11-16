@@ -1,0 +1,96 @@
+bsmiuv 0 90
+'&#x00AF;' '' macron.vert 0           % generated from bsmiuv.tfm, 2023-02-05-20:38
+'&#x00B7;' '' periodcentered.vert 1   % Copyright 2023 TeX Users Group
+'&#x02CD;' '' uni02CD.vert 2          %
+'&#xFF08;' '' uniFF08.vert 3          % This work may be distributed and/or modified under the
+'&#xFF09;' '' uniFF09.vert 4          % conditions of the LaTeX Project Public License, either
+'&#xFF0C;' '' uniFF0C.vert 5          % version 1.3c of this license or (at your option) any
+'&#xFF0E;' '' uniFF0E.vert 6          % later version. The latest version of this license is in
+'&#xFF3B;' '' uniFF3B.vert 7          %   http://www.latex-project.org/lppl.txt
+'&#xFF3D;' '' uniFF3D.vert 8          % and version 1.3c or later is part of all distributions
+'&#xFF3F;' '' uniFF3F.vert 9          % of LaTeX version 2005/12/01 or later.
+'&#xFF5B;' '' uniFF5B.vert 10         %
+'&#xFF5D;' '' uniFF5D.vert 11         % This work has the LPPL maintenance status "maintained".
+'&#xFF5E;' '' uniFF5E.vert 12         %
+'&#x2013;' '' endash.vert 13          % The Current Maintainer of this work
+'&#x2014;' '' emdash.vert 14          % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x2025;' '' twodotenleader.vert 15  %
+'&#x2026;' '' ellipsis.vert 16        % If you modify this program, changing the
+'&#x2190;' '' arrowleft.vert 17       % version identification would be appreciated.
+'&#x2191;' '' arrowup.vert 18
+'&#x2192;' '' arrowright.vert 19
+'&#x2193;' '' arrowdown.vert 20
+'&#x2223;' '' uni2223.vert 21
+'&#x2225;' '' uni2225.vert 22
+'&#x2500;' '' SF100000.vert 23
+'&#x2502;' '' SF110000.vert 24
+'&#x250C;' '' SF010000.vert 25
+'&#x2510;' '' SF030000.vert 26
+'&#x2514;' '' SF020000.vert 27
+'&#x2518;' '' SF040000.vert 28
+'&#x251C;' '' SF080000.vert 29
+'&#x2524;' '' SF090000.vert 30
+'&#x252C;' '' SF060000.vert 31
+'&#x2534;' '' SF070000.vert 32
+'&#x2550;' '' SF430000.vert 33
+'&#x2551;' '' SF240000.vert 34
+'&#x2552;' '' SF510000.vert 35
+'&#x2553;' '' SF520000.vert 36
+'&#x2554;' '' SF390000.vert 37
+'&#x2555;' '' SF220000.vert 38
+'&#x2556;' '' SF210000.vert 39
+'&#x2557;' '' SF250000.vert 40
+'&#x2558;' '' SF500000.vert 41
+'&#x2559;' '' SF490000.vert 42
+'&#x255A;' '' SF380000.vert 43
+'&#x255B;' '' SF280000.vert 44
+'&#x255C;' '' SF270000.vert 45
+'&#x255D;' '' SF260000.vert 46
+'&#x255E;' '' SF360000.vert 47
+'&#x255F;' '' SF370000.vert 48
+'&#x2560;' '' SF420000.vert 49
+'&#x2561;' '' SF190000.vert 50
+'&#x2562;' '' SF200000.vert 51
+'&#x2563;' '' SF230000.vert 52
+'&#x2564;' '' SF470000.vert 53
+'&#x2565;' '' SF480000.vert 54
+'&#x2566;' '' SF410000.vert 55
+'&#x2567;' '' SF450000.vert 56
+'&#x2568;' '' SF460000.vert 57
+'&#x2569;' '' SF400000.vert 58
+'&#x256A;' '' SF540000.vert 59
+'&#x256B;' '' SF530000.vert 60
+'&#x256D;' '' uni256D.vert 61
+'&#x256E;' '' uni256E.vert 62
+'&#x256F;' '' uni256F.vert 63
+'&#x2570;' '' uni2570.vert 64
+'&#x2574;' '' uni2574.vert 65
+'&#x3001;' '' uni3001.vert 66
+'&#x3002;' '' uni3002.vert 67
+'&#x3008;' '' uni3008.vert 68
+'&#x3009;' '' uni3009.vert 69
+'&#x300A;' '' uni300A.vert 70
+'&#x300B;' '' uni300B.vert 71
+'&#x300C;' '' uni300C.vert 72
+'&#x300D;' '' uni300D.vert 73
+'&#x300E;' '' uni300E.vert 74
+'&#x300F;' '' uni300F.vert 75
+'&#x3010;' '' uni3010.vert 76
+'&#x3011;' '' uni3011.vert 77
+'&#x3014;' '' uni3014.vert 78
+'&#x3015;' '' uni3015.vert 79
+'&#xFE4F;' '' uniFE4F.vert 80
+'&#xFE50;' '' uniFE50.vert 81
+'&#xFE51;' '' uniFE51.vert 82
+'&#xFE52;' '' uniFE52.vert 83
+'&#xFE59;' '' uniFE59.vert 84
+'&#xFE5A;' '' uniFE5A.vert 85
+'&#xFE5B;' '' uniFE5B.vert 86
+'&#xFE5C;' '' uniFE5C.vert 87
+'&#xFE5D;' '' uniFE5D.vert 88
+'&#xFE5E;' '' uniFE5E.vert 89
+'&#x203E;' '' uni203E.vert 90
+bsmiuv 0 90
+htfcss:  bsmiuv  font-family: 'AR PL Mingti2L Big5', serif;
+
+

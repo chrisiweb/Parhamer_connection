@@ -1,0 +1,15 @@
+name fixpdfmag
+category Package
+revision 15878
+shortdesc Fix magnification in pdfTeX
+longdesc A recent change to pdfTeX has caused magnification to apply to
+longdesc page dimensions. This small package changes the values set in
+longdesc the page dimension variables from pt to truept, thus evading
+longdesc the effects of \mag.
+containersize 1160
+containerchecksum 733995ec82df92bea5a674fc25a3a6af2102739c3c73eeed7c9f40cd54bc4c5d65cafb35366b70641ff0661dc83700071054f7af274487474c3893ce5a44c9ad
+runfiles size=1
+ texmf-dist/tex/plain/fixpdfmag/fixpdfmag.tex
+catalogue-ctan /macros/plain/contrib/misc/fixpdfmag.tex
+catalogue-license pd
+catalogue-topics geometry

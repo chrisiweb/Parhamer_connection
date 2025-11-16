@@ -1,0 +1,18 @@
+name pst-marble
+category Package
+revision 50925
+shortdesc A PSTricks package to draw marble-like patterns
+longdesc This is a PSTricks package to draw marble-like patterns.
+containersize 8560
+containerchecksum e16ea0ed61c6548d43746f251bf8581a00863370b73d46077e5510fd167d63a539ab4543f0ad7db704571b5274cc5756fb713e5182c8abea404708215a98849b
+doccontainersize 20207432
+doccontainerchecksum 5684abd4913353b7a4953ed1b5878183f1c10dcc1bdecea6f3e9e6adef7c73c7f16cdade2b5e18f4a645c203dfb15a3917740a7638c410002eab892bc5ca6acd
+runfiles size=10
+ texmf-dist/dvips/pst-marble/pst-marble.pro
+ texmf-dist/tex/generic/pst-marble/pst-marble.tex
+ texmf-dist/tex/latex/pst-marble/pst-marble.sty
+catalogue-contact-home http://people.csail.mit.edu/jaffer/Marbling/How-To
+catalogue-ctan /graphics/pstricks/contrib/pst-marble
+catalogue-license lppl1.3c
+catalogue-topics graphics graphics-use pstricks
+catalogue-version 1.6

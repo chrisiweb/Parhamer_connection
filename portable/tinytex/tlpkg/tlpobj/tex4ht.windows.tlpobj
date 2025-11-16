@@ -1,0 +1,26 @@
+name tex4ht.windows
+category Package
+revision 73796
+shortdesc windows files of tex4ht
+containersize 61956
+containerchecksum 88eba5e20edb89347ab5c0827dd28d60893eff54c5e314a120eb18e6cdced5f669dd8db11ec35785a8b62d3f3c9f49c6d79cd21079a8bf1b3a9dc37812536ae1
+binfiles arch=windows size=59
+ bin/windows/ht.bat
+ bin/windows/ht.exe
+ bin/windows/htlatex.bat
+ bin/windows/htlatex.exe
+ bin/windows/htmex.bat
+ bin/windows/htmex.exe
+ bin/windows/httex.bat
+ bin/windows/httex.exe
+ bin/windows/httexi.bat
+ bin/windows/httexi.exe
+ bin/windows/htxelatex.bat
+ bin/windows/htxelatex.exe
+ bin/windows/htxetex.bat
+ bin/windows/htxetex.exe
+ bin/windows/mk4ht.exe
+ bin/windows/t4ht.exe
+ bin/windows/tex4ht.exe
+ bin/windows/xhlatex.bat
+ bin/windows/xhlatex.exe

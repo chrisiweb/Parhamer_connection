@@ -1,0 +1,20 @@
+name pst-contourplot
+category Package
+revision 48230
+shortdesc Draw implicit functions using the "marching squares" algorithm
+longdesc This package allows to draw implicit functions "f(x,y) = 0"
+longdesc with options for coloring the inside of the surfaces, for
+longdesc marking the points and arrowing the curve at points chosen by
+longdesc the user. The package uses the "marching squares" algorithm.
+containersize 3624
+containerchecksum 9930e77c3ac5adcd9e3f14c4785a52a79fe5068b5ee239d1c9f052181657d2c5f16b082a8900b9571094ec83b7326be28a567dd39876332e5f68aa6b1c1b7083
+doccontainersize 764392
+doccontainerchecksum 1a52121a22c829c9c5423810f529cbc4cf3e49a805ec4fae123dd795dfc8fc87bebb13653a9d173ca962bba716c8428effa4410e48085af4bb208331e4e89bce
+runfiles size=6
+ texmf-dist/tex/generic/pst-contourplot/pst-contourplot.tex
+ texmf-dist/tex/latex/pst-contourplot/pst-contourplot.sty
+catalogue-contact-home http://pstricks.blogspot.com
+catalogue-ctan /graphics/pstricks/contrib/pst-contourplot
+catalogue-license lppl
+catalogue-topics pstricks graphics-plotfn
+catalogue-version 0.6

@@ -1,0 +1,18 @@
+name pdftricks2
+category Package
+revision 31016
+shortdesc Use PSTricks in pdfTeX
+longdesc The package provides the means of processing documents (that
+longdesc contain pstricks graphics specifications. The package is
+longdesc inspired by pdftricks
+containersize 5468
+containerchecksum e50406cd680e1d5cfabcfd8000b743fde61dcff7e3c686b06f58fd1fd36e414d53140b5d244ef65931aeec67dbf458e5e2d43266f26ee9de301babbc0f88853d
+doccontainersize 62624
+doccontainerchecksum 4a22c280a28e4a45f068d52f4d75f19b5ccfec30609d7c8d143cccc67d16fc04cd1ae63e7d6a5a659a0805ed85d96d57ff5fba4b246f67029457088e7696ad23
+runfiles size=6
+ texmf-dist/tex/latex/pdftricks2/pdftricks2.sty
+catalogue-also pdftricks
+catalogue-ctan /graphics/pdftricks2
+catalogue-license gpl2
+catalogue-topics callback pstricks
+catalogue-version 1.01

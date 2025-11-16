@@ -1,0 +1,21 @@
+name dirtree
+category Package
+revision 42428
+shortdesc Display trees in the style of windows explorer
+longdesc This package is designed to emulate the way windows explorer
+longdesc displays directory and file trees, with the root at top left,
+longdesc and each level of subtree displaying one step in to the right.
+longdesc The macros work equally well with Plain TeX and with LaTeX.
+containersize 2484
+containerchecksum 5faecc2a6d79ae79929481c283b01e69df482267635957c5eb11c264d924ce299021d95baaf8cf6f9cb10e57f5fe14820c6b3506021b4d0213494bdeff5746a2
+doccontainersize 100148
+doccontainerchecksum 9edfb6fbcf4278c2b24599b58e10f64918d901bdd19dc0e9e8c8bd77756f2f3ba5dc13e31fefd2bd5f1467a0fb0dc0e765fe4e0515781103bdb1b81f687def7b
+srccontainersize 7780
+srccontainerchecksum 4939918ace772a76142674410f9a1e91c698e02c113517385814346399cc94e031384905dc2719d717ac1dc65ff04d1d5a7049408ec55e20b4c0000f4b8a7049
+runfiles size=3
+ texmf-dist/tex/generic/dirtree/dirtree.sty
+ texmf-dist/tex/generic/dirtree/dirtree.tex
+catalogue-ctan /macros/generic/dirtree
+catalogue-license lppl
+catalogue-topics tree
+catalogue-version 0.32

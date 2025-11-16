@@ -1,0 +1,22 @@
+name encxvlna
+category Package
+revision 34087
+shortdesc Insert nonbreakable spaces, using encTeX
+longdesc The package provides tools for inserting nonbreakable spaces
+longdesc after nonsyllabic prepositions and single letter conjunctions
+longdesc as required by Czech and Slovak typographical rules. It is
+longdesc implemented using encTeX and provides files both for plain TeX
+longdesc and LaTeX. The LaTeX solution tries to avoid conflicts with
+longdesc other packages.
+containersize 2572
+containerchecksum f6aa0a954affda9152f5b15958ea453e3c2979205f25a5d9f15e3fb189b2352a87256a345d382a3c7dc401eeb55360afa9cf942cc4779406b97cc8f8c47eba81
+doccontainersize 251156
+doccontainerchecksum 01f44c8205daf33006eaa73061d27c9e17ce5b456e73f427f797023cf94d7380e44180c347021cc5c17870550fc7e626bab8de6219d6b56000526aa54ba34efe
+runfiles size=3
+ texmf-dist/tex/latex/encxvlna/encxvlna.sty
+ texmf-dist/tex/plain/encxvlna/encxvlna.tex
+catalogue-also luavlna xevlna
+catalogue-ctan /macros/generic/encxvlna
+catalogue-license lppl
+catalogue-topics typesetting czech slovak
+catalogue-version 1.1

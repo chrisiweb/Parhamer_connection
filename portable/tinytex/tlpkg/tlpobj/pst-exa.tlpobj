@@ -1,0 +1,18 @@
+name pst-exa
+category Package
+revision 45289
+shortdesc Typeset PSTricks examples, with code
+longdesc The (PSTricks-related) package provides an environment
+longdesc PSTexample to put code and output side by side or one above the
+longdesc other.
+containersize 3236
+containerchecksum af3bf68bf2401e0bd7023762748180bbedae1a34fa749b02cccd6b498f1f7ed0ca0e929e1b290f9b4f56b7f30718cc602d54b348e23f73c4cfb4d72ea22ffa4c
+doccontainersize 63352
+doccontainerchecksum 9f0310ad130ad4693575e33bb2f2deb795a8eb4cc6b3f5fa946095d979ad8a1a348feca0ee5421b4831fd16a1de23608013b69d027b0dd37f782113e7de868bf
+runfiles size=3
+ texmf-dist/tex/latex/pst-exa/pst-exa.sty
+catalogue-also showexpl
+catalogue-ctan /graphics/pstricks/contrib/pst-exa
+catalogue-license lppl
+catalogue-topics listing pstricks
+catalogue-version 0.06

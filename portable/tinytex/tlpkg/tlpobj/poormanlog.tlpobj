@@ -1,0 +1,26 @@
+name poormanlog
+category Package
+revision 63400
+shortdesc Logarithms and powers with (almost) 9 digits
+longdesc This small package (usable with Plain e-TeX, LaTeX, or others)
+longdesc with no dependencies provides two fast expandable macros
+longdesc computing logarithms in base 10 and fractional powers of 10.
+longdesc They handle arguments of 9 digit tokens which stand for either
+longdesc 1 <= d.dddddddd < 10 (for the log) or 0.xxxxxxxxx (for powers
+longdesc of 10). They achieve a precision of 1ulp for the logarithm and
+longdesc 2ulp for fractional powers of ten. Extension to other numerical
+longdesc ranges has to be done by user, via own macros or some math
+longdesc engine. The xintexpr package (at 1.3f) imports the poormanlog
+longdesc macros as core constituents of its log10(), pow10(), log(),
+longdesc exp() and pow() functions.
+containersize 3812
+containerchecksum e67561e7818e8ff9e02a43c02b8b992a26bef477176ce36eebaea37f56ea182bc9bedcfa56ffd8581b5d696698718d87f5319ac93d79032c4c27780ceb964851
+doccontainersize 2092
+doccontainerchecksum 7d99c4036411bd892bc0a520a42c5e2a1c1077c89e58e1be8a9fc991b87da3d22871e75669c814358701d17add447a7e6546a33a8ada55f55ce0814296273f91
+runfiles size=4
+ texmf-dist/tex/generic/poormanlog/poormanlog.sty
+ texmf-dist/tex/generic/poormanlog/poormanlog.tex
+catalogue-ctan /macros/generic/poormanlog
+catalogue-license lppl1.3c
+catalogue-topics calculation
+catalogue-version 0.07

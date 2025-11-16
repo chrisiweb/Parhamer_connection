@@ -1,0 +1,50 @@
+name pdftoolbox
+category Package
+revision 74832
+shortdesc A plain-pdfTeX toolbox for creating beautiful documents
+longdesc pdfToolbox is a toolbox of various "subpackages" intended for
+longdesc programming and creating beautiful plain-pdfTeX documents. It
+longdesc is an amalgamation of the following "subpackages" (in the
+longdesc future there will be an ability to access each one by itself):
+longdesc pdfData -- for storing and manipulating data; pdfDstruct -- for
+longdesc managing the layout and structure of your document; pdfGraphics
+longdesc -- for adding some color and illustrations to your document.
+longdesc pdfToolbox currently only works with pdfTeX. It is not
+longdesc compatible with any form of LaTeX, and currently does not work
+longdesc with XeTeX or LuaTeX (though hopefully LuaTeX support will be
+longdesc added in the future).
+containersize 19808
+containerchecksum 62e7f3d2e6f22a297d7ccfc80b76b8c0bc80e6df13fa348ab76ebda3539d30f2266bc72bbe93a16422baef1df181ef13880af2f049ae96b803ea9b3d407c1c2c
+doccontainersize 252540
+doccontainerchecksum 0c5cc97ef4e6ce4bcae9e8b04e4c76c0856ed015616ff3c944eb180f717474605fc83b6d2adb48eac8410e3eb60ce9e6fe168a8a42e0ff564b69a82305fdb2bc
+runfiles size=40
+ texmf-dist/tex/plain/pdftoolbox/pdfData/ptb-arrays.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfData/ptb-counters.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfData/ptb-dictionaries.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfData/ptb-key-value.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfData/ptb-math.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfData/ptb-mergesort.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfData/ptb-stack.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfDstruct/ptb-fonts.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfDstruct/ptb-hooks.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfDstruct/ptb-hyperlinks.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfDstruct/ptb-index.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfDstruct/ptb-layout.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfDstruct/ptb-lists.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfDstruct/ptb-tableofcontents.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfGraphics/listingcommands/ptb-syntax-C.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfGraphics/listingcommands/ptb-syntax-TeX.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfGraphics/ptb-colorboxes.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfGraphics/ptb-colors.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfGraphics/ptb-listings.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfGraphics/ptb-pdfdraw-utils.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfGraphics/ptb-pdfdraw.tex
+ texmf-dist/tex/plain/pdftoolbox/pdfToolbox.tex
+ texmf-dist/tex/plain/pdftoolbox/ptb-pdfData.tex
+ texmf-dist/tex/plain/pdftoolbox/ptb-pdfDstruct.tex
+ texmf-dist/tex/plain/pdftoolbox/ptb-pdfGraphics.tex
+ texmf-dist/tex/plain/pdftoolbox/ptb-utils.tex
+catalogue-ctan /macros/pdftex/plain/pdftoolbox
+catalogue-license mit
+catalogue-topics pdf-feat
+catalogue-version 0.2

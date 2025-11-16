@@ -1,0 +1,23 @@
+name modulus
+category Package
+revision 47599
+shortdesc A non-destructive modulus and integer quotient operator for TeX
+longdesc The package provides an easy way to take the remainder of a
+longdesc division operation without destroying the values of the
+longdesc counters containing the dividend and divisor. Also provides a
+longdesc way to take the integer quotient of a division operation
+longdesc without destroying the values of the counters containing the
+longdesc dividend and divisor. A tiny but occasionally useful package,
+longdesc when doing heavy TeX programming.
+containersize 1212
+containerchecksum e5dde62c2e0730befb63612bfd6ea3626463db85b74291df5937d8f7e1995f6b63c8bc6d7e08536ae761457ab1e9a0ddeccf11afa4108910561075dcc03201f6
+doccontainersize 174792
+doccontainerchecksum 965d03005ef257526ffa6667d889a4b238ca5314f4fe8714bc8219ace1e909eb5765da6c0dc94e9b312635e0f9ca096f1d14364effb0045ed467da7c1d735474
+srccontainersize 3136
+srccontainerchecksum 0f33d1d241e0155eae39875b0ce72019740771c2e36b337255a0865cabeae78c93e24d7f7eddbe7cba9ce312090b251b26a632c260e097a2619d35b47fb050bb
+runfiles size=1
+ texmf-dist/tex/generic/modulus/modulus.sty
+catalogue-ctan /macros/generic/modulus
+catalogue-license lppl1.3c
+catalogue-topics calculation
+catalogue-version 1.0

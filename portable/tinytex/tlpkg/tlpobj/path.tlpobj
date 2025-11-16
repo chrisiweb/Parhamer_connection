@@ -1,0 +1,20 @@
+name path
+category Package
+revision 22045
+shortdesc Typeset paths, making them breakable
+longdesc Defines a macro \path|...|, similar to the LaTeX \verb|...|,
+longdesc that sets the text in typewriter font and allows hyphen-less
+longdesc breaks at punctuation characters. The set of characters to be
+longdesc regarded as punctuation may be changed from the package's
+longdesc default.
+containersize 5424
+containerchecksum 6a1fad600e4683476206385504ab5fb916caecc1101ac903d23042c25e055c6d4a73b85a57a3293929b1effd7d4af6db26c36ff994d76efd1c4f81073cee785a
+doccontainersize 290328
+doccontainerchecksum e52367b81b9042af70e940aab99fa13140c31d58768ce94fb86df74ec9b52fb365168e7e325d8b2e304094e5a35fbd9fd687305062b5b606bb9e5748f143ac2f
+runfiles size=4
+ texmf-dist/tex/generic/path/path.sty
+catalogue-also url
+catalogue-ctan /macros/generic/path
+catalogue-license other-free
+catalogue-topics verbatim
+catalogue-version 3.05

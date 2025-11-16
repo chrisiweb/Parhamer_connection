@@ -1,0 +1,21 @@
+name pagesel
+category Package
+revision 75712
+shortdesc Select pages of a document for output
+longdesc Selects single pages, ranges of pages, odd pages or even pages
+longdesc for output.
+containersize 2476
+containerchecksum 095ccf2d8d01c48865e6cef5941693e2d0ef8d514a16f57acca685139aaef3d8243e04b9cc2a904e0b06da7916e00867c74a806e229a2be65f115ac4759739f0
+doccontainersize 331608
+doccontainerchecksum 320f133e0dd94b9ec89b04c84b56d0e1e7344f4971a9b19946438a5bbc061820d472e3155c0d630b5c08ad7fb7ad11f7ce2f6bcc81978cdd6c9d3f1351b16723
+srccontainersize 7128
+srccontainerchecksum e41ceb7adafbd767056dc1fa36aa7829ce031b743242528ae15c151c8bacb2f2019d9c51f7f81749c6a10be0de0cfafb15b57afea4c26e8183ea9f7d9a47820d
+runfiles size=4
+ texmf-dist/tex/latex/pagesel/pagesel-2016-05-16.sty
+ texmf-dist/tex/latex/pagesel/pagesel.sty
+catalogue-also selectp
+catalogue-contact-bugs https://github.com/ho-tex/pagesel/issues
+catalogue-ctan /macros/latex/contrib/pagesel
+catalogue-license lppl1.3c
+catalogue-topics page-control
+catalogue-version 1.10

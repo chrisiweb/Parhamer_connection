@@ -1,0 +1,27 @@
+name pst-slpe
+category Package
+revision 24391
+shortdesc Sophisticated colour gradients
+longdesc This PStricks package covers all the colour gradient
+longdesc functionality of pst-grad (part of the base PSTricks
+longdesc distribution), and provides the following facilities: it
+longdesc permits the user to specify an arbitrary number of colours,
+longdesc along with the points at which they are to be reached; it
+longdesc converts between RGB and HSV behind the scenes; it provides
+longdesc concentric and radial gradients; it provides a command \psBall
+longdesc that generates bullets with a three-dimensional appearance; and
+longdesc uses the xkeyval package for the extended key handling.
+containersize 3176
+containerchecksum 43905d7525acca6d10261e169a1c1ec1ee0cf0d4b7fcd05643dea3f705331588d774649ad5ca560111269025e92a1e91796693c5246e4d2b2816dd33d4eed87b
+doccontainersize 244888
+doccontainerchecksum 377a89c5dcc49e587e3e2d2e1221c289da9dc6b3cc0565bd182d0ec356835309c12eecf68680ac4083c906701365de0068608ee1e49ea9fb95c866a188931a67
+srccontainersize 12612
+srccontainerchecksum f8579912fb5477394f8eb150de776b9a15dad8f67b821a073748910388e06c70b23163fdabe260d55216add2924879f5380915c5d3ebbb21f0da3c65c6f82f73
+runfiles size=5
+ texmf-dist/dvips/pst-slpe/pst-slpe.pro
+ texmf-dist/tex/generic/pst-slpe/pst-slpe.tex
+ texmf-dist/tex/latex/pst-slpe/pst-slpe.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-slpe
+catalogue-license lppl
+catalogue-topics colour pstricks
+catalogue-version 1.31

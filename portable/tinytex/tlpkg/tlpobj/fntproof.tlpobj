@@ -1,0 +1,20 @@
+name fntproof
+category Package
+revision 20638
+shortdesc A programmable font test pattern generator
+longdesc The package implements all the font testing commands of Knuth's
+longdesc testfont.tex, but arranges that information necessary for each
+longdesc command is supplied as arguments to that command, rather than
+longdesc prompted for. This makes it possible to type all the tests in
+longdesc one command line, and easy to input the package in a file and
+longdesc to use the commands there. A few additional commands supporting
+longdesc this last purpose are also made available.
+containersize 6592
+containerchecksum c1cdc018808a2b9fb5b91c54b55eddf3d517b8dc6062db1ffda3db154efe6f3abb91e61ce90a68743ce411ec614785974b4362f20f03ae398488ac1f816b3ba6
+doccontainersize 209564
+doccontainerchecksum cf9e8909ed030b27a57573cc257682da84b7f14c3c3775e17fdc8a2203fe99dda8797ae7b2599dc92e9684140102f6d1ca2147bbb437edcf8eb41ffd28b9a576
+runfiles size=4
+ texmf-dist/tex/generic/fntproof/fntproof.tex
+catalogue-ctan /macros/generic/fntproof
+catalogue-license pd
+catalogue-topics font-devel

@@ -1,0 +1,15 @@
+name upca
+category Package
+revision 22511
+shortdesc Print UPC-A barcodes
+longdesc The package defines a single macro \upca, to print UPC-A
+longdesc barcodes.
+containersize 1840
+containerchecksum 3423a3a7d42273bfb28642d250d5000fd55d5cfe2dfb5ba0c2f875ced6c6df344866a5512a624dedb12d6bb9357f02a831297f4aba463dbd5e69e5e8dd9941dd
+doccontainersize 812
+doccontainerchecksum f19dd751bffb9ee92ee80f74f692ac410781e87817ee841c01f37bac87fc770b9fc97d488ffbe97490206899653d329034d82cf649de0ee52cfa4643f956d7de
+runfiles size=2
+ texmf-dist/tex/generic/upca/upca.tex
+catalogue-ctan /macros/generic/upca
+catalogue-license lppl
+catalogue-topics barcode

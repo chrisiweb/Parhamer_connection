@@ -1,0 +1,20 @@
+name randomlist
+category Package
+revision 45281
+shortdesc Deal with database, loop, and random in order to build personalized exercises
+longdesc The main aim of this package is to work on lists, especially
+longdesc with random operations. The hidden aim is to build a personnal
+longdesc collection of exercises with different data for each pupil.
+containersize 4996
+containerchecksum 895eb116868ced533e23d398d0f17bda2f55a2cea52ec46bcfca4004b9411fade8817af4fc9d3d91b2ab2959ea24027266d8fcac0c77a64d2a4b88fbed5d56a4
+doccontainersize 391560
+doccontainerchecksum 4c0ebff9275bbd1c8550902735b4ef0d04dbd688bb1abdf124560defd2e5d0cc23171e8034fc67b5379d0ec30395b4433ababf3c3a244cbb5ca5f15005057f58
+srccontainersize 18212
+srccontainerchecksum 3ccb29c8a6b815484929b7bf0e142090bca848d3f5562533380b71e1be3c9fff2d7ed00f39fa68a745442ad45e1b07e4ed38ef2db55a2bf341e6adb0ce51c373
+runfiles size=6
+ texmf-dist/tex/generic/randomlist/randomlist.sty
+ texmf-dist/tex/generic/randomlist/randomlist.tex
+catalogue-ctan /macros/generic/randomlist
+catalogue-license lppl1.3
+catalogue-topics list list-supp
+catalogue-version 1.3

@@ -1,0 +1,21 @@
+name pst-ob3d
+category Package
+revision 54514
+shortdesc Three dimensional objects using PSTricks
+longdesc The package uses PSTricks to provide basic three-dimensional
+longdesc objects. As yet, only cubes (which can be deformed to
+longdesc rectangular parallelipipeds) and dies (which are only a special
+longdesc kind of cubes) are defined.
+containersize 2720
+containerchecksum 19cdca2466071a1c6236fd4c149d4962dab3aa0b0c097fa408ea60c2bb46011173033bff02d33f596c8a413ad781c14f785b39bc28be4c85aa66480cb8a7e295
+doccontainersize 168200
+doccontainerchecksum 78ea80a6d63ccbc69640e6e18e8ef43526fd4d4b51a63dccd23429ea44843a0f99f522bc34a7cc88d6ffe48843313da64c550464f28ad48726554bf74b9e9cc5
+srccontainersize 9788
+srccontainerchecksum a0827ae0fb0ba2072894bfc284234eb301c982972d8333866cc8b66ff754e85b837fa024083ae31d637ba941569ae491a85bbe62ab32adf0fb99bbe3ecd019ed
+runfiles size=4
+ texmf-dist/tex/generic/pst-ob3d/pst-ob3d.tex
+ texmf-dist/tex/latex/pst-ob3d/pst-ob3d.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-ob3d
+catalogue-license lppl
+catalogue-topics graphics graphics-3d pstricks
+catalogue-version 0.22

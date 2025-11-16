@@ -1,0 +1,18 @@
+name pst-knot
+category Package
+revision 16033
+shortdesc PSTricks package for displaying knots
+longdesc The package can produce a fair range of knot shapes, with all
+longdesc the standard graphics controls one expects.
+containersize 14940
+containerchecksum f481b82e5d21dd86eef3cf64ecedc45420b33e43619574f072a050fd70a6446ef8d527607ed5a929443ff6976cc94a03817837c8776bb2ee9794fec80a4c0751
+doccontainersize 53744
+doccontainerchecksum a8a82ce955b707c6ecb319783cdc4fc8406411dc8d711321919413d84ca42197828e69ae2b6b368a4b5b326650caf5393cb2214a7cd8b7bc0cff742b9b0d977c
+runfiles size=15
+ texmf-dist/dvips/pst-knot/pst-psm.pro
+ texmf-dist/tex/generic/pst-knot/pst-knot.tex
+ texmf-dist/tex/latex/pst-knot/pst-knot.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-knot
+catalogue-license lppl
+catalogue-topics decoration pstricks
+catalogue-version 0.2

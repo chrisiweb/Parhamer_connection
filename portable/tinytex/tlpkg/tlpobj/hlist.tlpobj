@@ -1,0 +1,18 @@
+name hlist
+category Package
+revision 44983
+shortdesc Horizontal and columned lists
+longdesc This plain TeX and LaTeX package provides the "hlist"
+longdesc environment in which \hitem starts a horizontal and columned
+longdesc item. It depends upon the simplekv package.
+containersize 9244
+containerchecksum 9e2150f08a7fac07a0e2e36edcecbd5c16ab3c119d8532fbae9399f14c6c7567d2cf4e2a92eda9a650049a901a35b6a9a0dd3423a06da6a9d266a3859392334d
+doccontainersize 386912
+doccontainerchecksum 5b3748d7f67fb51dc0df2a03318e96ac9224abc42291ab475a907befa14fc210d9d2371005150404480900865e8ffa9f97e3ab122109bb5454c3b061f66a064d
+runfiles size=9
+ texmf-dist/tex/generic/hlist/hlist.sty
+ texmf-dist/tex/generic/hlist/hlist.tex
+catalogue-ctan /macros/generic/hlist
+catalogue-license lppl1.3c
+catalogue-topics list-supp table list
+catalogue-version 0.11

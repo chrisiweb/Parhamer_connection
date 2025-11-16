@@ -1,0 +1,18 @@
+name pdf-trans
+category Package
+revision 32809
+shortdesc A set of macros for various transformations of TeX boxes
+longdesc pdf-trans is a set of macros offering various transformations
+longdesc of TeX boxes (based on plain and pdfeTeX primitives). It was
+longdesc initially inspired by trans.tex, remade to work with pdfTeX.
+containersize 10768
+containerchecksum 8e3d1526b0373113064e4812003b84fd78dec65ce4946ef991f09efcb6ffab8e89a9a655c8a0582e1f4452feb526c077ec9cff30b1ad7f3c59f07bc715e643e6
+doccontainersize 61272
+doccontainerchecksum a275e35947c38b93f5ade7a812d7938d342b25460e2a29e16a1431c7fff5939826ffe0bab30aeaf504a57ded91925e85853f93611702ee6dfec713031edf9306
+runfiles size=12
+ texmf-dist/tex/generic/pdf-trans/pdf-trans.tex
+catalogue-also trans
+catalogue-ctan /macros/generic/pdf-trans
+catalogue-license pd
+catalogue-topics box-manip
+catalogue-version 2.4

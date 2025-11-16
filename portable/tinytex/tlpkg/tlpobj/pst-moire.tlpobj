@@ -1,0 +1,17 @@
+name pst-moire
+category Package
+revision 60411
+shortdesc A PSTricks package to draw moire patterns
+longdesc This is a PSTricks package to draw moire patterns.
+containersize 5328
+containerchecksum 60fb7e65170ec16f08f4109794afd657436fbb42a18feaff2997fdef20e18376810c3b34e0e341a5e577a6d08d6bf6314adfa51611d83a4e66245f112581d678
+doccontainersize 8296868
+doccontainerchecksum f24fb6a5a34a09f7b519f864c40d4bb4afd4b37f12280877fa9e6edae48a655c12bdf13eb7d13e9ce43ffa849a183c6a81b8040f61d90e9ec514b07352fced3c
+runfiles size=7
+ texmf-dist/dvips/pst-moire/pst-moire.pro
+ texmf-dist/tex/generic/pst-moire/pst-moire.tex
+ texmf-dist/tex/latex/pst-moire/pst-moire.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-moire
+catalogue-license lppl1.3c
+catalogue-topics graphics-use pstricks
+catalogue-version 2.2

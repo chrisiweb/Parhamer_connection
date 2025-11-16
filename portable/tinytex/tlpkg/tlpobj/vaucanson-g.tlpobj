@@ -1,0 +1,24 @@
+name vaucanson-g
+category Package
+revision 15878
+shortdesc PSTricks macros for drawing automata
+longdesc VauCanSon-G is a package that enables the user to draw automata
+longdesc within texts written using LaTeX. The package macros make use
+longdesc of commands of PStricks.
+containersize 11360
+containerchecksum e4bf83ea01ff4162f95dd595b93635ed988ae081d0c65ada59ae64c6c64c730dbb92ae049d22dcc20d6204c5a7cbca5cd643be6c572e51a3aa17df88c6f1f700
+doccontainersize 288568
+doccontainerchecksum 520aabba38562e208b464fc0d4e9f9a138c238abb94b43e89864e4ac21acfd35e5d6e224e855ab4baf9feb1df736b7e937508f6245e5f873c5c8f8a75947e014
+runfiles size=19
+ texmf-dist/tex/generic/vaucanson-g/VCColor-names.def
+ texmf-dist/tex/generic/vaucanson-g/VCPref-beamer.tex
+ texmf-dist/tex/generic/vaucanson-g/VCPref-default.tex
+ texmf-dist/tex/generic/vaucanson-g/VCPref-mystyle.tex
+ texmf-dist/tex/generic/vaucanson-g/VCPref-slides.tex
+ texmf-dist/tex/generic/vaucanson-g/Vaucanson-G.tex
+ texmf-dist/tex/generic/vaucanson-g/vaucanson-g.sty
+ texmf-dist/tex/generic/vaucanson-g/vaucanson.sty
+catalogue-ctan /graphics/pstricks/contrib/vaucanson-g
+catalogue-license lppl
+catalogue-topics automata graphics-use
+catalogue-version 0.4

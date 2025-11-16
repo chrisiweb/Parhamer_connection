@@ -1,0 +1,25 @@
+name apnum
+category Package
+revision 47510
+shortdesc Arbitrary precision numbers implemented by TeX macros
+longdesc The basic operations (addition, subtraction, multiplication,
+longdesc division, power to an integer) are implemented by TeX macros in
+longdesc this package. Operands may be numbers with arbitrary numbers of
+longdesc digits; scientific notation is allowed. The expression scanner
+longdesc is also provided. As of version 1.4 (December 2015) the
+longdesc calculation of common functions (sqrt, exp, ln, sin, cos, tan,
+longdesc asin, acos, atan, pi) with arbitrary precision in the result
+longdesc has been added. Exhaustive documentation (including detailed
+longdesc TeXnical documentation) is included. The macro includes many
+longdesc optimizations and uses only TeX primitives (from classic TeX)
+longdesc and \newcount macro.
+containersize 13364
+containerchecksum 2e155193dfdd3c88cf336cece23bc6b393a81529c31ac2535840a7c4f4a97530d35d0f4ae964e8f92856eea0d54c356e8bc15427918ba0891730827a3ba561c6
+doccontainersize 739572
+doccontainerchecksum 4e1a6ff31d9836dbb04fbd90911083a9ff70c7526ef099d437e21c11766314cc29e8071dbc21976af7a23fe99b673bbee82dfd265041b9ecd015070c58b4ce14
+runfiles size=13
+ texmf-dist/tex/generic/apnum/apnum.tex
+catalogue-ctan /macros/generic/apnum
+catalogue-license pd
+catalogue-topics calculation
+catalogue-version 1.7

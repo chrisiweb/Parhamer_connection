@@ -1,0 +1,23 @@
+name fontname
+category Package
+revision 75544
+shortdesc Scheme for naming fonts in TeX
+longdesc The scheme for assigning names is described (in the
+longdesc documentation part of the package), and map files giving the
+longdesc relation between foundry name and 'TeX-name' are also provided.
+containersize 17528
+containerchecksum 318eaa7cdc310bb651d8dd0df92adcfc0e20fd5e98a670314075ba1241287a5f14021c27acf253b2930c1c0d677c8fcd6ce4f53dfc409c4d36c34c51672a8043
+doccontainersize 673296
+doccontainerchecksum e5052d782c0a4023c0b49538a76adc0977351b0ac74235d7b849fc2d1331e616e8a5a2d3e6d0cd85c71faaa25286248eafd056b53ec5a9366b233b5ba32ae494
+runfiles size=27
+ texmf-dist/fonts/map/fontname/special.map
+ texmf-dist/fonts/map/fontname/supplier.map
+ texmf-dist/fonts/map/fontname/texfonts.map
+ texmf-dist/fonts/map/fontname/typeface.map
+ texmf-dist/fonts/map/fontname/urw.map
+ texmf-dist/fonts/map/fontname/variant.map
+ texmf-dist/fonts/map/fontname/weight.map
+ texmf-dist/fonts/map/fontname/width.map
+catalogue-ctan /info/fontname
+catalogue-license gpl
+catalogue-topics font-doc

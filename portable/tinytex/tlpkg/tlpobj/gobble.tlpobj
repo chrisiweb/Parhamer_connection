@@ -1,0 +1,32 @@
+name gobble
+category Package
+revision 64967
+shortdesc More gobble macros for PlainTeX and LaTeX
+longdesc The LaTeX package gobble includes several gobble macros not
+longdesc included in the LaTeX kernel. These macros remove a number of
+longdesc arguments after them, a feature regulary used inside other
+longdesc macros. This includes gobble macros for optional arguments. The
+longdesc LaTeX package gobble-user provides these macros at the user
+longdesc level, i.e. using names without @ so that these can be used
+longdesc without \makeatletter and \makeatother. The same macros are
+longdesc provided inside .tex files for use with plain-TeX or other TeX
+longdesc formats. However, the gobble macros for optional macros require
+longdesc \@ifnextchar to be defined.
+containersize 1700
+containerchecksum a3490d91422940763da75ce023ae032a3d3dffc7114c02edab40399a1ef11e5fb2c3f8f3bcf27ba5fc089b4d961bc3b99f45351f43eb2f4b31d6a425a9df40e5
+doccontainersize 157372
+doccontainerchecksum cb1bf320485624448d9456c44056fd5c43792db4ef2a4211c37acbe54bc4be7a8eba0b7cd2a10446efd1591b631d6a3adef26b5440b1a79739af095a831b4300
+srccontainersize 3288
+srccontainerchecksum f430253f8b2534f1eb1a2be289f7356792ee12b5be6f0847715974e5ed0303cd12f437723e93cc00616a4b55d4874d43477ebcf62c5b03a038a6bc76d838a597
+runfiles size=4
+ texmf-dist/tex/generic/gobble/gobble-user.sty
+ texmf-dist/tex/generic/gobble/gobble-user.tex
+ texmf-dist/tex/generic/gobble/gobble.sty
+ texmf-dist/tex/generic/gobble/gobble.tex
+catalogue-contact-bugs https://github.com/MartinScharrer/gobble/issues
+catalogue-contact-home https://github.com/MartinScharrer/gobble
+catalogue-contact-repository https://github.com/MartinScharrer/gobble.git
+catalogue-ctan /macros/generic/gobble
+catalogue-license lppl1.3
+catalogue-topics macro-supp
+catalogue-version 0.2

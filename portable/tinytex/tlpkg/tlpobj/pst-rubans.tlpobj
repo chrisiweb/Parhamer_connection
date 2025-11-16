@@ -1,0 +1,23 @@
+name pst-rubans
+category Package
+revision 23464
+shortdesc Draw three-dimensional ribbons
+longdesc The package uses PStricks and pst-solides3d to draw three
+longdesc dimensional ribbons on a cylinder, torus, sphere, cone or
+longdesc paraboloid. The width of the ribbon, the number of turns, the
+longdesc colour of the outer and the inner surface of the ribbon may be
+longdesc set. In the case of circular and conical helices, one may also
+longdesc choose the number of ribbons.
+containersize 3136
+containerchecksum 360f1a04170358b976bc8b6d4d4ee138398f6b018b5611811fc41d90475c474e89fed214708d11b47bdb58cfcf983b37c3338c4d5b13b13825f3388d1562372b
+doccontainersize 565612
+doccontainerchecksum 086f80c0b99a0043769b159b6f52de125f01e6c3b00189b0924c62961b934121b09a2f1634fdeef737b2fc468c392051f8b117e1de5d7e6d223e79ff443c2cae
+srccontainersize 960
+srccontainerchecksum f62e689c044a0600f4e303251329033e705f3d08b025214af34cc85488f347324d552594a321f88ecf91845b5db5011875436ba9fdb819dbe038dbbe012c4676
+runfiles size=5
+ texmf-dist/tex/generic/pst-rubans/pst-rubans.tex
+ texmf-dist/tex/latex/pst-rubans/pst-rubans.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-rubans
+catalogue-license lppl
+catalogue-topics graphics pstricks
+catalogue-version 1.2

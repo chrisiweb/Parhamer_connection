@@ -1,0 +1,27 @@
+name tokmap
+category Package
+revision 75599
+shortdesc Iterate over a token list expandably, without dropping spaces or braced groups
+longdesc Usage: \tokmap <command> { <tokens> } applies command over the
+longdesc token list tokens. Space tokens, left and right braces are
+longdesc replaced with the marker tokens \tokmap@space, \tokmap@bgroup,
+longdesc and \tokmap@egroup respectively (which are \ifx-equal to
+longdesc themselves exclusively). For convenience, command may contain
+longdesc multiple tokens. It is assumed that { and } are the only
+longdesc characters with category codes 1 (beginning of group) and 2
+longdesc (end of group) respectively. Expandable. This package may be
+longdesc used in LaTeX by \usepackage{tokmap}, or in plain TeX and other
+longdesc formats by \input{tokmap}. See the visualtoks package for an
+longdesc example application.
+containersize 1472
+containerchecksum a1e4c235b3af8e6fb1e002c459e9d7f564cfb563b84cf95a081933a21deedfd81667a8d7b60db9c08b3d4776ec30bf87972a2ed777a92bcf48bec9b89c6f44cc
+doccontainersize 840
+doccontainerchecksum 273b9d4fd843df6f067097972c460464286ba5bdf7b6ae4081140bc66ceb6ec4abfbd9efba7cade8ebcf1a5bc897fad4f9637750ee137e875186f059a9ff7ded
+runfiles size=2
+ texmf-dist/tex/generic/tokmap/tokmap.sty
+ texmf-dist/tex/generic/tokmap/tokmap.tex
+catalogue-contact-repository https://github.com/plante3/tokmap
+catalogue-ctan /macros/generic/tokmap
+catalogue-license lppl1.3c
+catalogue-topics macro-iterate macro-gen
+catalogue-version 1.0

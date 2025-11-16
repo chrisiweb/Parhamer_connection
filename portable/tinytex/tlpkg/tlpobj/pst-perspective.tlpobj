@@ -1,0 +1,18 @@
+name pst-perspective
+category Package
+revision 39585
+shortdesc Draw perspective views using PSTricks
+longdesc The package provides the means to draw an orthogonal parallel
+longdesc projection with an arbitrarily chosen angle and a variable
+longdesc shortening factor.
+containersize 3556
+containerchecksum b1c6c1313e0f87d7c4dbc7122d09777f14f02ad0908c6151fb5da905d908a9ca2d905c5a9e3fb1e54deb0b7b91dda1488de0b96ff40683488947985d68e2d331
+doccontainersize 1274264
+doccontainerchecksum df82bc95d3720f7da3c23736d83fbaeae5132f7b84aea9f2fd8ddf925f919e5d56f6701bf5b541446c024e8d2f6a5875d562d96cdb1564dae92d6ade759671cc
+runfiles size=6
+ texmf-dist/tex/generic/pst-perspective/pst-perspective.tex
+ texmf-dist/tex/latex/pst-perspective/pst-perspective.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-perspective
+catalogue-license lppl1.3
+catalogue-topics graphics-3d pstricks
+catalogue-version 1.05

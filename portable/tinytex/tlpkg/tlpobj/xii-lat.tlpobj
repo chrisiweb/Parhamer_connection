@@ -1,0 +1,16 @@
+name xii-lat
+category Package
+revision 45805
+shortdesc Christmas silliness (Latin)
+longdesc This is the plain TeX file xii-lat.tex. Call "pdftex
+longdesc xii-lat.tex" to produce a (perhaps) surprising typeset
+longdesc document.
+containersize 492
+containerchecksum e4538ac31b6508371ee156168d4da71644a65297b91be7f070291f35563a45a1ee5a528d25585bc23a4690e8fc5c6ad04bfc829de4e95f49468a5852fac9e822
+doccontainersize 1392
+doccontainerchecksum 50322d89f494d07793d964fe515b8a0bacb74bd5706a6da80f6860771a8e3cad35c7d06bf398217a7e4364594d54f4dc490f39980194804a04460047ff5083f8
+catalogue-also xii inscrutable
+catalogue-contact-home https://github.com/davidcarlisle/dpctex
+catalogue-ctan /macros/plain/contrib/xii-lat
+catalogue-license lppl
+catalogue-topics frivolous

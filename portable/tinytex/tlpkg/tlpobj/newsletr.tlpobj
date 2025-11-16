@@ -1,0 +1,13 @@
+name newsletr
+category Package
+revision 15878
+shortdesc Macros for making newsletters with Plain TeX
+containersize 16788
+containerchecksum e2f1995420ed7b94b980fd794df5dca89e89dd96daefa43559d568881ffd17668717de1baaff18bf27e8519663203e0ea7fef214b8f7541bde81d436a3a5c378
+doccontainersize 137580
+doccontainerchecksum aff23fd9e3397c52a1566930d6da6184786f07adc64c63e5d9e0062451014d261db8dab06e9d393cb66b3b56a51b57f494f01c9ab27b05bbe2a226cd4623d590
+runfiles size=14
+ texmf-dist/tex/plain/newsletr/newsletr.tex
+catalogue-ctan /macros/plain/contrib/newsletr
+catalogue-license other-free
+catalogue-topics magazine

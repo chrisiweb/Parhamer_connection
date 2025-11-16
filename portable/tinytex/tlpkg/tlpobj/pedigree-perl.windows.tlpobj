@@ -1,0 +1,8 @@
+name pedigree-perl.windows
+category Package
+revision 65891
+shortdesc windows files of pedigree-perl
+containersize 2316
+containerchecksum 2eff69d5a1887e6463ec7a03be41f37fd4b19955069d301eb3458dd1de68e0123f2a32c0efd16d0e3309a835b0db002f4d363cdcaec3c06959becd50e4bbaaa4
+binfiles arch=windows size=2
+ bin/windows/pedigree.exe

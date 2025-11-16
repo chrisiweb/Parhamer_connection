@@ -1,0 +1,18 @@
+name pst-hsb
+category Package
+revision 66739
+shortdesc Curves with continuous colours
+longdesc This is a PSTricks-related package. It can plot lines and/or
+longdesc curves with continuous colours. Only colours defined in the hsb
+longdesc model are supported.
+containersize 2292
+containerchecksum d3eef4f4672b938b84d1fafbf22889f9d7116af9a0574a95bfe2a7225d4a7185abcfb862ba7309fca924993f9665f2086a35edde97306c4b2311cf18f1763929
+doccontainersize 199780
+doccontainerchecksum a2664b558f51c43ead6c078f0895f4a6c5c55045b8485e7f564bac10279b997fe082279e3cf2c35a7f47f78fd826ecc5a65daff112dc8659768c3b6275b7c854
+runfiles size=3
+ texmf-dist/tex/generic/pst-hsb/pst-hsb.tex
+ texmf-dist/tex/latex/pst-hsb/pst-hsb.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-hsb
+catalogue-license lppl
+catalogue-topics pstricks colour
+catalogue-version 0.03

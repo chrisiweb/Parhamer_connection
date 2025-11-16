@@ -1,0 +1,224 @@
+MnSymbolE-Bold10 0 218
+'[' '' bracketleft 0           % generated from MnSymbolE-Bold10, 2022-07-07-15:12
+'[' '' bracketleft.alt1 1      % Copyright 2022 TeX Users Group
+'[' '' bracketleft.alt2 2      %
+'[' '' bracketleft.alt3 3      % This work may be distributed and/or modified under the
+'[' '' bracketleft.alt4 4      % conditions of the LaTeX Project Public License, either
+']' '' bracketright 5          % version 1.3c of this license or (at your option) any
+']' '' bracketright.alt 6      % later version. The latest version of this license is in
+']' '' bracketright.alt2 7     %   http://www.latex-project.org/lppl.txt
+']' '' bracketright.alt3 8     % and version 1.3c or later is part of all distributions
+']' '' bracketright.alt4 9     % of LaTeX version 2005/12/01 or later.
+'&#x230A;' '' uni230A 10       %
+'&#x230A;' '' uni230A.alt1 11  % This work has the LPPL maintenance status "maintained".
+'&#x230A;' '' uni230A.alt2 12  %
+'&#x230A;' '' uni230A.alt3 13  % The Current Maintainer of this work
+'&#x230A;' '' uni230A.alt4 14  % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x230B;' '' uni230B 15       %
+'&#x230B;' '' uni230B.alt1 16  % If you modify this program, changing the
+'&#x230B;' '' uni230B.alt2 17  % version identification would be appreciated.
+'&#x230B;' '' uni230B.alt3 18
+'&#x230B;' '' uni230B.alt4 19
+'&#x2308;' '' uni2308 20
+'&#x2308;' '' uni2308.alt1 21
+'&#x2308;' '' uni2308.alt2 22
+'&#x2308;' '' uni2308.alt3 23
+'&#x2308;' '' uni2308.alt4 24
+'&#x2309;' '' uni2309 25
+'&#x2309;' '' uni2309.alt1 26
+'&#x2309;' '' uni2309.alt2 27
+'&#x2309;' '' uni2309.alt3 28
+'&#x2309;' '' uni2309.alt4 29
+'&#x231C;' '' uni231C.alt1 30
+'&#x231C;' '' uni231C.alt2 31
+'&#x231C;' '' uni231C.alt3 32
+'&#x231C;' '' uni231C.alt4 33
+'&#x231C;' '' uni231C.alt5 34
+'&#x231D;' '' uni231D.alt1 35
+'&#x231D;' '' uni231D.alt2 36
+'&#x231D;' '' uni231D.alt3 37
+'&#x231D;' '' uni231D.alt4 38
+'&#x231D;' '' uni231D.alt5 39
+'&#x231E;' '' uni231E.alt1 40
+'&#x231E;' '' uni231E.alt2 41
+'&#x231E;' '' uni231E.alt3 42
+'&#x231E;' '' uni231E.alt4 43
+'&#x231E;' '' uni231E.alt5 44
+'&#x231F;' '' uni231F.alt1 45
+'&#x231F;' '' uni231F.alt2 46
+'&#x231F;' '' uni231F.alt3 47
+'&#x231F;' '' uni231F.alt4 48
+'&#x231F;' '' uni231F.alt5 49
+'' '' ullcorner 50
+'' '' ullcorner.alt1 51
+'' '' ullcorner.alt2 52
+'' '' ullcorner.alt3 53
+'' '' ullcorner.alt4 54
+'' '' ulrcorner 55
+'' '' ulrcorner.alt1 56
+'' '' ulrcorner.alt2 57
+'' '' ulrcorner.alt3 58
+'' '' ulrcorner.alt4 59
+'&#x23A1;' '' uni23A1 60
+'&#x23A4;' '' uni23A4 61
+'&#x23A3;' '' uni23A3 62
+'&#x23A6;' '' uni23A6 63
+'&#x23A2;' '' uni23A2 64
+'&#x23A5;' '' uni23A5 65
+'&#x27E6;' '' uni27E6 66
+'&#x27E6;' '' uni27E6.alt1 67
+'&#x27E6;' '' uni27E6.alt2 68
+'&#x27E6;' '' uni27E6.alt3 69
+'&#x27E6;' '' uni27E6.alt4 70
+'&#x27E7;' '' uni27E7 71
+'&#x27E7;' '' uni27E7.alt1 72
+'&#x27E7;' '' uni27E7.alt2 73
+'&#x27E7;' '' uni27E7.alt3 74
+'&#x27E7;' '' uni27E7.alt4 75
+'' '' lsemtop 76
+'' '' rsemtop 77
+'' '' lsembot 78
+'' '' rsembot 79
+'' '' lsemmod 80
+'' '' rsemmod 81
+'' '' arrowvert 82
+'|' '' divides.alt0 83
+'&#x2223;' '' divides.alt1 84
+'&#x2223;' '' divides.alt2 85
+'&#x2223;' '' divides.alt3 86
+'&#x2223;' '' divides.alt4 87
+'' '' Arrowvert 88
+'&#x2225;' '' parallel.alt1 89
+'&#x2225;' '' parallel.alt2 90
+'&#x2225;' '' parallel.alt3 91
+'&#x2225;' '' parallel.alt4 92
+'&#x2225;' '' parallel.alt5 93
+'' '' wavy 94
+'' '' Wavy 95
+'&#x27E8;' '' uni27E8 96
+'&#x27E8;' '' uni27E8.alt 97
+'&#x27E8;' '' uni27E8.alt2 98
+'&#x27E8;' '' uni27E8.alt3 99
+'&#x27E8;' '' uni27E8.alt4 100
+'&#x27E9;' '' uni27E9 101
+'&#x27E9;' '' uni27E9.alt1 102
+'&#x27E9;' '' uni27E9.alt2 103
+'&#x27E9;' '' uni27E9.alt3 104
+'&#x27E9;' '' uni27E9.alt4 105
+'' '' anglebar.left 106
+'' '' anglebar.left.alt1 107
+'' '' anglebar.left.alt2 108
+'' '' anglebar.left.alt3 109
+'' '' anglebar.left.alt4 110
+'' '' anglebar.right 111
+'' '' anglebar.right.alt1 112
+'' '' anglebar.right.alt2 113
+'' '' anglebar.right.alt3 114
+'' '' anglebar.right.alt4 115
+'&#x27EA;' '' uni27EA 116
+'&#x27EA;' '' uni27EA.alt1 117
+'&#x27EA;' '' uni27EA.alt2 118
+'&#x27EA;' '' uni27EA.alt3 119
+'&#x27EA;' '' uni27EA.alt4 120
+'&#x27EB;' '' uni27EB 121
+'&#x27EB;' '' uni27EB.alt1 122
+'&#x27EB;' '' uni27EB.alt2 123
+'&#x27EB;' '' uni27EB.alt3 124
+'&#x27EB;' '' uni27EB.alt4 125
+'/' '' slash.left 126
+'/' '' slash.left.alt1 127
+'/' '' slash.left.alt2 128
+'/' '' slash.left.alt3 129
+'/' '' slash.left.alt4 130
+'/' '' slash.right 131
+'/' '' slash.right.alt1 132
+'/' '' slash.right.alt2 133
+'/' '' slash.right.alt3 134
+'/' '' slash.right.alt4 135
+'(' '' parenleft 136
+'(' '' parenleft.alt1 137
+'(' '' parenleft.alt2 138
+'(' '' parenleft.alt3 139
+'(' '' parenleft.alt4 140
+')' '' parenright 141
+')' '' parenright.alt1 142
+')' '' parenright.alt2 143
+')' '' parenright.alt3 144
+')' '' parenright.alt4 145
+'&#x239B;' '' uni239B 146
+'&#x239E;' '' uni239E 147
+'&#x239D;' '' uni239D 148
+'&#x23A0;' '' uni23A0 149
+'&#x239C;' '' uni239C 150
+'&#x239F;' '' uni239F 151
+'{' '' braceleft 152
+'{' '' braceleft.alt1 153
+'{' '' braceleft.alt2 154
+'{' '' braceleft.alt3 155
+'{' '' braceleft.alt4 156
+'}' '' braceright 157
+'}' '' braceright.alt1 158
+'}' '' braceright.alt2 159
+'}' '' braceright.alt3 160
+'}' '' braceright.alt4 161
+'&#x23A7;' '' uni23A7 162
+'&#x23AB;' '' uni23AB 163
+'&#x23A9;' '' uni23A9 164
+'&#x23AD;' '' uni23AD 165
+'&#x23A8;' '' uni23A8 166
+'&#x23AC;' '' uni23AC 167
+'&#x23AA;' '' uni23AA 168
+'&#xc;' '' ucurly 169
+'&#xc;' '' ucurly.alt1 170
+'&#xc;' '' ucurly.alt2 171
+'&#xc;' '' ucurly.alt3 172
+'&#xc;' '' ucurly.alt4 173
+'' '' dcurly 174
+'' '' dcurly.alt1 175
+'' '' dcurly.alt2 176
+'' '' dcurly.alt3 177
+'' '' dcurly.alt4 178
+'&#xc;' '' ucurlyleft 179
+'' '' dcurlyleft 180
+'&#xc;' '' ucurlyright 181
+'' '' dcurlyright 182
+'&#xc;' '' ucurlymid 183
+'' '' dcurlymid 184
+'&#xdc;' '' udcurlymod 185
+'&#x221A;' '' radical 186
+'&#x221A;' '' radical.alt1 187
+'&#x221A;' '' radical.alt2 188
+'&#x221A;' '' radical.alt3 189
+'&#x221A;' '' radical.alt4 190
+'' '' roottop 191
+'' '' rootbot 192
+'' '' rootmod 193
+'&#x0302;' '' circumflexcmb 194
+'&#x0302;' '' circumflexcmb.alt1 195
+'&#x0302;' '' circumflexcmb.alt2 196
+'&#x0302;' '' circumflexcmb.alt3 197
+'&#x0302;' '' circumflexcmb.alt4 198
+'&#x0303;' '' tildecomb 199
+'&#x0303;' '' tildecomb.alt1 200
+'&#x0303;' '' tildecomb.alt2 201
+'&#x0303;' '' tildecomb.alt3 202
+'&#x0303;' '' tildecomb.alt4 203
+'' '' wideparen1 204
+'' '' wideparen2 205
+'' '' wideparen3 206
+'' '' wideparen4 207
+'' '' wideparen5 208
+'&#x20D7;' '' uni20D7 209
+'&#x0335;' '' uni0335 210
+'&#x0337;' '' uni0337 211
+'&#x0338;' '' uni0338 212
+'&#x2191;' '' uparrow 213
+'&#x2193;' '' downarrow 214
+'' '' arrowmod 215
+'' '' uparrowdbl 216
+'' '' downarrowdbl 217
+'' '' arrowmoddbl 218
+MnSymbolE-Bold10 0 218
+htfcss:  MnSymbolE-Bold10  font-weight: bold; font-family: 'MnSymbol', serif;
+
+

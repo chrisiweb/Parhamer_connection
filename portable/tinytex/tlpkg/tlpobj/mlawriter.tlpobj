@@ -1,0 +1,16 @@
+name mlawriter
+category Package
+revision 67558
+shortdesc Write MLA style documents in Plain TeX
+longdesc With this Plain TeX extension, papers can be written in MLA
+longdesc style. These appear as if they were written in MS Word.
+containersize 1468
+containerchecksum 67e9de777a464cf7ecdff6c821ff31d73f31f5f69cc5e6800d740ed6df296b5fc3a584b34e60be025f91b96a609e392198b67d386b60fd24deefb11746ecd439
+doccontainersize 41868
+doccontainerchecksum 7d05bea21e44c771cf86e94b03ff2960419fa99e44adb1e7cc9a2398eb0647d0a177ffb9e2b8bbc74775946e2b438c51b8dacdea916311c967a02c34dfd1a2fe
+runfiles size=1
+ texmf-dist/tex/plain/mlawriter/mlawriter.tex
+catalogue-ctan /macros/plain/contrib/mlawriter
+catalogue-license cc0
+catalogue-topics plain-ext
+catalogue-version 1.1.0

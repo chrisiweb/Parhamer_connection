@@ -1,0 +1,17 @@
+name pst-graphicx
+category Package
+revision 21717
+shortdesc A PSTricks-compatible graphicx for use with Plain TeX
+longdesc The package provides a version of graphicx that avoids loading
+longdesc the graphics bundle's (original) keyval package, which clashes
+longdesc with pstricks' use of xkeyval.
+containersize 1112
+containerchecksum 0d3f2d072a7bbb58ff555add4df7347a4dcba929bfba49d25dbf6b95956462a3fda07818135fe40f737151f323a27225983f656389f9a91a8295145ebf2877a1
+doccontainersize 752
+doccontainerchecksum 8deba57cafa74987ff7dd22b52db699fef2067dfb62e8e2c7e8e17b662f1d7644278272ee97209b3c109345ae8c295e125d1b195ff68cdfa8362eb3b7ad1bc84
+runfiles size=1
+ texmf-dist/tex/generic/pst-graphicx/pst-graphicx.tex
+catalogue-ctan /graphics/pstricks/contrib/pst-graphicx
+catalogue-license lppl
+catalogue-topics graphics-incl
+catalogue-version 0.02

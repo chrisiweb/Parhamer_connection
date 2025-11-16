@@ -1,0 +1,18 @@
+name pst-vowel
+category Package
+revision 25228
+shortdesc Enable arrows showing diphthongs on vowel charts
+longdesc The package extends the vowel package (distributed as part of
+longdesc the tipa bundle) by allowing the user to draw arrows between
+longdesc vowels to show relationships such as diphthong membership. The
+longdesc package depends on use of pstricks.
+containersize 2024
+containerchecksum 6ee1dd91b42e319e3a88966fe4cb7327211e5859ae9bc9e262afbfe1fb7f143386ecb70a71d6b24cb0c794cb0943a6cbab4eb40ac683c55a7ef1fbafc118e132
+doccontainersize 81968
+doccontainerchecksum 4fd8ba42b0d4ed821abe52e5848af0d19fcf12c2b9660f09a502561fcfbeffbe38bdf2a0540ee79b99f50cb3c783ab4b5d003a59cf84b3066c364daa7dca0eea
+runfiles size=2
+ texmf-dist/tex/latex/pst-vowel/pst-vowel.sty
+catalogue-ctan /macros/latex/contrib/pst-vowel
+catalogue-license lppl
+catalogue-topics phonetic
+catalogue-version 1.0

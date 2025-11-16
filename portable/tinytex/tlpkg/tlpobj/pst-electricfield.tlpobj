@@ -1,0 +1,22 @@
+name pst-electricfield
+category Package
+revision 29803
+shortdesc Draw electric field and equipotential lines with PSTricks
+longdesc The package provides macros to plot electric field and
+longdesc equipotential lines using PStricks. There may be any number of
+longdesc charges which can be placed in a cartesian coordinate system by
+longdesc (x,y) values.
+containersize 3700
+containerchecksum db9f7474d8290640d960f411574b6dad9f9b705eaf68644e001ebfc5050328673f0c1c31f925c6a2cd2279b9bb7ff89cf8d21e71a99e4b937137af404d046df0
+doccontainersize 5271200
+doccontainerchecksum 9d89a2818a56bed9e3cda9069f91cb49beb0182e0b24474051bb28c4299439a7b5477d09fa1caf23b855226d4d4441e48c9fba4a4dd1cd5eaf044a608876e5ae
+srccontainersize 1536
+srccontainerchecksum 89d6b2314db2840f70d99f2f0e66a875b47cc2e653bbd28c80a71eaf6f7d269e647e84b5bbf5ab7349d8a45412b824f9ae7d0c4ce9c4703f82258418b82e8867
+runfiles size=4
+ texmf-dist/dvips/pst-electricfield/pst-electricfield.pro
+ texmf-dist/tex/generic/pst-electricfield/pst-electricfield.tex
+ texmf-dist/tex/latex/pst-electricfield/pst-electricfield.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-electricfield
+catalogue-license lppl
+catalogue-topics graphics-use pstricks
+catalogue-version 0.14

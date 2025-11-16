@@ -1,0 +1,19 @@
+name measurebox
+category Package
+revision 75139
+shortdesc Precise measurements of glyphs
+longdesc MeasureBox is a (plain TeX) package for measuring material. It
+longdesc is intended for precise measurements of glyphs so that they can
+longdesc be manipulated by other macros and packages (e.g. the Stretchy
+longdesc package). Its only dependency is the pdfToolbox package, which
+longdesc is currently only supported by plain-pdfTeX.
+containersize 1888
+containerchecksum 66d71ce72cc8c1f76602ff27c289548cbd0f7b80245bc5ce7dc5354f30d3b0569023c007d929c729f94048e192c5bfb9bded563701daaed89aee4494c5a3bd86
+doccontainersize 81736
+doccontainerchecksum 89361e8821645b11c3d7f8db58b1064a54b4fbb52bf10b7ab7f460c47caa4695ac5010847224c234a3798afd38c77e45bee6aa7cb67f67788cb53361746fad5c
+runfiles size=2
+ texmf-dist/tex/generic/measurebox/measurebox.tex
+catalogue-ctan /macros/generic/measurebox
+catalogue-license mit
+catalogue-topics measure font-devel
+catalogue-version 1.0

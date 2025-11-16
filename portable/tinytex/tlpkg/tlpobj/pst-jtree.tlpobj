@@ -1,0 +1,19 @@
+name pst-jtree
+category Package
+revision 20946
+shortdesc Typeset complex trees for linguists
+longdesc jTree uses PSTricks to enable linguists to typeset complex
+longdesc trees. The package requires use of PStricks (of course) and
+longdesc xkeyval packages. jTree is a development of, and replacement
+longdesc for, the jftree package, which is no longer available.
+containersize 6296
+containerchecksum 9947e00e7fdac25f25f1f828ff5b9a3b962b1d033c57232d2d47736ee7a675ee48367aa934153ec17ae3f2eaa763044dc067d83b2248c5f42a93eb5d9a79e292
+doccontainersize 304048
+doccontainerchecksum 4d0a2432e9880a71f1d7b6a9965dfacbebeb44ea2586fd428fa58f634d7670d763e9ac293aeec6adda6cdef98736a7b5d341ec41d89bf3999c4cfee9066001ae
+runfiles size=7
+ texmf-dist/tex/generic/pst-jtree/pst-jtree.tex
+ texmf-dist/tex/latex/pst-jtree/pst-jtree.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-jtree
+catalogue-license lppl1.3
+catalogue-topics linguistic tree pstricks
+catalogue-version 2.6

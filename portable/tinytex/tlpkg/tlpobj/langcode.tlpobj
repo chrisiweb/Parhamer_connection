@@ -1,0 +1,25 @@
+name langcode
+category Package
+revision 27764
+shortdesc Simple language-dependent settings based on language codes
+longdesc The package provides a command \uselangcode{<code>} to adjust
+longdesc language-dependent settings such as key words, typographical
+longdesc conventions and language codes (ISO 639-1). The package
+longdesc provides a means of selecting macros according to the specified
+longdesc code, for preparing a document that is to be separately typeset
+longdesc in different laguages. The package is dependent on the plainpkg
+longdesc package, and is already in use in the morehype and catcodes
+longdesc packages.
+containersize 3032
+containerchecksum bc3e601701732d3ff533a7415446c2aaf7306732fdd6a8ac8aee6571cbdfc02b38f51fffde3a80cf5df6b0dd5e649971406f76d394500a74f1830139ea0bc0bb
+doccontainersize 313268
+doccontainerchecksum 7ac261071a2902d1e24cbe4bd43bf1baef418bdeb4d3c1dbee4db273d29918649f346e97b5ead3e3de2820110c0cd11dc58c78f765dbd07f7221f28ede5242a8
+srccontainersize 2064
+srccontainerchecksum 60baef83840b42deb38d8ae66e18484e4a0431fedd23b1a8dc96c426840ee57f37ab613d93409c3ad8660eef2e759757daf39ec9aace30350623accbd21d2de8
+runfiles size=2
+ texmf-dist/tex/generic/langcode/langcode.sty
+catalogue-contact-support http://www.webdesign-bu.de/uwe_lueck/contact.html
+catalogue-ctan /macros/generic/langcode
+catalogue-license lppl1.3
+catalogue-topics multilingual macro-gen
+catalogue-version 0.2

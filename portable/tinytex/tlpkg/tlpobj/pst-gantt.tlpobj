@@ -1,0 +1,18 @@
+name pst-gantt
+category Package
+revision 35832
+shortdesc Draw GANTT charts with PSTricks
+longdesc The package uses PSTricks to draw GANTT charts, which are a
+longdesc kind of bar chart that displays a project schedule. The package
+longdesc requires the pstricks apparatus, of course.
+containersize 2716
+containerchecksum 61b59f922129de60bf954145a0c83a5bb4c0232270b8213b45856a69ca56f32a9525d70ba86e51f95fa1c8836d4922a0dec971dea16f13f0c2f83c80fbfefc56
+doccontainersize 87420
+doccontainerchecksum 950a55218077d7203988c42c83445bfb10f53c7292cb85bb4178ab20b9f1404ab4a864266e52c3af074c45cc27b6777dae71af41caf270143160d3d59e222731
+runfiles size=3
+ texmf-dist/tex/generic/pst-gantt/pst-gantt.tex
+ texmf-dist/tex/latex/pst-gantt/pst-gantt.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-gantt
+catalogue-license lppl
+catalogue-topics diagram gantt pstricks
+catalogue-version 0.22a

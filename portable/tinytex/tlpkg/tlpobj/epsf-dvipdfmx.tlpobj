@@ -1,0 +1,19 @@
+name epsf-dvipdfmx
+category Package
+revision 35575
+shortdesc Plain TeX file for using epsf.tex with (x)dvipdfmx
+longdesc epsf-dvipdfmx.tex is a plain TeX file to be \input after
+longdesc epsf.tex when using plain TeX with dvipdfmx. As in: \input epsf
+longdesc \input epsf-dvipdfmx It is needed when an .eps file has
+longdesc anything except the origin (0,0) for the lower-left of its
+longdesc bounding box.
+containersize 1036
+containerchecksum 0f210b940d55bc2e85b3c86318be82fde1bf2b6fa2e5d498101036a01cec3b09cd8081079476f128f21881b14a13c7fa248c758a7a33ab0770f261505260992d
+doccontainersize 2052
+doccontainerchecksum e7b770f6880bfa8001851cfdcf2f2d03117fba3a2d38514bd7e23683aae08d57774bd1bfa4d0f75df443d9111a5472ba96bf8129e45b618b39f1798b27fb533c
+runfiles size=1
+ texmf-dist/tex/plain/epsf-dvipdfmx/epsf-dvipdfmx.tex
+catalogue-ctan /macros/plain/contrib/epsf-dvipdfmx
+catalogue-license pd
+catalogue-topics graphics-epspdf
+catalogue-version 2014

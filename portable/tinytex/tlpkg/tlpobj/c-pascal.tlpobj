@@ -1,0 +1,20 @@
+name c-pascal
+category Package
+revision 18337
+shortdesc Typeset Python, C and Pascal programs
+longdesc A TeX macro package for easy typesetting programs in Python, C
+longdesc and Pascal. Program source files may also be input.
+containersize 4988
+containerchecksum 59aa375b3b953f2fab04547b3234b36fd08af39392cfdf05f6992a90ef3a52503b2e11296787763abb9ce6251f9cc2fd062d78133038ca4a92e1b06ae65118e9
+doccontainersize 5548
+doccontainerchecksum 52252a2265d9bd48f09ddaf5f1517a6a74980897f0e8e0ad7ea71bafb194ca5bb98386af537ef2a4fb955e62ccba3d16cc1ebbae094502f16ae3bea0c5073c79
+runfiles size=9
+ texmf-dist/tex/generic/c-pascal/cap.tex
+ texmf-dist/tex/generic/c-pascal/cap_c.tex
+ texmf-dist/tex/generic/c-pascal/cap_comm.tex
+ texmf-dist/tex/generic/c-pascal/cap_pas.tex
+ texmf-dist/tex/generic/c-pascal/cap_pyt.tex
+catalogue-ctan /macros/generic/c_pascal
+catalogue-license pd
+catalogue-topics listing
+catalogue-version 1.2

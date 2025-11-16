@@ -1,0 +1,20 @@
+name pst-ovl
+category Package
+revision 54963
+shortdesc Create and manage graphical overlays
+longdesc The package is useful when building an image from assorted
+longdesc material, as in the slides of a projected presentation. The
+longdesc package requires pstricks, and shares that package's
+longdesc restrictions on usage when generating PDF output.
+containersize 1932
+containerchecksum e3349edf9643e5d9e370b5dbf1c4dc3078ec82520c943a81ae353e1ccd0e2476105813b0cbbbeb707de5419035edcc39748c7e86a69cb90f8bc0d61d70f553c5
+doccontainersize 30000
+doccontainerchecksum 755c786cec204ad3dd41043d8dd1bebb33ebbd889580a0a85390ca8efc318076ec9300a8e38b99788bf348a49dbda8ba5f3c758ace788bd9de47c251dd4e0407
+runfiles size=3
+ texmf-dist/dvips/pst-ovl/pst-ovl.pro
+ texmf-dist/tex/generic/pst-ovl/pst-ovl.tex
+ texmf-dist/tex/latex/pst-ovl/pst-ovl.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-ovl
+catalogue-license lppl
+catalogue-topics pstricks presentation graphics-supp
+catalogue-version 0.07b

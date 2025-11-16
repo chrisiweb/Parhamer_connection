@@ -1,0 +1,23 @@
+name plain-widow
+category Package
+revision 75230
+shortdesc Three output routines that extend \plainoutput
+longdesc This package contains three output routines that extend
+longdesc \plainoutput. The first adds a reporting of problematic lines,
+longdesc i.e., for widow, club, and broken lines. The second prevents
+longdesc widow lines by changing the \vsize by one line. The third tries
+longdesc to avoid widow, club, and broken lines as much as possible for
+longdesc spreads.
+containersize 4552
+containerchecksum f8d17de21c270d4c52ce841c66543a4c3e0c4e71409a839cc3230793821ff6864fada0a9c52c88cf27d8cbb3520f3772d14819563e103c2d2a926fed28b96a57
+doccontainersize 33240
+doccontainerchecksum 2950bf6fa6c56fa3538d0df4c1e1972508a3958928a409d418eb49efce7d1e445fbd1531c0cff056d0f8a00810005b21ea468e4a6256e04ae7124eb10e9357a7
+runfiles size=6
+ texmf-dist/tex/plain/plain-widow/pxwmanual.tex
+ texmf-dist/tex/plain/plain-widow/pxwreport.tex
+ texmf-dist/tex/plain/plain-widow/pxwsingle.tex
+ texmf-dist/tex/plain/plain-widow/pxwspread.tex
+catalogue-ctan /macros/plain/contrib/plain-widow
+catalogue-license gpl3+
+catalogue-topics layout plain-ext
+catalogue-version 1.0

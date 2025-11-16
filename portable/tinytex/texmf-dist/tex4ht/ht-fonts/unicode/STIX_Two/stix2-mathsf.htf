@@ -1,0 +1,219 @@
+stix2-mathsf 42 255
+'&#xE0B4;' '' uniE0B4.nu 42    % generated from stix2-mathsf.tfm, 2023-02-09-16:37
+'&#xE0B5;' '' uniE0B5.nu 43    % Copyright 2023 TeX Users Group
+'' '' horizontal.x 44          %
+'&#x21D0;' '' uni21D0.x 45     % This work may be distributed and/or modified under the
+'&#x21DA;' '' uni21DA.x 46     % conditions of the LaTeX Project Public License, either
+'&#x2B45;' '' uni2B45.x 47     % version 1.3c of this license or (at your option) any
+'&#x1D7E2;' '' u1D7E2 48       % later version. The latest version of this license is in
+'&#x1D7E3;' '' u1D7E3 49       %   http://www.latex-project.org/lppl.txt
+'&#x1D7E4;' '' u1D7E4 50       % and version 1.3c or later is part of all distributions
+'&#x1D7E5;' '' u1D7E5 51       % of LaTeX version 2005/12/01 or later.
+'&#x1D7E6;' '' u1D7E6 52       %
+'&#x1D7E7;' '' u1D7E7 53       % This work has the LPPL maintenance status "maintained".
+'&#x1D7E8;' '' u1D7E8 54       %
+'&#x1D7E9;' '' u1D7E9 55       % The Current Maintainer of this work
+'&#x1D7EA;' '' u1D7EA 56       % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x1D7EB;' '' u1D7EB 57       %
+'&#x21A4;' '' uni21A4.endr 58  % If you modify this program, changing the
+'&#x21A6;' '' uni21A6.endl 59  % version identification would be appreciated.
+'&#x23D0;' '' uni23D0 60
+'&#x21D1;' '' uni21D1.x 61
+'&#x290A;' '' uni290A.x 62
+'&#x27F0;' '' uni27F0.x 63
+'&#x2B48;' '' uni2B48 64
+'&#x1D5A0;' '' u1D5A0 65
+'&#x1D5A1;' '' u1D5A1 66
+'&#x1D5A2;' '' u1D5A2 67
+'&#x1D5A3;' '' u1D5A3 68
+'&#x1D5A4;' '' u1D5A4 69
+'&#x1D5A5;' '' u1D5A5 70
+'&#x1D5A6;' '' u1D5A6 71
+'&#x1D5A7;' '' u1D5A7 72
+'&#x1D5A8;' '' u1D5A8 73
+'&#x1D5A9;' '' u1D5A9 74
+'&#x1D5AA;' '' u1D5AA 75
+'&#x1D5AB;' '' u1D5AB 76
+'&#x1D5AC;' '' u1D5AC 77
+'&#x1D5AD;' '' u1D5AD 78
+'&#x1D5AE;' '' u1D5AE 79
+'&#x1D5AF;' '' u1D5AF 80
+'&#x1D5B0;' '' u1D5B0 81
+'&#x1D5B1;' '' u1D5B1 82
+'&#x1D5B2;' '' u1D5B2 83
+'&#x1D5B3;' '' u1D5B3 84
+'&#x1D5B4;' '' u1D5B4 85
+'&#x1D5B5;' '' u1D5B5 86
+'&#x1D5B6;' '' u1D5B6 87
+'&#x1D5B7;' '' u1D5B7 88
+'&#x1D5B8;' '' u1D5B8 89
+'&#x1D5B9;' '' u1D5B9 90
+'&#x2B49;' '' uni2B49 91
+'&#x2B4A;' '' uni2B4A 92
+'&#x2B4B;' '' uni2B4B 93
+'&#x2B4C;' '' uni2B4C 94
+'&#x290A;' '' uni290A 95
+'&#x290B;' '' uni290B 96
+'&#x1D5BA;' '' u1D5BA 97
+'&#x1D5BB;' '' u1D5BB 98
+'&#x1D5BC;' '' u1D5BC 99
+'&#x1D5BD;' '' u1D5BD 100
+'&#x1D5BE;' '' u1D5BE 101
+'&#x1D5BF;' '' u1D5BF 102
+'&#x1D5C0;' '' u1D5C0 103
+'&#x1D5C1;' '' u1D5C1 104
+'&#x1D5C2;' '' u1D5C2 105
+'&#x1D5C3;' '' u1D5C3 106
+'&#x1D5C4;' '' u1D5C4 107
+'&#x1D5C5;' '' u1D5C5 108
+'&#x1D5C6;' '' u1D5C6 109
+'&#x1D5C7;' '' u1D5C7 110
+'&#x1D5C8;' '' u1D5C8 111
+'&#x1D5C9;' '' u1D5C9 112
+'&#x1D5CA;' '' u1D5CA 113
+'&#x1D5CB;' '' u1D5CB 114
+'&#x1D5CC;' '' u1D5CC 115
+'&#x1D5CD;' '' u1D5CD 116
+'&#x1D5CE;' '' u1D5CE 117
+'&#x1D5CF;' '' u1D5CF 118
+'&#x1D5D0;' '' u1D5D0 119
+'&#x1D5D1;' '' u1D5D1 120
+'&#x1D5D2;' '' u1D5D2 121
+'&#x1D5D3;' '' u1D5D3 122
+'&#x1D5C2;' '' u1D5C2.dotless 123
+'&#x1D5C3;' '' u1D5C3.dotless 124
+'&#x2190;' '' uni2190 125
+'&#x2191;' '' uni2191 126
+'&#x2040;' '' uni2040 127
+'&#x0300;' '' uni0300 128
+'&#x0301;' '' uni0301 129
+'&#x0302;' '' uni0302 130
+'&#x0303;' '' uni0303 131
+'&#x0304;' '' uni0304 132
+'&#x0306;' '' uni0306 133
+'&#x0307;' '' uni0307 134
+'&#x0308;' '' uni0308 135
+'&#x0309;' '' uni0309 136
+'&#x030A;' '' uni030A 137
+'&#x030C;' '' uni030C 138
+'&#x0310;' '' uni0310 139
+'&#x0312;' '' uni0312 140
+'&#x0315;' '' uni0315 141
+'&#x031A;' '' uni031A 142
+'&#x20D0;' '' uni20D0 143
+'&#x20D1;' '' uni20D1 144
+'&#x20D6;' '' uni20D6 145
+'&#x20D7;' '' uni20D7 146
+'&#x20DB;' '' uni20DB 147
+'&#x20DC;' '' uni20DC 148
+'&#x20E1;' '' uni20E1 149
+'&#x20E7;' '' uni20E7 150
+'&#x20E9;' '' uni20E9 151
+'&#x20F0;' '' uni20F0 152
+'&#x2192;' '' uni2192 153
+'&#x2193;' '' uni2193 154
+'&#x2194;' '' uni2194 155
+'&#x2195;' '' uni2195 156
+'&#x2196;' '' uni2196 157
+'&#x2197;' '' uni2197 158
+'&#x2198;' '' uni2198 159
+'&#x2199;' '' uni2199 160
+'&#x219A;' '' uni219A 161
+'&#x219B;' '' uni219B 162
+'&#x219C;' '' uni219C 163
+'&#x219D;' '' uni219D 164
+'&#x219E;' '' uni219E 165
+'&#x219F;' '' uni219F 166
+'&#x21A0;' '' uni21A0 167
+'&#x21A1;' '' uni21A1 168
+'&#x21A2;' '' uni21A2 169
+'&#x21A3;' '' uni21A3 170
+'&#x21A4;' '' uni21A4 171
+'&#x21A5;' '' uni21A5 172
+'&#x21A6;' '' uni21A6 173
+'&#x21A7;' '' uni21A7 174
+'&#x21A8;' '' uni21A8 175
+'&#x21A9;' '' uni21A9 176
+'&#x21AA;' '' uni21AA 177
+'&#x21AB;' '' uni21AB 178
+'&#x21AC;' '' uni21AC 179
+'&#x21AD;' '' uni21AD 180
+'&#x21AE;' '' uni21AE 181
+'&#x21AF;' '' uni21AF 182
+'&#x21B0;' '' uni21B0 183
+'&#x21B1;' '' uni21B1 184
+'&#x21B2;' '' uni21B2 185
+'&#x21B3;' '' uni21B3 186
+'&#x21B4;' '' uni21B4 187
+'&#x21B5;' '' uni21B5 188
+'&#x21B6;' '' uni21B6 189
+'&#x21B7;' '' uni21B7 190
+'&#x21B8;' '' uni21B8 191
+'&#x21B9;' '' uni21B9 192
+'&#x21BA;' '' uni21BA 193
+'&#x21BB;' '' uni21BB 194
+'&#x21BC;' '' uni21BC 195
+'&#x21BD;' '' uni21BD 196
+'&#x21BE;' '' uni21BE 197
+'&#x21BF;' '' uni21BF 198
+'&#x21C0;' '' uni21C0 199
+'&#x21C1;' '' uni21C1 200
+'&#x21C2;' '' uni21C2 201
+'&#x21C3;' '' uni21C3 202
+'&#x21C4;' '' uni21C4 203
+'&#x21C5;' '' uni21C5 204
+'&#x21C6;' '' uni21C6 205
+'&#x21C7;' '' uni21C7 206
+'&#x21C8;' '' uni21C8 207
+'&#x21C9;' '' uni21C9 208
+'&#x21CA;' '' uni21CA 209
+'&#x21CB;' '' uni21CB 210
+'&#x21CC;' '' uni21CC 211
+'&#x21CD;' '' uni21CD 212
+'&#x21CE;' '' uni21CE 213
+'&#x21CF;' '' uni21CF 214
+'&#x21D0;' '' uni21D0 215
+'&#x21D1;' '' uni21D1 216
+'&#x21D2;' '' uni21D2 217
+'&#x21D3;' '' uni21D3 218
+'&#x21D4;' '' uni21D4 219
+'&#x21D5;' '' uni21D5 220
+'&#x21D6;' '' uni21D6 221
+'&#x21D7;' '' uni21D7 222
+'&#x21D8;' '' uni21D8 223
+'&#x21D9;' '' uni21D9 224
+'&#x21DA;' '' uni21DA 225
+'&#x21DB;' '' uni21DB 226
+'&#x21DC;' '' uni21DC 227
+'&#x21DD;' '' uni21DD 228
+'&#x21DE;' '' uni21DE 229
+'&#x21DF;' '' uni21DF 230
+'&#x21E0;' '' uni21E0 231
+'&#x21E1;' '' uni21E1 232
+'&#x21E2;' '' uni21E2 233
+'&#x21E3;' '' uni21E3 234
+'&#x21E4;' '' uni21E4 235
+'&#x21E5;' '' uni21E5 236
+'&#x21E6;' '' uni21E6 237
+'&#x21E7;' '' uni21E7 238
+'&#x21E8;' '' uni21E8 239
+'&#x21E9;' '' uni21E9 240
+'&#x21EA;' '' uni21EA 241
+'&#x21F4;' '' uni21F4 242
+'&#x21F5;' '' uni21F5 243
+'&#x21F6;' '' uni21F6 244
+'&#x21F7;' '' uni21F7 245
+'&#x21F8;' '' uni21F8 246
+'&#x21F9;' '' uni21F9 247
+'&#x21FA;' '' uni21FA 248
+'&#x21FB;' '' uni21FB 249
+'&#x21FC;' '' uni21FC 250
+'&#x21FD;' '' uni21FD 251
+'&#x21FE;' '' uni21FE 252
+'&#x21FF;' '' uni21FF 253
+'&#x27F0;' '' uni27F0 254
+'&#x27F1;' '' uni27F1 255
+stix2-mathsf 42 255
+htfcss:  stix2-mathsf  font-family: 'STIX Two Math', serif;
+
+

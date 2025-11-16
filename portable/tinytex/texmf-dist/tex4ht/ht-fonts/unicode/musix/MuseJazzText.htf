@@ -1,0 +1,229 @@
+MuseJazzText 32 255
+' ' '1' space 32               % generated from MuseJazzText.tfm, 2022-11-24-12:10
+'!' '1' exclam 33              % Copyright 2022 TeX Users Group
+'"' '1' quotedbl 34            %
+'#' '1' numbersign 35          % This work may be distributed and/or modified under the
+'$' '1' dollar 36              % conditions of the LaTeX Project Public License, either
+'%' '1' percent 37             % version 1.3c of this license or (at your option) any
+'&amp;' '1' ampersand 38       % later version. The latest version of this license is in
+'&#x0027;' '1' quotesingle 39  %   http://www.latex-project.org/lppl.txt
+'(' '1' parenleft 40           % and version 1.3c or later is part of all distributions
+')' '1' parenright 41          % of LaTeX version 2005/12/01 or later.
+'*' '1' asterisk 42            %
+'+' '1' plus 43                % This work has the LPPL maintenance status "maintained".
+',' '1' comma 44               %
+'-' '1' hyphen 45              % The Current Maintainer of this work
+'.' '1' period 46              % is the TeX4ht Project <http://tug.org/tex4ht>.
+'/' '1' slash 47               %
+'0' '1' zero 48                % If you modify this program, changing the
+'1' '1' one 49                 % version identification would be appreciated.
+'2' '1' two 50
+'3' '1' three 51
+'4' '1' four 52
+'5' '1' five 53
+'6' '1' six 54
+'7' '1' seven 55
+'8' '1' eight 56
+'9' '1' nine 57
+':' '1' colon 58
+';' '1' semicolon 59
+'&lt;' '1' less 60
+'=' '1' equal 61
+'&gt;' '1' greater 62
+'?' '1' question 63
+'@' '1' at 64
+'A' '1' A 65
+'B' '1' B 66
+'C' '1' C 67
+'D' '1' D 68
+'E' '1' E 69
+'F' '1' F 70
+'G' '1' G 71
+'H' '1' H 72
+'I' '1' I 73
+'J' '1' J 74
+'K' '1' K 75
+'L' '1' L 76
+'M' '1' M 77
+'N' '1' N 78
+'O' '1' O 79
+'P' '1' P 80
+'Q' '1' Q 81
+'R' '1' R 82
+'S' '1' S 83
+'T' '1' T 84
+'U' '1' U 85
+'V' '1' V 86
+'W' '1' W 87
+'X' '1' X 88
+'Y' '1' Y 89
+'Z' '1' Z 90
+'[' '1' bracketleft 91
+'&#x005C;' '1' backslash 92
+']' '1' bracketright 93
+'^' '1' asciicircum 94
+'_' '1' underscore 95
+'&#x60;' '1' grave 96
+'a' '1' a 97
+'b' '1' b 98
+'c' '1' c 99
+'d' '1' d 100
+'e' '1' e 101
+'f' '1' f 102
+'g' '1' g 103
+'h' '1' h 104
+'i' '1' i 105
+'j' '1' j 106
+'k' '1' k 107
+'l' '1' l 108
+'m' '1' m 109
+'n' '1' n 110
+'o' '1' o 111
+'p' '1' p 112
+'q' '1' q 113
+'r' '1' r 114
+'s' '1' s 115
+'t' '1' t 116
+'u' '1' u 117
+'v' '1' v 118
+'w' '1' w 119
+'x' '1' x 120
+'y' '1' y 121
+'z' '1' z 122
+'{' '1' braceleft 123
+'|' '1' bar 124
+'}' '1' braceright 125
+'~' '1' asciitilde 126
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'&#x00A1;' '1' exclamdown 161
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'&#x00A9;' '1' copyright 169
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'&#x00B0;' '1' degree 176
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'&#x00BF;' '1' questiondown 191
+'&#x00C0;' '1' Agrave 192
+'&#x00C1;' '1' Aacute 193
+'&#x00C2;' '1' Acircumflex 194
+'&#x00C3;' '1' Atilde 195
+'&#x00C4;' '1' Adieresis 196
+'&#x00C5;' '1' Aring 197
+'&#x00C6;' '1' AE 198
+'&#x00C7;' '1' Ccedilla 199
+'&#x00C8;' '1' Egrave 200
+'&#x00C9;' '1' Eacute 201
+'&#x00CA;' '1' Ecircumflex 202
+'&#x00CB;' '1' Edieresis 203
+'&#x00CC;' '1' Igrave 204
+'&#x00CD;' '1' Iacute 205
+'&#x00CE;' '1' Icircumflex 206
+'&#x00CF;' '1' Idieresis 207
+'&#x00D0;' '1' Eth 208
+'&#x00D1;' '1' Ntilde 209
+'&#x00D2;' '1' Ograve 210
+'&#x00D3;' '1' Oacute 211
+'&#x00D4;' '1' Ocircumflex 212
+'&#x00D5;' '1' Otilde 213
+'&#x00D6;' '1' Odieresis 214
+'&#x00D7;' '1' multiply 215
+'&#x00D8;' '1' Oslash 216
+'&#x00D9;' '1' Ugrave 217
+'&#x00DA;' '1' Uacute 218
+'&#x00DB;' '1' Ucircumflex 219
+'&#x00DC;' '1' Udieresis 220
+'&#x00DD;' '1' Yacute 221
+'&#x00DE;' '1' Thorn 222
+'&#x00DF;' '1' germandbls 223
+'&#x00E0;' '1' agrave 224
+'&#x00E1;' '1' aacute 225
+'&#x00E2;' '1' acircumflex 226
+'&#x00E3;' '1' atilde 227
+'&#x00E4;' '1' adieresis 228
+'&#x00E5;' '1' aring 229
+'&#x00E6;' '1' ae 230
+'&#x00E7;' '1' ccedilla 231
+'&#x00E8;' '1' egrave 232
+'&#x00E9;' '1' eacute 233
+'&#x00EA;' '1' ecircumflex 234
+'&#x00EB;' '1' edieresis 235
+'&#x00EC;' '1' igrave 236
+'&#x00ED;' '1' iacute 237
+'&#x00EE;' '1' icircumflex 238
+'&#x00EF;' '1' idieresis 239
+'&#x00F0;' '1' eth 240
+'&#x00F1;' '1' ntilde 241
+'&#x00F2;' '1' ograve 242
+'&#x00F3;' '1' oacute 243
+'&#x00F4;' '1' ocircumflex 244
+'&#x00F5;' '1' otilde 245
+'&#x00F6;' '1' odieresis 246
+'&#x00F7;' '1' divide 247
+'&#x00F8;' '1' oslash 248
+'&#x00F9;' '1' ugrave 249
+'&#x00FA;' '1' uacute 250
+'&#x00FB;' '1' ucircumflex 251
+'&#x00FC;' '1' udieresis 252
+'&#x00FD;' '1' yacute 253
+'&#x00FE;' '1' thorn 254
+'&#x00FF;' '1' ydieresis 255
+MuseJazzText 32 255
+htfcss:  MuseJazzText  font-family: 'MuseJazz Text', serif;
+
+

@@ -1,0 +1,21 @@
+name pst-spectra
+category Package
+revision 15878
+shortdesc Draw continuum, emission and absorption spectra with PSTricks
+longdesc The package is a PSTricks extension, based on a NASA lines
+longdesc database. It allows you to draw continuum, emission and
+longdesc absorption spectra. A Total of 16 880 visible lines from 99
+longdesc elements can be displayed. The package requires the xkeyval
+longdesc package for decoding its arguments.
+containersize 77276
+containerchecksum 325e4f07e9c2788d571c6105e1fdc3a097881d1b472b038c365c65a84a4e69e15866750720b2c86f5b20e00fc3a054f619e79b6564fc3712194a1a5d05edf248
+doccontainersize 185432
+doccontainerchecksum f3655f399c4986b122253c4849bcb15d0ea4d2390b0ec3b8328d8255e5e2d44481198d63c6ad9dc10365095414267285ff02a944c1bf5bfd8c458d1a7cd5a0c5
+runfiles size=68
+ texmf-dist/dvips/pst-spectra/pst-spectra.pro
+ texmf-dist/tex/generic/pst-spectra/pst-spectra.tex
+ texmf-dist/tex/latex/pst-spectra/pst-spectra.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-spectra
+catalogue-license lppl
+catalogue-topics physics pstricks
+catalogue-version 0.91

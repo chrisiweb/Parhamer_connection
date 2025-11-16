@@ -1,0 +1,17 @@
+name pst-asr
+category Package
+revision 22138
+shortdesc Typeset autosegmental representations for linguists
+longdesc The package allows the user to typeset autosegmental
+longdesc representations. It uses the PStricks, and xkeyval packages.
+containersize 6156
+containerchecksum c5ae73e1553b564a90d2c77fa434c360fe2858657fb5ff4c6ce1cbb46838fea9c0dd7a8d92e2048a8ed0d748839518b461b0727db3b7937c4e39edf85277e081
+doccontainersize 271600
+doccontainerchecksum 560ea68a6f02dc3b79c64554652a9efd52c7fb00d07e7ffbc9b92ffab251854e07e87642028b94fc42bf7d01fedd82bfd50913f9c42d1c37d76c1eaba761ed00
+runfiles size=7
+ texmf-dist/tex/generic/pst-asr/pst-asr.tex
+ texmf-dist/tex/latex/pst-asr/pst-asr.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-asr
+catalogue-license lppl
+catalogue-topics linguistic pstricks
+catalogue-version 1.3

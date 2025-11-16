@@ -1,0 +1,27 @@
+name auto-pst-pdf
+category Package
+revision 56596
+shortdesc Wrapper for pst-pdf (with some psfrag features)
+longdesc The package uses --shell-escape to execute pst-pdf when
+longdesc necessary. This makes it especially easy to integrate into the
+longdesc workflow of an editor with just "LaTeX" and "pdfLaTeX" buttons.
+longdesc Wrappers are provided for various psfrag-related features so
+longdesc that Matlab figures via laprint, Mathematica figures via
+longdesc MathPSfrag, and regular psfrag figures can all be input
+longdesc consistently and easily.
+depend ifplatform
+depend iftex
+depend xkeyval
+containersize 2636
+containerchecksum 5c1f85a0ec5aa4173181b087a1f5f8e30be6d8c21c3461999a85b42032d45292aa6f8aae4922a5e97d073fff5b2c9d114cd30f5d5bb73ef523718e891ce59473
+doccontainersize 211044
+doccontainerchecksum 73d6f4b2e298eedc537a46c1e69bce9e160eb28e6bc2f631596a4fd3aa658d8b51d6dfddb6748b7e629fe564a2ced5e55bcd766650616d936a4197e368b2fcd7
+srccontainersize 7256
+srccontainerchecksum 199e9fefcb2f96f1ad9e33abeecedcff9c72f20614c48951197703ff65901763ef88f425af08021b1843f30c3ee8e3a9756095ad4b165772b829a29c6e5515f2
+runfiles size=2
+ texmf-dist/tex/latex/auto-pst-pdf/auto-pst-pdf.sty
+catalogue-contact-repository https://github.com/wspr/will2e/
+catalogue-ctan /macros/latex/contrib/auto-pst-pdf
+catalogue-license lppl1.3c
+catalogue-topics graphics-epspdf
+catalogue-version 0.7

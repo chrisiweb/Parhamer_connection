@@ -1,0 +1,20 @@
+name pst-am
+category Package
+revision 19591
+shortdesc Simulation of modulation and demodulation
+longdesc The package allows the simulation of the modulated and
+longdesc demodulated amplitude of radio waves. The user may plot curves
+longdesc of modulated signals, wave carrier, signal modulation, signal
+longdesc recovery and signal demodulation.
+containersize 3020
+containerchecksum a5f466dacd393ed7243fa2cb43aed0a5bb8469a51aa82fac4b53c47a474a1d9758db4d7a001cee49716714049499339567cb62a66f2731ffc7646fecc15c7784
+doccontainersize 843332
+doccontainerchecksum edea0ddc3f5472a86706d1823fe78459d2908724daf2b9bfe44b41e749f2b41483000602817a45a5e41869f86d4034ea52640bdffa334af54e4964510768152e
+srccontainersize 928
+srccontainerchecksum fca7f1f7769f839632eec75b3baa864b60f9ab3c1ff9cc08437fad4086cf9a063f283568163d1ebe3e5a2c87b06bbae1b11e5be07a8eca5030cccfc68392b40f
+runfiles size=3
+ texmf-dist/tex/latex/pst-am/pst-am.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-am
+catalogue-license lppl
+catalogue-topics diagram pstricks
+catalogue-version 1.02

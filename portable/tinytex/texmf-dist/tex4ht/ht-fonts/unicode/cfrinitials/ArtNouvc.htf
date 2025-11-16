@@ -1,0 +1,226 @@
+ArtNouvc 32 252
+' ' '1' space 32              % generated from ArtNouvc.tfm, 2023-07-06-13:12
+'!' '1' exclam 33             % Copyright 2023 TeX Users Group
+'"' '1' quotedbl 34           %
+'' '1'                        % This work may be distributed and/or modified under the
+'' '1'                        % conditions of the LaTeX Project Public License, either
+'' '1'                        % version 1.3c of this license or (at your option) any
+'' '1'                        % later version. The latest version of this license is in
+'&#x2019;' '1' quoteright 39  %   http://www.latex-project.org/lppl.txt
+'(' '1' parenleft 40          % and version 1.3c or later is part of all distributions
+')' '1' parenright 41         % of LaTeX version 2005/12/01 or later.
+'' '1'                        %
+'' '1'                        % This work has the LPPL maintenance status "maintained".
+',' '1' comma 44              %
+'-' '1' hyphen 45             % The Current Maintainer of this work
+'.' '1' period 46             % is the TeX4ht Project <http://tug.org/tex4ht>.
+'' '1'                        %
+'0' '1' zero 48               % If you modify this program, changing the
+'1' '1' one 49                % version identification would be appreciated.
+'2' '1' two 50
+'3' '1' three 51
+'4' '1' four 52
+'5' '1' five 53
+'6' '1' six 54
+'7' '1' seven 55
+'8' '1' eight 56
+'9' '1' nine 57
+':' '1' colon 58
+';' '1' semicolon 59
+'' '1'
+'' '1'
+'' '1'
+'?' '1' question 63
+'' '1'
+'A' '1' A 65
+'B' '1' B 66
+'C' '1' C 67
+'D' '1' D 68
+'E' '1' E 69
+'F' '1' F 70
+'G' '1' G 71
+'H' '1' H 72
+'I' '1' I 73
+'J' '1' J 74
+'K' '1' K 75
+'L' '1' L 76
+'M' '1' M 77
+'N' '1' N 78
+'O' '1' O 79
+'P' '1' P 80
+'Q' '1' Q 81
+'R' '1' R 82
+'S' '1' S 83
+'T' '1' T 84
+'U' '1' U 85
+'V' '1' V 86
+'W' '1' W 87
+'X' '1' X 88
+'Y' '1' Y 89
+'Z' '1' Z 90
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'a' '1' a 97
+'b' '1' b 98
+'c' '1' c 99
+'d' '1' d 100
+'e' '1' e 101
+'f' '1' f 102
+'g' '1' g 103
+'h' '1' h 104
+'i' '1' i 105
+'j' '1' j 106
+'k' '1' k 107
+'l' '1' l 108
+'m' '1' m 109
+'n' '1' n 110
+'o' '1' o 111
+'p' '1' p 112
+'q' '1' q 113
+'r' '1' r 114
+'s' '1' s 115
+'t' '1' t 116
+'u' '1' u 117
+'v' '1' v 118
+'w' '1' w 119
+'x' '1' x 120
+'y' '1' y 121
+'z' '1' z 122
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1' .notdef 130
+'' '1'
+'' '1' .notdef 132
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1' .notdef 147
+'' '1' .notdef 148
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'&#x00A1;' '1' exclamdown 161
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'&#x00BF;' '1' questiondown 191
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'&#x02DC;' '1' tilde 196
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'&#x00B8;' '1' cedilla 203
+'' '1'
+'' '1'
+'' '1'
+'&#x02C7;' '1' caron 207
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1' .notdef 214
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1' .notdef 220
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1' .notdef 228
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'&#x00BA;' '1' ordmasculine 235
+'' '1'
+'' '1'
+'' '1'
+'' '1' .notdef 239
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1' .notdef 246
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'' '1' .notdef 252
+ArtNouvc 32 252
+htfcss:  ArtNouvc  font-family: 'Art Nouveau Caps', serif;
+
+

@@ -1,0 +1,18 @@
+name localloc
+category Package
+revision 56496
+shortdesc Macros for localizing TeX register allocations
+longdesc This package approaches the problem of the shortage of
+longdesc registers, by providing a mechanism for local allocation. The
+longdesc package works with Plain TeX, LaTeX, and LaTeX 2.09.
+containersize 2436
+containerchecksum abd3aaa28d6c90182990890ebc8aa0ab1d71833549e9a1ed9a09d7fc2db01cad45efb231cb8d3b09a849c948a6f7ba309954d38152af88fa8cd3e38cc857fe68
+doccontainersize 241332
+doccontainerchecksum 40fa07b0d5a5fe0603a087ce9440dd6d95ab188b83b4adf847d7145f9e1f1cc8e2d8ef49c7ee206e341db26afd885308ef349ea5a8c2b826ba6664c347c7d8c5
+srccontainersize 11672
+srccontainerchecksum 9a19531358e4809a90c1e571a8f7c507ec1b0807a009627ad2dfa3ebdf97fb749a4f57441b0855e44cae93ccbdc64e79b640de078fb9ccdca1de891a2d156eae
+runfiles size=2
+ texmf-dist/tex/generic/localloc/localloc.sty
+catalogue-ctan /macros/generic/localloc
+catalogue-license other-free
+catalogue-topics macro-supp macro-gen

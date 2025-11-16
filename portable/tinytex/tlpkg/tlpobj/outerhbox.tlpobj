@@ -1,0 +1,16 @@
+name outerhbox
+category Package
+revision 54254
+shortdesc Collect horizontal material for contributing to a paragraph
+longdesc The package provides the \outerhbox command, which is similar
+longdesc to \hbox, except that material is set in outer horizontal mode.
+longdesc This prevents TeX from optimising away maths penalties and the
+longdesc like, that are needed when the material is \unhbox'ed.
+containersize 1596
+containerchecksum 954af6a75833dc388c430faf538415457d0526b85060602b93584a45e6b0ff9bb83ab1d2117ef58817f08b138146873ff74ab045f174e949a0c9fb9f042b1121
+runfiles size=1
+ texmf-dist/tex/generic/outerhbox/outerhbox.sty
+catalogue-ctan /macros/generic/misc/outerhbox.sty
+catalogue-license gpl
+catalogue-topics boxing
+catalogue-version 1.2

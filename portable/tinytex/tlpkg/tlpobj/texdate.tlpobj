@@ -1,0 +1,25 @@
+name texdate
+category Package
+revision 49362
+shortdesc Date printing, formatting, and manipulation in TeX
+longdesc TeX and LaTeX provide few facilities for dates by default,
+longdesc though many packages have filled this gap. This package fills
+longdesc it, as well, with a pure TeX-primitive implementation. It can
+longdesc print dates, advance them by numbers of days, weeks, or months,
+longdesc determine the weekday automatically (with an algorithm cribbed
+longdesc from the dayofweek.tex file written by Martin Minow), and print
+longdesc them in (mostly) arbitrary format. It can also print calendars
+longdesc (monthly and yearly) automatically, and can be easily localized
+longdesc for non-English languages.
+containersize 3976
+containerchecksum c6f34d5ab0c54f799669c4c44e8c6e00381796ca76b9d2e8352a749effe65b9ffd6ebd139998ab9267d1e54da6471f5f38cc6931f7ff046882261cd5e5440bc7
+doccontainersize 256872
+doccontainerchecksum 2338dd99b32a1b2e04326e888b718f595a26848bbef17206f92a0a0f26556edddc3e0a06327d86e72fcb3e55270bcdff846cab3bfc37cbd61115b601164fc10e
+srccontainersize 11800
+srccontainerchecksum 30a5c6401d66e7fc2cf0300341c7007881945fdfb267ce4c1f9930f6cb84d04d7895df613215be27da15e307baff361cba6bd4b530ac78f352b74aa81bb94356
+runfiles size=6
+ texmf-dist/tex/generic/texdate/texdate.sty
+catalogue-ctan /macros/generic/texdate
+catalogue-license lppl1.3c
+catalogue-topics date-time
+catalogue-version 2.0

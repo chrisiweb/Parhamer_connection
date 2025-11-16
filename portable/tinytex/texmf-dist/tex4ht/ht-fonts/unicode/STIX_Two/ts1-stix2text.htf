@@ -1,0 +1,252 @@
+ts1-stix2text 0 246
+'&#x0300;' '' uni0300.cap 0      % generated from ts1-stix2text.tfm, 2023-02-09-16:37
+'&#x0301;' '' uni0301.cap 1      % Copyright 2023 TeX Users Group
+'&#x0302;' '' uni0302.cap 2      %
+'&#x0303;' '' uni0303.cap 3      % This work may be distributed and/or modified under the
+'&#x0308;' '' uni0308.cap 4      % conditions of the LaTeX Project Public License, either
+'&#x030B;' '' uni030B.cap 5      % version 1.3c of this license or (at your option) any
+'&#x030A;' '' uni030A.cap 6      % later version. The latest version of this license is in
+'&#x030C;' '' uni030C.cap 7      %   http://www.latex-project.org/lppl.txt
+'&#x0306;' '' uni0306.cap 8      % and version 1.3c or later is part of all distributions
+'&#x0304;' '' uni0304.cap 9      % of LaTeX version 2005/12/01 or later.
+'&#x0307;' '' uni0307.cap 10     %
+'&#x00B8;' '' cedilla 11         % This work has the LPPL maintenance status "maintained".
+'&#x02DB;' '' ogonek 12          %
+'&#x201A;' '' quotesinglbase 13  % The Current Maintainer of this work
+'' ''                            % is the TeX4ht Project <http://tug.org/tex4ht>.
+'' ''                            %
+'' ''                            % If you modify this program, changing the
+'' ''                            % version identification would be appreciated.
+'&#x201E;' '' quotedblbase 18
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x2423;' '' uni2423 32
+'' ''
+'' ''
+'' ''
+'$' '' dollar 36
+'' ''
+'' ''
+'&#x0027;' '' quotesingle 39
+'' ''
+'' ''
+'' ''
+'' ''
+',' '' comma 44
+'' ''
+'.' '' period 46
+'&#x2044;' '' fraction 47
+'0' '' zero.OT 48
+'1' '' one.OT 49
+'2' '' two.OT 50
+'3' '' three.OT 51
+'4' '' four.OT 52
+'5' '' five.OT 53
+'6' '' six.OT 54
+'7' '' seven.OT 55
+'8' '' eight.OT 56
+'9' '' nine.OT 57
+'' ''
+'' ''
+'' ''
+'&#x2212;' '' uni2212 61
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x2127;' '' uni2127 77
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x2126;' '' uni2126 87
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x60;' '' grave 96
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x0330;' '' uni0330 126
+'' ''
+'&#x02D8;' '' breve 128
+'&#x02C7;' '' caron 129
+'&#x02DD;' '' hungarumlaut 130
+'&#x030F;' '' uni030F 131
+'&#x2020;' '' dagger 132
+'&#x2021;' '' daggerdbl 133
+'&#x2016;' '' uni2016 134
+'&#x2030;' '' perthousand 135
+'&#x2022;' '' bullet 136
+'' ''
+'$' '' dollar 138
+'&#x00A2;' '' cent 139
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x20A4;' '' uni20A4 146
+'&#x211E;' '' uni211E 147
+'' ''
+'' ''
+'' ''
+'&#x2122;' '' trademark 151
+'&#x2031;' '' uni2031 152
+'&#x00B6;' '' paragraph 153
+'' ''
+'&#x2116;' '' uni2116 155
+'&#x2052;' '' uni2052 156
+'&#x212E;' '' estimated 157
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x00A2;' '' cent 162
+'&#x00A3;' '' sterling 163
+'&#x00A4;' '' currency 164
+'&#x00A5;' '' yen 165
+'&#x00A6;' '' brokenbar 166
+'&#x00A7;' '' section 167
+'&#x00A8;' '' dieresis 168
+'&#x00A9;' '' copyright 169
+'&#x00AA;' '' ordfeminine 170
+'' ''
+'&#x00AC;' '' logicalnot 172
+'' ''
+'&#x00AE;' '' registered 174
+'&#x00AF;' '' macron 175
+'&#x00B0;' '' degree 176
+'&#x00B1;' '' plusminus 177
+'&#x00B2;' '' twosuperior 178
+'&#x00B3;' '' threesuperior 179
+'&#x00B4;' '' acute 180
+'&#x00B5;' '' mu 181
+'&#x00B6;' '' paragraph 182
+'&#x00B7;' '' periodcentered 183
+'&#x203B;' '' uni203B 184
+'&#x00B9;' '' onesuperior 185
+'&#x00BA;' '' ordmasculine 186
+'' ''
+'&#x00BC;' '' onequarter 188
+'&#x00BD;' '' onehalf 189
+'&#x00BE;' '' threequarters 190
+'&#x20AC;' '' Euro 191
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x00D7;' '' multiply 214
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x00F7;' '' divide 246
+ts1-stix2text 0 246
+htfcss:  ts1-stix2text  font-family: 'STIX Two Text', serif;
+
+

@@ -1,0 +1,81 @@
+name pst-flags
+category Package
+revision 65501
+shortdesc Draw flags of countries using PSTricks
+longdesc This package provides a number of macros for rendering flags of
+longdesc countries and their associated artefacts using PSTricks.
+longdesc Formatting of the resulting drawings is entirely controlled by
+longdesc TeX macros. A good working knowledge of LaTeX should be
+longdesc sufficient to design flags of sovereign countries and adapt
+longdesc them to create new designs. Features such as color or shape
+longdesc customisation and dynamic modifications are possible by
+longdesc cleverly adjusting the options supplied to the TeX macros, see
+longdesc the documentation for examples. This package requires expl3,
+longdesc fp, xfp, xcolor, pstricks and pst-all.
+containersize 1243392
+containerchecksum 142a1d78f1423474a935bcc977964eeec310f0e8d8037149f4f5fbf691789f0a9f2986630f629cacf319e34ee640902556b0b59145ef2a763006618c65e21f49
+doccontainersize 1230264
+doccontainerchecksum 4c8bed4fa6f527fd5e0262692cf4acfd52d36bfe8461acb97615c127ab54336ada7a274ed9e5a7a75d26cf764c2f63734aa75d5bc45ec833f3b77b6179fa74fe
+runfiles size=1218
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Albania-flag-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-American-Samoa-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Andora-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Angola-flag-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Anguilla-flag-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Argentina-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Barbados-flag-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Belize-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Bermuda-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Bhutan-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Bolivia-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-British-Virgin-Islands-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Brunei-flag.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Cambodia-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Cayman-Islands-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Christmas-Island-flag.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Cocos-Keeling-Islands-flag.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Croatia-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Cyprus-flag.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Dominica-flag.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Dominican-Republic-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Egypt-flag-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-El-Salvador-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Equatorial-Guinea-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Eritrea-flag-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Fiji-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Iraq-flag-slogan.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Kazakhstan-flag.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Kenya-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Kyrgyzstan-flag.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Lebanon-flag.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Lesotho-flag-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Liechtenstein-flag.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Malta-flag-seal-corner.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Malta-flag-seal-horse.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Malta-flag-seal-text.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Mexico-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Moldova-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Mongolia-flag-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Montenegro-flag.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Nicaragua-flag-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Oman-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Papua-New-Guinea-flag.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Paraguay-seal-wreath.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Portugal-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Saudi-flag-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Serbia-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Slovakia-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Slovenia-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Spain-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-SriLanka-seal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Tajikistan-flag-seal-crown.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Uganda-flagseal.tex
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Uruguay-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Zambia-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/Flags/pst-Zimbabwe-flag-seal.eps
+ texmf-dist/tex/latex/pst-flags/pst-flags-colors-html.sty
+ texmf-dist/tex/latex/pst-flags/pst-flags.sty
+catalogue-contact-repository https://github.com/manthanwar/PST-Flags
+catalogue-ctan /graphics/pstricks/contrib/pst-flags
+catalogue-license lppl1.3c
+catalogue-topics graphics pstricks expl3

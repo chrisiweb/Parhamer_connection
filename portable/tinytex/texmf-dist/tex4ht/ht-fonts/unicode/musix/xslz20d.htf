@@ -1,0 +1,113 @@
+xslz20d 0 107
+'&#x60;' '1' grave 0              % generated from xslz20d.tfm, 2022-11-24-12:10
+'&#x00B4;' '1' acute 1            % Copyright 2022 TeX Users Group
+'&#x02C6;' '1' circumflex 2       %
+'&#x02DC;' '1' tilde 3            % This work may be distributed and/or modified under the
+'&#x00A8;' '1' dieresis 4         % conditions of the LaTeX Project Public License, either
+'&#x02DD;' '1' hungarumlaut 5     % version 1.3c of this license or (at your option) any
+'&#x02DA;' '1' ring 6             % later version. The latest version of this license is in
+'&#x02C7;' '1' caron 7            %   http://www.latex-project.org/lppl.txt
+'&#x02D8;' '1' breve 8            % and version 1.3c or later is part of all distributions
+'&#x00AF;' '1' macron 9           % of LaTeX version 2005/12/01 or later.
+'&#x02D9;' '1' dotaccent 10       %
+'&#x00B8;' '1' cedilla 11         % This work has the LPPL maintenance status "maintained".
+'&#x02DB;' '1' ogonek 12          %
+'&#x201A;' '1' quotesinglbase 13  % The Current Maintainer of this work
+'&#x2039;' '1' guilsinglleft 14   % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x203A;' '1' guilsinglright 15  %
+'&#x201C;' '1' quotedblleft 16    % If you modify this program, changing the
+'&#x201D;' '1' quotedblright 17   % version identification would be appreciated.
+'&#x201E;' '1' quotedblbase 18
+'&#x00AB;' '1' guillemotleft 19
+'&#x00BB;' '1' guillemotright 20
+'&#x2013;' '1' endash 21
+'&#x2014;' '1' emdash 22
+'&#x200C;' '1' cwm 23
+'&#x2030;' '1' perthousand 24
+'&#x0131;' '1' dotlessi 25
+'&#x0237;' '1' dotlessj 26
+'&#xFB00;' '1' ff 27
+'&#xFB01;' '1' fi 28
+'&#xFB02;' '1' fl 29
+'&#xFB03;' '1' ffi 30
+'&#xFB04;' '1' ffl 31
+' ' '1' space 32
+'!' '1' exclam 33
+'"' '1' quotedbl 34
+'#' '1' numbersign 35
+'$' '1' dollar 36
+'%' '1' percent 37
+'&amp;' '1' ampersand 38
+'&#x2019;' '1' quoteright 39
+'(' '1' parenleft 40
+')' '1' parenright 41
+'*' '1' asterisk 42
+'+' '1' plus 43
+',' '1' comma 44
+'-' '1' hyphen 45
+'.' '1' period 46
+'/' '1' slash 47
+'0' '1' zero 48
+'1' '1' one 49
+'2' '1' two 50
+'3' '1' three 51
+'4' '1' four 52
+'5' '1' five 53
+'6' '1' six 54
+'7' '1' seven 55
+'8' '1' eight 56
+'9' '1' nine 57
+':' '1' colon 58
+';' '1' semicolon 59
+'&lt;' '1' less 60
+'=' '1' equal 61
+'&gt;' '1' greater 62
+'?' '1' question 63
+'@' '1' at 64
+'A' '1' A 65
+'B' '1' B 66
+'C' '1' C 67
+'D' '1' D 68
+'E' '1' E 69
+'F' '1' F 70
+'G' '1' G 71
+'H' '1' H 72
+'I' '1' I 73
+'J' '1' J 74
+'K' '1' K 75
+'L' '1' L 76
+'M' '1' M 77
+'N' '1' N 78
+'O' '1' O 79
+'P' '1' P 80
+'Q' '1' Q 81
+'R' '1' R 82
+'S' '1' S 83
+'T' '1' T 84
+'U' '1' U 85
+'V' '1' V 86
+'W' '1' W 87
+'X' '1' X 88
+'Y' '1' Y 89
+'Z' '1' Z 90
+'[' '1' bracketleft 91
+'&#x005C;' '1' backslash 92
+']' '1' bracketright 93
+'^' '1' asciicircum 94
+'_' '1' underscore 95
+'&#x2018;' '1' quoteleft 96
+'a' '1' a 97
+'b' '1' b 98
+'c' '1' c 99
+'d' '1' d 100
+'e' '1' e 101
+'f' '1' f 102
+'g' '1' g 103
+'h' '1' h 104
+'i' '1' i 105
+'j' '1' j 106
+'k' '1' k 107
+xslz20d 0 107
+htfcss:  xslz20d  font-family: 'xslz20d', serif;
+
+

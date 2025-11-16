@@ -1,0 +1,27 @@
+name advice
+category Package
+revision 70688
+shortdesc Extend commands and environments
+longdesc Like its namesake from the Emacs world, this cross-format
+longdesc package implements a generic framework for extending the
+longdesc functionality of selected commands and environments. It was
+longdesc developed as an auxiliary package of Memoize. This is why it
+longdesc is, somewhat unconventionally, documented alongside that
+longdesc package. This applies to both the manual and the documented
+longdesc code listing.
+containersize 5128
+containerchecksum 96c8afa423e13d61c9723846b6b85a5f49ed6c54be4092225776766bf7067d7a22da961f7be8db707f41ddf6b48d04d91bb66b5eaa108f183f291a9beea45f2c
+doccontainersize 8256
+doccontainerchecksum 373f201789db1ce1aea3a8881e2270df02972a8ac8cb13dae8a899b8ce53518d81e3bf69eb5ed1bfd9323188ca106f2843fc82918e51c29b75c6bf23e6602c48
+srccontainersize 13792
+srccontainerchecksum cd717c73fe950cd206605f1dd641e14984ef0f6634b3e6b68765d0ad6fbea44bdeda4c936db32ff2dee5ec2d14073ff009929570f82af11ad9ee19849401af7d
+runfiles size=16
+ texmf-dist/tex/context/third/advice/t-advice.tex
+ texmf-dist/tex/generic/advice/advice-tikz.code.tex
+ texmf-dist/tex/latex/advice/advice.sty
+ texmf-dist/tex/plain/advice/advice.tex
+catalogue-contact-repository https://github.com/sasozivanovic/memoize
+catalogue-ctan /macros/generic/advice
+catalogue-license lppl1.3c
+catalogue-topics macro-def macro-supp macro-gen
+catalogue-version 1.1.1

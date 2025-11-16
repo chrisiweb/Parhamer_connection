@@ -1,0 +1,20 @@
+name pst-3dplot
+category Package
+revision 68727
+shortdesc Draw 3D objects in parallel projection, using PSTricks
+longdesc A package using PSTricks to draw a large variety of graphs and
+longdesc plots, including 3D maths functions. Data can be read from
+longdesc external data files, making this package a generic tool for
+longdesc graphing within TeX/LaTeX, without the need for external tools.
+containersize 21936
+containerchecksum 1fefbd8b34e49b7cf6bc35bb761ed9aa49d062d81f280936b86b58f123cf6023e038308f066a2f9e62c2fbd4181d3dad781525f289a9f5e58acefcdd344fd69e
+doccontainersize 2753668
+doccontainerchecksum 7e15351efd6190ff52e10287a7797a6ef0944561e381793290fbb56f6f2f174447343d10c9cfbfd0f61a62755ea0b3eb7adf52dfacf1b0b7ef2ec159f393b4f0
+runfiles size=31
+ texmf-dist/dvips/pst-3dplot/pst-3dplot.pro
+ texmf-dist/tex/generic/pst-3dplot/pst-3dplot.tex
+ texmf-dist/tex/latex/pst-3dplot/pst-3dplot.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-3dplot
+catalogue-license lppl
+catalogue-topics graphics-3d graphics-plot pstricks
+catalogue-version 2.09

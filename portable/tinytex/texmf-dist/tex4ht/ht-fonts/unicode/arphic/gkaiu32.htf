@@ -1,0 +1,15 @@
+gkaiu32 32 41
+'&#x3220;' '' uni3220 32  % generated from gkaiu32.tfm, 2023-02-05-20:38
+'&#x3221;' '' uni3221 33  % Copyright 2023 TeX Users Group
+'&#x3222;' '' uni3222 34  %
+'&#x3223;' '' uni3223 35  % This work may be distributed and/or modified under the
+'&#x3224;' '' uni3224 36  % conditions of the LaTeX Project Public License, either
+'&#x3225;' '' uni3225 37  % version 1.3c of this license or (at your option) any
+'&#x3226;' '' uni3226 38  % later version. The latest version of this license is in
+'&#x3227;' '' uni3227 39  %   http://www.latex-project.org/lppl.txt
+'&#x3228;' '' uni3228 40  % and version 1.3c or later is part of all distributions
+'&#x3229;' '' uni3229 41  % of LaTeX version 2005/12/01 or later.
+gkaiu32 32 41             %
+htfcss:  gkaiu32  font-family: 'AR PL KaitiM GB', serif;
+
+

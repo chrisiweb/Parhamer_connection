@@ -1,0 +1,25 @@
+name dsptricks
+category Package
+revision 68753
+shortdesc Macros for Digital Signal Processing plots
+longdesc The package provides a set of LaTeX macros (based on PSTricks)
+longdesc for plotting the kind of graphs and figures that are usually
+longdesc employed in digital signal processing publications. DSPTricks
+longdesc provides facilities for standard discrete-time "lollipop"
+longdesc plots, continuous-time and frequency plots, and pole-zero
+longdesc plots. The companion package DSPFunctions (dspfunctions.sty)
+longdesc provides macros for computing frequency responses and DFTs,
+longdesc while the package DSPBlocks (dspblocks.sty) supports DSP block
+longdesc diagrams.
+containersize 11964
+containerchecksum f51353329034141f52c38563f79de526b7b47de3435e14dcbf91f658a0f64a7b23075e8cef98d0f948ab54b57681c7d9fcec417b59871ff908c00e12d1711b6e
+doccontainersize 187996
+doccontainerchecksum 0cfcb4e1094284ae954da49c1212bb793831861b57316f48fa93e20e92c8d35e1ee8e02bb1be8ecb52442dd80e3f0f921d024bdc8797a843ea0fcaad29759d01
+runfiles size=13
+ texmf-dist/tex/latex/dsptricks/dspblocks.sty
+ texmf-dist/tex/latex/dsptricks/dspfunctions.sty
+ texmf-dist/tex/latex/dsptricks/dsptricks.sty
+catalogue-ctan /graphics/pstricks/contrib/dsptricks
+catalogue-license lppl
+catalogue-topics pstricks
+catalogue-version 1.1

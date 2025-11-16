@@ -1,0 +1,191 @@
+stix-mathtt 0 185
+'&#x27F3;' '' uni27F3 0   % generated from stix-mathtt.tfm, 2022-11-15-12:30
+'&#x27F4;' '' uni27F4 1   % Copyright 2022 TeX Users Group
+'&#x27F5;' '' uni27F5 2   %
+'&#x27F6;' '' uni27F6 3   % This work may be distributed and/or modified under the
+'&#x27F7;' '' uni27F7 4   % conditions of the LaTeX Project Public License, either
+'&#x27F8;' '' uni27F8 5   % version 1.3c of this license or (at your option) any
+'&#x27F9;' '' uni27F9 6   % later version. The latest version of this license is in
+'&#x27FA;' '' uni27FA 7   %   http://www.latex-project.org/lppl.txt
+'&#x27FB;' '' uni27FB 8   % and version 1.3c or later is part of all distributions
+'&#x27FC;' '' uni27FC 9   % of LaTeX version 2005/12/01 or later.
+'&#x27FD;' '' uni27FD 10  %
+'&#x27FE;' '' uni27FE 11  % This work has the LPPL maintenance status "maintained".
+'&#x27FF;' '' uni27FF 12  %
+'&#x27F2;' '' uni27F2 13  % The Current Maintainer of this work
+'&#x2B47;' '' uni2B47 14  % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x2660;' '' uni2660 15  %
+'&#x2661;' '' uni2661 16  % If you modify this program, changing the
+'&#x2662;' '' uni2662 17  % version identification would be appreciated.
+'&#x2663;' '' uni2663 18
+'&#x00B6;' '' paragraph 19
+'&#x00A7;' '' section 20
+'&#x2967;' '' uni2967 21
+'&#x2968;' '' uni2968 22
+'&#x2969;' '' uni2969 23
+'&#x296A;' '' uni296A 24
+'&#x296B;' '' uni296B 25
+'&#x296C;' '' uni296C 26
+'&#x296D;' '' uni296D 27
+'&#x296E;' '' uni296E 28
+'&#x296F;' '' uni296F 29
+'&#x2970;' '' uni2970 30
+'&#x2971;' '' uni2971 31
+'&#x2972;' '' uni2972 32
+'&#x2973;' '' uni2973 33
+'&#x2974;' '' uni2974 34
+'&#x2975;' '' uni2975 35
+'&#x2976;' '' uni2976 36
+'&#x2977;' '' uni2977 37
+'&#x2978;' '' uni2978 38
+'&#x2979;' '' uni2979 39
+'&#x297A;' '' uni297A 40
+'&#x297B;' '' uni297B 41
+'&#x297C;' '' uni297C 42
+'&#x297D;' '' uni297D 43
+'&#x297E;' '' uni297E 44
+'&#x297F;' '' uni297F 45
+'&#x2667;' '' uni2667 46
+'&#x2669;' '' uni2669 47
+'&#x1D7F6;' '' u1D7F6 48
+'&#x1D7F7;' '' u1D7F7 49
+'&#x1D7F8;' '' u1D7F8 50
+'&#x1D7F9;' '' u1D7F9 51
+'&#x1D7FA;' '' u1D7FA 52
+'&#x1D7FB;' '' u1D7FB 53
+'&#x1D7FC;' '' u1D7FC 54
+'&#x1D7FD;' '' u1D7FD 55
+'&#x1D7FE;' '' u1D7FE 56
+'&#x1D7FF;' '' u1D7FF 57
+'&#x266A;' '' uni266A 58
+'&#x266B;' '' uni266B 59
+'&#x2680;' '' uni2680 60
+'&#x2681;' '' uni2681 61
+'&#x2682;' '' uni2682 62
+'&#x2683;' '' uni2683 63
+'&#x2684;' '' uni2684 64
+'&#x1D670;' '' u1D670 65
+'&#x1D671;' '' u1D671 66
+'&#x1D672;' '' u1D672 67
+'&#x1D673;' '' u1D673 68
+'&#x1D674;' '' u1D674 69
+'&#x1D675;' '' u1D675 70
+'&#x1D676;' '' u1D676 71
+'&#x1D677;' '' u1D677 72
+'&#x1D678;' '' u1D678 73
+'&#x1D679;' '' u1D679 74
+'&#x1D67A;' '' u1D67A 75
+'&#x1D67B;' '' u1D67B 76
+'&#x1D67C;' '' u1D67C 77
+'&#x1D67D;' '' u1D67D 78
+'&#x1D67E;' '' u1D67E 79
+'&#x1D67F;' '' u1D67F 80
+'&#x1D680;' '' u1D680 81
+'&#x1D681;' '' u1D681 82
+'&#x1D682;' '' u1D682 83
+'&#x1D683;' '' u1D683 84
+'&#x1D684;' '' u1D684 85
+'&#x1D685;' '' u1D685 86
+'&#x1D686;' '' u1D686 87
+'&#x1D687;' '' u1D687 88
+'&#x1D688;' '' u1D688 89
+'&#x1D689;' '' u1D689 90
+'&#x2685;' '' uni2685 91
+'&#x2686;' '' uni2686 92
+'&#x2687;' '' uni2687 93
+'&#x2688;' '' uni2688 94
+'&#x2689;' '' uni2689 95
+'&#x26A5;' '' uni26A5 96
+'&#x1D68A;' '' u1D68A 97
+'&#x1D68B;' '' u1D68B 98
+'&#x1D68C;' '' u1D68C 99
+'&#x1D68D;' '' u1D68D 100
+'&#x1D68E;' '' u1D68E 101
+'&#x1D68F;' '' u1D68F 102
+'&#x1D690;' '' u1D690 103
+'&#x1D691;' '' u1D691 104
+'&#x1D692;' '' u1D692 105
+'&#x1D693;' '' u1D693 106
+'&#x1D694;' '' u1D694 107
+'&#x1D695;' '' u1D695 108
+'&#x1D696;' '' u1D696 109
+'&#x1D697;' '' u1D697 110
+'&#x1D698;' '' u1D698 111
+'&#x1D699;' '' u1D699 112
+'&#x1D69A;' '' u1D69A 113
+'&#x1D69B;' '' u1D69B 114
+'&#x1D69C;' '' u1D69C 115
+'&#x1D69D;' '' u1D69D 116
+'&#x1D69E;' '' u1D69E 117
+'&#x1D69F;' '' u1D69F 118
+'&#x1D6A0;' '' u1D6A0 119
+'&#x1D6A1;' '' u1D6A1 120
+'&#x1D6A2;' '' u1D6A2 121
+'&#x1D6A3;' '' u1D6A3 122
+'&#x1D692;' '' u1D692.dtls 123
+'&#x1D693;' '' u1D693.dtls 124
+'&#x26AA;' '' uni26AA 125
+'&#x26AB;' '' uni26AB 126
+'&#x2040;' '' uni2040 127
+'&#x26AC;' '' uni26AC 128
+'&#x26B2;' '' uni26B2 129
+'&#x2713;' '' uni2713 130
+'&#x2720;' '' uni2720 131
+'&#x272A;' '' uni272A 132
+'&#x2736;' '' uni2736 133
+'&#x273D;' '' uni273D 134
+'' ''
+'&#x25E9;' '' uni25E9 136
+'&#x25EA;' '' uni25EA 137
+'&#x25EB;' '' uni25EB 138
+'&#x25EC;' '' uni25EC 139
+'&#x25ED;' '' uni25ED 140
+'&#x25EE;' '' uni25EE 141
+'&#x25EF;' '' uni25EF 142
+'&#x25F0;' '' uni25F0 143
+'&#x25F1;' '' uni25F1 144
+'&#x25F2;' '' uni25F2 145
+'&#x25F3;' '' uni25F3 146
+'&#x25F4;' '' uni25F4 147
+'&#x25F5;' '' uni25F5 148
+'&#x25F6;' '' uni25F6 149
+'&#x25F7;' '' uni25F7 150
+'&#x25F8;' '' uni25F8 151
+'&#x25F9;' '' uni25F9 152
+'&#x25FA;' '' uni25FA 153
+'&#x25FB;' '' uni25FB 154
+'&#x25FC;' '' uni25FC 155
+'&#x25FD;' '' uni25FD 156
+'&#x25FE;' '' uni25FE 157
+'&#x25FF;' '' uni25FF 158
+'&#x2605;' '' uni2605 159
+'&#x2606;' '' uni2606 160
+'&#x2A30;' '' uni2A30 161
+'&#x2A31;' '' uni2A31 162
+'&#x2A32;' '' uni2A32 163
+'&#x2A33;' '' uni2A33 164
+'&#x2A34;' '' uni2A34 165
+'&#x2A35;' '' uni2A35 166
+'&#x2A36;' '' uni2A36 167
+'&#x2A37;' '' uni2A37 168
+'&#x2A38;' '' uni2A38 169
+'&#x2A39;' '' uni2A39 170
+'&#x2A3A;' '' uni2A3A 171
+'&#x2A3B;' '' uni2A3B 172
+'&#x2A3C;' '' uni2A3C 173
+'&#x2A3D;' '' uni2A3D 174
+'&#x2A3E;' '' uni2A3E 175
+'&#x2A3F;' '' uni2A3F 176
+'&#x2A40;' '' uni2A40 177
+'&#x2A41;' '' uni2A41 178
+'&#x2A42;' '' uni2A42 179
+'&#x2A43;' '' uni2A43 180
+'&#x2A44;' '' uni2A44 181
+'&#x2A45;' '' uni2A45 182
+'&#x2A46;' '' uni2A46 183
+'&#x2A47;' '' uni2A47 184
+'&#x2A48;' '' uni2A48 185
+stix-mathtt 0 185
+htfcss:  stix-mathtt  font-family: 'STIXMathTyperwriter', serif;
+
+

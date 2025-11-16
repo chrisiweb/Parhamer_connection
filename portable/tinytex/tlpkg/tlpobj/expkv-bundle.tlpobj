@@ -1,0 +1,44 @@
+name expkv-bundle
+category Package
+revision 73212
+shortdesc An expandable key=val implementation and friends
+longdesc This is a collection of different packages that provide
+longdesc key=value functionality in plainTeX, LaTeX, and ConTeXt. At the
+longdesc core, the expkv package implements two expandable key=value
+longdesc parsers that are somewhat fast and robust against common bugs
+longdesc in many key=value implementations (no accidental brace
+longdesc stripping, no fragility for active commas or equals signs).
+longdesc expkv-cs enables users to define expandable key=value macros in
+longdesc a comfortable and straightforward way. expkv-def provides an
+longdesc interface to define common key types for expkv similar to the
+longdesc key defining interfaces of widespread key=value
+longdesc implementations. expkv-opt allows to parse package or class
+longdesc options in LaTeX via expkv. expkv-pop is a utility package to
+longdesc define prefix oriented parsers that allow a somewhat natural
+longdesc formulation (it provides the core functionality for the
+longdesc key-defining front ends of both expkv-cs and expkv-def).
+containersize 19616
+containerchecksum 864f43e90542762c5db2d0f38a91638fc7eef2606c9914eb0d448991cd17705771f0e967a3353161bdaeb43d4b0e9ba0008e601506123c56c713f307f21a755b
+doccontainersize 757620
+doccontainerchecksum d94ba5a4e8a030d8353972862465e937f88586ddfc7bf60c018dac0ae9af5f06c96d903cfbbdede7c93c47ca0b58dbf54a6d34e6379b22977e163cb641bdf77a
+srccontainersize 49892
+srccontainerchecksum 1a84dd60dcd95c2f84185d3d25a3d2cf6a009af19f0b5fdf5316fa4d1da9b8e181983dc4f9a2e83fcd17b003e746e5bcc28779c531eb049fc76699a0a6ca8f6a
+runfiles size=46
+ texmf-dist/tex/context/third/expkv-bundle/t-expkv-cs.tex
+ texmf-dist/tex/context/third/expkv-bundle/t-expkv-def.tex
+ texmf-dist/tex/context/third/expkv-bundle/t-expkv-pop.tex
+ texmf-dist/tex/context/third/expkv-bundle/t-expkv.tex
+ texmf-dist/tex/generic/expkv-bundle/expkv-cs.tex
+ texmf-dist/tex/generic/expkv-bundle/expkv-def.tex
+ texmf-dist/tex/generic/expkv-bundle/expkv-pop.tex
+ texmf-dist/tex/generic/expkv-bundle/expkv.tex
+ texmf-dist/tex/latex/expkv-bundle/expkv-cs.sty
+ texmf-dist/tex/latex/expkv-bundle/expkv-def.sty
+ texmf-dist/tex/latex/expkv-bundle/expkv-opt-2020-10-10.sty
+ texmf-dist/tex/latex/expkv-bundle/expkv-opt.sty
+ texmf-dist/tex/latex/expkv-bundle/expkv-pop.sty
+ texmf-dist/tex/latex/expkv-bundle/expkv.sty
+catalogue-contact-repository https://gitlab.com/islandoftex/texmf/expkv-bundle
+catalogue-ctan /macros/generic/expkv-bundle
+catalogue-license lppl1.3c
+catalogue-topics keyval macro-supp macro-gen

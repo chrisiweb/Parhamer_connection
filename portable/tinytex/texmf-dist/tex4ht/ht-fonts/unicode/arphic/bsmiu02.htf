@@ -1,0 +1,24 @@
+bsmiu02 199 217
+'&#x02C7;' '' caron 199    % generated from bsmiu02.tfm, 2023-02-05-20:38
+'' ''                      % Copyright 2023 TeX Users Group
+'&#x02C9;' '' uni02C9 201  %
+'&#x02CA;' '' uni02CA 202  % This work may be distributed and/or modified under the
+'&#x02CB;' '' uni02CB 203  % conditions of the LaTeX Project Public License, either
+'' ''                      % version 1.3c of this license or (at your option) any
+'&#x02CD;' '' uni02CD 205  % later version. The latest version of this license is in
+'' ''                      %   http://www.latex-project.org/lppl.txt
+'' ''                      % and version 1.3c or later is part of all distributions
+'' ''                      % of LaTeX version 2005/12/01 or later.
+'' ''                      %
+'' ''                      % This work has the LPPL maintenance status "maintained".
+'' ''                      %
+'' ''                      % The Current Maintainer of this work
+'' ''                      % is the TeX4ht Project <http://tug.org/tex4ht>.
+'' ''                      %
+'' ''                      % If you modify this program, changing the
+'' ''                      % version identification would be appreciated.
+'&#x02D9;' '' dotaccent 217
+bsmiu02 199 217
+htfcss:  bsmiu02  font-family: 'AR PL Mingti2L Big5', serif;
+
+

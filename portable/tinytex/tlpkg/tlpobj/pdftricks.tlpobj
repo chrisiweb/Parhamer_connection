@@ -1,0 +1,25 @@
+name pdftricks
+category Package
+revision 15878
+shortdesc Support for PSTricks in pdfTeX
+longdesc The PSTricks macros cannot be used (directly) with pdfTeX,
+longdesc since PSTricks uses PostScript arithmetic, which isn't part of
+longdesc PDF. This package circumvents this limitation so that the
+longdesc extensive facilities offered by the powerful PSTricks package
+longdesc can be made use of in a pdfTeX document. This is done using the
+longdesc shell escape function available in current TeX implementations.
+longdesc The package may also be used in support of other
+longdesc 'PostScript-output-only' packages, such as PSfrag. For
+longdesc alternatives, users may care to review the discussion in the
+longdesc PSTricks online documentation.
+containersize 4360
+containerchecksum f7c0a71e44d0d388ab952ff820e5af63fe0f94acb2feb3415a2d1b3cffd94efc7e8bd17efbb7b608d082ab1b7d7ba1b780c63088df54a8db241c9b3d133eab1e
+doccontainersize 217036
+doccontainerchecksum 0e3ec1f3b7d7c9bda1e08060f0ee0615244863e513a25370b598f22bef00e6ece79592a105eb13cc913c169b1994c8a38fd60be0566e1c52e1ce2f97dc1e5995
+runfiles size=4
+ texmf-dist/tex/latex/pdftricks/pdftricks.sty
+catalogue-also pst-pdf
+catalogue-ctan /graphics/pdftricks
+catalogue-license gpl
+catalogue-topics callback pstricks
+catalogue-version 1.16

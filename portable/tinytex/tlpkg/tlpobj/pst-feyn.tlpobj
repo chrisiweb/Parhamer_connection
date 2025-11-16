@@ -1,0 +1,20 @@
+name pst-feyn
+category Package
+revision 48781
+shortdesc Draw graphical elements for Feynman diagrams
+longdesc pst-feyn is a set of drawing graphical elements which are used
+longdesc for Feynman diagrams. The package is based on the macros of the
+longdesc old package axodraw but uses the capabilities of PSTricks.
+containersize 6228
+containerchecksum c1ac123bac3f92fd92321387be28f519963ab196fde7ead8ed6b4c93ff9fe5cdf07bfee65bef67b9cd70d020adfa99c72592df9be376d69c5dadcb8bd0d6963b
+doccontainersize 140408
+doccontainerchecksum e30fc57ace8fb4f0c36fd1a07415e894abe6840592a9a62b9e45c0663281a79532387f5d37136e9cb5e7b27f4c0d7722e6d1a9779e1a57a2fddbd8d0324d1424
+runfiles size=9
+ texmf-dist/dvips/pst-feyn/pst-feyn.pro
+ texmf-dist/tex/generic/pst-feyn/pst-feyn.tex
+ texmf-dist/tex/latex/pst-feyn/pst-feyn.sty
+catalogue-also axodraw2
+catalogue-ctan /graphics/pstricks/contrib/pst-feyn
+catalogue-license lppl
+catalogue-topics physics
+catalogue-version 0.01

@@ -1,0 +1,20 @@
+name figflow
+category Package
+revision 21462
+shortdesc Flow text around a figure
+longdesc Provides a Plain TeX macro \figflow that allows one to insert a
+longdesc figure into an area inset into a paragraph. Command arguments
+longdesc are width and height of the figure, and the figure (and its
+longdesc caption) itself. Usage details are to be found in the TeX file
+longdesc itself. The package does not work with LaTeX; packages such as
+longdesc wrapfig, floatflt and picins support the needs of LaTeX users
+longdesc in this area.
+containersize 2072
+containerchecksum f75517b5c43119d33edf46fbe124523cacf0d7d837cdf66af702ba563392a96323b266bece1ec9e7f87df34d684a87ab38f9ddafab6c3d069dca8ee22c3bf25a
+doccontainersize 684
+doccontainerchecksum c972bfb356731aa119e8cdf1292a3bcbfc08a74453feb7e509a5cc519f62ae6c7e6b0c087973549b9d860b97ff1a3bae9cfd1166c4ac6a74553ca6c0f463694d
+runfiles size=1
+ texmf-dist/tex/plain/figflow/figflow.tex
+catalogue-ctan /macros/plain/contrib/figflow
+catalogue-license other-free
+catalogue-topics text-flow

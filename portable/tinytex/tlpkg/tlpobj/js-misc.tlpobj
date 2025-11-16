@@ -1,0 +1,21 @@
+name js-misc
+category Package
+revision 16211
+shortdesc Miscellaneous macros from Joachim Schrod
+longdesc A bunch of packages, including: idverb.tex, for 'short
+longdesc verbatim'; xfig.tex, for including xfig/transfig output in a
+longdesc TeX document; and cassette.tex for setting cassette labels.
+containersize 13868
+containerchecksum 6dd7920204cc66ff28c78f54bd6432a71d77ae2f4463bd997d2a4170465053eb86d61bc35d8da66377b47cb1eba88c6ed0918142910a5bdd4e44aec41d3ec4d0
+doccontainersize 18444
+doccontainerchecksum 507cc8c04589dfa7b4d36bf32e4c1d18af42b90df58fee128c0ad37284a87aa1adad32623591d0e8ca880c53a1f583b0bd8054487e231bb2a58ed06d1bf6c6e3
+runfiles size=13
+ texmf-dist/tex/plain/js-misc/cassette.tex
+ texmf-dist/tex/plain/js-misc/idverb.tex
+ texmf-dist/tex/plain/js-misc/js-misc.tex
+ texmf-dist/tex/plain/js-misc/schild.tex
+ texmf-dist/tex/plain/js-misc/sperr.tex
+ texmf-dist/tex/plain/js-misc/xfig.tex
+catalogue-ctan /macros/plain/contrib/js-misc
+catalogue-license pd
+catalogue-topics collection

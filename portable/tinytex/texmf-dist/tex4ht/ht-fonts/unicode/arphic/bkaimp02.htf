@@ -1,0 +1,261 @@
+bkaimp02 0 255
+'&#x3023;' '' uni3023 0   % generated from bkaimp02.tfm, 2023-02-05-20:38
+'&#x3024;' '' uni3024 1   % Copyright 2023 TeX Users Group
+'&#x3025;' '' uni3025 2   %
+'&#x3026;' '' uni3026 3   % This work may be distributed and/or modified under the
+'&#x3027;' '' uni3027 4   % conditions of the LaTeX Project Public License, either
+'&#x3028;' '' uni3028 5   % version 1.3c of this license or (at your option) any
+'&#x3029;' '' uni3029 6   % later version. The latest version of this license is in
+'&#x5341;' '' uni5341 7   %   http://www.latex-project.org/lppl.txt
+'&#x5344;' '' uni5344 8   % and version 1.3c or later is part of all distributions
+'&#x5345;' '' uni5345 9   % of LaTeX version 2005/12/01 or later.
+'&#xFF21;' '' uniFF21 10  %
+'&#xFF22;' '' uniFF22 11  % This work has the LPPL maintenance status "maintained".
+'&#xFF23;' '' uniFF23 12  %
+'&#xFF24;' '' uniFF24 13  % The Current Maintainer of this work
+'&#xFF25;' '' uniFF25 14  % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#xFF26;' '' uniFF26 15  %
+'&#xFF27;' '' uniFF27 16  % If you modify this program, changing the
+'&#xFF28;' '' uniFF28 17  % version identification would be appreciated.
+'&#xFF29;' '' uniFF29 18
+'&#xFF2A;' '' uniFF2A 19
+'&#xFF2B;' '' uniFF2B 20
+'&#xFF2C;' '' uniFF2C 21
+'&#xFF2D;' '' uniFF2D 22
+'&#xFF2E;' '' uniFF2E 23
+'&#xFF2F;' '' uniFF2F 24
+'&#xFF30;' '' uniFF30 25
+'&#xFF31;' '' uniFF31 26
+'&#xFF32;' '' uniFF32 27
+'&#xFF33;' '' uniFF33 28
+'&#xFF34;' '' uniFF34 29
+'&#xFF35;' '' uniFF35 30
+'&#xFF36;' '' uniFF36 31
+'&#xFF37;' '' uniFF37 32
+'&#xFF38;' '' uniFF38 33
+'&#xFF39;' '' uniFF39 34
+'&#xFF3A;' '' uniFF3A 35
+'&#xFF41;' '' uniFF41 36
+'&#xFF42;' '' uniFF42 37
+'&#xFF43;' '' uniFF43 38
+'&#xFF44;' '' uniFF44 39
+'&#xFF45;' '' uniFF45 40
+'&#xFF46;' '' uniFF46 41
+'&#xFF47;' '' uniFF47 42
+'&#xFF48;' '' uniFF48 43
+'&#xFF49;' '' uniFF49 44
+'&#xFF4A;' '' uniFF4A 45
+'&#xFF4B;' '' uniFF4B 46
+'&#xFF4C;' '' uniFF4C 47
+'&#xFF4D;' '' uniFF4D 48
+'&#xFF4E;' '' uniFF4E 49
+'&#xFF4F;' '' uniFF4F 50
+'&#xFF50;' '' uniFF50 51
+'&#xFF51;' '' uniFF51 52
+'&#xFF52;' '' uniFF52 53
+'&#xFF53;' '' uniFF53 54
+'&#xFF54;' '' uniFF54 55
+'&#xFF55;' '' uniFF55 56
+'&#xFF56;' '' uniFF56 57
+'&#xFF57;' '' uniFF57 58
+'&#xFF58;' '' uniFF58 59
+'&#xFF59;' '' uniFF59 60
+'&#xFF5A;' '' uniFF5A 61
+'&#x0391;' '' Alpha 62
+'&#x0392;' '' Beta 63
+'&#x0393;' '' Gamma 64
+'&#x2206;' '' Delta 65
+'&#x0395;' '' Epsilon 66
+'&#x0396;' '' Zeta 67
+'&#x0397;' '' Eta 68
+'&#x0398;' '' Theta 69
+'&#x0399;' '' Iota 70
+'&#x039A;' '' Kappa 71
+'&#x039B;' '' Lambda 72
+'&#x039C;' '' Mu 73
+'&#x039D;' '' Nu 74
+'&#x039E;' '' Xi 75
+'&#x039F;' '' Omicron 76
+'&#x03A0;' '' Pi 77
+'&#x03A1;' '' Rho 78
+'&#x03A3;' '' Sigma 79
+'&#x03A4;' '' Tau 80
+'&#x03A5;' '' Upsilon 81
+'&#x03A6;' '' Phi 82
+'&#x03A7;' '' Chi 83
+'&#x03A8;' '' Psi 84
+'&#x2126;' '' Omega 85
+'&#x03B1;' '' alpha 86
+'&#x03B2;' '' beta 87
+'&#x03B3;' '' gamma 88
+'&#x03B4;' '' delta 89
+'&#x03B5;' '' epsilon 90
+'&#x03B6;' '' zeta 91
+'&#x03B7;' '' eta 92
+'&#x03B8;' '' theta 93
+'&#x03B9;' '' iota 94
+'&#x03BA;' '' kappa 95
+'&#x03BB;' '' lambda 96
+'&#x00B5;' '' mu 97
+'&#x03BD;' '' nu 98
+'&#x03BE;' '' xi 99
+'&#x03BF;' '' omicron 100
+'&#x03C0;' '' pi 101
+'&#x03C1;' '' rho 102
+'&#x03C3;' '' sigma 103
+'&#x03C4;' '' tau 104
+'&#x03C5;' '' upsilon 105
+'&#x03D5;' '' phi 106
+'&#x03C7;' '' chi 107
+'&#x03C8;' '' psi 108
+'&#x03C9;' '' omega 109
+'&#x3105;' '' uni3105 110
+'&#x3106;' '' uni3106 111
+'&#x3107;' '' uni3107 112
+'&#x3108;' '' uni3108 113
+'&#x3109;' '' uni3109 114
+'&#x310A;' '' uni310A 115
+'&#x310B;' '' uni310B 116
+'&#x310C;' '' uni310C 117
+'&#x310D;' '' uni310D 118
+'&#x310E;' '' uni310E 119
+'&#x310F;' '' uni310F 120
+'&#x3110;' '' uni3110 121
+'&#x3111;' '' uni3111 122
+'&#x3112;' '' uni3112 123
+'&#x3113;' '' uni3113 124
+'&#x3114;' '' uni3114 125
+'&#x3115;' '' uni3115 126
+'&#x3116;' '' uni3116 127
+'&#x3117;' '' uni3117 128
+'&#x3118;' '' uni3118 129
+'&#x3119;' '' uni3119 130
+'&#x311A;' '' uni311A 131
+'&#x311B;' '' uni311B 132
+'&#x311C;' '' uni311C 133
+'&#x311D;' '' uni311D 134
+'&#x311E;' '' uni311E 135
+'&#x311F;' '' uni311F 136
+'&#x3120;' '' uni3120 137
+'&#x3121;' '' uni3121 138
+'&#x3122;' '' uni3122 139
+'&#x3123;' '' uni3123 140
+'&#x3124;' '' uni3124 141
+'&#x3125;' '' uni3125 142
+'&#x3126;' '' uni3126 143
+'&#x3127;' '' uni3127 144
+'&#x3128;' '' uni3128 145
+'&#x3129;' '' uni3129 146
+'&#x02D9;' '' dotaccent 147
+'&#x02C9;' '' uni02C9 148
+'&#x02CA;' '' uni02CA 149
+'&#x02C7;' '' caron 150
+'&#x02CB;' '' uni02CB 151
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x20AC;' '' Euro 185
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x4E00;' '' uni4E00 215
+'&#x4E59;' '' uni4E59 216
+'&#x4E01;' '' uni4E01 217
+'&#x4E03;' '' uni4E03 218
+'&#x4E43;' '' uni4E43 219
+'&#x4E5D;' '' uni4E5D 220
+'&#x4E86;' '' uni4E86 221
+'&#x4E8C;' '' uni4E8C 222
+'&#x4EBA;' '' uni4EBA 223
+'&#x513F;' '' uni513F 224
+'&#x5165;' '' uni5165 225
+'&#x516B;' '' uni516B 226
+'&#x51E0;' '' uni51E0 227
+'&#x5200;' '' uni5200 228
+'&#x5201;' '' uni5201 229
+'&#x529B;' '' uni529B 230
+'&#x5315;' '' uni5315 231
+'&#x5341;' '' uni5341 232
+'&#x535C;' '' uni535C 233
+'&#x53C8;' '' uni53C8 234
+'&#x4E09;' '' uni4E09 235
+'&#x4E0B;' '' uni4E0B 236
+'&#x4E08;' '' uni4E08 237
+'&#x4E0A;' '' uni4E0A 238
+'&#x4E2B;' '' uni4E2B 239
+'&#x4E38;' '' uni4E38 240
+'&#x51E1;' '' uni51E1 241
+'&#x4E45;' '' uni4E45 242
+'&#x4E48;' '' uni4E48 243
+'&#x4E5F;' '' uni4E5F 244
+'&#x4E5E;' '' uni4E5E 245
+'&#x4E8E;' '' uni4E8E 246
+'&#x4EA1;' '' uni4EA1 247
+'&#x5140;' '' uni5140 248
+'&#x5203;' '' uni5203 249
+'&#x52FA;' '' uni52FA 250
+'&#x5343;' '' uni5343 251
+'&#x53C9;' '' uni53C9 252
+'&#x53E3;' '' uni53E3 253
+'&#x571F;' '' uni571F 254
+'&#x58EB;' '' uni58EB 255
+bkaimp02 0 255
+htfcss:  bkaimp02  font-family: 'AR PL KaitiM Big5', serif;
+
+

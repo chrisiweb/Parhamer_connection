@@ -1,0 +1,20 @@
+name pst-fr3d
+category Package
+revision 15878
+shortdesc Draw 3-dimensional framed boxes using PSTricks
+longdesc A package using PSTricks to draw three dimensional framed boxes
+longdesc using a macro \PstFrameBoxThreeD. The macro is especially
+longdesc useful for drawing 3d-seeming buttons.
+containersize 2132
+containerchecksum ccd418ac7ac5ee1885cd2b7008e867c08cc0fc13fa97e264377446d301cef1caa82b8552731a4c7d3131f0e2ddaa0267276d5b1726998a0be2f149ac67bbffcd
+doccontainersize 171192
+doccontainerchecksum 48c559c27999b06d63ab5c33c9779d0902e05c80c51ba9225f0def724e02892557deda44add976bd5fb73403bbc2615854ef9ea398b830357f0fa5be12702e74
+srccontainersize 7608
+srccontainerchecksum 7fde5941ebf78da6f5142d07963aba36f2c298e46c2125f5ec210830f5f3694b3b1a8bd4b342b6065fdefcce1e5807321f379d030b0950d3ca5dcad30ed2ae3e
+runfiles size=3
+ texmf-dist/tex/generic/pst-fr3d/pst-fr3d.tex
+ texmf-dist/tex/latex/pst-fr3d/pst-fr3d.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-fr3d
+catalogue-license lppl
+catalogue-topics boxing graphics-3d pstricks
+catalogue-version 1.10

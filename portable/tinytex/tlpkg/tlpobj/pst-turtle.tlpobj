@@ -1,0 +1,19 @@
+name pst-turtle
+category Package
+revision 52261
+shortdesc Commands for "turtle operations"
+longdesc This is a PSTricks related package for creating "Turtle"
+longdesc graphics. It supports the commands forward, back, left, right,
+longdesc penup, and pendown.
+containersize 3836
+containerchecksum df30018ed03f10edbb9e215879f041ed6eb0db48cf0e7e2b5128cd3339d1005ef074aa0631c84bcfd2c8f9c1a1a69a26cac36248f3971a3b3302e2f763af750d
+doccontainersize 45192
+doccontainerchecksum 22c14f1eca2aa764bfc250d8140f0a24f3dab1cb8e755180167ddcd1ac9224aca07fb41408823b8933b73293204053f7f139513781ff37a67ca9e0ee7bec4fbb
+runfiles size=4
+ texmf-dist/dvips/pst-turtle/pst-turtle.pro
+ texmf-dist/tex/generic/pst-turtle/pst-turtle.tex
+ texmf-dist/tex/latex/pst-turtle/pst-turtle.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-turtle
+catalogue-license lppl
+catalogue-topics graphics pstricks
+catalogue-version 0.02

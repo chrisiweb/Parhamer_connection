@@ -1,0 +1,22 @@
+name mathdots
+category Package
+revision 34301
+shortdesc Commands to produce dots in math that respect font size
+longdesc Redefines \ddots and \vdots, and defines \iddots. The dots
+longdesc produced by \iddots slant in the opposite direction to \ddots.
+longdesc All the commands are designed to change size appropriately in
+longdesc scripts, as well as in response to LaTeX size changing
+longdesc commands. The commands may also be used in plain TeX.
+containersize 2168
+containerchecksum 1235583223f831852458d53e1e8cb767495987829d4930387f4dccf7ab060b9f0af8722d6c1aaa820c1a371f8ce1c0222633e6feb064e0344e639eedbaa4129d
+doccontainersize 397300
+doccontainerchecksum b1ce238b3abb3397b0085983e752dbb9eb9d9c1026046726360498d089304f7f4deecd656dceee27b63934092568f0ca46620231f03e0952c43f28ae73e97dc0
+srccontainersize 7252
+srccontainerchecksum dd590187fadbf0eb788eade245d4198a4c1075433db1a0df00ce2d5cf2b6f332e09ce995292d21ad46f13ba68284808cfea6c7818a47bf99a61ae44e5381fe55
+runfiles size=3
+ texmf-dist/tex/generic/mathdots/mathdots.sty
+ texmf-dist/tex/generic/mathdots/mathdots.tex
+catalogue-ctan /macros/generic/mathdots
+catalogue-license lppl
+catalogue-topics maths
+catalogue-version 0.9

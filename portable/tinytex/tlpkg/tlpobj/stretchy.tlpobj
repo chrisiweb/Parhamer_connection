@@ -1,0 +1,22 @@
+name stretchy
+category Package
+revision 75140
+shortdesc Macros for creating stretchy TeX symbols
+longdesc This package helps to create "stretchy" math symbols. It
+longdesc provides various ready-made stretchy symbols, as well as
+longdesc auxiliary macros for creating them. The package has no
+longdesc dependencies and supports both pdfTeX and LuaTeX.
+containersize 5296
+containerchecksum 98c7b0fd596486863c7be10ee5d01b1293663a3ce7f33b40d81bc671e8fe1283a764d26fa7539d15d7b83d160e5620019a3e16b995bb7ce32f875aed4bd63810
+doccontainersize 156196
+doccontainerchecksum 657276a27b61dc7d2fe302d36ad72e641606ad956c4d987dc374943f8c991d576cfb7d764d2e103d6701a0e1c9eeda34fee5df1e9701a88804808ba3a05e8c47
+runfiles size=11
+ texmf-dist/tex/generic/stretchy/stretchy.tex
+ texmf-dist/tex/generic/stretchy/strty-logo.tex
+ texmf-dist/tex/generic/stretchy/strty-repeatedsyms.tex
+ texmf-dist/tex/generic/stretchy/strty-stretchedsyms.tex
+ texmf-dist/tex/generic/stretchy/strty-utils.tex
+catalogue-ctan /macros/generic/stretchy
+catalogue-license mit
+catalogue-topics maths-symbol text-symbol macro-gen
+catalogue-version 0.1

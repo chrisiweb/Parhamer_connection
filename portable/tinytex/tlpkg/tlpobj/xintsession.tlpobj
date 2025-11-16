@@ -1,0 +1,25 @@
+name xintsession
+category Package
+revision 60926
+shortdesc Interactive computing sessions (fractions, floating points, polynomials)
+longdesc This package provides support for interactive computing
+longdesc sessions with etex (or pdftex) executed on the command line, on
+longdesc the basis of the xintexpr and polexpr packages. Once
+longdesc xintsession is loaded, eTeX becomes an interactive computing
+longdesc software capable of executing arbitrary precision calculations,
+longdesc or exact calculations with arbitrarily big fractions. It can
+longdesc also manipulate polynomials as algebraic entities. Numerical
+longdesc variables and functions can be defined during the session, and
+longdesc each evaluation result is stored in automatically labeled
+longdesc variables. A file is automatically created storing inputs and
+longdesc outputs.
+containersize 6960
+containerchecksum d1e279e733e37d6ef163a1dc537f5c02119403710a930f409cc6cfa55f1c08d9dd30bf4aeb14b68e4080442137a7352207ca8dc9bd7f859a8d19cf9205b68c1d
+doccontainersize 2860
+doccontainerchecksum 1a99ce3ce5e2a311e1dd4086f416738c48cbd42ad0b37c372fffcb0a4f035b3384f1b4963cccd2b602164f256e4bcb8d9b1d3efc56c99382e284d6d97e20b7c1
+runfiles size=6
+ texmf-dist/tex/plain/xintsession/xintsession.tex
+catalogue-ctan /macros/plain/contrib/xintsession
+catalogue-license lppl1.3c
+catalogue-topics maths calculation
+catalogue-version 0.4alpha

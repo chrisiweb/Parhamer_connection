@@ -1,0 +1,17 @@
+name ruler
+category Package
+revision 54251
+shortdesc A typographic ruler for TeX
+longdesc The file processes to produce (real) rulers; the author
+longdesc suggests printing them on transparent plastic and trimming for
+longdesc use as a "real" ruler. The rule widths are 0.05mm, which can be
+longdesc challenging for (old) laser printers.
+containersize 6620
+containerchecksum a0ac63735eee4be96fc368bece6eed80058b79689954780990e1da5632448203c4f99d9b13f541a89e523f4a531983d5fefd836b99ed64c2f177723c822f8749
+runfiles size=7
+ texmf-dist/tex/generic/ruler/ruler.tex
+catalogue-also pointruler
+catalogue-ctan /macros/generic/misc/ruler.tex
+catalogue-license gpl
+catalogue-topics misc-support
+catalogue-version 1.1

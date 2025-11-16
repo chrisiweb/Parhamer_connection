@@ -1,0 +1,17 @@
+name pstricks_calcnotes
+category Package
+revision 34363
+catalogue pstricks-calcnotes
+shortdesc Use of PSTricks in calculus lecture notes
+longdesc The bundle shows the construction of PSTricks macros to draw
+longdesc Riemann sums of an integral and to draw the vector field of an
+longdesc ordinary differential equation. The results are illustrated in
+longdesc a fragment of lecture notes.
+containersize 512
+containerchecksum 1b17e544484b71f3c29e5c3e1bed6021658ce7b9a256c21c004113b722a85be7ea6861753230910771b7c900184ca8cce146408301e75de79e0c2bf8939c49a6
+doccontainersize 1133128
+doccontainerchecksum bab8492549fd268f856e11f5f6db4e1ca878c67634387e7295bc163cd17080ee6b685893ddc85a882bd895adf3689639bfa7fc7d0da5e9916ef305c18d94ad65
+catalogue-ctan /info/pstricks_calcnotes
+catalogue-license lppl
+catalogue-topics pstricks documentation
+catalogue-version 1.2

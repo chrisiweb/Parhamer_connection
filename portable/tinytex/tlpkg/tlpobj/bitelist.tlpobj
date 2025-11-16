@@ -1,0 +1,29 @@
+name bitelist
+category Package
+revision 25779
+shortdesc Split list, in TeX's mouth
+longdesc The package provides commands for "splitting" a token list at
+longdesc the first occurrence of another (specified) token list. I.e.,
+longdesc for given token lists s, t return b and the shortest a, such
+longdesc that t = a s b. The package's mechanism differs from those of
+longdesc packages providing similar features, in the following ways: the
+longdesc method uses TeX's mechanism of reading delimited macro
+longdesc parameters; splitting macros work by pure expansion, without
+longdesc assignments; the operation is carried out in a single macro
+longdesc call. A variant of the operation is provided, that retains
+longdesc outer braces.
+containersize 5352
+containerchecksum a2022ccc4f45f7a911eea4e99557764770b4e6f2ba0333e043fda2419e29d93bac40462fd36568354a415a9b27204a38620e6191fddcdb053f8956aac5747cbf
+doccontainersize 362388
+doccontainerchecksum 5c3186464aaadbf269b26321ed9447e8a1633ca9b4a7b323da692277ab074f15b6c39df866eb41955dbd6ca8b0ff76a115786f3273fdb293bfb79893dfe0de99
+srccontainersize 6228
+srccontainerchecksum 0dfbf3dc2ad3b11ce91f1f5f6949f3d8559e0f90044abff431af556560382b5063a96e661c7e95667f3079a7386df85938e937743e2f185a13f4d8a2259fc4eb
+runfiles size=4
+ texmf-dist/tex/generic/bitelist/bitedemo.tex
+ texmf-dist/tex/generic/bitelist/bitelist.sty
+catalogue-also datatool stringstrings ted texapi xstring
+catalogue-contact-support http://www.webdesign-bu.de/uwe_lueck/contact.html
+catalogue-ctan /macros/generic/bitelist
+catalogue-license lppl1.3
+catalogue-topics text-manip macro-supp
+catalogue-version 0.1

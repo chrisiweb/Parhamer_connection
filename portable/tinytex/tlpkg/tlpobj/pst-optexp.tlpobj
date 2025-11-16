@@ -1,0 +1,26 @@
+name pst-optexp
+category Package
+revision 62977
+shortdesc Drawing optical experimental setups
+longdesc The package is a collection of optical components that
+longdesc facilitate easy sketching of optical experimental setups. The
+longdesc package uses PSTricks for its output. A wide range of free-ray
+longdesc and fibre components is provided, the alignment, positioning
+longdesc and labelling of which can be achieved in very simple and
+longdesc flexible ways. The components may be connected with fibers or
+longdesc beams, and realistic raytraced beam paths are also possible.
+containersize 37772
+containerchecksum a72c425dc808ab5a4507691c9a86ad2193c08f8e88d62ea558d2559b68e18e9dfd8e0295bc18fd66e3cf41236c17b85086dc218e46317c09867b5eaf024564fe
+doccontainersize 3194708
+doccontainerchecksum 6c4f4427b023b6dccaf75ac2cab2c22da32d0fbe6007c68e05b9ced31b11da91e5537ae4dd174a726b36ff2657113bc07e1b054e9dff344a9dd99f3039be97f6
+srccontainersize 155324
+srccontainerchecksum 8f3f7cdddc2b26ff9adce1cb60fd165fdecfc0b3b61cbb827e52f97702cce602312bad4838f2ed96a8d07d1deda4f5226a305c7796a8794b6cafb821c8b745a2
+runfiles size=59
+ texmf-dist/dvips/pst-optexp/pst-optexp.pro
+ texmf-dist/makeindex/pst-optexp/pst-optexp.ist
+ texmf-dist/tex/latex/pst-optexp/pst-optexp.sty
+catalogue-contact-repository https://github.com/cbersch/pst-optexp
+catalogue-ctan /graphics/pstricks/contrib/pst-optexp
+catalogue-license lppl1.3
+catalogue-topics physics optics diagram-lab pstricks
+catalogue-version 6.1

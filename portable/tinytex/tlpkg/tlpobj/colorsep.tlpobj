@@ -1,0 +1,12 @@
+name colorsep
+category Package
+revision 13293
+shortdesc Color separation
+longdesc Support for colour separation when using dvips.
+containersize 1884
+containerchecksum 3c6387a4c538235181dcaf7b6c3ac51d2893d35fa2c18d95d85810b778fecaed7ae2337d2b284ee3439f44d3570ee86884d42616539bf61a15526aa711da70e9
+runfiles size=2
+ texmf-dist/dvips/colorsep/colorsep.pro
+catalogue-ctan /graphics/colorsep
+catalogue-license pd
+catalogue-topics colour

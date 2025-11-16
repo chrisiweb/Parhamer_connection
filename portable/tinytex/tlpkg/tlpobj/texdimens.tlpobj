@@ -1,0 +1,20 @@
+name texdimens
+category Package
+revision 61070
+shortdesc Conversion of TeX dimensions to decimals
+longdesc Utilities and documentation related to TeX dimensional units,
+longdesc usable both with Plain (\input texdimens) and with LaTeX
+longdesc (\usepackage{texdimens}).
+containersize 11436
+containerchecksum 737074790de5c16de0e30dd6f708d6b8ec43e8d387ced2dc6b16b64f38854fad7367884abeab71fd41eaa79dc0c5939904314deed97331f9919a1fbefb0108d3
+doccontainersize 121624
+doccontainerchecksum 3ab30a8de33cedd4bdb9aa0a84104eb5b02be164de9f6fb81a51dbaa6caabe0029228c311970a3287cfbcf270a5430d6883756e9c28fc924a3286d76bb71217e
+runfiles size=11
+ texmf-dist/tex/generic/texdimens/texdimens.sty
+ texmf-dist/tex/generic/texdimens/texdimens.tex
+catalogue-contact-bugs https://github.com/jfbu/texdimens/issues
+catalogue-contact-repository https://github.com/jfbu/texdimens
+catalogue-ctan /macros/generic/texdimens
+catalogue-license lppl1.3c
+catalogue-topics units etex
+catalogue-version 1.1

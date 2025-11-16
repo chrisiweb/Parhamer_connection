@@ -1,0 +1,20 @@
+name visualtoks
+category Package
+revision 76207
+shortdesc Typeset TeXbook-style visualisations of token lists
+longdesc This package provides the \visualtoks command to display
+longdesc arbitrary list of tokens, for pedagogical or debugging
+longdesc purposes, in a style inspired by Knuth's TeXbook. The package
+longdesc may be used in plain TeX or LaTeX.
+containersize 1548
+containerchecksum 054dd4b1dc8f71a58def369db4c9478e4ede335a8293644b063aa3be7506edc2ff4b8b9202f8fc06922f4a3072139b55c32cd0226bbb45b1622eabce0e34c9a4
+doccontainersize 158764
+doccontainerchecksum 713bde8ed91490dae64767a4783ecbc550a1efa3ec4570c3ad3b92fadb61f281216d83876c2aea1f93155e775ab8f85d774aded7945fbc33cc21ec6ebd7611c1
+runfiles size=2
+ texmf-dist/tex/generic/visualtoks/visualtoks.sty
+ texmf-dist/tex/generic/visualtoks/visualtoks.tex
+catalogue-contact-repository https://github.com/plante3/visualtoks/tree/main
+catalogue-ctan /macros/generic/visualtoks
+catalogue-license lppl1.3c
+catalogue-topics macro-demo macro-gen etex
+catalogue-version 1.1b

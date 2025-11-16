@@ -1,0 +1,21 @@
+name makeplot
+category Package
+revision 15878
+shortdesc Easy plots from Matlab in LaTeX
+longdesc Existing approaches to create EPS files from Matlab (laprint,
+longdesc mma2ltx, print -eps, etc.) aren't satisfactory; makeplot aims
+longdesc to resolve this problem. Makeplot is a LaTeX package that uses
+longdesc the pstricks pst-plot functions to plot data that it takes from
+longdesc Matlab output files.
+containersize 4660
+containerchecksum 366e9ec4ce551e17ae6e77f068b0d2fb46582c033eb27781cd620a87731eba744212db8dde9ce8e50318f280dfe31e61a344ab4232c3bf26040dd7a2290d4fef
+doccontainersize 129276
+doccontainerchecksum 9aa863af450a66201e7cb3d3a58d9248430aa26cca9b50de4c71c350314ac9c0f6fe54e5eb1b37917a75030a60ca18102933f154bdeb7831ca02bdaa65b3a6bf
+srccontainersize 11680
+srccontainerchecksum b4f0e0de72c005124b7e83f214111931ca2ba03ae5f1270b5d10ff790c6fd84cb02950aed7377deae2c432de55b7822ddc68b9911b608b0460c7800f375fcecb
+runfiles size=5
+ texmf-dist/tex/latex/makeplot/makeplot.sty
+catalogue-ctan /graphics/pstricks/contrib/makeplot
+catalogue-license lppl
+catalogue-topics graphics-plot
+catalogue-version 1.0.6

@@ -1,0 +1,67 @@
+bsmiu26 5 66
+'&#x2605;' '' uni2605 5  % generated from bsmiu26.tfm, 2023-02-05-20:38
+'&#x2606;' '' uni2606 6  % Copyright 2023 TeX Users Group
+'' ''                    %
+'' ''                    % This work may be distributed and/or modified under the
+'&#x2609;' '' uni2609 9  % conditions of the LaTeX Project Public License, either
+'' ''                    % version 1.3c of this license or (at your option) any
+'' ''                    % later version. The latest version of this license is in
+'' ''                    %   http://www.latex-project.org/lppl.txt
+'' ''                    % and version 1.3c or later is part of all distributions
+'' ''                    % of LaTeX version 2005/12/01 or later.
+'' ''                    %
+'' ''                    % This work has the LPPL maintenance status "maintained".
+'' ''                    %
+'' ''                    % The Current Maintainer of this work
+'' ''                    % is the TeX4ht Project <http://tug.org/tex4ht>.
+'' ''                    %
+'' ''                    % If you modify this program, changing the
+'' ''                    % version identification would be appreciated.
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x2640;' '' female 64
+'&#x2641;' '' uni2641 65
+'&#x2642;' '' male 66
+bsmiu26 5 66
+htfcss:  bsmiu26  font-family: 'AR PL Mingti2L Big5', serif;
+
+

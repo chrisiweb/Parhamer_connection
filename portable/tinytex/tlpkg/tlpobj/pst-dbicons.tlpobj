@@ -1,0 +1,24 @@
+name pst-dbicons
+category Package
+revision 17556
+shortdesc Support for drawing ER diagrams
+longdesc The package provides some useful macros in the database area.
+longdesc The package focusses on typesetting ER-Diagrams in a
+longdesc declarative style, i.e., by positioning some nodes and defining
+longdesc the position of all other nodes relative to them by using the
+longdesc standard database terminology. The PSTricks package is required
+longdesc for using pst-dbicons, but no deep knowledge of PSTricks
+longdesc commands is required (although such knowledge is useful for
+longdesc exploiting the full functionality of the package).
+containersize 3332
+containerchecksum a09ba8f72ecc1b58298b436c47d3922b494337179bdf789468aa3a2236a5e2bd0f9ddd9b491c1a2eb181d08090cc1c6d8c4a0e9e56cb8619a65ce168d7efd355
+doccontainersize 133024
+doccontainerchecksum fc0a74b0ca228ff598f3f88840ad1b87654cd7205afb757e6eb6d98abb0cd56cea0ac3ad7b3464a9a5b09d3d4f3a8489228b19c78edc8ceeb8b10f5d40e18540
+srccontainersize 10216
+srccontainerchecksum ad710329d577b7da464028bc0abe684d987a601b6ea68cbbbeafbc6135c3ade2ab124026ba0e1d714984251f800028ffd018863c9bb51aa8fae4b5b7ebff02f9
+runfiles size=3
+ texmf-dist/tex/latex/pst-dbicons/pst-dbicons.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-dbicons
+catalogue-license lppl
+catalogue-topics diagram pstricks
+catalogue-version 0.16

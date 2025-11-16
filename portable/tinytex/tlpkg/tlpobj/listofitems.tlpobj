@@ -1,0 +1,26 @@
+name listofitems
+category Package
+revision 70579
+shortdesc Grab items in lists using user-specified sep char
+longdesc This simple package is designed to read a list of items whose
+longdesc parsing character may be selected by the user. Once the list is
+longdesc read, its items are stored in a structure that behaves as a
+longdesc dimensioned array. As such, it becomes very easy to access an
+longdesc item in the list by its number. For example, if the list is
+longdesc stored in the macro \foo, the item #3 is designated by \foo[3].
+longdesc A component may, in turn, be a list with a parsing delimiter
+longdesc different from the parent list, paving the way for nesting and
+longdesc employing a syntax reminiscent of an array of several
+longdesc dimensions of the type \foo[3,2] to access the item #2 of the
+longdesc list contained within the item #3 of the top-tier list.
+containersize 7760
+containerchecksum 808395fdb8c7b9ec738e26eb582fbcf4555291695dff70558d415b34c640cbc4362be358ec35582be18066ff419718f70ca2be65ee30aee85d2fd57d7cd7b6a0
+doccontainersize 406384
+doccontainerchecksum 57cbb93175df4f4766d3a00ffdd6701ed4c14efe8d33ce831412f93fd5fb025ae4cca4e1ec16ec6172da12dff830c61c9d888450f9b84197d45566309ba6eac3
+runfiles size=9
+ texmf-dist/tex/generic/listofitems/listofitems.sty
+ texmf-dist/tex/generic/listofitems/listofitems.tex
+catalogue-ctan /macros/generic/listofitems
+catalogue-license lppl1.3c
+catalogue-topics text-manip list
+catalogue-version 1.65

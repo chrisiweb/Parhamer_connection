@@ -1,0 +1,23 @@
+name pst-infixplot
+category Package
+revision 15878
+shortdesc Using PSTricks plotting capacities with infix expressions rather than RPN
+longdesc Plotting functions with pst-plot is very powerful but sometimes
+longdesc difficult to learn since the syntax of \psplot and
+longdesc \parametricplot requires some PostScript knowledge. The
+longdesc infix-RPN and pst-infixplot styles simplify the usage of
+longdesc pst-plot for the beginner, providing macro commands that
+longdesc convert natural mathematical expressions to PostScript syntax.
+containersize 3340
+containerchecksum a8e69a4bc20752d5f6d455f34fc4810e569a5f444de257c1b50c76d567a23d868b0e19c9f4656370a12d3a53ef35ad43e7dcc946782c19ef76091634bc2440a0
+doccontainersize 155392
+doccontainerchecksum 0b6958f851af834917ab04f39bf60d50e26eb61ea52c9dee91274714ec0a87519323b1f9ef7d665f0a6d05cc97e6f8b1bf51617f2c57a5d80ebb96ba1aa94306
+runfiles size=7
+ texmf-dist/tex/generic/pst-infixplot/infix-RPN.tex
+ texmf-dist/tex/generic/pst-infixplot/pst-infixplot.tex
+ texmf-dist/tex/latex/pst-infixplot/infix-RPN.sty
+ texmf-dist/tex/latex/pst-infixplot/pst-infixplot.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-infixplot
+catalogue-license lppl
+catalogue-topics graphics-plot pstricks
+catalogue-version 0.11

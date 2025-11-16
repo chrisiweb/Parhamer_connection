@@ -1,0 +1,257 @@
+musix11 0 251
+'&#x60;' '1' grave 0              % generated from musix11.tfm, 2022-11-24-12:10
+'&#x00B4;' '1' acute 1            % Copyright 2022 TeX Users Group
+'&#x02C6;' '1' circumflex 2       %
+'&#x02DC;' '1' tilde 3            % This work may be distributed and/or modified under the
+'&#x00A8;' '1' dieresis 4         % conditions of the LaTeX Project Public License, either
+'&#x02DD;' '1' hungarumlaut 5     % version 1.3c of this license or (at your option) any
+'&#x02DA;' '1' ring 6             % later version. The latest version of this license is in
+'&#x02C7;' '1' caron 7            %   http://www.latex-project.org/lppl.txt
+'&#x02D8;' '1' breve 8            % and version 1.3c or later is part of all distributions
+'&#x00AF;' '1' macron 9           % of LaTeX version 2005/12/01 or later.
+'&#x02D9;' '1' dotaccent 10       %
+'&#x00B8;' '1' cedilla 11         % This work has the LPPL maintenance status "maintained".
+'&#x02DB;' '1' ogonek 12          %
+'&#x201A;' '1' quotesinglbase 13  % The Current Maintainer of this work
+'&#x2039;' '1' guilsinglleft 14   % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x203A;' '1' guilsinglright 15  %
+'&#x201C;' '1' quotedblleft 16    % If you modify this program, changing the
+'&#x201D;' '1' quotedblright 17   % version identification would be appreciated.
+'&#x201E;' '1' quotedblbase 18
+'&#x00AB;' '1' guillemotleft 19
+'&#x00BB;' '1' guillemotright 20
+'&#x2013;' '1' endash 21
+'&#x2014;' '1' emdash 22
+'&#x200C;' '1' cwm 23
+'&#x2030;' '1' perthousand 24
+'&#x0131;' '1' dotlessi 25
+'&#x0237;' '1' dotlessj 26
+'&#xFB00;' '1' ff 27
+'&#xFB01;' '1' fi 28
+'&#xFB02;' '1' fl 29
+'&#xFB03;' '1' ffi 30
+'&#xFB04;' '1' ffl 31
+' ' '1' space 32
+'!' '1' exclam 33
+'"' '1' quotedbl 34
+'#' '1' numbersign 35
+'$' '1' dollar 36
+'%' '1' percent 37
+'&amp;' '1' ampersand 38
+'&#x2019;' '1' quoteright 39
+'(' '1' parenleft 40
+')' '1' parenright 41
+'*' '1' asterisk 42
+'+' '1' plus 43
+',' '1' comma 44
+'-' '1' hyphen 45
+'.' '1' period 46
+'/' '1' slash 47
+'0' '1' zero 48
+'1' '1' one 49
+'2' '1' two 50
+'3' '1' three 51
+'4' '1' four 52
+'5' '1' five 53
+'6' '1' six 54
+'7' '1' seven 55
+'8' '1' eight 56
+'9' '1' nine 57
+':' '1' colon 58
+';' '1' semicolon 59
+'&lt;' '1' less 60
+'=' '1' equal 61
+'&gt;' '1' greater 62
+'?' '1' question 63
+'@' '1' at 64
+'A' '1' A 65
+'B' '1' B 66
+'C' '1' C 67
+'D' '1' D 68
+'E' '1' E 69
+'F' '1' F 70
+'G' '1' G 71
+'H' '1' H 72
+'I' '1' I 73
+'J' '1' J 74
+'K' '1' K 75
+'L' '1' L 76
+'M' '1' M 77
+'N' '1' N 78
+'O' '1' O 79
+'P' '1' P 80
+'Q' '1' Q 81
+'R' '1' R 82
+'S' '1' S 83
+'T' '1' T 84
+'U' '1' U 85
+'V' '1' V 86
+'W' '1' W 87
+'X' '1' X 88
+'Y' '1' Y 89
+'&#x266D;' '' Z 90
+'&#x1D12B;' '' bracketleft 91
+'&#x266F;' '' backslash 92
+'&#x1D12A;' '' bracketright 93
+'&#x266E;' '' asciicircum 94
+'_' '1' underscore 95
+'&#x2018;' '1' quoteleft 96
+'a' '1' a 97
+'b' '1' b 98
+'c' '1' c 99
+'d' '1' d 100
+'e' '1' e 101
+'f' '1' f 102
+'g' '1' g 103
+'h' '1' h 104
+'i' '1' i 105
+'j' '1' j 106
+'k' '1' k 107
+'l' '1' l 108
+'m' '1' m 109
+'n' '1' n 110
+'o' '1' o 111
+'p' '1' p 112
+'q' '1' q 113
+'r' '1' r 114
+'s' '1' s 115
+'t' '1' t 116
+'u' '1' u 117
+'v' '1' v 118
+'w' '1' w 119
+'x' '1' x 120
+'y' '1' y 121
+'z' '1' z 122
+'{' '1' braceleft 123
+'|' '1' bar 124
+'}' '1' braceright 125
+'~' '1' asciitilde 126
+'&#x00AD;' '1' sfthyphen 127
+'&#x0102;' '1' Abreve 128
+'&#x0104;' '1' Aogonek 129
+'&#x0106;' '1' Cacute 130
+'&#x010C;' '1' Ccaron 131
+'&#x010E;' '1' Dcaron 132
+'&#x011A;' '1' Ecaron 133
+'&#x0118;' '1' Eogonek 134
+'&#x011E;' '1' Gbreve 135
+'&#x0139;' '1' Lacute 136
+'&#x013D;' '1' Lcaron 137
+'&#x0141;' '1' Lslash 138
+'&#x0143;' '1' Nacute 139
+'&#x0147;' '1' Ncaron 140
+'&#x014A;' '1' Eng 141
+'&#x0150;' '1' Ohungarumlaut 142
+'&#x0154;' '1' Racute 143
+'&#x0158;' '1' Rcaron 144
+'&#x015A;' '1' Sacute 145
+'&#x0160;' '1' Scaron 146
+'&#x015E;' '1' Scedilla 147
+'&#x0164;' '1' Tcaron 148
+'&#x0162;' '1' Tcedilla 149
+'&#x0170;' '1' Uhungarumlaut 150
+'&#x016E;' '1' Uring 151
+'&#x0178;' '1' Ydieresis 152
+'&#x0179;' '1' Zacute 153
+'&#x017D;' '1' Zcaron 154
+'&#x017B;' '1' Zdotaccent 155
+'&#x0132;' '1' IJ 156
+'&#x0130;' '1' Idotaccent 157
+'&#x0111;' '1' dcroat 158
+'&#x00A7;' '1' section 159
+'&#x0103;' '1' abreve 160
+'&#x0105;' '1' aogonek 161
+'&#x0107;' '1' cacute 162
+'&#x010D;' '1' ccaron 163
+'&#x010F;' '1' dcaron 164
+'&#x011B;' '1' ecaron 165
+'&#x0119;' '1' eogonek 166
+'&#x011F;' '1' gbreve 167
+'&#x013A;' '1' lacute 168
+'&#x013E;' '1' lcaron 169
+'&#x0142;' '1' lslash 170
+'&#x0144;' '1' nacute 171
+'&#x0148;' '1' ncaron 172
+'&#x014B;' '1' eng 173
+'&#x0151;' '1' ohungarumlaut 174
+'&#x0155;' '1' racute 175
+'&#x0159;' '1' rcaron 176
+'&#x015B;' '1' sacute 177
+'&#x0161;' '1' scaron 178
+'&#x015F;' '1' scedilla 179
+'&#x0165;' '1' tcaron 180
+'&#x0163;' '1' tcedilla 181
+'&#x0171;' '1' uhungarumlaut 182
+'&#x016F;' '1' uring 183
+'&#x00FF;' '1' ydieresis 184
+'&#x017A;' '1' zacute 185
+'&#x017E;' '1' zcaron 186
+'&#x017C;' '1' zdotaccent 187
+'' '1'
+'' '1'
+'' '1'
+'' '1'
+'&#x00C0;' '1' Agrave 192
+'&#x00C1;' '1' Aacute 193
+'&#x00C2;' '1' Acircumflex 194
+'&#x00C3;' '1' Atilde 195
+'&#x00C4;' '1' Adieresis 196
+'&#x00C5;' '1' Aring 197
+'&#x00C6;' '1' AE 198
+'&#x00C7;' '1' Ccedilla 199
+'&#x00C8;' '1' Egrave 200
+'&#x00C9;' '1' Eacute 201
+'&#x00CA;' '1' Ecircumflex 202
+'&#x00CB;' '1' Edieresis 203
+'&#x00CC;' '1' Igrave 204
+'&#x00CD;' '1' Iacute 205
+'&#x00CE;' '1' Icircumflex 206
+'&#x00CF;' '1' Idieresis 207
+'&#x00D0;' '1' Eth 208
+'&#x00D1;' '1' Ntilde 209
+'&#x00D2;' '1' Ograve 210
+'&#x00D3;' '1' Oacute 211
+'&#x00D4;' '1' Ocircumflex 212
+'&#x00D5;' '1' Otilde 213
+'&#x00D6;' '1' Odieresis 214
+'&#x0152;' '1' OE 215
+'&#x00D8;' '1' Oslash 216
+'&#x00D9;' '1' Ugrave 217
+'&#x00DA;' '1' Uacute 218
+'&#x00DB;' '1' Ucircumflex 219
+'&#x00DC;' '1' Udieresis 220
+'&#x00DD;' '1' Yacute 221
+'&#x00DE;' '1' Thorn 222
+'SS' '1' SS 223
+'&#x00E0;' '1' agrave 224
+'&#x00E1;' '1' aacute 225
+'&#x00E2;' '1' acircumflex 226
+'&#x00E3;' '1' atilde 227
+'&#x00E4;' '1' adieresis 228
+'&#x00E5;' '1' aring 229
+'&#x00E6;' '1' ae 230
+'&#x00E7;' '1' ccedilla 231
+'&#x00E8;' '1' egrave 232
+'&#x00E9;' '1' eacute 233
+'&#x00EA;' '1' ecircumflex 234
+'&#x00EB;' '1' edieresis 235
+'&#x00EC;' '1' igrave 236
+'&#x00ED;' '1' iacute 237
+'&#x00EE;' '1' icircumflex 238
+'&#x00EF;' '1' idieresis 239
+'&#x00F0;' '1' eth 240
+'&#x00F1;' '1' ntilde 241
+'&#x00F2;' '1' ograve 242
+'&#x00F3;' '1' oacute 243
+'&#x00F4;' '1' ocircumflex 244
+'&#x00F5;' '1' otilde 245
+'&#x00F6;' '1' odieresis 246
+'&#x0153;' '1' oe 247
+'&#x00F8;' '1' oslash 248
+'&#x00F9;' '1' ugrave 249
+'&#x00FA;' '1' uacute 250
+'&#x00FB;' '1' ucircumflex 251
+musix11 0 251
+htfcss:  musix11  font-family: 'musix11', serif;
+
+

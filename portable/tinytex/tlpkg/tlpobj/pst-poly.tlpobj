@@ -1,0 +1,21 @@
+name pst-poly
+category Package
+revision 35062
+shortdesc Polygons with PSTricks
+longdesc This PSTricks package provides a really rather simple command
+longdesc \PstPolygon that will draw various regular and non-regular
+longdesc polygons (according to command parameters); various shortcuts
+longdesc to commonly-used polygons are provided, as well as a command
+longdesc \pspolygonbox that frames text with a polygon. The package uses
+longdesc the xkeyval package for argument decoding.
+containersize 3176
+containerchecksum badd0fcc2b439ba270d5375703f91df9009fb7eae920915eab8757185da0c6665c34d530d9b4d8bf469767dd79ee834ded104a0fd98243a1e8a17cda47be0f79
+doccontainersize 141292
+doccontainerchecksum 0facae2d565a22853a6e455534065f5954571311898e0850fcee7b18909f1cd0fe06b116138faedda6767d8514d44f7d843c13985f8723ccb8ec03a81bbaa46a
+runfiles size=4
+ texmf-dist/tex/generic/pst-poly/pst-poly.tex
+ texmf-dist/tex/latex/pst-poly/pst-poly.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-poly
+catalogue-license lppl
+catalogue-topics maths pstricks
+catalogue-version 1.63

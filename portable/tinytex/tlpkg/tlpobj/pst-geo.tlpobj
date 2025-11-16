@@ -1,0 +1,82 @@
+name pst-geo
+category Package
+revision 74247
+shortdesc Geographical Projections
+longdesc The package offers a set of PSTricks related packages for
+longdesc various cartographic projections of the terrestrial sphere. The
+longdesc package pst-map2d provides conventional projections such as
+longdesc Mercator, Lambert, cylindrical, etc. The package pst-map3d
+longdesc treats representation in three dimensions of the terrestrial
+longdesc sphere. Packages pst-map2dII and pst-map3dII allow use of the
+longdesc CIA World DataBank II. Various parameters of the packages allow
+longdesc for choice of the level of the detail and the layouts possible
+longdesc (cities, borders, rivers etc). Substantial data files are
+longdesc provided, in an (internally) compressed format. Decompression
+longdesc happens on-the-fly as a document using the data is displayed,
+longdesc printed or converted to PDF format. A Perl script is provided
+longdesc for the user to do the decompression, if the need should arise.
+containersize 24297580
+containerchecksum e14be4b4358571b2de072ed17c715dc467ef5bc3ca6906c1e5f4219665256dd6841bab9eaf47cc98c72a20b4e8d8251d0881fc8799cada6189d51e4fdc03110b
+doccontainersize 137077840
+doccontainerchecksum 84ed84b5e4440855e7bd63362af30fd652591480854bd44f03f5e0e400bcf6260cbfd6d34458423b1c3289777eeb2a4f4a79ce4c157d74e34cebb2fd3da46b04
+runfiles size=6064
+ texmf-dist/dvips/pst-geo/pst-geo.pro
+ texmf-dist/tex/generic/pst-geo/data/README.data
+ texmf-dist/tex/generic/pst-geo/data/Staedte3dJG.tex
+ texmf-dist/tex/generic/pst-geo/data/africa-bdy_II.dat
+ texmf-dist/tex/generic/pst-geo/data/africa-cil_II.dat
+ texmf-dist/tex/generic/pst-geo/data/africa-riv_II.dat
+ texmf-dist/tex/generic/pst-geo/data/asia-bdy_II.dat
+ texmf-dist/tex/generic/pst-geo/data/asia-cil_II.dat
+ texmf-dist/tex/generic/pst-geo/data/asia-isl_II.dat
+ texmf-dist/tex/generic/pst-geo/data/asia-riv_II.dat
+ texmf-dist/tex/generic/pst-geo/data/aus.dat
+ texmf-dist/tex/generic/pst-geo/data/c-cap.dat
+ texmf-dist/tex/generic/pst-geo/data/c-sub.dat
+ texmf-dist/tex/generic/pst-geo/data/canada.dat
+ texmf-dist/tex/generic/pst-geo/data/capitals.dat
+ texmf-dist/tex/generic/pst-geo/data/capitals.tex
+ texmf-dist/tex/generic/pst-geo/data/capitals3d.tex
+ texmf-dist/tex/generic/pst-geo/data/cities.data
+ texmf-dist/tex/generic/pst-geo/data/cities.tex
+ texmf-dist/tex/generic/pst-geo/data/citycapitals.dat
+ texmf-dist/tex/generic/pst-geo/data/citysub.dat
+ texmf-dist/tex/generic/pst-geo/data/convert.py
+ texmf-dist/tex/generic/pst-geo/data/corse.dat
+ texmf-dist/tex/generic/pst-geo/data/europe-bdy_II.dat
+ texmf-dist/tex/generic/pst-geo/data/europe-cil_II.dat
+ texmf-dist/tex/generic/pst-geo/data/europe-riv_II.dat
+ texmf-dist/tex/generic/pst-geo/data/france.dat
+ texmf-dist/tex/generic/pst-geo/data/germany.dat
+ texmf-dist/tex/generic/pst-geo/data/mexico.dat
+ texmf-dist/tex/generic/pst-geo/data/northamerica-bdy_II.dat
+ texmf-dist/tex/generic/pst-geo/data/northamerica-cil_II.dat
+ texmf-dist/tex/generic/pst-geo/data/northamerica-pby_II.dat
+ texmf-dist/tex/generic/pst-geo/data/northamerica-riv_II.dat
+ texmf-dist/tex/generic/pst-geo/data/pborder.dat
+ texmf-dist/tex/generic/pst-geo/data/pcoast.dat
+ texmf-dist/tex/generic/pst-geo/data/pisland.dat
+ texmf-dist/tex/generic/pst-geo/data/plake.dat
+ texmf-dist/tex/generic/pst-geo/data/rhone.dat
+ texmf-dist/tex/generic/pst-geo/data/ridge.dat
+ texmf-dist/tex/generic/pst-geo/data/river.dat
+ texmf-dist/tex/generic/pst-geo/data/seine.dat
+ texmf-dist/tex/generic/pst-geo/data/southamerica-arc_II.dat
+ texmf-dist/tex/generic/pst-geo/data/southamerica-bdy_II.dat
+ texmf-dist/tex/generic/pst-geo/data/southamerica-cil_II.dat
+ texmf-dist/tex/generic/pst-geo/data/southamerica-riv_II.dat
+ texmf-dist/tex/generic/pst-geo/data/transfrm.dat
+ texmf-dist/tex/generic/pst-geo/data/trench.dat
+ texmf-dist/tex/generic/pst-geo/data/usa.dat
+ texmf-dist/tex/generic/pst-geo/data/villesFrance.tex
+ texmf-dist/tex/generic/pst-geo/data/villesFrance3d.tex
+ texmf-dist/tex/generic/pst-geo/data/villesItalia.tex
+ texmf-dist/tex/generic/pst-geo/data/villesItalia3d.tex
+ texmf-dist/tex/generic/pst-geo/data/wfraczon.dat
+ texmf-dist/tex/generic/pst-geo/data/wmaglin.dat
+ texmf-dist/tex/generic/pst-geo/pst-geo.tex
+ texmf-dist/tex/latex/pst-geo/pst-geo.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-geo
+catalogue-license lppl
+catalogue-topics cartography pstricks
+catalogue-version 0.09

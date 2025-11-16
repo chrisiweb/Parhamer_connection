@@ -1,0 +1,27 @@
+name catcodes
+category Package
+revision 38859
+shortdesc Generic handling of TeX category codes
+longdesc The bundle deals with category code switching; the packages of
+longdesc the bundle should work with any TeX format (with the support of
+longdesc the plainpkg package). The bundle provides: stacklet.sty, which
+longdesc supports stacks that control the use of different catcodes;
+longdesc actcodes.sty, which deals with active characters; and
+longdesc catchdq.sty, which provides a simple quotation character
+longdesc control mechanism.
+containersize 6288
+containerchecksum 6eeba6d0c7435050e5ca07a6b0a24bca1714a9ba3d3a20168547502c2ec954b9d74918767c9728c1595355fdb84eb74ef258fee86cae1907fc5b186ccac0a939
+doccontainersize 542996
+doccontainerchecksum 4dbf09f34abc39d9aa5003ce3defe4f5a04b0cade5d6a848bbde4ff3f35ff6bd511b8dd8dade14f92b1ba38bda2595da65da589b0236920c7aa340d245e0cb7c
+srccontainersize 6940
+srccontainerchecksum 157520a8e968f5236add71d55aab0ddec48eeac801349ae1900cf70bcaf1faa4cfe98632ac5fa41cabee6dfb6fa46655a609023329d161cad06ece33f10d03d7
+runfiles size=7
+ texmf-dist/tex/generic/catcodes/actcodes.sty
+ texmf-dist/tex/generic/catcodes/catchdq.sty
+ texmf-dist/tex/generic/catcodes/catcodes.RLS
+ texmf-dist/tex/generic/catcodes/stacklet.sty
+catalogue-contact-support http://www.webdesign-bu.de/uwe_lueck/contact.html
+catalogue-ctan /macros/generic/catcodes
+catalogue-license lppl1.3
+catalogue-topics macro-supp quote-marks macro-gen
+catalogue-version r0.2

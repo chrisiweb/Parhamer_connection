@@ -1,0 +1,18 @@
+name pst-tree
+category Package
+revision 60421
+shortdesc Trees, using PSTricks
+longdesc pst-tree is a pstricks package that defines a macro \pstree
+longdesc which offers a structured way of joining nodes created using
+longdesc pst-node in order to draw trees.
+containersize 6712
+containerchecksum 39d6f88d9b0dd4280cd08cad6524fa693cf727bdbacf16063d76e100e16f957602124ee71421e88f389a7ba5070a932d779a2abbb64d791bbc071398f09a8708
+doccontainersize 205684
+doccontainerchecksum 6ac862eff40eaa1a8cacc5c1a1d4886e82dee53046d3fbf631ec23bfb59490fe89bdde5f2767cba35e8d0439fa7b7688669b50ba3ce81698c34bcfc9d010a7e6
+runfiles size=10
+ texmf-dist/tex/generic/pst-tree/pst-tree.tex
+ texmf-dist/tex/latex/pst-tree/pst-tree.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-tree
+catalogue-license lppl
+catalogue-topics tree linguistic
+catalogue-version 1.14

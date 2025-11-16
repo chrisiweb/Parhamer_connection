@@ -1,0 +1,18 @@
+name nth
+category Package
+revision 54252
+shortdesc Generate English ordinal numbers
+longdesc The command \nth{<number>} generates English ordinal numbers of
+longdesc the form 1st, 2nd, 3rd, 4th, etc. LaTeX package options may
+longdesc specify that the ordinal mark be superscripted, and that
+longdesc negative numbers may be treated; Plain TeX users have no access
+longdesc to package options, so need to redefine macros for these
+longdesc changes.
+containersize 1380
+containerchecksum e94365bee89f78b13ec22d8d34ac78aaf50f060f9282c0529d98518ce1e5b7f7995bd2da1d17654ed795f7555e7dcfd9d51399f4a83affc059eb3a760a76bf97
+runfiles size=1
+ texmf-dist/tex/generic/nth/nth.sty
+catalogue-also engord
+catalogue-ctan /macros/generic/misc/nth.sty
+catalogue-license pd
+catalogue-topics numbers

@@ -1,0 +1,20 @@
+name pst-gr3d
+category Package
+revision 15878
+shortdesc Three dimensional grids with PSTricks
+longdesc This PSTricks package provides a command \PstGridThreeD that
+longdesc will draw a three dimensional grid, offering a number of
+longdesc options for its appearance.
+containersize 2500
+containerchecksum 85cbaa41c3cce49aeda36ef55a89122370fc23dc91c5e5e63790aff2b8b748eb6a13a9a921836b2a471ab2deb9577ecf59be0bc6dfa4d2f1ddcf17bc33ca4264
+doccontainersize 157396
+doccontainerchecksum bd9026c7730dce9c09a092cc420fa7ca8d7c85db4a1f9a665a64f933595b43397027904c08311ab2301305f79a426a1b726b8df2c237c8a545726fadf9b8ed30
+srccontainersize 8788
+srccontainerchecksum ce6786ec803ceeb33fd42d2d786d119ec2f604c1d4b4f7a51c6e9ce9e4171f01fff33b66b234a5af854e5bee24f23bb50abb898ab89c568150a50ffd8ff7d582
+runfiles size=3
+ texmf-dist/tex/generic/pst-gr3d/pst-gr3d.tex
+ texmf-dist/tex/latex/pst-gr3d/pst-gr3d.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-gr3d
+catalogue-license lppl
+catalogue-topics typeset-grid graphics-3d pstricks
+catalogue-version 1.34

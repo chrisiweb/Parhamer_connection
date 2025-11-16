@@ -1,0 +1,29 @@
+name eoldef
+category Package
+revision 76050
+shortdesc Define commands which absorb the whole source line as arguments
+longdesc This macro allows you to define commands that take the entire
+longdesc source line as arguments. Usage: \eoldef <control sequence>
+longdesc <parameter text> { <replacement text>} defines a control
+longdesc sequence that is delimited by the end-of-line in addition to
+longdesc the specified parameter text. For instance, \eoldef\test#1:#2{}
+longdesc and \test abc:def will give #1 = abc, #2 = def. \eolgdef is the
+longdesc \global variant to \eoldef. Like \verb|...|, \eoldef'd commands
+longdesc may generally not be used as part of another command's argument
+longdesc as it changes catcodes. However, if you must use it in
+longdesc environments where catcodes are frozen, you may follow the
+longdesc command with a braced argument, eg. \test{#1:#2} using the
+longdesc previous example. This package may be used in plain TeX or
+longdesc LaTeX by \input{eoldef}.
+containersize 1676
+containerchecksum 1668f67f2d4460f22cf7be2537c816bc0732c1f1750ef62653048d463375cb3a8702f106fd65856d99808dac5745ee6328400a5e8c303494a7a24fa29fd88364
+doccontainersize 147152
+doccontainerchecksum f554c635c5db6f69f59101da560b884074376f9c141e9cdff0095e0473beefaf03a7c042e199abeea24fd90a47be361a5441171af3b483ae0cdfbddb760d1a1b
+runfiles size=2
+ texmf-dist/tex/generic/eoldef/eoldef.sty
+ texmf-dist/tex/generic/eoldef/eoldef.tex
+catalogue-also optex
+catalogue-ctan /macros/generic/eoldef
+catalogue-license lppl1.3c
+catalogue-topics macro-def etex
+catalogue-version 1.1

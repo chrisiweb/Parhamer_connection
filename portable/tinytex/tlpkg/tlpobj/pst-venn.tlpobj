@@ -1,0 +1,17 @@
+name pst-venn
+category Package
+revision 49316
+shortdesc A PSTricks package for drawing Venn sets
+longdesc This is a PSTricks related package for drawing Venn diagrams
+longdesc with three circles.
+containersize 1448
+containerchecksum 63baf8075ef294bc3a909b3160fa7868a7f179c832d680728fe463f8b1c058411a1393614ade666824fa3233d6617b1dd4e0c50c299a620bc459104515c85727
+doccontainersize 35532
+doccontainerchecksum e332f8ed24744c03c32bfd139a38dabfca1c6eaf9c5c4624d1579c16feda26e42e81b39dafc98527e8bdaacc2e3ff2d246c6f4b88d89bebfaadd57454e08af7e
+runfiles size=1
+ texmf-dist/tex/latex/pst-venn/pst-venn.sty
+catalogue-also venndiagram venn
+catalogue-ctan /graphics/pstricks/contrib/pst-venn
+catalogue-license lppl
+catalogue-topics diagram-maths pstricks
+catalogue-version 0.01

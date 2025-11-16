@@ -1,0 +1,24 @@
+name pst-sigsys
+category Package
+revision 21667
+shortdesc Support of signal processing-related disciplines
+longdesc The package offers a collection of useful macros for
+longdesc disciplines related to signal processing. It defines macros for
+longdesc plotting a sequence of numbers, drawing the pole-zero diagram
+longdesc of a system, shading the region of convergence, creating an
+longdesc adder or a multiplier node, placing a framed node at a given
+longdesc coordinate, creating an up-sampler or a down-sampler node,
+longdesc drawing the block diagram of a system, drawing adaptive
+longdesc systems, sequentially connecting a list of nodes, and
+longdesc connecting a list of nodes using any node-connecting macro.
+containersize 4696
+containerchecksum db3d3dd31c4166a132a174cc9b2a86fb226496c663c1ba95b36f6590e18799c5eb4e8587ccc3db5de0d3833729ffa90080cf037519b2a7ba24c70fe381aedad9
+doccontainersize 286952
+doccontainerchecksum ae2869eaa649898daf057875d28fef1be5f20caf0b7385ba7723e9be51e534cc69b953bba8ad4fa6d04a0d67f85659c82ec08043ba760279a6759c20a2c27d0f
+runfiles size=6
+ texmf-dist/tex/generic/pst-sigsys/pst-sigsys.tex
+ texmf-dist/tex/latex/pst-sigsys/pst-sigsys.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-sigsys
+catalogue-license lppl
+catalogue-topics physics engineering pstricks
+catalogue-version 1.4

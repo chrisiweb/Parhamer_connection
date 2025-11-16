@@ -1,0 +1,18 @@
+name pst-stru
+category Package
+revision 38613
+shortdesc Civil engineering diagrams, using PSTricks
+longdesc This PSTricks-based package provides facilities to draw
+longdesc structural schemes in civil engineering analysis, for beams,
+longdesc portals, arches and piles.
+containersize 3336
+containerchecksum bc0961c1f9afb68f66c4af9aa9d37cd8cc7c6047f55920d12cfb14a18b2c2288c8468c8d9f0e21eb7e395eaa884f0216b37a6fa947fb2c5ef51d57996ba8bb5f
+doccontainersize 160184
+doccontainerchecksum b9352eb01e9d80049a474e0b5a513bb8835be16af4226b4f4269d9a94d64b81a842e640ab316f066595b0b6053080042deac4b0cce1bbc602ea0e029f7809cd3
+runfiles size=4
+ texmf-dist/tex/generic/pst-stru/pst-stru.tex
+ texmf-dist/tex/latex/pst-stru/pst-stru.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-stru
+catalogue-license lppl
+catalogue-topics graphics-use engineering
+catalogue-version 0.13

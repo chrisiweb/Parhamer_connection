@@ -1,0 +1,21 @@
+name pst-bspline
+category Package
+revision 40685
+shortdesc Draw cubic Bspline curves and interpolations
+longdesc The package draws uniform, cubic B-spline curves, open and
+longdesc closed, based on a sequence of B-spline control points. There
+longdesc is also code which permits drawing the open or closed cubic
+longdesc Bspline curve interpolating a sequence of points. Graphical
+longdesc output is created using PStricks.
+containersize 8552
+containerchecksum 1f39a02cb0d56b4fcb8ed3a3768b59a9d14ac14769783dfde7108d86a8c6d68d79342df501c60efcfb8aca4c7f97fffecfe4cd0ea0f4fb76e528f696180b6dfc
+doccontainersize 161708
+doccontainerchecksum 1f2b8c3f5d85db4215cb11fcd663c33fc1e34e764432a2285f879ec8bf7acb9d09368c6a9910618ee99c3305d701aff5e5d401c227d0c1db9028be3690b5216c
+runfiles size=11
+ texmf-dist/dvips/pst-bspline/pst-bspline.pro
+ texmf-dist/tex/generic/pst-bspline/pst-bspline.tex
+ texmf-dist/tex/latex/pst-bspline/pst-bspline.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-bspline
+catalogue-license lppl1.3
+catalogue-topics graphics-curve pstricks
+catalogue-version 1.62

@@ -1,0 +1,261 @@
+bsmiu8f 0 255
+'&#x8F00;' '' uni8F00 0   % generated from bsmiu8f.tfm, 2023-02-05-20:38
+'&#x8F01;' '' uni8F01 1   % Copyright 2023 TeX Users Group
+'&#x8F02;' '' uni8F02 2   %
+'&#x8F03;' '' uni8F03 3   % This work may be distributed and/or modified under the
+'' ''                     % conditions of the LaTeX Project Public License, either
+'&#x8F05;' '' uni8F05 5   % version 1.3c of this license or (at your option) any
+'&#x8F06;' '' uni8F06 6   % later version. The latest version of this license is in
+'&#x8F07;' '' uni8F07 7   %   http://www.latex-project.org/lppl.txt
+'&#x8F08;' '' uni8F08 8   % and version 1.3c or later is part of all distributions
+'&#x8F09;' '' uni8F09 9   % of LaTeX version 2005/12/01 or later.
+'&#x8F0A;' '' uni8F0A 10  %
+'&#x8F0B;' '' uni8F0B 11  % This work has the LPPL maintenance status "maintained".
+'' ''                     %
+'&#x8F0D;' '' uni8F0D 13  % The Current Maintainer of this work
+'&#x8F0E;' '' uni8F0E 14  % is the TeX4ht Project <http://tug.org/tex4ht>.
+'' ''                     %
+'&#x8F10;' '' uni8F10 16  % If you modify this program, changing the
+'&#x8F11;' '' uni8F11 17  % version identification would be appreciated.
+'&#x8F12;' '' uni8F12 18
+'&#x8F13;' '' uni8F13 19
+'&#x8F14;' '' uni8F14 20
+'&#x8F15;' '' uni8F15 21
+'&#x8F16;' '' uni8F16 22
+'&#x8F17;' '' uni8F17 23
+'&#x8F18;' '' uni8F18 24
+'' ''
+'&#x8F1A;' '' uni8F1A 26
+'&#x8F1B;' '' uni8F1B 27
+'&#x8F1C;' '' uni8F1C 28
+'&#x8F1D;' '' uni8F1D 29
+'&#x8F1E;' '' uni8F1E 30
+'&#x8F1F;' '' uni8F1F 31
+'&#x8F20;' '' uni8F20 32
+'' ''
+'' ''
+'&#x8F23;' '' uni8F23 35
+'&#x8F24;' '' uni8F24 36
+'&#x8F25;' '' uni8F25 37
+'&#x8F26;' '' uni8F26 38
+'' ''
+'' ''
+'&#x8F29;' '' uni8F29 41
+'&#x8F2A;' '' uni8F2A 42
+'' ''
+'&#x8F2C;' '' uni8F2C 44
+'' ''
+'&#x8F2E;' '' uni8F2E 46
+'&#x8F2F;' '' uni8F2F 47
+'' ''
+'' ''
+'&#x8F32;' '' uni8F32 50
+'&#x8F33;' '' uni8F33 51
+'&#x8F34;' '' uni8F34 52
+'&#x8F35;' '' uni8F35 53
+'&#x8F36;' '' uni8F36 54
+'&#x8F37;' '' uni8F37 55
+'&#x8F38;' '' uni8F38 56
+'&#x8F39;' '' uni8F39 57
+'' ''
+'&#x8F3B;' '' uni8F3B 59
+'' ''
+'' ''
+'&#x8F3E;' '' uni8F3E 62
+'&#x8F3F;' '' uni8F3F 63
+'&#x8F40;' '' uni8F40 64
+'' ''
+'&#x8F42;' '' uni8F42 66
+'&#x8F43;' '' uni8F43 67
+'&#x8F44;' '' uni8F44 68
+'&#x8F45;' '' uni8F45 69
+'&#x8F46;' '' uni8F46 70
+'&#x8F47;' '' uni8F47 71
+'&#x8F48;' '' uni8F48 72
+'&#x8F49;' '' uni8F49 73
+'' ''
+'&#x8F4B;' '' uni8F4B 75
+'' ''
+'&#x8F4D;' '' uni8F4D 77
+'&#x8F4E;' '' uni8F4E 78
+'&#x8F4F;' '' uni8F4F 79
+'&#x8F50;' '' uni8F50 80
+'&#x8F51;' '' uni8F51 81
+'&#x8F52;' '' uni8F52 82
+'&#x8F53;' '' uni8F53 83
+'&#x8F54;' '' uni8F54 84
+'&#x8F55;' '' uni8F55 85
+'&#x8F56;' '' uni8F56 86
+'&#x8F57;' '' uni8F57 87
+'&#x8F58;' '' uni8F58 88
+'&#x8F59;' '' uni8F59 89
+'&#x8F5A;' '' uni8F5A 90
+'&#x8F5B;' '' uni8F5B 91
+'' ''
+'&#x8F5D;' '' uni8F5D 93
+'&#x8F5E;' '' uni8F5E 94
+'&#x8F5F;' '' uni8F5F 95
+'&#x8F60;' '' uni8F60 96
+'&#x8F61;' '' uni8F61 97
+'&#x8F62;' '' uni8F62 98
+'&#x8F63;' '' uni8F63 99
+'&#x8F64;' '' uni8F64 100
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x8F9B;' '' uni8F9B 155
+'&#x8F9C;' '' uni8F9C 156
+'' ''
+'' ''
+'&#x8F9F;' '' uni8F9F 159
+'' ''
+'' ''
+'' ''
+'&#x8FA3;' '' uni8FA3 163
+'' ''
+'' ''
+'&#x8FA6;' '' uni8FA6 166
+'' ''
+'&#x8FA8;' '' uni8FA8 168
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x8FAD;' '' uni8FAD 173
+'&#x8FAE;' '' uni8FAE 174
+'&#x8FAF;' '' uni8FAF 175
+'&#x8FB0;' '' uni8FB0 176
+'&#x8FB1;' '' uni8FB1 177
+'&#x8FB2;' '' uni8FB2 178
+'' ''
+'&#x8FB4;' '' uni8FB4 180
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x8FBF;' '' uni8FBF 191
+'' ''
+'' ''
+'&#x8FC2;' '' uni8FC2 194
+'' ''
+'&#x8FC4;' '' uni8FC4 196
+'&#x8FC5;' '' uni8FC5 197
+'&#x8FC6;' '' uni8FC6 198
+'' ''
+'' ''
+'&#x8FC9;' '' uni8FC9 201
+'' ''
+'&#x8FCB;' '' uni8FCB 203
+'' ''
+'&#x8FCD;' '' uni8FCD 205
+'&#x8FCE;' '' uni8FCE 206
+'' ''
+'' ''
+'&#x8FD1;' '' uni8FD1 209
+'&#x8FD2;' '' uni8FD2 210
+'&#x8FD3;' '' uni8FD3 211
+'&#x8FD4;' '' uni8FD4 212
+'&#x8FD5;' '' uni8FD5 213
+'&#x8FD6;' '' uni8FD6 214
+'&#x8FD7;' '' uni8FD7 215
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x8FE0;' '' uni8FE0 224
+'&#x8FE1;' '' uni8FE1 225
+'&#x8FE2;' '' uni8FE2 226
+'&#x8FE3;' '' uni8FE3 227
+'&#x8FE4;' '' uni8FE4 228
+'&#x8FE5;' '' uni8FE5 229
+'&#x8FE6;' '' uni8FE6 230
+'' ''
+'&#x8FE8;' '' uni8FE8 232
+'' ''
+'&#x8FEA;' '' uni8FEA 234
+'&#x8FEB;' '' uni8FEB 235
+'' ''
+'&#x8FED;' '' uni8FED 237
+'&#x8FEE;' '' uni8FEE 238
+'' ''
+'&#x8FF0;' '' uni8FF0 240
+'' ''
+'' ''
+'' ''
+'&#x8FF4;' '' uni8FF4 244
+'&#x8FF5;' '' uni8FF5 245
+'&#x8FF6;' '' uni8FF6 246
+'&#x8FF7;' '' uni8FF7 247
+'&#x8FF8;' '' uni8FF8 248
+'' ''
+'&#x8FFA;' '' uni8FFA 250
+'&#x8FFB;' '' uni8FFB 251
+'&#x8FFC;' '' uni8FFC 252
+'&#x8FFD;' '' uni8FFD 253
+'&#x8FFE;' '' uni8FFE 254
+'&#x8FFF;' '' uni8FFF 255
+bsmiu8f 0 255
+htfcss:  bsmiu8f  font-family: 'AR PL Mingti2L Big5', serif;
+
+

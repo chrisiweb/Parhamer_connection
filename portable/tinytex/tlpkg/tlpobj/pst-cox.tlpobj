@@ -1,0 +1,34 @@
+name pst-cox
+category Package
+revision 15878
+shortdesc Drawing regular complex polytopes with PSTricks
+longdesc Pst-cox is a PSTricks package for drawing 2-dimensional
+longdesc projections of complex regular polytopes (after the work of
+longdesc Coxeter). The package consists of a macro library for drawing
+longdesc the projections. The complex polytopes appear in the study of
+longdesc the root systems and play a crucial role in many domains
+longdesc related to mathematics and physics. These polytopes have been
+longdesc completely described by Coxeter in his book "Regular Complex
+longdesc Polytopes". There exist only a finite numbers of exceptional
+longdesc regular complex polytopes (for example the icosahedron) and
+longdesc some infinite series (for example, one can construct a
+longdesc multi-dimensional analogue of the hypercube in any finite
+longdesc dimension). The library contains two packages. The first,
+longdesc pst-coxcoor, is devoted to the exceptional complex regular
+longdesc polytopes whose coordinates have been pre-computed. The second,
+longdesc pst-coxeterp, is devoted to the infinite series.
+containersize 221952
+containerchecksum b7e0e787e5a6d825383a5c06d7aba34e5d7cb12258925b7f0384ec069e873a6652e421f963147648903f6bf063d9592089adee5b043f24dac10e30dc344f0608
+doccontainersize 1069364
+doccontainerchecksum 1de830f83253ef11f092c9ec0e698ff36971c7b6d4237c8eb9f6712bde051b9302d657faa21bf56d34287c838453c611ef1a7c70c09e55ea647bad48ca216e1e
+runfiles size=614
+ texmf-dist/dvips/pst-cox/pst-coxeter.pro
+ texmf-dist/tex/generic/pst-cox/pst-coxcoor.tex
+ texmf-dist/tex/generic/pst-cox/pst-coxeterp.tex
+ texmf-dist/tex/latex/pst-cox/pst-coxcoor.sty
+ texmf-dist/tex/latex/pst-cox/pst-coxeterp.sty
+catalogue-contact-home http://melusine.eu.org/syracuse/pstricks/pst-cox/
+catalogue-ctan /graphics/pstricks/contrib/pst-cox
+catalogue-license lgpl
+catalogue-topics physics maths pstricks
+catalogue-version 0.98 Beta

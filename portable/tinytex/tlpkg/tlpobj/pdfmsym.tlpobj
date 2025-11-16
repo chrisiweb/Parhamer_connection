@@ -1,0 +1,20 @@
+name pdfmsym
+category Package
+revision 66618
+shortdesc PDF Math Symbols -- various drawn mathematical symbols
+longdesc This package defines a handful of mathematical symbols many of
+longdesc which are implemented via PDF's builtin drawing utility. It is
+longdesc intended for use with pdfTeX and LuaTeX and is supported by
+longdesc XeTeX to a lesser extent. Among the symbols it defines are some
+longdesc variants of commonly used ones, as well as more obscure symbols
+longdesc which cannot be as easily found in other TeX or LaTeX packages.
+containersize 7120
+containerchecksum f424a0fcaaf484f919b1e6646c63eff6550711e23cf938886b9cdbcef8719defd1d23efe949916cdf27dda54a87a8eb5448d4c9e8234ffc043dd295937ea5365
+doccontainersize 234168
+doccontainerchecksum a40e39c7ce6e5d93339aeb6a1ffbb23dbecd11656b6c698362157c0fb46477dc4506d6b40269b3e9f10cf8fc0b2c982049d4e732b92c0a3401a0a40614b631e7
+runfiles size=9
+ texmf-dist/tex/generic/pdfmsym/pdfmsym.tex
+catalogue-ctan /macros/generic/pdfmsym
+catalogue-license mit
+catalogue-topics maths-symbol graphics-symb macro-gen
+catalogue-version 1.1.1

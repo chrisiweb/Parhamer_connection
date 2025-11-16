@@ -1,0 +1,27 @@
+name namedef
+category Package
+revision 55881
+shortdesc TeX definitions with named parameters
+longdesc This package provides a prefix \named to be used in TeX
+longdesc definitions so that parameters can be identified by their name
+longdesc rather than by number, giving parameters a semantic rather than
+longdesc syntactic meaning, making it easy to understand long
+longdesc definitions. A usual definition reads: \def\SayHello#1{Hello,
+longdesc #1!} but with namedef you can replace #1 by, say, #[person]:
+longdesc \named\def\SayHello#[person]{Hello, #[person]!} and \named will
+longdesc figure out the numbering of the parameters for you.
+depend l3kernel
+containersize 3564
+containerchecksum c413d600911ab1107554ec2aacadc80fad12a95e7486817c002274f282e047915d06f4878e68e423af649569752cd27d7c1b3a802a9abff68e91038719b2fd28
+doccontainersize 631916
+doccontainerchecksum 72031cf2858a3b68092c852c216f96aaea212c721e47d90e870c8153f83db921590246fb11b59009d431754720791e3c625fb3abd7bdd9010cd1a49894023ebb
+srccontainersize 15372
+srccontainerchecksum adff08a774126c8faff52ba14044a8e2140f9586358dab6ce95e7a941706bf57c32acf0ad75282bd3b01dec8a73fea105c0c65a1453f5903d5eaeb3fe0349b15
+runfiles size=4
+ texmf-dist/tex/generic/namedef/namedef.sty
+catalogue-contact-bugs https://github.com/PhelypeOleinik/namedef/issues
+catalogue-contact-repository https://github.com/PhelypeOleinik/namedef
+catalogue-ctan /macros/generic/namedef
+catalogue-license lppl1.3c
+catalogue-topics macro-def macro-gen expl3
+catalogue-version 1.0

@@ -1,0 +1,69 @@
+name font-change
+category Package
+revision 40403
+shortdesc Macros to change text and mathematics fonts in plain TeX
+longdesc Macros to Change Text and Mathematics fonts in TeX: 45
+longdesc Beautiful Variants The macros are written for plain TeX and may
+longdesc be used with other packages like AmSTeX, eplain, etc. They also
+longdesc work with XeTeX. The macros allow users to change the fonts
+longdesc (for both text and mathematics) in their TeX document with only
+longdesc one statement. The fonts may be used readily at various
+longdesc predefined sizes. All the fonts called by these macro files are
+longdesc free and are included in current MiKTeX and TeX Live
+longdesc distributions.
+containersize 19304
+containerchecksum 8ec91864d719d20ff66195ec1bab456d772417ff2d4d9ae75ecccafe0da616d1dfdf5b965be489a65eb28130b3672a5b55c33f3254f59c00cf204dcae6fd4eb7
+doccontainersize 1766316
+doccontainerchecksum 75f7e45fb5313d0bc1c333253aba2bcd1d650fb6c0baffce6e5c558b0e7aeaf2e697ea9412860b4049d2685cdee26d19f12d9a28184084ab9df66101b78b0361
+runfiles size=135
+ texmf-dist/tex/plain/font-change/default-amssymbols.tex
+ texmf-dist/tex/plain/font-change/font_antp_euler.tex
+ texmf-dist/tex/plain/font-change/font_antt-condensed-light.tex
+ texmf-dist/tex/plain/font-change/font_antt-condensed-medium.tex
+ texmf-dist/tex/plain/font-change/font_antt-condensed.tex
+ texmf-dist/tex/plain/font-change/font_antt-light.tex
+ texmf-dist/tex/plain/font-change/font_antt-medium.tex
+ texmf-dist/tex/plain/font-change/font_antt.tex
+ texmf-dist/tex/plain/font-change/font_arev.tex
+ texmf-dist/tex/plain/font-change/font_artemisia_euler.tex
+ texmf-dist/tex/plain/font-change/font_bera_concrete.tex
+ texmf-dist/tex/plain/font-change/font_bera_euler.tex
+ texmf-dist/tex/plain/font-change/font_bera_fnc.tex
+ texmf-dist/tex/plain/font-change/font_bookman.tex
+ texmf-dist/tex/plain/font-change/font_century.tex
+ texmf-dist/tex/plain/font-change/font_charter.tex
+ texmf-dist/tex/plain/font-change/font_cm.tex
+ texmf-dist/tex/plain/font-change/font_cmbright.tex
+ texmf-dist/tex/plain/font-change/font_concrete.tex
+ texmf-dist/tex/plain/font-change/font_epigrafica_euler.tex
+ texmf-dist/tex/plain/font-change/font_epigrafica_palatino.tex
+ texmf-dist/tex/plain/font-change/font_iwona-bold.tex
+ texmf-dist/tex/plain/font-change/font_iwona-condensed-bold.tex
+ texmf-dist/tex/plain/font-change/font_iwona-condensed-light.tex
+ texmf-dist/tex/plain/font-change/font_iwona-condensed-medium.tex
+ texmf-dist/tex/plain/font-change/font_iwona-condensed.tex
+ texmf-dist/tex/plain/font-change/font_iwona-light.tex
+ texmf-dist/tex/plain/font-change/font_iwona-medium.tex
+ texmf-dist/tex/plain/font-change/font_iwona.tex
+ texmf-dist/tex/plain/font-change/font_kp-light.tex
+ texmf-dist/tex/plain/font-change/font_kp.tex
+ texmf-dist/tex/plain/font-change/font_kurier-bold.tex
+ texmf-dist/tex/plain/font-change/font_kurier-condensed-bold.tex
+ texmf-dist/tex/plain/font-change/font_kurier-condensed-light.tex
+ texmf-dist/tex/plain/font-change/font_kurier-condensed-medium.tex
+ texmf-dist/tex/plain/font-change/font_kurier-condensed.tex
+ texmf-dist/tex/plain/font-change/font_kurier-light.tex
+ texmf-dist/tex/plain/font-change/font_kurier-medium.tex
+ texmf-dist/tex/plain/font-change/font_kurier.tex
+ texmf-dist/tex/plain/font-change/font_libertine_kp.tex
+ texmf-dist/tex/plain/font-change/font_libertine_palatino.tex
+ texmf-dist/tex/plain/font-change/font_libertine_times.tex
+ texmf-dist/tex/plain/font-change/font_mdutopia.tex
+ texmf-dist/tex/plain/font-change/font_pagella.tex
+ texmf-dist/tex/plain/font-change/font_palatino.tex
+ texmf-dist/tex/plain/font-change/font_times.tex
+ texmf-dist/tex/plain/font-change/font_utopia.tex
+catalogue-ctan /macros/plain/contrib/font-change
+catalogue-license other-free
+catalogue-topics font-supp plain-ext
+catalogue-version 2015.2

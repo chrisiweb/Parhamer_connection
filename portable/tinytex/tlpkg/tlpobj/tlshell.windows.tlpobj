@@ -1,0 +1,9 @@
+name tlshell.windows
+category TLCore
+revision 74302
+shortdesc windows files of tlshell
+containersize 2897116
+containerchecksum 18d9f6bdb0cc9838b2c13c03f89a5ff6814e6164d06d761446d28cc1cb47d676062e5bcef20a30c9e8cbe92326fe112d6af2f89aa8c7a2937c1af7d1576d94fa
+binfiles arch=windows size=1616
+ bin/windows/tlshell.exe
+ tlpkg/tltcl/tclkit.exe

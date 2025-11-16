@@ -1,0 +1,17 @@
+name pst-2dplot
+category Package
+revision 15878
+shortdesc A PSTricks package for drawing 2D curves
+longdesc Pst-2dplot is a pstricks package that offers an easy-to-use and
+longdesc intuitive tool for plotting 2-d curves. It defines an
+longdesc environment with commands similar to MATLAB for plotting.
+containersize 1876
+containerchecksum 3109c2709323906ec39bd1be6e7c9151b7b07f9d2dafd5f7af61d3facd3e37ae35bd8bd923968102fc702f35fa4a903e9a50d3a7a85a1c088017aababd16d969
+doccontainersize 69600
+doccontainerchecksum f46a0c8c94900d180fac92e7b393672d010388fe80867f01125cdc7c486eff97ee36cab1aeeeb224b9ab80739c2ddd9e89b84926948acaa8b2b0ae08457ac0ef
+runfiles size=2
+ texmf-dist/tex/latex/pst-2dplot/pst-2dplot.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-2dplot
+catalogue-license lppl
+catalogue-topics graphics-plot pstricks
+catalogue-version 1.5

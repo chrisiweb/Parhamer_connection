@@ -1,0 +1,25 @@
+name hypcap
+category Package
+revision 71912
+shortdesc Adjusting the anchors of captions
+longdesc The package offers a solution to the problem that when you link
+longdesc to a float using hyperref, the link anchors to below the
+longdesc float's caption, rather than the beginning of the float. Hypcap
+longdesc defines a separate \capstart command, which you put where you
+longdesc want links to end; you should have a \capstart command for each
+longdesc \caption command. Package options can be used to auto-insert a
+longdesc \capstart at the start of a float environment.
+containersize 2024
+containerchecksum addf9ef94f61eb1516b6a3ef1bc7653b83133f2d4df5eb9d178f859a411d0dd8bc3c1b14b5657396860813069b32d78e78a6b26d88e546c011628e47a878ff5e
+doccontainersize 293564
+doccontainerchecksum 24cf7adb17e9cafe2ab0009feab695ea359167823e7bfd71806ab7b989187fd8752b55d1cbb96fa9eb180d87c736f9823e20e622519f9fe9ded162fb1758b694
+srccontainersize 6212
+srccontainerchecksum a258899e82696a2314a5ef7a30bb0a2ba7cdf2cfccc17ba7c0d55c2546a9a46010428012d6bbb821c9ea2a96c62e1f10db2905de6464405f87ed7074ccce4b26
+runfiles size=1
+ texmf-dist/tex/latex/hypcap/hypcap.sty
+catalogue-contact-bugs https://github.com/ho-tex/hypcap/issues
+catalogue-contact-repository https://github.com/ho-tex/hypcap
+catalogue-ctan /macros/latex/contrib/hypcap
+catalogue-license lppl1.3c
+catalogue-topics hyper caption
+catalogue-version 1.13

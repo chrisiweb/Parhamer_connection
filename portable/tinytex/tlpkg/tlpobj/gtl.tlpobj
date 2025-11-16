@@ -1,0 +1,23 @@
+name gtl
+category Package
+revision 69297
+shortdesc Manipulating generalized token lists
+longdesc The package provides tools for simple operations on lists of
+longdesc tokens which are not necessarily balanced. It is in particular
+longdesc used a lot in the unravel package, to go through tokens one at
+longdesc a time rather than having to work with entire braced groups at
+longdesc a time.
+containersize 4004
+containerchecksum 18cac75f4370c759fb74079c6647553f5d91a8aaab946c46a54c40b8ed757e3c14fbb2f2f5b375e691c8599a7f7d3ca4ebc5a748f18ad35e507305a5e5d8f73d
+doccontainersize 579716
+doccontainerchecksum ca1fd56abaf08f10fc6c830b51d799a71ba00c11d94e48619f6ac44f151920e8e53df450c23426a860266d5c6347b7c24c9373d152be80c2ba5023836df6f89f
+srccontainersize 12580
+srccontainerchecksum e1ca28c2729e2a4b10ba53cb3f18a657ea1ac7cc0b3eae8b7d13b70ee510008b90d900eea9f5f48ec8b0541638e76ae73e533493ab5b1b0de020d3ad39b95561
+runfiles size=6
+ texmf-dist/tex/generic/gtl/gtl.sty
+catalogue-contact-bugs https://github.com/blefloch/latex-gtl/issues
+catalogue-contact-repository https://github.com/blefloch/latex-gtl
+catalogue-ctan /macros/generic/gtl
+catalogue-license lppl1.3c
+catalogue-topics macro-supp
+catalogue-version 0.6

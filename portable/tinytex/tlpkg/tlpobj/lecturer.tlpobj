@@ -1,0 +1,41 @@
+name lecturer
+category Package
+revision 23916
+shortdesc On-screen presentations for (almost) all formats
+longdesc The package creates slides for on-screen presentations based on
+longdesc PDF features without manipulating TeX's typesetting process.
+longdesc The presentation flow relies on PDF's abilities to display
+longdesc content step by step. Features include: Free positioning of
+longdesc anything anywhere in painted areas on the slide, as well as in
+longdesc the main textblock; Numerous attributes to control the layout
+longdesc and the presentation flow, from TeX's primitive dimensions to
+longdesc the visibility of steps; Feature inheritance from global to
+longdesc local settings, with intermediate types; Basic drawing
+longdesc facilities to produce symbols, e.g., for list items or buttons;
+longdesc Colours, transparency, shades, and pictures; Navigation with
+longdesc links, pop-up menus, and customizable bookmarks; Easy switch
+longdesc between presentation and handout; and PDF transitions. Besides
+longdesc the traditional documentation, the distribution includes visual
+longdesc documentation and six demo presentations ranging from geometric
+longdesc abstraction to classic style to silly video game. Lecturer is
+longdesc designed to work with all formats, but presently fails with
+longdesc ConTeXt MkIV (because of clashes in management of PDF objects,
+longdesc probably), works only with pdfTeX and LuaTeX for the time
+longdesc being, and requires texapi and yax, both v.1.02.
+containersize 18668
+containerchecksum e0c217ed089dccb7cb526e62456bf72d186bf8cdc69b2014bd4210b6f1225277d1afb514f381e4581727900c6ebf34780bb4df01c3682580cea0418fa9caa1db
+doccontainersize 1126000
+doccontainerchecksum 97892442ebe9263cbdc8e35ecbc2f3acebdaa886e5fe814bcc0ada98b0cecd9e140a0d103adc9eb0aab1e5e48e9d7f4ab42e786d52f8fcc96d03db17c51fc17b
+runfiles size=23
+ texmf-dist/tex/generic/lecturer/lecturer.sty
+ texmf-dist/tex/generic/lecturer/lecturer.tex
+ texmf-dist/tex/generic/lecturer/ltr-areas.tex
+ texmf-dist/tex/generic/lecturer/ltr-graphics.tex
+ texmf-dist/tex/generic/lecturer/ltr-job.tex
+ texmf-dist/tex/generic/lecturer/ltr-navigation.tex
+ texmf-dist/tex/generic/lecturer/ltr-slides.tex
+ texmf-dist/tex/generic/lecturer/ltr-steps.tex
+ texmf-dist/tex/generic/lecturer/t-lecturer.tex
+catalogue-ctan /macros/generic/lecturer
+catalogue-license lppl
+catalogue-topics presentation

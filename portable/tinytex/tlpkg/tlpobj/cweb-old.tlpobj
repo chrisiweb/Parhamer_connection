@@ -1,0 +1,13 @@
+name cweb-old
+category Package
+revision 49271
+containersize 9720
+containerchecksum efb1c9b65f7c628905d2dac1373da96346b6b6c78f15e8c0c8055e86c1a52b09bdb5f78fb06106e350d10a8daa378eb45f5fe788c6c3d8b23f0b47c3db6f256a
+runfiles size=16
+ texmf-dist/tex/plain/cweb-old/README
+ texmf-dist/tex/plain/cweb-old/pdfXcwebmac.tex
+ texmf-dist/tex/plain/cweb-old/pdfcwebmac.tex
+ texmf-dist/tex/plain/cweb-old/pdfdcwebmac.tex
+ texmf-dist/tex/plain/cweb-old/pdffcwebmac.tex
+ texmf-dist/tex/plain/cweb-old/pdficwebmac.tex
+ texmf-dist/tex/plain/cweb-old/pdfwebmac.tex

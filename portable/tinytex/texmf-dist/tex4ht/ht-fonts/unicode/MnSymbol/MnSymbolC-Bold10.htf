@@ -1,0 +1,261 @@
+MnSymbolC-Bold10 0 255
+'&#x22C5;' '' dotmath 0           % generated from MnSymbolC-Bold10, 2022-07-07-15:12
+'' '' hdotdot 1                   % Copyright 2022 TeX Users Group
+'&#x2236;' '' ratio 2             %
+'&#xd;' '' udotdot 3              % This work may be distributed and/or modified under the
+'' '' ddotdot 4                   % conditions of the LaTeX Project Public License, either
+'&#x22EF;' '' uni22EF 5           % version 1.3c of this license or (at your option) any
+'&#x22EE;' '' ellipsisvertical 6  % later version. The latest version of this license is in
+'&#x22F0;' '' uni22F0 7           %   http://www.latex-project.org/lppl.txt
+'&#x22F1;' '' uni22F1 8           % and version 1.3c or later is part of all distributions
+'' '' righttherefore 9            % of LaTeX version 2005/12/01 or later.
+'&#x2234;' '' therefore 10        %
+'' '' lefttherefore 11            % This work has the LPPL maintenance status "maintained".
+'&#x2235;' '' because 12          %
+'' '' diamonddots 13              % The Current Maintainer of this work
+'&#x2237;' '' proportion 14       % is the TeX4ht Project <http://tug.org/tex4ht>.
+'' '' fivedots 15                 %
+'&#x2212;' '' minus 16            % If you modify this program, changing the
+'&#x2223;' '' divides.alt 17      % version identification would be appreciated.
+'&#x2215;' '' divisionslash 18
+'&#x2216;' '' uni2216 19
+'+' '' plus 20
+'&#x00D7;' '' multiply 21
+'&#x00B1;' '' plusminus 22
+'&#x2213;' '' minusplus 23
+'&#x2238;' '' dotminus 24
+'' '' dotmedvert 25
+'&#x2A2A;' '' minusdot 26
+'' '' medvertdot 27
+'&#x00F7;' '' divide 28
+'' '' slashdiv 29
+'' '' vertdiv 30
+'' '' backslashdiv 31
+'&#x00AC;' '' logicalnot 32
+'&#x2310;' '' revlogicalnot 33
+'' '' dtimes 34
+'&#x22CA;' '' uni22CA 35
+'' '' utimes 36
+'&#x22C9;' '' uni22C9 37
+'&#x22C8;' '' bowtie 38
+'&#x29D6;' '' uni29D6 39
+'' '' rightY 40
+'' '' upY 41
+'' '' leftY 42
+'' '' downY 43
+'&#x2227;' '' logicaland 44
+'&#x2228;' '' logicalor 45
+'&#x27D1;' '' wedgedot 46
+'&#x27C7;' '' veedot 47
+'&#x2A55;' '' uni2A55 48
+'&#x2A54;' '' uni2A54 49
+'&#x22CF;' '' curlyand 50
+'&#x22CE;' '' curlyor 51
+'' '' curlywedgedot 52
+'' '' curlyveedot 53
+'&#xb;' '' doublecurlywedge 54
+'&#xb;' '' doublecurlyvee 55
+'&#x222A;' '' union 56
+'&#x2229;' '' intersection 57
+'&#x22D3;' '' uni22D3 58
+'&#x22D2;' '' uni22D2 59
+'&#x228D;' '' uni228D 60
+'&#x2A40;' '' uni2A40 61
+'&#x228E;' '' uni228E 62
+'' '' capplus 63
+'&#x2294;' '' uni2294 64
+'&#x2293;' '' uni2293 65
+'&#x2A4F;' '' uni2A4F 66
+'&#x2A4E;' '' uni2A4E 67
+'' '' sqcupdot 68
+'' '' sqcapdot 69
+'' '' sqcupplus 70
+'' '' sqcapplus 71
+'&#x25B9;' '' whiterightpointingsmalltriangle 72
+'&#x25B5;' '' whiteuppointingsmalltriangle 73
+'&#x25C3;' '' whiteleftpointingsmalltriangle 74
+'&#x25BF;' '' whitedownpointingsmalltriangle 75
+'&#x25B8;' '' uni25B8 76
+'&#x25B4;' '' blackuppointingsmalltriangle 77
+'&#x25C2;' '' uni25C2 78
+'&#x25BE;' '' uni25BE 79
+'&#x25B7;' '' whiterightpointingtriangle 80
+'&#x25B3;' '' whiteuppointingtriangle 81
+'&#x25C1;' '' whiteleftpointingtriangle 82
+'&#x25BD;' '' whitedownpointingtriangle 83
+'&#x25B7;' '' whiterightpointingtriangle.alt1 84
+'&#x25B3;' '' whiteuppointingtriangle.alt1 85
+'&#x25C1;' '' whiteleftpointingtriangle.alt1 86
+'&#x25BD;' '' whitedownpointingtriangle.alt1 87
+'&#x25CB;' '' circle 88
+'&#x25CF;' '' blackcircle 89
+'&#x25EF;' '' largecircle 90
+'&#x25EF;' '' largecircle.alt1 91
+'&#x2296;' '' minuscircle 92
+'&#x29B6;' '' uni29B6 93
+'&#x2298;' '' uni2298 94
+'&#x29B8;' '' uni29B8 95
+'&#x2295;' '' circleplus 96
+'&#x2297;' '' circlemultiply 97
+'&#x2299;' '' circleot 98
+'&#x229A;' '' uni229A 99
+'' '' otriangle 100
+'&#x229B;' '' uni229B 101
+'&#x235F;' '' uni235F 102
+'&#x2205;' '' uni2205 103
+'&#x25FD;' '' uni25FD 104
+'&#x25FE;' '' uni25FE 105
+'&#x25FB;' '' uni25FB 106
+'&#x25FB;' '' uni25FB.alt1 107
+'&#x25C7;' '' whitediamond 108
+'&#x25C6;' '' blackdiamond 109
+'&#x25C7;' '' whitediamond.alt1 110
+'&#x25C7;' '' whitediamond.alt2 111
+'&#x229F;' '' uni229F 112
+'' '' boxvert 113
+'&#x29C4;' '' uni29C4 114
+'&#x29C5;' '' uni29C5 115
+'&#x229E;' '' uni229E 116
+'&#x22A0;' '' uni22A0 117
+'&#x22A1;' '' uni22A1 118
+'&#x29C8;' '' uni29C8 119
+'' '' diamondminus 120
+'' '' diamondvert 121
+'' '' diamondslash 122
+'' '' diamondbackslash 123
+'' '' diamondplus 124
+'' '' diamondtimes 125
+'&#x27D0;' '' uni27D0 126
+'' '' diamonddiamond 127
+'&#x2606;' '' whitestar 128
+'&#x2605;' '' blackstar 129
+'&#x2606;' '' whitestar.alt1 130
+'&#x2606;' '' whitestar.alt2 131
+'' '' pentagram 132
+'' '' largepentagram 133
+'&#x22C6;' '' uni22C6 134
+'&#x2217;' '' asteriskmath 135
+'' '' hbipropto 136
+'' '' neswbipropto 137
+'' '' vbipropto 138
+'' '' nwsebipropto 139
+'&#x221D;' '' proportional 140
+'' '' downpropto 141
+'' '' rightpropto 142
+'' '' uppropto 143
+'' '' hcrossing 144
+'' '' neswcrossing 145
+'' '' vcrossing 146
+'' '' nwsecrossing 147
+'&#x226C;' '' between 148
+'' '' separated 149
+'&#x22A5;' '' bot 150
+'&#x22BA;' '' uni22BA 151
+'&#x2240;' '' uni2240 152
+'&#x2220;' '' angle 153
+'&#x2221;' '' uni2221 154
+'&#x2222;' '' uni2222 155
+'&#x2032;' '' minute 156
+'&#x2035;' '' primereversed 157
+'&#xc;' '' product.small 158
+'&#x2210;' '' uni2210.small 159
+'&#x2713;' '' checkmark 160
+'&#x2607;' '' uni2607 161
+'&#x2662;' '' diamondsuitwhite 162
+'&#x2661;' '' heartsuitwhite 163
+'&#x2660;' '' spade 164
+'&#x2663;' '' club 165
+'&#x2200;' '' universal 166
+'&#x2203;' '' existential 167
+'&#x2204;' '' uni2204 168
+'&#x2207;' '' gradient 169
+'&#x221E;' '' infinity 170
+'&#x222B;' '' integral.small 171
+'&#x266D;' '' musicflatsign 172
+'&#x266E;' '' uni266E 173
+'&#x266F;' '' musicsharpsign 174
+'&#x2135;' '' aleph 175
+'&#x2136;' '' uni2136 176
+'&#x2137;' '' uni2137 177
+'&#x2138;' '' uni2138 178
+'&#x2118;' '' weierstrass 179
+'&#x2118;' '' weierstrass.alt 180
+'&#x2A3C;' '' uni2A3C 181
+'&#x2A3D;' '' uni2A3D 182
+'&#x231E;' '' uni231E 183
+'&#x231F;' '' uni231F 184
+'&#x231C;' '' uni231C 185
+'&#x231D;' '' uni231D 186
+'&#xcc;' '' closedsucc 187
+'' '' closedcurlywedge 188
+'' '' closedprec 189
+'' '' closedcurlyvee 190
+'&#x2AA7;' '' uni2AA7 191
+'' '' upslice 192
+'&#x2AA6;' '' uni2AA6 193
+'' '' downslice 194
+'&#x25CA;' '' lozenge 195
+'&#x29EB;' '' uni29EB 196
+'&#x25CA;' '' lozenge.alt1 197
+'&#x29EB;' '' uni29EB.alt1 198
+'&#x25CA;' '' lozenge.alt2 199
+'&#x25B6;' '' blackrightpointingtriangle 200
+'&#x25B2;' '' blackuppointingtriangle 201
+'&#x25C0;' '' blackleftpointingtriangle 202
+'&#x25BC;' '' blackdownpointingtriangle 203
+'&#x220E;' '' uni220E 204
+'&#x2600;' '' uni2600 205
+'&#x2721;' '' uni2721 206
+'&#x2721;' '' uni2721.alt 207
+'&#x2720;' '' uni2720 208
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#xa;' '' closedequal 220
+'&#xa;' '' equalclosed 221
+'' '' equivclosed 222
+'&#x2272;' '' uni2272 223
+'&#x2273;' '' uni2273 224
+'&#x2A85;' '' uni2A85 225
+'&#x2A86;' '' uni2A86 226
+'&#x2A95;' '' uni2A95 227
+'&#x2A96;' '' uni2A96 228
+'&#x22DE;' '' uni22DE 229
+'&#x22DF;' '' uni22DF 230
+'&#x21DB;' '' uni21DB 231
+'&#x21DA;' '' uni21DA 232
+'&#xa;' '' closedequal_uni0338 233
+'&#xa;' '' equalclosed_uni0338 234
+'&#x0338;' '' equivclosed_uni0338 235
+'&#x2274;' '' uni2274 236
+'&#x2275;' '' uni2275 237
+'&#x2A89;' '' uni2A89 238
+'&#x2A8A;' '' uni2A8A 239
+'&#x2A95;&#x0338;' '' uni2A950338 240
+'&#x2A96;&#x0338;' '' uni2A960338 241
+'&#x22DE;&#x0338;' '' uni22DE0338 242
+'&#x22DF;&#x0338;' '' uni22DF0338 243
+'&#x21DB;&#x0338;' '' uni21DB0338 244
+'&#x21DA;&#x0338;' '' uni21DA0338 245
+'&#x21B1;' '' uni21B1 246
+'&#x21B0;' '' uni21B0 247
+'&#x21AC;' '' uni21AC 248
+'&#x21AB;' '' uni21AB 249
+'&#x22CB;' '' uni22CB 250
+'&#x22CC;' '' uni22CC 251
+'&#x22AA;' '' uni22AA 252
+'&#x2224;' '' uni2224.short 253
+'&#x2225;' '' parallel.short 254
+'&#x2226;' '' notparallel.short 255
+MnSymbolC-Bold10 0 255
+htfcss:  MnSymbolC-Bold10  font-weight: bold; font-family: 'MnSymbol', serif;
+
+

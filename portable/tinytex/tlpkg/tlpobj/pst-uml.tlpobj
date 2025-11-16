@@ -1,0 +1,21 @@
+name pst-uml
+category Package
+revision 15878
+shortdesc UML diagrams with PSTricks
+longdesc This a PSTricks package that provides support for drawing
+longdesc moderately complex UML (Universal Modelling Language) diagrams.
+longdesc (The PDF documentation is written in French.)
+depend multido
+containersize 7340
+containerchecksum e4ff8ea9b7fb9f530e33280de3e9eb20d653c0c062fa80611a544daf74da0b1dd2481b43d8f5258f9ebc1d1bf95b393b32c7152ab8464a9e980cefa105c45ceb
+doccontainersize 409404
+doccontainerchecksum d8aa92785c241b6346762d98349d8464ce604afceb8774ef160e8c24e0a40d3fd8dba7cac3f78cbf38cbf6cfebb79939ad3c76e6b4014c1028859aba38123efe
+srccontainersize 2396
+srccontainerchecksum 8b7e551154c1b1966046268ed3353b6c78c3a66bfa20f44c7fba3b58f661f2585b71d49d2dd673368f732b2f9446dc7783bad4ae5248169a79721d330a49514c
+runfiles size=7
+ texmf-dist/tex/latex/pst-uml/pst-uml.sty
+catalogue-also metauml
+catalogue-ctan /graphics/pstricks/contrib/pst-uml
+catalogue-license lppl
+catalogue-topics uml pstricks
+catalogue-version 0.83

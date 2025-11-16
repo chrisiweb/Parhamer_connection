@@ -1,0 +1,261 @@
+LibertinusSerif-Semibold-lf-t2b 0 255
+'&#x60;' '' grave 0             % generated from LibertinusSerif-Semibold-lf-t2b.tfm, 2024-01-03-15:29
+'&#x00B4;' '' acute 1           % Copyright 2024 TeX Users Group
+'&#x02C6;' '' circumflex 2      %
+'&#x02DC;' '' tilde 3           % This work may be distributed and/or modified under the
+'&#x00A8;' '' dieresis 4        % conditions of the LaTeX Project Public License, either
+'&#x02DD;' '' hungarumlaut 5    % version 1.3c of this license or (at your option) any
+'&#x02DA;' '' ring 6            % later version. The latest version of this license is in
+'&#x02C7;' '' caron 7           %   http://www.latex-project.org/lppl.txt
+'&#x02D8;' '' breve 8           % and version 1.3c or later is part of all distributions
+'&#x00AF;' '' macron 9          % of LaTeX version 2005/12/01 or later.
+'&#x02D9;' '' dotaccent 10      %
+'&#x00B8;' '' cedilla 11        % This work has the LPPL maintenance status "maintained".
+'&#x02DB;' '' ogonek 12         %
+'&#x04C0;' '' uni04C0 13        % The Current Maintainer of this work
+'&#x2329;' '' angleleft 14      % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x27E9;' '' angleright 15     %
+'&#x201C;' '' quotedblleft 16   % If you modify this program, changing the
+'&#x201D;' '' quotedblright 17  % version identification would be appreciated.
+'&#xFB01;' '' f_i 18
+'&#xFB02;' '' f_l 19
+'&#xFB03;' '' f_f_i 20
+'&#x2013;' '' endash 21
+'&#x2014;' '' emdash 22
+'&#xFB00;' '' f_f 23
+'&#xFB04;' '' f_f_l 24
+'&#x0131;' '' dotlessi 25
+'&#x0237;' '' uni0237 26
+'fj' '' f_j 27
+'ft' '' f_t 28
+'fh' '' f_h 29
+'fk' '' f_k 30
+'ffj' '' f_f_j 31
+' ' '' space 32
+'!' '' exclam 33
+'"' '' quotedbl 34
+'#' '' numbersign 35
+'$' '' dollar 36
+'%' '' percent 37
+'&amp;' '' ampersand 38
+'&#x2019;' '' quoteright 39
+'(' '' parenleft 40
+')' '' parenright 41
+'*' '' asterisk 42
+'+' '' plus 43
+',' '' comma 44
+'-' '' hyphen 45
+'.' '' period 46
+'/' '' slash 47
+'0' '' zero.fitted 48
+'1' '' one.fitted 49
+'2' '' two.fitted 50
+'3' '' three.fitted 51
+'4' '' four.fitted 52
+'5' '' five.fitted 53
+'6' '' six.fitted 54
+'7' '' seven.fitted 55
+'8' '' eight.fitted 56
+'9' '' nine.fitted 57
+':' '' colon 58
+';' '' semicolon 59
+'&lt;' '' less 60
+'=' '' equal 61
+'&gt;' '' greater 62
+'?' '' question 63
+'@' '' at 64
+'A' '' A 65
+'B' '' B 66
+'C' '' C 67
+'D' '' D 68
+'E' '' E 69
+'F' '' F 70
+'G' '' G 71
+'H' '' H 72
+'I' '' I 73
+'J' '' J 74
+'K' '' K 75
+'L' '' L 76
+'M' '' M 77
+'N' '' N 78
+'O' '' O 79
+'P' '' P 80
+'Q' '' Q 81
+'R' '' R 82
+'S' '' S 83
+'T' '' T 84
+'U' '' U 85
+'V' '' V 86
+'W' '' W 87
+'X' '' X 88
+'Y' '' Y 89
+'Z' '' Z 90
+'[' '' bracketleft 91
+'\' '' backslash 92
+']' '' bracketright 93
+'^' '' asciicircum 94
+'_' '' underscore 95
+'&#x2018;' '' quoteleft 96
+'a' '' a 97
+'b' '' b 98
+'c' '' c 99
+'d' '' d 100
+'e' '' e 101
+'f' '' f 102
+'g' '' g 103
+'h' '' h 104
+'i' '' i 105
+'j' '' j 106
+'k' '' k 107
+'l' '' l 108
+'m' '' m 109
+'n' '' n 110
+'o' '' o 111
+'p' '' p 112
+'q' '' q 113
+'r' '' r 114
+'s' '' s 115
+'t' '' t 116
+'u' '' u 117
+'v' '' v 118
+'w' '' w 119
+'x' '' x 120
+'y' '' y 121
+'z' '' z 122
+'{' '' braceleft 123
+'|' '' bar 124
+'}' '' braceright 125
+'~' '' asciitilde 126
+'-' '' hyphen 127
+'ffh' '' f_f_h 128
+'&#x0492;' '' uni0492 129
+'ff{' '' f_f_k 130
+'&#x0494;' '' uni0494 131
+'&#x04BA;' '' uni04BA 132
+'&#x0496;' '' uni0496 133
+'' ''
+'&#x04E0;' '' uni04E0 135
+'&#x0409;' '' uni0409 136
+'&#x049A;' '' uni049A 137
+'' ''
+'&#x04C3;' '' uni04C3 139
+'' ''
+'&#x04A2;' '' uni04A2 141
+'&#x04A4;' '' uni04A4 142
+'&#x04C7;' '' uni04C7 143
+'&#x04E8;' '' uni04E8 144
+'' ''
+'&#x040E;' '' uni040E 146
+'&#x04AE;' '' uni04AE 147
+'' ''
+'&#x04B2;' '' uni04B2 149
+'' ''
+'&#x04CB;' '' uni04CB 151
+'&#x04B6;' '' uni04B6 152
+'&#x040A;' '' uni040A 153
+'&#x04D8;' '' uni04D8 154
+'' ''
+'&#x0401;' '' uni0401 156
+'&#x2116;' '' uni2116 157
+'&#x00A4;' '' currency 158
+'&#x00A7;' '' section 159
+'' ''
+'&#x0493;' '' uni0493 161
+'' ''
+'&#x0495;' '' uni0495 163
+'&#x04BB;' '' uni04BB 164
+'&#x0497;' '' uni0497 165
+'' ''
+'&#x04E1;' '' uni04E1 167
+'&#x0459;' '' uni0459 168
+'&#x049B;' '' uni049B 169
+'' ''
+'&#x04C4;' '' uni04C4 171
+'' ''
+'&#x04A3;' '' uni04A3 173
+'&#x04A5;' '' uni04A5 174
+'&#x04C8;' '' uni04C8 175
+'&#x04E9;' '' uni04E9 176
+'' ''
+'&#x045E;' '' uni045E 178
+'&#x04AF;' '' uni04AF 179
+'' ''
+'&#x04B3;' '' uni04B3 181
+'' ''
+'&#x04CC;' '' uni04CC 183
+'&#x04B7;' '' uni04B7 184
+'&#x045A;' '' uni045A 185
+'&#x04D9;' '' uni04D9 186
+'' ''
+'&#x0451;' '' uni0451 188
+'&#x201E;' '' quotedblbase 189
+'&#x00AB;' '' guillemotleft 190
+'&#x00BB;' '' guillemotright 191
+'&#x0410;' '' uni0410 192
+'&#x0411;' '' uni0411 193
+'&#x0412;' '' uni0412 194
+'&#x0413;' '' uni0413 195
+'&#x0414;' '' uni0414 196
+'&#x0415;' '' uni0415 197
+'&#x0416;' '' uni0416 198
+'&#x0417;' '' uni0417 199
+'&#x0418;' '' uni0418 200
+'&#x0419;' '' uni0419 201
+'&#x041A;' '' uni041A 202
+'&#x041B;' '' uni041B 203
+'&#x041C;' '' uni041C 204
+'&#x041D;' '' uni041D 205
+'&#x041E;' '' uni041E 206
+'&#x041F;' '' uni041F 207
+'&#x0420;' '' uni0420 208
+'&#x0421;' '' uni0421 209
+'&#x0422;' '' uni0422 210
+'&#x0423;' '' uni0423 211
+'&#x0424;' '' uni0424 212
+'&#x0425;' '' uni0425 213
+'&#x0426;' '' uni0426 214
+'&#x0427;' '' uni0427 215
+'&#x0428;' '' uni0428 216
+'&#x0429;' '' uni0429 217
+'&#x042A;' '' uni042A 218
+'&#x042B;' '' uni042B 219
+'&#x042C;' '' uni042C 220
+'&#x042D;' '' uni042D 221
+'&#x042E;' '' uni042E 222
+'&#x042F;' '' uni042F 223
+'&#x0430;' '' uni0430 224
+'&#x0431;' '' uni0431 225
+'&#x0432;' '' uni0432 226
+'&#x0433;' '' uni0433 227
+'&#x0434;' '' uni0434 228
+'&#x0435;' '' uni0435 229
+'&#x0436;' '' uni0436 230
+'&#x0437;' '' uni0437 231
+'&#x0438;' '' uni0438 232
+'&#x0439;' '' uni0439 233
+'&#x043A;' '' uni043A 234
+'&#x043B;' '' uni043B 235
+'&#x043C;' '' uni043C 236
+'&#x043D;' '' uni043D 237
+'&#x043E;' '' uni043E 238
+'&#x043F;' '' uni043F 239
+'&#x0440;' '' uni0440 240
+'&#x0441;' '' uni0441 241
+'&#x0442;' '' uni0442 242
+'&#x0443;' '' uni0443 243
+'&#x0444;' '' uni0444 244
+'&#x0445;' '' uni0445 245
+'&#x0446;' '' uni0446 246
+'&#x0447;' '' uni0447 247
+'&#x0448;' '' uni0448 248
+'&#x0449;' '' uni0449 249
+'&#x044A;' '' uni044A 250
+'&#x044B;' '' uni044B 251
+'&#x044C;' '' uni044C 252
+'&#x044D;' '' uni044D 253
+'&#x044E;' '' uni044E 254
+'&#x044F;' '' uni044F 255
+LibertinusSerif-Semibold-lf-t2b 0 255
+htfcss:  LibertinusSerif-Semibold-lf-t2b  font-weight: bold; font-family: 'Libertinus Serif', serif;
+
+

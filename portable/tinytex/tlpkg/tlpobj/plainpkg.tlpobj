@@ -1,0 +1,25 @@
+name plainpkg
+category Package
+revision 27765
+shortdesc A minimal method for making generic packages
+longdesc The package provides a minimal method for making generic (i.e.,
+longdesc TeX-format-independent) packaged, combining maybeload
+longdesc functionality, fallback definitions for LaTeX \ProvidesPackage
+longdesc and \RequirePackage functionality, and handling of arbitrary
+longdesc (multiple) "private letters" (analagous LaTeX packages' use of
+longdesc "@") in nested package files. The documentation contains a
+longdesc central reference for making and using generic packages based
+longdesc on the package.
+containersize 3304
+containerchecksum aa1158f3958013b133dd3f9308063543268181296274a40e2ca606c8e684105e89b79cd9bb45d225e14865ca0e998e0412e8edf8057445bde549f249a6d69b2e
+doccontainersize 357100
+doccontainerchecksum 684b4f193f29336d5bd2c494c0c447cf0ac28090a156ae286437033e14507607582b3b9b40bc7b82fd92661a4bdd75f953e7c0b675f46418bb585b6a9492eaa1
+srccontainersize 5264
+srccontainerchecksum 44138ffb31ad8f78b0ab917302f48f0bbea871ef390c52b211ac25dd9c16f0687f02348c96682d89c9fdb5586b157c9d6d4ab3f404f40ab173835997ffe7c237
+runfiles size=2
+ texmf-dist/tex/generic/plainpkg/plainpkg.tex
+catalogue-contact-support http://www.webdesign-bu.de/uwe_lueck/contact.html
+catalogue-ctan /macros/generic/plainpkg
+catalogue-license lppl1.3
+catalogue-topics macro-supp macro-gen
+catalogue-version 0.4a

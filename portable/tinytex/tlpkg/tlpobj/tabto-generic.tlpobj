@@ -1,0 +1,15 @@
+name tabto-generic
+category Package
+revision 15878
+shortdesc "Tab" to a measured position in the line
+longdesc \tabto{<length>} moves the typesetting position to <length>
+longdesc from the left margin of the paragraph. If the typesetting
+longdesc position is already further along, \tabto starts a new line.
+containersize 1256
+containerchecksum 5b3bd8081ec6800c96ce4b4cbdd8091578ad1df2b625fb2792202a6c31f3f126d612f99f04802d82d490cb529e03e63f98b01c7842ec0df69b48c2fc289108fa
+runfiles size=1
+ texmf-dist/tex/generic/tabto-generic/tabto.tex
+catalogue-also tabto-ltx
+catalogue-ctan /macros/generic/misc/tabto.tex
+catalogue-license pd
+catalogue-topics layout

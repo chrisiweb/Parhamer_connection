@@ -1,0 +1,19 @@
+name placeins-plain
+category Package
+revision 15878
+shortdesc Insertions that keep their place
+longdesc This TeX file provides various mechanisms (for plain TeX and
+longdesc close relatives) to let insertions (footnotes, topins, pageins,
+longdesc etc.) float within their appropriate section, but to prevent
+longdesc them from intruding into the following section, even when
+longdesc sections do not normally begin a new page. (If your sections
+longdesc normally begin a new page, just use \supereject to flush out
+longdesc insertions.)
+containersize 2632
+containerchecksum ba143fda432b8ff9f96d48218ea3b3d29308db3a403c64af5f4a89b8305ff835481d9e0e77bff92530207359115f6a44b006cc58bce99c0f7d3924d1134ef60b
+runfiles size=2
+ texmf-dist/tex/plain/placeins-plain/placeins.tex
+catalogue-ctan /macros/plain/contrib/misc/placeins.tex
+catalogue-license pd
+catalogue-topics layout float
+catalogue-version 2.0

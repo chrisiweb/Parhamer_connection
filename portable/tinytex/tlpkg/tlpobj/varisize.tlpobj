@@ -1,0 +1,26 @@
+name varisize
+category Package
+revision 15878
+shortdesc Change font size in Plain TeX
+longdesc A series of files, each of which defines a size-change macro.
+longdesc Note that 10point.tex is by convention called by one of the
+longdesc other files, so that there's always a "way back".
+containersize 3204
+containerchecksum c1a900aa29601e9bcc5d1047ea5bca0bd3c079d05e8c42c8e3f85521cd8a1989425650d0e84ab0acf2a38e468bc4823e149cf1e799da8eea1d6af4554cbc0c94
+doccontainersize 440
+doccontainerchecksum f575e4faff4a80f72108ef5b97abb0bda08573669bb8b28592fa607538c632d3b59626282a0ff8d7805e6b66121b2c231618901a9dd71f0242e1a0875a3e2068
+runfiles size=10
+ texmf-dist/tex/plain/varisize/10point.tex
+ texmf-dist/tex/plain/varisize/10pointss.tex
+ texmf-dist/tex/plain/varisize/11point.tex
+ texmf-dist/tex/plain/varisize/12point.tex
+ texmf-dist/tex/plain/varisize/14point.tex
+ texmf-dist/tex/plain/varisize/17point.tex
+ texmf-dist/tex/plain/varisize/20point.tex
+ texmf-dist/tex/plain/varisize/7point.tex
+ texmf-dist/tex/plain/varisize/8point.tex
+ texmf-dist/tex/plain/varisize/9point.tex
+catalogue-also plnfss ofs font-selection
+catalogue-ctan /macros/plain/contrib/varisize
+catalogue-license pd
+catalogue-topics font-sel

@@ -1,0 +1,20 @@
+name mkpattern
+category Package
+revision 15878
+shortdesc A utility for making hyphenation patterns
+longdesc Mkpattern is a general purpose program for the generation of
+longdesc hyphenation patterns, with definition of letter sets and
+longdesc template-like constructions. It also provides an easy way to
+longdesc handle different input and output encodings, and featgures
+longdesc generation of clean UTF-8 patterns. The package was used for
+longdesc the creation of the Galician patterns.
+containersize 4924
+containerchecksum 0395c9258e6c4a8459e69ff2fbdfe511b0c6863e02333d9481a8a1e82362cf9e1be7e89e7447bda497e7ed2bc18e1986e0a5461e9f49c63ff869f39a4da4f007
+doccontainersize 82968
+doccontainerchecksum 8232866143444fab1ed1f15255dc5f8c1c5050812e2882d2e20636bfd300216815a53aa03cd4f69ed7f45aab255a8efae9bfdc10df6b7a246d36d4db075204ef
+runfiles size=4
+ texmf-dist/tex/plain/mkpattern/mkpatter.tex
+catalogue-ctan /language/hyphenation/utils/mkpattern
+catalogue-license lppl
+catalogue-topics hyphenation
+catalogue-version 1.2

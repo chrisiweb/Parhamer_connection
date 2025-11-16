@@ -1,0 +1,9 @@
+name pst-pdf.windows
+category Package
+revision 65891
+shortdesc windows files of pst-pdf
+containersize 3168
+containerchecksum 8b3b70710c1aadddb4ff74774eff1b132cbea627b1bc9500af0e5df352bcc127e4c6f5de193af99b26bd31fcf18d5830466b33efd4be809203262e28f9b6773b
+binfiles arch=windows size=3
+ bin/windows/ps4pdf.bat
+ bin/windows/ps4pdf.exe

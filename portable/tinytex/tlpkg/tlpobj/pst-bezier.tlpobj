@@ -1,0 +1,20 @@
+name pst-bezier
+category Package
+revision 41981
+shortdesc Draw Bezier curves
+longdesc The package provides a macro \psbcurve for drawing a Bezier
+longdesc curve. Provision is made for full control of over all the
+longdesc control points of the curve.
+containersize 6256
+containerchecksum e2277175eb2087e13ee0a1100d602730514e1e5bb023d4db7163ba4113f69c9fedf74ff50369298ed970b89425b824cb8619e2cac4be463589edbfd747ccc6c5
+doccontainersize 972072
+doccontainerchecksum 5126769fb89900916a52135af0ba459651083b01db466471cc984b6dc837686cd780bda7c3295b6afe9a7bc85180b3acd95c015084d49f46049adb2fd84b5748
+runfiles size=7
+ texmf-dist/dvips/pst-bezier/pst-bezier.pro
+ texmf-dist/tex/generic/pst-bezier/pst-bezier.tex
+ texmf-dist/tex/latex/pst-bezier/pst-bezier.sty
+catalogue-also ebezier
+catalogue-ctan /graphics/pstricks/contrib/pst-bezier
+catalogue-license lppl
+catalogue-topics graphics-curve pstricks
+catalogue-version 0.03

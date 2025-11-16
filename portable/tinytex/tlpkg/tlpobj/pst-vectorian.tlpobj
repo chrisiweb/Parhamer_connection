@@ -1,0 +1,17 @@
+name pst-vectorian
+category Package
+revision 60488
+shortdesc Printing ornaments
+longdesc The package uses PSTricks to draw ornaments (a substantial
+longdesc repertoire of ornaments is provided).
+containersize 546776
+containerchecksum e3898a6b489afe685bfc657760702bd5e2e44fce2ecf6e4af28c1a6eb36173fc653e003af7b7879fbd3a342adfb89b8cf47168b1f1868815fa44050495d15f54
+doccontainersize 738340
+doccontainerchecksum 6bdc368c391d12e6fb54740867631c7ba62b66a889e11dd40668dc7bcf5f9846e4414f84b706010505d3032b132735a9247e25193b952bd3272590d47d59172b
+runfiles size=463
+ texmf-dist/dvips/pst-vectorian/psvectorian.pro
+ texmf-dist/tex/latex/pst-vectorian/psvectorian.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-vectorian
+catalogue-license lppl
+catalogue-topics decoration
+catalogue-version 0.41

@@ -1,0 +1,35 @@
+bsmiuf8 0 29
+'&#xF800;' '' uniF800 0   % generated from bsmiuf8.tfm, 2023-02-05-20:38
+'&#xF801;' '' uniF801 1   % Copyright 2023 TeX Users Group
+'&#xF802;' '' uniF802 2   %
+'&#xF803;' '' uniF803 3   % This work may be distributed and/or modified under the
+'&#xF804;' '' uniF804 4   % conditions of the LaTeX Project Public License, either
+'&#xF805;' '' uniF805 5   % version 1.3c of this license or (at your option) any
+'&#xF806;' '' uniF806 6   % later version. The latest version of this license is in
+'&#xF807;' '' uniF807 7   %   http://www.latex-project.org/lppl.txt
+'&#xF808;' '' uniF808 8   % and version 1.3c or later is part of all distributions
+'&#xF809;' '' uniF809 9   % of LaTeX version 2005/12/01 or later.
+'&#xF80A;' '' uniF80A 10  %
+'&#xF80B;' '' uniF80B 11  % This work has the LPPL maintenance status "maintained".
+'&#xF80C;' '' uniF80C 12  %
+'&#xF80D;' '' uniF80D 13  % The Current Maintainer of this work
+'&#xF80E;' '' uniF80E 14  % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#xF80F;' '' uniF80F 15  %
+'&#xF810;' '' uniF810 16  % If you modify this program, changing the
+'&#xF811;' '' uniF811 17  % version identification would be appreciated.
+'&#xF812;' '' uniF812 18
+'&#xF813;' '' uniF813 19
+'&#xF814;' '' uniF814 20
+'&#xF815;' '' uniF815 21
+'&#xF816;' '' uniF816 22
+'&#xF817;' '' uniF817 23
+'&#xF818;' '' uniF818 24
+'&#xF819;' '' uniF819 25
+'&#xF81A;' '' uniF81A 26
+'&#xF81B;' '' uniF81B 27
+'&#xF81C;' '' uniF81C 28
+'&#xF81D;' '' uniF81D 29
+bsmiuf8 0 29
+htfcss:  bsmiuf8  font-family: 'AR PL Mingti2L Big5', serif;
+
+

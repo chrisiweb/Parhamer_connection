@@ -1,0 +1,21 @@
+name pst-blur
+category Package
+revision 15878
+shortdesc PSTricks package for "blurred" shadows
+longdesc Pst-blur is a package built for use with PSTricks. It provides
+longdesc macros that apply blurring to the normal shadow function of
+longdesc PSTricks.
+containersize 2248
+containerchecksum 5726819bfa08fbf6e9b5a2c6f93008e468b759a825fef04739a47e756d4b12a99aef604d64618081b1788b5fed9247c75dd3580a899771b148306880341f0444
+doccontainersize 79100
+doccontainerchecksum 5e483141d8f5ad03421d9c7c5feef8baaa3b522385d307022dd617af0889bf57d1cf603a1d519a5d17d8dc918441ca3310d766e4dddb7ed6b8155985186b5e7f
+srccontainersize 7156
+srccontainerchecksum 2e7038a248c307c50d29a6171d1b52bc8d6fed76885ebc24480a3f679918fbdbf1e538f783d0f9e3792a3530e51e60da4873c5da0878e66672dbe13fc9b950d6
+runfiles size=3
+ texmf-dist/dvips/pst-blur/pst-blur.pro
+ texmf-dist/tex/generic/pst-blur/pst-blur.tex
+ texmf-dist/tex/latex/pst-blur/pst-blur.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-blur
+catalogue-license lppl
+catalogue-topics graphics-subpic pstricks
+catalogue-version 2.0

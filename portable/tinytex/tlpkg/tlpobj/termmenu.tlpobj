@@ -1,0 +1,21 @@
+name termmenu
+category Package
+revision 37700
+shortdesc The package provides support for terminal-based menus using expl3
+longdesc When writing programs, it's often required to present the user
+longdesc with a list of options/actions. The user is then expected to
+longdesc select one of these options for the program to process.
+longdesc termmenu provides this mechanism for TeX. It requires only
+longdesc expl3 support, thus the l3kernel and l3packages are both
+longdesc required.
+containersize 2016
+containerchecksum 5c3d4ac4a2bab5e18453b9de0b372b364981444df3550c3a195a8fee841a6d76e73835096ff1b71a37f5e5acf0fd2777dbc8846be9345f99b004adb560ced517
+doccontainersize 473824
+doccontainerchecksum 029f4ae3b57e0b226883e66030db2d3c41cffc0a4dbd4f8b3662562fd566d8a09b7aa0c83d98f7fb0cdfbd1226c5dde9c93211565292f037e5b5554e9a5d02b4
+srccontainersize 6808
+srccontainerchecksum 56c1396e90a4c1db5dd28ae96c6f3ebe0310c163d7fdb2cb4e3ade78b522b349fba0bd43556165c282bedcab167241033b065feaac4c4a5e3dc2d8a8a55dca61
+runfiles size=2
+ texmf-dist/tex/generic/termmenu/termmenu.tex
+catalogue-ctan /macros/generic/termmenu
+catalogue-license lppl1.3
+catalogue-topics comp-mgmt expl3

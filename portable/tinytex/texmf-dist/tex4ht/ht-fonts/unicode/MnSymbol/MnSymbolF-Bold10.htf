@@ -1,0 +1,141 @@
+MnSymbolF-Bold10 0 135
+'+' '' plus.big 0                   % generated from MnSymbolF-Bold10, 2022-07-07-15:12
+'+' '' plus.big.disp 1              % Copyright 2022 TeX Users Group
+'&#x2A09;' '' uni2A09 2             %
+'&#x2A09;' '' uni2A09.disp 3        % This work may be distributed and/or modified under the
+'&#x22C0;' '' uni22C0 4             % conditions of the LaTeX Project Public License, either
+'&#x22C0;' '' uni22C0.disp 5        % version 1.3c of this license or (at your option) any
+'&#x22C1;' '' uni22C1 6             % later version. The latest version of this license is in
+'&#x22C1;' '' uni22C1.disp 7        %   http://www.latex-project.org/lppl.txt
+'&#x27D1;' '' wedgedot.big 8        % and version 1.3c or later is part of all distributions
+'&#x27D1;' '' wedgedot.big.disp 9   % of LaTeX version 2005/12/01 or later.
+'&#x27C7;' '' veedot.big 10         %
+'&#x27C7;' '' veedot.big.disp 11    % This work has the LPPL maintenance status "maintained".
+'&#x2A55;' '' uni2A55.big 12        %
+'&#x2A55;' '' uni2A55.big.disp 13   % The Current Maintainer of this work
+'&#x2A54;' '' uni2A54.big 14        % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x2A54;' '' uni2A54.big.disp 15   %
+'&#x22CF;' '' curlyand.big 16       % If you modify this program, changing the
+'&#x22CF;' '' curlyand.big.disp 17  % version identification would be appreciated.
+'&#x22CE;' '' curlyor.big 18
+'&#x22CE;' '' curlyor.big.disp 19
+'' '' curlywedgedot.big 20
+'' '' curlywedgedot.big.disp 21
+'' '' curlyveedot.big 22
+'' '' curlyveedot.big.disp 23
+'&#xb;' '' doublecurlywedge.big 24
+'&#xb;' '' doublecurlywedge.big.disp 25
+'&#xb;' '' doublecurlyvee.big 26
+'&#xb;' '' doublecurlyvee.big.disp 27
+'&#x22C2;' '' uni22C2 28
+'&#x22C2;' '' uni22C2.disp 29
+'&#x22C3;' '' uni22C3 30
+'&#x22C3;' '' uni22C3.disp 31
+'&#x2A40;' '' uni2A40.big 32
+'&#x2A40;' '' uni2A40.big.disp 33
+'&#x228D;' '' uni228D.big 34
+'&#x228D;' '' uni228D.big.disp 35
+'' '' capplus.big 36
+'' '' capplus.big.disp 37
+'&#x228E;' '' uni228E.big 38
+'&#x228E;' '' uni228E.big.disp 39
+'&#x2293;' '' uni2293.big 40
+'&#x2293;' '' uni2293.big.disp 41
+'&#x2294;' '' uni2294.big 42
+'&#x2294;' '' uni2294.big.disp 43
+'' '' sqcapdot.big 44
+'' '' sqcapdot.big.disp 45
+'' '' sqcupdot.big 46
+'' '' sqcupdot.big.disp 47
+'' '' sqcapplus.big 48
+'' '' sqcapplus.big.disp 49
+'' '' sqcupplus.big 50
+'' '' sqcupplus.big.disp 51
+'&#x25EF;' '' uni25EF.big 52
+'&#x25EF;' '' uni25EF.big.disp 53
+'&#x2296;' '' uni2296.big 54
+'&#x2296;' '' uni2296.big.disp 55
+'&#x29B6;' '' uni29B6.big 56
+'&#x29B6;' '' uni29B6.big.disp 57
+'&#x2298;' '' uni2298.big 58
+'&#x2298;' '' uni2298.big.disp 59
+'&#x29B8;' '' uni29B8.big 60
+'&#x29B8;' '' uni29B8.big.disp 61
+'&#x2295;' '' uni2295.big 62
+'&#x2295;' '' uni2295.big.disp 63
+'&#x2297;' '' uni2297.big 64
+'&#x2297;' '' uni2297.big.disp 65
+'&#x2299;' '' uni2299.big 66
+'&#x2299;' '' uni2299.big.disp 67
+'&#x229A;' '' uni229A.big 68
+'&#x229A;' '' uni229A.big.disp 69
+'' '' otriangle.big 70
+'' '' otriangle.big.disp 71
+'&#x229B;' '' uni229B.big 72
+'&#x229B;' '' uni229B.big.disp 73
+'&#x235F;' '' uni235F.big 74
+'&#x235F;' '' uni235F.big.disp 75
+'&#x220F;' '' product 76
+'&#xc;' '' product.disp 77
+'&#x2210;' '' uni2210 78
+'&#x2210;' '' uni2210.disp 79
+'&#x2211;' '' summation 80
+'&#x2211;' '' summation.disp 81
+'&#x222B;' '' integral 82
+'&#x222B;' '' integral.disp 83
+'&#x222C;' '' uni222C 84
+'&#x222C;' '' uni222C.disp 85
+'&#x222D;' '' uni222D 86
+'&#x222D;' '' uni222D.disp 87
+'&#x2A0C;' '' uni2A0C 88
+'&#x2A0C;' '' uni2A0C.disp 89
+'&#x222B;&#x2026;&#x222B;' '' uni222B2026222B 90
+'&#x222B;&#x2026;&#x222B;' '' uni222B2026222B.disp 91
+'&#x2A19;' '' uni2A19 92
+'&#x2A19;' '' uni2A19.disp 93
+'&#x2A1A;' '' uni2A1A 94
+'&#x2A1A;' '' uni2A1A.disp 95
+'&#x2A0F;' '' uni2A0F 96
+'&#x2A0F;' '' uni2A0F.disp 97
+'&#x222E;' '' uni222E 98
+'&#x222E;' '' uni222E.disp 99
+'&#x222F;' '' uni222F 100
+'&#x222F;' '' uni222F.disp 101
+'&#x2233;' '' uni2233 102
+'&#x2233;' '' uni2233.disp 103
+'&#x2232;' '' uni2232.alt1 104
+'&#x2232;' '' uni2232.disp.alt1 105
+'&#x2233;' '' uni2233.alt1 106
+'&#x2233;' '' uni2233.disp.alt1 107
+'&#x2232;' '' uni2232 108
+'&#x2232;' '' uni2232.disp 109
+'&#x2A0B;' '' uni2A0B 110
+'&#x2A0B;' '' uni2A0B.disp 111
+'&#x222B;&#x2026;&#x222B;' '' uni222B2026222B.part 112
+'&#x222B;&#x2026;&#x222B;' '' uni222B2026222B.part.disp 113
+'&#x2A19;' '' uni2A19.part 114
+'&#x2A19;' '' uni2A19.part.disp 115
+'&#x2A1A;' '' uni2A1A.part 116
+'&#x2A1A;' '' uni2A1A.part.disp 117
+'&#x2A0F;' '' uni2A0F.part 118
+'&#x2A0F;' '' uni2A0F.part.disp 119
+'&#x222E;' '' uni222E.part 120
+'&#x222E;' '' uni222E.part.disp 121
+'&#x222F;' '' uni222F.part 122
+'&#x222F;' '' uni222F.part.disp 123
+'&#x2233;' '' uni2233.part 124
+'&#x2233;' '' uni2233.part.disp 125
+'&#x2232;' '' uni2232.part.alt1 126
+'&#x2232;' '' uni2232.part.disp.alt1 127
+'&#x2233;' '' uni2233.part.alt1 128
+'&#x2233;' '' uni2233.part.disp.alt1 129
+'&#x2232;' '' uni2232.part 130
+'&#x2232;' '' uni2232.part.disp 131
+'&#x2A0B;' '' uni2A0B.part 132
+'&#x2A0B;' '' uni2A0B.part.disp 133
+'&#x2201;' '' uni2201 134
+'&#x2201;' '' uni2201.disp 135
+MnSymbolF-Bold10 0 135
+htfcss:  MnSymbolF-Bold10  font-weight: bold; font-family: 'MnSymbol', serif;
+
+

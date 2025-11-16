@@ -1,0 +1,45 @@
+name texinfo
+category Package
+revision 76658
+shortdesc Texinfo documentation system
+longdesc Texinfo is the preferred format for documentation in the GNU
+longdesc project; the format may be used to produce online or printed
+longdesc output from a single source. The Texinfo macros may be used to
+longdesc produce printable output using TeX; other programs in the
+longdesc distribution offer online interactive use (with hypertext
+longdesc linkages in some cases). The latest release of the texinfo.tex
+longdesc macros and texi2dvi and texi2pdf scripts may be found in the
+longdesc texinfo-latest package, which are usually newer than the last
+longdesc full release. CTAN does not hold any other Texinfo-related
+longdesc files; see its GNU home page for downloads and other info.
+containersize 105964
+containerchecksum a6e7bbdf19b767bf203488e108875fe84f3c9a311e6a10c26e74f0b4631f29310542a4f2ee4a68398042811f5be5b62bdcea56209be3fc7197b9484609ef7d16
+runfiles size=127
+ texmf-dist/tex/texinfo/texinfo-ja.tex
+ texmf-dist/tex/texinfo/texinfo-zh.tex
+ texmf-dist/tex/texinfo/texinfo.ini
+ texmf-dist/tex/texinfo/texinfo.tex
+ texmf-dist/tex/texinfo/txi-ca.tex
+ texmf-dist/tex/texinfo/txi-cs.tex
+ texmf-dist/tex/texinfo/txi-de.tex
+ texmf-dist/tex/texinfo/txi-en.tex
+ texmf-dist/tex/texinfo/txi-es.tex
+ texmf-dist/tex/texinfo/txi-fi.tex
+ texmf-dist/tex/texinfo/txi-fr.tex
+ texmf-dist/tex/texinfo/txi-hu.tex
+ texmf-dist/tex/texinfo/txi-is.tex
+ texmf-dist/tex/texinfo/txi-it.tex
+ texmf-dist/tex/texinfo/txi-ja.tex
+ texmf-dist/tex/texinfo/txi-nb.tex
+ texmf-dist/tex/texinfo/txi-nl.tex
+ texmf-dist/tex/texinfo/txi-nn.tex
+ texmf-dist/tex/texinfo/txi-pl.tex
+ texmf-dist/tex/texinfo/txi-pt.tex
+ texmf-dist/tex/texinfo/txi-ru.tex
+ texmf-dist/tex/texinfo/txi-sr.tex
+ texmf-dist/tex/texinfo/txi-tr.tex
+ texmf-dist/tex/texinfo/txi-uk.tex
+ texmf-dist/tex/texinfo/txi-zh.tex
+catalogue-contact-home https://www.gnu.org/software/texinfo/
+catalogue-license gpl
+catalogue-topics doc-supp format

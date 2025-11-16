@@ -1,0 +1,37 @@
+name pslatex
+category Package
+revision 67469
+shortdesc Use PostScript fonts by default
+longdesc A small package that makes LaTeX default to 'standard'
+longdesc PostScript fonts. It is basically a merger of the times and the
+longdesc (obsolete) mathptm packages from the psnfss suite. You must
+longdesc have installed standard LaTeX and the psnfss PostScript fonts
+longdesc to use this package. The main novel feature is that the pslatex
+longdesc package tries to compensate for the visual differences between
+longdesc the Adobe fonts by scaling Helvetica by 90%, and 'condensing'
+longdesc Courier (i.e. scaling horizontally) by 85%. The package is
+longdesc supplied with a (unix) shell file for a 'pslatex' command that
+longdesc allows standard LaTeX documents to be processed, without
+longdesc needing to edit the file. Note that current psnfss uses a
+longdesc different technique for scaling Helvetica, and treats Courier
+longdesc as a lost cause (there are better free fixed-width available
+longdesc now, than there were when pslatex was designed). As a result,
+longdesc pslatex is widely considered obsolete.
+containersize 5832
+containerchecksum b08cbb8ed7a4b89b9018b5b31bbaaf8ae9c520ffbf47b54d239b30ca67a26e138206c1f2f9951f8cc5da49357c0eca9a3df9eda4f02119355cf2be0a85c3a825
+srccontainersize 1204
+srccontainerchecksum 9943941967009a9d3cac0841318c6a31818f7496ded89fe6cf4d6ee8718913d0145497443762d55e4f80a1fee496b5170ff4b6c13266f04e6ce4c5bc2bdb5728
+runfiles size=9
+ texmf-dist/fonts/map/dvips/pslatex/pcrr8rn.map
+ texmf-dist/fonts/tfm/public/pslatex/pcrr7tn.tfm
+ texmf-dist/fonts/tfm/public/pslatex/pcrr8rn.tfm
+ texmf-dist/fonts/tfm/public/pslatex/pcrr8tn.tfm
+ texmf-dist/fonts/vf/public/pslatex/pcrr7tn.vf
+ texmf-dist/fonts/vf/public/pslatex/pcrr8tn.vf
+ texmf-dist/tex/latex/pslatex/pslatex.sty
+catalogue-contact-bugs https://github.com/davidcarlisle/dpctex/issues
+catalogue-contact-repository https://github.com/davidcarlisle/dpctex
+catalogue-ctan /macros/latex/contrib/pslatex
+catalogue-license lppl
+catalogue-topics font-supp obsolete
+catalogue-version 1.3

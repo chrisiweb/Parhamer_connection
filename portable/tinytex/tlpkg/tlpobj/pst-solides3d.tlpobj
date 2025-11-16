@@ -1,0 +1,27 @@
+name pst-solides3d
+category Package
+revision 68786
+shortdesc Draw perspective views of 3D solids
+longdesc The package is designed to draw solids in 3d perspective.
+longdesc Features include: create primitive solids; create solids by
+longdesc including a list of its vertices and faces; faces of solids and
+longdesc surfaces can be colored by choosing from a very large palette
+longdesc of colors; draw parametric surfaces in algebraic and reverse
+longdesc polish notation; create explicit and parameterized algebraic
+longdesc functions drawn in 2 or 3 dimensions; project text onto a plane
+longdesc or onto the faces of a solid; support for including external
+longdesc database files.
+containersize 55756
+containerchecksum fef032b9aa9a87711e2c09e0a7213a2c3e70451e64060ba9fad81beeeababdc622ec46107f077ad2869a8ba9420fd81e3e9df96ba60f98530fb3238d4bec45ee
+doccontainersize 5751600
+doccontainerchecksum 3bbdf115c8cb4e0dec4deebb1bf8af6317eb0deafa19054404f992f79361a913b26e1523a31105b7fe0addcfef438a016d6b5c5780da564fc108a58f449ee86b
+runfiles size=81
+ texmf-dist/dvips/pst-solides3d/pst-implicitsurface.pro
+ texmf-dist/dvips/pst-solides3d/pst-solides3d.pro
+ texmf-dist/tex/generic/pst-solides3d/pst-solides3d.tex
+ texmf-dist/tex/latex/pst-solides3d/pst-solides3d.sty
+catalogue-contact-home https://tug.org/PSTricks/main.cgi/
+catalogue-ctan /graphics/pstricks/contrib/pst-solides3d
+catalogue-license lppl1.3
+catalogue-topics graphics-3d pstricks
+catalogue-version 4.35a

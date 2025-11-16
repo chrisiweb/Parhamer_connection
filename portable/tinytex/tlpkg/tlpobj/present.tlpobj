@@ -1,0 +1,23 @@
+name present
+category Package
+revision 50048
+shortdesc Presentations with Plain TeX
+longdesc The package offers a collection of simple macros for preparing
+longdesc presentations in Plain TeX. Slide colour and text colour may be
+longdesc set, links between parts of the presentation, to other files,
+longdesc and to web addresses may be inserted. Images may be included
+longdesc easily, and code is available to provide transition effects
+longdesc between slides or frames. The structure of the macros is not
+longdesc overly complex, so that users should find it easy to adapt the
+longdesc macros to their specific needs.
+containersize 4364
+containerchecksum b22c0bb6803ebed5cd26aca4a9b55f2c7b506cc7e8910346a07437d60007310a3d2e3549040ffb2616df7f173279342f2334100aab14b589d0cc9e710ea89369
+doccontainersize 814492
+doccontainerchecksum e43a5de9c4bcf9281416963a898e350ba0a0b2d1cad92cbc97d99e2ee9d25f8407a09f024ec5d03a43fd3eee58e1c40bf99ebfff13913bbf85465588b4cf9710
+runfiles size=3
+ texmf-dist/tex/plain/present/present.tex
+catalogue-also lecturer
+catalogue-ctan /macros/plain/contrib/present
+catalogue-license lppl
+catalogue-topics presentation
+catalogue-version 2.2.1

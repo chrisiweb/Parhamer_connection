@@ -1,0 +1,18 @@
+name pst-platon
+category Package
+revision 16538
+shortdesc Platonic solids in PSTricks
+longdesc The package adds to PSTricks the ability to draw 3-dimensional
+longdesc views of the five Platonic solids.
+containersize 2788
+containerchecksum 8eade14982b0ffa2c5e7d5c68a91d4159ee6f3317b20836c3f470ed68940a522459bdce54b1e1dd4068173e50b0c611531d1210b1651d805602f952a1696626c
+doccontainersize 90668
+doccontainerchecksum 7c252b535853c4941fc4cdbe504a3c20ece2c04dd15e2bc5ea0c88928b5fdd7063035c329dccb7ed04d71606e70f632fc1d66847dd35ea46a4626c04070974be
+srccontainersize 936
+srccontainerchecksum 092665b806f358201f0dc1b0010796c2090b84cf31d1f0e9e33d2ce370049f0e7f65ebac23cf9841f770df8c61c22bdea60e583474694311c7e3fb4fd71ced6f
+runfiles size=3
+ texmf-dist/tex/latex/pst-platon/pst-platon.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-platon
+catalogue-license lppl
+catalogue-topics maths graphics-3d pstricks
+catalogue-version 0.01

@@ -1,0 +1,184 @@
+ot2-stix2text 0 178
+'&#x040A;' '' uni040A 0   % generated from ot2-stix2text.tfm, 2023-02-09-16:37
+'&#x0409;' '' uni0409 1   % Copyright 2023 TeX Users Group
+'&#x040F;' '' uni040F 2   %
+'&#x042D;' '' uni042D 3   % This work may be distributed and/or modified under the
+'&#x0406;' '' uni0406 4   % conditions of the LaTeX Project Public License, either
+'&#x0404;' '' uni0404 5   % version 1.3c of this license or (at your option) any
+'&#x0402;' '' uni0402 6   % later version. The latest version of this license is in
+'&#x040B;' '' uni040B 7   %   http://www.latex-project.org/lppl.txt
+'&#x045A;' '' uni045A 8   % and version 1.3c or later is part of all distributions
+'&#x0459;' '' uni0459 9   % of LaTeX version 2005/12/01 or later.
+'&#x045F;' '' uni045F 10  %
+'&#x044D;' '' uni044D 11  % This work has the LPPL maintenance status "maintained".
+'&#x0456;' '' uni0456 12  %
+'&#x0454;' '' uni0454 13  % The Current Maintainer of this work
+'&#x0452;' '' uni0452 14  % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x045B;' '' uni045B 15  %
+'&#x042E;' '' uni042E 16  % If you modify this program, changing the
+'&#x0416;' '' uni0416 17  % version identification would be appreciated.
+'&#x0419;' '' uni0419 18
+'&#x0401;' '' uni0401 19
+'&#x0474;' '' uni0474 20
+'&#x0472;' '' uni0472 21
+'&#x0405;' '' uni0405 22
+'&#x042F;' '' uni042F 23
+'&#x044E;' '' uni044E 24
+'&#x0436;' '' uni0436 25
+'&#x0439;' '' uni0439 26
+'&#x0451;' '' uni0451 27
+'&#x0475;' '' uni0475 28
+'&#x0473;' '' uni0473 29
+'&#x0455;' '' uni0455 30
+'&#x044F;' '' uni044F 31
+'&#x00A8;' '' dieresis 32
+'!' '' exclam 33
+'&#x201D;' '' quotedblright 34
+'&#x0462;' '' uni0462 35
+'&#x0306;' '' brevecomb.Cyrillic 36
+'%' '' percent 37
+'&#x00B4;' '' acute 38
+'&#x2019;' '' quoteright 39
+'(' '' parenleft 40
+')' '' parenright 41
+'*' '' asterisk 42
+'&#x0463;' '' uni0463 43
+',' '' comma 44
+'-' '' hyphen 45
+'.' '' period 46
+'/' '' slash 47
+'0' '' zero 48
+'1' '' one 49
+'2' '' two 50
+'3' '' three 51
+'4' '' four 52
+'5' '' five 53
+'6' '' six 54
+'7' '' seven 55
+'8' '' eight 56
+'9' '' nine 57
+':' '' colon 58
+';' '' semicolon 59
+'&#x00AB;' '' guillemotleft 60
+'&#x0131;' '' dotlessi 61
+'&#x00BB;' '' guillemotright 62
+'?' '' question 63
+'&#x02D8;' '' breve 64
+'&#x0410;' '' uni0410 65
+'&#x0411;' '' uni0411 66
+'&#x0426;' '' uni0426 67
+'&#x0414;' '' uni0414 68
+'&#x0415;' '' uni0415 69
+'&#x0424;' '' uni0424 70
+'&#x0413;' '' uni0413 71
+'&#x0425;' '' uni0425 72
+'&#x0418;' '' uni0418 73
+'&#x0408;' '' uni0408 74
+'&#x041A;' '' uni041A 75
+'&#x041B;' '' uni041B 76
+'&#x041C;' '' uni041C 77
+'&#x041D;' '' uni041D 78
+'&#x041E;' '' uni041E 79
+'&#x041F;' '' uni041F 80
+'&#x0427;' '' uni0427 81
+'&#x0420;' '' uni0420 82
+'&#x0421;' '' uni0421 83
+'&#x0422;' '' uni0422 84
+'&#x0423;' '' uni0423 85
+'&#x0412;' '' uni0412 86
+'&#x0429;' '' uni0429 87
+'&#x0428;' '' uni0428 88
+'&#x042B;' '' uni042B 89
+'&#x0417;' '' uni0417 90
+'[' '' bracketleft 91
+'&#x201C;' '' quotedblleft 92
+']' '' bracketright 93
+'&#x042C;' '' uni042C 94
+'&#x042A;' '' uni042A 95
+'&#x2018;' '' quoteleft 96
+'&#x0430;' '' uni0430 97
+'&#x0431;' '' uni0431 98
+'&#x0446;' '' uni0446 99
+'&#x0434;' '' uni0434 100
+'&#x0435;' '' uni0435 101
+'&#x0444;' '' uni0444 102
+'&#x0433;' '' uni0433 103
+'&#x0445;' '' uni0445 104
+'&#x0438;' '' uni0438 105
+'&#x0458;' '' uni0458 106
+'&#x043A;' '' uni043A 107
+'&#x043B;' '' uni043B 108
+'&#x043C;' '' uni043C 109
+'&#x043D;' '' uni043D 110
+'&#x043E;' '' uni043E 111
+'&#x043F;' '' uni043F 112
+'&#x0447;' '' uni0447 113
+'&#x0440;' '' uni0440 114
+'&#x0441;' '' uni0441 115
+'&#x0442;' '' uni0442 116
+'&#x0443;' '' uni0443 117
+'&#x0432;' '' uni0432 118
+'&#x0449;' '' uni0449 119
+'&#x0448;' '' uni0448 120
+'&#x044B;' '' uni044B 121
+'&#x0437;' '' uni0437 122
+'&#x2013;' '' endash 123
+'&#x2014;' '' emdash 124
+'&#x2116;' '' uni2116 125
+'&#x044C;' '' uni044C 126
+'&#x044A;' '' uni044A 127
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x040E;' '' uni040E 146
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x045E;' '' uni045E 178
+ot2-stix2text 0 178
+htfcss:  ot2-stix2text  font-family: 'STIX Two Text', serif;
+
+

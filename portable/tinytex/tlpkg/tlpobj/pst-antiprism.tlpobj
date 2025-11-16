@@ -1,0 +1,19 @@
+name pst-antiprism
+category Package
+revision 46643
+shortdesc A PSTricks related package which draws an antiprism
+longdesc pst-antiprism is a PSTricks related package which draws an
+longdesc antiprism, which is a semiregular polyhedron constructed with
+longdesc 2-gons and triangles.
+containersize 2584
+containerchecksum dc93e3a8a040a2712f701c2fa89924c45749824d20ad814a9f04aa423e15caed3a457b762dc7d30cf5c9e3afea378efc303851af919831c0969cde50b9adea57
+doccontainersize 302008
+doccontainerchecksum df528e5693cbbdca80a88d02e2b8487b70c188109825da66c9d9042056c6ba62e361fcba2ac747d69a08a4c8d78f27534640ce55c583289c3f12c2eb4c57d861
+runfiles size=3
+ texmf-dist/dvips/pst-antiprism/pst-antiprism.pro
+ texmf-dist/tex/generic/pst-antiprism/pst-antiprism.tex
+ texmf-dist/tex/latex/pst-antiprism/pst-antiprism.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-antiprism
+catalogue-license lppl
+catalogue-topics pstricks graphics
+catalogue-version 0.02

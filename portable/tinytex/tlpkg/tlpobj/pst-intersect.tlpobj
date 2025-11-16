@@ -1,0 +1,22 @@
+name pst-intersect
+category Package
+revision 33210
+shortdesc Compute intersections of arbitrary curves
+longdesc The package computes the intersections between arbitrary
+longdesc PostScript paths or Bezier curves, using the Bezier clipping
+longdesc algorithm.
+containersize 9820
+containerchecksum 847a2532362e570d3e14ac4aadedf0cf1ac0f2da1991837abcb6cbfa607357d8a451d852bec9be50ea8b2995716613475c4c1ea1c3766169902eb82e70aaba0c
+doccontainersize 165404
+doccontainerchecksum e8775b9d8adbab9e7ce63d595cb70747dc3d850c4b43095e1a35f6be8093b61ec92457c7fcf6565484e62b1aa7bec82700d8ccb2dc8dca0089e56bc8be5e762a
+srccontainersize 27412
+srccontainerchecksum 87bbc6bb4d4b43d6c1e93e89d7d96c5f9941187181eb93814110e3930255d6ac6c95d81a53a6ed440f6bd4fd8c38725e4cf5763467722465cf941c4cc16b5841
+runfiles size=12
+ texmf-dist/dvips/pst-intersect/pst-intersect.pro
+ texmf-dist/tex/generic/pst-intersect/pst-intersect.tex
+ texmf-dist/tex/latex/pst-intersect/pst-intersect.sty
+catalogue-contact-repository https://github.com/cbersch/pst-intersect
+catalogue-ctan /graphics/pstricks/contrib/pst-intersect
+catalogue-license lppl
+catalogue-topics graphics-supp pstricks
+catalogue-version 0.4

@@ -1,0 +1,21 @@
+name pst-calendar
+category Package
+revision 60480
+shortdesc Plot calendars in "fancy" ways
+longdesc The package uses pstricks and pst-3d to draw tabular calendars,
+longdesc or calendars on dodecahedra with a month to each face (the
+longdesc package also requires the multido and pst-xkey packages). The
+longdesc package works for years 2000-2099, and has options for
+longdesc calendars in French German and English, but the documentation
+longdesc is not available in English.
+containersize 4328
+containerchecksum 0e9bece02b9deaf677ef2d6f02999d3b4b7bc7028ec768fb57e69fcd3c1c26d1ddee1c261cbdce8eb8cb18c647dcdbca1448860d6139f01e17f234b3a8a0e793
+doccontainersize 142076
+doccontainerchecksum 07796be64b64e6c8eff2797d145933bb45c0e3ec0ba50e6fb41974d2dcabce09f2f781f989a62a5c5fe6295af3ddbce10ab811c2abeafe2d8b56b7a603f27412
+runfiles size=5
+ texmf-dist/tex/latex/pst-calendar/pst-calendar.sty
+catalogue-also calendar
+catalogue-ctan /graphics/pstricks/contrib/pst-calendar
+catalogue-license lppl
+catalogue-topics calendar pstricks
+catalogue-version 0.48

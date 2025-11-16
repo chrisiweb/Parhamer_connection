@@ -1,0 +1,19 @@
+name pst-grad
+category Package
+revision 15878
+shortdesc Filling with colour gradients, using PSTricks
+longdesc The package fills with colour gradients, using PSTricks. The
+longdesc RGB, CMYK and HSB models are supported. Other colour gradient
+longdesc mechanisms are to be found in package pst-slpe.
+containersize 3796
+containerchecksum f98fe4e4996e20947d90ef24d6825d72a8ceb6bbd586b0de9b90d5d73208816395e5b195dcda2816c8e709fa4c408f3b814c02911488c83a207039d28654b9e3
+doccontainersize 215188
+doccontainerchecksum 11f4a4de67f92bb2ba77457b5940e2b848985de111e3307215981e6d39617b8590316de5cb6e5002748d9e951be405e3f938d1708c28a7970be53808688c10ef
+runfiles size=5
+ texmf-dist/dvips/pst-grad/pst-grad.pro
+ texmf-dist/tex/generic/pst-grad/pst-grad.tex
+ texmf-dist/tex/latex/pst-grad/pst-grad.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-grad
+catalogue-license lppl
+catalogue-topics colour pstricks
+catalogue-version 1.06

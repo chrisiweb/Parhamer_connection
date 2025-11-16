@@ -1,0 +1,184 @@
+ot2-stix2textsc 0 178
+'&#x040A;' '' uni040A 0   % generated from ot2-stix2textsc.tfm, 2023-02-09-16:37
+'&#x0409;' '' uni0409 1   % Copyright 2023 TeX Users Group
+'&#x040F;' '' uni040F 2   %
+'&#x042D;' '' uni042D 3   % This work may be distributed and/or modified under the
+'&#x0406;' '' uni0406 4   % conditions of the LaTeX Project Public License, either
+'&#x0404;' '' uni0404 5   % version 1.3c of this license or (at your option) any
+'&#x0402;' '' uni0402 6   % later version. The latest version of this license is in
+'&#x040B;' '' uni040B 7   %   http://www.latex-project.org/lppl.txt
+'c' '' c.nje.smcp 8       % and version 1.3c or later is part of all distributions
+'c' '' c.lje.smcp 9       % of LaTeX version 2005/12/01 or later.
+'c' '' c.dzhe.smcp 10     %
+'c' '' c.e.smcp 11        % This work has the LPPL maintenance status "maintained".
+'c' '' c.iUkr.smcp 12     %
+'c' '' c.ieUkr.smcp 13    % The Current Maintainer of this work
+'c' '' c.dje.smcp 14      % is the TeX4ht Project <http://tug.org/tex4ht>.
+'c' '' c.tshe.smcp 15     %
+'&#x042E;' '' uni042E 16  % If you modify this program, changing the
+'&#x0416;' '' uni0416 17  % version identification would be appreciated.
+'&#x0419;' '' uni0419 18
+'&#x0401;' '' uni0401 19
+'&#x0474;' '' uni0474 20
+'&#x0472;' '' uni0472 21
+'&#x0405;' '' uni0405 22
+'&#x042F;' '' uni042F 23
+'c' '' c.yu.smcp 24
+'c' '' c.zhe.smcp 25
+'c' '' c.ishort.smcp 26
+'c' '' c.io.smcp 27
+'c' '' c.izhitsa.smcp 28
+'c' '' c.fita.smcp 29
+'c' '' c.dze.smcp 30
+'c' '' c.ya.smcp 31
+'&#x00A8;' '' dieresis 32
+'!' '' exclam 33
+'&#x201D;' '' quotedblright 34
+'&#x0462;' '' uni0462 35
+'&#x0306;' '' brevecomb.Cyrillic 36
+'%' '' percent 37
+'&#x00B4;' '' acute 38
+'&#x2019;' '' quoteright 39
+'(' '' parenleft 40
+')' '' parenright 41
+'*' '' asterisk 42
+'c' '' c.yat.smcp 43
+',' '' comma 44
+'-' '' hyphen 45
+'.' '' period 46
+'/' '' slash 47
+'0' '' zero 48
+'1' '' one 49
+'2' '' two 50
+'3' '' three 51
+'4' '' four 52
+'5' '' five 53
+'6' '' six 54
+'7' '' seven 55
+'8' '' eight 56
+'9' '' nine 57
+':' '' colon 58
+';' '' semicolon 59
+'&#x00AB;' '' guillemotleft 60
+'&#x0131;' '' dotlessi.smcp 61
+'&#x00BB;' '' guillemotright 62
+'?' '' question 63
+'&#x02D8;' '' breve 64
+'&#x0410;' '' uni0410 65
+'&#x0411;' '' uni0411 66
+'&#x0426;' '' uni0426 67
+'&#x0414;' '' uni0414 68
+'&#x0415;' '' uni0415 69
+'&#x0424;' '' uni0424 70
+'&#x0413;' '' uni0413 71
+'&#x0425;' '' uni0425 72
+'&#x0418;' '' uni0418 73
+'&#x0408;' '' uni0408 74
+'&#x041A;' '' uni041A 75
+'&#x041B;' '' uni041B 76
+'&#x041C;' '' uni041C 77
+'&#x041D;' '' uni041D 78
+'&#x041E;' '' uni041E 79
+'&#x041F;' '' uni041F 80
+'&#x0427;' '' uni0427 81
+'&#x0420;' '' uni0420 82
+'&#x0421;' '' uni0421 83
+'&#x0422;' '' uni0422 84
+'&#x0423;' '' uni0423 85
+'&#x0412;' '' uni0412 86
+'&#x0429;' '' uni0429 87
+'&#x0428;' '' uni0428 88
+'&#x042B;' '' uni042B 89
+'&#x0417;' '' uni0417 90
+'[' '' bracketleft 91
+'&#x201C;' '' quotedblleft 92
+']' '' bracketright 93
+'&#x042C;' '' uni042C 94
+'&#x042A;' '' uni042A 95
+'&#x2018;' '' quoteleft 96
+'c' '' c.a.smcp 97
+'c' '' c.be.smcp 98
+'c' '' c.tse.smcp 99
+'c' '' c.de.smcp 100
+'c' '' c.ie.smcp 101
+'c' '' c.ef.smcp 102
+'c' '' c.ghe.smcp 103
+'c' '' c.ha.smcp 104
+'c' '' c.i.smcp 105
+'c' '' c.je.smcp 106
+'c' '' c.ka.smcp 107
+'c' '' c.el.smcp 108
+'c' '' c.em.smcp 109
+'c' '' c.en.smcp 110
+'c' '' c.o.smcp 111
+'c' '' c.pe.smcp 112
+'c' '' c.che.smcp 113
+'c' '' c.er.smcp 114
+'c' '' c.es.smcp 115
+'c' '' c.te.smcp 116
+'c' '' c.u.smcp 117
+'c' '' c.ve.smcp 118
+'c' '' c.shcha.smcp 119
+'c' '' c.sha.smcp 120
+'c' '' c.yeru.smcp 121
+'c' '' c.ze.smcp 122
+'&#x2013;' '' endash 123
+'&#x2014;' '' emdash 124
+'&#x2116;' '' uni2116 125
+'c' '' c.soft.smcp 126
+'c' '' c.hard.smcp 127
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x040E;' '' uni040E 146
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'c' '' c.ushort.smcp 178
+ot2-stix2textsc 0 178
+htfcss:  ot2-stix2textsc  font-variant: small-caps; font-family: 'STIX Two Text', serif;
+
+

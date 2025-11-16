@@ -1,0 +1,31 @@
+name crossrefenum
+category Package
+revision 76004
+shortdesc Smart typesetting of enumerated cross-references for various TeX formats
+longdesc This package lets TeX manage the formatting of bunches of
+longdesc cross-references for you. It features: Automatic collapsing of
+longdesc references, Support for references by various criteria,
+longdesc including page and note number, line number in ConTeXt and
+longdesc edpage and edline when used in conjunction with reledmac,
+longdesc Handling of references combining two criteria (e.g. by page and
+longdesc note number), Extension mechanisms to add support to other
+longdesc types of references without modifying the internal macros. Note
+longdesc that sorting is not supported. I assume that users know in what
+longdesc order the labels they refer to appear in their document. It is
+longdesc written in Plain TeX as much as possible in order to make it
+longdesc compatible with a wide array of formats. For the moment, it
+longdesc works out of the box with ConTeXt and LaTeX.
+containersize 12448
+containerchecksum 5ab2f3678745516835ece5c4b6dd00ae8c72e679c91381a2e52aab4d18ec6d1fca8faca1f59f889a51e7239b427734d34f2afd5b3ce3e5671569c16761233b94
+doccontainersize 263024
+doccontainerchecksum 6a16cd8648ff5072557d6b587330f3626f76008bae7b472fc23df0522a011fece5458722f53c59eed45ad7a15af5f71750febb86347bb092345aee9f55475417
+runfiles size=16
+ texmf-dist/tex/generic/crossrefenum/crossrefenum.sty
+ texmf-dist/tex/generic/crossrefenum/crossrefenum.tex
+ texmf-dist/tex/generic/crossrefenum/t-crossrefenum.tex
+catalogue-contact-bugs https://bastien-dumont.onmypc.net/git/bdumont/crossrefenum/issues
+catalogue-contact-repository https://bastien-dumont.onmypc.net/git/bdumont/crossrefenum
+catalogue-ctan /macros/generic/crossrefenum
+catalogue-license gpl3+ fdl
+catalogue-topics label-ref context
+catalogue-version 1.2

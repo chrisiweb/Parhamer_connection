@@ -1,0 +1,26 @@
+name fenixpar
+category Package
+revision 24730
+shortdesc One-shot changes to token registers such as \everypar
+longdesc The bundle provides two packages, fenxitok and fenixpar. The
+longdesc fenixtok package provides user macros to add material to a
+longdesc token register; the material will be (automatically) removed
+longdesc from the token register when the register is executed. Material
+longdesc may be added either to the left or to the right, and care is
+longdesc taken not to override any redefinition that may be included in
+longdesc the token register itself. The fenixpar package uses the macros
+longdesc of fenixtok to provide a user interface to manipulation of the
+longdesc \everypar token register. The packages require the e-TeX
+longdesc extensions; with them, they work either with Plain TeX or with
+longdesc LaTeX.
+containersize 3840
+containerchecksum 1b09294b430bb9ab6a4eae11549500b224514e55bb99329a4ee3d9d72ab906128063537302f672a772c02ff4372d46649656a88c4a303a9301976fc7a804387e
+doccontainersize 532
+doccontainerchecksum 6ee02d615438e99df82f939a8104097e43802b00af2a0e7be56f329061722cfc7df0edf84c82ac73754d63a703533bd6d5b88b6e648bedbc47be712ff86ec5c8
+runfiles size=4
+ texmf-dist/tex/generic/fenixpar/fenixpar.sty
+ texmf-dist/tex/generic/fenixpar/fenixtok.sty
+catalogue-ctan /macros/generic/fenixpar
+catalogue-license lppl
+catalogue-topics macro-supp
+catalogue-version 0.92

@@ -1,0 +1,20 @@
+name ifis-macros
+category Package
+revision 75195
+shortdesc Check if a given input string is a number or dimension for TeX
+longdesc This package provides three macros: \ifisint, \ifisdim, and
+longdesc \ifisglue. They test if a given input string represents either
+longdesc a valid integer or a valid dimension or a valid (mu)glue
+longdesc specification for TeX.
+containersize 3472
+containerchecksum 02d400337f123a02b033a275c0478c87a510fd2027f3676b68b486e2d58cd3d5dc1740d3efd9d53704c99c7196e11ae77c8c91c1a0e895c6cdf00074cdf8ad33
+doccontainersize 31456
+doccontainerchecksum 0b0ff04a07073b6373eefb494484c0194b9ebd3fb64d5908d177c6a5e2484423979ba5de2c23ce51727f460a77af7967d6f82fe0a675ba32ae3391fa742d7297
+runfiles size=4
+ texmf-dist/tex/plain/ifis-macros/ifisdimension.tex
+ texmf-dist/tex/plain/ifis-macros/ifisglue.tex
+ texmf-dist/tex/plain/ifis-macros/ifisinteger.tex
+catalogue-ctan /macros/plain/contrib/ifis-macros
+catalogue-license gpl3+
+catalogue-topics plain-ext macro-supp
+catalogue-version 2.0

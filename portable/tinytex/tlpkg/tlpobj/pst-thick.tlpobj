@@ -1,0 +1,19 @@
+name pst-thick
+category Package
+revision 16369
+shortdesc Drawing very thick lines and curves
+longdesc The package supports drawing of very thick lines and curves in
+longdesc PSTricks, with various fillings for the body of the lines.
+containersize 1968
+containerchecksum 5eab2dfdad0c9fad21cbb7d4484f9701bd48b225e881e0c86a2418afa143582aef160bbf4cc9f5a773aea97d2c12c7f614f41fd87f0ff2952c27ddac91f75905
+doccontainersize 472840
+doccontainerchecksum 5d75bab3e4b5c18a14e7348dd97a3f7e0895a2b44111a72d87ff8ce7c7c0499062f61b4ff38b2d36b0632719fd58a33c91f077edc269d74fa58281a83752e9d7
+srccontainersize 948
+srccontainerchecksum c3cbd54dab4d8e71a2d6e9f94cffb1dc0576344032d3af01c21a4ef0f493c5b886fe6f99e7361f4ca0c9b2e01e68e61e0f8e74b5f511cd1680b20eb01a068030
+runfiles size=2
+ texmf-dist/tex/generic/pst-thick/pst-thick.tex
+ texmf-dist/tex/latex/pst-thick/pst-thick.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-thick
+catalogue-license lppl
+catalogue-topics graphics-subpic
+catalogue-version 1.0

@@ -1,0 +1,261 @@
+gkaimp01 0 255
+'&#x3000;' '' uni3000 0         % generated from gkaimp01.tfm, 2023-02-05-20:39
+'&#x3001;' '' uni3001 1         % Copyright 2023 TeX Users Group
+'&#x3002;' '' uni3002 2         %
+'&#x00B7;' '' periodcentered 3  % This work may be distributed and/or modified under the
+'&#x02C9;' '' uni02C9 4         % conditions of the LaTeX Project Public License, either
+'&#x02C7;' '' caron 5           % version 1.3c of this license or (at your option) any
+'&#x00A8;' '' dieresis 6        % later version. The latest version of this license is in
+'&#x3003;' '' uni3003 7         %   http://www.latex-project.org/lppl.txt
+'&#x3005;' '' uni3005 8         % and version 1.3c or later is part of all distributions
+'&#x2014;' '' emdash 9          % of LaTeX version 2005/12/01 or later.
+'&#xFF5E;' '' uniFF5E 10        %
+'&#x2016;' '' uni2016 11        % This work has the LPPL maintenance status "maintained".
+'&#x2026;' '' ellipsis 12       %
+'&#x2018;' '' quoteleft 13      % The Current Maintainer of this work
+'&#x2019;' '' quoteright 14     % is the TeX4ht Project <http://tug.org/tex4ht>.
+'&#x201C;' '' quotedblleft 15   %
+'&#x201D;' '' quotedblright 16  % If you modify this program, changing the
+'&#x3014;' '' uni3014 17        % version identification would be appreciated.
+'&#x3015;' '' uni3015 18
+'&#x3008;' '' uni3008 19
+'&#x3009;' '' uni3009 20
+'&#x300A;' '' uni300A 21
+'&#x300B;' '' uni300B 22
+'&#x300C;' '' uni300C 23
+'&#x300D;' '' uni300D 24
+'&#x300E;' '' uni300E 25
+'&#x300F;' '' uni300F 26
+'&#x3016;' '' uni3016 27
+'&#x3017;' '' uni3017 28
+'&#x3010;' '' uni3010 29
+'&#x3011;' '' uni3011 30
+'&#x00B1;' '' plusminus 31
+'&#x00D7;' '' multiply 32
+'&#x00F7;' '' divide 33
+'&#x2236;' '' uni2236 34
+'&#x2227;' '' logicaland 35
+'&#x2228;' '' logicalor 36
+'&#x2211;' '' summation 37
+'&#x220F;' '' product 38
+'&#x222A;' '' union 39
+'&#x2229;' '' intersection 40
+'&#x2208;' '' element 41
+'&#x2237;' '' uni2237 42
+'&#x221A;' '' radical 43
+'&#x22A5;' '' perpendicular 44
+'&#x2225;' '' uni2225 45
+'&#x2220;' '' angle 46
+'&#x2312;' '' uni2312 47
+'&#x2299;' '' uni2299 48
+'&#x222B;' '' integral 49
+'&#x222E;' '' uni222E 50
+'&#x2261;' '' equivalence 51
+'&#x224C;' '' uni224C 52
+'&#x2248;' '' approxequal 53
+'&#x223D;' '' uni223D 54
+'&#x221D;' '' proportional 55
+'&#x2260;' '' notequal 56
+'&#x226E;' '' uni226E 57
+'&#x226F;' '' uni226F 58
+'&#x2264;' '' lessequal 59
+'&#x2265;' '' greaterequal 60
+'&#x221E;' '' infinity 61
+'&#x2235;' '' uni2235 62
+'&#x2234;' '' therefore 63
+'&#x2642;' '' male 64
+'&#x2640;' '' female 65
+'&#x00B0;' '' degree 66
+'&#x2032;' '' minute 67
+'&#x2033;' '' second 68
+'&#x2103;' '' uni2103 69
+'&#xFF04;' '' uniFF04 70
+'&#x00A4;' '' currency 71
+'&#xFFE0;' '' uniFFE0 72
+'&#xFFE1;' '' uniFFE1 73
+'&#x2030;' '' perthousand 74
+'&#x00A7;' '' section 75
+'&#x2116;' '' afii61352 76
+'&#x2606;' '' uni2606 77
+'&#x2605;' '' uni2605 78
+'&#x25CB;' '' circle 79
+'&#x25CF;' '' H18533 80
+'&#x25CE;' '' uni25CE 81
+'&#x25C7;' '' uni25C7 82
+'&#x25C6;' '' uni25C6 83
+'&#x25A1;' '' H22073 84
+'&#x25A0;' '' filledbox 85
+'&#x25B3;' '' uni25B3 86
+'&#x25B2;' '' triagup 87
+'&#x203B;' '' uni203B 88
+'&#x2192;' '' arrowright 89
+'&#x2190;' '' arrowleft 90
+'&#x2191;' '' arrowup 91
+'&#x2193;' '' arrowdown 92
+'&#x3013;' '' uni3013 93
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x2488;' '' uni2488 110
+'&#x2489;' '' uni2489 111
+'&#x248A;' '' uni248A 112
+'&#x248B;' '' uni248B 113
+'&#x248C;' '' uni248C 114
+'&#x248D;' '' uni248D 115
+'&#x248E;' '' uni248E 116
+'&#x248F;' '' uni248F 117
+'&#x2490;' '' uni2490 118
+'&#x2491;' '' uni2491 119
+'&#x2492;' '' uni2492 120
+'&#x2493;' '' uni2493 121
+'&#x2494;' '' uni2494 122
+'&#x2495;' '' uni2495 123
+'&#x2496;' '' uni2496 124
+'&#x2497;' '' uni2497 125
+'&#x2498;' '' uni2498 126
+'&#x2499;' '' uni2499 127
+'&#x249A;' '' uni249A 128
+'&#x249B;' '' uni249B 129
+'&#x2474;' '' uni2474 130
+'&#x2475;' '' uni2475 131
+'&#x2476;' '' uni2476 132
+'&#x2477;' '' uni2477 133
+'&#x2478;' '' uni2478 134
+'&#x2479;' '' uni2479 135
+'&#x247A;' '' uni247A 136
+'&#x247B;' '' uni247B 137
+'&#x247C;' '' uni247C 138
+'&#x247D;' '' uni247D 139
+'&#x247E;' '' uni247E 140
+'&#x247F;' '' uni247F 141
+'&#x2480;' '' uni2480 142
+'&#x2481;' '' uni2481 143
+'&#x2482;' '' uni2482 144
+'&#x2483;' '' uni2483 145
+'&#x2484;' '' uni2484 146
+'&#x2485;' '' uni2485 147
+'&#x2486;' '' uni2486 148
+'&#x2487;' '' uni2487 149
+'&#x2460;' '' uni2460 150
+'&#x2461;' '' uni2461 151
+'&#x2462;' '' uni2462 152
+'&#x2463;' '' uni2463 153
+'&#x2464;' '' uni2464 154
+'&#x2465;' '' uni2465 155
+'&#x2466;' '' uni2466 156
+'&#x2467;' '' uni2467 157
+'&#x2468;' '' uni2468 158
+'&#x2469;' '' uni2469 159
+'' ''
+'' ''
+'&#x3220;' '' uni3220 162
+'&#x3221;' '' uni3221 163
+'&#x3222;' '' uni3222 164
+'&#x3223;' '' uni3223 165
+'&#x3224;' '' uni3224 166
+'&#x3225;' '' uni3225 167
+'&#x3226;' '' uni3226 168
+'&#x3227;' '' uni3227 169
+'&#x3228;' '' uni3228 170
+'&#x3229;' '' uni3229 171
+'' ''
+'' ''
+'&#x2160;' '' uni2160 174
+'&#x2161;' '' uni2161 175
+'&#x2162;' '' uni2162 176
+'&#x2163;' '' uni2163 177
+'&#x2164;' '' uni2164 178
+'&#x2165;' '' uni2165 179
+'&#x2166;' '' uni2166 180
+'&#x2167;' '' uni2167 181
+'&#x2168;' '' uni2168 182
+'&#x2169;' '' uni2169 183
+'&#x216A;' '' uni216A 184
+'&#x216B;' '' uni216B 185
+'' ''
+'' ''
+'&#xFF01;' '' uniFF01 188
+'&#xFF02;' '' uniFF02 189
+'&#xFF03;' '' uniFF03 190
+'&#xFFE5;' '' uniFFE5 191
+'&#xFF05;' '' uniFF05 192
+'&#xFF06;' '' uniFF06 193
+'&#xFF07;' '' uniFF07 194
+'&#xFF08;' '' uniFF08 195
+'&#xFF09;' '' uniFF09 196
+'&#xFF0A;' '' uniFF0A 197
+'&#xFF0B;' '' uniFF0B 198
+'&#xFF0C;' '' uniFF0C 199
+'&#xFF0D;' '' uniFF0D 200
+'&#xFF0E;' '' uniFF0E 201
+'&#xFF0F;' '' uniFF0F 202
+'&#xFF10;' '' uniFF10 203
+'&#xFF11;' '' uniFF11 204
+'&#xFF12;' '' uniFF12 205
+'&#xFF13;' '' uniFF13 206
+'&#xFF14;' '' uniFF14 207
+'&#xFF15;' '' uniFF15 208
+'&#xFF16;' '' uniFF16 209
+'&#xFF17;' '' uniFF17 210
+'&#xFF18;' '' uniFF18 211
+'&#xFF19;' '' uniFF19 212
+'&#xFF1A;' '' uniFF1A 213
+'&#xFF1B;' '' uniFF1B 214
+'&#xFF1C;' '' uniFF1C 215
+'&#xFF1D;' '' uniFF1D 216
+'&#xFF1E;' '' uniFF1E 217
+'&#xFF1F;' '' uniFF1F 218
+'&#xFF20;' '' uniFF20 219
+'&#xFF21;' '' uniFF21 220
+'&#xFF22;' '' uniFF22 221
+'&#xFF23;' '' uniFF23 222
+'&#xFF24;' '' uniFF24 223
+'&#xFF25;' '' uniFF25 224
+'&#xFF26;' '' uniFF26 225
+'&#xFF27;' '' uniFF27 226
+'&#xFF28;' '' uniFF28 227
+'&#xFF29;' '' uniFF29 228
+'&#xFF2A;' '' uniFF2A 229
+'&#xFF2B;' '' uniFF2B 230
+'&#xFF2C;' '' uniFF2C 231
+'&#xFF2D;' '' uniFF2D 232
+'&#xFF2E;' '' uniFF2E 233
+'&#xFF2F;' '' uniFF2F 234
+'&#xFF30;' '' uniFF30 235
+'&#xFF31;' '' uniFF31 236
+'&#xFF32;' '' uniFF32 237
+'&#xFF33;' '' uniFF33 238
+'&#xFF34;' '' uniFF34 239
+'&#xFF35;' '' uniFF35 240
+'&#xFF36;' '' uniFF36 241
+'&#xFF37;' '' uniFF37 242
+'&#xFF38;' '' uniFF38 243
+'&#xFF39;' '' uniFF39 244
+'&#xFF3A;' '' uniFF3A 245
+'&#xFF3B;' '' uniFF3B 246
+'&#xFF3C;' '' uniFF3C 247
+'&#xFF3D;' '' uniFF3D 248
+'&#xFF3E;' '' uniFF3E 249
+'&#xFF3F;' '' uniFF3F 250
+'&#xFF40;' '' uniFF40 251
+'&#xFF41;' '' uniFF41 252
+'&#xFF42;' '' uniFF42 253
+'&#xFF43;' '' uniFF43 254
+'&#xFF44;' '' uniFF44 255
+gkaimp01 0 255
+htfcss:  gkaimp01  font-family: 'AR PL KaitiM GB', serif;
+
+

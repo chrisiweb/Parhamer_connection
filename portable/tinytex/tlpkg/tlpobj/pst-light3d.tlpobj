@@ -1,0 +1,22 @@
+name pst-light3d
+category Package
+revision 15878
+shortdesc Three dimensional lighting effects (PSTricks)
+longdesc A PSTricks package for three dimensional lighting effects on
+longdesc characters and PSTricks graphics, like lines, curves, plots,
+longdesc ...
+containersize 2536
+containerchecksum 2bcfd2835e20302ec865667a44af8dec63c6c006c8a3e39b048464e129ef04300d0d7c2e23f324a8acee0e1ae1439e75ce642f7b76a8f1958d600546ac7c220c
+doccontainersize 836124
+doccontainerchecksum 166f47222230e24530508e3ca66c881dcc844cb8cb35b92fdbeab164b964ebf2928df3068d79467fc8a9a8a4db81d2be48350036169605365bda116cbd86d095
+srccontainersize 824
+srccontainerchecksum 8edab208ea567672bbfa0252fb4180abd8134702058223f04ab23c3ac92dca98f4946ffc31620b9d65376ae41c819038403ad3bd7c9162cabf8efcf7d4d57362
+runfiles size=3
+ texmf-dist/dvips/pst-light3d/pst-light3d.pro
+ texmf-dist/tex/generic/pst-light3d/pst-light3d.tex
+ texmf-dist/tex/latex/pst-light3d/pst-light3d.sty
+catalogue-also xkeyval
+catalogue-ctan /graphics/pstricks/contrib/pst-light3d
+catalogue-license lppl
+catalogue-topics graphics-3d graphics-use pstricks
+catalogue-version 0.12

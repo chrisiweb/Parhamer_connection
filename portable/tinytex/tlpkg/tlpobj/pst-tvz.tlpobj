@@ -1,0 +1,20 @@
+name pst-tvz
+category Package
+revision 23451
+shortdesc Draw trees with more than one root node, using PSTricks
+longdesc The package uses PSTricks to draw trees with more than one root
+longdesc node. It is similar to pst-tree, though it uses a different
+longdesc placement algorithm.
+containersize 16140
+containerchecksum 79e206f5e4154a797cf168b1b490cac8e1ddf98a79de6ddbd9dc98cf53eae01301c034643f6660708b58e890ca94b7235e5b0f48e53136f32c12c0adf5749179
+doccontainersize 274160
+doccontainerchecksum ffbba30214dce83e7f00aa7c6e126919cafe341dc727736e27a5af8ae212dc66dafa49afba553079d6857258ca72577950c06ba2deb21ca3c1b13231d1909935
+srccontainersize 944
+srccontainerchecksum ea0d7dc35ccef586bbe4dc225886755b28524b4db4ebcede6fd41c51bcc0fc8e7fca1f7a326d12524dae478b5a9228cae413b80e7a2830f0cd729e7efa8bab4c
+runfiles size=21
+ texmf-dist/tex/generic/pst-tvz/pst-tvz.tex
+ texmf-dist/tex/latex/pst-tvz/pst-tvz.sty
+catalogue-ctan /graphics/pstricks/contrib/pst-tvz
+catalogue-license lppl1.3
+catalogue-topics tree linguistic
+catalogue-version 1.01

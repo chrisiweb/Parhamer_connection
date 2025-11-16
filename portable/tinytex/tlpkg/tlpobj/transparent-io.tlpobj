@@ -1,0 +1,27 @@
+name transparent-io
+category Package
+revision 64113
+shortdesc Show for approval the filenames used in \input, \openin, or \openout
+longdesc This package provides macros to make the file I/O in plain TeX
+longdesc more transparent. That is, every \input, \openin, and \openout
+longdesc operation by TeX is presented to the user who must check
+longdesc carefully if the file name of the source is acceptable. The
+longdesc user must sometimes enter additional text and has to specify
+longdesc the file name that the TeX operation should use. The macros
+longdesc require a complex installation procedure; the package contains
+longdesc sed and bash scripts to do this on a UNIX-like operating
+longdesc system. Every installation is different from any other as
+longdesc password-protected macro names and private messages have to be
+longdesc chosen by the installer. Therefore, the files in the package
+longdesc cannot be used directly. The files carry the extension .org,
+longdesc and only after the user has performed an individual
+longdesc customization for a private installation the changed files are
+longdesc renamed and have the extension .tex. For details see the
+longdesc manual.
+containersize 852
+containerchecksum 69d27356f57d5b610fc9e6e839f6df111f6b98b8bf446327ecfba473dea6bc997cb6802ca382b3438d44de85fd5f50f82bd4e5508bfa43d08223463b5436950c
+doccontainersize 76976
+doccontainerchecksum 2e54e51744c482f98c1b35588cc934ba18e3358fc2be043459d7e16f8c85ee6aae7acf4b6c3b329cdfddcf1b3126000c6559d41d5b2c4e88d5018844717cb8eb
+catalogue-ctan /macros/plain/contrib/transparent-io
+catalogue-license gpl3
+catalogue-topics security

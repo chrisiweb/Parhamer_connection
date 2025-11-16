@@ -1,0 +1,8 @@
+name pst2pdf.windows
+category Package
+revision 65891
+shortdesc windows files of pst2pdf
+containersize 2308
+containerchecksum 6334776e1f9baf4097c34bb35fb0a5eea126b88a3b59f86a55d0a71fa50875cf8118ae4c509bbdf4a342a3594137d235842438478da6d44f9586bb220a329329
+binfiles arch=windows size=2
+ bin/windows/pst2pdf.exe

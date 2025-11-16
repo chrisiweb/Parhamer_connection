@@ -1,0 +1,23 @@
+name tex-ps
+category Package
+revision 15878
+shortdesc TeX to PostScript generic macros and add-ons
+longdesc TeX to PostScript generic macros and add-ons: transformations
+longdesc of EPS files, prepress preparation, color separation, mirror,
+longdesc etc.
+containersize 21404
+containerchecksum cc616b501be7c0724646d5e0f326a5729df8f4cb0c4070f92bdd3b5b370e496efd6208b3ec8b2387713810b9764c75525689f434b7f482a83fb0b8e9b0383cb6
+doccontainersize 246188
+doccontainerchecksum 2f82f63954c1407c2caa9c39a538ed1cffeabfde8ac0506906f0f28430d12e18d858040ee66f2326cad3fa758c23d1ed490b70c5d18eb68b699b7ddd0afd15d1
+runfiles size=24
+ texmf-dist/dvips/tex-ps/crops.pro
+ texmf-dist/dvips/tex-ps/mirr.hd
+ texmf-dist/dvips/tex-ps/separate.pro
+ texmf-dist/tex/generic/tex-ps/cmyk-hax.tex
+ texmf-dist/tex/generic/tex-ps/epsfx.tex
+ texmf-dist/tex/generic/tex-ps/poligraf.sty
+ texmf-dist/tex/generic/tex-ps/trans.tex
+catalogue-also epsfx cmyk-hax trans mirr poligraf
+catalogue-ctan /macros/generic/TeX-PS
+catalogue-license pd
+catalogue-topics ps-manip

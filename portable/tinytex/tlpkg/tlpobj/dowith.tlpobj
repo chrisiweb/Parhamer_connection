@@ -1,0 +1,27 @@
+name dowith
+category Package
+revision 38860
+shortdesc Apply a command to a list of items
+longdesc The package provides macros for applying a command to all
+longdesc elements of a list without separators, such as
+longdesc '\DoWithAllIn{<cmd>}{<list-macro>}', and also for extending and
+longdesc reducing macros storing such lists. Applications in mind
+longdesc belonged to LaTeX, but the package should work with other
+longdesc formats as well. Loop and list macros in other packages are
+longdesc discussed. A further package, domore, is also provided, which
+longdesc enhances the functionality of dowith.
+containersize 6600
+containerchecksum 7c9bc25d94364ea13326ebc010d15c92b27ffad08b68fa5c3b5034e6bbd6a96370d159727270adf76e6edca15d08de86c13ca7ede009a445b500ac22b151c05c
+doccontainersize 1179736
+doccontainerchecksum 2fb2234cdf6b42bd3f9f991b3d2d76473c45c51ffb67e7c12e7976310e0fa562cb8d1f01b347e9b8140c854e1ede865cfed17f5748ded909dc8d983d4f246961
+srccontainersize 21140
+srccontainerchecksum 44d331b8f99533a6bb3b150748245787f686a807b22dcea3dd9bef311000881fcf0870d19d6718574d56adae79451ef05aca1bddf1904a76d50dd4e74529fd47
+runfiles size=6
+ texmf-dist/tex/generic/dowith/domore.sty
+ texmf-dist/tex/generic/dowith/dowith.RLS
+ texmf-dist/tex/generic/dowith/dowith.sty
+catalogue-contact-support http://www.webdesign-bu.de/uwe_lueck/contact.html
+catalogue-ctan /macros/generic/dowith
+catalogue-license lppl1.3
+catalogue-topics macro-supp
+catalogue-version r0.32

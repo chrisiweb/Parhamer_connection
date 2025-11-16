@@ -1,0 +1,252 @@
+ts1-stixgeneral 0 246
+'&#x60;' '' grave 0              % generated from ts1-stixgeneral.tfm, 2022-11-15-12:30
+'&#x00B4;' '' acute 1            % Copyright 2022 TeX Users Group
+'&#x02C6;' '' circumflex 2       %
+'&#x02DC;' '' tilde 3            % This work may be distributed and/or modified under the
+'&#x00A8;' '' dieresis 4         % conditions of the LaTeX Project Public License, either
+'&#x02DD;' '' hungarumlaut 5     % version 1.3c of this license or (at your option) any
+'&#x02DA;' '' ring 6             % later version. The latest version of this license is in
+'&#x02C7;' '' caron 7            %   http://www.latex-project.org/lppl.txt
+'&#x02D8;' '' breve 8            % and version 1.3c or later is part of all distributions
+'&#x00AF;' '' macron 9           % of LaTeX version 2005/12/01 or later.
+'&#x02D9;' '' dotaccent 10       %
+'&#x00B8;' '' cedilla 11         % This work has the LPPL maintenance status "maintained".
+'&#x02DB;' '' ogonek 12          %
+'&#x201A;' '' quotesinglbase 13  % The Current Maintainer of this work
+'' ''                            % is the TeX4ht Project <http://tug.org/tex4ht>.
+'' ''                            %
+'' ''                            % If you modify this program, changing the
+'' ''                            % version identification would be appreciated.
+'&#x201E;' '' quotedblbase 18
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x2190;' '' uni2190 24
+'&#x2192;' '' uni2192 25
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'$' '' dollar 36
+'' ''
+'' ''
+'&#x0027;' '' quotesingle 39
+'' ''
+'' ''
+'&#x2217;' '' uni2217 42
+'' ''
+',' '' comma 44
+'' ''
+'.' '' period 46
+'&#x2044;' '' fraction 47
+'0' '' zero.oldstyle 48
+'1' '' one.oldstyle 49
+'2' '' two.oldstyle 50
+'3' '' three.oldstyle 51
+'4' '' four.oldstyle 52
+'5' '' five.oldstyle 53
+'6' '' six.oldstyle 54
+'7' '' seven.oldstyle 55
+'8' '' eight.oldstyle 56
+'9' '' nine.oldstyle 57
+'' ''
+'' ''
+'&#x27E8;' '' uni27E8 60
+'&#x2212;' '' minus 61
+'&#x27E9;' '' uni27E9 62
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x2127;' '' uni2127 77
+'' ''
+'&#x25CB;' '' uni25CB 79
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x2126;' '' uni2126 87
+'' ''
+'' ''
+'' ''
+'&#x27E6;' '' uni27E6 91
+'' ''
+'&#x27E7;' '' uni27E7 93
+'&#x2191;' '' uni2191 94
+'&#x2193;' '' uni2193 95
+'&#x60;' '' grave 96
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x266A;' '' uni266A 110
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x0330;' '' uni0330 126
+'' ''
+'&#x02D8;' '' breve 128
+'&#x02C7;' '' caron 129
+'&#x02DD;' '' hungarumlaut 130
+'&#x030F;' '' uni030F 131
+'&#x2020;' '' dagger 132
+'&#x2021;' '' daggerdbl 133
+'&#x2016;' '' uni2016 134
+'&#x2030;' '' perthousand 135
+'&#x2022;' '' bullet 136
+'' ''
+'$' '' dollar 138
+'&#x00A2;' '' cent 139
+'&#x0192;' '' florin 140
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x20A4;' '' uni20A4 146
+'&#x211E;' '' uni211E 147
+'' ''
+'' ''
+'' ''
+'&#x2122;' '' trademark 151
+'&#x2031;' '' uni2031 152
+'' ''
+'' ''
+'&#x2116;' '' uni2116 155
+'&#x2052;' '' uni2052 156
+'&#x212E;' '' uni212E 157
+'&#x25E6;' '' uni25E6 158
+'' ''
+'' ''
+'' ''
+'&#x00A2;' '' cent 162
+'&#x00A3;' '' sterling 163
+'&#x00A4;' '' currency 164
+'&#x00A5;' '' yen 165
+'&#x00A6;' '' brokenbar 166
+'&#x00A7;' '' section 167
+'&#x00A8;' '' dieresis 168
+'&#x00A9;' '' copyright 169
+'&#x00AA;' '' ordfeminine 170
+'' ''
+'&#x00AC;' '' logicalnot 172
+'&#x24C5;' '' uni24C5 173
+'&#x00AE;' '' registered 174
+'&#x00AF;' '' macron 175
+'&#x00B0;' '' degree 176
+'&#x00B1;' '' plusminus 177
+'&#x00B2;' '' twosuperior 178
+'&#x00B3;' '' threesuperior 179
+'&#x00B4;' '' acute 180
+'&#x00B5;' '' mu 181
+'&#x00B6;' '' paragraph 182
+'&#x00B7;' '' periodcentered 183
+'&#x203B;' '' uni203B 184
+'&#x00B9;' '' onesuperior 185
+'&#x00BA;' '' ordmasculine 186
+'&#x221A;' '' uni221A 187
+'&#x00BC;' '' onequarter 188
+'&#x00BD;' '' onehalf 189
+'&#x00BE;' '' threequarters 190
+'&#x20AC;' '' uni20AC 191
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x00D7;' '' multiply 214
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'' ''
+'&#x00F7;' '' divide 246
+ts1-stixgeneral 0 246
+htfcss:  ts1-stixgeneral  font-family: 'STIXGeneral', serif;
+
+

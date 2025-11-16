@@ -1,0 +1,26 @@
+name pst-pdgr
+category Package
+revision 45875
+shortdesc Draw medical pedigrees using PSTricks
+longdesc The package provides a set of macros based on PSTricks to draw
+longdesc medical pedigrees according to the recommendations for
+longdesc standardized human pedigree nomenclature. The drawing commands
+longdesc place the symbols on a pspicture canvas. An interface for
+longdesc making trees is also provided. The package may be used both
+longdesc with LaTeX and PlainTeX. A separate Perl program for generating
+longdesc TeX files from spreadsheets is available.
+containersize 3384
+containerchecksum c42b723e2739eb3a70f7a984d45b6b738a1dab1f4f3bb7311850c344be736fbc97ababb6f744539deddc7d1cbde47830e81d1bfd42f705a7287b1fb970664823
+doccontainersize 171680
+doccontainerchecksum 006395a2e1caebf8c86f4eb41eeb03a35d47b82e65e18ce4045eb22f93bc78a38f7611a1328216712d29be852fa3431876254f3b41b8b7a2a7c453f32a8e1bf7
+srccontainersize 16788
+srccontainerchecksum e576ffab3eb1b0094bf7514ea996146c1d73abc5f68a47f3cdccf5e7fe7eec133a21511e9d1107ef20541750b12766899bd3c925e09be931b1e0e2a1cee376d9
+runfiles size=5
+ texmf-dist/tex/generic/pst-pdgr/pst-pdgr.tex
+ texmf-dist/tex/latex/pst-pdgr/pst-pdgr.cfg
+ texmf-dist/tex/latex/pst-pdgr/pst-pdgr.sty
+catalogue-also pedigree-perl
+catalogue-ctan /graphics/pstricks/contrib/pedigree/pst-pdgr
+catalogue-license lppl
+catalogue-topics humanities pstricks
+catalogue-version 0.4
