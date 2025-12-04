@@ -1,13 +1,9 @@
-﻿@echo off
-setlocal enabledelayedexpansion
+@echo off
+setlocal
 
-rem ============================================================
-rem  LaMA Build & Installer Automation Script (CMD-kompatibel)
-rem ============================================================
-
-rem -----------------------------
-rem Einstellungen
-rem -----------------------------
+:: ==============================
+:: Variablen
+:: ==============================
 set "PYINSTALLER_EXE=c:\users\cwebe\appdata\roaming\python\python313\scripts\pyinstaller.exe"
 set "EXE_NAME=LaMA.exe"
 set "BUILD_DIR=dist"
@@ -17,112 +13,50 @@ set "ARCHIVE_DIR=%DEST_DIR%\lama_installer\Archiv"
 set "INNO_COMPILER=C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
 set "INNO_SCRIPT=C:\Users\cwebe\Desktop\_create_lama_installer\script_create_installer - includetinylatex.iss"
 
-echo =============================================
-echo   🧠  Baue LaMA.exe mit PyInstaller ...
-echo =============================================
+echo ==============================
+echo Schritt 1: Lösche dist & build
+echo ==============================
+if exist "%BUILD_DIR%" rd /s /q "%BUILD_DIR%"
+if exist build rd /s /q build
 
-if not exist "%PYINSTALLER_EXE%" (
-    echo [FEHLER] PyInstaller wurde nicht gefunden:
-    echo %PYINSTALLER_EXE%
-    pause
-    exit /b 1
-)
-
+echo ==============================
+echo Schritt 2: Erstelle LaMA.exe mit PyInstaller
+echo ==============================
 python "%PYINSTALLER_EXE%" -F -i icon_lama.ico LaMA.pyw
 if errorlevel 1 (
-    echo [FEHLER] PyInstaller-Build fehlgeschlagen!
-    pause
+    echo Fehler beim Erstellen der EXE.
     exit /b 1
 )
 
-echo LaMA.exe erfolgreich erstellt.
-echo.
-
-echo =============================================
-echo   📁  Kopiere LaMA.exe ins Zielverzeichnis ...
-echo =============================================
-
-if not exist "%BUILD_DIR%\%EXE_NAME%" (
-    echo [FEHLER] "%BUILD_DIR%\%EXE_NAME%" wurde nicht gefunden!
-    pause
-    exit /b 1
-)
-
-if not exist "%DEST_DIR%" (
-    echo Erstelle Zielverzeichnis: "%DEST_DIR%"
-    mkdir "%DEST_DIR%"
-)
-
-if exist "%DEST_DIR%\%EXE_NAME%" del /f /q "%DEST_DIR%\%EXE_NAME%"
-
-echo Quelle: "%BUILD_DIR%\%EXE_NAME%"
-echo Ziel:   "%DEST_DIR%\"
-echo.
-
-xcopy "%BUILD_DIR%\%EXE_NAME%" "%DEST_DIR%\" /Y /Q /I >nul
-if errorlevel 1 (
-    echo [FEHLER] Konnte EXE nicht kopieren!
-    pause
-    exit /b 1
-)
-
-echo EXE erfolgreich kopiert.
-echo.
-
-echo =============================================
-echo   🗄️  Alte Setup-Datei archivieren ...
-echo =============================================
-
+echo ==============================
+echo Schritt 3: Alte Installer archivieren
+echo ==============================
 if exist "%SETUP_PATH%" (
-    echo Alte Setup-Datei gefunden: "%SETUP_PATH%"
-
     for %%F in ("%SETUP_PATH%") do (
-        set "filedate=%%~tF"
+        set FILEDATE=%%~tF
     )
-
-    rem Datum formatieren (JJJJ_MM_TT)
-    for /f "tokens=1-3 delims=." %%a in ("!filedate:~0,10!") do (
-        set "DATE_TAG=%%c_%%b_%%a"
+    :: Extrahiere aktuelles Datum für den neuen Namen
+    for /f "tokens=1-3 delims=." %%a in ("%DATE%") do (
+        set NEWNAME=LaMA_setup_%%c_%%b_%%a.exe
     )
-
-    set "ARCHIVE_NAME=LaMA_setup_!DATE_TAG!.exe"
-
-    if not exist "%ARCHIVE_DIR%" mkdir "%ARCHIVE_DIR%"
-
-    echo Verschiebe alte Setup-Datei nach Archiv als !ARCHIVE_NAME! ...
-    move /Y "%SETUP_PATH%" "%ARCHIVE_DIR%\!ARCHIVE_NAME!" >nul
-    echo Archivierung abgeschlossen.
-) else (
-    echo Keine alte Setup-Datei gefunden - ueberspringe Archivierung.
+    echo Umbenennen in %NEWNAME% und verschieben nach Archiv...
+    ren "%SETUP_PATH%" "%NEWNAME%"
+    move "%DEST_DIR%\lama_installer\%NEWNAME%" "%ARCHIVE_DIR%"
 )
-echo.
 
-
-echo =============================================
-echo   ⚙️  Starte Inno Setup Compiler ...
-echo =============================================
-
-echo Starte Inno Setup Compiler:
-echo   Compiler: [%INNO_COMPILER%]
-echo   Script:   [%INNO_SCRIPT%]
-echo.
-
-call "%INNO_COMPILER%" "%INNO_SCRIPT%"
+echo ==============================
+echo Schritt 4: Kopiere neue EXE und starte Inno Setup
+echo ==============================
+copy /y "%BUILD_DIR%\%EXE_NAME%" "%DEST_DIR%"
 if errorlevel 1 (
-    echo [FEHLER] Inno Setup Build fehlgeschlagen!
-    pause
+    echo Fehler beim Kopieren der EXE.
     exit /b 1
 )
 
+echo Starte Inno Setup Compiler...
+"%INNO_COMPILER%" "%INNO_SCRIPT%"
 
-rem ------------------------------------------------------------
-rem 5. Fertigmeldung
-rem ------------------------------------------------------------
-echo =============================================
-echo   Build erfolgreich abgeschlossen!
-echo   Neuer Installer befindet sich in:
-echo   %DEST_DIR%\lama_installer\
-echo =============================================
-
-explorer "%DEST_DIR%\lama_installer\"
-exit /b 0
+echo ==============================
+echo Fertig!
+echo ==============================
+pause
