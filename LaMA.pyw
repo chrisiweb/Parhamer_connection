@@ -13,6 +13,7 @@ import certifi
 os.environ["SSL_CERT_FILE"] = certifi.where()
 os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
 
+
 if sys.platform.startswith("linux"): ## ignore Linux warning: QSocketNotifier: Can only be used with threads started with QThread
     os.environ["QT_LOGGING_RULES"] = "*.warning=false"
     os.environ["QT_NO_GLIB"] = "1"

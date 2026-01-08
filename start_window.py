@@ -150,7 +150,6 @@ class Ui_StartWindow(object):
             thread.start()
             thread.exit()
             Dialog_download.exec()
-            # download_successfull = True
 
             if worker.download_successfull == True:                
                 text = "Die Datenbank wurde erfolgreich heruntergeladen.\n\nLaMA kann ab sofort verwendet werden!"
@@ -167,6 +166,17 @@ class Ui_StartWindow(object):
 
                 break
             else:
+                occured_error = worker.download_successfull
+                if hasattr(worker.download_successfull, "winerror") and worker.download_successfull.winerror == 183:
+
+                    defect_git_folder = os.path.join(database, ".git")
+                    if os.path.exists(defect_git_folder):
+                        try:
+                            shutil.rmtree(defect_git_folder, ignore_errors=True)
+                            continue
+                        except Exception as e:
+                            occured_error = f"{occured_error}\n\n{e}"
+                
                 text = """
     Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
 
@@ -179,7 +189,7 @@ class Ui_StartWindow(object):
                 # msg.setWindowIcon(QtGui.QIcon(logo_path))
                 msg.setText(text)
                 # msg.setInformativeText(informative_text)
-                msg.setDetailedText("Error: {}".format(worker.download_successfull))
+                msg.setDetailedText("Error: {}".format(occured_error))
                 msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
 
                 buttonRepeat = msg.button(QMessageBox.Ok)
