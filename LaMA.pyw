@@ -12,7 +12,7 @@ if sys.platform.startswith("linux"): ## ignore Linux warning: QSocketNotifier: C
     os.environ["QT_LOGGING_RULES"] = "*.warning=false"
     os.environ["QT_NO_GLIB"] = "1"
 
-# if sys.platform.startswith("darwin"):
+# if sys.platform.startswith("darwin"): 
 #     reload_ddb = True
 # else:
 #     reload_ddb = False
