@@ -9,6 +9,7 @@
 - dulwich
 - requests
 - tinydb
+- certifi
 - LaTeX
 - LaTeX-package: srdp-mathematik <https://ctan.org/pkg/srdp-mathematik>
 

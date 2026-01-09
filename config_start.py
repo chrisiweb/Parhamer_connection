@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 #### Version number ###
-__version__ = "v5.0.3"
+__version__ = "v5.0.4"
 
 
 if sys.platform.startswith("win"):
