@@ -4,7 +4,8 @@ setlocal
 :: ==============================
 :: Variablen
 :: ==============================
-set "PYINSTALLER_EXE=C:\Users\cwebe\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller.exe" 
+set "PYINSTALLER_EXE=C:\Users\cwebe\AppData\Roaming\Python\Python313\Scripts\pyinstaller.exe"
+:: C:\Users\cwebe\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller.exe
 set "EXE_NAME=LaMA.exe"
 set "BUILD_DIR=dist"
 set "DEST_DIR=C:\Users\cwebe\Desktop\_create_lama_installer"
@@ -12,6 +13,10 @@ set "SETUP_PATH=%DEST_DIR%\lama_installer\LaMA_setup.exe"
 set "ARCHIVE_DIR=%DEST_DIR%\lama_installer\Archiv"
 set "INNO_COMPILER=C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
 set "INNO_SCRIPT=C:\Users\cwebe\Desktop\_create_lama_installer\script_create_installer - includetinylatex.iss"
+
+
+set /p APP_VERSION=Bitte Versionsnummer eingeben (z.B. 1.2.3): 
+echo Aktuelle Version:%APP_VERSION%
 
 echo ==============================
 echo Schritt 1: Lösche dist & build
@@ -54,7 +59,7 @@ if errorlevel 1 (
 )
 
 echo Starte Inno Setup Compiler...
-"%INNO_COMPILER%" "%INNO_SCRIPT%"
+"%INNO_COMPILER%" "/dMyAppVersion=%APP_VERSION%" "%INNO_SCRIPT%"
 
 echo ==============================
 echo Fertig!
