@@ -9,7 +9,7 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        python-version: [3.11] #Downgrade to 3.12 version (instead 3.12) due to ssl error
+        python-version: [3.10] #Downgrade to 3.12 version (instead 3.12) due to ssl error
         os: [windows-latest] #, macos-11, ubuntu-latest, windows-latest, macOS-latest
 
     steps:
