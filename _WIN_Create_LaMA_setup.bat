@@ -4,8 +4,8 @@ setlocal
 :: ==============================
 :: Variablen
 :: ==============================
-set "PYINSTALLER_EXE=C:\Users\cwebe\AppData\Roaming\Python\Python313\Scripts\pyinstaller.exe"
-:: C:\Users\cwebe\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller.exe
+set "PYINSTALLER_EXE=C:\Users\cwebe\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller.exe"
+:: C:\Users\cwebe\AppData\Roaming\Python\Python313\Scripts\pyinstaller.exe
 set "EXE_NAME=LaMA.exe"
 set "BUILD_DIR=dist"
 set "DEST_DIR=C:\Users\cwebe\Desktop\_create_lama_installer"
@@ -32,7 +32,7 @@ if errorlevel 1 (
     echo Fehler beim Erstellen der EXE.
     exit /b 1
 )
-
+exit /b 1
 echo ==============================
 echo Schritt 3: Alte Installer archivieren
 echo ==============================

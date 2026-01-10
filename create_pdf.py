@@ -59,9 +59,11 @@ class Worker_CreatePDF(QObject):
 
         ui.latex_error_occured = False
         logfile = ""
+        total_output_logfile = ""
 
         while process.poll() is None:
             output = process.stdout.readline().strip()
+            total_output_logfile += output.decode("utf-8", 'ignore')
             if output:
                 msg = output.decode("utf-8", 'ignore')
                 logfile += msg
@@ -91,6 +93,17 @@ class Worker_CreatePDF(QObject):
                 self.signalUpdateOutput.emit(ui, msg)
 
         process.wait()
+
+
+        # **GESAMTLOG SPEICHERN**
+        # try:
+        with open(latex_output_file, "w", encoding="utf-8", errors="replace") as f:
+            f.write(total_output_logfile)
+        # except Exception as e:
+        #     # Optional: Fehlerbehandlung / UI-Hinweis
+        #     self.signalUpdateOutput.emit(ui, f"[Log speichern fehlgeschlagen: {e}]")
+
+
 
         self.finished.emit()
 
@@ -972,12 +985,17 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
             folder_name = head
 
 
-    latex_output_file = open(
-        "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
-        "w",
-        encoding="utf8",
-        errors="ignore",
-    )
+    latex_output_file = os.path.join(path_localappdata_lama, "Teildokument", "temp.txt")
+    if os.path.isfile(latex_output_file):
+        print(True)
+    else:
+        print(False)
+    # latex_output_file = open(
+    #     "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
+    #     "w",
+    #     encoding="utf8",
+    #     errors="ignore",
+    # )
 
     if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau" or path_file == "preview" or path_file == "worksheet":
         text = "Die PDF Datei wird erstellt..."
