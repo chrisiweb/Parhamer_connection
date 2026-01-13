@@ -7,7 +7,6 @@ import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError, ProtocolError
 import socket
-import time
 
 
 
@@ -24,9 +23,17 @@ def check_internet_connection():
     # except URLError:
     #     return False
 
-def git_clone_repo():
+
+
+
+def git_clone_repo(errstream=None):
     try:
-        porcelain.clone("https://github.com/chrisiweb/lama_latest_update.git", database)
+        porcelain.clone(
+            source="https://github.com/chrisiweb/lama_latest_update.git",
+            target=database,
+            checkout=True,
+            errstream=errstream,
+            )
         return True
     except Exception as e:
         return e

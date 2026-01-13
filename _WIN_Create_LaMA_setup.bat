@@ -32,7 +32,7 @@ if errorlevel 1 (
     echo Fehler beim Erstellen der EXE.
     exit /b 1
 )
-exit /b 1
+
 echo ==============================
 echo Schritt 3: Alte Installer archivieren
 echo ==============================

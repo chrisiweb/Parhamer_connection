@@ -6,16 +6,184 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QGridLayout, QDia
 from waitingspinnerwidget import QtWaitingSpinner
 from git_sync import git_clone_repo
 import shutil
-# from standard_dialog_windows import information_window, critical_window
+import re
+
+
+phases_translation = {
+    "Counting objects":"Objekte werden gezählt",
+    "Compressing objects":"Objekte werden komprimiert",
+    "copying pack entries":"Einträge werden kopiert",
+    "generating index":"Index wird erstellt",
+    
+}
+
+
+
+
+class QtProgressStream:
+    def __init__(self, worker):
+        self.worker = worker
+        self._buf = b''
+        # "(done/total)" in Klammern – z.B. "Counting objects:   3% (1/32)"
+        self.RE_PAREN = re.compile(r'\((\d+)\s*/\s*(\d+)\)')
+
+        # "done/total" ohne Klammern – z.B. "generating index: 15812/45533"
+        self.RE_SLASH = re.compile(r'(\d+)\s*/\s*(\d+)')
+
+        self.RE_PCT = re.compile(r'(\d+)\s*%')  # optional: Prozent extrahieren
+
+    def parse_progress_line(self, line: str):
+        phase = ''
+        percent = None
+        objects_done = None
+        total_objects = None
+
+        s = line.strip()
+        parts = s.split(':', 1)
+        phase = parts[0].strip() if parts else s
+        right = parts[1].strip() if len(parts) > 1 else ''
+
+        # Prozent (falls vorhanden)
+        m_pct = self.RE_PCT.search(right or s)
+        if m_pct:
+            percent = int(m_pct.group(1))
+
+        # Zuerst "(done/total)" versuchen
+        m_paren = self.RE_PAREN.search(right)
+        if m_paren:
+            objects_done = int(m_paren.group(1))
+            total_objects = int(m_paren.group(2))
+        else:
+            # Fallback: "done/total" ohne Klammern
+            m_slash = self.RE_SLASH.search(right)
+            if m_slash:
+                objects_done = int(m_slash.group(1))
+                total_objects = int(m_slash.group(2))
+
+        return [phase, percent, objects_done, total_objects]
+
+
+
+
+    def write(self, data):
+        if isinstance(data, (bytes, bytearray)):
+            text = data.decode(errors='ignore')
+        else:
+            text = str(data)
+
+
+        global_percentage=0
+        
+        for line in text.splitlines():
+            line = line.strip()
+            if not line:
+                continue
+
+            line_output = self.parse_progress_line(line)
+            phase = line_output[0]
+            objects_done = line_output[-2]
+            total_objects = line_output[-1]
+
+            if phase!=None and objects_done!=None and total_objects!=None:
+                try:
+                    status_part = phases_translation[phase]
+                    local_percentage = int(objects_done)/int(total_objects)
+                    
+                    if phase == "Compressing objects":
+                        global_percentage += 1+round(7*local_percentage)
+                    elif phase == "copying pack entries":
+                        global_percentage += 8+ round(16*local_percentage)
+                        objects_done = round(objects_done/10)
+                        total_objects = round(total_objects/10)
+                    elif phase == "generating index":
+                        global_percentage += 24+round(77*local_percentage)
+                        objects_done = round(objects_done/10)
+                        total_objects = round(total_objects/10)                    
+
+                    new_text = (
+                        f"Die Datenbank wird heruntergeladen. ({global_percentage}%)\n\n"
+                        f"{status_part} ... ({objects_done}/{total_objects})"
+                    )
+                    self.worker.progress_text.emit(new_text)
+                except Exception:
+                    pass
+            # m = pattern.search(line)
+            # if m:
+            #     phase = m.group("phase").strip()
+            #     objects_done = m.group("objects_done")
+            #     total_objects = m.group("total_objects")
+            #     print(phase, objects_done, total_objects)
+
+            #     status_part = phases_translation[phase]
+
+            #     new_text = (
+            #         f"Die Datenbank wird heruntergeladen.\n\n"
+            #         f"{status_part} ... ({objects_done}/{total_objects})"
+            #     )
+            #     self.worker.progress_text.emit(new_text)
+            # Ausgabe: Counting objects 1 32
+
+            # phase = split_line[0].strip() if split_line else ''
+            
+            # if len(split_line[1])>1:
+            #     match = re.search(r'\((\d+)/(\d+)\)', split_line[1])
+            #     # print(match.group(1))
+            #     # print(match.group(2))
+            #     if match:
+            #         objects_done = match.group(1)  # "26"
+            #         total_objects = match.group(2) # "32"
+                
+            #     print(phase)
+            #     print(objects_done)
+            #     print(total_objects)
+            # match = re.search(r'Enumerating objects:\s*(\d+)', line)
+            # if match:
+            #     number_of_objects = int(match.group(1))
+            #     print(f"NUMMER : {number_of_objects}")
+            
+            # # Prozent extrahieren
+            # m = re.search(r'(\d+)%', line)
+            # if m:
+            #     percent = m.group(1)
+            #     # Status aus der Zeile (z. B. "Receiving objects")
+            #     # Wir nehmen den Teil vor dem Doppelpunkt, falls vorhanden
+            #     status_part = line.split(':')[0]
+                
+                # Text zusammenbauen
+                # new_text = (
+                #     f"Die Datenbank wird heruntergeladen.\n\n"
+                #     f"{status_part} ... ({percent}%)"
+                # )
+                # self.worker.progress_text.emit(new_text)
+            # else:
+            #     # Falls keine Prozentangabe, aber Status vorhanden
+            #     self.worker.progress_text.emit(
+            #         f"Die Datenbank wird heruntergeladen.\n\n{line}"
+            #     )
+
+
+
+
 
 
 class Worker_DownloadDatabase(QObject):
     finished = pyqtSignal()
+    error = pyqtSignal(str)
+    progress_text = pyqtSignal(str)
+
 
     @pyqtSlot()
     def task(self):
-        self.download_successfull = git_clone_repo()
-        self.finished.emit()   
+        stream = QtProgressStream(self)
+        self.download_successfull = git_clone_repo(errstream=stream)
+ 
+        if self.download_successfull is True:
+            self.finished.emit()
+        else:
+            # Falls git_clone_repo einen Fehler zurückgibt
+            self.error.emit(str(self.download_successfull))
+            self.finished.emit()
+ 
 
 class Ui_Dialog_processing(object):
     def setupUi(self, Dialog, text):
@@ -137,7 +305,10 @@ class Ui_StartWindow(object):
 
     def start_download(self):
         while True:
-            text = "Die Datenbank wird heruntergeladen.\n\nDies kann einige Minuten dauern ..."
+            text = (
+                "Die Datenbank wird heruntergeladen... (1%)\n\n"
+                "Objekte werden gezählt ..."
+            )
             Dialog_download = QDialog()
             ui = Ui_Dialog_processing()
             ui.setupUi(Dialog_download, text)
@@ -147,6 +318,7 @@ class Ui_StartWindow(object):
             worker.finished.connect(Dialog_download.close)
             worker.moveToThread(thread)
             rsp = thread.started.connect(worker.task)
+            worker.progress_text.connect(ui.label.setText)
             thread.start()
             thread.exit()
             Dialog_download.exec()
