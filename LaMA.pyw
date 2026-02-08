@@ -6670,6 +6670,35 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.no_saved_changes_sage = True
         QtWidgets.QApplication.restoreOverrideCursor()
 
+
+
+    def _atomic_json_write(self, path, obj, retries=5, backoff=0.2):
+        import unicodedata, errno, tempfile
+        path = unicodedata.normalize("NFC", os.path.normpath(path))
+        dirpath = os.path.dirname(path) or "."
+        for i in range(retries):
+            try:
+                os.makedirs(dirpath, exist_ok=True)
+                fd, tmp_path = tempfile.mkstemp(dir=dirpath, prefix=".tmp_", suffix=".lama")
+                try:
+                    with os.fdopen(fd, "w", encoding="utf8") as tmp:
+                        json.dump(obj, tmp, ensure_ascii=False)
+                    os.replace(tmp_path, path)
+                    return path
+                except Exception:
+                    try:
+                        os.remove(tmp_path)
+                    except OSError:
+                        pass
+                    raise
+            except OSError as e:
+                if e.errno in (errno.ENOENT, errno.EACCES, errno.EBUSY, errno.ETXTBSY):
+                    time.sleep(backoff * (2 ** i))
+                    continue
+                raise
+
+
+
     @report_exceptions
     def sage_save(self, path_create_tex_file=False, autosave=False):  # path_file
         
@@ -6702,12 +6731,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             path_create_tex_file = name + "_autosave.lama"
             save_file = path_create_tex_file
 
+        save_file = os.path.normpath(save_file)
+
         if autosave == False:
             self.saved_file_path = save_file
             self.no_saved_changes_sage = True
 
-        with open(save_file, "w+", encoding="utf8") as saved_file:
-            json.dump(self.dict_all_infos_for_file, saved_file, ensure_ascii=False)
+        # with open(save_file, "w+", encoding="utf8") as saved_file: ##ä WORKING BUT MAKING SOME ERRORS WITH GOOGLE DRIVE
+        #     json.dump(self.dict_all_infos_for_file, saved_file, ensure_ascii=False)
+
+        # Robustes, atomares Schreiben (inkl. Ordner anlegen + Retry)
+        self._atomic_json_write(save_file, self.dict_all_infos_for_file)
 
 
         if autosave == True:
