@@ -79,54 +79,231 @@ def restore_working_tree():
     print("📄 Alle Dateien aus origin/master neu geschrieben.")
 
 
-def git_reset_repo_to_origin():
+# # In git_sync.py
+# import os
+# import shutil
+# import stat
+# import time
+# from dulwich import porcelain
+# from dulwich.repo import Repo
+# from dulwich.index import build_index_from_tree
+
+# Optional: Wenn du LOG-Ausgaben willst, setze VERBOSE=True
+VERBOSE = False
+
+def _log(msg):
+    if VERBOSE:
+        print(msg)
+
+def _ensure_writable(path):
+    try:
+        mode = os.stat(path).st_mode
+        # Schreibschutz entfernen (Windows/Unix)
+        os.chmod(path, mode | stat.S_IWUSR)
+    except FileNotFoundError:
+        pass
+    except PermissionError:
+        pass
+
+def _iter_tracked_paths_from_tree(object_store, tree_id):
+    """Gibt ein Set aller relativem Pfade (mit /) im Tree zurück."""
+    tracked = set()
+    for p_b, mode, sha in object_store.iter_tree_contents(tree_id):
+        tracked.add(p_b.decode("utf-8"))
+    return tracked
+
+def _remove_untracked_files(workdir, tracked_paths):
+    """Löscht alle Dateien/Ordner unter workdir, die nicht im tracked_paths-Set sind (außer .git)."""
+    # Wir normalisieren Pfade mit "/" wie Git
+    git_dir = os.path.join(workdir, ".git")
+    for root, dirs, files in os.walk(workdir, topdown=False):
+        # .git niemals anfassen
+        if os.path.commonpath([git_dir, root]) == git_dir:
+            continue
+
+        # Dateien entfernen, die nicht getrackt sind
+        for f in files:
+            full = os.path.join(root, f)
+            rel = os.path.relpath(full, workdir).replace("\\", "/")
+            if rel not in tracked_paths:
+                _ensure_writable(full)
+                try:
+                    os.remove(full)
+                    _log(f"Removed untracked file: {rel}")
+                except Exception:
+                    pass
+
+        # Leere Ordner entfernen (wenn nicht .git)
+        if root != workdir:
+            try:
+                if not os.listdir(root):
+                    os.rmdir(root)
+            except Exception:
+                pass
+
+def _checkout_tree_to_workdir(repo, tree_id, workdir):
+    """Schreibt alle Blobs aus dem Tree in den Arbeitsbaum (legt Ordner an, setzt Ausführbarkeit bestmöglich)."""
+    store = repo.object_store
+    for p_b, mode, sha in store.iter_tree_contents(tree_id):
+        rel = p_b.decode("utf-8")
+        abspath = os.path.join(workdir, rel)
+        os.makedirs(os.path.dirname(abspath), exist_ok=True)
+        blob = store[sha]
+        _ensure_writable(abspath)
+        with open(abspath, "wb") as f:
+            f.write(blob.data)
+        # Ausführbarkeit setzen, falls im Git-Mode angegeben
+        try:
+            if mode & stat.S_IXUSR:  # executable bit
+                cur = os.stat(abspath).st_mode
+                os.chmod(abspath, cur | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+        except Exception:
+            pass
+
+def _detect_remote_target_ref(repo, remote=b"origin", prefer_branch=None):
+    """
+    Ermittelt ein sinnvolles Ziel-Ref auf dem Remote:
+    - prefer_branch (falls angegeben)
+    - sonst origin/HEAD
+    - sonst origin/master
+    - sonst origin/main
+    """
+    refs = repo.refs
+    if prefer_branch:
+        cand = f"refs/remotes/{remote.decode()}/{prefer_branch}".encode()
+        if cand in refs:
+            return cand
+
+    # origin/HEAD ist oft Symbolik auf master oder main
+    origin_head = f"refs/remotes/{remote.decode()}/HEAD".encode()
+    if origin_head in refs:
+        # Das hier gibt meist direkt die Ziel-Ref zurück
+        try:
+            head_target = refs.read_ref(origin_head)  # kann die Ziel-Ref liefern
+            if head_target in refs:
+                return head_target
+        except Exception:
+            pass
+
+    for name in (b"refs/remotes/%s/master" % remote, b"refs/remotes/%s/main" % remote):
+        if name in refs:
+            return name
+
+    raise RuntimeError("Konnte keinen geeigneten Remote-Branch finden (origin/HEAD, origin/master, origin/main fehlen).")
+
+def _force_move_head_and_branch(repo, local_branch_ref, target_commit_id):
+    """
+    Setzt local_branch_ref (z. B. refs/heads/master) hart auf target_commit_id
+    und zeigt HEAD symbolisch auf diesen Branch.
+    """
+    refs = repo.refs
+    refs[local_branch_ref] = target_commit_id
+    refs.set_symbolic_ref(b"HEAD", local_branch_ref)
+
+def _try_nuke_and_reclone(database, remote_url):
+    """
+    Fallback: vollständiges Neu-Klonen in temp-Ordner, dann Inhalte ersetzen.
+    Achtung: Löscht lokale Dateien (destruktiv).
+    """
+    tmp = database.rstrip("/\\") + "_tmp_clone"
+    if os.path.isdir(tmp):
+        shutil.rmtree(tmp, ignore_errors=True)
+
+    porcelain.clone(source=remote_url, target=tmp, checkout=True)
+
+    # Bestehenden Arbeitsbaum (außer .git) löschen
+    for name in os.listdir(database):
+        if name == ".git":
+            # Entferne alte .git, da wir die neue übernehmen wollen (sauberer Zustand)
+            shutil.rmtree(os.path.join(database, name), ignore_errors=True)
+            continue
+        full = os.path.join(database, name)
+        if os.path.isfile(full) or os.path.islink(full):
+            _ensure_writable(full)
+            os.remove(full)
+        else:
+            shutil.rmtree(full, ignore_errors=True)
+
+    # Inhalte aus tmp herüberkopieren
+    for name in os.listdir(tmp):
+        src = os.path.join(tmp, name)
+        dst = os.path.join(database, name)
+        if os.path.isfile(src) or os.path.islink(src):
+            shutil.copy2(src, dst)
+        else:
+            shutil.copytree(src, dst)
+    shutil.rmtree(tmp, ignore_errors=True)
+
+def git_reset_repo_to_origin(remote_name="origin", prefer_branch=None, remote_url="https://github.com/chrisiweb/lama_latest_update.git"):
+    """
+    Ersetzt ALLES lokal so, wie es in origin/<branch> liegt.
+    - Ermittelt den passenden Remote-Ref (HEAD/master/main)
+    - Force-setzt lokalen Branch (master) + HEAD
+    - Rebuild Index
+    - Löscht alle untracked Dateien/Ordner
+    - Schreibt alle Dateien aus Remote-Tree in den Arbeitsbaum
+    - Validiert lokaler Head == Remote-Commit
+
+    Rückgabe:
+      True bei Erfolg, ansonsten Exception-Objekt.
+    """
     try:
         repo = porcelain.Repo(database)
-        porcelain.fetch(repo)
+        repo._worktree_path = database
 
-        tree_head_id = repo[repo[b'refs/heads/master'].tree].id
-        tree_origin_master_id = repo[repo[b'refs/remotes/origin/master'].tree].id
+    except Exception:
+        # Kein Repo vorhanden? -> frisch klonen
+        try:
+            porcelain.clone(source=remote_url, target=database, checkout=True)
+            return True
+        except Exception as e:
+            return e
 
-        store=repo.object_store
-        list_all_files_head = list_all_files(store, tree_head_id)
-        list_all_files_origin_master = list_all_files(store, tree_origin_master_id)
+    try:
+        # 1) fetch
+        try:
+            porcelain.fetch(repo, remote_location=remote_name)
+        except Exception as e:
+            _log(f"fetch failed: {e}")
 
-        deleted_files = list(set(list_all_files_head)-set(list_all_files_origin_master))
+        # 2) Ziel-Ref finden
+        target_remote_ref = _detect_remote_target_ref(repo, remote=remote_name.encode(), prefer_branch=prefer_branch)
+        target_commit = repo[target_remote_ref]  # Commit-Objekt
+        target_tree_id = target_commit.tree
 
-        if deleted_files !=[]:
-            for all in deleted_files:
-                file_path = os.path.join(database, all.decode('utf-8'))
-                os.remove(file_path)
+        # 3) Lokale Branch-Ref setzen (wir bleiben bei 'master', um kompatibel mit deinem Code zu bleiben)
+        local_branch = b"refs/heads/master"
+        _force_move_head_and_branch(repo, local_branch, target_commit.id)
 
-            status=porcelain.status(repo) 
+        # 4) Index aus dem Ziel-Tree neu aufbauen
+        build_index_from_tree(repo.path, repo.index_path(), repo.object_store, target_tree_id)
 
-            repo.stage(status.unstaged)
+        # 5) Untracked/Abweichendes löschen und Tree ausschreiben
+        tracked = _iter_tracked_paths_from_tree(repo.object_store, target_tree_id)
+        _remove_untracked_files(database, tracked)
+        _checkout_tree_to_workdir(repo, target_tree_id, database)
 
-            porcelain.commit(repo, message="delete files")
+        # 6) Optional: zusätzliche Cleanups, falls Dulwich noch Metadaten hängen hat
+        try:
+            porcelain.clean(repo=repo, target_dir=database)
+        except Exception:
+            pass
 
-
-        ###working###
-        porcelain.reset(repo, "hard", treeish=b"refs/remotes/origin/master")
-
-        porcelain.clean(repo=repo, target_dir=database)
-
-        resolve_divergence()
-        ########
-
+        # 7) Validierung
+        head_commit = repo[b"HEAD"]
+        if head_commit.id != target_commit.id:
+            raise RuntimeError("HEAD stimmt nach Reset nicht mit Remote-Commit überein.")
 
         return True
 
-    except PermissionError as e:
-        print('PermissionError')
-        return e
-    
-    except MaxRetryError as e:
-        print('MaxRetryError')
-        return e
-
-    except ProtocolError as e:
-        print('ProtocolError')
-        return e
+    except Exception as e:
+        # Letzter Fallback: nuke & reclone
+        try:
+            _try_nuke_and_reclone(database, remote_url=remote_url)
+            return True
+        except Exception as e2:
+            # Original-Fehler anreichern
+            return RuntimeError(f"Hard Reset fehlgeschlagen: {e}\nFallback (Reclone) ebenfalls fehlgeschlagen: {e2}")
 
 
 
@@ -269,11 +446,14 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
         return True
 
 
+def to_str(x):
+    return x.decode("utf-8") if isinstance(x, bytes) else x
+
 def check_for_changes(database):
     repo = porcelain.Repo(database)
     repo._worktree_path = database
     status = porcelain.status(repo)
-    untracked = [p.decode("utf-8") for p in status.untracked]
+    untracked = [to_str(p) for p in status.untracked]
     changed = []
 
     head_commit = repo[b"HEAD"]
