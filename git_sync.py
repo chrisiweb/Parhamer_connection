@@ -89,7 +89,7 @@ class FileMutex:
             dir = tempfile.gettempdir()
         self.path = os.path.join(dir, name)
 
-    def acquire(self, timeout=15, poll=0.1):
+    def acquire(self, timeout=5, poll=0.1):
         t0 = time.time()
         while True:
             try:
@@ -203,7 +203,7 @@ def ensure_git_index(repo_path: str):
 
 
 # ====== (G) Generischer Retry-Wrapper (für Reset/Clean/Remove) ======
-def with_retry(fn, *, attempts=12, base_delay=0.05, catch=(PermissionError,)):
+def with_retry(fn, *, attempts=8, base_delay=0.05, catch=(PermissionError,)):
     for i in range(attempts):
         try:
             return fn()
@@ -507,11 +507,18 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
         return True
 
 
+def _to_str_path(p):
+    # Dulwich kann bytes ODER str liefern, je nach Version/Plattform
+    if isinstance(p, bytes):
+        return p.decode("utf-8", errors="surrogateescape")
+    return p  # bereits str
+
+
 def check_for_changes(database):
     repo = porcelain.Repo(database)
     repo._worktree_path = database
     status = porcelain.status(repo)
-    untracked = [p.decode("utf-8") for p in status.untracked]
+    untracked = [_to_str_path(p) for p in status.untracked]
     changed = []
 
     head_commit = repo[b"HEAD"]

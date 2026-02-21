@@ -3675,7 +3675,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # else:
             chosen_ddb = ["_database.json"]
             action_push_database(
-                False, chosen_ddb, message=message, worker_text="wird hochgeladen ..."
+                False, chosen_ddb, message=message, worker_text="Änderungen werden hochgeladen ..."
             )
 
     @report_exceptions
