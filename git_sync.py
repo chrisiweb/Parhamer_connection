@@ -3,16 +3,12 @@ import os
 from config_start import database, lama_developer_credentials, lama_user_credentials
 from dulwich import porcelain
 from dulwich.index import build_index_from_tree
-from dulwich.repo import Repo
-from dulwich.objects import Blob
 import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError, ProtocolError
 import socket
-import tempfile, time, ssl
-from contextlib import contextmanager
-import json
-import urllib.request
+
+
 
 def check_internet_connection():
     try:
@@ -83,325 +79,54 @@ def restore_working_tree():
     print("📄 Alle Dateien aus origin/master neu geschrieben.")
 
 
-
-# ========== Mutex gegen parallele Refresh-Läufe ==========
-class FileMutex:
-    def __init__(self, name="lama_refresh.lock", dir=None):
-        if dir is None:
-            dir = tempfile.gettempdir()
-        self.path = os.path.join(dir, name)
-
-    def acquire(self, timeout=0.5, poll=0.1):
-        t0 = time.time()
-        while True:
-            try:
-                fd = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-                os.close(fd)
-                return True
-            except FileExistsError:
-                if (time.time() - t0) > timeout:
-                    return False
-                time.sleep(poll)
-
-    def release(self):
-        try:
-            os.remove(self.path)
-        except FileNotFoundError:
-            pass
-
-@contextmanager
-def refresh_mutex():
-    m = FileMutex()
-    ok = m.acquire()
-    try:
-        if not ok:
-            raise RuntimeError("Ein anderer Aktualisierungsvorgang läuft bereits.")
-        yield
-    finally:
-        if ok:
-            m.release()
-
-
-# ========== Watcher/Leser kurz pausieren (No-Op, falls du keine Watcher hast) ==========
-def suspend_watchers(self_obj, enabled: bool):
-    try:
-        self_obj._suspend_watchers_flag = bool(enabled)
-        # Falls du QFileSystemWatcher / watchdog nutzt:
-        # self_obj.watcher.stop() / self_obj.watcher.start(paths)
-    except Exception:
-        pass
-
-
-# ========== Atomisch schreiben (Temp -> os.replace) mit Backoff ==========
-def atomic_write_bytes(data: bytes, target_path: str, retries=12, base_delay=0.05):
-    target_dir = os.path.dirname(target_path)
-    os.makedirs(target_dir, exist_ok=True)
-    fd, tmp_path = tempfile.mkstemp(prefix="_db_", dir=target_dir)
-    try:
-        with os.fdopen(fd, "wb") as f:
-            f.write(data)
-            f.flush()
-            os.fsync(f.fileno())
-        for i in range(retries):
-            try:
-                os.replace(tmp_path, target_path)  # „atomic enough“ auf Windows
-                return True
-            except PermissionError:  # [WinError 32]: Datei kurz gesperrt
-                time.sleep(base_delay * (2 ** i))
-        raise PermissionError(f"Konnte {target_path} nicht ersetzen (Datei in Benutzung).")
-    finally:
-        try:
-            if os.path.exists(tmp_path):
-                os.remove(tmp_path)
-        except Exception:
-            pass
-
-def atomic_write_json(obj, target_path: str, **kwargs):
-    data = json.dumps(obj, ensure_ascii=False, indent=2).encode("utf-8")
-    return atomic_write_bytes(data, target_path, **kwargs)
-
-
-# ========== Download -> atomisches Ablegen ==========
-def download_atomic(url: str, target_path: str, retries=12, base_delay=0.05, headers=None):
-    req = urllib.request.Request(url, headers=headers or {"User-Agent": "LaMA/1.0"})
-    ctx = ssl.create_default_context()
-    with urllib.request.urlopen(req, context=ctx) as resp:
-        data = resp.read()
-    atomic_write_bytes(data, target_path, retries=retries, base_delay=base_delay)
-    return data  # optional, wenn du die Inhalte gleich weiterverarbeiten willst
-
-
-# ========== Lesen mit kleinem Retry (falls Virenscanner kurz blockiert) ==========
-def read_json_with_retry(path: str, retries=6, base_delay=0.05):
-    last = None
-    for i in range(retries):
-        try:
-            with open(path, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except (PermissionError, OSError) as e:
-            last = e
-            time.sleep(base_delay * (2 ** i))
-    if last:
-        raise last
-
-
-# ========== Dulwich/Git: Index sanft neu bauen, falls nicht vorhanden ==========
-def ensure_git_index(repo_path: str):
-    git_dir = os.path.join(repo_path, ".git")
-    index_path = os.path.join(git_dir, "index")
-    if not os.path.isdir(git_dir):
-        return
-    if os.path.exists(index_path):
-        return
-    try:
-        from dulwich.repo import Repo
-        from dulwich.index import build_index_from_tree
-        repo = Repo(repo_path)
-        head = repo.head()
-        build_index_from_tree(repo.path, index_path, repo.object_store, repo[head].tree)
-    except Exception:
-        # Keine harte Eskalation – Refresh soll trotzdem weiterlaufen
-        pass
-
-
-# ====== (G) Generischer Retry-Wrapper (für Reset/Clean/Remove) ======
-def with_retry(fn, *, attempts=8, base_delay=0.05, catch=(PermissionError,)):
-    for i in range(attempts):
-        try:
-            return fn()
-        except catch:
-            time.sleep(base_delay * (2 ** i))
-    # letzter Versuch ohne try, damit Ausnahme sichtbar bleibt
-    return fn()
-
-
-# ===== Hilfsfunktionen zum Löschen unter Windows mit Backoff =====
-def _robust_remove(path):
-    # Win: schreibgeschützte Dateien zuerst entsperren
-    try:
-        os.chmod(path, 0o666)
-    except Exception:
-        pass
-    os.remove(path)
-
-def _robust_rmdir(path):
-    # Leeres Verzeichnis entfernen; bei Bedarf rekursiv anpassen
-    try:
-        os.rmdir(path)
-    except OSError:
-        # Notfalls rekursiv
-        for root, dirs, files in os.walk(path, topdown=False):
-            for name in files:
-                _robust_remove(os.path.join(root, name))
-            for name in dirs:
-                try:
-                    os.rmdir(os.path.join(root, name))
-                except Exception:
-                    pass
-        os.rmdir(path)
-
-
-# import os, time
-
-def _to_posix(path: str) -> str:
-    return path.replace("\\", "/")
-
-def blob_from_origin(repo: Repo, rel_path: str) -> bytes:
-    """Liest die Blob-Inhalte einer Datei aus refs/remotes/origin/master."""
-    rel_posix = _to_posix(rel_path)
-    origin = repo[b"refs/remotes/origin/master"]
-    store = repo.object_store
-    for entry in store.iter_tree_contents(repo[origin.tree]):
-        if entry.path.decode("utf-8") == rel_posix:
-            blob = repo[entry.sha]
-            if isinstance(blob, Blob):
-                return blob.as_raw_string()
-            break
-    raise FileNotFoundError(rel_path)
-
-def ensure_database_json_present(repo_path: str, rel_path="_database.json"):
-    """Verifiziert die Datei und stellt sie bei Bedarf aus origin/master wieder her."""
-    target = os.path.join(repo_path, rel_path)
-    try:
-        need_restore = not os.path.exists(target) or os.path.getsize(target) == 0
-    except OSError:
-        need_restore = True
-
-    if need_restore:
-        repo = Repo(repo_path)
-        data = blob_from_origin(repo, rel_path)
-        # atomisch + kurzer Backoff (8 Versuche reichen meist)
-        atomic_write_bytes(data, target, retries=8, base_delay=0.05)
-        return True
-    return False
-
 def git_reset_repo_to_origin():
     try:
-        ensure_git_index(database)
         repo = porcelain.Repo(database)
-        # porcelain.fetch(repo)
-        with_retry(lambda: porcelain.fetch(repo), attempts=3, base_delay=0.2, catch=(Exception,))
+        porcelain.fetch(repo)
 
-        try:
+        tree_head_id = repo[repo[b'refs/heads/master'].tree].id
+        tree_origin_master_id = repo[repo[b'refs/remotes/origin/master'].tree].id
 
-            head_commit = repo[b'refs/heads/master']
-            origin_commit = repo[b'refs/remotes/origin/master']
-            
-            # tree_head_id = repo[repo[b'refs/heads/master'].tree].id
-            # tree_origin_master_id = repo[repo[b'refs/remotes/origin/master'].tree].id
+        store=repo.object_store
+        list_all_files_head = list_all_files(store, tree_head_id)
+        list_all_files_origin_master = list_all_files(store, tree_origin_master_id)
 
-            store=repo.object_store
+        deleted_files = list(set(list_all_files_head)-set(list_all_files_origin_master))
 
-            tree_head_id = head_commit.tree
-            tree_origin_master_id = origin_commit.tree
+        if deleted_files !=[]:
+            for all in deleted_files:
+                file_path = os.path.join(database, all.decode('utf-8'))
+                os.remove(file_path)
 
-            list_all_files_head = list_all_files(store, tree_head_id)
-            list_all_files_origin_master = list_all_files(store, tree_origin_master_id)
+            status=porcelain.status(repo) 
 
+            repo.stage(status.unstaged)
 
-
-            deleted_files = list(set(list_all_files_head) - set(list_all_files_origin_master))
-        except Exception:
-            deleted_files = []
-
-        for entry in deleted_files:
-            try:
-                file_path = os.path.join(database, entry.decode('utf-8'))
-            except AttributeError:
-                file_path = os.path.join(database, entry)
-            if os.path.isfile(file_path):
-                with_retry(lambda: _robust_remove(file_path), attempts=12, base_delay=0.05)
-            elif os.path.isdir(file_path):
-                # Falls Verzeichnisse in der Liste vorkommen sollten
-                with_retry(lambda: _robust_rmdir(file_path), attempts=12, base_delay=0.05)
+            porcelain.commit(repo, message="delete files")
 
 
-        # if deleted_files !=[]:
-        #     for all in deleted_files:
-        #         file_path = os.path.join(database, all.decode('utf-8'))
-        #         os.remove(file_path)
+        ###working###
+        porcelain.reset(repo, "hard", treeish=b"refs/remotes/origin/master")
 
-        try:
-            status = porcelain.status(repo)
-            if status.unstaged:
-                repo.stage(status.unstaged)
-                porcelain.commit(repo, message="delete files")
-        except Exception:
-            # Nicht fatal – wir setzen trotzdem hart zurück
-            pass
+        porcelain.clean(repo=repo, target_dir=database)
 
-            # status=porcelain.status(repo) 
+        resolve_divergence()
+        ########
 
-            # repo.stage(status.unstaged)
-
-            # porcelain.commit(repo, message="delete files")
-
-
-        # 5) harter Reset auf origin/master (mit Retry bei WinError 32)
-        with_retry(
-            lambda: porcelain.reset(repo, "hard", treeish=b"refs/remotes/origin/master"),
-            attempts=12, base_delay=0.05, catch=(PermissionError,)
-        )
-
-        # 6) clean Working Tree (ebenfalls mit Retry)
-        with_retry(
-            lambda: porcelain.clean(repo=repo, target_dir=database),
-            attempts=12, base_delay=0.05, catch=(PermissionError,)
-        )
-
-        restored = ensure_database_json_present(database, "_database.json")
-        # 7) (Optional) Divergenz-Routine (dein Code)
-        try:
-            resolve_divergence()
-        except Exception:
-            pass
-
-        # 8) Index nachziehen (manchmal nötig nach Reset/Clean)
-        try:
-            ensure_git_index(database)
-        except Exception:
-            pass
-
-        try:
-            repo.close()  # Deskriptoren freigeben
-        except Exception:
-            pass
 
         return True
-
 
     except PermissionError as e:
         print('PermissionError')
         return e
+    
     except MaxRetryError as e:
         print('MaxRetryError')
         return e
+
     except ProtocolError as e:
         print('ProtocolError')
         return e
-
-        ###working###
-        # porcelain.reset(repo, "hard", treeish=b"refs/remotes/origin/master")
-
-        # porcelain.clean(repo=repo, target_dir=database)
-
-        # resolve_divergence()
-        ########
-
-
-    #     return True
-
-    # except PermissionError as e:
-    #     print('PermissionError')
-    #     return e
-    
-    # except MaxRetryError as e:
-    #     print('MaxRetryError')
-    #     return e
-
-    # except ProtocolError as e:
-    #     print('ProtocolError')
-    #     return e
 
 
 
@@ -544,18 +269,11 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
         return True
 
 
-def _to_str_path(p):
-    # Dulwich kann bytes ODER str liefern, je nach Version/Plattform
-    if isinstance(p, bytes):
-        return p.decode("utf-8", errors="surrogateescape")
-    return p  # bereits str
-
-
 def check_for_changes(database):
     repo = porcelain.Repo(database)
     repo._worktree_path = database
     status = porcelain.status(repo)
-    untracked = [_to_str_path(p) for p in status.untracked]
+    untracked = [p.decode("utf-8") for p in status.untracked]
     changed = []
 
     head_commit = repo[b"HEAD"]
