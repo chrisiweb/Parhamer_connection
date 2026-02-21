@@ -89,7 +89,7 @@ class FileMutex:
             dir = tempfile.gettempdir()
         self.path = os.path.join(dir, name)
 
-    def acquire(self, timeout=5, poll=0.1):
+    def acquire(self, timeout=0.5, poll=0.1):
         t0 = time.time()
         while True:
             try:
