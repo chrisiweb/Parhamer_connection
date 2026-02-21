@@ -3,6 +3,8 @@ import os
 from config_start import database, lama_developer_credentials, lama_user_credentials
 from dulwich import porcelain
 from dulwich.index import build_index_from_tree
+from dulwich.repo import Repo
+from dulwich.objects import Blob
 import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError, ProtocolError
@@ -239,6 +241,40 @@ def _robust_rmdir(path):
         os.rmdir(path)
 
 
+# import os, time
+
+def _to_posix(path: str) -> str:
+    return path.replace("\\", "/")
+
+def blob_from_origin(repo: Repo, rel_path: str) -> bytes:
+    """Liest die Blob-Inhalte einer Datei aus refs/remotes/origin/master."""
+    rel_posix = _to_posix(rel_path)
+    origin = repo[b"refs/remotes/origin/master"]
+    store = repo.object_store
+    for entry in store.iter_tree_contents(repo[origin.tree]):
+        if entry.path.decode("utf-8") == rel_posix:
+            blob = repo[entry.sha]
+            if isinstance(blob, Blob):
+                return blob.as_raw_string()
+            break
+    raise FileNotFoundError(rel_path)
+
+def ensure_database_json_present(repo_path: str, rel_path="_database.json"):
+    """Verifiziert die Datei und stellt sie bei Bedarf aus origin/master wieder her."""
+    target = os.path.join(repo_path, rel_path)
+    try:
+        need_restore = not os.path.exists(target) or os.path.getsize(target) == 0
+    except OSError:
+        need_restore = True
+
+    if need_restore:
+        repo = Repo(repo_path)
+        data = blob_from_origin(repo, rel_path)
+        # atomisch + kurzer Backoff (8 Versuche reichen meist)
+        atomic_write_bytes(data, target, retries=8, base_delay=0.05)
+        return True
+    return False
+
 def git_reset_repo_to_origin():
     try:
         ensure_git_index(database)
@@ -313,6 +349,7 @@ def git_reset_repo_to_origin():
             attempts=12, base_delay=0.05, catch=(PermissionError,)
         )
 
+        restored = ensure_database_json_present(database, "_database.json")
         # 7) (Optional) Divergenz-Routine (dein Code)
         try:
             resolve_divergence()
@@ -352,19 +389,19 @@ def git_reset_repo_to_origin():
         ########
 
 
-        return True
+    #     return True
 
-    except PermissionError as e:
-        print('PermissionError')
-        return e
+    # except PermissionError as e:
+    #     print('PermissionError')
+    #     return e
     
-    except MaxRetryError as e:
-        print('MaxRetryError')
-        return e
+    # except MaxRetryError as e:
+    #     print('MaxRetryError')
+    #     return e
 
-    except ProtocolError as e:
-        print('ProtocolError')
-        return e
+    # except ProtocolError as e:
+    #     print('ProtocolError')
+    #     return e
 
 
 
