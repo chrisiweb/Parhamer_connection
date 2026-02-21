@@ -401,19 +401,24 @@ class Ui_StartWindow(object):
 
 def check_if_database_exists(reload_ddb = False):
     config_file = os.path.join(database, "_config", "config.yml")
-
+    print(config_file)
     if not os.path.isfile(config_file):
-        if sys.platform.startswith("win"):
-            programdata = os.getenv('PROGRAMDATA')
-            database_old = os.path.join(programdata, "LaMA", "_database")
-            config_file_old = os.path.join(database_old, "_config", "config.yml")
+        print(f"config in {config_file} does not exist")
 
-            if os.path.isfile(config_file_old):
-                shutil.move(database_old, database)
-                teildokument_old = os.path.join(programdata, "LaMA", "Teildokument")
-                shutil.move(teildokument_old, os.path.join(path_programm, "Teildokument"))
-                if os.path.isfile(config_file):
-                    return
+
+
+    # if not os.path.isfile(config_file):
+    #     if sys.platform.startswith("win"):
+    #         programdata = os.getenv('PROGRAMDATA')
+    #         database_old = os.path.join(programdata, "LaMA", "_database")
+    #         config_file_old = os.path.join(database_old, "_config", "config.yml")
+
+    #         if os.path.isfile(config_file_old):
+    #             shutil.move(database_old, database)
+    #             teildokument_old = os.path.join(programdata, "LaMA", "Teildokument")
+    #             shutil.move(teildokument_old, os.path.join(path_programm, "Teildokument"))
+    #             if os.path.isfile(config_file):
+    #                 return
       
 
 

@@ -6,11 +6,51 @@ from pathlib import Path
 __version__ = "v5.0.4"
 
 
+
+
+def get_running_file_extension() -> str:
+    # Wenn es eine PyInstaller-EXE ist → sys.frozen = True
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).suffix.lower()
+
+    # Sonst normales Python-Script
+    return Path(__file__).suffix.lower()
+
+
+# def get_install_location():
+#     exe_path = sys.executable
+#     install_dir = os.path.dirname(exe_path)
+#     return install_dir
+
+
+
 if sys.platform.startswith("win"):
-    programdata = os.getenv('LOCALAPPDATA')
-    path_programm = os.path.join(programdata, "LaMA")
-    if not os.path.isdir(path_programm):
-        os.mkdir(path_programm)
+    extension = get_running_file_extension()
+    # programdata = os.getenv('PROGRAMDATA')
+    if extension == ".exe":
+        print(extension)
+        exe_dir = os.path.dirname(sys.executable)
+        
+        if exe_dir.lower().startswith(r"c:\program files") or exe_dir.lower().startswith(r"c:\programme"):
+            programdata = os.getenv('PROGRAMDATA')
+        else:
+            programdata = os.getenv('LOCALAPPDATA')
+        path_programm = os.path.join(programdata, "LaMA")
+        if not os.path.isdir(path_programm):
+            os.mkdir(path_programm)
+    else:
+        print(extension)
+        programdata = os.getenv('PROGRAMDATA')
+        path_programm = os.path.join(programdata, "LaMA")
+        if not os.path.isdir(path_programm):
+            ('Not C:')
+            programdata = os.getenv('LOCALAPPDATA')
+            path_programm = os.path.join(programdata, "LaMA")
+            if not os.path.isdir(path_programm):
+                print('not appdata')
+                os.mkdir(path_programm)
+
+
     path_localappdata_lama = path_programm
 
     path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
