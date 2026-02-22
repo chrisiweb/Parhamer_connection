@@ -1220,10 +1220,11 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     self._launch_installer_clean(path_installer) # Vorschlag Chatgpt (nicht getestet)
                     #subprocess.Popen([path_installer], start_new_session=True) # hat funktioniert
                 else:
+                    subprocess.Popen(['explorer.exe', path_installer])
                     #try:
-                    log_file = os.path.join(path_home, "Downloads", "LaMA_setup.log")
-                    args = ["/NORESTARTAPPLICATIONS", f"/LOG={log_file}"]
-                    self._launch_installer_clean(path_installer, args=args)
+                    # log_file = os.path.join(path_home, "Downloads", "LaMA_setup.log")
+                    # args = ["/NORESTARTAPPLICATIONS", f"/LOG={log_file}"]
+                    # self._launch_installer_clean(path_installer, args=args)
                     # except Exception as e:
                     #     # Fallback: notfalls ohne Bereinigung (sollte aber selten nötig sein)
                     #     os.startfile(path_installer)
