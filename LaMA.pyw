@@ -1199,7 +1199,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             worker.moveToThread(thread)
             thread.started.connect(partial(worker.task, path_installer, ui))
             thread.start()
-            # thread.exit()
+            thread.exit()
             Dialog_checkchanges.exec()
 
             if worker.response == False:
@@ -1280,7 +1280,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 worker.moveToThread(thread)
                 thread.started.connect(partial(worker.task, path_installer, ui))
                 thread.start()
-                # thread.exit()
+                thread.exit()
                 Dialog_checkchanges.exec()
 
                 if worker.response == False:
