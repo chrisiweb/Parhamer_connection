@@ -10,7 +10,7 @@ jobs:
       max-parallel: 2
       matrix:
         python-version: [3.12] #Downgrade to 3.12 version (instead 3.12) due to ssl error
-        os: [windows-latest] #, macos-11, ubuntu-latest, windows-latest, macOS-latest
+        os: [] #, macos-11, ubuntu-latest, windows-latest, macOS-latest
 
     steps:
     - uses: actions/checkout@v3
