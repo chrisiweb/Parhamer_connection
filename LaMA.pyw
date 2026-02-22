@@ -134,7 +134,12 @@ class Worker_UpdateLaMA(QtCore.QObject):
             self.response = True
 
         except requests.exceptions.ConnectionError:
+            print(f"Error: {requests.exceptions.ConnectionError}")
             self.response = False
+        except requests.exceptions.HTTPError:
+            print(f"Error: {requests.exceptions.HTTPError}")
+            self.response = False
+
         if sys.platform.startswith("darwin"):
             def install_dmg(path_installer):
                 volume_path = None
@@ -1053,50 +1058,64 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     #### Check for Updates
     ##########################
 
+
     def _launch_installer_clean(self, installer_path, args=None):
-        """Startet den Installer mit bereinigter Umgebung, damit keine PyInstaller-
-        Artefakte (z. B. _MEIPASS2) vererbt werden. Funktioniert für Windows/Linux."""
+        """Startet den Installer mit bereinigter Umgebung (Windows/Linux)."""
+        if not os.path.exists(installer_path):
+            raise FileNotFoundError(installer_path)
+
         args = args or []
         env = os.environ.copy()
 
-        # 1) PyInstaller-/Python-bezogene Variablen entfernen
+        # 1) Problematische Variablen entfernen (Name-basiert)
         for key in list(env.keys()):
             k = key.upper()
-            if k == '_MEIPASS2' or k.startswith('PYTHON') or k.startswith('PYI'):
+            if k in ('_MEIPASS2', 'VIRTUAL_ENV', 'CONDA_PREFIX', 'CONDA_DEFAULT_ENV'):
                 env.pop(key, None)
-        for key in ('VIRTUAL_ENV', 'CONDA_PREFIX', 'CONDA_DEFAULT_ENV'):
-            env.pop(key, None)
+            elif k.startswith('PYTHON') or k.startswith('PYI'):
+                env.pop(key, None)
 
-        # 2) PATH säubern: aktiven _MEI-Ordner entfernen
+        # 2) Variablen entfernen, deren WERT auf _MEI zeigt (zur Sicherheit)
+        for key in list(env.keys()):
+            val = str(env.get(key, ''))
+            if '\\_MEI' in val or '/_MEI' in val:
+                env.pop(key, None)
+
+        # 3) PATH säubern: alle Segmente mit _MEI raus
+        parts = env.get('PATH', '').split(os.pathsep)
+        parts = [p for p in parts if ('\\_MEI' not in p and '/_MEI' not in p)]
+        # optional: zusätzlich den exakten sys._MEIPASS falls vorhanden
         mei = getattr(sys, '_MEIPASS', None)
         if mei:
-            parts = env.get('PATH', '').split(os.pathsep)
             norm = lambda p: os.path.normcase(os.path.normpath(p))
             parts = [p for p in parts if norm(p) != norm(mei)]
-            env['PATH'] = os.pathsep.join(parts)
+        env['PATH'] = os.pathsep.join(parts)
 
-        # 3) Prozess wirklich loslösen (kein shell=True)
+        # 4) Prozess loslösen
         creationflags = 0
-        try:
-            # Windows: kein Konsolenfenster + vom Elternprozess lösen
-            CREATE_NO_WINDOW = 0x08000000
-            DETACHED_PROCESS = 0x00000008
-            CREATE_NEW_PROCESS_GROUP = 0x00000200
-            creationflags |= (CREATE_NO_WINDOW | DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP)
-        except Exception:
-            pass
-
-        # Unter Linux/Mac: start_new_session trennt die Prozessgruppe
         kwargs = {}
-        if not sys.platform.startswith('win'):
+        if sys.platform.startswith('win'):
+            try:
+                CREATE_NO_WINDOW = 0x08000000
+                DETACHED_PROCESS = 0x00000008
+                CREATE_NEW_PROCESS_GROUP = 0x00000200
+                creationflags |= (CREATE_NO_WINDOW | DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP)
+            except Exception:
+                pass
+        else:
             kwargs['start_new_session'] = True
 
-        # Wichtig: close_fds=True für saubere Handles
-        return subprocess.Popen([installer_path] + args,
+        # 5) Starten – ohne shell=True, mit sauberer env
+        proc = subprocess.Popen([installer_path] + args,
                                 env=env,
                                 close_fds=True,
                                 creationflags=creationflags,
                                 **kwargs)
+
+        # 6) Kleines Delay gibt dem Kind Zeit, sich zu initialisieren
+        time.sleep(0.4)
+        return proc
+
 
 
 
@@ -1179,6 +1198,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             Dialog_checkchanges.exec()
 
             if worker.response == False:
+                QtWidgets.QApplication.restoreOverrideCursor()
                 critical_window(
                     "LaMA konnte nicht heruntergeladen werden. Bitte überprüfen Sie die Internetverbindung und versuchen Sie es später erneut."
                 )
@@ -1195,11 +1215,11 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     self._launch_installer_clean(path_installer) # Vorschlag Chatgpt (nicht getestet)
                     #subprocess.Popen([path_installer], start_new_session=True) # hat funktioniert
                 else:
-                    try:
-                        self._launch_installer_clean(path_installer)
-                    except Exception as e:
-                        # Fallback: notfalls ohne Bereinigung (sollte aber selten nötig sein)
-                        os.startfile(path_installer)
+                    #try:
+                    proc = self._launch_installer_clean(path_installer)
+                    # except Exception as e:
+                    #     # Fallback: notfalls ohne Bereinigung (sollte aber selten nötig sein)
+                    #     os.startfile(path_installer)
 
                 sys.exit(0)              
                 # OLD VERSION - UPDATE
@@ -1257,6 +1277,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 Dialog_checkchanges.exec()
 
                 if worker.response == False:
+                    QtWidgets.QApplication.restoreOverrideCursor()
                     critical_window(
                         "LaMA konnte nicht heruntergeladen werden. Bitte überprüfen Sie die Internetverbindung und versuchen Sie es später erneut."
                     )

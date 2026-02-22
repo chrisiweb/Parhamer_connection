@@ -401,7 +401,6 @@ class Ui_StartWindow(object):
 
 def check_if_database_exists(reload_ddb = False):
     config_file = os.path.join(database, "_config", "config.yml")
-    print(config_file)
     if not os.path.isfile(config_file):
         print(f"config in {config_file} does not exist")
 

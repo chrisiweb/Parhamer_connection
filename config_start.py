@@ -28,7 +28,6 @@ if sys.platform.startswith("win"):
     extension = get_running_file_extension()
     # programdata = os.getenv('PROGRAMDATA')
     if extension == ".exe":
-        print(extension)
         exe_dir = os.path.dirname(sys.executable)
         
         if exe_dir.lower().startswith(r"c:\program files") or exe_dir.lower().startswith(r"c:\programme"):
@@ -39,15 +38,12 @@ if sys.platform.startswith("win"):
         if not os.path.isdir(path_programm):
             os.mkdir(path_programm)
     else:
-        print(extension)
         programdata = os.getenv('PROGRAMDATA')
         path_programm = os.path.join(programdata, "LaMA")
         if not os.path.isdir(path_programm):
-            ('Not C:')
             programdata = os.getenv('LOCALAPPDATA')
             path_programm = os.path.join(programdata, "LaMA")
             if not os.path.isdir(path_programm):
-                print('not appdata')
                 os.mkdir(path_programm)
 
 
