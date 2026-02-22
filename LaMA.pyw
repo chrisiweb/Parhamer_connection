@@ -1052,6 +1052,54 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     #######################
     #### Check for Updates
     ##########################
+
+    def _launch_installer_clean(self, installer_path, args=None):
+        """Startet den Installer mit bereinigter Umgebung, damit keine PyInstaller-
+        Artefakte (z. B. _MEIPASS2) vererbt werden. Funktioniert für Windows/Linux."""
+        args = args or []
+        env = os.environ.copy()
+
+        # 1) PyInstaller-/Python-bezogene Variablen entfernen
+        for key in list(env.keys()):
+            k = key.upper()
+            if k == '_MEIPASS2' or k.startswith('PYTHON') or k.startswith('PYI'):
+                env.pop(key, None)
+        for key in ('VIRTUAL_ENV', 'CONDA_PREFIX', 'CONDA_DEFAULT_ENV'):
+            env.pop(key, None)
+
+        # 2) PATH säubern: aktiven _MEI-Ordner entfernen
+        mei = getattr(sys, '_MEIPASS', None)
+        if mei:
+            parts = env.get('PATH', '').split(os.pathsep)
+            norm = lambda p: os.path.normcase(os.path.normpath(p))
+            parts = [p for p in parts if norm(p) != norm(mei)]
+            env['PATH'] = os.pathsep.join(parts)
+
+        # 3) Prozess wirklich loslösen (kein shell=True)
+        creationflags = 0
+        try:
+            # Windows: kein Konsolenfenster + vom Elternprozess lösen
+            CREATE_NO_WINDOW = 0x08000000
+            DETACHED_PROCESS = 0x00000008
+            CREATE_NEW_PROCESS_GROUP = 0x00000200
+            creationflags |= (CREATE_NO_WINDOW | DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP)
+        except Exception:
+            pass
+
+        # Unter Linux/Mac: start_new_session trennt die Prozessgruppe
+        kwargs = {}
+        if not sys.platform.startswith('win'):
+            kwargs['start_new_session'] = True
+
+        # Wichtig: close_fds=True für saubere Handles
+        return subprocess.Popen([installer_path] + args,
+                                env=env,
+                                close_fds=True,
+                                creationflags=creationflags,
+                                **kwargs)
+
+
+
     @report_exceptions
     def check_for_update(self):
         try:
@@ -1144,9 +1192,15 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     #subprocess.call(['open', path_installer])      
                 elif sys.platform.startswith('linux'):  # Linux
                     os.chmod(path_installer, 0o755)  # sicherstellen, dass es ausführbar ist
-                    subprocess.Popen([path_installer], start_new_session=True)
+                    self._launch_installer_clean(path_installer) # Vorschlag Chatgpt (nicht getestet)
+                    #subprocess.Popen([path_installer], start_new_session=True) # hat funktioniert
                 else:
-                    os.startfile('"' + path_installer + '"')
+                    try:
+                        self._launch_installer_clean(path_installer)
+                    except Exception as e:
+                        # Fallback: notfalls ohne Bereinigung (sollte aber selten nötig sein)
+                        os.startfile(path_installer)
+
                 sys.exit(0)              
                 # OLD VERSION - UPDATE
                 # refresh_ddb(self, auto_update='mac')
