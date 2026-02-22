@@ -1058,72 +1058,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     #### Check for Updates
     ##########################
 
-
-
-    def _launch_installer_clean(self, installer_path, args=None):
-        """Startet den Installer mit bereinigter Umgebung (Windows/Linux),
-        ohne PyInstaller-relevante _PYI-Variablen zu zerstören."""
-        if not os.path.exists(installer_path):
-            raise FileNotFoundError(installer_path)
-
-        args = args or []
-        env = os.environ.copy()
-
-        # 1) Nur gezielt problematische Variablen entfernen
-        #    - _MEIPASS2: zeigt auf das vergängliche Temp-Verzeichnis der LEBENDEN EXE
-        #    - PYTHON*: Python-virtuelle Umgebungen/Setups nicht vererben
-        #    - VIRTUAL_ENV/CONDA_* ebenso
-        for key in list(env.keys()):
-            u = key.upper()
-            if u == '_MEIPASS2':
-                env.pop(key, None)
-            elif u.startswith('PYTHON'):
-                env.pop(key, None)
-            elif u in ('VIRTUAL_ENV', 'CONDA_PREFIX', 'CONDA_DEFAULT_ENV'):
-                env.pop(key, None)
-            # WICHTIG: KEINE PYI-Variablen löschen!
-            # elif u.startswith('PYI') or u.startswith('_PYI'):
-            #     pass  # ausdrücklich NICHT entfernen
-
-        # 2) PATH bereinigen: alle Segmente, die _MEI enthalten
-        parts = env.get('PATH', '').split(os.pathsep)
-        parts = [p for p in parts if ('\\_MEI' not in p and '/_MEI' not in p)]
-        # zusätzlich den exakten sys._MEIPASS entfernen, falls vorhanden
-        mei = getattr(sys, '_MEIPASS', None)
-        if mei:
-            norm = lambda p: os.path.normcase(os.path.normpath(p))
-            parts = [p for p in parts if norm(p) != norm(mei)]
-        env['PATH'] = os.pathsep.join(parts)
-
-        # 3) Prozess loslösen
-        creationflags = 0
-        kwargs = {}
-        if sys.platform.startswith('win'):
-            try:
-                CREATE_NO_WINDOW = 0x08000000
-                DETACHED_PROCESS = 0x00000008
-                CREATE_NEW_PROCESS_GROUP = 0x00000200
-                creationflags |= (CREATE_NO_WINDOW | DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP)
-            except Exception:
-                pass
-        else:
-            kwargs['start_new_session'] = True
-
-        # 4) Starten – ohne shell=True, mit sauberer env
-        proc = subprocess.Popen([installer_path] + args,
-                                env=env,
-                                close_fds=True,
-                                creationflags=creationflags,
-                                **kwargs)
-
-        # 5) kurzes Delay, dann Elternprozess beenden
-        time.sleep(0.4)
-        return proc
-
-
-
-
-
     @report_exceptions
     def check_for_update(self):
         try:
@@ -1217,44 +1151,12 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     #subprocess.call(['open', path_installer])      
                 elif sys.platform.startswith('linux'):  # Linux
                     os.chmod(path_installer, 0o755)  # sicherstellen, dass es ausführbar ist
-                    self._launch_installer_clean(path_installer) # Vorschlag Chatgpt (nicht getestet)
-                    #subprocess.Popen([path_installer], start_new_session=True) # hat funktioniert
+                    subprocess.Popen([path_installer], start_new_session=True) # hat funktioniert
                 else:
                     subprocess.Popen(['explorer.exe', path_installer])
-                    #try:
-                    # log_file = os.path.join(path_home, "Downloads", "LaMA_setup.log")
-                    # args = ["/NORESTARTAPPLICATIONS", f"/LOG={log_file}"]
-                    # self._launch_installer_clean(path_installer, args=args)
-                    # except Exception as e:
-                    #     # Fallback: notfalls ohne Bereinigung (sollte aber selten nötig sein)
-                    #     os.startfile(path_installer)
 
                 sys.exit(0)              
-                # OLD VERSION - UPDATE
-                # refresh_ddb(self, auto_update='mac')
-                # opened_file = os.path.basename(sys.argv[0])
-                # name, extension = os.path.splitext(opened_file)
 
-                # filename_update = os.path.join(
-                #     path_programm,
-                #     "_database",
-                #     "_config",
-                #     "update",
-                #     "update_mac",
-                #     "update%s" % extension,
-                # )
-                # try:
-                #     if extension == ".py":
-                #         os.system('python3 "{}"'.format(filename_update))
-                #     else:
-                #         os.system('chmod 777 "{}"'.format(filename_update))
-                #         os.system(filename_update)
-                #     sys.exit(0)
-                # except Exception as e:
-                #     warning_window(
-                #         'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
-                #         'Fehler:\n"{}"'.format(e),
-                #     )
             else:
                 refresh_ddb(self, auto_update=True)
                 text = "Neue Version von LaMA wird heruntergeladen ..."
