@@ -12,8 +12,6 @@ DIST_DIR="dist"
 # === 🧹 Vorherige Builds löschen ===
 echo "🧹 Entferne alte Build-Dateien..."
 # Entfernt alle Schutzattribute
-xattr -cr .
-chmod -R u+w .
 rm -rf build "$DIST_DIR" "$APP_NAME.spec"
 
 
