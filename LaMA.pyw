@@ -1059,39 +1059,43 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     ##########################
 
 
+
     def _launch_installer_clean(self, installer_path, args=None):
-        """Startet den Installer mit bereinigter Umgebung (Windows/Linux)."""
+        """Startet den Installer mit bereinigter Umgebung (Windows/Linux),
+        ohne PyInstaller-relevante _PYI-Variablen zu zerstören."""
         if not os.path.exists(installer_path):
             raise FileNotFoundError(installer_path)
 
         args = args or []
         env = os.environ.copy()
 
-        # 1) Problematische Variablen entfernen (Name-basiert)
+        # 1) Nur gezielt problematische Variablen entfernen
+        #    - _MEIPASS2: zeigt auf das vergängliche Temp-Verzeichnis der LEBENDEN EXE
+        #    - PYTHON*: Python-virtuelle Umgebungen/Setups nicht vererben
+        #    - VIRTUAL_ENV/CONDA_* ebenso
         for key in list(env.keys()):
-            k = key.upper()
-            if k in ('_MEIPASS2', 'VIRTUAL_ENV', 'CONDA_PREFIX', 'CONDA_DEFAULT_ENV'):
+            u = key.upper()
+            if u == '_MEIPASS2':
                 env.pop(key, None)
-            elif k.startswith('PYTHON') or k.startswith('PYI'):
+            elif u.startswith('PYTHON'):
                 env.pop(key, None)
+            elif u in ('VIRTUAL_ENV', 'CONDA_PREFIX', 'CONDA_DEFAULT_ENV'):
+                env.pop(key, None)
+            # WICHTIG: KEINE PYI-Variablen löschen!
+            # elif u.startswith('PYI') or u.startswith('_PYI'):
+            #     pass  # ausdrücklich NICHT entfernen
 
-        # 2) Variablen entfernen, deren WERT auf _MEI zeigt (zur Sicherheit)
-        for key in list(env.keys()):
-            val = str(env.get(key, ''))
-            if '\\_MEI' in val or '/_MEI' in val:
-                env.pop(key, None)
-
-        # 3) PATH säubern: alle Segmente mit _MEI raus
+        # 2) PATH bereinigen: alle Segmente, die _MEI enthalten
         parts = env.get('PATH', '').split(os.pathsep)
         parts = [p for p in parts if ('\\_MEI' not in p and '/_MEI' not in p)]
-        # optional: zusätzlich den exakten sys._MEIPASS falls vorhanden
+        # zusätzlich den exakten sys._MEIPASS entfernen, falls vorhanden
         mei = getattr(sys, '_MEIPASS', None)
         if mei:
             norm = lambda p: os.path.normcase(os.path.normpath(p))
             parts = [p for p in parts if norm(p) != norm(mei)]
         env['PATH'] = os.pathsep.join(parts)
 
-        # 4) Prozess loslösen
+        # 3) Prozess loslösen
         creationflags = 0
         kwargs = {}
         if sys.platform.startswith('win'):
@@ -1105,16 +1109,17 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         else:
             kwargs['start_new_session'] = True
 
-        # 5) Starten – ohne shell=True, mit sauberer env
+        # 4) Starten – ohne shell=True, mit sauberer env
         proc = subprocess.Popen([installer_path] + args,
                                 env=env,
                                 close_fds=True,
                                 creationflags=creationflags,
                                 **kwargs)
 
-        # 6) Kleines Delay gibt dem Kind Zeit, sich zu initialisieren
+        # 5) kurzes Delay, dann Elternprozess beenden
         time.sleep(0.4)
         return proc
+
 
 
 
