@@ -1194,7 +1194,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             worker.moveToThread(thread)
             thread.started.connect(partial(worker.task, path_installer, ui))
             thread.start()
-            thread.exit()
+            # thread.exit()
             Dialog_checkchanges.exec()
 
             if worker.response == False:
@@ -1216,7 +1216,9 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     #subprocess.Popen([path_installer], start_new_session=True) # hat funktioniert
                 else:
                     #try:
-                    proc = self._launch_installer_clean(path_installer)
+                    log_file = os.path.join(path_home, "Downloads", "LaMA_setup.log")
+                    args = ["/NORESTARTAPPLICATIONS", f"/LOG={log_file}"]
+                    self._launch_installer_clean(path_installer, args=args)
                     # except Exception as e:
                     #     # Fallback: notfalls ohne Bereinigung (sollte aber selten nötig sein)
                     #     os.startfile(path_installer)
@@ -1273,7 +1275,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 worker.moveToThread(thread)
                 thread.started.connect(partial(worker.task, path_installer, ui))
                 thread.start()
-                thread.exit()
+                # thread.exit()
                 Dialog_checkchanges.exec()
 
                 if worker.response == False:
@@ -4105,7 +4107,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         worker.moveToThread(thread)
         thread.started.connect(worker.task)
         thread.start()
-        thread.exit()
+        # thread.exit()
         Dialog_checkchanges.exec()
 
         if self.reset_successfull == False:
