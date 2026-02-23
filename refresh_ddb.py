@@ -84,7 +84,8 @@ class Worker_RefreshDDB(QtCore.QObject):
 
             except urllib.error.HTTPError:
                 print('BILDER: Die erweiterte Datenbank konnte nicht aktualisiert werden, da der Downloadlink nicht mehr verfügbar ist.')
-
+            except FileNotFoundError:
+                print('BILDER: Die erweiterte Datenbank konnte nicht aktualisiert werden, da der Bilder_addon Ordner nicht existiert.')
 
         self.finished.emit()
 
