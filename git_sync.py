@@ -112,34 +112,107 @@ def _iter_tracked_paths_from_tree(object_store, tree_id):
         tracked.add(p_b.decode("utf-8"))
     return tracked
 
+IGNORED_PATHS = {
+    "_local_database.json",
+    "Bilder_local",
+    "Bilder_local/",
+    "Bilder_addon",
+    "Bilder_addon/",
+    "_database_addon.json",
+}
+
 def _remove_untracked_files(workdir, tracked_paths):
-    """Löscht alle Dateien/Ordner unter workdir, die nicht im tracked_paths-Set sind (außer .git)."""
-    # Wir normalisieren Pfade mit "/" wie Git
+    """
+    Löscht alle Dateien/Ordner unter workdir, die nicht getrackt sind und nicht in IGNORED_PATHS stehen.
+    - Dateien: exakte Matches ignorieren
+    - Ordner: Prefix-Match (alles darunter bleibt erhalten)
+    - .git bleibt unberührt
+    """
+    # --- Normalisierung ---
+    def norm(p: str) -> str:
+        return p.replace("\\", "/").lstrip("./").rstrip("/")
+
+    # tracked normalisieren
+    tracked_paths = {norm(p) for p in tracked_paths}
+
+    # ignore normalisieren
+    ignore_set = {norm(p) for p in IGNORED_PATHS}
+
+    # Hilfsfunktion: ist path ignoriert (Datei ODER liegt unter ignoriertem Ordner)?
+    def is_ignored(rel_path: str) -> bool:
+        rp = norm(rel_path)
+        if rp in ignore_set:
+            return True
+        for ign in ignore_set:
+            if ign and rp.startswith(ign + "/"):
+                return True
+        return False
+
     git_dir = os.path.join(workdir, ".git")
-    for root, dirs, files in os.walk(workdir, topdown=False):
-        # .git niemals anfassen
-        if os.path.commonpath([git_dir, root]) == git_dir:
+    git_dir_norm = norm(os.path.relpath(git_dir, workdir))
+
+    # --- Walk: topdown=True, damit wir in ignorierte Ordner gar nicht absteigen ---
+    for root, dirs, files in os.walk(workdir, topdown=True):
+        rel_root = norm(os.path.relpath(root, workdir))
+
+        # .git niemals anfassen / betreten
+        # (Falls wir zufällig im .git sind oder darunter)
+        if rel_root == git_dir_norm or rel_root.startswith(git_dir_norm + "/"):
+            # prunen: weder Dateien noch Unterordner unter .git bearbeiten
+            dirs[:] = []
             continue
 
-        # Dateien entfernen, die nicht getrackt sind
+        # PRUNING: ignorierte Ordner NICHT betreten
+        # (alles darunter soll unangetastet bleiben)
+        pruned = []
+        for d in list(dirs):
+            rel_dir = norm(os.path.join(rel_root, d)) if rel_root else norm(d)
+            if is_ignored(rel_dir):
+                pruned.append(d)
+        # entferne ignorierte Ordner aus dirs -> os.walk steigt dort nicht ein
+        dirs[:] = [d for d in dirs if d not in pruned]
+
+        # Dateien behandeln
         for f in files:
-            full = os.path.join(root, f)
-            rel = os.path.relpath(full, workdir).replace("\\", "/")
-            if rel not in tracked_paths:
+            rel_file = norm(os.path.join(rel_root, f)) if rel_root else norm(f)
+
+            # ignorierte Datei behalten
+            if is_ignored(rel_file):
+                continue
+
+            # untracked -> löschen
+            if rel_file not in tracked_paths:
+                full = os.path.join(root, f)
                 _ensure_writable(full)
                 try:
                     os.remove(full)
-                    _log(f"Removed untracked file: {rel}")
+                    _log(f"Removed untracked file: {rel_file}")
                 except Exception:
                     pass
 
-        # Leere Ordner entfernen (wenn nicht .git)
-        if root != workdir:
-            try:
-                if not os.listdir(root):
-                    os.rmdir(root)
-            except Exception:
-                pass
+    # Zweiter Durchlauf (bottom-up), um LEERE Ordner zu löschen, die NICHT ignoriert sind
+    for root, dirs, files in os.walk(workdir, topdown=False):
+        rel_root = norm(os.path.relpath(root, workdir))
+
+        # .git niemals löschen
+        if rel_root == git_dir_norm or rel_root.startswith(git_dir_norm + "/"):
+            continue
+
+        # ignorierte Ordner niemals löschen
+        if is_ignored(rel_root):
+            continue
+
+        # workdir selbst nicht löschen
+        if rel_root == "." or rel_root == "":
+            continue
+
+        # nur leere Ordner entfernen
+        try:
+            if not os.listdir(root):
+                os.rmdir(root)
+        except Exception:
+            pass
+
 
 def _checkout_tree_to_workdir(repo, tree_id, workdir):
     """Schreibt alle Blobs aus dem Tree in den Arbeitsbaum (legt Ordner an, setzt Ausführbarkeit bestmöglich)."""
