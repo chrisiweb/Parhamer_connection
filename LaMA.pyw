@@ -1078,10 +1078,18 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             if __version__ == latest_version:
                 return
         except Exception as e:
+            print(e)
             print(
                 "Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ..."
             )
-            return
+            backup_link = (
+                "https://mylama.github.io/lama/lama_update_backup"
+            )
+            readme_content_backup = requests.get(backup_link)
+            force_new_update = int(readme_content_backup.text)
+            if force_new_update==0:
+                print(False)          
+                return
 
         # if sys.platform.startswith("linux"):
         #     information_window(
