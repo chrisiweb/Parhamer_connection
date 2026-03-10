@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-__lastupdate__ = "02/26"
+__lastupdate__ = "03/26"
 
 #minor change##
 ##################
@@ -1062,15 +1062,14 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     def check_for_update(self):
         try:
             link = (
-                # "https://raw.githubusercontent.com/chrisiweb/lama_latest_update/master/README.md"
-                "https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
+                "https://raw.githubusercontent.com/chrisiweb/lama_latest_update/master/README.md"
+                #"https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
             )
             
             # r = requests.post('https://httpbin.org/post', data = {'key':'value'})
             # f = urlopen(link)
             # url_readme_version = f.read().decode("utf-8")
             readme_content = requests.get(link)
-
             latest_version = re.search(
                 r"\[(v\d+.\d+.\d+)\]", readme_content.text
             ).group(1)

@@ -465,7 +465,7 @@ def prepare_tex_for_pdf(self):
 
 
     gesammeltedateien = list_1 + list_2
-
+    print(gesammeltedateien)
     ###################################################################
     ##### REMOVE LEFT-OVER SRDP-Packages
     

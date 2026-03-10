@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 #### Version number ###
-__version__ = "v5.0.6"
+__version__ = "v5.0.7"
 
 
 
