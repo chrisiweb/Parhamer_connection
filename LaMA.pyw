@@ -1082,20 +1082,36 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     @report_exceptions
     def check_for_update(self):
         try:
-            link = (
-                "https://raw.githubusercontent.com/chrisiweb/lama_latest_update/refs/heads/master/README.md"
-                #"https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
-            )
-            
+            # link = (
+            #     # 'https://api.github.com/repos/<user>/<repo>/releases/latest'
+            #     "https://raw.githubusercontent.com/chrisiweb/lama_latest_update/master/version.txt"
+            #     #"https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
+            # )
+
+            def get_latest_version():
+                # 1) Neuesten Commit für version.txt im master-Branch abfragen
+                api_url = "https://api.github.com/repos/chrisiweb/lama_latest_update/commits?path=version.txt&sha=master"
+                commits = requests.get(api_url).json()
+                latest_commit = commits[0]["sha"]
+
+                # 2) Datei exakt aus diesem Commit laden (nie gecached)
+                raw_url = f"https://raw.githubusercontent.com/chrisiweb/lama_latest_update/{latest_commit}/version.txt"
+                version = requests.get(raw_url).text.strip()
+
+                return version
+
+            latest_version = get_latest_version()
+            # print(latest_version)
             # r = requests.post('https://httpbin.org/post', data = {'key':'value'})
             # f = urlopen(link)
             # url_readme_version = f.read().decode("utf-8")
-            readme_content = requests.get(link)
+            # readme_content = requests.get(link)
 
-            latest_version = re.search(
-                r"\[(v\d+.\d+.\d+)\]", readme_content.text
-            ).group(1)
-
+            # latest_version = re.search(
+            #     r"\[(v\d+.\d+.\d+)\]", readme_content.text
+            # ).group(1)
+            # latest_version = requests.get(link).text
+            # print(latest_version)
             if __version__ == latest_version:
                 return
         except Exception as e:
