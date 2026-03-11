@@ -1083,7 +1083,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     def check_for_update(self):
         try:
             link = (
-                "https://raw.githubusercontent.com/chrisiweb/lama_latest_update/master/README.md"
+                "https://raw.githubusercontent.com/chrisiweb/lama_latest_update/refs/heads/master/README.md"
                 #"https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
             )
             
@@ -1095,7 +1095,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             latest_version = re.search(
                 r"\[(v\d+.\d+.\d+)\]", readme_content.text
             ).group(1)
-
+            print(latest_version)
 
             if __version__ == latest_version:
                 return
