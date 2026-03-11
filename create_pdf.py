@@ -29,7 +29,6 @@ import webbrowser
 from tinydb import Query
 from database_commands import _database, _database_addon, _local_database, get_aufgabentyp
 from tex_minimal import tex_preamble, tex_end, begin_beispiel, end_beispiel, begin_beispiel_lang, end_beispiel_lang
-from distutils.spawn import find_executable
 
 
 
@@ -465,7 +464,13 @@ def prepare_tex_for_pdf(self):
 
 
     gesammeltedateien = list_1 + list_2
-    print(gesammeltedateien)
+
+    #### LÖSCHE NOTFALL UPDATE NACHRICHT IN DER NEUESTEN VERSION
+    gesammeltedateien = [
+    d for d in gesammeltedateien
+    if not (isinstance(d.get("name"), str) and d["name"].startswith("!!") and d["name"].endswith("!!"))
+    ]
+
     ###################################################################
     ##### REMOVE LEFT-OVER SRDP-Packages
     
@@ -986,10 +991,10 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
 
 
     latex_output_file = os.path.join(path_localappdata_lama, "Teildokument", "temp.txt")
-    if os.path.isfile(latex_output_file):
-        print(True)
-    else:
-        print(False)
+    # if os.path.isfile(latex_output_file):
+    #     print(True)
+    # else:
+    #     print(False)
     # latex_output_file = open(
     #     "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
     #     "w",

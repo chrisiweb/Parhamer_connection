@@ -23,11 +23,26 @@ if sys.platform.startswith("linux"): ## ignore Linux warning: QSocketNotifier: C
 # else:
 #     reload_ddb = False
 reload_ddb = False
-show_popup = False
+
+# link = (
+#     "https://raw.githubusercontent.com/chrisiweb/lama_latest_update/master/README.md"
+#     #"https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
+# )
+
+# # r = requests.post('https://httpbin.org/post', data = {'key':'value'})
+# # f = urlopen(link)
+# # url_readme_version = f.read().decode("utf-8")
+# readme_content = requests.get(link)
+
+# latest_version = re.search(
+#     r"\[(v\d+.\d+.\d+)\]", readme_content.text
+# ).group(1)
+# show_popup = False
 
 
 from start_window import check_if_database_exists
 check_if_database_exists(reload_ddb)
+
 
 
 from git_sync import git_reset_repo_to_origin
@@ -363,6 +378,12 @@ class Ui_MainWindow(object):
         except KeyError:
             self.lama_settings["popup_off"] = False
 
+        check_for_messages = os.path.join(database, "_config", "show_popup.txt")
+        if os.path.isfile(check_for_messages):
+            with open(check_for_messages) as f:
+                show_popup = eval(f.read().strip())
+        else:
+            show_popup = False
 
         if self.lama_settings["popup_off"] == False and show_popup==True:
             rsp = self.show_popup_window()
@@ -1070,6 +1091,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             # f = urlopen(link)
             # url_readme_version = f.read().decode("utf-8")
             readme_content = requests.get(link)
+
             latest_version = re.search(
                 r"\[(v\d+.\d+.\d+)\]", readme_content.text
             ).group(1)

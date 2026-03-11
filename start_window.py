@@ -66,45 +66,55 @@ class QtProgressStream:
 
 
     def write(self, data):
+        # Eingehende Bytes in Text umwandeln
         if isinstance(data, (bytes, bytearray)):
             text = data.decode(errors='ignore')
         else:
             text = str(data)
 
+        # Prozentbereiche pro Git-Phase
+        PHASE_MAP = {
+            "Compressing objects": (1, 8),
+            "copying pack entries": (8, 24),
+            "generating index": (24, 100),
+        }
 
-        global_percentage=0
-        
         for line in text.splitlines():
             line = line.strip()
             if not line:
                 continue
 
             line_output = self.parse_progress_line(line)
+            if not line_output:
+                continue
+
             phase = line_output[0]
             objects_done = line_output[-2]
             total_objects = line_output[-1]
 
-            if phase!=None and objects_done!=None and total_objects!=None:
+            if phase and objects_done and total_objects:
                 try:
-                    status_part = phases_translation[phase]
-                    local_percentage = int(objects_done)/int(total_objects)
-                    
-                    if phase == "Compressing objects":
-                        global_percentage += 1+round(7*local_percentage)
-                    elif phase == "copying pack entries":
-                        global_percentage += 8+ round(16*local_percentage)
-                        objects_done = round(objects_done/10)
-                        total_objects = round(total_objects/10)
-                    elif phase == "generating index":
-                        global_percentage += 24+round(77*local_percentage)
-                        objects_done = round(objects_done/10)
-                        total_objects = round(total_objects/10)                    
+                    status_part = phases_translation.get(phase, phase)
+                    local_percentage = int(objects_done) / int(total_objects)
+
+                    # absolute statt additiver globaler Fortschritt
+                    if phase in PHASE_MAP:
+                        base, end = PHASE_MAP[phase]
+                        global_percentage = round(base + (end - base) * local_percentage)
+                    else:
+                        global_percentage = 0  # Unbekannte Phase
+
+                    # Werte leicht runden (wie in deinem Originalcode)
+                    if phase in ["copying pack entries", "generating index"]:
+                        objects_done = round(objects_done / 10)
+                        total_objects = round(total_objects / 10)
 
                     new_text = (
                         f"Die Datenbank wird heruntergeladen. ({global_percentage}%)\n\n"
                         f"{status_part} ... ({objects_done}/{total_objects})"
                     )
                     self.worker.progress_text.emit(new_text)
+
                 except Exception:
                     pass
             # m = pattern.search(line)
