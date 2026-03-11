@@ -1095,12 +1095,11 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             latest_version = re.search(
                 r"\[(v\d+.\d+.\d+)\]", readme_content.text
             ).group(1)
-            print(latest_version)
 
             if __version__ == latest_version:
                 return
         except Exception as e:
-            print(e)
+            # print(e)
             print(
                 "Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ..."
             )
