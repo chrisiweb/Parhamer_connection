@@ -538,7 +538,8 @@ class Ui_Dialog_variation(object):
             #     name = _file_["name"].split(".", 1)[-1]
             # else:
             name = _file_["name"]
-
+            if name.startswith("!!") and name.endswith("!!"):
+                continue
             item = QtWidgets.QListWidgetItem()
 
             if local == True:

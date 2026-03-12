@@ -8406,7 +8406,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         for _file_ in filtered_items:
             name = _file_["name"]
-
+            if name.startswith("!!") and name.endswith("!!"):
+                continue
             item = QtWidgets.QListWidgetItem()
 
             if local == True:
