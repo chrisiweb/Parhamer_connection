@@ -373,10 +373,10 @@ class Ui_MainWindow(object):
             if (self.lama_settings["database"] == 1 and difference != 0) or (self.lama_settings["database"] == 2 and difference > 6) or (self.lama_settings["database"] == 3 and refresh_date_ddb_month != today_month):
                 refresh_ddb(self, auto_update = True) ## auto_update = True
 
-        try:
-            self.lama_settings["popup_off"]
-        except KeyError:
-            self.lama_settings["popup_off"] = False
+        # try:
+        #     self.lama_settings["popup_off"]
+        # except KeyError:
+        #     self.lama_settings["popup_off"] = False
 
         check_for_messages = os.path.join(database, "_config", "show_popup.txt")
         if os.path.isfile(check_for_messages):
@@ -385,13 +385,13 @@ class Ui_MainWindow(object):
         else:
             show_popup = False
 
-        if self.lama_settings["popup_off"] == False and show_popup==True:
+        if show_popup==True:
             rsp = self.show_popup_window()
-            if rsp == True:
-                self.lama_settings["popup_off"] = True
+        #     if rsp == True:
+        #         self.lama_settings["popup_off"] = True
 
-                with open(lama_settings_file, "w+", encoding="utf8") as f:
-                    json.dump(self.lama_settings, f, ensure_ascii=False)
+        #         with open(lama_settings_file, "w+", encoding="utf8") as f:
+        #             json.dump(self.lama_settings, f, ensure_ascii=False)
 
 
         if self.chosen_program == 'wizard':
@@ -551,23 +551,17 @@ class Ui_MainWindow(object):
             self.sage_load(external_file_loaded=True)
 
 
-    def show_popup_window(self, show_checkbox = True):
-        rsp = custom_window("""
-<b>Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.</b><br><br><br>
-
-Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via<br>
-
-<i>"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"</i><br>
-
-durchgeführt werden.<br><br>
-
-Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
-""".format(__version__),
-        titel="Update Information",
-        show_checkbox=show_checkbox,
-        set_width=600,
-        )
-        return rsp
+    def show_popup_window(self): #, show_checkbox = True
+        popup_message = os.path.join(database, "_config", "popup_message.txt")
+        if os.path.isfile(popup_message):
+            with open(popup_message, "r", encoding="utf-8") as f:
+                popup_message_text = f.read()
+            rsp = custom_window(f"""{popup_message_text}""",
+            titel="Benachrichtigung",
+            set_width=600,
+            )
+            return rsp
+        return False
 
 
     ##### PREVIOUS MESSAGES
@@ -1147,9 +1141,9 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         )
 
         if ret == True:
-            self.lama_settings["popup_off"] = False
-            with open(lama_settings_file, "w+", encoding="utf8") as f:
-                json.dump(self.lama_settings, f, ensure_ascii=False)
+            # self.lama_settings["popup_off"] = False
+            # with open(lama_settings_file, "w+", encoding="utf8") as f:
+            #     json.dump(self.lama_settings, f, ensure_ascii=False)
 
          
             refresh_ddb(self, auto_update=True)
@@ -8073,11 +8067,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # list_klassen = ["k5", "k6", "k7", "k8"]
             if self.comboBox_gk.currentText() == "Zusatzthemen":
                 #     x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
+                items_zusatzthemen = []
                 for all in zusatzthemen_beschreibung:
                     if zusatzthemen_beschreibung[all] == "---":
                         continue
                     label = zusatzthemen_beschreibung[all] + " (" + all + ")"
-                    self.comboBox_gk_num.addItem(label)
+                    items_zusatzthemen.append(label)
+                items_zusatzthemen.sort()
+                for all in items_zusatzthemen:
+                    self.comboBox_gk_num.addItem(all)
             else:
                 for all in dict_gk.keys():
                     if all.startswith(self.comboBox_gk.currentText().lower()):
@@ -8094,11 +8092,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             #     for all in x.keys():
             #         self.comboBox_fb_num.addItem(all.upper())
             if self.comboBox_fb.currentText() == "Zusatzthemen":
+                items_zusatzthemen = []
                 for all in zusatzthemen_beschreibung:
                     if zusatzthemen_beschreibung[all] == "---":
                         continue
                     label = zusatzthemen_beschreibung[all] + " (" + all + ")"
-                    self.comboBox_fb_num.addItem(label)
+                    label = zusatzthemen_beschreibung[all] + " (" + all + ")"
+                    items_zusatzthemen.append(label)
+                items_zusatzthemen.sort()
+                for all in items_zusatzthemen:
+                    self.comboBox_fb_num.addItem(all)
             else:
                 for all in dict_gk.keys():
                     if all.startswith(self.comboBox_fb.currentText().lower()):
