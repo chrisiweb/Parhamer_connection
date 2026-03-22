@@ -1,6 +1,6 @@
-from PyQt5.QtGui import QCursor, QIcon
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt
-from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt6.QtGui import QCursor, QIcon
+from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, Qt
+from PyQt6.QtWidgets import QApplication, QMessageBox
 import sys
 import os
 import re
@@ -864,6 +864,12 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
     return process
 
 
+class Ui_Dialog_pdfviewer(object):
+    def setupUi(self, Dialog):
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle("Pdf Viewer")
+
 def open_pdf_file(folder_name, file_name):
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
 
@@ -874,7 +880,18 @@ def open_pdf_file(folder_name, file_name):
     else:
         drive = ""
 
+    Dialog = QtWidgets.QDialog(
+        None,
+        QtCore.Qt.WindowSystemMenuHint
+        | QtCore.Qt.WindowTitleHint
+        | QtCore.Qt.WindowCloseButtonHint,
+    )
+    ui = Ui_Dialog_pdfviewer()
 
+    ui.setupUi(Dialog)
+
+    Dialog.exec()
+    return
     try:
         with open(lama_settings_file, "r", encoding="utf8") as f:
             lama_settings = json.load(f)

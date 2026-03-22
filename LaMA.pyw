@@ -62,8 +62,8 @@ from config_start import (
     lama_titlepage_save,
     cria_titlepage_save,
 )
-# from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QApplication
+# from PyQt6 import QtCore, QtWidgets, QtGui
+from PyQt6.QtWidgets import QApplication
 
 # from distutils.spawn import find_executable
 
@@ -9647,11 +9647,11 @@ if __name__ == "__main__":
     i = step_progressbar(i, "time")
 
 
-    i = step_progressbar(i, "PyQt5")
-    from PyQt5 import QtCore, QtWidgets, QtGui
+    i = step_progressbar(i, "PyQt6")
+    from PyQt6 import QtCore, QtWidgets, QtGui
 
-    i = step_progressbar(i, "PyQt5.QtWidgets")
-    from PyQt5.QtWidgets import QMainWindow
+    i = step_progressbar(i, "PyQt6.QtWidgets")
+    from PyQt6.QtWidgets import QMainWindow
 
     i = step_progressbar(i, "pathlib")
     from pathlib import Path

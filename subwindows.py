@@ -177,6 +177,7 @@ def worker_update_database():
 #     def start_download(self):
 #         self.Dialog.accept()      
 
+
 class Ui_Dialog_choose_type(object):
     def setupUi(self, Dialog, screen_width, screen_height):
         self.Dialog = Dialog
