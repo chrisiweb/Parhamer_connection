@@ -1,4 +1,4 @@
-from PyQt6 import QtCore, QtWidgets, QtGui
+from PyQt5 import QtCore, QtWidgets, QtGui
 from create_new_widgets import (
     add_action,
     create_new_label,

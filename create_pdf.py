@@ -1,6 +1,6 @@
-from PyQt6.QtGui import QCursor, QIcon
-from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, Qt
-from PyQt6.QtWidgets import QApplication, QMessageBox
+from PyQt5.QtGui import QCursor, QIcon
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt
+from PyQt5.QtWidgets import QApplication, QMessageBox
 import sys
 import os
 import re
@@ -9,6 +9,7 @@ import subprocess
 
 from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader, path_home
 from config import *
+from pdfviewer import Ui_Dialog_pdfviewer
 # (
 #     config_file,
 #     config_loader,
@@ -864,11 +865,8 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
     return process
 
 
-class Ui_Dialog_pdfviewer(object):
-    def setupUi(self, Dialog):
-        self.Dialog = Dialog
-        self.Dialog.setObjectName("Dialog")
-        Dialog.setWindowTitle("Pdf Viewer")
+_PDF_DIALOG = None      # QDialog
+_PDF_UI = None          # Ui_Dialog_pdfviewer
 
 def open_pdf_file(folder_name, file_name):
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
@@ -880,90 +878,133 @@ def open_pdf_file(folder_name, file_name):
     else:
         drive = ""
 
-    Dialog = QtWidgets.QDialog(
-        None,
-        QtCore.Qt.WindowSystemMenuHint
-        | QtCore.Qt.WindowTitleHint
-        | QtCore.Qt.WindowCloseButtonHint,
-    )
-    ui = Ui_Dialog_pdfviewer()
+    ### open internal PDF Viewer###
 
-    ui.setupUi(Dialog)
 
-    Dialog.exec()
-    return
+
+
+    def show_pdf(pdf_file_path):
+        global _PDF_DIALOG, _PDF_UI
+        if not os.path.isfile(pdf_file_path):
+            return
+
+        if _PDF_DIALOG is None:
+            _PDF_DIALOG = QtWidgets.QDialog(
+                None,
+                QtCore.Qt.WindowSystemMenuHint
+                | QtCore.Qt.WindowTitleHint
+                | QtCore.Qt.WindowMinMaxButtonsHint
+                | QtCore.Qt.WindowCloseButtonHint
+            )
+
+            _PDF_DIALOG.setAttribute(QtCore.Qt.WA_DeleteOnClose, False)
+
+            _PDF_UI = Ui_Dialog_pdfviewer()
+            _PDF_UI.setupUi(_PDF_DIALOG, pdf_file_path)
+            _PDF_DIALOG.setWindowTitle("PDF Viewer")
+
+            def _soft_close(ev):
+                ev.ignore()
+                _PDF_DIALOG.hide()
+            _PDF_DIALOG.closeEvent = _soft_close
+        else:
+            _PDF_UI.refresh_pdf(pdf_file_path)
+
+        _PDF_DIALOG.show()
+        _PDF_DIALOG.raise_()
+        _PDF_DIALOG.activateWindow()
+
+        
+    pdf_file_path = os.path.join(folder_name, file_name) + ".pdf"
+    show_pdf(pdf_file_path)
+    # file_path = os.path.join(folder_name, file_name)
+    # file_path = file_path + ".pdf"
+    # Dialog = QtWidgets.QDialog(
+    #     None,
+    #     QtCore.Qt.WindowSystemMenuHint
+    #     | QtCore.Qt.WindowTitleHint
+    #     | QtCore.Qt.WindowCloseButtonHint,
+    # )
+    # ui = Ui_Dialog_pdfviewer()
+
+    # ui.setupUi(Dialog, file_path)
+
+    # Dialog.exec()
     try:
-        with open(lama_settings_file, "r", encoding="utf8") as f:
-            lama_settings = json.load(f)
-        if is_empty(lama_settings['pdf_reader']):
+        print('test')
+    except:
+        try:
+            with open(lama_settings_file, "r", encoding="utf8") as f:
+                lama_settings = json.load(f)
+            if is_empty(lama_settings['pdf_reader']):
+                if os.path.isfile(path_standard_pdf_reader):
+                    path_pdf_reader = path_standard_pdf_reader
+                else:
+                    path_pdf_reader = ""
+            else:
+                path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
+        except (FileNotFoundError, KeyError):
             if os.path.isfile(path_standard_pdf_reader):
                 path_pdf_reader = path_standard_pdf_reader
             else:
                 path_pdf_reader = ""
-        else:
-            path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
-    except (FileNotFoundError, KeyError):
-        if os.path.isfile(path_standard_pdf_reader):
-            path_pdf_reader = path_standard_pdf_reader
-        else:
-            path_pdf_reader = ""
-    file_path = os.path.join(folder_name, file_name)
+        file_path = os.path.join(folder_name, file_name)
 
-    if sys.platform.startswith("linux"):
+        if sys.platform.startswith("linux"):
 
-        file_path = file_path + ".pdf"
+            file_path = file_path + ".pdf"
 
-        #subprocess.run(["evince", "--unique", file_path])
-        #webbrowser.open(file_path, new=2, autoraise=True)
+            #subprocess.run(["evince", "--unique", file_path])
+            #webbrowser.open(file_path, new=2, autoraise=True)
 
-        # os.system("xdg-open {0}".format(file_path))
+            # os.system("xdg-open {0}".format(file_path))
 
-        try:
-            subprocess.Popen(
-                [
-                    "evince",
-                    file_path,
-                ]
-            )
-        except FileNotFoundError:
-            subprocess.Popen(
-                [
-                    "xdg-open",
-                    file_path,
-                ]
-            )            
-    elif sys.platform.startswith("darwin"):
-        if is_empty(path_pdf_reader) == False:
-            if os.path.exists(path_pdf_reader)== False:
-                warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+            try:
+                subprocess.Popen(
+                    [
+                        "evince",
+                        file_path,
+                    ]
+                )
+            except FileNotFoundError:
+                subprocess.Popen(
+                    [
+                        "xdg-open",
+                        file_path,
+                    ]
+                )            
+        elif sys.platform.startswith("darwin"):
+            if is_empty(path_pdf_reader) == False:
+                if os.path.exists(path_pdf_reader)== False:
+                    warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+                
+                
+                subprocess.run(
+                    ["open","-a","{}".format(path_pdf_reader), "{0}.pdf".format(file_path)]
+                )            
+
+            else:
+                subprocess.run(
+                    ["open", "{0}.pdf".format(file_path)]
+                )
             
-            
-            subprocess.run(
-                ["open","-a","{}".format(path_pdf_reader), "{0}.pdf".format(file_path)]
-            )            
+        else:
+            if os.path.isfile(path_pdf_reader) == False:
+                if is_empty(path_pdf_reader)== False:
+                    warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+                path_pdf_reader = ""
+            else:
+                path_pdf_reader = '"{}"'.format(path_pdf_reader) 
 
-        else:
-            subprocess.run(
-                ["open", "{0}.pdf".format(file_path)]
-            )
-         
-    else:
-        if os.path.isfile(path_pdf_reader) == False:
-            if is_empty(path_pdf_reader)== False:
-                warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
-            path_pdf_reader = ""
-        else:
-            path_pdf_reader = '"{}"'.format(path_pdf_reader) 
-
-        if is_empty(drive):
-            subprocess.Popen(
-                'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
-                shell = True).poll()
-        else:
-            drive = "{} &".format(drive)
-            subprocess.Popen(
-                '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
-                shell = True).poll()            
+            if is_empty(drive):
+                subprocess.Popen(
+                    'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
+                    shell = True).poll()
+            else:
+                drive = "{} &".format(drive)
+                subprocess.Popen(
+                    '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
+                    shell = True).poll()            
 
 def loading_animation(process):
     animation = "|/-\\"

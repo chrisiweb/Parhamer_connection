@@ -62,8 +62,9 @@ from config_start import (
     lama_titlepage_save,
     cria_titlepage_save,
 )
-# from PyQt6 import QtCore, QtWidgets, QtGui
-from PyQt6.QtWidgets import QApplication
+# from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import QTranslator, QLocale, QLibraryInfo
 
 # from distutils.spawn import find_executable
 
@@ -71,6 +72,51 @@ from PyQt6.QtWidgets import QApplication
 
 
 from handle_exceptions import report_exceptions
+
+def enable_german_ui(app):
+    """
+    Aktiviert die Qt-Übersetzungen (Deutsch) für Standard-Dialoge wie QColorDialog.
+    Funktioniert mit PyQt5 5.15.x auf Windows 11.
+    """
+    # 1) Standard-Locale auf Deutsch (AT) setzen (DE ginge auch)
+    QLocale.setDefault(QLocale(QLocale.German, QLocale.Austria))
+
+    # 2) Übersetzungsverzeichnisse ermitteln
+    candidates = []
+    try:
+        # Der offizielle Qt-Translations-Pfad
+        candidates.append(QLibraryInfo.location(QLibraryInfo.TranslationsPath))
+    except Exception:
+        pass
+    # Fallback: PyQt5/Qt/translations relativ zum Paket
+    try:
+        import PyQt5
+        candidates.append(os.path.join(os.path.dirname(PyQt5.__file__), "Qt", "translations"))
+    except Exception:
+        pass
+
+    # 3) Benötigte Qt-Module laden: 'qtbase' deckt die meisten Widgets/Dialogs ab,
+    #    'qt' ergänzt einige allgemeine Strings (optional, aber schadet nicht).
+    loaded = []
+    for base in ("qtbase", "qt"):
+        tr = QTranslator(app)
+        ok = False
+        for path in candidates:
+            if path and os.path.isdir(path):
+                # Variante A: automatische Locale-Auswahl (z. B. qtbase_de.qm)
+                if tr.load(QLocale(), base, "_", path):
+                    ok = True
+                    break
+                # Variante B: explizit 'de' probieren
+                if tr.load(f"{base}_de", path):
+                    ok = True
+                    break
+        if ok:
+            app.installTranslator(tr)
+            loaded.append(tr)
+
+    # Referenzen halten, damit die Translator-Objekte nicht vorzeitig ge-GCed werden
+    app._de_translators = loaded
 
 class Worker_UpdateDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
@@ -9534,7 +9580,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-
+    enable_german_ui(app)
     app.setStyle("Fusion")
     # dir_ = QtCore.QDir("assets/fonts/IBM_Plex_Sans")
 
@@ -9647,11 +9693,11 @@ if __name__ == "__main__":
     i = step_progressbar(i, "time")
 
 
-    i = step_progressbar(i, "PyQt6")
-    from PyQt6 import QtCore, QtWidgets, QtGui
+    i = step_progressbar(i, "PyQt5")
+    from PyQt5 import QtCore, QtWidgets, QtGui
 
-    i = step_progressbar(i, "PyQt6.QtWidgets")
-    from PyQt6.QtWidgets import QMainWindow
+    i = step_progressbar(i, "PyQt5.QtWidgets")
+    from PyQt5.QtWidgets import QMainWindow
 
     i = step_progressbar(i, "pathlib")
     from pathlib import Path
