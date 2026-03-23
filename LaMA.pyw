@@ -455,6 +455,35 @@ class Ui_MainWindow(object):
 
         ########################
         self.MainWindow = MainWindow
+
+
+        # PDF-Viewer beim Schließen des Hauptfensters zuverlässig beenden
+        class _KillPdfOnMainClose(QtCore.QObject):
+            def eventFilter(self, obj, ev):
+                if ev.type() == QtCore.QEvent.Close:
+                    try:
+                        # Direkter Zugriff auf den internen PDF-Dialog
+                        import create_pdf
+                        dlg = getattr(create_pdf, "_PDF_DIALOG", None)
+                        if dlg is not None:
+                            # Soft-Close (hide) für DIESEN Vorgang aushebeln
+                            dlg.closeEvent = lambda e: e.accept()
+                            dlg.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
+                            dlg.close()
+                            dlg.deleteLater()
+                            # Globale Referenzen aufräumen
+                            create_pdf._PDF_DIALOG = None
+                            create_pdf._PDF_UI = None
+                    except Exception:
+                        pass
+                return super().eventFilter(obj, ev)
+
+        # Filter instanzieren und am MainWindow installieren
+        self._killPdfFilter = _KillPdfOnMainClose(MainWindow)
+        MainWindow.installEventFilter(self._killPdfFilter)
+
+
+
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 

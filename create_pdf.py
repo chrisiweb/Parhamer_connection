@@ -868,6 +868,7 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
 _PDF_DIALOG = None      # QDialog
 _PDF_UI = None          # Ui_Dialog_pdfviewer
 
+
 def open_pdf_file(folder_name, file_name):
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
 
@@ -879,10 +880,6 @@ def open_pdf_file(folder_name, file_name):
         drive = ""
 
     ### open internal PDF Viewer###
-
-
-
-
     def show_pdf(pdf_file_path):
         global _PDF_DIALOG, _PDF_UI
         if not os.path.isfile(pdf_file_path):
@@ -903,6 +900,8 @@ def open_pdf_file(folder_name, file_name):
             _PDF_UI.setupUi(_PDF_DIALOG, pdf_file_path)
             _PDF_DIALOG.setWindowTitle("PDF Viewer")
 
+
+            # Soft-Close: nur verstecken
             def _soft_close(ev):
                 ev.ignore()
                 _PDF_DIALOG.hide()

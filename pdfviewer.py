@@ -18,14 +18,14 @@ import os
 import re
 import sys
 from typing import List, Tuple, Optional
-
+from config import get_icon_path
 import fitz  # PyMuPDF
 from PyQt5.QtWidgets import (
     QLabel, QWidget, QScrollArea, QVBoxLayout,
     QToolBar, QLineEdit, QSizePolicy, QShortcut,
     QListWidget, QListWidgetItem, QSplitter, QHBoxLayout,
     QStyledItemDelegate, QStyle, QStyleOptionViewItem,
-    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox
+    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QAction, QToolButton
 )
 from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon
 from PyQt5.QtCore import Qt, pyqtSignal, QRect, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
@@ -225,9 +225,9 @@ class CategoryHeaderWidget(QWidget):
         super().__init__(parent)
 
         self._colors = [
+            QColor("#d3f9d8"), # Grün
             QColor("#ffd6d6"),  # Rot
             QColor("#fff3bf"),  # Gelb
-            QColor("#d3f9d8"),  # Grün
         ]
         self._labels = ["Übungsblatt", "Schularbeit", "Nachschularbeit"]
         self._enabled = [True, True, True]  # standardmäßig alle aktiv
@@ -373,6 +373,7 @@ class _CtrlWheelFilter(QObject):
 # ---------------- PDF-Anzeige-Widget ----------------
 class PdfWidget(QWidget):
     currentPageChanged = pyqtSignal(int)  # 1-basierter Index
+    zoomChanged = pyqtSignal(float)
 
     def __init__(self, pdf_path, parent=None):
         super().__init__(parent)
@@ -384,7 +385,7 @@ class PdfWidget(QWidget):
         self._layout.setSpacing(12)
         self._labels: List[QLabel] = []
         self._last_reported_page = 1
-
+        self._last_selected_text = ""   # 🔹 globaler Puffer für Strg+C
         self._render_pages()
 
         self._scroll = QScrollArea()
@@ -405,6 +406,15 @@ class PdfWidget(QWidget):
 
         self._update_current_page()
 
+        # --- Zoom Coalescing (flüssiges Touchpad-Zoom) ---
+        self._zoom_target = self._zoom
+        self._zoom_timer = QTimer(self)
+        self._zoom_timer.setSingleShot(True)
+        self._zoom_timer.setInterval(18)  # 18–25 ms: angenehm flüssig
+        self._zoom_timer.timeout.connect(self._apply_coalesced_zoom)
+
+    def get_last_selected_text(self) -> str:
+        return self._last_selected_text or ""
 
     def _container_pos(self, w: QWidget) -> QPoint:
         """Position eines Widgets relativ zu self._container."""
@@ -422,44 +432,84 @@ class PdfWidget(QWidget):
         return self._last_reported_page
 
 
-
-    def _on_ctrl_wheel(self, event):
-        """
-        STRG + Mausrad/Touchpad -> nur zoomen (kein Scrollen).
-        Scrollbalken wird mittels Pixelwert 'eingefroren' und nach dem Render 1:1 wiederhergestellt.
-        """
-        # Delta (Rad oder Touchpad)
-        dy = event.angleDelta().y()
-        if dy == 0 and hasattr(event, "pixelDelta"):
-            pd = event.pixelDelta()
-            if not pd.isNull():
-                dy = pd.y()
-        if dy == 0:
-            return
-
-        # Scroll-Top einfrieren (exakt, nicht relativ)
+    def _apply_coalesced_zoom(self):
+        """Wendet den in _zoom_target gesammelten Zoom an (einmalig rendern)."""
         vsb = self._scroll.verticalScrollBar()
         frozen_val = vsb.value()
 
-        # Zoom-Schritt: konservativ (5% pro Notch) = stabil beim Verkleinern
-        steps  = dy / 120.0
-        factor = 1.05 ** steps
-        new_z  = max(0.3, min(6.0, self._zoom * factor))
-        if abs(new_z - self._zoom) < 1e-6:
-            return
-
-        # Rendern ohne Zwischen-Repaint -> keine Zwischenbewegung
         self._scroll.setUpdatesEnabled(False)
         try:
-            self._zoom = new_z
+            self._zoom = max(0.3, min(6.0, self._zoom_target))
             self._render_pages()
-            # Scroll-Top 1:1 wiederherstellen (auf neue Range clampen)
             vsb.setValue(max(vsb.minimum(), min(vsb.maximum(), frozen_val)))
         finally:
             self._scroll.setUpdatesEnabled(True)
 
-        # Sicherheits-Set nach Layout-Pass: verhindert seltenes "Nachjustieren"
+        # kleiner Post-Layout-Fix
         QTimer.singleShot(0, lambda: vsb.setValue(max(vsb.minimum(), min(vsb.maximum(), frozen_val))))
+        self.zoomChanged.emit(self._zoom)
+
+
+    def zoom_in(self, factor: float = 1.2):
+        """Zoomt hinein (Standard +20%) – coalesced, kein Doppelt-Rendern."""
+        self._zoom_target = min(6.0, self._zoom * factor)
+        self._zoom_timer.start()  # coalesced
+        # kein _freeze_zoom_and_render() hier!
+
+    def zoom_out(self, factor: float = 1/1.2):
+        """Zoomt hinaus (Standard −20%) – coalesced, kein Doppelt-Rendern."""
+        self._zoom_target = max(0.3, self._zoom * factor)
+        self._zoom_timer.start()
+
+
+    def reset_zoom(self, value: float = 1.5):
+        """Setzt den Zoom auf einen Fixwert (Standard 150%)."""
+        value = max(0.3, min(6.0, float(value)))
+        self._freeze_zoom_and_render(value)
+        self.zoomChanged.emit(self._zoom)
+
+    def _on_ctrl_wheel(self, event):
+        """
+        STRG + Wheel/Touchpad -> Zoom (coalesced, flüssig).
+        - pixelDelta (Touchpad): feines, kontinuierliches Zoomen
+        - angleDelta (klassisches Rad): 10% pro Notch
+        - Rendering wird auf ~18 ms coalesced -> keine "Lag"-Gefühle
+        """
+        dy = event.angleDelta().y()
+        pixel_dy = 0
+        if hasattr(event, "pixelDelta"):
+            pd = event.pixelDelta()
+            if pd and not pd.isNull():
+                pixel_dy = pd.y()
+
+        # Nichts zu tun?
+        if dy == 0 and pixel_dy == 0:
+            event.accept()
+            return
+
+        # Aktuelle Ziel-Zoom-Basis ist _zoom_target (nicht _zoom)
+        z = float(self._zoom_target)
+
+        if pixel_dy != 0:
+            # Touchpad: feines, kontinuierliches Zoomen
+            # Da pixelDelta je nach Gerät klein ausfällt: skaliere moderat.
+            # 60 px "Scroll" ~ 15% Zoom
+            steps = pixel_dy / 40.0
+            z += (pixel_dy * 0.003)
+
+        else:
+            # Klassisches Rad (angleDelta): 120 -> ~10%
+            steps = dy / 120.0
+            z *= (1.10 ** steps)
+
+        # Grenzen & Setzen
+        self._zoom_target = max(0.3, min(6.0, z))
+
+        # Coalescing: Timer (re)starten -> rendert erst, wenn Events kurz pausieren
+        self._zoom_timer.start()
+
+        # Scrollen verhindern
+        event.accept()
 
     def scrollToPage(self, page_one_based: int):
         n = self.pageCount()
@@ -508,6 +558,121 @@ class PdfWidget(QWidget):
             self._scroll.verticalScrollBar().setValue(y_target)
             self._update_current_page(force=True)
 
+
+    def compute_smart_selection(self, page_index: int,
+                                p0_label: QPoint, p1_label: QPoint,
+                                label: QLabel):
+        """
+        Intelligente Textauswahl wie im PDF-Viewer:
+        - Mapping Label -> PDF
+        - findet Wörter in Lesereihenfolge
+        - gruppiert Wörter pro Zeile
+        - merged Rechtecke pro Zeile zu EINEM Balken
+        """
+        page = self._doc[page_index]
+        pm = label.pixmap()
+        if pm is None or pm.isNull():
+            return [], []
+
+        sx = page.rect.width / pm.width()
+        sy = page.rect.height / pm.height()
+
+        # Auswahlpunkte in PDF-Koordinaten
+        p0 = fitz.Point(p0_label.x()*sx, p0_label.y()*sy)
+        p1 = fitz.Point(p1_label.x()*sx, p1_label.y()*sy)
+
+        words = page.get_text("words") or []
+        if not words:
+            return [], []
+
+        # Sortieren nach (block, line, word)
+        words.sort(key=lambda w: (w[5], w[6], w[7]))
+
+        def center(w):
+            return ((w[0]+w[2])/2, (w[1]+w[3])/2)
+
+        def nearest(pt):
+            best, best_d = 0, 1e99
+            for i,w in enumerate(words):
+                cx,cy = center(w)
+                d = (cx-pt.x)**2 + (cy-pt.y)**2
+                if d < best_d:
+                    best_d = d
+                    best = i
+            return best
+
+        i0 = nearest(p0)
+        i1 = nearest(p1)
+        if i0 > i1:
+            i0, i1 = i1, i0
+
+        selected = words[i0:i1+1]
+        if not selected:
+            return [], []
+
+        # -------------------------
+        # MERGING PRO ZEILE
+        # -------------------------
+        merged_pdf_rects = []
+        merged_label_rects = []
+
+        sx_inv = 1/sx
+        sy_inv = 1/sy
+
+        current_line = selected[0][6]
+        line_rect = fitz.Rect(selected[0][0], selected[0][1],
+                            selected[0][2], selected[0][3])
+
+        for w in selected[1:]:
+            if w[6] == current_line:
+                # selbe Zeile → erweitern
+                line_rect |= fitz.Rect(w[:4])
+            else:
+                # neue Zeile → vorherige abschließen
+                merged_pdf_rects.append(line_rect)
+
+                lx0 = int(line_rect.x0 * sx_inv)
+                ly0 = int(line_rect.y0 * sy_inv)
+                lx1 = int(line_rect.x1 * sx_inv)
+                ly1 = int(line_rect.y1 * sy_inv)
+                merged_label_rects.append(
+                    QRect(lx0, ly0, lx1-lx0, ly1-ly0)
+                )
+
+                # Neue Zeile beginnen
+                current_line = w[6]
+                line_rect = fitz.Rect(w[0], w[1], w[2], w[3])
+
+        # Letzte Zeile hinzufügen
+        merged_pdf_rects.append(line_rect)
+        lx0 = int(line_rect.x0 * sx_inv)
+        ly0 = int(line_rect.y0 * sy_inv)
+        lx1 = int(line_rect.x1 * sx_inv)
+        ly1 = int(line_rect.y1 * sy_inv)
+        merged_label_rects.append(QRect(lx0, ly0, lx1-lx0, ly1-ly0))
+
+        return merged_pdf_rects, merged_label_rects
+
+
+    def apply_highlight(self, page_index: int, pdf_rects: list):
+        """
+        Legt Highlight-Annotationen an und rendert neu (Scrollposition bleibt).
+        """
+        if not pdf_rects:
+            return
+        page = self._doc[page_index]
+        for r in pdf_rects:
+            a = page.add_highlight_annot(r)
+            if a:
+                a.set_opacity(0.35)
+                a.update()
+
+        # sichtbar machen
+        vsb = self._scroll.verticalScrollBar()
+        pos = vsb.value()
+        self._render_pages()
+        vsb.setValue(min(max(pos, vsb.minimum()), vsb.maximum()))
+
     def gotoNext(self): self.scrollToPage(self.currentPage() + 1)
     def gotoPrev(self): self.scrollToPage(self.currentPage() - 1)
 
@@ -550,7 +715,7 @@ class PdfWidget(QWidget):
 
 
     def _render_pages(self):
-        # Alte Widgets raus
+        # Alte Widgets löschen
         for i in reversed(range(self._layout.count())):
             w = self._layout.itemAt(i).widget()
             if w:
@@ -559,22 +724,41 @@ class PdfWidget(QWidget):
 
         mat = fitz.Matrix(self._zoom, self._zoom)
 
-        # Einzel-Seitenansicht (siehe Abschnitt B unten für Doppelseiten)
         for page in self._doc:
             pix = page.get_pixmap(matrix=mat, alpha=False)
             img = QImage(pix.samples, pix.width, pix.height, pix.stride, QImage.Format_RGB888)
 
             card = self._make_page_card(img)
-            # Das eigentliche Seitenbild-Label speichern, damit scrollToPage etc. weiter funktionieren:
-            inner_lbl = card.findChild(QLabel)
-            self._labels.append(inner_lbl)
 
-            # Seitenkarte horizontal zentriert in die Spalte
+            # --- ALT ---
+            # inner_lbl = card.findChild(QLabel)
+            # self._labels.append(inner_lbl)
+
+            # --- NEU: inneres Label gegen PageImage tauschen ---
+            inner_lbl = card.findChild(QLabel)  # das von _make_page_card erstellte
+            pm = inner_lbl.pixmap()
+            page_index = page.number
+
+            pg = PageImage(self, page_index, pm, parent=card)
+            pg.setStyleSheet(inner_lbl.styleSheet())
+            pg.setAlignment(inner_lbl.alignment())
+            pg.setSizePolicy(inner_lbl.sizePolicy())
+
+            # Live-Auswahl finalisieren -> echte PDF-Highlights setzen
+            # pg.selectionMade.connect(lambda idx, rects: self.apply_highlight(idx, rects))
+
+            lay = card.layout()
+            lay.removeWidget(inner_lbl)
+            inner_lbl.deleteLater()
+            lay.addWidget(pg, 0, Qt.AlignCenter)
+
+            # Für Scroll-/Seitentracking weiterhin speichern
+            self._labels.append(pg)
+
+            # Karte in Spalte
             self._layout.addWidget(card, 0, Qt.AlignHCenter)
 
-        # Abstand zwischen den Karten
-        self._layout.setSpacing(24)
-
+        self._layout.setSpacing(16)
         spacer = QWidget(); spacer.setFixedHeight(1)
         self._layout.addWidget(spacer)
         self._container.adjustSize()
@@ -645,9 +829,9 @@ class PdfWidget(QWidget):
             vsb.setValue(max(vsb.minimum(), min(vsb.maximum(), frozen_val)))
         finally:
             self._scroll.setUpdatesEnabled(True)
-
         # zweiter Set nach Layout
         QTimer.singleShot(0, lambda: vsb.setValue(max(vsb.minimum(), min(vsb.maximum(), frozen_val))))
+        self.zoomChanged.emit(self._zoom)
 
     def keyPressEvent(self, event):
         ctrl = bool(event.modifiers() & Qt.ControlModifier)
@@ -661,8 +845,63 @@ class PdfWidget(QWidget):
         if event.key() == Qt.Key_Right: self.gotoNext(); return
         super().keyPressEvent(event)
 
+    def extract_quads_from_label_rect(self, page_index, rect_in_label, label: QLabel):
+        page = self._doc[page_index]
+        pm = label.pixmap()
+        if pm is None:
+            return []
+
+        # Berechne Verhältnis Label→PDF
+        scale_x = page.rect.width / pm.width()
+        scale_y = page.rect.height / pm.height()
+
+        # Transformiere Auswahl-Rect in PDF-Koordinaten
+        pdf_rect = fitz.Rect(
+            rect_in_label.x() * scale_x,
+            rect_in_label.y() * scale_y,
+            rect_in_label.right() * scale_x,
+            rect_in_label.bottom() * scale_y
+        )
+
+        # Alle Wörter der Seite abrufen
+        words = page.get_text("words")  # (x0,y0,x1,y1, word, block_no, line_no, word_no)
+
+        quads = []
+        for w in words:
+            wrect = fitz.Rect(w[:4])
+            if pdf_rect.intersects(wrect):
+                quads.append(wrect)
+
+        return quads
+    
+    def apply_highlight(self, page_index, quads):
+        page = self._doc[page_index]
+
+        for rect in quads:
+            page.add_highlight_annot(rect)
+
+        # Seite neu rendern
+        vsb = self._scroll.verticalScrollBar()
+        pos = vsb.value()
+        self._render_pages()
+        vsb.setValue(pos)
 
 
+    def extract_text_from_pdf_rects(self, page_index: int, rects: list) -> str:
+        """Gibt den Text der ausgewählten Rechtecke (in Reihenfolge) zurück."""
+        if not rects:
+            return ""
+
+        page = self._doc[page_index]
+        parts = []
+
+        for r in rects:
+            txt = page.get_textbox(r)  # exakter Text des Wort- oder Zeilen-Rects
+            if txt:
+                parts.append(txt.strip())
+
+        # Leerzeichen/Zeilenumbrüche sinnvoll setzen
+        return " ".join(parts)
 # # --- nötige Imports ---
 # import os
 # from PyQt5 import QtCore, QtWidgets
@@ -679,7 +918,130 @@ class PdfWidget(QWidget):
 # - PdfWidget             (mit .pageCount(), .currentPageChanged, .scrollToPage(), .scrollToPageLocation(), .gotoPrev(), .gotoNext())
 # - extract_headings_with_positions(pdf_path) -> [(text, page, y_ratio_or_None), ...]
 
-# ---------- interner Event-Filter: merkt Vorzustand der Selektion ----------
+class PageImage(QLabel):
+    """
+    QLabel, das echte Textmarkierung als temporäre UI-Selektion ermöglicht:
+    - gelbe rechteckige Markierung um Wörter
+    - verschwindet beim nächsten Klick
+    - KEINE PDF-Annotation
+    - Cursorwechsel Crosshair/IBeam
+    """
+    selectionMade = pyqtSignal(int, list)   # <<< WICHTIG! Das fehlte bei dir.
+
+    def __init__(self, pdfw, page_index, pixmap, parent=None):
+        super().__init__(parent)
+        self._pdfw = pdfw
+        self._page_index = page_index
+        self.setPixmap(pixmap)
+
+        self.setStyleSheet("background: transparent;")
+        self.setAlignment(Qt.AlignCenter)
+        self.setCursor(Qt.IBeamCursor)
+        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self._selected_text = ""
+        self.setFocusPolicy(Qt.ClickFocus) 
+
+        self._dragging = False
+        self._p0 = None
+        self._p1 = None
+
+        self._temp_label_rects = []     # Live während der Auswahl
+        self._final_label_rects = []    # Sichtbare Markierung
+        self.setCursor(Qt.IBeamCursor)
+
+    def mousePressEvent(self, ev):
+        if ev.button() == Qt.LeftButton:
+            self._final_label_rects = []
+            self._temp_label_rects = []
+            self.update()
+
+            self._dragging = True
+            self._p0 = ev.pos()
+            self._p1 = ev.pos()
+            
+            # ✅ Cursor bleibt Textcursor (KEIN Crosshair)
+            self.setCursor(Qt.IBeamCursor)
+            self.setFocus(Qt.MouseFocusReason)
+
+        super().mousePressEvent(ev)
+
+
+    def mouseMoveEvent(self, ev):
+        if self._dragging:
+            self._p1 = ev.pos()
+
+            # Wörter automatisch bestimmen
+            _pdf_rects, label_rects = self._pdfw.compute_smart_selection(
+                self._page_index,
+                self._p0,
+                self._p1,
+                self
+            )
+            self._temp_label_rects = label_rects
+            self.update()
+        super().mouseMoveEvent(ev)
+
+
+    def mouseReleaseEvent(self, ev):
+        if ev.button() == Qt.LeftButton and self._dragging:
+            self._dragging = False
+            self.setCursor(Qt.IBeamCursor)
+
+
+            if (self._p0 - self._p1).manhattanLength() >= 6:
+                pdf_rects, label_rects = self._pdfw.compute_smart_selection(
+                    self._page_index, self._p0, self._p1, self
+                )
+                self._final_label_rects = label_rects
+
+                # 🔹 Text extrahieren & merken
+                self._selected_text = self._pdfw.extract_text_from_pdf_rects(
+                    self._page_index, pdf_rects
+                )
+                # 🔹 Optional auch zentral im PdfWidget merken (für globalen Shortcut)
+                self._pdfw._last_selected_text = self._selected_text
+
+
+            else:
+                # Klick ohne Auswahl → alles löschen
+                self._final_label_rects = []
+                self._selected_text = ""
+
+            self._temp_label_rects = []
+            self.update()
+
+        super().mouseReleaseEvent(ev)
+
+
+    def paintEvent(self, ev):
+        super().paintEvent(ev)
+
+        from PyQt5.QtGui import QPainter, QColor
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing, False)
+        p.setPen(Qt.NoPen)
+
+        # ✅ DEZENTES HELLBLAU für Live-Vorschau
+        p.setBrush(QColor(150, 200, 255, 100))
+        for r in self._temp_label_rects:
+            p.drawRect(r)
+
+        # ✅ DEZENTES HELLBLAU für finale Auswahl
+        p.setBrush(QColor(150, 200, 255, 140))
+        for r in self._final_label_rects:
+            p.drawRect(r)
+
+        p.end()
+
+    def copy_to_clipboard(self):
+        from PyQt5.QtWidgets import QApplication
+        QApplication.clipboard().setText(self._selected_text or "")
+
+    def keyPressEvent(self, ev):
+        if ev.matches(QKeySequence.Copy):
+            self.copy_to_clipboard()
+            return
+        super().keyPressEvent(ev)
 
 class _PressStateFilter(QObject):
     def __init__(self, viewport):
@@ -746,7 +1108,27 @@ class Ui_Dialog_pdfviewer(object):
         row_layout.addWidget(self.spin_page)
         row_layout.addWidget(self.lbl_total)
 
+        # ---- Zoom Buttons (rechts neben Seitenangabe) ----
+        # from PyQt5.QtWidgets import QToolButton
+        # from PyQt5.QtGui import QIcon, QKeySequence
 
+        btn_zoom_out = QToolButton(center)
+        btn_zoom_out.setIcon(QIcon(get_icon_path('zoom-out.svg')))
+        btn_zoom_out.setToolTip("Verkleinern (Strg + -)")
+        row_layout.addWidget(btn_zoom_out)
+
+        btn_zoom_in = QToolButton(center)
+        btn_zoom_in.setIcon(QIcon(get_icon_path('zoom-in.svg')))
+        btn_zoom_in.setToolTip("Vergrößern (Strg + +)")
+        row_layout.addWidget(btn_zoom_in)
+
+        # Verbindungen
+        btn_zoom_out.clicked.connect(lambda: self.viewer.zoom_out())
+        btn_zoom_in.clicked.connect(lambda: self.viewer.zoom_in())
+
+        # (optional) Shortcuts
+        btn_zoom_in.setShortcut(QKeySequence.ZoomIn)
+        btn_zoom_out.setShortcut(QKeySequence.ZoomOut)
 
         # row_layout.addWidget(self.edt_current)
         # row_layout.addWidget(self.lbl_total)
@@ -786,7 +1168,7 @@ class Ui_Dialog_pdfviewer(object):
         # --- Rechte Seite: PDF-Viewer ---
         self.viewer = PdfWidget(self._current_pdf_path)
         self.viewer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-
+        # self.spin_zoom.setValue(self.viewer.get_zoom_percent())
         # --- Splitter (Mitte) ---
         splitter = QSplitter(Qt.Horizontal)
         splitter.addWidget(left_panel)
@@ -847,9 +1229,36 @@ class Ui_Dialog_pdfviewer(object):
         self.header.labelChanged.connect(self._on_category_label_changed)
         # (optional, wenn noch genutzt) globaler Shim:
         # self.header.markingToggled.connect(self._on_marking_toggled)
+        # Buttons -> Viewer
+        # actZoomOut.triggered.connect(lambda: self._on_zoom_button(False))
+        # actZoomIn.triggered.connect(lambda: self._on_zoom_button(True))
 
+        # SpinBox -> Viewer
+        # self.spin_zoom.valueChanged.connect(self._on_zoom_spin_changed)
+
+        # Viewer -> SpinBox (wenn via Rad/Shortcuts gezoomt wurde)
+        # self.viewer.zoomChanged.connect(self._on_viewer_zoom_changed)
         # --- Start ---
         Dialog.showMaximized()
+
+
+        # 🔹 Strg+C überall im Dialog -> kopiert die aktuelle Bildauswahl
+        sc_copy = QShortcut(QKeySequence.Copy, self.Dialog)
+        sc_copy.setContext(Qt.ApplicationShortcut)
+
+        def _on_copy():
+            w = self.Dialog.focusWidget()
+            # Falls gerade das Bild den Fokus hat, dort kopieren
+            if isinstance(w, PageImage):
+                w.copy_to_clipboard()
+                return
+            # Sonst: letzten Text aus dem Viewer nehmen (falls vorhanden)
+            from PyQt5.QtWidgets import QApplication
+            txt = self.viewer.get_last_selected_text() if hasattr(self.viewer, "get_last_selected_text") else ""
+            if txt:
+                QApplication.clipboard().setText(txt)
+
+        sc_copy.activated.connect(_on_copy)
 
     def refresh_pdf(self, file_path: str):
         """Öffentliche API: PDF austauschen + Liste neu aufbauen."""
