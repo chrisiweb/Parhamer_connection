@@ -9,7 +9,7 @@ import subprocess
 
 from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader, path_home
 from config import *
-from pdfviewer import Ui_Dialog_pdfviewer
+from lama_pdfviewer import Ui_Dialog_pdfviewer
 # (
 #     config_file,
 #     config_loader,
