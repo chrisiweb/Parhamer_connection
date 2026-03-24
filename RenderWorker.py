@@ -48,3 +48,23 @@ class RenderWorker(QObject):
         self.rendered.emit(page_index, zoom_int, img)
 
         QTimer.singleShot(0, self._process_next)
+
+
+    def render_pages(self, pages, zoom_int):
+        # Nur Jobs für DIESEN Zoom ersetzen
+        new_queue = []
+        for p in pages:
+            new_queue.append((p, zoom_int))
+
+        # Ersetze queue durch neue Jobs
+        self.queue = new_queue
+
+        if not self._busy:
+            QTimer.singleShot(0, self._process_next)
+
+    # def render_pages(self, pages, zoom_int): ##SEHR SCHNELL!!!
+    #     self.queue.clear()
+    #     for i in pages:
+    #         self.queue.append((i, zoom_int))
+    #     if not self._busy:
+    #         QTimer.singleShot(0, self._process_next)

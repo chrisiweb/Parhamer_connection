@@ -100,46 +100,27 @@ class PdfCanvas(QWidget):
                              scaled_h + 2*self.PAGE_PADDING))
 
             # Pixmap
-            # Pixmap wählen (Sumatra-Logik):
+            # Pixmap anzeigen — PURE SUMATRA-LOGIK:
             scaled = self.cache_scaled.get(index)
 
             if scaled is not None:
-                # ✅ bereits skaliert → direkt anzeigen
                 p.drawPixmap(
                     x_page + self.PAGE_PADDING,
                     int(y) + self.PAGE_PADDING,
                     scaled
                 )
-
             else:
-                # ✅ SKALIERTES BILD EXISTIERT NOCH NICHT → versuche RAW
-                raw = self.cache_raw.get((index, int(self.zoom * 100)))
-
-                if raw is not None:
-                    # ✅ RAW existiert → jetzt lokal skalieren (NICHT rendern!)
-                    scaled = raw.scaled(
-                        scaled_w, scaled_h,
-                        Qt.KeepAspectRatio,
-                        Qt.SmoothTransformation
-                    )
-                    self.cache_scaled[index] = scaled
-
-                    p.drawPixmap(
+                # Kein scaled-Bild verfügbar → grauer Platzhalter.
+                # ABER: quick_scale wird beim nächsten paintEvent scaled erzeugen!
+                p.fillRect(
+                    QRect(
                         x_page + self.PAGE_PADDING,
                         int(y) + self.PAGE_PADDING,
-                        scaled
-                    )
-
-                else:
-                    # ✅ Weder RAW noch SCALED → grauer Platzhalter (erstes Laden)
-                    p.fillRect(
-                        QRect(
-                            x_page + self.PAGE_PADDING,
-                            int(y) + self.PAGE_PADDING,
-                            scaled_w, scaled_h
-                        ),
-                        QColor("#d0d0d0")
-                    )
+                        scaled_w,
+                        scaled_h
+                    ),
+                    QColor("#d0d0d0")
+                )
             # else:
             #     # Placeholder
             #     p.fillRect(

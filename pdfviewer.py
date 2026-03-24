@@ -30,7 +30,10 @@ class PdfViewer(QWidget):
         self.worker.moveToThread(self.thread)
         self.worker.rendered.connect(self.canvas.insert_rendered)
         self.thread.start()
-        self.worker.request_render_all_pages(int(self.canvas.zoom * 100))
+
+        pages = self.visible_pages()
+        self.worker.render_pages(pages, int(self.canvas.zoom * 100))
+
         self.scroll.verticalScrollBar().valueChanged.connect(self._on_scroll)
 
     # ========== API-KOMPATIBILITÄT ZU DEINEM ALTEN PdfWidget ==========
@@ -69,7 +72,11 @@ class PdfViewer(QWidget):
     # ========== INTERNAL ==========
 
     def _on_scroll(self):
+        self.canvas.quick_scale()
+        pages = self.visible_pages()
+        self.worker.render_pages(pages, int(self.canvas.zoom*100))
         self.currentPageChanged.emit(self.currentPage())
+
     
 
     def load_document(self, pdf_path):
@@ -106,7 +113,10 @@ class PdfViewer(QWidget):
         self.worker.moveToThread(self.thread)
         self.worker.rendered.connect(self.canvas.insert_rendered)
         self.thread.start()
-        self.worker.request_render_all_pages(int(self.canvas.zoom * 100))
+
+        pages = self.visible_pages()
+        self.worker.render_pages(pages, int(self.canvas.zoom * 100))
+
         # ---------- Seite 1 anzeigen ----------
         if len(self.canvas.page_positions) > 0:
             y, _ = self.canvas.page_positions[0]
@@ -144,7 +154,10 @@ class PdfViewer(QWidget):
         self.scroll.verticalScrollBar().setValue(int(new_y - focal_point.y()))
 
         # <<< HINTERGRUND-NACHSCHÄRFUNG >>>
-        self.worker.request_render_all_pages(int(new * 100))
+
+        pages = self.visible_pages()
+        self.worker.render_pages(pages, int(new * 100))
+
 
 
     def wheelEvent(self, e):
@@ -181,3 +194,17 @@ class PdfViewer(QWidget):
 
     def zoom_out(self, step=0.1):
         self.apply_zoom_factor(1 - step)
+
+
+    def visible_pages(self):
+        top = self.scroll.verticalScrollBar().value()
+        bottom = top + self.scroll.viewport().height()
+
+        visible = []
+
+        for i, (y, h) in enumerate(self.canvas.page_positions):
+            if y + h >= top - 200 and y <= bottom + 200:
+                visible.append(i)
+
+        return visible
+    
