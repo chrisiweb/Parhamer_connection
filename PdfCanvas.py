@@ -193,7 +193,11 @@ class PdfCanvas(QWidget):
         pix_sx = scaled_w / page.rect.width
         pix_sy = scaled_h / page.rect.height
 
-        pix_x = 40 + self.PAGE_PADDING
+        page = self.doc[self.sel_page]
+        page_width = int(page.rect.width * self.zoom) + 2 * self.PAGE_PADDING
+        x_page = max(0, (self.width() - page_width) // 2)   # exakt wie in paintEvent
+
+        pix_x = x_page + self.PAGE_PADDING
         pix_y = int(y_page) + self.PAGE_PADDING
 
         # Canvas → Pixmap
