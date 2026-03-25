@@ -1188,13 +1188,17 @@ class Ui_MainWindow(object):
             print(
                 "Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ..."
             )
+            print(f"Fehlermeldung:{e}")
             backup_link = (
                 "https://mylama.github.io/lama/lama_update_backup"
             )
-            readme_content_backup = requests.get(backup_link)
-            force_new_update = int(readme_content_backup.text)
-            if force_new_update==0:
-                print(False)          
+            try:
+                readme_content_backup = requests.get(backup_link)
+                force_new_update = int(readme_content_backup.text)
+                if force_new_update==0:
+                    print(False)          
+                    return
+            except Exception as e:
                 return
 
         # if sys.platform.startswith("linux"):

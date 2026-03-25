@@ -25,9 +25,9 @@ from PyQt5.QtWidgets import (
     QToolBar, QLineEdit, QSizePolicy, QShortcut,
     QListWidget, QListWidgetItem, QSplitter, QHBoxLayout,
     QStyledItemDelegate, QStyle, QStyleOptionViewItem,
-    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QAction, QToolButton
+    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QAction, QToolButton, QMenu
 )
-from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon
+from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon, QPainter
 from PyQt5.QtCore import Qt, pyqtSignal, QRect, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
 from config import logo_path
 from PdfViewer import PdfViewer
@@ -535,6 +535,42 @@ class _PressStateFilter(QObject):
         return False
 
 
+class TagPopup(QWidget):
+    """
+    Dynamisches Popup für Kategorien:
+     - categories: Liste von (tagname, labeltext)
+     - tags: set() mit aktiven Kategorien
+     - on_change: Callback bei Änderung
+    """
+
+    def __init__(self, parent, tags: set, categories: list, on_change):
+        super().__init__(parent, Qt.Popup)
+        self.tags = tags
+        self.on_change = on_change
+        self.categories = categories   # [(tagname, label), ...]
+
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(6, 6, 6, 6)
+        layout.setSpacing(4)
+
+        # Checkboxen dynamisch bauen
+        self.checkboxes = {}
+
+        for tagname, label in categories:
+            cb = QCheckBox(label)
+            cb.setChecked(tagname in tags)
+            cb.stateChanged.connect(lambda _, t=tagname: self._update(t))
+            layout.addWidget(cb)
+            self.checkboxes[tagname] = cb
+
+    def _update(self, tagname):
+        if tagname in self.tags:
+            self.tags.discard(tagname)
+        else:
+            self.tags.add(tagname)
+        self.on_change()
+
+
 class Ui_Dialog_pdfviewer(object):
     ROLE_TARGET = Qt.UserRole          # (page, y_ratio)
     ROLE_COLORSTATE = Qt.UserRole + 1  # 0..3 (0=weiß,1=cat0,2=cat1,3=cat2)
@@ -631,6 +667,18 @@ class Ui_Dialog_pdfviewer(object):
         self.list.setItemDelegate(
             ColorAwareBorderDelegate(border_color="#0078D4", border_width=2, radius=6, parent=self.list)
         )
+
+        self.list.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.list.customContextMenuRequested.connect(self._on_list_context_menu)
+
+        def make_square(color):
+            pm = QPixmap(12, 12)
+            pm.fill(color)
+            return pm
+
+        self.icon_green  = make_square(QColor("#b7f5a9"))
+        self.icon_red    = make_square(QColor("#ffb4b4"))
+        self.icon_yellow = make_square(QColor("#ffeaa2"))        
 
         left_panel = QWidget()
         left_layout = QVBoxLayout(left_panel)
@@ -784,6 +832,7 @@ class Ui_Dialog_pdfviewer(object):
             it = QListWidgetItem(text)
             it.setData(self.ROLE_TARGET, (page, y_ratio))
             it.setData(self.ROLE_COLORSTATE, 0)  # 0=weiß
+            it.setData(Qt.UserRole + 5, set())
             # Anzeige abhängig vom Markierungsstatus
             if self.header.markingEnabled():
                 it.setBackground(Qt.white); it.setForeground(Qt.black)
@@ -792,39 +841,6 @@ class Ui_Dialog_pdfviewer(object):
                 it.setBackground(Qt.white); it.setForeground(Qt.black)
             self.list.addItem(it)
 
-    # ----- Farben anwenden (state: 0=weiß,1=cat0,2=cat1,3=cat2) -----
-    def _apply_color_state(self, item: QListWidgetItem, state: int):
-        # Zustand setzen (logisch)
-        item.setData(self.ROLE_COLORSTATE, state)
-        # Anzeige über Recolor zentral aktualisieren
-        # (so ist Masken-Logik an EINER Stelle)
-        st = int(item.data(self.ROLE_COLORSTATE) or 0)
-        if st == 0:
-            item.setBackground(Qt.white); item.setForeground(Qt.black); return
-        mask = self.header.enabledMask()
-        cat_idx = st - 1
-        if (mask & (1 << cat_idx)) == 0:
-            item.setBackground(Qt.white); item.setForeground(Qt.black)
-        else:
-            col = self.header.colors()[cat_idx]
-            item.setBackground(col); item.setForeground(Qt.black)
-
-    def _recolor_all_items(self):
-        mask = self.header.enabledMask()  # Bit0=Rot(1), Bit1=Gelb(2), Bit2=Grün(4)
-        for i in range(self.list.count()):
-            it = self.list.item(i)
-            st = int(it.data(self.ROLE_COLORSTATE) or 0)  # 0=weiß, 1=rot, 2=gelb, 3=grün
-            if st == 0:
-                it.setBackground(Qt.white); it.setForeground(Qt.black)
-            else:
-                cat_idx = st - 1  # 0..2
-                if (mask & (1 << cat_idx)) == 0:
-                    # Kategorie ist deaktiviert -> weiß darstellen
-                    it.setBackground(Qt.white); it.setForeground(Qt.black)
-                else:
-                    # Kategorie aktiv -> echte Farbe anwenden
-                    col = self.header.colors()[cat_idx]
-                    it.setBackground(col); it.setForeground(Qt.black)
 
     # ----- Click-Handling -----
     def _on_task_clicked(self, item: QListWidgetItem):
@@ -834,17 +850,6 @@ class Ui_Dialog_pdfviewer(object):
             page, y_ratio = data
             self.viewer.scrollToPageLocation(page, y_ratio)
 
-        # 2) Farbzyklus nur, wenn Item VOR dem Klick schon ausgewählt war
-        pf = self._pressFilter
-        if pf.was_selected and (item is pf.pressed_item):
-            cur = int(item.data(self.ROLE_COLORSTATE) or 0)  # 0..3
-            nxt = self._next_enabled_state(cur)
-            # Nur ändern, wenn sich der Zustand tatsächlich ändert
-            if nxt != cur:
-                self._apply_color_state(item, nxt)
-        # Flags zurücksetzen
-        pf.was_selected = False
-        pf.pressed_item = None
 
     def _next_enabled_state(self, cur: int) -> int:
         """
@@ -916,3 +921,84 @@ class Ui_Dialog_pdfviewer(object):
             self.edt_current.setText(str(self.viewer.currentPage()))
             return
         self.viewer.scrollToPage(int(text))
+        
+
+    def _update_item_icons(self, item):
+        tags = item.data(Qt.UserRole + 5) or set()
+
+        # Kategorien und ihre Bedingungen
+        cat_data = [
+            ("uebung",        self.header.categoryEnabled(0), self.icon_green),
+            ("schularbeit",   self.header.categoryEnabled(1), self.icon_red),
+            ("nachschularbeit", self.header.categoryEnabled(2), self.icon_yellow),
+        ]
+
+        # Welche Tags sollen angezeigt werden?
+        active_icons = []
+        for tagname, enabled, pm in cat_data:
+            if tagname in tags and enabled:
+                active_icons.append(pm)
+
+        # Falls keine aktive Kategorie → Icon entfernen
+        if not active_icons:
+            item.setIcon(QIcon())
+            return
+
+        # Gemeinsamen Pixmap erzeugen (nebeneinander!)
+        w = 0
+        h = 16                     # Höhe der Kästchen
+        spacing = 4               # Abstand zwischen den Kästchen
+
+        for pm in active_icons:
+            w += pm.width() + spacing
+        w -= spacing  # letztes spacing entfernen
+
+        final_pm = QPixmap(w, h)
+        final_pm.fill(Qt.transparent)
+
+        p = QPainter(final_pm)
+        x = 0
+        for pm in active_icons:
+            p.drawPixmap(x, 0, pm)
+            x += pm.width() + spacing
+        p.end()
+
+        item.setIcon(QIcon(final_pm))
+
+    def _on_list_context_menu(self, pos):
+        item = self.list.itemAt(pos)
+        if not item:
+            return
+
+        # Tag-Set holen
+        tags = item.data(Qt.UserRole + 5)
+        if tags is None:
+            tags = set()
+            item.setData(Qt.UserRole + 5, tags)
+
+        # Kategorien abhängig vom Header erstellen
+        categories = []
+        if self.header.categoryEnabled(0):
+            categories.append(("uebung", self.header.labels()[0]))
+        if self.header.categoryEnabled(1):
+            categories.append(("schularbeit", self.header.labels()[1]))
+        if self.header.categoryEnabled(2):
+            categories.append(("nachschularbeit", self.header.labels()[2]))
+
+        # Popup erzeugen
+        popup = TagPopup(
+            parent=self.list,
+            tags=tags,
+            categories=categories,
+            on_change=lambda: self._update_item_icons(item)
+        )
+
+        # Popup anzeigen
+        global_pos = self.list.viewport().mapToGlobal(pos)
+        popup.move(global_pos)
+        popup.show()
+
+    def _recolor_all_items(self):
+        for i in range(self.list.count()):
+            it = self.list.item(i)
+            self._update_item_icons(it)
