@@ -221,8 +221,13 @@ class CategoryHeaderWidget(QWidget):
     labelChanged    = pyqtSignal(int, str)      # 0..2
     categoryToggled = pyqtSignal(int, bool)     # 0..2, enabled
 
-    def __init__(self, parent=None):
+    def __init__(self, counts=None, parent=None):
         super().__init__(parent)
+
+        if counts is None:
+            counts = [0, 0, 0]
+
+        self._counts = counts
 
         self._colors = [
             QColor("#d3f9d8"), # Grün
@@ -270,19 +275,44 @@ class CategoryHeaderWidget(QWidget):
             self._checks.append(chk)
             grid.addWidget(chk, i, 0)
 
-            # Farbkastl
-            btn = QPushButton("")
-            btn.setFixedSize(20, 20)
-            btn.setCursor(Qt.PointingHandCursor)
-            btn.setStyleSheet(self._btn_style(self._colors[i], enabled=True))
-            btn.clicked.connect(lambda _, ix=i: self._pick_color(ix))
 
-            btn.setAutoDefault(False)          # verhindert Auto-Default-Verhalten
-            btn.setDefault(False)              # kein Default-Button
-            btn.setFocusPolicy(Qt.NoFocus)     # Button bekommt keinen Tastatur-Fokus
+            # Farbkastl als Label mit Zahl
+            lbl = QLabel()
+            lbl.setFixedSize(26, 20)  # etwas breiter, damit Zahl reinpasst
+            lbl.setAlignment(Qt.AlignCenter)
 
-            self._btns.append(btn)
-            grid.addWidget(btn, i, 1)
+            # Farbe + Zahl vorbereiten
+            count_value = self._counts[i]
+            # count_value = [self.parent().len_list_1,
+            #             self.parent().len_list_2,
+            #             self.parent().len_list_3][i]
+
+            lbl.setText(str(count_value))
+
+            lbl.setStyleSheet(
+                f"""
+                background: {self._colors[i].name()};
+                border: 1px solid #c8c8c8;
+                border-radius: 4px;
+                font-weight: bold;
+                """
+            )
+
+            self._btns.append(lbl)
+            grid.addWidget(lbl, i, 1)
+
+            # btn = QPushButton("")
+            # btn.setFixedSize(20, 20)
+            # btn.setCursor(Qt.PointingHandCursor)
+            # btn.setStyleSheet(self._btn_style(self._colors[i], enabled=True))
+            # # btn.clicked.connect(lambda _, ix=i: self._pick_color(ix))
+
+            # btn.setAutoDefault(False)          # verhindert Auto-Default-Verhalten
+            # btn.setDefault(False)              # kein Default-Button
+            # btn.setFocusPolicy(Qt.NoFocus)     # Button bekommt keinen Tastatur-Fokus
+
+            # self._btns.append(btn)
+            # grid.addWidget(btn, i, 1)
 
             # Editierbarer Titel
             edit = QLineEdit(self._labels[i])
@@ -306,6 +336,17 @@ class CategoryHeaderWidget(QWidget):
         """Kompatibilitäts-Helper: 'global aktiv' = mindestens eine Kategorie aktiv."""
         return any(self._enabled)
 
+    def updateCounts(self, counts):
+        self._counts = counts
+        for i, lbl in enumerate(self._btns):
+            lbl.setText(str(counts[i]))
+
+    
+    # def update_header_counts(self):
+    #     counts = [self.len_list_1, self.len_list_2, self.len_list_3]
+    #     for i, lbl in enumerate(self.header._btns):
+    #         lbl.setText(str(counts[i]))
+
     def _btn_style(self, qcolor: QColor, enabled: bool) -> str:
         c = qcolor.name()
         if enabled:
@@ -324,15 +365,17 @@ class CategoryHeaderWidget(QWidget):
                 "}"
             )
 
-    def _pick_color(self, index: int):
-        # Farbe nur ändern lassen, auch wenn disabled – Anzeige bleibt jedoch gräulich,
-        # aber die definierte Farbe bleibt gespeichert (wird wieder aktiv, wenn reaktiviert).
-        start = self._colors[index]
-        col = QColorDialog.getColor(start, self, "Farbe wählen")
-        if col.isValid():
-            self._colors[index] = col
-            self._btns[index].setStyleSheet(self._btn_style(col, self._enabled[index]))
-            self.colorChanged.emit(index, col)
+
+    ### FARBAUSWAHL WORKING!!! >>>> OPTIONEN!
+    # def _pick_color(self, index: int):
+    #     # Farbe nur ändern lassen, auch wenn disabled – Anzeige bleibt jedoch gräulich,
+    #     # aber die definierte Farbe bleibt gespeichert (wird wieder aktiv, wenn reaktiviert).
+    #     start = self._colors[index]
+    #     col = QColorDialog.getColor(start, self, "Farbe wählen")
+    #     if col.isValid():
+    #         self._colors[index] = col
+    #         self._btns[index].setStyleSheet(self._btn_style(col, self._enabled[index]))
+    #         self.colorChanged.emit(index, col)
 
     def _on_label(self, index: int, text: str):
         self._labels[index] = text
@@ -340,8 +383,18 @@ class CategoryHeaderWidget(QWidget):
 
     def _on_toggle(self, index: int, state: bool):
         self._enabled[index] = state
-        # Kastl-Stil aktualisieren (gräulich bei aus)
-        self._btns[index].setStyleSheet(self._btn_style(self._colors[index], state))
+        lbl = self._btns[index]
+        base = self._colors[index].name()
+
+        if state:
+            lbl.setStyleSheet(
+                f"background:{base}; border:1px solid #c8c8c8; border-radius:4px; font-weight:bold;"
+            )
+        else:
+            lbl.setStyleSheet(
+                f"background:{base}; border:1px dashed #999; border-radius:4px; opacity:0.45; font-weight:bold;"
+            )
+
         self.categoryToggled.emit(index, state)
 
     # ---------- API ----------
@@ -570,6 +623,9 @@ class TagPopup(QWidget):
             self.tags.add(tagname)
         self.on_change()
 
+        ## Schließt nach der Auwahl
+        self.close()
+
 
 class Ui_Dialog_pdfviewer(object):
     ROLE_TARGET = Qt.UserRole          # (page, y_ratio)
@@ -649,7 +705,6 @@ class Ui_Dialog_pdfviewer(object):
         tb.addWidget(spacer_right)
 
         # --- Linkes Panel: Header + Liste ---
-        self.header = CategoryHeaderWidget()
 
         self.list = QListWidget()
         self.list.setAlternatingRowColors(False)
@@ -676,9 +731,18 @@ class Ui_Dialog_pdfviewer(object):
             pm.fill(color)
             return pm
 
-        self.icon_green  = make_square(QColor("#b7f5a9"))
-        self.icon_red    = make_square(QColor("#ffb4b4"))
-        self.icon_yellow = make_square(QColor("#ffeaa2"))        
+        # self.icon_green  = make_square(QColor("#b7f5a9"))
+        # self.icon_red    = make_square(QColor("#ffb4b4"))
+        # self.icon_yellow = make_square(QColor("#ffeaa2"))        
+
+        self.len_list_1 = 1
+        self.len_list_2 = 5
+        self.len_list_3 = 10
+
+        self.header = CategoryHeaderWidget(
+            counts=[self.len_list_1, self.len_list_2, self.len_list_3]
+        )
+
 
         left_panel = QWidget()
         left_layout = QVBoxLayout(left_panel)
@@ -717,6 +781,9 @@ class Ui_Dialog_pdfviewer(object):
 
         # --- Liste initial befüllen (NACH Aufbau, VOR Signal-Connects!) ---
         self._fill_tasks_from_pdf(self._current_pdf_path)
+
+
+
 
         # # Viewer -> Spinbox (Scrollen/Seitenwechsel aktualisiert Anzeige)
         # self.viewer.currentPageChanged.connect(self._on_current_page_changed)
@@ -809,6 +876,18 @@ class Ui_Dialog_pdfviewer(object):
 
         # 3) Aufgabenliste neu aus den Überschriften bauen
         self._fill_tasks_from_pdf(self._current_pdf_path)
+
+        # Listenlängen berechnen
+        self.len_list_1 = 1
+        self.len_list_2 = 5
+        self.len_list_3 = 10
+
+        # Header-Zahlen aktualisieren
+        self.header.updateCounts([
+            self.len_list_1,
+            self.len_list_2,
+            self.len_list_3
+        ])
 
         # 4) (optional) ganz nach oben springen
         self.viewer.scrollToPage(1)
@@ -926,39 +1005,37 @@ class Ui_Dialog_pdfviewer(object):
     def _update_item_icons(self, item):
         tags = item.data(Qt.UserRole + 5) or set()
 
-        # Kategorien und ihre Bedingungen
-        cat_data = [
-            ("uebung",        self.header.categoryEnabled(0), self.icon_green),
-            ("schularbeit",   self.header.categoryEnabled(1), self.icon_red),
-            ("nachschularbeit", self.header.categoryEnabled(2), self.icon_yellow),
+        # Aktuelle Farben aus dem Header holen
+        colors = self.header.colors()  # [color0, color1, color2]
+
+        cat_info = [
+            ("uebung",        self.header.categoryEnabled(0), colors[0]),
+            ("schularbeit",   self.header.categoryEnabled(1), colors[1]),
+            ("nachschularbeit", self.header.categoryEnabled(2), colors[2]),
         ]
 
-        # Welche Tags sollen angezeigt werden?
-        active_icons = []
-        for tagname, enabled, pm in cat_data:
-            if tagname in tags and enabled:
-                active_icons.append(pm)
+        # aktive Kästchen erstellen (NEUE Pixmaps!)
+        pixmaps = []
+        for tagname, enabled, color in cat_info:
+            if enabled and tagname in tags:
+                pix = self._make_square(color, size=14)
+                pixmaps.append(pix)
 
-        # Falls keine aktive Kategorie → Icon entfernen
-        if not active_icons:
+        if not pixmaps:
             item.setIcon(QIcon())
             return
 
-        # Gemeinsamen Pixmap erzeugen (nebeneinander!)
-        w = 0
-        h = 16                     # Höhe der Kästchen
-        spacing = 4               # Abstand zwischen den Kästchen
+        # Gemeinsames Icon für alle Pixmaps (nebeneinander)
+        spacing = 4
+        h = pixmaps[0].height()
+        total_w = sum(pm.width() for pm in pixmaps) + spacing * (len(pixmaps) - 1)
 
-        for pm in active_icons:
-            w += pm.width() + spacing
-        w -= spacing  # letztes spacing entfernen
-
-        final_pm = QPixmap(w, h)
+        final_pm = QPixmap(total_w, h)
         final_pm.fill(Qt.transparent)
 
         p = QPainter(final_pm)
         x = 0
-        for pm in active_icons:
+        for pm in pixmaps:
             p.drawPixmap(x, 0, pm)
             x += pm.width() + spacing
         p.end()
@@ -1002,3 +1079,8 @@ class Ui_Dialog_pdfviewer(object):
         for i in range(self.list.count()):
             it = self.list.item(i)
             self._update_item_icons(it)
+
+    def _make_square(self, color: QColor, size=14):
+        pm = QPixmap(size, size)
+        pm.fill(color)
+        return pm
