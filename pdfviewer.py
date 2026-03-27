@@ -36,6 +36,11 @@ class PdfViewer(QWidget):
 
         self.scroll.verticalScrollBar().valueChanged.connect(self._on_scroll)
 
+        # self.scroll.viewport().installEventFilter(self)
+
+        self.scroll.viewport().setAttribute(Qt.WA_NoMousePropagation, True)
+        self.scroll.viewport().installEventFilter(self)
+
     # ========== API-KOMPATIBILITÄT ZU DEINEM ALTEN PdfWidget ==========
 
     def pageCount(self):
@@ -132,43 +137,118 @@ class PdfViewer(QWidget):
         if abs(new - old) < 0.001:
             return
 
+        # 1) Focal point im viewport
         if focal_point is None:
             focal_point = QPoint(
-                self.scroll.horizontalScrollBar().value() + self.width() // 2,
-                self.scroll.verticalScrollBar().value() + self.height() // 2
+                self.scroll.viewport().width() // 2,
+                self.scroll.viewport().height() // 2
             )
 
-        pdf_x = (focal_point.x() + self.scroll.horizontalScrollBar().value()) / old
-        pdf_y = (focal_point.y() + self.scroll.verticalScrollBar().value()) / old
+        # 2) globale Canvas-Koordinaten
+        canvas_x = self.scroll.horizontalScrollBar().value() + focal_point.x()
+        canvas_y = self.scroll.verticalScrollBar().value() + focal_point.y()
 
-        # Zoom setzen
+        # 3) Seite finden
+        page_index = None
+        for i, (py, ph) in enumerate(self.canvas.page_positions):
+            if py <= canvas_y <= py + ph:
+                page_index = i
+                break
+        if page_index is None:
+            page_index = 0
+
+        page = self.canvas.doc[page_index]
+
+        # -----------------------------
+        #    WICHTIGSTE ÄNDERUNG:
+        # -----------------------------
+        # HORIZONTALER OFFSET MUSS IDENTISCH ZU paintEvent SEIN!
+        # UND IMMER scaled.width() VERWENDEN!
+        # -----------------------------
+
+        # VOR DEM ZOOM
+        if page_index in self.canvas.cache_scaled:
+            old_scaled = self.canvas.cache_scaled[page_index]
+            old_page_pixel_width = old_scaled.width()
+        else:
+            old_page_pixel_width = int(page.rect.width * old)
+
+        # old_page_total_width = old_page_pixel_width + 2 * self.canvas.PAGE_PADDING
+
+        old_x_page = self.compute_x_page(page_index, old)
+        old_pdf_left_canvas = old_x_page + self.canvas.PAGE_PADDING
+
+
+        # Vertikal vor Zoom
+        old_page_y_top = self.canvas.page_positions[page_index][0]
+        old_pdf_top = old_page_y_top + self.canvas.PAGE_PADDING
+
+        # Canvas → PDF
+        pdf_x = (canvas_x - old_pdf_left_canvas) / old
+        pdf_y = (canvas_y - old_pdf_top) / old
+
+        # -----------------------------
+        # 4) Zoom durchführen
+        # -----------------------------
         self.canvas.zoom = new
-
-        # <<< SMOOTH, NO‑LAG SCALING >>>
         self.canvas.quick_scale()
+        self.canvas._compute_positions()
 
-        new_x = pdf_x * new
-        new_y = pdf_y * new
+        # JETZT ERNEUT Breite + Offsets HOLEN
+        if page_index in self.canvas.cache_scaled:
+            new_scaled = self.canvas.cache_scaled[page_index]
+            new_page_pixel_width = new_scaled.width()
+        else:
+            new_page_pixel_width = int(page.rect.width * new)
 
-        self.scroll.horizontalScrollBar().setValue(int(new_x - focal_point.x()))
-        self.scroll.verticalScrollBar().setValue(int(new_y - focal_point.y()))
+        # new_page_total_width = new_page_pixel_width + 2 * self.canvas.PAGE_PADDING
 
-        # <<< HINTERGRUND-NACHSCHÄRFUNG >>>
+        new_x_page = self.compute_x_page(page_index, new)
+        new_pdf_left_canvas = new_x_page + self.canvas.PAGE_PADDING
 
+
+        new_page_y_top = self.canvas.page_positions[page_index][0]
+        new_pdf_top = new_page_y_top + self.canvas.PAGE_PADDING
+
+        # 5) PDF zurück → Canvas
+        new_canvas_x = pdf_x * new + new_pdf_left_canvas
+        new_canvas_y = pdf_y * new + new_pdf_top
+
+        # 6) Scrollbars setzen
+        self.scroll.horizontalScrollBar().setValue(int(new_canvas_x - focal_point.x()))
+        self.scroll.verticalScrollBar().setValue(int(new_canvas_y - focal_point.y()))
+
+        # Rendern
         pages = self.visible_pages()
         self.worker.render_pages(pages, int(new * 100))
 
 
+    # def wheelEvent(self, e):
+    #     # STRG + Mausrad = Zoom
+    #     if e.modifiers() & Qt.ControlModifier:
 
-    def wheelEvent(self, e):
-        if QApplication.keyboardModifiers() == Qt.ControlModifier:
-            delta = e.angleDelta().y()
-            if delta > 0:
-                self.zoom_in(step=0.1)
-            else:
-                self.zoom_out(step=0.1)
-            return  # verhindert Scroll
-        super().wheelEvent(e)
+    #         # Mausposition relativ zum Viewer
+    #         vp_pos = e.pos()
+
+    #         # Scrollbar Offsets
+    #         h = self.scroll.horizontalScrollBar().value()
+    #         v = self.scroll.verticalScrollBar().value()
+
+    #         # Focal-Punkt IM CANVAS
+    #         focal = QPoint(vp_pos.x() + h, vp_pos.y() + v)
+
+    #         # Zoomrichtung
+    #         if e.angleDelta().y() > 0:
+    #             self.apply_zoom_factor(1.1, focal_point=focal)
+    #         else:
+    #             self.apply_zoom_factor(0.9, focal_point=focal)
+
+    #         # Wichtig: verhindert Scrollen!
+    #         e.accept()
+    #         return
+
+    #     # Ohne STRG → Standard-Scroll
+    #     super().wheelEvent(e)
 
     def event(self, ev):
         if ev.type() == QEvent.NativeGesture:
@@ -208,3 +288,43 @@ class PdfViewer(QWidget):
 
         return visible
     
+    def eventFilter(self, obj, e):
+        if obj == self.scroll.viewport() and e.type() == QEvent.Wheel:
+            if e.modifiers() & Qt.ControlModifier:
+
+                # Viewport-Koordinate der Maus
+                vp_x = e.pos().x()
+                vp_y = e.pos().y()
+                print(vp_x)
+                print(vp_y)
+                # # ScrollOffsets holen
+                # sx = self.scroll.horizontalScrollBar().value()
+                # sy = self.scroll.verticalScrollBar().value()
+
+                # ✅ CANVAS-Koordinaten des Mauspunktes
+                focal = QPoint(vp_x, vp_y)
+                # Zoom-Faktor bestimmen
+                if e.angleDelta().y() > 0:
+                    self.apply_zoom_factor(1.1, focal_point=focal)
+                else:
+                    self.apply_zoom_factor(0.9, focal_point=focal)
+
+                # ScrollEvent vollständig blockieren
+                return True
+
+        return super().eventFilter(obj, e)
+    
+
+    def compute_x_page(self, page_index, zoom):
+        # Der Canvas zeichnet IMMER nach scaled.width(), nicht nach PDF-Maßen!
+        if page_index in self.canvas.cache_scaled:
+            scaled = self.canvas.cache_scaled[page_index]
+            page_pixel_width = scaled.width()
+        else:
+            # fallback – aber korrekt!
+            page = self.canvas.doc[page_index]
+            page_pixel_width = int(page.rect.width * zoom)
+
+        total_width = page_pixel_width + 2 * self.canvas.PAGE_PADDING
+        x_page = max(0, (self.canvas.width() - total_width) // 2)
+        return x_page

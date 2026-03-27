@@ -40,28 +40,20 @@ class PdfCanvas(QWidget):
         y = self.PAGE_MARGIN
 
         for i in range(self.doc.page_count):
-
-            # Wenn wir bereits ein scaled Bild haben → echte Höhe nehmen
             scaled = self.cache_scaled.get(i)
+
             if scaled is not None:
                 h = scaled.height()
             else:
-                # fallback: PDF-Höhe geschätzt – aber korrekt skaliert
+                # letzte bekannte Höhe merken (aus raw render)
                 page = self.doc[i]
                 h = int(page.rect.height * self.zoom)
 
             total = h + 2 * self.PAGE_PADDING
-
             self.page_positions.append((y, total))
             y += total + self.PAGE_MARGIN
 
         self.setMinimumHeight(int(y + self.PAGE_MARGIN))
-
-    def set_zoom(self, z):
-        self.zoom = z
-        self.cache_scaled.clear()
-        self._compute_positions()
-        self.update()
 
     # -------------------------------------------------------
     # Rendering
@@ -71,12 +63,24 @@ class PdfCanvas(QWidget):
         p = QPainter(self)
         p.fillRect(self.rect(), self.BACKGROUND_COLOR)
 
+
         for index, (y, total_h) in enumerate(self.page_positions):
 
-            if y + total_h < self.rect().top() - 200:
+            # Korrekte ScrollArea holen
+            scrollarea = self.parent().parent()  # viewport -> scrollarea
+
+            view_y_top = scrollarea.verticalScrollBar().value()
+            view_y_bottom = view_y_top + scrollarea.viewport().height()
+
+            # Seite oberhalb des sichtbaren Bereichs
+            if y + total_h < view_y_top - 200:
                 continue
-            if y > self.rect().bottom() + 200:
+
+            # Seite unterhalb des sichtbaren Bereichs
+            if y > view_y_bottom + 200:
                 break
+
+
 
             page = self.doc[index]
             page_key = (index, int(self.zoom * 100))
@@ -86,8 +90,13 @@ class PdfCanvas(QWidget):
             page_width = int(page.rect.width * self.zoom) + 2 * self.PAGE_PADDING
             x_page = max(0, (self.width() - page_width) // 2) #links zentriert: = 40
 
-            scaled_w = int(page.rect.width * self.zoom)
-            scaled_h = int(page.rect.height * self.zoom)
+            if index in self.cache_scaled:
+                scaled = self.cache_scaled[index]
+                scaled_w = scaled.width()
+                scaled_h = scaled.height()
+            else:
+                scaled_w = int(page.rect.width * self.zoom)
+                scaled_h = int(page.rect.height * self.zoom)
 
             # Karte
             p.fillRect(QRect(x_page, int(y),
@@ -106,8 +115,8 @@ class PdfCanvas(QWidget):
             if scaled is not None:
                 p.drawPixmap(
                     x_page + self.PAGE_PADDING,
-                    int(y) + self.PAGE_PADDING,
-                    scaled
+                    y + self.PAGE_PADDING,
+                    self.cache_scaled[index]
                 )
             else:
                 # Kein scaled-Bild verfügbar → grauer Platzhalter.
@@ -407,21 +416,20 @@ class PdfCanvas(QWidget):
         if not self.cache_raw:
             return
 
-        self.cache_scaled.clear()
+        # ❌ scaled NICHT löschen!
+        # self.cache_scaled.clear()
 
-        # IMMER die LETZTE gerenderte Version pro Seite nehmen
-        # egal welcher Zoom
+        # ✅ Ausgabe-Cache NICHT löschen, sondern nur updaten
         latest_raw_per_page = {}
 
+        # neueste RAW-Version je Seite finden
         for (page_index, zoom_int), raw in self.cache_raw.items():
-            # Nur das höchste zoom_int pro Seite nehmen
             if page_index not in latest_raw_per_page:
                 latest_raw_per_page[page_index] = (zoom_int, raw)
-            else:
-                if zoom_int > latest_raw_per_page[page_index][0]:
-                    latest_raw_per_page[page_index] = (zoom_int, raw)
+            elif zoom_int > latest_raw_per_page[page_index][0]:
+                latest_raw_per_page[page_index] = (zoom_int, raw)
 
-        # Jetzt latest_raw_per_page skalieren
+        # ✅ skaliere neueste RAWs
         for page_index, (_, raw_pixmap) in latest_raw_per_page.items():
             page = self.doc[page_index]
 
@@ -434,6 +442,9 @@ class PdfCanvas(QWidget):
                 Qt.SmoothTransformation
             )
 
+            # ✅ wichtig: aktualisiere NUR diese Seite
             self.cache_scaled[page_index] = scaled
 
+        # ✅ jetzt erst die Positionen neu berechnen
+        self._compute_positions()
         self.update()
