@@ -965,6 +965,23 @@ class Ui_Dialog_pdfviewer(object):
         self._recolor_all_items()
 
     def _on_category_label_changed(self, index: int, text: str):
+
+        """
+        Aktualisiert name_list_x im Dictionary, wenn oben der Titel geändert wird.
+        index = 0 → Übungsblatt
+        index = 1 → Schularbeit
+        index = 2 → Nachschularbeit
+        """
+
+        if index == 0:
+            self.dict_pdf_chosen_examples['name_list_1'] = text
+        elif index == 1:
+            self.dict_pdf_chosen_examples['name_list_2'] = text
+        elif index == 2:
+            self.dict_pdf_chosen_examples['name_list_3'] = text
+
+
+
         # aktuell nur Info; später evtl. Tooltips/Badges etc.
         pass
 
