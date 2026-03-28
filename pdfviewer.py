@@ -223,33 +223,6 @@ class PdfViewer(QWidget):
         self.worker.render_pages(pages, int(new * 100))
 
 
-    # def wheelEvent(self, e):
-    #     # STRG + Mausrad = Zoom
-    #     if e.modifiers() & Qt.ControlModifier:
-
-    #         # Mausposition relativ zum Viewer
-    #         vp_pos = e.pos()
-
-    #         # Scrollbar Offsets
-    #         h = self.scroll.horizontalScrollBar().value()
-    #         v = self.scroll.verticalScrollBar().value()
-
-    #         # Focal-Punkt IM CANVAS
-    #         focal = QPoint(vp_pos.x() + h, vp_pos.y() + v)
-
-    #         # Zoomrichtung
-    #         if e.angleDelta().y() > 0:
-    #             self.apply_zoom_factor(1.1, focal_point=focal)
-    #         else:
-    #             self.apply_zoom_factor(0.9, focal_point=focal)
-
-    #         # Wichtig: verhindert Scrollen!
-    #         e.accept()
-    #         return
-
-    #     # Ohne STRG → Standard-Scroll
-    #     super().wheelEvent(e)
-
     def event(self, ev):
         if ev.type() == QEvent.NativeGesture:
             if ev.gestureType() == Qt.ZoomNativeGesture:
