@@ -897,7 +897,7 @@ def open_pdf_file(folder_name, file_name):
             _PDF_DIALOG.setAttribute(QtCore.Qt.WA_DeleteOnClose, False)
 
             _PDF_UI = Ui_Dialog_pdfviewer()
-            _PDF_UI.setupUi(_PDF_DIALOG, pdf_file_path)
+            _PDF_UI.setupUi(_PDF_DIALOG, pdf_file_path, dict_pdf_chosen_examples)
             _PDF_DIALOG.setWindowTitle("PDF Viewer")
 
 
@@ -913,7 +913,16 @@ def open_pdf_file(folder_name, file_name):
         _PDF_DIALOG.raise_()
         _PDF_DIALOG.activateWindow()
 
-        
+    dict_pdf_chosen_examples = {
+        'list_1' : [],
+        'list_2' : [],
+        'list_3' : [],
+        'name_list_1' : 'Übungsblatt',
+        'name_list_2' : 'Schularbeit',
+        'name_list_3' : 'Nachschularbeit',
+    }
+
+
     pdf_file_path = os.path.join(folder_name, file_name) + ".pdf"
     show_pdf(pdf_file_path)
     # file_path = os.path.join(folder_name, file_name)

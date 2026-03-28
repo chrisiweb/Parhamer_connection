@@ -631,7 +631,7 @@ class Ui_Dialog_pdfviewer(object):
     ROLE_TARGET = Qt.UserRole          # (page, y_ratio)
     ROLE_COLORSTATE = Qt.UserRole + 1  # 0..3 (0=weiß,1=cat0,2=cat1,3=cat2)
 
-    def setupUi(self, Dialog: QDialog, file_path: str):
+    def setupUi(self, Dialog: QDialog, file_path: str, dict_pdf_chosen_examples):
         # --- State ---
         self._current_pdf_path = file_path
         self.Dialog = Dialog
@@ -734,10 +734,10 @@ class Ui_Dialog_pdfviewer(object):
         # self.icon_green  = make_square(QColor("#b7f5a9"))
         # self.icon_red    = make_square(QColor("#ffb4b4"))
         # self.icon_yellow = make_square(QColor("#ffeaa2"))        
-
-        self.len_list_1 = 1
-        self.len_list_2 = 5
-        self.len_list_3 = 10
+        self.dict_pdf_chosen_examples = dict_pdf_chosen_examples
+        self.len_list_1 = len(self.dict_pdf_chosen_examples['list_1'])
+        self.len_list_2 = len(self.dict_pdf_chosen_examples['list_2'])
+        self.len_list_3 = len(self.dict_pdf_chosen_examples['list_3'])
 
         self.header = CategoryHeaderWidget(
             counts=[self.len_list_1, self.len_list_2, self.len_list_3]
@@ -877,10 +877,10 @@ class Ui_Dialog_pdfviewer(object):
         # 3) Aufgabenliste neu aus den Überschriften bauen
         self._fill_tasks_from_pdf(self._current_pdf_path)
 
-        # Listenlängen berechnen
-        self.len_list_1 = 1
-        self.len_list_2 = 5
-        self.len_list_3 = 10
+        # # Listenlängen berechnen
+        # self.len_list_1 = 1
+        # self.len_list_2 = 5
+        # self.len_list_3 = 10
 
         # Header-Zahlen aktualisieren
         self.header.updateCounts([
@@ -1063,12 +1063,18 @@ class Ui_Dialog_pdfviewer(object):
             categories.append(("nachschularbeit", self.header.labels()[2]))
 
         # Popup erzeugen
+
+        def on_tag_change():
+            self._update_item_icons(item)
+            self._update_dict_for_item(item)
+
         popup = TagPopup(
             parent=self.list,
             tags=tags,
             categories=categories,
-            on_change=lambda: self._update_item_icons(item)
+            on_change=on_tag_change
         )
+
 
         # Popup anzeigen
         global_pos = self.list.viewport().mapToGlobal(pos)
@@ -1084,3 +1090,54 @@ class Ui_Dialog_pdfviewer(object):
         pm = QPixmap(size, size)
         pm.fill(color)
         return pm
+    
+    def _update_dict_for_item(self, item):
+
+        # Gesamten Text vom Item holen
+        full_text = item.text()
+
+        # Nur die Aufgabennummer extrahieren
+        task_id = self._extract_task_number(full_text)
+
+        # Tags (Kategorien) aus dem Item holen
+        tags = item.data(Qt.UserRole + 5) or set()
+
+        # --- 1) zuerst aus allen Listen entfernen ---
+        for key in ('list_1', 'list_2', 'list_3'):
+            if task_id in self.dict_pdf_chosen_examples[key]:
+                self.dict_pdf_chosen_examples[key].remove(task_id)
+
+        # --- 2) neue Tags einfügen ---
+        if "uebung" in tags:
+            if task_id not in self.dict_pdf_chosen_examples['list_1']:
+                self.dict_pdf_chosen_examples['list_1'].append(task_id)
+
+        if "schularbeit" in tags:
+            if task_id not in self.dict_pdf_chosen_examples['list_2']:
+                self.dict_pdf_chosen_examples['list_2'].append(task_id)
+
+        if "nachschularbeit" in tags:
+            if task_id not in self.dict_pdf_chosen_examples['list_3']:
+                self.dict_pdf_chosen_examples['list_3'].append(task_id)
+
+        # --- 3) Header-Kästchen aktualisieren ---
+        self.len_list_1 = len(self.dict_pdf_chosen_examples['list_1'])
+        self.len_list_2 = len(self.dict_pdf_chosen_examples['list_2'])
+        self.len_list_3 = len(self.dict_pdf_chosen_examples['list_3'])
+
+        self.header.updateCounts([
+            self.len_list_1,
+            self.len_list_2,
+            self.len_list_3
+        ])
+
+        print(self.dict_pdf_chosen_examples)
+
+    def _extract_task_number(self, text: str) -> str:
+        """
+        Entfernt alles ab dem ersten ' - '.
+        Beispiel: 'AG 1.4 - 3 - Titel' -> 'AG 1.4 - 3'
+        """
+        if " - " in text:
+            return text.split(" - ")[0] + " - " + text.split(" - ")[1]
+        return text
