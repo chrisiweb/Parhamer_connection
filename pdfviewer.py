@@ -276,9 +276,9 @@ class PdfViewer(QWidget):
                 focal = QPoint(vp_x, vp_y)
                 # Zoom-Faktor bestimmen
                 if e.angleDelta().y() > 0:
-                    self.apply_zoom_factor(1.2, focal_point=focal)
+                    self.apply_zoom_factor(1.3, focal_point=focal)
                 else:
-                    self.apply_zoom_factor(0.8, focal_point=focal)
+                    self.apply_zoom_factor(0.7, focal_point=focal)
 
                 # ScrollEvent vollständig blockieren
                 return True

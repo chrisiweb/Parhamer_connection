@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import (
     QToolBar, QLineEdit, QSizePolicy, QShortcut,
     QListWidget, QListWidgetItem, QSplitter, QHBoxLayout,
     QStyledItemDelegate, QStyle, QStyleOptionViewItem,
-    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QAction, QToolButton, QMenu
+    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QAction, QToolButton, QMenu, QMessageBox
 )
 from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon, QPainter
 from PyQt5.QtCore import Qt, pyqtSignal, QRect, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
@@ -220,6 +220,7 @@ class CategoryHeaderWidget(QWidget):
     colorChanged    = pyqtSignal(int, QColor)   # 0..2
     labelChanged    = pyqtSignal(int, str)      # 0..2
     categoryToggled = pyqtSignal(int, bool)     # 0..2, enabled
+    trashClicked = pyqtSignal(int)   # index 0..2
 
     def __init__(self, counts=None, parent=None):
         super().__init__(parent)
@@ -288,13 +289,24 @@ class CategoryHeaderWidget(QWidget):
             #             self.parent().len_list_3][i]
 
             lbl.setText(str(count_value))
+            lbl.setToolTip("")  # wird später dynamisch befüllt
 
             lbl.setStyleSheet(
                 f"""
-                background: {self._colors[i].name()};
-                border: 1px solid #c8c8c8;
-                border-radius: 4px;
-                font-weight: bold;
+                QLabel {{
+                    background: {self._colors[i].name()};
+                    border: 1px solid #c8c8c8;
+                    border-radius: 4px;
+                    font-weight: bold;
+                }}
+
+                QToolTip {{
+                    color: #F4F4F9;
+                    background-color: #2F4550;
+                    border: 0px;
+                    padding: 6px;
+                    font-size: 12px;
+                }}
                 """
             )
 
@@ -321,6 +333,37 @@ class CategoryHeaderWidget(QWidget):
             self._edits.append(edit)
             grid.addWidget(edit, i, 2)
 
+            # --- Trash-Button ---
+            btn_trash = QPushButton()
+            btn_trash.setIcon(QIcon(get_icon_path("trash-2.svg")))   # ← dein Icon
+            btn_trash.setFixedSize(26, 26)
+            btn_trash.setStyleSheet("border: none;")
+            btn_trash.setCursor(Qt.PointingHandCursor)
+    
+
+            btn_trash.setStyleSheet("""
+                QPushButton {
+                    background: #f5f5f5;
+                    border: 1px solid #cccccc;
+                    border-radius: 6px;
+                    padding: 3px;
+                }
+                QPushButton:hover {
+                    background: #ffffff;
+                    border: 1px solid #999999;
+                }
+                QPushButton:pressed {
+                    background: #e0e0e0;
+                    border: 1px solid #888888;
+                }
+            """)
+
+
+            # Callback zum Hauptfenster durchreichen
+            btn_trash.clicked.connect(lambda _, ix=i: self._on_trash_clicked(ix))
+
+            grid.addWidget(btn_trash, i, 3)            
+
         # Spalten: 0 = Checkbox (schmal), 1 = Kastl, 2 = Edit (flexibel)
         grid.setColumnStretch(2, 1)
 
@@ -336,11 +379,25 @@ class CategoryHeaderWidget(QWidget):
         """Kompatibilitäts-Helper: 'global aktiv' = mindestens eine Kategorie aktiv."""
         return any(self._enabled)
 
-    def updateCounts(self, counts):
+    def updateCounts(self, counts, dict_pdf_chosen_examples=None):
         self._counts = counts
         for i, lbl in enumerate(self._btns):
             lbl.setText(str(counts[i]))
 
+            if dict_pdf_chosen_examples:
+                # Richtige Liste aus dem dict holen
+                key = ["list_1", "list_2", "list_3"][i]
+                items = dict_pdf_chosen_examples[key]
+
+                if items:
+                    tooltip_text = "\n".join(f"{t}" for t in items)
+                else:
+                    tooltip_text = ""
+
+                lbl.setToolTip(tooltip_text)
+                        
+    def _on_trash_clicked(self, index: int):
+        self.trashClicked.emit(index)
     
     # def update_header_counts(self):
     #     counts = [self.len_list_1, self.len_list_2, self.len_list_3]
@@ -638,6 +695,16 @@ class Ui_Dialog_pdfviewer(object):
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("PDF Viewer")
         Dialog.setWindowIcon(QIcon(logo_path))  # logo_path muss gültig sein
+       
+        Dialog.setStyleSheet("""
+            QToolTip {
+                color: #F4F4F9;
+                background-color: #2F4550;
+                border: 0px;
+                padding: 6px;
+                font-size: 12px;
+            }
+        """)
 
         # --- Hauptlayout ---
         main = QVBoxLayout(Dialog)
@@ -817,6 +884,7 @@ class Ui_Dialog_pdfviewer(object):
         self.header.categoryToggled.connect(self._on_category_toggled)
         self.header.colorChanged.connect(self._on_category_color_changed)
         self.header.labelChanged.connect(self._on_category_label_changed)
+        self.header.trashClicked.connect(self._on_header_trash_clicked)
         # (optional, wenn noch genutzt) globaler Shim:
         # self.header.markingToggled.connect(self._on_marking_toggled)
         # Buttons -> Viewer
@@ -855,6 +923,11 @@ class Ui_Dialog_pdfviewer(object):
 
         sc_copy.activated.connect(_on_copy)
 
+
+    
+    def get_current_dict(self):
+        return self.dict_pdf_chosen_examples
+
     def refresh_pdf(self, file_path: str):
         """Öffentliche API: PDF austauschen + Liste neu aufbauen."""
         if not file_path or not os.path.isfile(file_path):
@@ -887,7 +960,7 @@ class Ui_Dialog_pdfviewer(object):
             self.len_list_1,
             self.len_list_2,
             self.len_list_3
-        ])
+        ],self.dict_pdf_chosen_examples)
 
         # 4) (optional) ganz nach oben springen
         self.viewer.scrollToPage(1)
@@ -1146,7 +1219,7 @@ class Ui_Dialog_pdfviewer(object):
             self.len_list_1,
             self.len_list_2,
             self.len_list_3
-        ])
+        ],self.dict_pdf_chosen_examples)
 
         print(self.dict_pdf_chosen_examples)
 
@@ -1158,3 +1231,78 @@ class Ui_Dialog_pdfviewer(object):
         if " - " in text:
             return text.split(" - ")[0] + " - " + text.split(" - ")[1]
         return text
+    
+# from PyQt5.QtWidgets import QMessageBox
+
+    def _on_header_trash_clicked(self, index: int):
+        """
+        Löscht alle Aufgaben einer Kategorie – mit Sicherheitsabfrage,
+        falls die Liste nicht leer ist.
+        index 0 = list_1
+        index 1 = list_2
+        index 2 = list_3
+        """
+
+        key_map = {
+            0: "list_1",
+            1: "list_2",
+            2: "list_3",
+        }
+
+        name_map = {
+            0: self.dict_pdf_chosen_examples["name_list_1"],
+            1: self.dict_pdf_chosen_examples["name_list_2"],
+            2: self.dict_pdf_chosen_examples["name_list_3"],
+        }
+
+        key = key_map[index]
+        list_name = name_map[index]
+
+        # Wenn die Liste leer ist → keine Abfrage, einfach ignorieren
+        if len(self.dict_pdf_chosen_examples[key]) > 0:
+
+            # Sicherheitsdialog
+            msg = QMessageBox(self.Dialog)
+            msg.setWindowTitle("Bestätigung")
+            msg.setText(
+                f"Sind Sie sicher, dass Sie die Aufgabenliste "
+                f"„{list_name}“ unwiderruflich löschen möchten?"
+            )
+
+            msg.setIcon(QMessageBox.Warning)
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            msg.setDefaultButton(QMessageBox.Yes)  # Fokus auf JA → Enter bestätigt
+
+            result = msg.exec_()
+
+            if result != QMessageBox.Yes:
+                return  # Abgebrochen → nichts löschen
+
+        # --- Ab hier EINDEUTIG löschen ---
+
+        # 1) Einträge im Dictionary löschen
+        self.dict_pdf_chosen_examples[key].clear()
+
+        # 2) Tags in der Aufgabenliste entfernen
+        tag_map = {
+            0: "uebung",
+            1: "schularbeit",
+            2: "nachschularbeit"
+        }
+        tag_to_remove = tag_map[index]
+
+        for i in range(self.list.count()):
+            item = self.list.item(i)
+            tags = item.data(Qt.UserRole + 5) or set()
+
+            if tag_to_remove in tags:
+                tags.discard(tag_to_remove)
+                item.setData(Qt.UserRole + 5, tags)
+                self._update_item_icons(item)
+
+        # 3) Header‑Zähler aktualisieren
+        self.header.updateCounts([
+            len(self.dict_pdf_chosen_examples["list_1"]),
+            len(self.dict_pdf_chosen_examples["list_2"]),
+            len(self.dict_pdf_chosen_examples["list_3"]),
+        ],self.dict_pdf_chosen_examples)
