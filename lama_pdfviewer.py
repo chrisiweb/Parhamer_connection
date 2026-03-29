@@ -379,15 +379,18 @@ class CategoryHeaderWidget(QWidget):
         """Kompatibilitäts-Helper: 'global aktiv' = mindestens eine Kategorie aktiv."""
         return any(self._enabled)
 
+
     def updateCounts(self, counts, dict_pdf_chosen_examples=None):
         self._counts = counts
+
         for i, lbl in enumerate(self._btns):
             lbl.setText(str(counts[i]))
 
             if dict_pdf_chosen_examples:
-                # Richtige Liste aus dem dict holen
-                key = ["list_1", "list_2", "list_3"][i]
-                items = dict_pdf_chosen_examples[key]
+                # list index 0→1, 1→2, 2→3
+                list_num = i + 1
+
+                items = dict_pdf_chosen_examples["lists"][list_num]
 
                 if items:
                     tooltip_text = "\n".join(f"{t}" for t in items)
@@ -691,7 +694,10 @@ class Ui_Dialog_pdfviewer(object):
 
     def setupUi(self, Dialog: QDialog, file_path: str, dict_pdf_chosen_examples, typ, show_selection_list=False):
         # --- State ---
-        self.typ = typ
+        if typ != 'cria':
+            self.typ = 'lama'
+        else:
+            self.typ = typ
         print(self.typ)
         self._current_pdf_path = file_path
         self.show_selection_list = show_selection_list
@@ -801,9 +807,9 @@ class Ui_Dialog_pdfviewer(object):
         # self.icon_red    = make_square(QColor("#ffb4b4"))
         # self.icon_yellow = make_square(QColor("#ffeaa2"))        
         self.dict_pdf_chosen_examples = dict_pdf_chosen_examples
-        self.len_list_1 = len(self.dict_pdf_chosen_examples['list_1'])
-        self.len_list_2 = len(self.dict_pdf_chosen_examples['list_2'])
-        self.len_list_3 = len(self.dict_pdf_chosen_examples['list_3'])
+        self.len_list_1 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][1])
+        self.len_list_2 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][2])
+        self.len_list_3 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][3])
 
         self.header = CategoryHeaderWidget(
             counts=[self.len_list_1, self.len_list_2, self.len_list_3]
@@ -944,8 +950,10 @@ class Ui_Dialog_pdfviewer(object):
 
     def refresh_pdf(self, file_path: str, typ=None, show_selection_list=None):
         if typ is not None:
-            self.typ = typ   # <--- neuer typ wird hier aktualisiert!
-
+            if typ != 'cria':
+                self.typ = 'lama'  # <--- neuer typ wird hier aktualisiert!
+            else:
+                self.typ = typ
 
         if show_selection_list is not None:
             self.show_selection_list = show_selection_list
@@ -1003,11 +1011,19 @@ class Ui_Dialog_pdfviewer(object):
         # self.len_list_3 = 10
 
         # Header-Zahlen aktualisieren
+
+        # ✅ Zuerst neue Längen für den aktuellen typ berechnen!
+        self.len_list_1 = len(self.dict_pdf_chosen_examples[self.typ]["lists"][1])
+        self.len_list_2 = len(self.dict_pdf_chosen_examples[self.typ]["lists"][2])
+        self.len_list_3 = len(self.dict_pdf_chosen_examples[self.typ]["lists"][3])
+
+        # ✅ Danach Header aktualisieren
         self.header.updateCounts([
             self.len_list_1,
             self.len_list_2,
             self.len_list_3
-        ],self.dict_pdf_chosen_examples)
+        ], self.dict_pdf_chosen_examples[self.typ])
+
 
         # 4) (optional) ganz nach oben springen
         self.viewer.scrollToPage(1)
@@ -1092,13 +1108,13 @@ class Ui_Dialog_pdfviewer(object):
         index = 1 → Schularbeit
         index = 2 → Nachschularbeit
         """
-
+        self.typ 
         if index == 0:
-            self.dict_pdf_chosen_examples['name_list_1'] = text
+            self.dict_pdf_chosen_examples[self.typ]['names'][1] = text
         elif index == 1:
-            self.dict_pdf_chosen_examples['name_list_2'] = text
+            self.dict_pdf_chosen_examples[self.typ]['names'][2] = text
         elif index == 2:
-            self.dict_pdf_chosen_examples['name_list_3'] = text
+            self.dict_pdf_chosen_examples[self.typ]['names'][3] = text
 
 
 
@@ -1240,33 +1256,33 @@ class Ui_Dialog_pdfviewer(object):
         tags = item.data(Qt.UserRole + 5) or set()
 
         # --- 1) zuerst aus allen Listen entfernen ---
-        for key in ('list_1', 'list_2', 'list_3'):
-            if task_id in self.dict_pdf_chosen_examples[key]:
-                self.dict_pdf_chosen_examples[key].remove(task_id)
+        for key in (1,2,3):
+            if task_id in self.dict_pdf_chosen_examples[self.typ]['lists'][key]:
+                self.dict_pdf_chosen_examples[self.typ]['lists'][key].remove(task_id)
 
         # --- 2) neue Tags einfügen ---
         if "uebung" in tags:
-            if task_id not in self.dict_pdf_chosen_examples['list_1']:
-                self.dict_pdf_chosen_examples['list_1'].append(task_id)
+            if task_id not in self.dict_pdf_chosen_examples[self.typ]['lists'][1]:
+                self.dict_pdf_chosen_examples[self.typ]['lists'][1].append(task_id)
 
         if "schularbeit" in tags:
-            if task_id not in self.dict_pdf_chosen_examples['list_2']:
-                self.dict_pdf_chosen_examples['list_2'].append(task_id)
+            if task_id not in self.dict_pdf_chosen_examples[self.typ]['lists'][2]:
+                self.dict_pdf_chosen_examples[self.typ]['lists'][2].append(task_id)
 
         if "nachschularbeit" in tags:
-            if task_id not in self.dict_pdf_chosen_examples['list_3']:
-                self.dict_pdf_chosen_examples['list_3'].append(task_id)
+            if task_id not in self.dict_pdf_chosen_examples[self.typ]['lists'][3]:
+                self.dict_pdf_chosen_examples[self.typ]['lists'][3].append(task_id)
 
         # --- 3) Header-Kästchen aktualisieren ---
-        self.len_list_1 = len(self.dict_pdf_chosen_examples['list_1'])
-        self.len_list_2 = len(self.dict_pdf_chosen_examples['list_2'])
-        self.len_list_3 = len(self.dict_pdf_chosen_examples['list_3'])
+        self.len_list_1 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][1])
+        self.len_list_2 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][2])
+        self.len_list_3 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][3])
 
         self.header.updateCounts([
             self.len_list_1,
             self.len_list_2,
             self.len_list_3
-        ],self.dict_pdf_chosen_examples)
+        ],self.dict_pdf_chosen_examples[self.typ])
 
         print(self.dict_pdf_chosen_examples)
 
@@ -1292,57 +1308,45 @@ class Ui_Dialog_pdfviewer(object):
         """
         Löscht alle Aufgaben einer Kategorie – mit Sicherheitsabfrage,
         falls die Liste nicht leer ist.
-        index 0 = list_1
-        index 1 = list_2
-        index 2 = list_3
+        index 0 → list 1
+        index 1 → list 2
+        index 2 → list 3
         """
 
-        key_map = {
-            0: "list_1",
-            1: "list_2",
-            2: "list_3",
-        }
+        # 0→1, 1→2, 2→3
+        list_num = index + 1
 
-        name_map = {
-            0: self.dict_pdf_chosen_examples["name_list_1"],
-            1: self.dict_pdf_chosen_examples["name_list_2"],
-            2: self.dict_pdf_chosen_examples["name_list_3"],
-        }
+        # Zugriff auf Namen und Listen anhand des aktuellen Typs ("lama" / "cria")
+        name_list = self.dict_pdf_chosen_examples[self.typ]["names"][list_num]
+        current_list = self.dict_pdf_chosen_examples[self.typ]["lists"][list_num]
 
-        key = key_map[index]
-        list_name = name_map[index]
-
-        # Wenn die Liste leer ist → keine Abfrage, einfach ignorieren
-        if len(self.dict_pdf_chosen_examples[key]) > 0:
+        # Wenn die Liste leer ist → nichts tun
+        if len(current_list) > 0:
 
             # Sicherheitsdialog
             msg = QMessageBox(self.Dialog)
             msg.setWindowTitle("Bestätigung")
             msg.setText(
                 f"Sind Sie sicher, dass Sie die Aufgabenliste "
-                f"„{list_name}“ unwiderruflich löschen möchten?"
+                f"„{name_list}“ unwiderruflich löschen möchten?"
             )
 
             msg.setIcon(QMessageBox.Warning)
             msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-            msg.setDefaultButton(QMessageBox.Yes)  # Fokus auf JA → Enter bestätigt
+            msg.setDefaultButton(QMessageBox.Yes)  # Enter bestätigt 'Ja'
 
             result = msg.exec_()
 
             if result != QMessageBox.Yes:
-                return  # Abgebrochen → nichts löschen
+                return  # abbrechen
 
-        # --- Ab hier EINDEUTIG löschen ---
+        # --- Ab hier wirklich löschen ---
 
-        # 1) Einträge im Dictionary löschen
-        self.dict_pdf_chosen_examples[key].clear()
+        # 1) Liste im Dictionary leeren
+        self.dict_pdf_chosen_examples[self.typ]["lists"][list_num].clear()
 
-        # 2) Tags in der Aufgabenliste entfernen
-        tag_map = {
-            0: "uebung",
-            1: "schularbeit",
-            2: "nachschularbeit"
-        }
+        # 2) Tags in UI entfernen
+        tag_map = {0: "uebung", 1: "schularbeit", 2: "nachschularbeit"}
         tag_to_remove = tag_map[index]
 
         for i in range(self.list.count()):
@@ -1356,10 +1360,10 @@ class Ui_Dialog_pdfviewer(object):
 
         # 3) Header‑Zähler aktualisieren
         self.header.updateCounts([
-            len(self.dict_pdf_chosen_examples["list_1"]),
-            len(self.dict_pdf_chosen_examples["list_2"]),
-            len(self.dict_pdf_chosen_examples["list_3"]),
-        ],self.dict_pdf_chosen_examples)
+            len(self.dict_pdf_chosen_examples[self.typ]["lists"][1]),
+            len(self.dict_pdf_chosen_examples[self.typ]["lists"][2]),
+            len(self.dict_pdf_chosen_examples[self.typ]["lists"][3]),
+        ], self.dict_pdf_chosen_examples[self.typ])
 
 
     def _restore_selections_from_dict(self):
@@ -1376,13 +1380,13 @@ class Ui_Dialog_pdfviewer(object):
             tags.clear()
 
             # Kategorie zuordnen
-            if task_id in self.dict_pdf_chosen_examples["list_1"]:
+            if task_id in self.dict_pdf_chosen_examples[self.typ]['lists'][1]:
                 tags.add("uebung")
 
-            if task_id in self.dict_pdf_chosen_examples["list_2"]:
+            if task_id in self.dict_pdf_chosen_examples[self.typ]['lists'][2]:
                 tags.add("schularbeit")
 
-            if task_id in self.dict_pdf_chosen_examples["list_3"]:
+            if task_id in self.dict_pdf_chosen_examples[self.typ]['lists'][3]:
                 tags.add("nachschularbeit")
 
             item.setData(Qt.UserRole + 5, tags)

@@ -51,14 +51,30 @@ dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 
 
 
+# dict_pdf_chosen_examples = {
+#     'list_1' : [],
+#     'list_2' : [],
+#     'list_3' : [],
+#     'name_list_1' : 'Übungsblatt',
+#     'name_list_2' : 'Schularbeit',
+#     'name_list_3' : 'Nachschularbeit',
+# }
 dict_pdf_chosen_examples = {
-    'list_1' : [],
-    'list_2' : [],
-    'list_3' : [],
-    'name_list_1' : 'Übungsblatt',
-    'name_list_2' : 'Schularbeit',
-    'name_list_3' : 'Nachschularbeit',
+    mode: {
+        "lists": {
+            1: [],
+            2: [],
+            3: []
+        },
+        "names": {
+            1: "Übungsblatt",
+            2: "Schularbeit",
+            3: "Nachschularbeit"
+        }
+    }
+    for mode in ("lama", "cria")
 }
+
 # dict_pdf_chosen_examples = {
 #     'lama':{
 #     'list_1' : [],
