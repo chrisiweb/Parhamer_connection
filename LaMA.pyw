@@ -276,7 +276,27 @@ class Worker_UpdateLaMA(QtCore.QObject):
 
         self.finished.emit()
 
+class FastProgress(QtWidgets.QWidget):
+    def __init__(self, maximum, title="Lade...", text="Bitte warten..."):
+        super().__init__()
+        self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+        self.setWindowTitle(title)
+        self.setWindowIcon(QIcon(logo_path))
 
+        layout = create_new_verticallayout(self)
+        self.label = QtWidgets.QLabel(text)
+        layout.addWidget(self.label)
+
+        self.progress = QtWidgets.QProgressBar()
+        self.progress.setRange(0, maximum)
+        layout.addWidget(self.progress)
+
+        self.resize(300, 80)
+        self.show()
+
+    def setValue(self, val):
+        self.progress.setValue(val)
+        QApplication.processEvents()  # <--- WICHTIG: UI sofort aktualisieren
 
 
 class Ui_MainWindow(object):
@@ -8382,7 +8402,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def buttonImport_sage_clicked(self):
-        dict_pdf_chosen_examples = create_pdf._PDF_UI.get_current_dict()
+        try:
+            dict_pdf_chosen_examples = create_pdf._PDF_UI.get_current_dict()
+        except AttributeError:
+            dict_pdf_chosen_examples = None
+            
         Dialog = QtWidgets.QDialog(
             None,
             Qt.WindowSystemMenuHint
@@ -8401,22 +8425,31 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         list_aufgaben_errors=[]
         list_duplicates = []
-
+        if any(self.list_alle_aufgaben_sage):
+            rsp = question_window("Der Prüfungsgenerator ist nicht leer! Möchten sie die Aufgabenliste zu den bestehenden Aufgaben hinzufügen oder möchten sie den Prüfungsgenerator zurücksetzen?",buttontext_yes="Hinzufügen", buttontext_no="Zurücksetzen", icon_yes=get_icon_path('plus-square'), icon_no=get_icon_path('refresh-ccw'))
+            if rsp == False: 
+                self.reset_sage()
 
         progress_value = 0
         progress_maximum = len(self.import_list_sage)
-        progress = QtWidgets.QProgressDialog("Aufgabenliste wird geladen ...", "",progress_value, progress_maximum)
+        progress = FastProgress(progress_maximum, "Lade...", "Aufgabenliste wird geladen ...")
         progress.setFixedSize(progress.sizeHint())
         progress.setWindowTitle("Lade...")
         progress.setWindowFlags(QtCore.Qt.WindowTitleHint)
         progress.setWindowIcon(QtGui.QIcon(logo_path))
-        progress.setCancelButton(None)
+        # progress.setCancelButton(None)
         progress.setWindowModality(Qt.WindowModal)
+        progress.show()
+        QtWidgets.QApplication.processEvents()
+        # progress = QtWidgets.QProgressDialog("Aufgabenliste wird geladen ...", "",progress_value, progress_maximum)
+
 
         progress.setValue(progress_value)
+
         for index, aufgabe in enumerate(self.import_list_sage):
             progress_value +=1
             progress.setValue(progress_value)
+            QtWidgets.QApplication.processEvents()
             aufgabe = aufgabe.upper()
 
             typ = get_aufgabentyp(self.chosen_program, aufgabe.replace('I.',''))
@@ -8457,6 +8490,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 list_aufgaben_errors.append(aufgabe)
                 continue
 
+
             if typ == 2:
                 if aufgabe not in self.list_alle_aufgaben_sage[1]:
                     aufgaben_nummer = len(self.list_alle_aufgaben_sage[1])
@@ -8481,7 +8515,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
 
-        progress.cancel()
+
+        
+        progress.setValue(progress_maximum)
+        QtWidgets.QApplication.processEvents()
+        QtCore.QThread.msleep(150)
+        # progress.cancel()
+        progress.close()
 
         if not is_empty(list_aufgaben_errors):
             str_error = ', '.join(list_aufgaben_errors)

@@ -31,7 +31,15 @@ def information_window(
 
 
 def question_window(
-    text, informative_text="", titel="Sind Sie sicher?", detailed_text="", buttontext_yes="Ja", buttontext_no = "Nein", default="yes"
+    text, 
+    informative_text="",
+    titel="Sind Sie sicher?",
+    detailed_text="",
+    buttontext_yes="Ja",
+    buttontext_no = "Nein",
+    default="yes",
+    icon_yes=None,
+    icon_no=None,
 ):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Question)
@@ -45,8 +53,10 @@ def question_window(
         msg.setDefaultButton(QMessageBox.No)
     buttonY = msg.button(QMessageBox.Yes)
     buttonY.setText(buttontext_yes)
+    buttonY.setIcon(QIcon(icon_yes))
     buttonN = msg.button(QMessageBox.No)
     buttonN.setText(buttontext_no)
+    buttonN.setIcon(QIcon(icon_no))
     response = msg.exec_()
     if response == QMessageBox.No:
         return False
