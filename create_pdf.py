@@ -49,6 +49,8 @@ list_klassen = config_loader(config_file, "list_klassen")
 
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 
+
+
 dict_pdf_chosen_examples = {
     'list_1' : [],
     'list_2' : [],
@@ -57,6 +59,22 @@ dict_pdf_chosen_examples = {
     'name_list_2' : 'Schularbeit',
     'name_list_3' : 'Nachschularbeit',
 }
+# dict_pdf_chosen_examples = {
+#     'lama':{
+#     'list_1' : [],
+#     'list_2' : [],
+#     'list_3' : [],
+#     'name_list_1' : 'Übungsblatt',
+#     'name_list_2' : 'Schularbeit',
+#     'name_list_3' : 'Nachschularbeit'},
+#     'cria':{
+#     'list_1' : [],
+#     'list_2' : [],
+#     'list_3' : [],
+#     'name_list_1' : 'Übungsblatt',
+#     'name_list_2' : 'Schularbeit',
+#     'name_list_3' : 'Nachschularbeit'}
+# }
 
 class Worker_CreatePDF(QObject):
     finished = pyqtSignal()
@@ -877,7 +895,7 @@ _PDF_DIALOG = None      # QDialog
 _PDF_UI = None          # Ui_Dialog_pdfviewer
 
 
-def open_pdf_file(folder_name, file_name):
+def open_pdf_file(folder_name, file_name, typ, show_selection_list):
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
 
     drive_location = os.path.splitdrive(sys.argv[-1])[0]
@@ -887,12 +905,13 @@ def open_pdf_file(folder_name, file_name):
     else:
         drive = ""
 
+
+    ## typ: 1,2, cria
     ### open internal PDF Viewer###
     def show_pdf(pdf_file_path):
         global _PDF_DIALOG, _PDF_UI
         if not os.path.isfile(pdf_file_path):
             return
-
         if _PDF_DIALOG is None:
             _PDF_DIALOG = QtWidgets.QDialog(
                 None,
@@ -905,7 +924,7 @@ def open_pdf_file(folder_name, file_name):
             _PDF_DIALOG.setAttribute(QtCore.Qt.WA_DeleteOnClose, False)
 
             _PDF_UI = Ui_Dialog_pdfviewer()
-            _PDF_UI.setupUi(_PDF_DIALOG, pdf_file_path, dict_pdf_chosen_examples)
+            _PDF_UI.setupUi(_PDF_DIALOG, pdf_file_path, dict_pdf_chosen_examples, typ, show_selection_list)
             _PDF_DIALOG.setWindowTitle("PDF Viewer")
 
 
@@ -915,7 +934,7 @@ def open_pdf_file(folder_name, file_name):
                 _PDF_DIALOG.hide()
             _PDF_DIALOG.closeEvent = _soft_close
         else:
-            _PDF_UI.refresh_pdf(pdf_file_path)
+            _PDF_UI.refresh_pdf(pdf_file_path, typ, show_selection_list)
 
         _PDF_DIALOG.show()
         _PDF_DIALOG.raise_()
@@ -1052,6 +1071,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
     if path_file == "Teildokument":
         folder_name = "{0}/Teildokument".format(path_programm)
         file_name = path_file + "_" + typ
+        show_selection_list = True
     else:
         head, tail = os.path.split(path_file)
         file_name = tail
@@ -1059,6 +1079,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
             folder_name = "{0}/Teildokument".format(path_programm)
         else:
             folder_name = head
+        show_selection_list = False
 
 
     latex_output_file = os.path.join(path_localappdata_lama, "Teildokument", "temp.txt")
@@ -1134,7 +1155,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
         # if response == False:
         #     return
 
-        open_pdf_file(folder_name, file_name)
+        open_pdf_file(folder_name, file_name, typ, show_selection_list)
 
     try:
         delete_unneeded_files(folder_name, file_name)

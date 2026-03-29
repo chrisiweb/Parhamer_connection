@@ -4662,30 +4662,67 @@ class Ui_Dialog_edit_worksheet_instructions(object):
             self.plainTextEdit_instructions.setEnabled(False)      
 
 class Ui_Dialog_import_sage(object):
-    def setupUi(self, Dialog):
+    def setupUi(self, Dialog, dict_pdf_chosen_examples):
+        self.dict_pdf_chosen_examples = dict_pdf_chosen_examples
+        
         Dialog.setWindowTitle("Aufgabenliste importieren")
         Dialog.setWindowIcon(QIcon(logo_path)) 
         Dialog.resize(80,300)
         self.Dialog = Dialog
+
         verticalLayout = create_new_verticallayout(Dialog)
 
-        # self.tableWidget = QtWidgets.QTableWidget(Dialog)
-        # self.tableWidget.setRowCount(4)
-        # self.tableWidget.setColumnCount(1)
-        # verticalLayout.addWidget(self.tableWidget)
-        label = create_new_label(Dialog, "Import der Aufgabenummern")
+        label = create_new_label(Dialog, "Import der Aufgabennummern")
         verticalLayout.addWidget(label)
 
+        # ✅ ComboBox einfügen
+        self.combo = QtWidgets.QComboBox(Dialog)
+
+        self.list_names = [
+            self.dict_pdf_chosen_examples["name_list_1"],
+            self.dict_pdf_chosen_examples["name_list_2"],
+            self.dict_pdf_chosen_examples["name_list_3"],
+            "Manuelle Eingabe"
+        ]
+
+        self.combo.addItems(self.list_names)
+        verticalLayout.addWidget(self.combo)
+
+        # ✅ Textfeld, vorerst deaktiviert
         self.plainTextEdit = QtWidgets.QPlainTextEdit(Dialog)
         self.plainTextEdit.setToolTip("Jede Aufgabenummer muss in eine neue Zeile eingefügt werden")
+        self.plainTextEdit.setEnabled(False)
         verticalLayout.addWidget(self.plainTextEdit)
+
+        # ✅ Verhalten beim Wechsel der ComboBox
+        self.combo.currentIndexChanged.connect(self._on_combo_changed)
 
         btn_import = create_new_button(Dialog, "Importieren", self.btn_import_clicked, icon="plus-square.svg")
         verticalLayout.addWidget(btn_import)
 
+    def _on_combo_changed(self, index):
+        # "Manuelle Eingabe" ist die LETZTE Option
+        if index == 3:
+            self.plainTextEdit.setEnabled(True)
+        else:
+            self.plainTextEdit.setEnabled(False)
+            self.plainTextEdit.clear()
+
     def btn_import_clicked(self):
-       
-        self.list_of_tasks = self.plainTextEdit.toPlainText().split('\n')
-        self.list_of_tasks = [x for x in self.list_of_tasks if x]
+        selected_index = self.combo.currentIndex()
+        self.selected_list_name = self.combo.currentText()
+
+
+        # ✅ Falls manuelle Eingabe
+        if selected_index == 3:
+            self.list_of_tasks = self.plainTextEdit.toPlainText().split('\n')
+            self.list_of_tasks = [x.strip() for x in self.list_of_tasks if x.strip()]
+        else:
+            # ✅ Hier später: Import aus der PDF‑Liste einbauen
+            # (z. B. direkt Zugriff auf deine dict‑Listen)
+            self.list_of_tasks = self.dict_pdf_chosen_examples[
+                ["list_1", "list_2", "list_3"][selected_index]
+            ]
+        
         self.Dialog.accept()
         

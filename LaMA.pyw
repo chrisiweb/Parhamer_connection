@@ -65,6 +65,7 @@ from config_start import (
 # from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QTranslator, QLocale, QLibraryInfo
+from lama_pdfviewer import Ui_Dialog_pdfviewer
 
 # from distutils.spawn import find_executable
 
@@ -462,21 +463,43 @@ class Ui_MainWindow(object):
             def eventFilter(self, obj, ev):
                 if ev.type() == QtCore.QEvent.Close:
                     try:
-                        # Direkter Zugriff auf den internen PDF-Dialog
-                        import create_pdf
+                        # PDF-Dialog holen
                         dlg = getattr(create_pdf, "_PDF_DIALOG", None)
+                        ui  = getattr(create_pdf, "_PDF_UI", None)
+
                         if dlg is not None:
-                            # Soft-Close (hide) für DIESEN Vorgang aushebeln
+                            # Falls es ein UI gibt (normalfall)
+                            if ui and hasattr(ui, "viewer"):
+                                viewer = ui.viewer
+
+                                # ✅ Worker stoppen
+                                try:
+                                    viewer.worker.stop()
+                                except:
+                                    pass
+
+                                # ✅ Thread sauber beenden & warten
+                                try:
+                                    viewer.thread.quit()
+                                    viewer.thread.wait()
+                                except:
+                                    pass
+
+                            # ✅ PDF-Dialog wirklich schließen
                             dlg.closeEvent = lambda e: e.accept()
                             dlg.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
                             dlg.close()
                             dlg.deleteLater()
-                            # Globale Referenzen aufräumen
+
+                            # ✅ globale Referenzen freigeben
                             create_pdf._PDF_DIALOG = None
-                            create_pdf._PDF_UI = None
+                            create_pdf._PDF_UI     = None
+
                     except Exception:
                         pass
+
                 return super().eventFilter(obj, ev)
+
 
         # Filter instanzieren und am MainWindow installieren
         self._killPdfFilter = _KillPdfOnMainClose(MainWindow)
@@ -768,7 +791,7 @@ class Ui_MainWindow(object):
             
 
             if range_limit > 2:
-                create_pdf(name, index, range_limit)
+                create_pdf.create_pdf(name, index, range_limit)
                 temp_filename = name + ".pdf"
 
                 
@@ -792,7 +815,7 @@ class Ui_MainWindow(object):
 
             else:
 
-                create_pdf(name, index, 2)
+                create_pdf.create_pdf(name, index, 2)
 
                 temp_filename = name + ".pdf"
                 if index % 2 == 0:
@@ -3953,10 +3976,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     content = content.replace(image, image_path)
 
 
-        rsp = create_tex(file_path, content, punkte = self.spinBox_punkte.value(), pagebreak=pagebreak)
+        rsp = create_pdf.create_tex(file_path, content, punkte = self.spinBox_punkte.value(), pagebreak=pagebreak)
 
         if rsp == True:
-            create_pdf("preview")
+            create_pdf.create_pdf("preview")
         else:
             critical_window(
                 "Die PDF Datei konnte nicht erstellt werden", detailed_text=rsp
@@ -4468,7 +4491,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # worker_text = "Fehlende Aufgabenummern werden gesucht ... ({0}|{1})".format(index, progress_maximum)
             # ui.label.setText(worker_text)
 
-            variation = check_if_variation(file['name'])
+            variation = create_pdf.check_if_variation(file['name'])
             if typ == "typ1":
                 _ ,num = file['name'].split(" - ")
             else:
@@ -6053,7 +6076,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             file.write(tex_end)
 
 
-        create_pdf("worksheet")
+        create_pdf.create_pdf("worksheet")
 
 
 
@@ -6184,7 +6207,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             name, extension = os.path.splitext(path_file)
 
 
-            create_pdf(name, index, 2)
+            create_pdf.create_pdf(name, index, 2)
             
             temp_filename = name + ".pdf"
             if index == 0:
@@ -8359,6 +8382,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def buttonImport_sage_clicked(self):
+        dict_pdf_chosen_examples = create_pdf._PDF_UI.get_current_dict()
         Dialog = QtWidgets.QDialog(
             None,
             Qt.WindowSystemMenuHint
@@ -8367,7 +8391,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
         ui = Ui_Dialog_import_sage()
 
-        ui.setupUi(Dialog)
+        ui.setupUi(Dialog, dict_pdf_chosen_examples)
         Dialog.exec()
 
         try:
@@ -8501,7 +8525,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             item.setText(name)
 
-            if check_if_variation(_file_["name"]) == True:
+            if create_pdf.check_if_variation(_file_["name"]) == True:
                 item.setToolTip("Variation")
 
             if _file_["draft"] == True and not self.cb_drafts_sage.isChecked():
@@ -9026,7 +9050,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             name, extension = os.path.splitext(filename_vorschau)
 
             if pdf == True:
-                create_pdf(name, index, 2)
+                create_pdf.create_pdf(name, index, 2)
 
                 temp_filename = name + ".pdf"
                 if index % 2 == 0:
@@ -9149,7 +9173,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         # return ## WORKING RETURN
         if ausgabetyp == "vorschau":
-            create_pdf("Schularbeit_Vorschau", 0, 0)
+            create_pdf.create_pdf("Schularbeit_Vorschau", 0, 0)
 
         if ausgabetyp == "schularbeit":
             name, extension = os.path.splitext(filename_vorschau)
@@ -9159,7 +9183,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     show_warning = False
                 else:
                     show_warning = None
-                create_pdf(name, index, maximum, show_latex_error_warning=show_warning)
+                create_pdf.create_pdf(name, index, maximum, show_latex_error_warning=show_warning)
 
                 temp_filename = name + ".pdf"
 
@@ -9847,12 +9871,12 @@ if __name__ == "__main__":
     i = step_progressbar(i, "translate")
     from translate import _fromUtf8, _translate
 
-    i = step_progressbar(i, "create_pdf")
-    from create_pdf import (
-        create_tex,
-        create_pdf,
-        check_if_variation,
-    )
+    # i = step_progressbar(i, "create_pdf")
+    # from create_pdf import (
+    #     create_tex,
+    #     create_pdf,
+    #     check_if_variation,
+    # )
 
     i = step_progressbar(i, "refresh_ddb")
     from refresh_ddb import modification_date, refresh_ddb
@@ -9914,6 +9938,15 @@ if __name__ == "__main__":
     from tinydb import Query, TinyDB
 
     i = step_progressbar(i, "database_commands")
+
+    # from create_pdf import (
+    #     create_pdf,
+    #     create_tex,
+    #     check_if_variation,
+    # )
+    import create_pdf
+
+    i = step_progressbar(i, "pdf viewer")
 
     from sort_items import order_gesammeltedateien
 

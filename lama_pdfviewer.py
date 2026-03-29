@@ -645,6 +645,7 @@ class _PressStateFilter(QObject):
         return False
 
 
+
 class TagPopup(QWidget):
     """
     Dynamisches Popup für Kategorien:
@@ -688,9 +689,12 @@ class Ui_Dialog_pdfviewer(object):
     ROLE_TARGET = Qt.UserRole          # (page, y_ratio)
     ROLE_COLORSTATE = Qt.UserRole + 1  # 0..3 (0=weiß,1=cat0,2=cat1,3=cat2)
 
-    def setupUi(self, Dialog: QDialog, file_path: str, dict_pdf_chosen_examples):
+    def setupUi(self, Dialog: QDialog, file_path: str, dict_pdf_chosen_examples, typ, show_selection_list=False):
         # --- State ---
+        self.typ = typ
+        print(self.typ)
         self._current_pdf_path = file_path
+        self.show_selection_list = show_selection_list
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("PDF Viewer")
@@ -793,11 +797,6 @@ class Ui_Dialog_pdfviewer(object):
         self.list.setContextMenuPolicy(Qt.CustomContextMenu)
         self.list.customContextMenuRequested.connect(self._on_list_context_menu)
 
-        def make_square(color):
-            pm = QPixmap(12, 12)
-            pm.fill(color)
-            return pm
-
         # self.icon_green  = make_square(QColor("#b7f5a9"))
         # self.icon_red    = make_square(QColor("#ffb4b4"))
         # self.icon_yellow = make_square(QColor("#ffeaa2"))        
@@ -811,31 +810,46 @@ class Ui_Dialog_pdfviewer(object):
         )
 
 
-        left_panel = QWidget()
-        left_layout = QVBoxLayout(left_panel)
+        self.left_panel = QWidget()
+        left_layout = QVBoxLayout(self.left_panel)
         # WICHTIG: links etwas Luft, damit Checkbox-Indikatoren nicht abgeschnitten werden
         left_layout.setContentsMargins(12, 0, 0, 0)   # ← 12px linker Innenabstand
         left_layout.setSpacing(0)
         left_layout.addWidget(self.header)
         left_layout.addWidget(self.list)
+                
+
 
         # --- Rechte Seite: PDF-Viewer ---
         self.viewer = PdfViewer(self._current_pdf_path)
         self.viewer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         # self.spin_zoom.setValue(self.viewer.get_zoom_percent())
         # --- Splitter (Mitte) ---
-        splitter = QSplitter(Qt.Horizontal)
-        splitter.addWidget(left_panel)
-        splitter.addWidget(self.viewer)
-        splitter.setStretchFactor(0, 0)   # linkes Panel
-        splitter.setStretchFactor(1, 1)   # Viewer dehnt
-        splitter.setSizes([300, 2000])    # Start: viel Platz rechts
+        self.splitter = QSplitter(Qt.Horizontal)
+        self.splitter.addWidget(self.left_panel)
+        self.splitter.addWidget(self.viewer)
+
+        # if not self.show_selection_list:
+        #     self._lehide_splitter_hand()
+
+        self.splitter.setStretchFactor(0, 0)   # linkes Panel
+        self.splitter.setStretchFactor(1, 1)   # Viewer dehnt
+        self.splitter.setSizes([300, 2000])    # Start: viel Platz rechts
+
+        if not self.show_selection_list:
+            self.left_panel.hide()
+            self.splitter.handle(1).setEnabled(False)
+            # self.splitter.handle(1).setStyleSheet("background: transparent; width: 0px; image: none")
+            self.splitter.setSizes([0, 1_000_000])
+    #             QSplitter::handle {{
+    #     # image: url({get_icon_path("more-vertical.svg")});
+    # }}  
 
         # --- Zentrale Fläche ---
         central = QWidget()
         lay = QHBoxLayout(central)
         lay.setContentsMargins(0, 0, 0, 0)
-        lay.addWidget(splitter)
+        lay.addWidget(self.splitter)
         main.addWidget(central)
 
         # --- Initialwerte (Toolbar) ---
@@ -849,8 +863,7 @@ class Ui_Dialog_pdfviewer(object):
         # --- Liste initial befüllen (NACH Aufbau, VOR Signal-Connects!) ---
         self._fill_tasks_from_pdf(self._current_pdf_path)
 
-
-
+        self._restore_selections_from_dict()
 
         # # Viewer -> Spinbox (Scrollen/Seitenwechsel aktualisiert Anzeige)
         # self.viewer.currentPageChanged.connect(self._on_current_page_changed)
@@ -923,12 +936,44 @@ class Ui_Dialog_pdfviewer(object):
 
         sc_copy.activated.connect(_on_copy)
 
-
+    def set_typ(self, new_typ):
+        self.typ = new_typ
     
     def get_current_dict(self):
         return self.dict_pdf_chosen_examples
 
-    def refresh_pdf(self, file_path: str):
+    def refresh_pdf(self, file_path: str, typ=None, show_selection_list=None):
+        if typ is not None:
+            self.typ = typ   # <--- neuer typ wird hier aktualisiert!
+
+
+        if show_selection_list is not None:
+            self.show_selection_list = show_selection_list
+
+            if show_selection_list:
+                # self.header.show()
+                # self.list.show()
+                self.left_panel.show()
+
+                # Handle normal anzeigen
+                self.splitter.handle(1).setEnabled(True)
+                # self.splitter.handle(1).setStyleSheet('image: url({get_icon_path("more-vertical.svg")}')
+                self.splitter.setSizes([300, 2000])
+
+            else:
+
+                self.left_panel.hide()
+                self.splitter.handle(1).setEnabled(False)
+                # self.splitter.handle(1).setStyleSheet("background: transparent; width: 0px; image: none")
+                self.splitter.setSizes([0, 1_000_000])
+                # self.header.hide()
+                # self.splitter.handle(1).setEnabled(False)
+                # self.splitter.handle(1).setStyleSheet("background: transparent; width: 0px; image: none")
+                # self.list.hide()
+                # self.splitter.setSizes([0, 1_000_000])
+                # self._hide_splitter_handle()
+
+
         """Öffentliche API: PDF austauschen + Liste neu aufbauen."""
         if not file_path or not os.path.isfile(file_path):
             return
@@ -949,6 +994,8 @@ class Ui_Dialog_pdfviewer(object):
 
         # 3) Aufgabenliste neu aus den Überschriften bauen
         self._fill_tasks_from_pdf(self._current_pdf_path)
+
+        self._restore_selections_from_dict()
 
         # # Listenlängen berechnen
         # self.len_list_1 = 1
@@ -1225,12 +1272,19 @@ class Ui_Dialog_pdfviewer(object):
 
     def _extract_task_number(self, text: str) -> str:
         """
-        Entfernt alles ab dem ersten ' - '.
-        Beispiel: 'AG 1.4 - 3 - Titel' -> 'AG 1.4 - 3'
+        Entfernt immer den letzten Teil nach ' - '.
+        Beispiel:
+        'AG 1.4 - 3 - Titel' -> 'AG 1.4 - 3'
+        '98 - Polynomfunktion dritten Grades' -> '98'
+        'WS-XY 2.3 - 1 - Irgendein Titel - Noch mehr' -> 'WS-XY 2.3 - 1'
         """
-        if " - " in text:
-            return text.split(" - ")[0] + " - " + text.split(" - ")[1]
-        return text
+        if " - " not in text:
+            return text
+
+        parts = text.split(" - ")
+        # alle Teile außer dem letzten wieder zusammensetzen
+        cleaned = " - ".join(parts[:-1])
+        return cleaned.strip()
     
 # from PyQt5.QtWidgets import QMessageBox
 
@@ -1306,3 +1360,41 @@ class Ui_Dialog_pdfviewer(object):
             len(self.dict_pdf_chosen_examples["list_2"]),
             len(self.dict_pdf_chosen_examples["list_3"]),
         ],self.dict_pdf_chosen_examples)
+
+
+    def _restore_selections_from_dict(self):
+        """
+        Setzt die Markierungen im ListWidget anhand des gespeicherten Dictionaries wieder.
+        """
+        for i in range(self.list.count()):
+            item = self.list.item(i)
+
+            task_id = self._extract_task_number(item.text())
+            tags = item.data(Qt.UserRole + 5) or set()
+
+            # Reset
+            tags.clear()
+
+            # Kategorie zuordnen
+            if task_id in self.dict_pdf_chosen_examples["list_1"]:
+                tags.add("uebung")
+
+            if task_id in self.dict_pdf_chosen_examples["list_2"]:
+                tags.add("schularbeit")
+
+            if task_id in self.dict_pdf_chosen_examples["list_3"]:
+                tags.add("nachschularbeit")
+
+            item.setData(Qt.UserRole + 5, tags)
+            self._update_item_icons(item)
+
+    # def _hide_splitter_handle(self):
+    #     handle = self.splitter.handle(1)
+    #     handle.setEnabled(False)
+    #     handle.setStyleSheet("""
+    #         QSplitter::handle {
+    #             background: transparent;
+    #             width: 0px;
+    #         }
+    #     """)
+    #     self.splitter.setSizes([0, 1_000_000])
