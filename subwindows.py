@@ -4662,7 +4662,8 @@ class Ui_Dialog_edit_worksheet_instructions(object):
             self.plainTextEdit_instructions.setEnabled(False)      
 
 class Ui_Dialog_import_sage(object):
-    def setupUi(self, Dialog, dict_pdf_chosen_examples):
+    def setupUi(self, Dialog, dict_pdf_chosen_examples, typ):
+        self.typ = typ
         self.dict_pdf_chosen_examples = dict_pdf_chosen_examples
         
         Dialog.setWindowTitle("Aufgabenliste importieren")
@@ -4680,14 +4681,14 @@ class Ui_Dialog_import_sage(object):
 
         self.list_names = []
         if self.dict_pdf_chosen_examples is not None:
-            if len(self.dict_pdf_chosen_examples["list_1"]) > 0:
-                self.list_names.append(self.dict_pdf_chosen_examples["name_list_1"])
+            if len(self.dict_pdf_chosen_examples[typ]["lists"][1]) > 0:
+                self.list_names.append(self.dict_pdf_chosen_examples[typ]["names"][1])
 
-            if len(self.dict_pdf_chosen_examples["list_2"]) > 0:
-                self.list_names.append(self.dict_pdf_chosen_examples["name_list_2"])
+            if len(self.dict_pdf_chosen_examples[typ]["lists"][2]) > 0:
+                self.list_names.append(self.dict_pdf_chosen_examples[typ]["names"][2])
 
-            if len(self.dict_pdf_chosen_examples["list_3"]) > 0:
-                self.list_names.append(self.dict_pdf_chosen_examples["name_list_3"])
+            if len(self.dict_pdf_chosen_examples[typ]["lists"][3]) > 0:
+                self.list_names.append(self.dict_pdf_chosen_examples[typ]["names"][3])
 
         self.list_names.append("Manuelle Eingabe")
 
@@ -4738,9 +4739,17 @@ class Ui_Dialog_import_sage(object):
         else:
             # ✅ Hier später: Import aus der PDF‑Liste einbauen
             # (z. B. direkt Zugriff auf deine dict‑Listen)
-            self.list_of_tasks = self.dict_pdf_chosen_examples[
-                ["list_1", "list_2", "list_3"][selected_index]
-            ]
+            selected_index = self.combo.currentIndex()
+
+            # 0→1, 1→2, 2→3
+            list_num = selected_index + 1
+
+            self.list_of_tasks = self.dict_pdf_chosen_examples[self.typ]["lists"][list_num]
+
+
+            # self.list_of_tasks = self.dict_pdf_chosen_examples[
+            #     ["list_1", "list_2", "list_3"][selected_index]
+            # ]
 
         self.Dialog.accept()
         

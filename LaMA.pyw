@@ -8415,7 +8415,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
         ui = Ui_Dialog_import_sage()
 
-        ui.setupUi(Dialog, dict_pdf_chosen_examples)
+        ui.setupUi(Dialog, dict_pdf_chosen_examples, self.chosen_program)
         Dialog.exec()
 
         try:
