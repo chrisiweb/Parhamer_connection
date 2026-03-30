@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import (
     QToolBar, QLineEdit, QSizePolicy, QShortcut,
     QListWidget, QListWidgetItem, QSplitter, QHBoxLayout,
     QStyledItemDelegate, QStyle, QStyleOptionViewItem,
-    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QAction, QToolButton, QMenu, QMessageBox
+    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QAction, QToolButton, QMenu, QMessageBox, QDialogButtonBox
 )
 from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon, QPainter
 from PyQt5.QtCore import Qt, pyqtSignal, QRect, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
@@ -431,53 +431,66 @@ class CategoryHeaderWidget(QWidget):
     ### FARBAUSWAHL WORKING!!! >>>> OPTIONEN!
     def _pick_color(self, index: int):
         start = self._colors[index]
-
-        # 🔹 ColorDialog mit "Standard wiederherstellen"
         dlg = QColorDialog(start, self)
         dlg.setOption(QColorDialog.ShowAlphaChannel, False)
 
-        reset_btn = dlg.findChild(QPushButton, "qt_colorreset")
-        if reset_btn is None:
-            reset_btn = QPushButton("Standard wiederherstellen", dlg)
-            reset_btn.setObjectName("qt_colorreset")
-            dlg.layout().addWidget(reset_btn)
+        # --- Standard-Button erstellen ---
+        reset_btn = QPushButton("Standardfarbe wiederherstellen", dlg)
+        # reset_btn.setFixedWidth(90)  # kleiner
+        # reset_btn.setStyleSheet("""
+        #     QPushButton {
+        #         padding: 4px 8px;
+        #         font-size: 11px;
+        #     }
+        # """)
 
-            def reset_color():
-                # Standardfarben
-                defaults = {
-                    0: "#d3f9d8",
-                    1: "#ffd6d6",
-                    2: "#fff3bf"
-                }
-                col = QColor(defaults[index])
-                self._colors[index] = col
-                self._btns[index].setStyleSheet(self._label_style(col, self._enabled[index]))
+        # --- Reset-Funktion ---
+        def reset_color():
+            defaults = {
+                0: "#d3f9d8",  # grün
+                1: "#ffd6d6",  # rot
+                2: "#fff3bf"   # gelb
+            }
+            col = QColor(defaults[index])
+            self._colors[index] = col
+            self._btns[index].setStyleSheet(self._label_style(col, self._enabled[index]))
 
-                # ✅ auch im JSON speichern
-                self.dict_pdf_chosen_examples[self.typ]["colors"][index+1] = col.name()
+            # JSON speichern
+            self.dict_pdf_chosen_examples[self.typ]["colors"][index+1] = col.name()
+            save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
 
-                print(self.dict_pdf_chosen_examples)
-                save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
-                self.colorChanged.emit(index, col)
-                dlg.close()
+            self.colorChanged.emit(index, col)
+            dlg.accept()
 
-            reset_btn.clicked.connect(reset_color)
+        reset_btn.clicked.connect(reset_color)
 
+        # --- ButtonBox finden (OK & Cancel) ---
+        buttonbox = None
+        for child in dlg.children():
+            if isinstance(child, QDialogButtonBox):
+                buttonbox = child
+                break
+
+        # --- Neues Layout für untere Zeile ---
+        bottom_layout = QHBoxLayout()
+        bottom_layout.addWidget(reset_btn)      # ganz links
+        bottom_layout.addStretch()              # Abstand
+        bottom_layout.addWidget(buttonbox)      # rechts OK / Abbrechen
+
+        # --- In das Hauptlayout einfügen ---
+        main_layout = dlg.layout()
+        main_layout.addLayout(bottom_layout)     # ganz unten anhängen
+
+        # --- normalen Dialogablauf ---
         if dlg.exec_():
             col = dlg.currentColor()
             if col.isValid():
-                # ✅ 1. interne Farbe setzen
                 self._colors[index] = col
-
-                # ✅ 2. Kasten einfärben
                 self._btns[index].setStyleSheet(self._label_style(col, self._enabled[index]))
 
-                # ✅ 3. In JSON speichern
                 self.dict_pdf_chosen_examples[self.typ]["colors"][index+1] = col.name()
-                print(self.dict_pdf_chosen_examples)
                 save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
 
-                # ✅ 4. Items neu einfärben
                 self.colorChanged.emit(index, col)
 
 
