@@ -238,7 +238,6 @@ class CategoryHeaderWidget(QWidget):
             QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get("2", "#ffd6d6")),
             QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get("3", "#fff3bf")),
         ]
-        # print(self.dict_pdf_chosen_examples[self.typ]["colors"]["1"])
 
 
         # if "colors" in dict_pdf_chosen_examples[self.typ]:
@@ -414,7 +413,6 @@ class CategoryHeaderWidget(QWidget):
                 background: {base};
                 border: {border};
                 border-radius: 4px;
-                font-weight: bold;
                 {opacity}
             }}
 
@@ -431,66 +429,68 @@ class CategoryHeaderWidget(QWidget):
     ### FARBAUSWAHL WORKING!!! >>>> OPTIONEN!
     def _pick_color(self, index: int):
         start = self._colors[index]
+
+        # 🔹 ColorDialog mit "Standard wiederherstellen"
         dlg = QColorDialog(start, self)
         dlg.setOption(QColorDialog.ShowAlphaChannel, False)
 
-        # --- Standard-Button erstellen ---
-        reset_btn = QPushButton("Standardfarbe wiederherstellen", dlg)
-        # reset_btn.setFixedWidth(90)  # kleiner
-        # reset_btn.setStyleSheet("""
-        #     QPushButton {
-        #         padding: 4px 8px;
-        #         font-size: 11px;
-        #     }
-        # """)
+        # reset_btn = dlg.findChild(QPushButton, "qt_colorreset")
+        # if reset_btn is None:
+        reset_btn = QPushButton("Standard wiederherstellen", dlg)
+        # reset_btn.setObjectName("qt_colorreset")
+        # dlg.layout().addWidget(reset_btn)
 
-        # --- Reset-Funktion ---
         def reset_color():
+            # Standardfarben
             defaults = {
-                0: "#d3f9d8",  # grün
-                1: "#ffd6d6",  # rot
-                2: "#fff3bf"   # gelb
+                0: "#d3f9d8",
+                1: "#ffd6d6",
+                2: "#fff3bf"
             }
             col = QColor(defaults[index])
             self._colors[index] = col
             self._btns[index].setStyleSheet(self._label_style(col, self._enabled[index]))
 
-            # JSON speichern
+            # ✅ auch im JSON speichern
             self.dict_pdf_chosen_examples[self.typ]["colors"][index+1] = col.name()
-            save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
 
+            save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
             self.colorChanged.emit(index, col)
-            dlg.accept()
+            dlg.close()
 
         reset_btn.clicked.connect(reset_color)
 
-        # --- ButtonBox finden (OK & Cancel) ---
+
+        # ---- ButtonBox finden ----
         buttonbox = None
         for child in dlg.children():
             if isinstance(child, QDialogButtonBox):
                 buttonbox = child
                 break
 
-        # --- Neues Layout für untere Zeile ---
-        bottom_layout = QHBoxLayout()
-        bottom_layout.addWidget(reset_btn)      # ganz links
-        bottom_layout.addStretch()              # Abstand
-        bottom_layout.addWidget(buttonbox)      # rechts OK / Abbrechen
+        # ---- Untere Zeile bauen: [Standard] ... [OK][Abbrechen] ----
+        bottom = QHBoxLayout()
+        bottom.addWidget(reset_btn)
+        bottom.addStretch()
+        bottom.addWidget(buttonbox)
 
-        # --- In das Hauptlayout einfügen ---
-        main_layout = dlg.layout()
-        main_layout.addLayout(bottom_layout)     # ganz unten anhängen
+        dlg.layout().addLayout(bottom)
 
-        # --- normalen Dialogablauf ---
         if dlg.exec_():
             col = dlg.currentColor()
             if col.isValid():
+                # ✅ 1. interne Farbe setzen
                 self._colors[index] = col
+
+                # ✅ 2. Kasten einfärben
                 self._btns[index].setStyleSheet(self._label_style(col, self._enabled[index]))
 
+                # ✅ 3. In JSON speichern
                 self.dict_pdf_chosen_examples[self.typ]["colors"][index+1] = col.name()
+
                 save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
 
+                # ✅ 4. Items neu einfärben
                 self.colorChanged.emit(index, col)
 
 
@@ -754,7 +754,7 @@ class Ui_Dialog_pdfviewer(object):
             self.typ = 'lama'
         else:
             self.typ = typ
-        print(self.typ)
+
         self._current_pdf_path = file_path
         self.show_selection_list = show_selection_list
         self.Dialog = Dialog
@@ -1353,7 +1353,6 @@ class Ui_Dialog_pdfviewer(object):
             self.len_list_3
         ],self.dict_pdf_chosen_examples, self.typ)
 
-        print(self.dict_pdf_chosen_examples)
 
     def _extract_task_number(self, text: str) -> str:
         """
