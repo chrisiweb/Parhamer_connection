@@ -177,7 +177,7 @@ def get_default_pdf_selection_dict():
             "lists": {1: [], 2: [], 3: []},
             "names": {1: "Übungsblatt", 2: "Schularbeit", 3: "Nachschularbeit"},
             "enabled": {1: True, 2: True, 3: True},
-            "colors": {1: "#ffd6d6",2: "#fff3bf",3: "#d3f9d8"}
+            "colors": {1: "#d3f9d8",2: "#ffd6d6",3: "#fff3bf"}
         }
         for mode in ("lama", "cria")
     }
@@ -201,6 +201,8 @@ def load_pdf_selection_dict(path):
     for mode in data:
         data[mode]["lists"] = {int(k): v for k, v in data[mode]["lists"].items()}
         data[mode]["names"] = {int(k): v for k, v in data[mode]["names"].items()}
+        data[mode]["enabled"] = {int(k): v for k, v in data[mode]["enabled"].items()}
+        data[mode]["colors"] = {int(k): v for k, v in data[mode]["colors"].items()}
     return data
 
 # -----------------------------------------------------
@@ -226,8 +228,8 @@ def load_or_create_pdf_selection_file():
 dict_pdf_chosen_examples = load_or_create_pdf_selection_file()
 
 
-DEFAULT_COLORS = {
-    1: "#d3f9d8",  # grün
-    2: "#ffd6d6",  # rot
-    3: "#fff3bf",  # gelb
-}
+# DEFAULT_COLORS = {
+#     1: "#d3f9d8",  # grün
+#     2: "#ffd6d6",  # rot
+#     3: "#fff3bf",  # gelb
+# }

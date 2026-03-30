@@ -8010,6 +8010,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 gruppe_AB = self.temp_info[aufgabe][4]
             else:
                 gruppe_AB = True
+                
 
             button_AB.setChecked(gruppe_AB)
 

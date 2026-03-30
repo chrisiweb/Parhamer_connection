@@ -234,9 +234,9 @@ class CategoryHeaderWidget(QWidget):
 
 
         self._colors = [
-            QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get("1", "#d3f9d8")),
-            QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get("2", "#ffd6d6")),
-            QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get("3", "#fff3bf")),
+            QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get(1, "#d3f9d8")),
+            QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get(2, "#ffd6d6")),
+            QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get(3, "#fff3bf")),
         ]
 
 
@@ -246,8 +246,17 @@ class CategoryHeaderWidget(QWidget):
         #         if hexcol:
         #             self._colors[i] = QColor(hexcol)
 
-        self._labels = ["Übungsblatt", "Schularbeit", "Nachschularbeit"]
-        self._enabled = [True, True, True]  # standardmäßig alle aktiv
+        self._labels = [
+            self.dict_pdf_chosen_examples[self.typ]["names"][1],
+            self.dict_pdf_chosen_examples[self.typ]["names"][2],
+            self.dict_pdf_chosen_examples[self.typ]["names"][3],
+        ]
+
+        self._enabled = [
+            self.dict_pdf_chosen_examples[self.typ]["enabled"][1],
+            self.dict_pdf_chosen_examples[self.typ]["enabled"][2], 
+            self.dict_pdf_chosen_examples[self.typ]["enabled"][3],
+        ]  # standardmäßig alle aktiv
 
         grid = QGridLayout(self)
         grid.setContentsMargins(8, 8, 8, 8)
@@ -264,7 +273,7 @@ class CategoryHeaderWidget(QWidget):
         for i in range(3):
             # Checkbox
             chk = QCheckBox()
-            chk.setChecked(True)
+            chk.setChecked(self._enabled[i])
 
             chk.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
             # Indicator-Größe explizit auf DPI-freundliche Maße setzen:
@@ -393,7 +402,7 @@ class CategoryHeaderWidget(QWidget):
             # ✅ wichtig: erneut Stylesheet setzen, damit es NIE verloren geht
             lbl.setStyleSheet(self._label_style(self._colors[i], self._enabled[i]))
 
-        save_pdf_selection_dict(lama_pdf_selection_file, dict_pdf_chosen_examples)
+        save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
                         
     def _on_trash_clicked(self, index: int):
         self.trashClicked.emit(index)
@@ -496,6 +505,10 @@ class CategoryHeaderWidget(QWidget):
 
     def _on_label(self, index: int, text: str):
         self._labels[index] = text
+
+        self.dict_pdf_chosen_examples[self.typ]["names"][index+1] = text
+        save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples) 
+        
         self.labelChanged.emit(index, text)
 
     def _on_toggle(self, index: int, state: bool):
@@ -510,7 +523,9 @@ class CategoryHeaderWidget(QWidget):
         #     lbl.setStyleSheet(
         #         f"background:{base}; border:1px dashed #999; border-radius:4px; opacity:0.45; font-weight:bold;"
         #     )
+        self.dict_pdf_chosen_examples[self.typ]["enabled"][index+1] = state
 
+        save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)        
         self.categoryToggled.emit(index, state)
 
     # ---------- API ----------
@@ -863,6 +878,7 @@ class Ui_Dialog_pdfviewer(object):
         # self.icon_red    = make_square(QColor("#ffb4b4"))
         # self.icon_yellow = make_square(QColor("#ffeaa2"))        
         self.dict_pdf_chosen_examples = dict_pdf_chosen_examples
+        print(self.dict_pdf_chosen_examples)
         self.len_list_1 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][1])
         self.len_list_2 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][2])
         self.len_list_3 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][3])
