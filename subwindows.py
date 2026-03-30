@@ -1196,7 +1196,7 @@ class Ui_Dialog_individual_titlepage(object):
 
 
 class Ui_Dialog_ausgleichspunkte(object):
-    @report_exceptions
+    ##@report_exception.s
     def setupUi(
         self,
         Dialog,
@@ -1474,7 +1474,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # _list = [0,1,2]
         # _list.remove(index)
 
-    @report_exceptions
+    ##@report_exception.s
     def combobox_edit_changed(self):
         changes_detected, index = self.check_for_change()
 
@@ -3055,7 +3055,7 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
         # self.buttonBox_setup.accepted.connect(partial(self.save_setting, MainWindow.chosen_program))
 
 
-    @report_exceptions
+    ##@report_exception.s
     def combobox_ns_index_changed(self):
         if self.combobox_ns.currentIndex()==0:
             self.combobox_ns.setEditable(True)
@@ -4349,7 +4349,7 @@ class Ui_Dialog_Convert_To_Eps(object):
     #         _list.append(self.listWidget.item(x).text())
         
     #     return _list
-    @report_exceptions
+    ##@report_exception.s
     def search_pressed(self):
         try:
             os.path.dirname(self.MainWindow.saved_file_path)
@@ -4376,7 +4376,7 @@ class Ui_Dialog_Convert_To_Eps(object):
             # self.listWidget.addItems(filename[0])
             self.listWidget.setCurrentRow(-1)
 
-    @report_exceptions
+    ##@report_exception.s
     def convert_pressed(self):
         item_list = get_list_of_all_items(self.listWidget)
 
