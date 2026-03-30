@@ -4676,24 +4676,29 @@ class Ui_Dialog_import_sage(object):
         label = create_new_label(Dialog, "Import der Aufgabennummern")
         verticalLayout.addWidget(label)
 
+
         # ✅ ComboBox einfügen
         self.combo = QtWidgets.QComboBox(Dialog)
 
-        self.list_names = []
-        if self.dict_pdf_chosen_examples is not None:
-            if len(self.dict_pdf_chosen_examples[typ]["lists"][1]) > 0:
-                self.list_names.append(self.dict_pdf_chosen_examples[typ]["names"][1])
+        all_lists_empty = True
+        # ✅ Jede Liste nur hinzufügen, wenn sie nicht leer ist
+        if len(self.dict_pdf_chosen_examples[self.typ]["lists"][1]) > 0:
+            self.combo.addItem(self.dict_pdf_chosen_examples[self.typ]["names"][1], 1)
+            all_lists_empty = False
 
-            if len(self.dict_pdf_chosen_examples[typ]["lists"][2]) > 0:
-                self.list_names.append(self.dict_pdf_chosen_examples[typ]["names"][2])
+        if len(self.dict_pdf_chosen_examples[self.typ]["lists"][2]) > 0:
+            self.combo.addItem(self.dict_pdf_chosen_examples[self.typ]["names"][2], 2)
+            all_lists_empty = False
 
-            if len(self.dict_pdf_chosen_examples[typ]["lists"][3]) > 0:
-                self.list_names.append(self.dict_pdf_chosen_examples[typ]["names"][3])
+        if len(self.dict_pdf_chosen_examples[self.typ]["lists"][3]) > 0:
+            self.combo.addItem(self.dict_pdf_chosen_examples[self.typ]["names"][3], 3)
+            all_lists_empty = False
 
-        self.list_names.append("Manuelle Eingabe")
+        # ✅ immer hinzufügen
+        self.combo.addItem("Manuelle Eingabe", None)
 
-        for name in self.list_names:
-            self.combo.addItem(name)
+        # for name in self.list_names:
+        #     self.combo.addItem(name)
         
 
         # self.combo.addItems(self.list_names)
@@ -4702,26 +4707,67 @@ class Ui_Dialog_import_sage(object):
 
         # ✅ Textfeld, vorerst deaktiviert
         self.plainTextEdit = QtWidgets.QPlainTextEdit(Dialog)
-        if len(self.list_names)>1:
-            self.plainTextEdit.setEnabled(False)
-            self.plainTextEdit.setToolTip("Jede Aufgabenummer muss in eine neue Zeile eingefügt werden")
+
+        # if len(self.list_names)>1:
+        #     self.plainTextEdit.setEnabled(False)
+        #     self.plainTextEdit.setToolTip("Jede Aufgabenummer muss in eine neue Zeile eingefügt werden")
         verticalLayout.addWidget(self.plainTextEdit)
 
         # ✅ Verhalten beim Wechsel der ComboBox
         self.combo.currentIndexChanged.connect(self._on_combo_changed)
 
+
+        # ✅ Standard-Auswahl bestimmen
+        initial_index = self.combo.count() - 1     # default = manuelle Eingabe
+
+        for i in range(self.combo.count()):
+            list_id = self.combo.itemData(i)
+            if list_id is not None:
+                if len(self.dict_pdf_chosen_examples[self.typ]["lists"][list_id]) > 0:
+                    initial_index = i
+                    break
+
+        # ✅ ComboBox setzen
+        self.combo.setCurrentIndex(initial_index)
+
+        # ✅ Textfeld befüllen
+        list_id = self.combo.itemData(initial_index)
+        if list_id is not None:
+            data = self.dict_pdf_chosen_examples[self.typ]["lists"][list_id]
+            self.plainTextEdit.setPlainText("\n".join(data))
+        else:
+            self.plainTextEdit.clear()
+
+        self.plaintext_stylesheet_inactive="QPlainTextEdit {background: #dbdbdb;}"
+        self.plaintext_stylesheet_active="QPlainTextEdit {background: white;}"
+
+        if all_lists_empty == False:
+            self.plainTextEdit.setReadOnly(True)
+            self.plainTextEdit.setStyleSheet(self.plaintext_stylesheet_inactive)
+        else:
+            self.plainTextEdit.setToolTip("Jede Aufgabenummer muss in eine neue Zeile eingefügt werden")
+
         btn_import = create_new_button(Dialog, "Importieren", self.btn_import_clicked, icon="plus-square.svg")
         verticalLayout.addWidget(btn_import)
 
     def _on_combo_changed(self):
-        # "Manuelle Eingabe" ist die LETZTE Option
-        if self.combo.currentText() == "Manuelle Eingabe":
-            self.plainTextEdit.setEnabled(True)
-            self.plainTextEdit.setToolTip("Jede Aufgabenummer muss in eine neue Zeile eingefügt werden")
-        else:
-            self.plainTextEdit.setEnabled(False)
-            self.plainTextEdit.setToolTip("")
+        list_id = self.combo.itemData(self.combo.currentIndex())
+
+        if list_id is None:   # Manuelle Eingabe
+            self.plainTextEdit.setReadOnly(False)
             self.plainTextEdit.clear()
+            self.plainTextEdit.setToolTip("Jede Aufgabenummer muss in eine neue Zeile eingefügt werden")
+            self.plainTextEdit.setStyleSheet(self.plaintext_stylesheet_active)
+            return
+
+        # ✅ Listen-Auswahl
+        self.plainTextEdit.setReadOnly(True)
+        self.plainTextEdit.setToolTip("")
+        self.plainTextEdit.clear()
+        self.plainTextEdit.setStyleSheet(self.plaintext_stylesheet_inactive)
+        data = self.dict_pdf_chosen_examples[self.typ]["lists"][list_id]
+        self.plainTextEdit.setPlainText("\n".join(data))
+            
 
     def btn_import_clicked(self):
         selected_index = self.combo.currentIndex()
@@ -4737,19 +4783,8 @@ class Ui_Dialog_import_sage(object):
                 information_window("Die Importliste ist leer.")
                 return
         else:
-            # ✅ Hier später: Import aus der PDF‑Liste einbauen
-            # (z. B. direkt Zugriff auf deine dict‑Listen)
-            selected_index = self.combo.currentIndex()
-
-            # 0→1, 1→2, 2→3
-            list_num = selected_index + 1
-
-            self.list_of_tasks = self.dict_pdf_chosen_examples[self.typ]["lists"][list_num]
-
-
-            # self.list_of_tasks = self.dict_pdf_chosen_examples[
-            #     ["list_1", "list_2", "list_3"][selected_index]
-            # ]
+            list_id = self.combo.itemData(selected_index)
+            self.list_of_tasks = self.dict_pdf_chosen_examples[self.typ]["lists"][list_id]
 
         self.Dialog.accept()
         

@@ -8690,17 +8690,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     #@report_exception.s
     def buttonImport_sage_clicked(self):
         try:
-            dict_pdf_chosen_examples = create_pdf._PDF_UI.get_current_dict()
+            pdf_list = create_pdf._PDF_UI.get_current_dict()
         except AttributeError:
-            dict_pdf_chosen_examples = None
-
+            pdf_list = dict_pdf_chosen_examples
+            #use predefined dict_pdf_chosen_examples from config
+        print(pdf_list)
         Dialog = QtWidgets.QDialog(
             None,
             Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint,
         )
         ui = Ui_Dialog_import_sage()
 
-        ui.setupUi(Dialog, dict_pdf_chosen_examples, self.chosen_program)
+        ui.setupUi(Dialog, pdf_list, self.chosen_program)
         Dialog.exec()
 
         try:
