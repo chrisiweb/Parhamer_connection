@@ -878,7 +878,6 @@ class Ui_Dialog_pdfviewer(object):
         # self.icon_red    = make_square(QColor("#ffb4b4"))
         # self.icon_yellow = make_square(QColor("#ffeaa2"))        
         self.dict_pdf_chosen_examples = dict_pdf_chosen_examples
-        print(self.dict_pdf_chosen_examples)
         self.len_list_1 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][1])
         self.len_list_2 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][2])
         self.len_list_3 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][3])
