@@ -3,6 +3,7 @@ from config_start import path_programm
 import yaml
 import os
 import re
+import json
 
 
 
@@ -161,3 +162,72 @@ for klasse in list_klassen:
     exec('dict_{0}_name = config_loader(config_file,"dict_{0}_name")'.format(klasse))
 
 dict_unterkapitel = config_loader(config_file, "dict_unterkapitel")
+
+
+
+
+lama_pdf_selection_file = os.path.join(path_programm, "lama_pdf_selection_file.json")
+
+# -----------------------------------------------------
+# Default Dictionary (für NEU-Anlage)
+# -----------------------------------------------------
+def get_default_pdf_selection_dict():
+    return {
+        mode: {
+            "lists": {1: [], 2: [], 3: []},
+            "names": {1: "Übungsblatt", 2: "Schularbeit", 3: "Nachschularbeit"},
+            "enabled": {1: True, 2: True, 3: True},
+            "colors": {1: "#ffd6d6",2: "#fff3bf",3: "#d3f9d8"}
+        }
+        for mode in ("lama", "cria")
+    }
+
+# -----------------------------------------------------
+# ✅ JSON speichern
+# -----------------------------------------------------
+def save_pdf_selection_dict(path, data):
+    # JSON erlaubt keine int-Keys → JSON speichert sie als Strings
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+
+# -----------------------------------------------------
+# ✅ JSON laden (inkl. int-Konvertierung)
+# -----------------------------------------------------
+def load_pdf_selection_dict(path):
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    # Strings → ints konvertieren bei lists und names
+    for mode in data:
+        data[mode]["lists"] = {int(k): v for k, v in data[mode]["lists"].items()}
+        data[mode]["names"] = {int(k): v for k, v in data[mode]["names"].items()}
+    return data
+
+# -----------------------------------------------------
+# ✅ Datei prüfen / erstellen / laden
+# -----------------------------------------------------
+def load_or_create_pdf_selection_file():
+    if os.path.isfile(lama_pdf_selection_file):
+        # --- Datei existiert: laden ---
+        try:
+            return load_pdf_selection_dict(lama_pdf_selection_file)
+        except Exception:
+            # Falls Datei beschädigt → neu erstellen
+            default = get_default_pdf_selection_dict()
+            save_pdf_selection_dict(lama_pdf_selection_file, default)
+            return default
+    else:
+        # --- Datei existiert NICHT: neu erstellen ---
+        default = get_default_pdf_selection_dict()
+        save_pdf_selection_dict(lama_pdf_selection_file, default)
+        return default
+
+
+dict_pdf_chosen_examples = load_or_create_pdf_selection_file()
+
+
+DEFAULT_COLORS = {
+    1: "#d3f9d8",  # grün
+    2: "#ffd6d6",  # rot
+    3: "#fff3bf",  # gelb
+}

@@ -50,48 +50,6 @@ list_klassen = config_loader(config_file, "list_klassen")
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 
 
-
-# dict_pdf_chosen_examples = {
-#     'list_1' : [],
-#     'list_2' : [],
-#     'list_3' : [],
-#     'name_list_1' : 'Übungsblatt',
-#     'name_list_2' : 'Schularbeit',
-#     'name_list_3' : 'Nachschularbeit',
-# }
-dict_pdf_chosen_examples = {
-    mode: {
-        "lists": {
-            1: [],
-            2: [],
-            3: []
-        },
-        "names": {
-            1: "Übungsblatt",
-            2: "Schularbeit",
-            3: "Nachschularbeit"
-        }
-    }
-    for mode in ("lama", "cria")
-}
-
-# dict_pdf_chosen_examples = {
-#     'lama':{
-#     'list_1' : [],
-#     'list_2' : [],
-#     'list_3' : [],
-#     'name_list_1' : 'Übungsblatt',
-#     'name_list_2' : 'Schularbeit',
-#     'name_list_3' : 'Nachschularbeit'},
-#     'cria':{
-#     'list_1' : [],
-#     'list_2' : [],
-#     'list_3' : [],
-#     'name_list_1' : 'Übungsblatt',
-#     'name_list_2' : 'Schularbeit',
-#     'name_list_3' : 'Nachschularbeit'}
-# }
-
 class Worker_CreatePDF(QObject):
     finished = pyqtSignal()
     signalUpdateOutput = pyqtSignal(object, str)
@@ -957,10 +915,10 @@ def open_pdf_file(folder_name, file_name, typ, show_selection_list):
         _PDF_DIALOG.activateWindow()
 
 
-    try:
-        print(_PDF_UI.get_current_dict())
-    except Exception as e:
-        print(e)
+    # try:
+    #     print(_PDF_UI.get_current_dict())
+    # except Exception as e:
+    #     print(e)
 
 
     pdf_file_path = os.path.join(folder_name, file_name) + ".pdf"

@@ -29,8 +29,9 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon, QPainter
 from PyQt5.QtCore import Qt, pyqtSignal, QRect, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
-from config import logo_path
+from config import logo_path, save_pdf_selection_dict, lama_pdf_selection_file
 from PdfViewer import PdfViewer
+from create_new_widgets import create_new_label
 
 # ---------- Überschriften-Extraktion aus PDF ----------
 # ---------- Überschriften-Extraktion aus PDF (erweitert) ----------
@@ -222,19 +223,30 @@ class CategoryHeaderWidget(QWidget):
     categoryToggled = pyqtSignal(int, bool)     # 0..2, enabled
     trashClicked = pyqtSignal(int)   # index 0..2
 
-    def __init__(self, counts=None, parent=None):
+    def __init__(self, counts, dict_pdf_chosen_examples, typ, parent=None):
         super().__init__(parent)
-
+        self.dict_pdf_chosen_examples = dict_pdf_chosen_examples
+        self.typ = typ
         if counts is None:
             counts = [0, 0, 0]
 
         self._counts = counts
 
+
         self._colors = [
-            QColor("#d3f9d8"), # Grün
-            QColor("#ffd6d6"),  # Rot
-            QColor("#fff3bf"),  # Gelb
+            QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get("1", "#d3f9d8")),
+            QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get("2", "#ffd6d6")),
+            QColor(self.dict_pdf_chosen_examples[self.typ]["colors"].get("3", "#fff3bf")),
         ]
+        # print(self.dict_pdf_chosen_examples[self.typ]["colors"]["1"])
+
+
+        # if "colors" in dict_pdf_chosen_examples[self.typ]:
+        #     for i in range(3):
+        #         hexcol = dict_pdf_chosen_examples[self.typ]["colors"].get(i+1)
+        #         if hexcol:
+        #             self._colors[i] = QColor(hexcol)
+
         self._labels = ["Übungsblatt", "Schularbeit", "Nachschularbeit"]
         self._enabled = [True, True, True]  # standardmäßig alle aktiv
 
@@ -278,37 +290,25 @@ class CategoryHeaderWidget(QWidget):
 
 
             # Farbkastl als Label mit Zahl
-            lbl = QLabel()
+            count_value = self._counts[i]
+            lbl = create_new_label(
+                None,
+                str(count_value),
+                clickable=True
+                )
             lbl.setFixedSize(26, 20)  # etwas breiter, damit Zahl reinpasst
             lbl.setAlignment(Qt.AlignCenter)
-
+            lbl.clicked.connect(lambda ix=i: self._pick_color(ix))
             # Farbe + Zahl vorbereiten
-            count_value = self._counts[i]
+            
             # count_value = [self.parent().len_list_1,
             #             self.parent().len_list_2,
             #             self.parent().len_list_3][i]
 
-            lbl.setText(str(count_value))
+            # lbl.setText(str(count_value))
             lbl.setToolTip("")  # wird später dynamisch befüllt
 
-            lbl.setStyleSheet(
-                f"""
-                QLabel {{
-                    background: {self._colors[i].name()};
-                    border: 1px solid #c8c8c8;
-                    border-radius: 4px;
-                    font-weight: bold;
-                }}
-
-                QToolTip {{
-                    color: #F4F4F9;
-                    background-color: #2F4550;
-                    border: 0px;
-                    padding: 6px;
-                    font-size: 12px;
-                }}
-                """
-            )
+            lbl.setStyleSheet(self._label_style(self._colors[i], self._enabled[i]))
 
             self._btns.append(lbl)
             grid.addWidget(lbl, i, 1)
@@ -380,24 +380,21 @@ class CategoryHeaderWidget(QWidget):
         return any(self._enabled)
 
 
-    def updateCounts(self, counts, dict_pdf_chosen_examples=None):
+
+    def updateCounts(self, counts, dict_pdf_chosen_examples, typ):
         self._counts = counts
 
         for i, lbl in enumerate(self._btns):
             lbl.setText(str(counts[i]))
 
             if dict_pdf_chosen_examples:
-                # list index 0→1, 1→2, 2→3
-                list_num = i + 1
+                items = dict_pdf_chosen_examples[typ]["lists"][i+1]
+                lbl.setToolTip("\n".join(items) if items else "")
 
-                items = dict_pdf_chosen_examples["lists"][list_num]
+            # ✅ wichtig: erneut Stylesheet setzen, damit es NIE verloren geht
+            lbl.setStyleSheet(self._label_style(self._colors[i], self._enabled[i]))
 
-                if items:
-                    tooltip_text = "\n".join(f"{t}" for t in items)
-                else:
-                    tooltip_text = ""
-
-                lbl.setToolTip(tooltip_text)
+        save_pdf_selection_dict(lama_pdf_selection_file, dict_pdf_chosen_examples)
                         
     def _on_trash_clicked(self, index: int):
         self.trashClicked.emit(index)
@@ -407,35 +404,82 @@ class CategoryHeaderWidget(QWidget):
     #     for i, lbl in enumerate(self.header._btns):
     #         lbl.setText(str(counts[i]))
 
-    def _btn_style(self, qcolor: QColor, enabled: bool) -> str:
-        c = qcolor.name()
-        if enabled:
-            return (
-                "QPushButton {"
-                f" background:{c}; border:1px solid #c8c8c8; border-radius:4px;"
-                "}"
-                "QPushButton:hover { border-color:#888; }"
-                "QPushButton:pressed { border-color:#555; }"
-            )
-        else:
-            # deaktiviert: ausgrauen
-            return (
-                "QPushButton {"
-                f" background:{c}; border:1px dashed #bbbbbb; border-radius:4px; opacity:0.45;"
-                "}"
-            )
+    def _label_style(self, color: QColor, enabled: bool) -> str:
+        base = color.name()
+        border = "1px solid #c8c8c8" if enabled else "1px dashed #999"
+        opacity = "" if enabled else "opacity: 0.45;"
+
+        return f"""
+            QLabel {{
+                background: {base};
+                border: {border};
+                border-radius: 4px;
+                font-weight: bold;
+                {opacity}
+            }}
+
+            QToolTip {{
+                color: #F4F4F9;
+                background-color: #2F4550;
+                border: 0px;
+                padding: 6px;
+                font-size: 12px;
+            }}
+        """
 
 
     ### FARBAUSWAHL WORKING!!! >>>> OPTIONEN!
-    # def _pick_color(self, index: int):
-    #     # Farbe nur ändern lassen, auch wenn disabled – Anzeige bleibt jedoch gräulich,
-    #     # aber die definierte Farbe bleibt gespeichert (wird wieder aktiv, wenn reaktiviert).
-    #     start = self._colors[index]
-    #     col = QColorDialog.getColor(start, self, "Farbe wählen")
-    #     if col.isValid():
-    #         self._colors[index] = col
-    #         self._btns[index].setStyleSheet(self._btn_style(col, self._enabled[index]))
-    #         self.colorChanged.emit(index, col)
+    def _pick_color(self, index: int):
+        start = self._colors[index]
+
+        # 🔹 ColorDialog mit "Standard wiederherstellen"
+        dlg = QColorDialog(start, self)
+        dlg.setOption(QColorDialog.ShowAlphaChannel, False)
+
+        reset_btn = dlg.findChild(QPushButton, "qt_colorreset")
+        if reset_btn is None:
+            reset_btn = QPushButton("Standard wiederherstellen", dlg)
+            reset_btn.setObjectName("qt_colorreset")
+            dlg.layout().addWidget(reset_btn)
+
+            def reset_color():
+                # Standardfarben
+                defaults = {
+                    0: "#d3f9d8",
+                    1: "#ffd6d6",
+                    2: "#fff3bf"
+                }
+                col = QColor(defaults[index])
+                self._colors[index] = col
+                self._btns[index].setStyleSheet(self._label_style(col, self._enabled[index]))
+
+                # ✅ auch im JSON speichern
+                self.dict_pdf_chosen_examples[self.typ]["colors"][index+1] = col.name()
+
+                print(self.dict_pdf_chosen_examples)
+                save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
+                self.colorChanged.emit(index, col)
+                dlg.close()
+
+            reset_btn.clicked.connect(reset_color)
+
+        if dlg.exec_():
+            col = dlg.currentColor()
+            if col.isValid():
+                # ✅ 1. interne Farbe setzen
+                self._colors[index] = col
+
+                # ✅ 2. Kasten einfärben
+                self._btns[index].setStyleSheet(self._label_style(col, self._enabled[index]))
+
+                # ✅ 3. In JSON speichern
+                self.dict_pdf_chosen_examples[self.typ]["colors"][index+1] = col.name()
+                print(self.dict_pdf_chosen_examples)
+                save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
+
+                # ✅ 4. Items neu einfärben
+                self.colorChanged.emit(index, col)
+
 
     def _on_label(self, index: int, text: str):
         self._labels[index] = text
@@ -443,17 +487,16 @@ class CategoryHeaderWidget(QWidget):
 
     def _on_toggle(self, index: int, state: bool):
         self._enabled[index] = state
+        col = self._colors[index]
         lbl = self._btns[index]
         base = self._colors[index].name()
 
-        if state:
-            lbl.setStyleSheet(
-                f"background:{base}; border:1px solid #c8c8c8; border-radius:4px; font-weight:bold;"
-            )
-        else:
-            lbl.setStyleSheet(
-                f"background:{base}; border:1px dashed #999; border-radius:4px; opacity:0.45; font-weight:bold;"
-            )
+        # if state:
+        lbl.setStyleSheet(self._label_style(QColor(base), state))
+        # else:
+        #     lbl.setStyleSheet(
+        #         f"background:{base}; border:1px dashed #999; border-radius:4px; opacity:0.45; font-weight:bold;"
+        #     )
 
         self.categoryToggled.emit(index, state)
 
@@ -812,9 +855,22 @@ class Ui_Dialog_pdfviewer(object):
         self.len_list_3 = len(self.dict_pdf_chosen_examples[self.typ]['lists'][3])
 
         self.header = CategoryHeaderWidget(
-            counts=[self.len_list_1, self.len_list_2, self.len_list_3]
+            counts=[self.len_list_1, self.len_list_2, self.len_list_3],
+            dict_pdf_chosen_examples=self.dict_pdf_chosen_examples,
+            typ=self.typ
         )
 
+
+        # ✅ Farben aus JSON laden
+        saved_colors = self.dict_pdf_chosen_examples[self.typ]["colors"]
+        for i in range(3):
+            hexcol = saved_colors.get(i+1)
+            if hexcol:
+                col = QColor(hexcol)
+                self.header._colors[i] = col
+                self.header._btns[i].setStyleSheet(
+                    self.header._label_style(col, self.header._enabled[i])
+                )
 
         self.left_panel = QWidget()
         left_layout = QVBoxLayout(self.left_panel)
@@ -1022,7 +1078,7 @@ class Ui_Dialog_pdfviewer(object):
             self.len_list_1,
             self.len_list_2,
             self.len_list_3
-        ], self.dict_pdf_chosen_examples[self.typ])
+        ], self.dict_pdf_chosen_examples, self.typ)
 
 
         # 4) (optional) ganz nach oben springen
@@ -1117,9 +1173,9 @@ class Ui_Dialog_pdfviewer(object):
             self.dict_pdf_chosen_examples[self.typ]['names'][3] = text
 
 
-
+        save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
         # aktuell nur Info; später evtl. Tooltips/Badges etc.
-        pass
+        # pass
 
     # ----- Toolbar-Events -----
 
@@ -1282,7 +1338,7 @@ class Ui_Dialog_pdfviewer(object):
             self.len_list_1,
             self.len_list_2,
             self.len_list_3
-        ],self.dict_pdf_chosen_examples[self.typ])
+        ],self.dict_pdf_chosen_examples, self.typ)
 
         print(self.dict_pdf_chosen_examples)
 
@@ -1363,7 +1419,8 @@ class Ui_Dialog_pdfviewer(object):
             len(self.dict_pdf_chosen_examples[self.typ]["lists"][1]),
             len(self.dict_pdf_chosen_examples[self.typ]["lists"][2]),
             len(self.dict_pdf_chosen_examples[self.typ]["lists"][3]),
-        ], self.dict_pdf_chosen_examples[self.typ])
+        ], self.dict_pdf_chosen_examples, self.typ)
+        save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)
 
 
     def _restore_selections_from_dict(self):

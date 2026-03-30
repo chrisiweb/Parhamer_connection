@@ -7726,34 +7726,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
         else:
             self.lineedit_sg_upper_limit.setText(str(gesamtpunkte))
-            # self.lineedit_sg_lower_limit.setText(str(punkteverteilung_notenschluessel[0]))
-            # self.lineedit_g_upper_limit.setText(str(punkteverteilung_notenschluessel[0]-1))
-            # self.lineedit_g_lower_limit.setText(str(punkteverteilung_notenschluessel[1]))
-            # self.lineedit_b_upper_limit.setText(str(punkteverteilung_notenschluessel[1]-1))
-            # self.lineedit_b_lower_limit.setText(str(punkteverteilung_notenschluessel[2]))
-            # self.lineedit_g2_upper_limit.setText(str(punkteverteilung_notenschluessel[2]-1))
-            # self.lineedit_g2_lower_limit.setText(str(punkteverteilung_notenschluessel[3]))
 
-    # def get_number_ausgleichspunkte_gesamt(self):
-    #     number_ausgleichspkt_gesamt = 0
-    #     for aufgabe in self.list_alle_aufgaben_sage:
-    #         typ = get_aufgabentyp(self.chosen_program, aufgabe)
-    #         if typ == 2:
-    #             # collect_content(self, aufgabe)
-    #             aufgabe_total = get_aufgabe_total(aufgabe, "lama_2")
-    #             number = self.count_ausgleichspunkte(aufgabe_total["content"])
-    #             number_ausgleichspkt_gesamt += number
-
-    #     return number_ausgleichspkt_gesamt
-
-    # def update_beurteilungsraster(self):
-
-    #     punkteverteilung = self.get_punkteverteilung()
-    #     # number_ausgleichspunkte_gesamt = self.get_number_ausgleichspunkte_gesamt()
-    #     self.label_typ1_pkt.setText("Punkte Typ 1: {}".format(punkteverteilung[1]))
-    #     self.label_typ2_pkt.setText("Punkte Typ 2: {0}".format(punkteverteilung[2]))
-
-    # #@report_exception.s
     def update_punkte(self):
         gesamtpunkte = self.get_punkteverteilung()[0]
         num_typ1, num_typ2 = self.get_aufgabenverteilung()
@@ -7814,12 +7787,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             return False
 
-    # def count_ausgleichspunkte(self, content):
-    #     number = content.count("\ASubitem")
-    #     number = number + content.count("\Aitem")
-    #     number = number + content.count("fbox{A}")
-
-    #     return number
 
     def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
@@ -7877,44 +7844,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         gridLayout_gB.setColumnStretch(2, 1)
 
-        # af = aufgabe_total["af"]
-        # if  af == 'oa' or af == 'ta' or af == 'ko' or typ==2:
-        #     # widget_AB = create_new_groupbox(new_groupbox, "Gruppe")
-        #     widget_AB = QtWidgets.QWidget(new_groupbox)
-        #     # widget_AB.setSizePolicy(SizePolicy_fixed)
-        #     gridLayout_gB.addWidget(widget_AB, 0,1,2,1,QtCore.Qt.AlignRight)
-        #     horizontalLayout_widget_AB = create_new_horizontallayout(widget_AB)
-        #     horizontalLayout_widget_AB.setSpacing(0)
-
-        #     button_AB = create_new_button(widget_AB, "", still_to_define, "users.svg")
-        #     button_AB.setCheckable(True)
-        #     button_AB.toggle()
-        #     horizontalLayout_widget_AB.addWidget(button_AB)
-
-        #     label_AB = create_new_label(widget_AB, "")
-        #     label_AB.setPixmap(QtGui.QPixmap(get_icon_path("users.svg")))
-        #     label_AB.setFixedSize(QtCore.QSize(20,20))
-        #     label_AB.setScaledContents(True)
-        #     horizontalLayout_widget_AB.addWidget(label_AB)
-
-        #     checkbox_AB = create_new_checkbox(widget_AB, " ", True)
-        #     checkbox_AB.setSizePolicy(SizePolicy_fixed)
-        #     self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)] = checkbox_AB
-
-        #     try:
-        #         gruppe = aufgabe_total['gruppe']
-        #     except KeyError:
-        #         gruppe = False
-
-        #     if gruppe == False:
-        #         checkbox_AB.setChecked(False)
-        #         checkbox_AB.setEnabled(False)
-        #         checkbox_AB.setToolTip("Derzeit ist für diese Aufgabe keine Gruppen-Variation verfügbar.")
-        #     else:
-        #         checkbox_AB.setToolTip("Diese Aufgabe wird bei unterschiedlichen Gruppen\ngeringfügig (z.B. durch veränderte Zahlen) variiert.")
-
-        #     horizontalLayout_widget_AB.addWidget(checkbox_AB)
-
+ 
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
         groupbox_pkt.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)

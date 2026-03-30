@@ -930,7 +930,7 @@ def setup_stackSage(self):
     )
 
 
-    self.buttonImport_sage = create_new_button(self.stackSage, "Aufgabenliste hinzufügen",self.buttonImport_sage_clicked, icon= "upload.svg")
+    self.buttonImport_sage = create_new_button(self.stackSage, "Aufgabenliste importieren",self.buttonImport_sage_clicked, icon= "upload.svg")
     
     ####################
     self.verticalLayout_sage.addWidget(self.lineEdit_number)
