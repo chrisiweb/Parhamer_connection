@@ -439,7 +439,8 @@ class Ui_MainWindow(object):
         self.list_copy_images = []
         self.dict_picture_path = {}
         self.dict_aufgaben_wizard = {}
-
+        self.cache_groupbox = {}
+        self.icon_cache = {}
         hashed_pw = read_credentials()
         self.developer_mode_active = False
         self.no_saved_changes_sage = True
@@ -7956,7 +7957,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             language = "DE"
 
         button_translation.setText(language)
-        button_translation.setIcon(QtGui.QIcon(get_icon_path("globe.svg")))
+        button_translation.setIcon(self.get_icon_cached("globe.svg"))
         button_translation.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         button_translation.clicked.connect(
             lambda: self.btn_translation_pressed(button_translation, aufgabe)
@@ -8020,7 +8021,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     QtGui.QIcon(get_icon_path("users.svg", color="ghostwhite"))
                 )
             else:
-                button_AB.setIcon(QtGui.QIcon(get_icon_path("users.svg")))
+                button_AB.setIcon(self.get_icon_cached("users.svg"))
             # button_AB.setIcon(QtGui.QIcon(get_icon_path("users.svg")))
             button_AB.clicked.connect(lambda: self.btn_AB_pressed(button_AB, aufgabe))
 
@@ -8031,7 +8032,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             new_groupbox, "", partial(self.btn_up_pressed, aufgabe)
         )
         button_up.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        button_up.setIcon(QtGui.QIcon(get_icon_path("arrow-up-circle.svg")))
+        button_up.setIcon(self.get_icon_cached("arrow-up-circle.svg"))
         button_up.setSizePolicy(SizePolicy_fixed)
         # button_up = create_standard_button(
         #     new_groupbox,
@@ -8051,7 +8052,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             new_groupbox, "", partial(self.btn_down_pressed, aufgabe)
         )
         button_down.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        button_down.setIcon(QtGui.QIcon(get_icon_path("arrow-down-circle.svg")))
+        button_down.setIcon(self.get_icon_cached("arrow-down-circle.svg"))
         button_down.setSizePolicy(SizePolicy_fixed)
 
         # button_down = create_standard_button(
@@ -8078,7 +8079,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             "",
             lambda: self.pushButton_edit_pressed(aufgabe),
         )
-        pushbutton_edit.setIcon(QtGui.QIcon(get_icon_path("edit.svg")))
+        pushbutton_edit.setIcon(self.get_icon_cached("edit.svg"))
         pushbutton_edit.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         # pushbutton_ausgleich.setStyleSheet("padding: 6px")
         pushbutton_edit.setSizePolicy(SizePolicy_maximum)
@@ -8088,7 +8089,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         button_delete = create_new_button(
             new_groupbox, "", partial(self.btn_delete_pressed, aufgabe)
         )
-        button_delete.setIcon(QtGui.QIcon(get_icon_path("trash-2.svg")))
+        button_delete.setIcon(self.get_icon_cached("trash-2.svg"))
         button_delete.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         button_delete.setSizePolicy(SizePolicy_fixed)
 
@@ -8148,6 +8149,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
 
         new_groupbox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+
+        self.cache_groupbox[aufgabe] = new_groupbox
         return new_groupbox
 
     def get_klasse(self, mode="sage"):
@@ -8205,10 +8208,40 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     for image in matches:
         #         self.list_copy_images.append(image)
 
+    def update_groupbox_style(self, groupbox, index, typ):
+        # Typ 2 hat eigenes Stylesheet
+        if typ == 2:
+            if self.display_mode == 0:
+                stylesheet = StyleSheet_typ2
+            else:
+                stylesheet = StyleSheet_typ2_dark_mode
+            groupbox.setStyleSheet(stylesheet)
+            return
+
+        # Typ 1 / normale Aufgaben → alternierende Farben
+        if index % 2 == 1:
+            # dunklere / alternative Farbe
+            if self.display_mode == 0:
+                stylesheet = StyleSheet_aufgaben_groupbox
+            else:
+                stylesheet = StyleSheet_aufgaben_groupbox_dark_mode
+        else:
+            # Standardfarbe (kein Stylesheet nötig oder optional leer)
+            stylesheet = ""
+
+        groupbox.setStyleSheet(stylesheet)
+
+
+    
+    def get_icon_cached(self, name, color='charcoal'):
+        key = (name, color)
+        if key not in self.icon_cache:
+            self.icon_cache[key] = QtGui.QIcon(get_icon_path(name, color=color))
+        return self.icon_cache[key]
+
     #@report_exception.s
     def build_aufgaben_schularbeit(self, aufgabe, delete=False):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
         # try:
         #     self.gridLayout_8.removeItem(self.spacerItem)
         # except AttributeError:
@@ -8220,6 +8253,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             list_index = 0
             layout = self.verticalLayout_scrollArea_sage_typ1
+        
         index = self.list_alle_aufgaben_sage[list_index].index(aufgabe)
 
         if index == 0:
@@ -8256,11 +8290,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     "Bitte versuchen Sie es erneut oder kontaktieren Sie uns unter unter lama.helpme@gmail.com.",
                 )
                 continue
-            neue_aufgaben_box = self.create_neue_aufgaben_box(
-                index_item, item, aufgabe_total
-            )
 
+            # 1. Widget wiederverwenden wenn möglich
+            if item in self.cache_groupbox:
+                neue_aufgaben_box = self.cache_groupbox[item]
+            else:
+                neue_aufgaben_box = self.create_neue_aufgaben_box(
+                    index_item, item, aufgabe_total
+                )
+
+            # 2. Widget ins Layout einfügen
             layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
+
+            # 3. Farben neu setzen abhängig vom Index
+            self.update_groupbox_style(neue_aufgaben_box, index_item, typ)
+
             # if typ== 2:
             #     layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
             # else:
@@ -8584,8 +8628,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if not is_empty(self.list_alle_aufgaben_sage[1]):
             self.scrollAreaWidgetContents_typ2.show()
 
+        self.scrollAreaWidgetContents_typ1.setUpdatesEnabled(False)
+        self.scrollAreaWidgetContents_typ2.setUpdatesEnabled(False)
+
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
 
+        
+        self.scrollAreaWidgetContents_typ1.setUpdatesEnabled(True)
+        self.scrollAreaWidgetContents_typ1.update()
+        self.scrollAreaWidgetContents_typ2.setUpdatesEnabled(True)
+        self.scrollAreaWidgetContents_typ2.update()
+        
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
         self.check_for_autosave()
