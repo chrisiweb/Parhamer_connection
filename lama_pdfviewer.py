@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import (
     QToolBar, QLineEdit, QSizePolicy, QShortcut,
     QListWidget, QListWidgetItem, QSplitter, QHBoxLayout,
     QStyledItemDelegate, QStyle, QStyleOptionViewItem,
-    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QAction, QToolButton, QMenu, QMessageBox, QDialogButtonBox
+    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QAction, QToolButton, QMenu, QMessageBox, QDialogButtonBox, QAbstractItemView
 )
 from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon, QPainter
 from PyQt5.QtCore import Qt, pyqtSignal, QRect, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
@@ -1209,11 +1209,32 @@ class Ui_Dialog_pdfviewer(object):
 
 
     def _on_current_page_changed(self, page_one_based: int):
-        """Vom Viewer beim Scrollen/Wechseln gefeuert -> Spinbox nachziehen."""
+        """Vom Viewer beim Scrollen/Wechseln gefeuert -> Spinbox + linke Liste aktualisieren."""
+
+        # ---- Spinbox aktualisieren ----
         if self.spin_page.value() != page_one_based:
             self.spin_page.blockSignals(True)
             self.spin_page.setValue(page_one_based)
             self.spin_page.blockSignals(False)
+
+        # ---- Linke Liste automatisch zur aktuellen PDF-Seite bewegen ----
+        index = page_one_based - 1   # Liste ist 0-basiert
+
+        if 0 <= index < self.list.count():
+
+            # Schleifen verhindern
+            self.list.blockSignals(True)
+
+            # Auswahl auf das Beispiel setzen (blauer Rahmen)
+            self.list.setCurrentRow(index)
+
+            # Automatisch scrollen -> schön zentriert, wie Sumatra
+            self.list.scrollToItem(
+                self.list.item(index),
+                QAbstractItemView.PositionAtCenter
+            )
+
+            self.list.blockSignals(False)
 
 
     def _on_spin_value_changed(self, val: int):
