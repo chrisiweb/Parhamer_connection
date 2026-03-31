@@ -1432,13 +1432,39 @@ class Ui_Dialog_pdfviewer(object):
         if not item:
             return
 
-        # Tag-Set holen
+        # aktive Kategorien prüfen
+        enabled = self.header._enabled               # [bool, bool, bool]
+        idx_enabled = [i for i, e in enumerate(enabled) if e]
+
+        # Tags holen oder initialisieren
         tags = item.data(Qt.UserRole + 5)
         if tags is None:
             tags = set()
             item.setData(Qt.UserRole + 5, tags)
 
-        # Kategorien abhängig vom Header erstellen
+        # ✅ FALL 0 → Keine Kategorie aktiv → NICHTS tun
+        if len(idx_enabled) == 0:
+            return
+
+        # ✅ FALL 1 → genau eine Kategorie aktiv → direkt taggen
+        if len(idx_enabled) == 1:
+            index = idx_enabled[0]          # 0, 1 oder 2
+            tagname = ["uebung", "schularbeit", "nachschularbeit"][index]
+
+            # toggeln wie im Popup
+            if tagname in tags:
+                tags.remove(tagname)
+            else:
+                tags.add(tagname)
+
+            item.setData(Qt.UserRole + 5, tags)
+
+            # UI + Dictionary aktualisieren
+            self._update_item_icons(item)
+            self._update_dict_for_item(item)
+            return
+
+        # ✅ FALL 2 → mehrere Kategorien aktiv → Popup anzeigen
         categories = []
         if self.header.categoryEnabled(0):
             categories.append(("uebung", self.header.labels()[0]))
@@ -1446,8 +1472,6 @@ class Ui_Dialog_pdfviewer(object):
             categories.append(("schularbeit", self.header.labels()[1]))
         if self.header.categoryEnabled(2):
             categories.append(("nachschularbeit", self.header.labels()[2]))
-
-        # Popup erzeugen
 
         def on_tag_change():
             self._update_item_icons(item)
@@ -1460,8 +1484,6 @@ class Ui_Dialog_pdfviewer(object):
             on_change=on_tag_change
         )
 
-
-        # Popup anzeigen
         global_pos = self.list.viewport().mapToGlobal(pos)
         popup.move(global_pos)
         popup.show()
