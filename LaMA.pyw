@@ -46,6 +46,7 @@ class SafeApplication(QApplication):
         try:
             return super().notify(receiver, event)
         except RuntimeError as e:
+            print(e)
             # löschen von QObjects ist normal
             if "wrapped C/C++ object" in str(e):
                 return False

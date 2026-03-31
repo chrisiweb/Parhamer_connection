@@ -19,6 +19,7 @@ class PdfCanvas(QWidget):
         # ✅ Original (vom Worker) + skaliert (für Anzeige/Auswahl)
         self.cache_raw = {}
         self.cache_scaled = {}
+        self.cache_preview = {}
 
         # ✅ Auswahl
         self._selecting = False
@@ -31,6 +32,14 @@ class PdfCanvas(QWidget):
         self._compute_positions()
         self.setFocusPolicy(Qt.StrongFocus)
         self.setCursor(Qt.IBeamCursor)
+
+    
+        self.page_sizes = [
+            (page.rect.width, page.rect.height)
+            for page in self.doc
+        ]
+        self._last_quick_zoom = self.zoom
+        
 
     # -------------------------------------------------------
     # Layout
@@ -93,12 +102,14 @@ class PdfCanvas(QWidget):
 
 
 
-            page = self.doc[index]
-            page_key = (index, int(self.zoom * 100))
-
-
             
-            page_width = int(page.rect.width * self.zoom) + 2 * self.PAGE_PADDING
+            # page_key = (index, int(self.zoom * 100))
+
+
+
+            page_w_raw, page_h_raw = self.page_sizes[index]
+            page_width = int(page_w_raw * self.zoom) + 2 * self.PAGE_PADDING
+
             x_page = max(0, (self.width() - page_width) // 2) #links zentriert: = 40
 
             if index in self.cache_scaled:
@@ -106,8 +117,9 @@ class PdfCanvas(QWidget):
                 scaled_w = scaled.width()
                 scaled_h = scaled.height()
             else:
-                scaled_w = int(page.rect.width * self.zoom)
-                scaled_h = int(page.rect.height * self.zoom)
+                scaled_w = int(page_w_raw * self.zoom)
+                scaled_h = int(page_h_raw * self.zoom)
+
 
             # Karte
             p.fillRect(QRect(x_page, int(y),
@@ -123,24 +135,47 @@ class PdfCanvas(QWidget):
             # Pixmap anzeigen — PURE SUMATRA-LOGIK:
             scaled = self.cache_scaled.get(index)
 
+            # Sollte scaled fehlen, preview bevorzugen
+            if index not in self.cache_scaled and index in self.cache_preview:
+                scaled = self.cache_preview[index].scaled(
+                    scaled_w, scaled_h,
+                    Qt.KeepAspectRatio,
+                    Qt.FastTransformation
+                )
+
+
             if scaled is not None:
                 p.drawPixmap(
                     x_page + self.PAGE_PADDING,
                     y + self.PAGE_PADDING,
-                    self.cache_scaled[index]
+                    scaled  # ✅ wir nutzen die Variable, nicht self.cache_scaled[index]
                 )
+
             else:
-                # Kein scaled-Bild verfügbar → grauer Platzhalter.
-                # ABER: quick_scale wird beim nächsten paintEvent scaled erzeugen!
-                p.fillRect(
-                    QRect(
+                preview = self.cache_preview.get(index)
+                if preview:
+                    # Preview hochskalieren, sehr schnell
+                    p.drawPixmap(
                         x_page + self.PAGE_PADDING,
                         int(y) + self.PAGE_PADDING,
-                        scaled_w,
-                        scaled_h
-                    ),
-                    QColor("#d0d0d0")
-                )
+                        preview.scaled(
+                            scaled_w, scaled_h,
+                            Qt.KeepAspectRatio,
+                            Qt.FastTransformation
+                        )
+                    )
+                else:
+                    # allererste Anzeige -> grauer Fallback
+                    p.fillRect(
+                        QRect(
+                            x_page + self.PAGE_PADDING,
+                            int(y) + self.PAGE_PADDING,
+                            scaled_w,
+                            scaled_h
+                        ),
+                        QColor("#d0d0d0")
+                    )
+
             # else:
             #     # Placeholder
             #     p.fillRect(
@@ -398,6 +433,19 @@ class PdfCanvas(QWidget):
         # raw pixmap speichern
         self.cache_raw[(page_index, zoom_int)] = QPixmap.fromImage(qimage)
 
+        # --- PREVIEW (Low-Res) erstellen ---
+        page_w_raw, page_h_raw = self.page_sizes[page_index]
+        preview_w = max(50, int(page_w_raw * self.zoom / 4))
+        preview_h = max(50, int(page_h_raw * self.zoom / 4))
+
+        self.cache_preview[page_index] = self.cache_raw[(page_index, zoom_int)].scaled(
+            preview_w, preview_h,
+            Qt.KeepAspectRatio,
+            Qt.FastTransformation
+        )
+
+
+        positions_need_update = False
         # skaliertes Bild anhand aktuellem Zoom neu erzeugen
         if zoom_int == int(self.zoom * 100):
             page = self.doc[page_index]
@@ -411,6 +459,9 @@ class PdfCanvas(QWidget):
             )
 
             self.cache_scaled[page_index] = scaled
+            positions_need_update = True
+
+        if positions_need_update:    
             self._compute_positions()  
         self.update()
 
@@ -424,6 +475,9 @@ class PdfCanvas(QWidget):
 
 
     def quick_scale(self):
+        if abs(self.zoom - self._last_quick_zoom) < 0.01:
+            return  # ✅ Kein neues Skalieren nötig
+
         if not self.cache_raw:
             return
 
@@ -441,7 +495,12 @@ class PdfCanvas(QWidget):
                 latest_raw_per_page[page_index] = (zoom_int, raw)
 
         # ✅ skaliere neueste RAWs
+
+        vis = set(self.visible_pages())
         for page_index, (_, raw_pixmap) in latest_raw_per_page.items():
+            if page_index not in vis:
+                continue  # ✅ Nicht sichtbare Seiten ignorieren
+
             page = self.doc[page_index]
 
             sw = int(page.rect.width * self.zoom)
@@ -475,3 +534,17 @@ class PdfCanvas(QWidget):
         except:
             pass
         super().closeEvent(e)
+
+
+
+    def visible_pages(self):
+        scrollarea = self.parent().parent()
+        top = scrollarea.verticalScrollBar().value()
+        bottom = top + scrollarea.viewport().height()
+
+        visible = []
+        for i, (y, h) in enumerate(self.page_positions):
+            if y + h >= top - 200 and y <= bottom + 200:
+                visible.append(i)
+        return visible
+

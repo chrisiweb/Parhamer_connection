@@ -59,8 +59,10 @@ class RenderWorker(QObject):
         # Ersetze queue durch neue Jobs
         self.queue = new_queue
 
-        if not self._busy:
-            QTimer.singleShot(0, self._process_next)
+
+        self._busy = False
+        QTimer.singleShot(0, self._process_next)
+
 
     def stop(self):
         self._busy = False
