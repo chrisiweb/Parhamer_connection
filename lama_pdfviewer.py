@@ -336,6 +336,7 @@ class CategoryHeaderWidget(QWidget):
 
             # Editierbarer Titel
             edit = QLineEdit(self._labels[i])
+            edit.setEnabled(self._enabled[i])
             edit.setPlaceholderText("Bezeichnung eingeben…")
             edit.textEdited.connect(lambda txt, ix=i: self._on_label(ix, txt))
             self._edits.append(edit)
@@ -513,16 +514,13 @@ class CategoryHeaderWidget(QWidget):
 
     def _on_toggle(self, index: int, state: bool):
         self._enabled[index] = state
+        self._edits[index].setEnabled(state)
         col = self._colors[index]
         lbl = self._btns[index]
         base = self._colors[index].name()
 
-        # if state:
         lbl.setStyleSheet(self._label_style(QColor(base), state))
-        # else:
-        #     lbl.setStyleSheet(
-        #         f"background:{base}; border:1px dashed #999; border-radius:4px; opacity:0.45; font-weight:bold;"
-        #     )
+
         self.dict_pdf_chosen_examples[self.typ]["enabled"][index+1] = state
 
         save_pdf_selection_dict(lama_pdf_selection_file, self.dict_pdf_chosen_examples)        
