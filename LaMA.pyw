@@ -2987,15 +2987,19 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 if mode == "creator":
                     self.groupBox_grundkompetenzen_cr.setEnabled(False)
             elif typ == 2:
+                print(zusatzthemen_beschreibung)
                 for i, gk in enumerate(aufgabe_total["themen"]):
                     short_gk = shorten_gk(gk)
-
+                    print(short_gk)
                     if short_gk in zusatzthemen_beschreibung:
-                        checkbox_gk = "checkbox_creator_themen_{}".format(short_gk)
+                        print(True)
+
+                        checkbox_gk = "checkbox_creator_themen_{0}".format(short_gk)
+                        self.dict_widget_variables[checkbox_gk].setChecked(True)
                         if i == 0:
                             index = list_comboBox_gk.index("Zusatzthemen")
                     else:
-                        checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
+                        checkbox_gk = "checkbox_creator_gk_{0}".format(short_gk)
 
                         try:
                             if i == 0:
@@ -3004,10 +3008,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                                 )
                             self.dict_widget_variables[checkbox_gk].setChecked(True)
                         except (ValueError, KeyError) as error:
+
                             warning_window(
                                 f"Die geöffnete Aufgabe {aufgabe} ist fehlerhaft!",
-                                "Bitte melden Sie dies unter lama.helpme@gmail.com, damit der Fehler behoben werden kann. Vielen Dank!",
-                                informative_text=f"Fehlermeldung:\n\n{error}",
+                                f"Bitte melden Sie dies unter lama.helpme@gmail.com, damit der Fehler behoben werden kann. Vielen Dank!\n\n ValueError, KeyError: {error}",
                             )
 
                 # self.tab_widget_gk_cr.setCurrentIndex(index)
