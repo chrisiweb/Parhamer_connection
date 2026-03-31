@@ -822,6 +822,14 @@ class TagPopup(QWidget):
         else:
             super().keyPressEvent(ev)
 
+class _BlockNumberNavigation(QObject):
+    def eventFilter(self, obj, ev):
+        if ev.type() == QEvent.KeyPress:
+            # 1,2,3 sollen NICHT die Auswahl im QListWidget verändern
+            if ev.key() in (Qt.Key_1, Qt.Key_2, Qt.Key_3):
+                return True  # Event wird abgefangen → NICHT weitergeben
+        return False
+
 
 class Ui_Dialog_pdfviewer(object):
     ROLE_TARGET = Qt.UserRole          # (page, y_ratio)
@@ -1060,6 +1068,10 @@ class Ui_Dialog_pdfviewer(object):
         self._pressFilter = _PressStateFilter(vp)  # QObject-Filter, parent = viewport
         vp.installEventFilter(self._pressFilter)
         self.list.itemClicked.connect(self._on_task_clicked)
+
+        # verhindert, dass 1/2/3 die Listen-Auswahl verändern
+        self._numberBlocker = _BlockNumberNavigation()
+        self.list.installEventFilter(self._numberBlocker)
 
         # Header-Änderungen -> Anzeige aktualisieren
         self.header.categoryToggled.connect(self._on_category_toggled)
