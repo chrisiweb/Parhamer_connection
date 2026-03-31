@@ -85,6 +85,18 @@ class PdfViewer(QWidget):
     
 
     def load_document(self, pdf_path):
+
+        try:
+            self.worker.stop()
+        except:
+            pass
+
+        # HARTE ABKÜHLUNG: Queue leeren und alle alten Renderjobs verwerfen
+        try:
+            self.worker.pending_pages.clear()
+        except:
+            pass
+
         """
         Lädt ein neues PDF und ersetzt sauber das alte Dokument.
         """

@@ -430,6 +430,20 @@ class PdfCanvas(QWidget):
 
     # -------------------------------------------------------
     def insert_rendered(self, page_index, zoom_int, qimage):
+
+        # --- 0) Seite existiert noch? ---
+        if page_index < 0 or page_index >= len(self.page_positions):
+            return  # verwerfen, Worker ist zu spät
+
+        # --- 1) PDF hat sich geändert? ---
+        expected_pages = len(self.doc)
+        if page_index >= expected_pages:
+            return  # Ergebnis gehört zum alten PDF
+
+        # --- 2) Zoomstufe stimmt noch? ---
+        if zoom_int != int(self.zoom * 100):
+            return  # altes Render-Ergebnis, verwerfen
+
         # raw pixmap speichern
         self.cache_raw[(page_index, zoom_int)] = QPixmap.fromImage(qimage)
 
