@@ -86,6 +86,18 @@ class PdfViewer(QWidget):
 
     def load_document(self, pdf_path):
 
+        # Worker sicher stoppen
+        try: self.worker.rendered.disconnect()
+        except: pass
+
+        try: self.worker.stop()
+        except: pass
+
+        try:
+            self.thread.quit()
+            self.thread.wait(200)
+        except: pass
+
         try:
             self.worker.stop()
         except:
@@ -321,13 +333,16 @@ class PdfViewer(QWidget):
             self.worker.rendered.disconnect()
         except:
             pass
+
         try:
-            self.worker.stop()
+            self.worker.stop()        # MUSS existieren – siehe unten
         except:
             pass
+
         try:
             self.thread.quit()
-            self.thread.wait()
+            self.thread.wait(200)
         except:
             pass
+
         super().closeEvent(e)
