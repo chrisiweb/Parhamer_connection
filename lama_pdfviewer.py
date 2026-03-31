@@ -413,7 +413,7 @@ class CategoryHeaderWidget(QWidget):
     #         lbl.setText(str(counts[i]))
 
     def _label_style(self, color: QColor, enabled: bool) -> str:
-        base = color.name()
+        base = color.name() if enabled else "#dbdbdb"
         border = "1px solid #c8c8c8" if enabled else "1px dashed #999"
         opacity = "" if enabled else "opacity: 0.45;"
 
@@ -730,6 +730,8 @@ class TagPopup(QWidget):
 
     def __init__(self, parent, tags: set, categories: list, on_change):
         super().__init__(parent, Qt.Popup)
+        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocus()
         self.tags = tags
         self.on_change = on_change
         self.categories = categories   # [(tagname, label), ...]
@@ -757,6 +759,31 @@ class TagPopup(QWidget):
 
         ## Schließt nach der Auwahl
         self.close()
+
+
+    def keyPressEvent(self, ev):
+        key = ev.key()
+
+        # 1,2,3 → die drei Kategorien toggeln
+        if key in (Qt.Key_1, Qt.Key_2, Qt.Key_3):
+            index = key - Qt.Key_1  # 0,1,2
+
+            if 0 <= index < len(self.categories):
+                tagname, _ = self.categories[index]
+
+                # Toggle wie Checkbox
+                if tagname in self.tags:
+                    self.tags.remove(tagname)
+                else:
+                    self.tags.add(tagname)
+
+                # Callback ausführen
+                self.on_change()
+
+            # Popup sofort schließen (genau wie bei Checkbox-Klick)
+            self.close()
+        else:
+            super().keyPressEvent(ev)
 
 
 class Ui_Dialog_pdfviewer(object):
