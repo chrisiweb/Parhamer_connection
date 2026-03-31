@@ -106,6 +106,10 @@ class PdfCanvas(QWidget):
             # page_key = (index, int(self.zoom * 100))
 
 
+            # ❗ SAFETY: Wenn Canvas in einem alten Zustand ist → einfach überspringen
+            if index >= len(self.page_sizes):
+                continue
+
 
             page_w_raw, page_h_raw = self.page_sizes[index]
             page_width = int(page_w_raw * self.zoom) + 2 * self.PAGE_PADDING
@@ -430,7 +434,6 @@ class PdfCanvas(QWidget):
 
     # -------------------------------------------------------
     def insert_rendered(self, page_index, zoom_int, qimage):
-
 
         # --- SAFETY: Seite existiert noch? ---
         if page_index < 0 or page_index >= len(self.page_sizes):

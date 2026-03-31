@@ -32,41 +32,64 @@ from PyQt5.QtCore import Qt, pyqtSignal, QRect, QModelIndex, QEvent, QTranslator
 from config import logo_path, save_pdf_selection_dict, lama_pdf_selection_file
 from PdfViewer import PdfViewer
 from create_new_widgets import create_new_label
-
 # ---------- Überschriften-Extraktion aus PDF ----------
 # ---------- Überschriften-Extraktion aus PDF (erweitert) ----------
 import re
 
 # 1) „AG/WS/AN … 1.4 - 3“-artige Muster (wie bisher)
-_HEADING_CODED = re.compile(
-    r"""(?xmi)                               # x: verbose, m: ^ matcht Zeilenbeginn, i: case-insensitive
-    ^                                        # Zeilenanfang
-    (?P<full>
-        (?P<prefix>[A-ZÄÖÜ]{2,}(?:-[A-Z])?)  # AG, WS, AN, AG-L, …
-        \s*
-        (?P<chap>\d+(?:\.\d+)*)              # 1.4, 2.10.3, …
-        \s*[-–—]\s*                          # Bindestrich (alle Varianten)
-        (?P<num>\d+)                         # laufende Nummer
-        (?:\b.*)?                            # evtl. weiterer Titeltext
-    )
-    $                                        # Zeilenende
-    """
-)
+# ALLE erlaubten Aufgaben-Formate in EINER Regex
 
-# 2) „8 - Haber'sche Regel“-artige Muster (zahlbasierte Überschrift),
-#    aber KEINE Seitenangaben wie „1 / 18“ und keine leeren Titel
-_HEADING_NUMERIC = re.compile(
+_HEADING = re.compile(
     r"""(?xmi)
-    ^                                  # Zeilenanfang
+    ^
     (?P<full>
-        (?P<num>\d{1,3})               # 1..3-stellige Nummer (anpassbar)
-        \s*[-–—]\s*                    # Bindestrich
-        (?P<title>                     # Titel: keine Slash-Zeilen (z.B. '1 / 18')
-            (?![^/\n]*\s/\s*\d+\b)     # negative lookahead: keine '… / …'
-            [^\n]{1,120}               # etwas Text (max. 120 Zeichen, anpassbar)
+
+        #######################################################
+        # (A) Kapitelbasierte Aufgaben: AG/WS/AN/FA 1.1 - 3...
+        #######################################################
+        (?:
+            (?P<prefixA>AG|WS|AN|FA)        # feste Präfixe
+            \s+
+            (?P<chapter>\d+(?:\.\d+)*)      # Kapitelnummer
+            \s*[-–—]\s*
+            (?P<numA>
+                \d+(?:\[\d+\])?             # 3 oder 3[1]
+              | [il]\.\d+                   # i.74 oder l.74
+            )
+            (?:\s*[-–—]\s*.*)?              # optionaler Titel
         )
+
+        |
+
+        #######################################################
+        # (B) Zusatzthemen: KKK - 1 - Titel, LGM1 - i.74 ...
+        #######################################################
+        (?:
+            (?P<prefixB>[A-Z][A-Z0-9]{1,})  # beliebiges Kürzel ≥2 Zeichen
+            \s*[-–—]\s*
+            (?P<numB>
+                \d+(?:\[\d+\])?
+              | [il]\.\d+
+            )
+            (?:\s*[-–—]\s*.*)?
+        )
+
+        |
+
+        #######################################################
+        # (C) Rein numerische Aufgaben: 4 - Titel, 118[2] - ...
+        #######################################################
+        (?:
+            (?P<numC>
+                \d{1,3}(?:\[\d+\])?
+              | [il]\.\d+                   # auch i.74 ohne Prefix erlauben
+            )
+            \s*[-–—]\s*
+            .+                              # Titel muss folgen
+        )
+
     )
-    $                                  # Zeilenende
+    $
     """
 )
 
@@ -118,14 +141,20 @@ def enable_german_ui(app):
     app._de_translators = loaded
 
 
+def normalize_heading(s: str) -> str:
+    return (
+        s.replace("–", "-")
+         .replace("—", "-")
+         .replace("‑", "-")
+         .replace("‒", "-")
+         .replace("−", "-")
+         .replace("\u2212", "-")
+         .replace("\xad", "")   # Soft hyphen
+    )
+
+
 
 def extract_headings_with_positions(pdf_path: str):
-    """
-    Liefert Liste von (heading_text, page_one_based, y_ratio[0..1|None]).
-    Erfasst:
-      - Schemata wie 'AG-L 1.4 - 3 - …'
-      - Zahlbasierte Überschriften wie '8 - Haber'sche Regel'
-    """
     results = []
     seen = set()
 
@@ -141,10 +170,7 @@ def extract_headings_with_positions(pdf_path: str):
                 if not line:
                     continue
 
-                m = _HEADING_CODED.match(line)
-                if not m:
-                    m = _HEADING_NUMERIC.match(line)
-
+                m = _HEADING.match(line)
                 if not m:
                     continue
 
@@ -152,19 +178,32 @@ def extract_headings_with_positions(pdf_path: str):
                 key = (full, pno)
                 if key in seen:
                     continue
+                seen.add(key)
 
-                # Versuche, die genaue Y-Position über den exakten Zeilenstring zu finden
                 y_ratio = None
                 try:
-                    rects = page.search_for(full, quads=False)
+                    rects = page.search_for(full)
+                    if not rects:
+                        # --- Bindestrich-Varianten ersetzen ---
+                        norm_full = (full
+                            .replace("–", "-")
+                            .replace("—", "-")
+                            .replace("‑", "-")
+                        )
+
+                        norm_full = normalize_heading(full)
+                        norm_page = normalize_heading(page.get_text("text"))
+
+                        rects = page.search_for(norm_full)
+
+
                     if rects:
                         r0 = rects[0]
-                        y_ratio = float(r0.y0 / page.rect.height) if page.rect.height else None
-                except Exception:
+                        y_ratio = r0.y0 / page.rect.height
+                except:
                     pass
 
                 results.append((full, pno + 1, y_ratio))
-                seen.add(key)
 
     return results
 
@@ -988,7 +1027,7 @@ class Ui_Dialog_pdfviewer(object):
             self.task_positions.append({
                 "row": row,
                 "page": page,          # echte PDF-Seite
-                "ratio": y_ratio or 0  # falls None -> 0
+                "ratio": y_ratio if y_ratio is not None else 0.00001
             })
 
 
