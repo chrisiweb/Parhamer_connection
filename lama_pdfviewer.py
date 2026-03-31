@@ -772,6 +772,7 @@ class Ui_Dialog_pdfviewer(object):
 
         self._current_pdf_path = file_path
         self.show_selection_list = show_selection_list
+        self._manual_selection = False
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("PDF Viewer")
@@ -952,6 +953,19 @@ class Ui_Dialog_pdfviewer(object):
 
         # --- Liste initial befüllen (NACH Aufbau, VOR Signal-Connects!) ---
         self._fill_tasks_from_pdf(self._current_pdf_path)
+
+        # Liste: Aufgabe → PDF-Seite
+        self.task_positions = []   # ersetzt task_to_page !
+    
+        for row in range(self.list.count()):
+            item = self.list.item(row)
+            page, y_ratio = item.data(self.ROLE_TARGET)  # kommt direkt aus extract_headings
+            self.task_positions.append({
+                "row": row,
+                "page": page,          # echte PDF-Seite
+                "ratio": y_ratio or 0  # falls None -> 0
+            })
+
 
         self._restore_selections_from_dict()
 
@@ -1143,11 +1157,16 @@ class Ui_Dialog_pdfviewer(object):
 
     # ----- Click-Handling -----
     def _on_task_clicked(self, item: QListWidgetItem):
-        # 1) Navigation
+        # Manuelles Klicken → automatische Auswahl pausieren
+        self._manual_selection = True
+
         data = item.data(self.ROLE_TARGET)
         if data:
             page, y_ratio = data
             self.viewer.scrollToPageLocation(page, y_ratio)
+
+        # Nach kurzer Zeit wieder Auto-Sync erlauben
+        QTimer.singleShot(200, lambda: setattr(self, "_manual_selection", False))
 
 
     def _next_enabled_state(self, cur: int) -> int:
@@ -1209,32 +1228,64 @@ class Ui_Dialog_pdfviewer(object):
 
 
     def _on_current_page_changed(self, page_one_based: int):
-        """Vom Viewer beim Scrollen/Wechseln gefeuert -> Spinbox + linke Liste aktualisieren."""
-
+        """Aktualisiert Spinbox und markiert die Aufgabe,
+        die im sichtbaren Teil der Seite am weitesten oben steht."""
+        # Wenn der Benutzer gerade aktiv in der Liste geklickt hat:
+        if self._manual_selection:
+            return
         # ---- Spinbox aktualisieren ----
         if self.spin_page.value() != page_one_based:
             self.spin_page.blockSignals(True)
             self.spin_page.setValue(page_one_based)
             self.spin_page.blockSignals(False)
 
-        # ---- Linke Liste automatisch zur aktuellen PDF-Seite bewegen ----
-        index = page_one_based - 1   # Liste ist 0-basiert
+        # ---- aktuelle Scrollposition im Viewer bestimmen ----
+        scroll_y = self.viewer.scroll.verticalScrollBar().value()
 
-        if 0 <= index < self.list.count():
+        # Seitenpositionen im Canvas:
+        page_y, page_height = self.viewer.canvas.page_positions[page_one_based - 1]
 
-            # Schleifen verhindern
+        # relative Position IN der Seite (0..1)
+        rel = max(0.0, min(1.0, (scroll_y - page_y) / float(page_height)))
+
+        # ---- passende Aufgabe suchen ----
+        best_row = None
+        best_ratio = -1
+
+        for pos in self.task_positions:
+            if pos["page"] != page_one_based:
+                continue
+            if pos["ratio"] <= rel and pos["ratio"] > best_ratio:
+                best_ratio = pos["ratio"]
+                best_row = pos["row"]
+
+        # falls nichts passt -> nimm die erste Aufgabe auf der Seite
+        if best_row is None:
+            for pos in self.task_positions:
+                if pos["page"] == page_one_based:
+                    best_row = pos["row"]
+                    break
+
+        # ---- Liste aktualisieren ----
+        if best_row is not None:
             self.list.blockSignals(True)
-
-            # Auswahl auf das Beispiel setzen (blauer Rahmen)
-            self.list.setCurrentRow(index)
-
-            # Automatisch scrollen -> schön zentriert, wie Sumatra
+            self.list.setCurrentRow(best_row)
             self.list.scrollToItem(
-                self.list.item(index),
+                self.list.item(best_row),
                 QAbstractItemView.PositionAtCenter
             )
-
             self.list.blockSignals(False)
+
+
+    def _select_task_row(self, index):
+        self.list.blockSignals(True)
+        self.list.setCurrentRow(index)
+        self.list.scrollToItem(
+            self.list.item(index),
+            QAbstractItemView.PositionAtCenter
+        )
+        self.list.blockSignals(False)
+
 
 
     def _on_spin_value_changed(self, val: int):
@@ -1497,6 +1548,24 @@ class Ui_Dialog_pdfviewer(object):
             item.setData(Qt.UserRole + 5, tags)
             self._update_item_icons(item)
 
+    def _find_page_for_task(self, task_name: str) -> int:
+        """
+        Sucht im PDF nach der echten Aufgabenkennung (AG 1.1 - 36 …).
+        Gibt die Seite (1-basiert) zurück.
+        """
+
+        # ECHTE Kennung extrahieren (z.B. "AG 1.1 - 36")
+        key = self._extract_task_number(task_name)
+
+        for page_index in range(self.viewer.doc.page_count):
+            page = self.viewer.doc[page_index]
+            text = page.get_text("text")
+
+            # exakte Suche nach Aufgabenkennung
+            if key in text:
+                return page_index + 1
+
+        return 1
     # def _hide_splitter_handle(self):
     #     handle = self.splitter.handle(1)
     #     handle.setEnabled(False)
