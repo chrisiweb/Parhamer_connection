@@ -90,6 +90,11 @@ class PdfViewer(QWidget):
         """
         # ---------- alten Worker stoppen ----------
         try:
+            self.worker.rendered.disconnect()
+        except:
+            pass
+
+        try:
             self.worker.stop()
         except:
             pass
@@ -99,7 +104,6 @@ class PdfViewer(QWidget):
             self.thread.wait()
         except:
             pass
-
         # ---------- PDF ersetzen ----------
         self.doc = fitz.open(pdf_path)
         self.canvas.doc = self.doc
@@ -299,3 +303,19 @@ class PdfViewer(QWidget):
         total_width = page_pixel_width + 2 * self.canvas.PAGE_PADDING
         x_page = max(0, (self.canvas.width() - total_width) // 2)
         return x_page
+
+    def closeEvent(self, e):
+        try:
+            self.worker.rendered.disconnect()
+        except:
+            pass
+        try:
+            self.worker.stop()
+        except:
+            pass
+        try:
+            self.thread.quit()
+            self.thread.wait()
+        except:
+            pass
+        super().closeEvent(e)

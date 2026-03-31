@@ -45,6 +45,13 @@ class SafeApplication(QApplication):
     def notify(self, receiver, event):
         try:
             return super().notify(receiver, event)
+        except RuntimeError as e:
+            # löschen von QObjects ist normal
+            if "wrapped C/C++ object" in str(e):
+                return False
+            exctype, value, tb = sys.exc_info()
+            lama_global_exception_hook(exctype, value, tb)
+            return False
         except Exception:
             exctype, value, tb = sys.exc_info()
             lama_global_exception_hook(exctype, value, tb)

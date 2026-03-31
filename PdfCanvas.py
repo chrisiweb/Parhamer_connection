@@ -459,3 +459,19 @@ class PdfCanvas(QWidget):
         # ✅ jetzt erst die Positionen neu berechnen
         self._compute_positions()
         self.update()
+
+    def closeEvent(self, e):
+        try:
+            self.worker.rendered.disconnect()
+        except:
+            pass
+        try:
+            self.worker.stop()
+        except:
+            pass
+        try:
+            self.thread.quit()
+            self.thread.wait()
+        except:
+            pass
+        super().closeEvent(e)

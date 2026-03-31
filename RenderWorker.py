@@ -62,6 +62,11 @@ class RenderWorker(QObject):
         if not self._busy:
             QTimer.singleShot(0, self._process_next)
 
+    def stop(self):
+        self._busy = False
+        self.queue.clear()
+        self.doc = None
+
     # def render_pages(self, pages, zoom_int): ##SEHR SCHNELL!!!
     #     self.queue.clear()
     #     for i in pages:
