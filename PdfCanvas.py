@@ -236,188 +236,198 @@ class PdfCanvas(QWidget):
         return None
 
     def _recompute_selection(self, final=False):
+
+        # ------------------------------------------------------------
+        # 0) Ohne gültige Seite → Abbruch
+        # ------------------------------------------------------------
         if self.sel_page is None:
+            self.sel_label_rects = []
+            self.selected_text = ""
             return
 
-        page = self.doc[self.sel_page]
-        y_page, total_h = self.page_positions[self.sel_page]
+        page_index = self.sel_page
+        page = self.doc.load_page(page_index)
 
-        pix = self.cache_scaled.get(self.sel_page)
-        if pix is None:
+        # ------------------------------------------------------------
+        # 1) Auswahlrechteck (Widget → PDF Koordinaten)
+        # ------------------------------------------------------------
+        # Positions-Offset der Seite herausfinden
+        page_y, total_h = self.page_positions[page_index]
+        page_x = max(0, (self.width() - (page.rect.width * self.zoom + 2*self.PAGE_PADDING)) // 2)
+
+        # Maus-Start/Endpunkt in Widget-Space
+        p0 = self.sel_start
+        p1 = self.sel_end
+
+        # Normiertes Auswahlrechteck in Widget-Space
+        wx0, wy0 = min(p0.x(), p1.x()), min(p0.y(), p1.y())
+        wx1, wy1 = max(p0.x(), p1.x()), max(p0.y(), p1.y())
+
+        # In PDF-Space umrechnen
+        pdf_x0 = (wx0 - page_x - self.PAGE_PADDING) / self.zoom
+        pdf_y0 = (wy0 - page_y - self.PAGE_PADDING) / self.zoom
+        pdf_x1 = (wx1 - page_x - self.PAGE_PADDING) / self.zoom
+        pdf_y1 = (wy1 - page_y - self.PAGE_PADDING) / self.zoom
+
+        # Auswahl speichern
+        sel_x0, sel_y0, sel_x1, sel_y1 = pdf_x0, pdf_y0, pdf_x1, pdf_y1
+
+        # ------------------------------------------------------------
+        # 2) PAGE TEXT LADEN
+        # ------------------------------------------------------------
+        raw = page.get_text("rawdict")
+        blocks = raw.get("blocks", [])
+
+        # ------------------------------------------------------------
+        # 3) WATERMARK-BLOCK entfernen ("LÖSUNGEN")
+        # ------------------------------------------------------------
+        filtered = []
+        for b in blocks:
+            if b.get("type", 0) != 0:
+                filtered.append(b)
+                continue
+
+            x0, y0, x1, y1 = b.get("bbox", (0,0,0,0))
+            bw = x1 - x0
+            bh = y1 - y0
+
+            if bw > page.rect.width * 0.40 and bh > page.rect.height * 0.20:
+                # Wasserzeichen erkannt → nicht aufnehmen
+                continue
+
+            filtered.append(b)
+
+        blocks = filtered
+
+        # ------------------------------------------------------------
+        # 4) ALLE ZEICHEN EXTRAHIEREN
+        # ------------------------------------------------------------
+        chars = []
+        for b in blocks:
+            if b.get("type", 0) != 0:
+                continue
+            for line in b.get("lines", []):
+                for span in line.get("spans", []):
+                    for c in span.get("chars", []):
+                        cx0, cy0, cx1, cy1 = c["bbox"]
+                        ch = c["c"]
+                        chars.append([cx0, cy0, cx1, cy1, ch])
+
+        if not chars:
+            self.sel_label_rects = []
+            self.selected_text = ""
             return
 
-        scaled_w = pix.width()
-        scaled_h = pix.height()
+        chars.sort(key=lambda c: (c[1], c[0]))
 
-        pix_sx = scaled_w / page.rect.width
-        pix_sy = scaled_h / page.rect.height
-
-        page = self.doc[self.sel_page]
-        page_width = int(page.rect.width * self.zoom) + 2 * self.PAGE_PADDING
-        x_page = max(0, (self.width() - page_width) // 2)   # exakt wie in paintEvent
-
-        pix_x = x_page + self.PAGE_PADDING
-        pix_y = int(y_page) + self.PAGE_PADDING
-
-        # Canvas → Pixmap
-        def to_pix(pt):
-            return QPoint(pt.x() - pix_x, pt.y() - pix_y)
-
-        p0_pix = to_pix(self.sel_start)
-        p1_pix = to_pix(self.sel_end)
-
-        p0 = fitz.Point(p0_pix.x() / pix_sx, p0_pix.y() / pix_sy)
-        p1 = fitz.Point(p1_pix.x() / pix_sx, p1_pix.y() / pix_sy)
-
-        # -------------------------------------------------------
-        # 1) WORDS + Wasserzeichen filtern
-        # -------------------------------------------------------
-        raw = page.get_text("words") or []
-        words = []
-        for w in raw:
-            x0,y0,x1,y1,text,block,line,word = w
-
-            if "LÖSUNGEN" in text.upper():
-                continue
-            if (y1 - y0) > 20:
-                continue
-            if (x1 - x0) > page.rect.width * 0.6:
-                continue
-
-            words.append(w)
-
-        if not words:
-            return
-
-        # -------------------------------------------------------
-        # 2) VISUELLE Sortierung + Zeilencluster
-        # -------------------------------------------------------
-        words.sort(key=lambda w: (w[1], w[0]))
-
+        # ------------------------------------------------------------
+        # 5) ZEILEN GRUPPIEREN
+        # ------------------------------------------------------------
         lines = []
-        cur = []
+        current = [chars[0]]
 
-        for w in words:
-            r = fitz.Rect(w[:4])
-            if not cur:
-                cur = [w]
-                continue
+        def same_line(a, b):
+            return abs(a[1] - b[1]) < 5
 
-            prev_r = fitz.Rect(cur[-1][:4])
-
-            # gleiche Zeile (vertikale Überlappung)
-            if r.y0 < prev_r.y1 and r.y1 > prev_r.y0:
-                cur.append(w)
+        for c in chars[1:]:
+            if same_line(current[-1], c):
+                current.append(c)
             else:
-                lines.append(cur)
-                cur = [w]
+                lines.append(current)
+                current = [c]
 
-        if cur:
-            lines.append(cur)
+        lines.append(current)
 
-        # -------------------------------------------------------
-        # 3) Start- und Endzeile
-        # -------------------------------------------------------
-        def line_of_point(pt):
-            for i, line in enumerate(lines):
-                lr = fitz.Rect(line[0][:4])
-                for w in line[1:]:
-                    lr |= fitz.Rect(w[:4])
-                if lr.y0 <= pt.y <= lr.y1:
-                    return i
-            return None
+        # ------------------------------------------------------------
+        # 6) SUMATRA-PDF-STYLE AUSWAHL: rein nach Zeichenreihenfolge
+        # ------------------------------------------------------------
 
-        s = line_of_point(p0)
-        e = line_of_point(p1)
+        # 1. PDF-Koordinaten der beiden Punkte
+        p0 = self.sel_start
+        p1 = self.sel_end
 
-        if s is None or e is None:
-            return
+        # Umrechnung ins PDF-Koordinatensystem
+        pdf_x0 = (p0.x() - page_x - self.PAGE_PADDING) / self.zoom
+        pdf_y0 = (p0.y() - page_y - self.PAGE_PADDING) / self.zoom
+        pdf_x1 = (p1.x() - page_x - self.PAGE_PADDING) / self.zoom
+        pdf_y1 = (p1.y() - page_y - self.PAGE_PADDING) / self.zoom
 
-        if s > e:
-            s, e = e, s
+        # 2. Char-Liste flatten:
+        # Wir haben alle chars bereits extrahiert → in der Variablen 'chars'
+        # (Liste von [x0,y0,x1,y1,char])
+        # UND sie ist bereits sortiert, das passt perfekt.
 
-        # -------------------------------------------------------
-        # 4) PRO-LINE TEXTBREITE: wie Sumatra
-        # -------------------------------------------------------
-        line_rects = []
+        # 3. Finde Start- und Endindex
+        idx_start = self._char_index_from_pdf_pos(chars, pdf_x0, pdf_y0)
+        idx_end   = self._char_index_from_pdf_pos(chars, pdf_x1, pdf_y1)
 
-        for ln in range(s, e+1):
-            line = lines[ln]
+        if idx_start > idx_end:
+            idx_start, idx_end = idx_end, idx_start
 
-            # Breite des Textblocks = rechtester Wortrand
-            rightmost = max(w[2] for w in line)
+        selected = chars[idx_start:idx_end+1]
 
-            # dynamische Erweiterung bis rechter Rand des Absatzes
-            # aber niemals in Tabellenbereich hinein
-            # daher 82% der Seitenbreite als Limit 
-            # (für DEIN PDF optimal)
-            safe_right = min(rightmost + 15, page.rect.width * 0.82)
+        # 4. Text erzeugen
+        self.selected_text = "".join(c[4] for c in selected)
 
-            lr = fitz.Rect(line[0][:4])
-            for w in line[1:]:
-                lr |= fitz.Rect(w[:4])
+        # 5. Rechtecke erzeugen (Zeilenbasiert aber nur für Darstellung)
+        #    → wir gruppieren die ausgewählten Zeichen nach Linien
 
-            lr.x1 = safe_right
-            line_rects.append(lr)
+        # Linien finden
+        line_groups = []
+        current = [selected[0]]
 
-        # teilwort:
-        line_rects[0].x0 = max(line_rects[0].x0, p0.x)
-        # rechter Rand der letzten Zeile darf NIE breiter sein als ihre echte Wortbreite
-        last_line_words = lines[e]
-        natural_right = max(w[2] for w in last_line_words)   # echter rechter Rand der Textzeile
+        def same_line(a, b):
+            return abs(a[1] - b[1]) < 5
 
-        # Wenn die Mausposition innerhalb der Textbreite war → Teilwort
-        if p1.x < natural_right:
-            line_rects[-1].x1 = max(line_rects[-1].x0, p1.x)
-        else:
-            # Maus rechts außerhalb -> NICHT übernehmen -> natürliche Breite nutzen
-            line_rects[-1].x1 = natural_right
+        for c in selected[1:]:
+            if same_line(current[-1], c):
+                current.append(c)
+            else:
+                line_groups.append(current)
+                current = [c]
+        line_groups.append(current)
 
-        # -------------------------------------------------------
-        # 5) PDF→Canvas
-        # -------------------------------------------------------
-        rects = []
-        for r in line_rects:
-            cx0 = pix_x + r.x0 * pix_sx
-            cy0 = pix_y + r.y0 * pix_sy
-            cx1 = pix_x + r.x1 * pix_sx
-            cy1 = pix_y + r.y1 * pix_sy
-            rects.append(QRect(int(cx0), int(cy0), int(cx1-cx0), int(cy1-cy0)))
+        sel_rects = []
 
-        self.sel_label_rects = rects
+        for group in line_groups:
+            gx0 = min(c[0] for c in group)
+            gy0 = min(c[1] for c in group)
+            gx1 = max(c[2] for c in group)
+            gy1 = max(c[3] for c in group)
 
-        # -------------------------------------------------------
-        # 6) Copy-Text
-        # -------------------------------------------------------
+            wx0 = int(page_x + self.PAGE_PADDING + gx0 * self.zoom)
+            wy0 = int(page_y + self.PAGE_PADDING + gy0 * self.zoom)
+            wx1 = int(page_x + self.PAGE_PADDING + gx1 * self.zoom)
+            wy1 = int(page_y + self.PAGE_PADDING + gy1 * self.zoom)
 
-        if final:
-            result_lines = []
+            sel_rects.append(QRect(wx0, wy0, wx1 - wx0, wy1 - wy0))
 
-            # Für jede markierte Zeile (Canvas-Rechteck bekannt!)
-            for idx, r_pdf in enumerate(line_rects):
-                # PDF-Rect → wir filtern nach PDF-Koordinaten
-                line_words = sorted(lines[s + idx], key=lambda w: w[0])
+        self.sel_label_rects = sel_rects
 
-                filtered_words = []
-                for w in line_words:
-                    wx0, wy0, wx1, wy1, text, block, line, wn = w
-
-                    # Wort liegt (teilweise) innerhalb des markierten PDF-Zeilen-Rechtecks?
-                    if wx1 >= r_pdf.x0 and wx0 <= r_pdf.x1:
-                        filtered_words.append(text)
-
-                # gesamten Text der Linie erzeugen
-                line_text = " ".join(filtered_words)
-                line_text = " ".join(line_text.split())   # Mehrfachspaces korrigieren
-
-                result_lines.append(line_text)
-
-            self.selected_text = "\n".join(result_lines)
-
-
-        self.update()
 
     # -------------------------------------------------------
+
+    def _char_index_from_pdf_pos(self, chars, x, y):
+        """
+        Finde den Index des Zeichens, das am besten zum Punkt (x,y) passt.
+        """
+        best = None
+        best_dist = 1e9
+
+        for i, (x0, y0, x1, y1, ch) in enumerate(chars):
+            if x0 <= x <= x1 and y0 <= y <= y1:
+                return i  # perfekter Treffer
+
+            # sonst Distanz zur Char-Bbox
+            cx = (x0 + x1) / 2
+            cy = (y0 + y1) / 2
+            dist = (cx - x) ** 2 + (cy - y) ** 2
+            if dist < best_dist:
+                best_dist = dist
+                best = i
+
+        return best if best is not None else 0    
+    
     def _merge_rects(self, rects):
         x0 = min(r.x() for r in rects)
         y0 = min(r.y() for r in rects)
