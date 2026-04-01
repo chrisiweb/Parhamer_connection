@@ -1036,6 +1036,13 @@ class Ui_Dialog_pdfviewer(object):
 
         self._restore_selections_from_dict()
 
+
+        # --- Beim ersten Anzeigen: erste Aufgabe auswählen ---
+        if self.list.count() > 0:
+            self.list.setCurrentRow(0)
+            first_page, first_ratio = self.list.item(0).data(self.ROLE_TARGET)
+            self.viewer.scrollToPageLocation(first_page, first_ratio)
+
         # # Viewer -> Spinbox (Scrollen/Seitenwechsel aktualisiert Anzeige)
         # self.viewer.currentPageChanged.connect(self._on_current_page_changed)
 
@@ -1186,6 +1193,14 @@ class Ui_Dialog_pdfviewer(object):
 
 
         self._restore_selections_from_dict()
+
+
+
+        # --- Beim ersten Anzeigen: erste Aufgabe auswählen ---
+        if self.list.count() > 0:
+            self.list.setCurrentRow(0)
+            first_page, first_ratio = self.list.item(0).data(self.ROLE_TARGET)
+            self.viewer.scrollToPageLocation(first_page, first_ratio)
 
         # # Listenlängen berechnen
         # self.len_list_1 = 1
