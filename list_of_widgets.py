@@ -10,7 +10,6 @@ widgets_search = [
     "self.combobox_aufgabentyp",
     "self.groupBox_klassen",
     "self.label_aufgabentyp",
-
 ]
 
 widgets_create = [

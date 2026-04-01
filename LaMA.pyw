@@ -9892,15 +9892,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 exec("%s.show()" % all)
 
         if chosen_gui == "widgets_search":
-            if self.combobox_aufgabentyp.currentIndex() == 0:
-                self.combobox_searchtype.hide()
+            if self.combobox_aufgabentyp.currentIndex() == 1:
+                self.combobox_searchtype.show()
         if chosen_gui == "widgets_sage" or chosen_gui == "widgets_sage_cria":
             self.MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
             self.MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse_sage)
             self.adapt_choosing_list("sage")
         if chosen_gui == "widgets_feedback" or chosen_gui == "widgets_feedback_cria":
             self.adapt_choosing_list("feedback")
-
+        return
         if self.developer_mode_active == False:
             self.menuBar.removeAction(self.menuDeveloper.menuAction())
 

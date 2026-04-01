@@ -1356,7 +1356,6 @@ class Ui_Dialog_pdfviewer(object):
         # # Nur wenn die Überschrift wirklich auf dieser Seite ist!
         # if only["ratio"] is not None:
         if len(tasks_on_page) == 1:
-            print(tasks_on_page[0])
             if tasks_on_page[0] is not None:
                 only_row = tasks_on_page[0]["row"]
                 self.list.blockSignals(True)
