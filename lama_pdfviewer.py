@@ -153,7 +153,6 @@ def normalize_heading(s: str) -> str:
     )
 
 
-
 def extract_headings_with_positions(pdf_path: str):
     results = []
     seen = set()
@@ -180,28 +179,24 @@ def extract_headings_with_positions(pdf_path: str):
                     continue
                 seen.add(key)
 
-                y_ratio = None
+                
                 try:
-                    rects = page.search_for(full)
-                    if not rects:
-                        # --- Bindestrich-Varianten ersetzen ---
-                        norm_full = (full
-                            .replace("–", "-")
-                            .replace("—", "-")
-                            .replace("‑", "-")
-                        )
+                    rects = []  # ✅ rects JEDES MAL zurücksetzen
 
-                        norm_full = normalize_heading(full)
-                        norm_page = normalize_heading(page.get_text("text"))
+                    norm_full = normalize_heading(full)
+                    norm_page_text = normalize_heading(page.get_text("text"))
 
+                    y_ratio = None
+
+                    if norm_full in norm_page_text:
                         rects = page.search_for(norm_full)
+                        if rects:
+                            r0 = rects[0]
+                            if page.rect.height > 0:
+                                y_ratio = r0.y0 / page.rect.height
 
-
-                    if rects:
-                        r0 = rects[0]
-                        y_ratio = r0.y0 / page.rect.height
                 except:
-                    pass
+                    y_ratio = None
 
                 results.append((full, pno + 1, y_ratio))
 
@@ -1027,15 +1022,15 @@ class Ui_Dialog_pdfviewer(object):
         self._fill_tasks_from_pdf(self._current_pdf_path)
 
         # Liste: Aufgabe → PDF-Seite
-        self.task_positions = []   # ersetzt task_to_page !
-    
+        # --- Task-Positionsliste NEU aufbauen ---
+        self.task_positions = []
         for row in range(self.list.count()):
             item = self.list.item(row)
-            page, y_ratio = item.data(self.ROLE_TARGET)  # kommt direkt aus extract_headings
+            page, y_ratio = item.data(self.ROLE_TARGET)
             self.task_positions.append({
                 "row": row,
-                "page": page,          # echte PDF-Seite
-                "ratio": y_ratio if y_ratio is not None else 0.00001
+                "page": page,
+                "ratio": y_ratio
             })
 
 
@@ -1176,6 +1171,19 @@ class Ui_Dialog_pdfviewer(object):
 
         # 3) Aufgabenliste neu aus den Überschriften bauen
         self._fill_tasks_from_pdf(self._current_pdf_path)
+
+        # --- Task-Positionsliste NEU aufbauen ---
+        self.task_positions = []
+        for row in range(self.list.count()):
+            item = self.list.item(row)
+            page, y_ratio = item.data(self.ROLE_TARGET)
+            self.task_positions.append({
+                "row": row,
+                "page": page,
+                "ratio": y_ratio
+            })
+
+
 
         self._restore_selections_from_dict()
 
@@ -1321,8 +1329,29 @@ class Ui_Dialog_pdfviewer(object):
         # Seitenpositionen im Canvas:
         page_y, page_height = self.viewer.canvas.page_positions[page_one_based - 1]
 
+
         # relative Position IN der Seite (0..1)
         rel = max(0.0, min(1.0, (scroll_y - page_y) / float(page_height)))
+
+        # --- Sonderfall: Wenn auf dieser Seite genau EINE Aufgabe steht ---
+        tasks_on_page = [pos for pos in self.task_positions if pos["page"] == page_one_based]
+        # print(tasks_on_page)
+        # only = tasks_on_page[0]
+
+        # # Nur wenn die Überschrift wirklich auf dieser Seite ist!
+        # if only["ratio"] is not None:
+        if len(tasks_on_page) == 1:
+            print(tasks_on_page[0])
+            if tasks_on_page[0] is not None:
+                only_row = tasks_on_page[0]["row"]
+                self.list.blockSignals(True)
+                self.list.setCurrentRow(only_row)
+                self.list.scrollToItem(
+                    self.list.item(only_row),
+                    QAbstractItemView.PositionAtCenter
+                )
+                self.list.blockSignals(False)
+                return
 
         # ---- passende Aufgabe suchen ----
         best_row = None
