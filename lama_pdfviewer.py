@@ -30,7 +30,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon, QPainter
 from PyQt5.QtCore import Qt, pyqtSignal, QRect, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
 from config import logo_path, save_pdf_selection_dict, lama_pdf_selection_file
-from PdfViewer import PdfViewer
+from PdfViewer_gui import PdfViewer
 from create_new_widgets import create_new_label
 # ---------- Überschriften-Extraktion aus PDF ----------
 # ---------- Überschriften-Extraktion aus PDF (erweitert) ----------
