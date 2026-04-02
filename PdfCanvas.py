@@ -1,8 +1,23 @@
-from PyQt5.QtWidgets import QWidget, QApplication
+from PyQt5.QtWidgets import QWidget, QApplication, QDialog, QPlainTextEdit, QVBoxLayout
 from PyQt5.QtGui import QPainter, QColor, QPixmap, QKeySequence
 from PyQt5.QtCore import QRect, Qt, QPoint
 import fitz
 
+class SourceCodeWindow(QDialog):
+    def __init__(self, title, text="", parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(f"LaTeX Quellcode - {title}")
+        self.resize(600, 400)
+
+        self.setWindowFlags(
+            self.windowFlags()
+            & ~Qt.WindowContextHelpButtonHint
+        )
+
+        layout = QVBoxLayout(self)
+        self.editor = QPlainTextEdit()
+        self.editor.setPlainText(text)
+        layout.addWidget(self.editor)
 
 class PdfCanvas(QWidget):
     BACKGROUND_COLOR = QColor("#e5e5e5")
@@ -11,8 +26,10 @@ class PdfCanvas(QWidget):
     PAGE_MARGIN = 20
     PAGE_PADDING = 12
 
-    def __init__(self, doc):
+    def __init__(self, doc, ui_dialog=None, tindb_data = None):
         super().__init__()
+        self.ui_dialog = ui_dialog
+        self.tindb_data = tindb_data
         self.doc = doc
         self.zoom = 1.5
 
@@ -201,6 +218,25 @@ class PdfCanvas(QWidget):
     # Mouse
     # -------------------------------------------------------
     def mousePressEvent(self, e):
+        # ✅ STRG + rechte Maustaste → Notizfenster öffnen
+        if e.button() == Qt.RightButton and (e.modifiers() & Qt.ControlModifier):
+
+            title = self._find_task_by_click(e.pos())
+
+
+            latex = self._find_latex_for_task(title)
+
+            dlg = SourceCodeWindow(
+                title,
+                latex or f"Kein Quellcode gefunden für: {title}",
+                parent=self
+            )
+            dlg.exec_()
+
+            return
+
+
+        # ✅ Linksklick = Textauswahl
         if e.button() == Qt.LeftButton:
             self.sel_label_rects = []
             self.selected_text = ""
@@ -576,3 +612,103 @@ class PdfCanvas(QWidget):
                 visible.append(i)
         return visible
 
+
+    def _get_task_title_for_current_page(self):
+        """
+        Ermittelt die Aufgabe, die zur aktuellen Seite am besten passt.
+        Nimmt NICHT die markierte Aufgabe, sondern berechnet es wie deine Auto-Auswahl.
+        """
+        # Ui-Dialog suchen
+        ui = None
+        p = self
+        while p is not None:
+            if hasattr(p, "task_positions"):
+                ui = p
+                break
+            p = p.parent()
+        if ui is None:
+            return None
+
+        scrollarea = self.parent().parent()
+        viewer = scrollarea.parent()
+        page = viewer.currentPage()  # 1-based
+
+        # alle Aufgaben der aktuellen Seite
+        tasks = [t for t in ui.task_positions if t["page"] == page]
+        if not tasks:
+            return None
+
+        # beste Aufgabe = kleinster ratio-Wert
+        best = min(tasks, key=lambda t: (t["ratio"] if t["ratio"] is not None else 1.0))
+
+        item = ui.list.item(best["row"])
+        if not item:
+            return None
+
+        return ui._extract_task_number(item.text())
+
+    def _find_task_by_click(self, pos):
+        ui = self.ui_dialog
+        if ui is None:
+            return None
+
+        scroll = self.parent().parent()
+        viewer = scroll.parent()
+
+        page_num = viewer.currentPage()   # 1-based
+        page_index = page_num - 1
+
+        if page_index < 0 or page_index >= len(self.page_positions):
+            return None
+
+        page_y, page_h = self.page_positions[page_index]
+
+        # Klick -> relative Position in der Seite
+        click_ratio = (pos.y() - page_y) / float(page_h)
+        click_ratio = max(0.0, min(1.0, click_ratio))
+
+        # Alle Aufgaben dieser Seite
+        tasks = [t for t in ui.task_positions if t["page"] == page_num]
+        if not tasks:
+            return None
+
+        # Beste Aufgabe = ratio <= click_ratio UND maximal
+        best = None
+        best_r = -1
+        for t in tasks:
+            r = t["ratio"]
+            if r is not None and r <= click_ratio and r > best_r:
+                best = t
+                best_r = r
+
+        if best is None:
+            # Nimm erste Aufgabe auf der Seite
+            best = min(tasks, key=lambda t: t["ratio"] or 0)
+
+        item = ui.list.item(best["row"])
+        if not item:
+            return None
+
+        return ui._extract_task_number(item.text())
+    
+
+    def _find_latex_for_task(self, task_name):
+        """
+        Sucht in der TiNDB-Datenliste nach name == task_name
+        und gibt den LaTeX-Content zurück.
+        """
+        if not self.tindb_data:
+            return None
+
+        # exakte Übereinstimmung (z.B. "WS 3.3 - 2")
+        for entry in self.tindb_data:
+            if entry.get("name") == task_name:
+                return entry.get("content")
+
+        # Falls Varianten wie  "WS 3.3 - 2[1]" existieren
+        base = task_name.split("[")[0]
+        for entry in self.tindb_data:
+            if entry.get("name", "").startswith(base):
+                return entry.get("content")
+
+        return None

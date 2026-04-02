@@ -830,7 +830,8 @@ class Ui_Dialog_pdfviewer(object):
     ROLE_TARGET = Qt.UserRole          # (page, y_ratio)
     ROLE_COLORSTATE = Qt.UserRole + 1  # 0..3 (0=weiß,1=cat0,2=cat1,3=cat2)
 
-    def setupUi(self, Dialog: QDialog, file_path: str, dict_pdf_chosen_examples, typ, show_selection_list=False):
+    def setupUi(self, Dialog: QDialog, file_path: str, dict_pdf_chosen_examples, typ, show_selection_list=False, gesammeltedateien=None):
+        self.gesammeltedateien = gesammeltedateien or []
         # --- State ---
         if typ != 'cria':
             self.typ = 'lama'
@@ -979,7 +980,7 @@ class Ui_Dialog_pdfviewer(object):
 
 
         # --- Rechte Seite: PDF-Viewer ---
-        self.viewer = PdfViewer(self._current_pdf_path)
+        self.viewer = PdfViewer(self._current_pdf_path, ui_dialog=self, tindb_data = self.gesammeltedateien)
         self.viewer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         # self.spin_zoom.setValue(self.viewer.get_zoom_percent())
         # --- Splitter (Mitte) ---
@@ -1350,7 +1351,6 @@ class Ui_Dialog_pdfviewer(object):
 
         # --- Sonderfall: Wenn auf dieser Seite genau EINE Aufgabe steht ---
         tasks_on_page = [pos for pos in self.task_positions if pos["page"] == page_one_based]
-        # print(tasks_on_page)
         # only = tasks_on_page[0]
 
         # # Nur wenn die Überschrift wirklich auf dieser Seite ist!

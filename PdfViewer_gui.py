@@ -6,12 +6,14 @@ from PdfCanvas import PdfCanvas
 from RenderWorker import RenderWorker
 
 
+
 class PdfViewer(QWidget):
     currentPageChanged = pyqtSignal(int)  # 1-based
 
-    def __init__(self, pdf_path):
+    def __init__(self, pdf_path, ui_dialog=None, tindb_data = None):
         super().__init__()
-
+        self.ui_dialog = ui_dialog
+        self.tindb_data = tindb_data
         self.doc = fitz.open(pdf_path)
 
         layout = QVBoxLayout(self)
@@ -21,7 +23,7 @@ class PdfViewer(QWidget):
         self.scroll.setWidgetResizable(True)
         layout.addWidget(self.scroll)
 
-        self.canvas = PdfCanvas(self.doc)
+        self.canvas = PdfCanvas(self.doc, ui_dialog=self.ui_dialog, tindb_data = self.tindb_data)
         self.scroll.setWidget(self.canvas)
 
         # Worker thread
@@ -290,6 +292,20 @@ class PdfViewer(QWidget):
         return visible
     
     def eventFilter(self, obj, e):
+        # ✅ STRG + rechte Maustaste -> Notizfenster öffnen
+        if obj == self.scroll.viewport() and e.type() == QEvent.MouseButtonPress:
+            if e.button() == Qt.RightButton and QApplication.keyboardModifiers() & Qt.ControlModifier:
+                
+                # Aufgabennummer bestimmen
+                page = self.currentPage()      # 1-based
+                
+                aufgabe = f"Aufgabe {page}"
+
+                # Fenster öffnen
+                dlg = NoteWindow(aufgabe, parent=self)
+                dlg.exec_()
+
+                return True
         if obj == self.scroll.viewport() and e.type() == QEvent.Wheel:
             if e.modifiers() & Qt.ControlModifier:
 

@@ -585,7 +585,7 @@ def prepare_tex_for_pdf(self):
         elif self.chosen_program == "cria":
             typ = "cria"
 
-        create_pdf("Teildokument", 0, 0, typ)
+        create_pdf("Teildokument", 0, 0, typ, gesammeltedateien=gesammeltedateien)
 
 def get_output_size(gesammeltedateien, variation, spezielle_suche, language_index):
     if language_index == 2:
@@ -869,7 +869,8 @@ _PDF_DIALOG = None      # QDialog
 _PDF_UI = None          # Ui_Dialog_pdfviewer
 
 
-def open_pdf_file(folder_name, file_name, typ, show_selection_list):
+def open_pdf_file(folder_name, file_name, typ, show_selection_list, gesammeltedateien):
+    print(gesammeltedateien)
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
 
     drive_location = os.path.splitdrive(sys.argv[-1])[0]
@@ -898,7 +899,7 @@ def open_pdf_file(folder_name, file_name, typ, show_selection_list):
             _PDF_DIALOG.setAttribute(QtCore.Qt.WA_DeleteOnClose, False)
 
             _PDF_UI = Ui_Dialog_pdfviewer()
-            _PDF_UI.setupUi(_PDF_DIALOG, pdf_file_path, dict_pdf_chosen_examples, typ, show_selection_list)
+            _PDF_UI.setupUi(_PDF_DIALOG, pdf_file_path, dict_pdf_chosen_examples, typ, show_selection_list, gesammeltedateien)
             _PDF_DIALOG.setWindowTitle("PDF Viewer")
 
 
@@ -914,11 +915,6 @@ def open_pdf_file(folder_name, file_name, typ, show_selection_list):
         _PDF_DIALOG.raise_()
         _PDF_DIALOG.activateWindow()
 
-
-    # try:
-    #     print(_PDF_UI.get_current_dict())
-    # except Exception as e:
-    #     print(e)
 
 
     pdf_file_path = os.path.join(folder_name, file_name) + ".pdf"
@@ -1040,7 +1036,7 @@ def delete_unneeded_files(folder_name, file_name):
     try_to_delete_file("{0}.ps".format(file_path))
 
 
-def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=True):
+def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=True, gesammeltedateien = None):
     # QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
     if path_file == "Teildokument":
         folder_name = "{0}/Teildokument".format(path_programm)
@@ -1054,7 +1050,6 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
         else:
             folder_name = head
         show_selection_list = False
-
 
     latex_output_file = os.path.join(path_localappdata_lama, "Teildokument", "temp.txt")
     # if os.path.isfile(latex_output_file):
@@ -1129,7 +1124,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
         # if response == False:
         #     return
 
-        open_pdf_file(folder_name, file_name, typ, show_selection_list)
+        open_pdf_file(folder_name, file_name, typ, show_selection_list, gesammeltedateien)
 
     try:
         delete_unneeded_files(folder_name, file_name)
