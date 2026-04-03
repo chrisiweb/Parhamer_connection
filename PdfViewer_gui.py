@@ -3,7 +3,6 @@ from PyQt5.QtCore import pyqtSignal, QThread, Qt, QEvent, QPoint
 import fitz
 
 from PdfCanvas import PdfCanvas
-from RenderWorker import RenderWorker
 
 
 
@@ -26,15 +25,7 @@ class PdfViewer(QWidget):
         self.canvas = PdfCanvas(self.doc, ui_dialog=self.ui_dialog, tindb_data = self.tindb_data)
         self.scroll.setWidget(self.canvas)
 
-        # Worker thread
-        self.thread = QThread()
-        self.worker = RenderWorker(self.doc)
-        self.worker.moveToThread(self.thread)
-        self.worker.rendered.connect(self.canvas.insert_rendered)
-        self.thread.start()
 
-        pages = self.visible_pages()
-        self.worker.render_pages(pages, int(self.canvas.zoom * 100))
 
         self.scroll.verticalScrollBar().valueChanged.connect(self._on_scroll)
 
@@ -79,57 +70,19 @@ class PdfViewer(QWidget):
     # ========== INTERNAL ==========
 
     def _on_scroll(self):
-        self.canvas.quick_scale()
-        pages = self.visible_pages()
-        self.worker.render_pages(pages, int(self.canvas.zoom*100))
+        self.canvas.update()  # <- NEU: einfach neu zeichnen
         self.currentPageChanged.emit(self.currentPage())
 
     
 
     def load_document(self, pdf_path):
 
-        # Worker sicher stoppen
-        try: self.worker.rendered.disconnect()
-        except: pass
-
-        try: self.worker.stop()
-        except: pass
-
-        try:
-            self.thread.quit()
-            self.thread.wait(200)
-        except: pass
-
-        try:
-            self.worker.stop()
-        except:
-            pass
-
         # HARTE ABKÜHLUNG: Queue leeren und alle alten Renderjobs verwerfen
-        try:
-            self.worker.pending_pages.clear()
-        except:
-            pass
 
         """
         Lädt ein neues PDF und ersetzt sauber das alte Dokument.
         """
-        # ---------- alten Worker stoppen ----------
-        try:
-            self.worker.rendered.disconnect()
-        except:
-            pass
 
-        try:
-            self.worker.stop()
-        except:
-            pass
-
-        try:
-            self.thread.quit()
-            self.thread.wait()
-        except:
-            pass
         # ---------- PDF ersetzen ----------
         self.doc = fitz.open(pdf_path)
         self.canvas.doc = self.doc
@@ -142,15 +95,6 @@ class PdfViewer(QWidget):
         self.canvas.selected_text = ""
         self.canvas.update()
 
-        # ---------- neuen Worker starten ----------
-        self.thread = QThread()
-        self.worker = RenderWorker(self.doc)
-        self.worker.moveToThread(self.thread)
-        self.worker.rendered.connect(self.canvas.insert_rendered)
-        self.thread.start()
-
-        pages = self.visible_pages()
-        self.worker.render_pages(pages, int(self.canvas.zoom * 100))
 
         # ---------- Seite 1 anzeigen ----------
         if len(self.canvas.page_positions) > 0:
@@ -248,9 +192,7 @@ class PdfViewer(QWidget):
         self.scroll.horizontalScrollBar().setValue(int(new_canvas_x - focal_point.x()))
         self.scroll.verticalScrollBar().setValue(int(new_canvas_y - focal_point.y()))
 
-        # Rendern
-        pages = self.visible_pages()
-        self.worker.render_pages(pages, int(new * 100))
+
 
 
     def event(self, ev):
@@ -284,12 +226,13 @@ class PdfViewer(QWidget):
         bottom = top + self.scroll.viewport().height()
 
         visible = []
-
         for i, (y, h) in enumerate(self.canvas.page_positions):
-            if y + h >= top - 200 and y <= bottom + 200:
+            # Eine Seite ist dann sichtbar, wenn sie zumindest 1 Pixel im Sichtbereich hat
+            if y < bottom and (y + h) > top:
                 visible.append(i)
 
-        return visible
+        # ✅ Sicherheitslimit: maximal 4 Seiten
+        return visible[:4]
     
     def eventFilter(self, obj, e):
         # ✅ STRG + rechte Maustaste -> Notizfenster öffnen
@@ -345,20 +288,4 @@ class PdfViewer(QWidget):
         return x_page
 
     def closeEvent(self, e):
-        try:
-            self.worker.rendered.disconnect()
-        except:
-            pass
-
-        try:
-            self.worker.stop()        # MUSS existieren – siehe unten
-        except:
-            pass
-
-        try:
-            self.thread.quit()
-            self.thread.wait(200)
-        except:
-            pass
-
-        super().closeEvent(e)
+        pass

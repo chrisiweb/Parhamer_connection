@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QApplication, QDialog, QPlainTextEdit, QVBoxLayout
-from PyQt5.QtGui import QPainter, QColor, QPixmap, QKeySequence
+from PyQt5.QtGui import QPainter, QColor, QPixmap, QKeySequence, QImage
 from PyQt5.QtCore import QRect, Qt, QPoint
 import fitz
 
@@ -66,153 +66,66 @@ class PdfCanvas(QWidget):
         y = self.PAGE_MARGIN
 
         for i in range(self.doc.page_count):
-            scaled = self.cache_scaled.get(i)
+            page = self.doc[i]
+            h = int(page.rect.height * self.zoom) + 2 * self.PAGE_PADDING
+            self.page_positions.append((y, h))
+            y += h + self.PAGE_MARGIN
 
-            if scaled is not None:
-                h = scaled.height()
-            else:
-                # letzte bekannte Höhe merken (aus raw render)
-                page = self.doc[i]
-                h = int(page.rect.height * self.zoom)
-
-            total = h + 2 * self.PAGE_PADDING
-            self.page_positions.append((y, total))
-            y += total + self.PAGE_MARGIN
-
-        self.setMinimumHeight(int(y + self.PAGE_MARGIN))
-
-
-        # --- neue Mindestbreite basierend auf der breitesten Seite ---
-        max_width = 0
-        for i, page in enumerate(self.doc):
-            if i in self.cache_scaled:
-                w = self.cache_scaled[i].width() + 2 * self.PAGE_PADDING
-            else:
-                w = int(page.rect.width * self.zoom) + 2 * self.PAGE_PADDING
-            max_width = max(max_width, w)
-
-        self.setMinimumWidth(max_width + self.PAGE_MARGIN * 2)
+        self.setMinimumHeight(y)
     # -------------------------------------------------------
     # Rendering
     # -------------------------------------------------------
     def paintEvent(self, ev):
+        painter = QPainter(self)
+        painter.fillRect(self.rect(), self.BACKGROUND_COLOR)
 
-        p = QPainter(self)
-        p.fillRect(self.rect(), self.BACKGROUND_COLOR)
-
+        scroll = self.parent().parent()
+        view_top = scroll.verticalScrollBar().value()
+        view_bottom = view_top + scroll.viewport().height()
 
         for index, (y, total_h) in enumerate(self.page_positions):
-
-            # Korrekte ScrollArea holen
-            scrollarea = self.parent().parent()  # viewport -> scrollarea
-
-            view_y_top = scrollarea.verticalScrollBar().value()
-            view_y_bottom = view_y_top + scrollarea.viewport().height()
-
-            # Seite oberhalb des sichtbaren Bereichs
-            if y + total_h < view_y_top - 200:
+            # Seite außerhalb des Sichtbereichs → ignorieren
+            if y + total_h < view_top - 50:
                 continue
-
-            # Seite unterhalb des sichtbaren Bereichs
-            if y > view_y_bottom + 200:
+            if y > view_bottom + 50:
                 break
 
+            # Seitenrahmen zeichnen
+            page = self.doc[index]
+            w = int(page.rect.width * self.zoom)
+            h = int(page.rect.height * self.zoom)
 
+            x_page = max(0, (self.width() - (w + 2 * self.PAGE_PADDING)) // 2)
 
-            
-            # page_key = (index, int(self.zoom * 100))
+            # Hintergrund
+            painter.fillRect(
+                QRect(x_page, y, w + 2*self.PAGE_PADDING, h + 2*self.PAGE_PADDING),
+                self.PAGE_BG
+            )
+            painter.setPen(self.PAGE_BORDER)
+            painter.drawRect(
+                QRect(x_page, y, w + 2*self.PAGE_PADDING, h + 2*self.PAGE_PADDING)
+            )
 
+            # ✅ WICHTIG: Pixmap JETZT rendern – On‑Demand
+            # Kein Cache nötig – PyMuPDF ist extrem schnell
+            mat = fitz.Matrix(self.zoom, self.zoom)
+            pix = page.get_pixmap(matrix=mat, alpha=False)
 
-            # ❗ SAFETY: Wenn Canvas in einem alten Zustand ist → einfach überspringen
-            if index >= len(self.page_sizes):
-                continue
+            img = QImage(
+                pix.samples,
+                pix.width,
+                pix.height,
+                pix.stride,
+                QImage.Format_RGB888
+            )
 
+            painter.drawImage(
+                QPoint(x_page + self.PAGE_PADDING, y + self.PAGE_PADDING),
+                img
+            )
 
-            page_w_raw, page_h_raw = self.page_sizes[index]
-            page_width = int(page_w_raw * self.zoom) + 2 * self.PAGE_PADDING
-
-            x_page = max(0, (self.width() - page_width) // 2) #links zentriert: = 40
-
-            if index in self.cache_scaled:
-                scaled = self.cache_scaled[index]
-                scaled_w = scaled.width()
-                scaled_h = scaled.height()
-            else:
-                scaled_w = int(page_w_raw * self.zoom)
-                scaled_h = int(page_h_raw * self.zoom)
-
-
-            # Karte
-            p.fillRect(QRect(x_page, int(y),
-                             scaled_w + 2*self.PAGE_PADDING,
-                             scaled_h + 2*self.PAGE_PADDING),
-                       self.PAGE_BG)
-            p.setPen(self.PAGE_BORDER)
-            p.drawRect(QRect(x_page, int(y),
-                             scaled_w + 2*self.PAGE_PADDING,
-                             scaled_h + 2*self.PAGE_PADDING))
-
-            # Pixmap
-            # Pixmap anzeigen — PURE SUMATRA-LOGIK:
-            scaled = self.cache_scaled.get(index)
-
-            # Sollte scaled fehlen, preview bevorzugen
-            if index not in self.cache_scaled and index in self.cache_preview:
-                scaled = self.cache_preview[index].scaled(
-                    scaled_w, scaled_h,
-                    Qt.KeepAspectRatio,
-                    Qt.FastTransformation
-                )
-
-
-            if scaled is not None:
-                p.drawPixmap(
-                    x_page + self.PAGE_PADDING,
-                    y + self.PAGE_PADDING,
-                    scaled  # ✅ wir nutzen die Variable, nicht self.cache_scaled[index]
-                )
-
-            else:
-                preview = self.cache_preview.get(index)
-                if preview:
-                    # Preview hochskalieren, sehr schnell
-                    p.drawPixmap(
-                        x_page + self.PAGE_PADDING,
-                        int(y) + self.PAGE_PADDING,
-                        preview.scaled(
-                            scaled_w, scaled_h,
-                            Qt.KeepAspectRatio,
-                            Qt.FastTransformation
-                        )
-                    )
-                else:
-                    # allererste Anzeige -> grauer Fallback
-                    p.fillRect(
-                        QRect(
-                            x_page + self.PAGE_PADDING,
-                            int(y) + self.PAGE_PADDING,
-                            scaled_w,
-                            scaled_h
-                        ),
-                        QColor("#d0d0d0")
-                    )
-
-            # else:
-            #     # Placeholder
-            #     p.fillRect(
-            #         QRect(x_page + self.PAGE_PADDING,
-            #               int(y) + self.PAGE_PADDING,
-            #               scaled_w, scaled_h),
-            #         QColor("#d0d0d0")
-            #     )
-
-        # Auswahl
-        p.setBrush(QColor(150, 200, 255, 120))
-        p.setPen(Qt.NoPen)
-        for r in self.sel_label_rects:
-            p.drawRect(r)
-
-        p.end()
+        painter.end()
 
     # -------------------------------------------------------
     # Mouse
@@ -481,6 +394,9 @@ class PdfCanvas(QWidget):
     # -------------------------------------------------------
     def insert_rendered(self, page_index, zoom_int, qimage):
 
+        print("INSERT", page_index, "scaled exists?", page_index in self.cache_scaled)
+        print("raw exists?", (page_index, zoom_int) in self.cache_raw)
+
         # --- SAFETY: Seite existiert noch? ---
         if page_index < 0 or page_index >= len(self.page_sizes):
             return
@@ -497,16 +413,38 @@ class PdfCanvas(QWidget):
         # raw pixmap speichern
         self.cache_raw[(page_index, zoom_int)] = QPixmap.fromImage(qimage)
 
+        # ✅ RAW‑CACHE LIMITIEREN — verhindert Memory Overflow
+        if len(self.cache_raw) > 40:                # 40 Einträge genügt völlig
+            keys = list(self.cache_raw.keys())
+            keys.sort(key=lambda x: x[0])           # sortiere nach page_index
+            for old_key in keys[:-20]:              # behalte nur die letzten 20
+                del self.cache_raw[old_key]
+
         # --- PREVIEW (Low-Res) erstellen ---
         page_w_raw, page_h_raw = self.page_sizes[page_index]
         preview_w = max(50, int(page_w_raw * self.zoom / 4))
         preview_h = max(50, int(page_h_raw * self.zoom / 4))
 
-        self.cache_preview[page_index] = self.cache_raw[(page_index, zoom_int)].scaled(
-            preview_w, preview_h,
-            Qt.KeepAspectRatio,
-            Qt.FastTransformation
-        )
+        # ✅ RAW speichern
+        self.cache_raw[(page_index, zoom_int)] = QPixmap.fromImage(qimage)
+
+        # ✅ PREVIEW sicher erstellen – ohne KeyError
+        raw_pm = self.cache_raw.get((page_index, zoom_int))
+        if raw_pm:
+            preview = raw_pm.scaled(
+                preview_w, preview_h,
+                Qt.KeepAspectRatio,
+                Qt.FastTransformation
+            )
+        else:
+            # ✅ RAW fehlt (durch Cache-Limit oder Race) → fallback
+            preview = QPixmap.fromImage(qimage).scaled(
+                preview_w, preview_h,
+                Qt.KeepAspectRatio,
+                Qt.FastTransformation
+            )
+
+        self.cache_preview[page_index] = preview
 
 
         positions_need_update = False
@@ -523,6 +461,14 @@ class PdfCanvas(QWidget):
             )
 
             self.cache_scaled[page_index] = scaled
+
+
+            # ✅ SCALED‑CACHE LIMITIEREN
+            if len(self.cache_scaled) > 40:
+                keys = sorted(self.cache_scaled.keys())
+                for old_page in keys[:-20]:             # nur 20 Seiten behalten
+                    del self.cache_scaled[old_page]
+
             positions_need_update = True
 
         if positions_need_update:    
@@ -584,20 +530,8 @@ class PdfCanvas(QWidget):
         self.update()
 
     def closeEvent(self, e):
-        try:
-            self.worker.rendered.disconnect()
-        except:
-            pass
-        try:
-            self.worker.stop()
-        except:
-            pass
-        try:
-            self.thread.quit()
-            self.thread.wait()
-        except:
-            pass
-        super().closeEvent(e)
+        pass
+
 
 
 

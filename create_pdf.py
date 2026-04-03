@@ -870,7 +870,6 @@ _PDF_UI = None          # Ui_Dialog_pdfviewer
 
 
 def open_pdf_file(folder_name, file_name, typ, show_selection_list, gesammeltedateien):
-    print(gesammeltedateien)
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
 
     drive_location = os.path.splitdrive(sys.argv[-1])[0]
