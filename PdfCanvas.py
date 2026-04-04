@@ -262,12 +262,41 @@ class PdfCanvas(QWidget):
                         ch = c["c"]
                         chars.append([cx0, cy0, cx1, cy1, ch])
 
-        if not chars:
-            self.sel_label_rects = []
-            self.selected_text = ""
-            return
+        # ------------------------------------------------------------
+        # NEU ✅: Rechtsstehenden Rand-Text herausfiltern
+        # ------------------------------------------------------------
 
-        chars.sort(key=lambda c: (c[1], c[0]))
+        if chars:
+            # X-Koordinaten analysieren
+            xs = [c[0] for c in chars]   # linke Seite
+            max_x_main = sorted(xs)[int(len(xs) * 0.97)]  
+            # → 97%-Quantil: trennt sauber Haupttext von rechten Randinfos
+
+            # Filter anwenden: nur Chars innerhalb des Haupttextblocks behalten
+            chars = [c for c in chars if c[0] <= max_x_main + 2]  # kleine Toleranz
+
+        # ------------------------------------------------------------
+        # NEU ✅: Große vertikale Lücke erkennen (z.B. beim Überschreiten der Trennlinie)
+        # ------------------------------------------------------------
+        # Text-Y-Positionen (Zeilenhöhe)
+        ys = [c[1] for c in chars]
+        ys_sorted = sorted(ys)
+
+        # Typische Zeilenabstände sind klein (< 50 px), der Strich erzeugt Lücken von > 100–200 px
+        vertical_gaps = [
+            ys_sorted[i+1] - ys_sorted[i]
+            for i in range(len(ys_sorted)-1)
+        ]
+
+        # größte Lücke suchen
+        if vertical_gaps:
+            max_gap = max(vertical_gaps)
+            if max_gap > 120:  # 120 px ist ein sehr guter Trenner für deine PDFs
+                gap_index = vertical_gaps.index(max_gap)
+                cutoff_y = ys_sorted[gap_index+1]
+
+                # ✅ ALLES unterhalb der Trennlinie rausfiltern
+                chars = [c for c in chars if c[1] < cutoff_y + 2]
 
         # ------------------------------------------------------------
         # 5) ZEILEN GRUPPIEREN
@@ -377,8 +406,8 @@ class PdfCanvas(QWidget):
     # -------------------------------------------------------
     def insert_rendered(self, page_index, zoom_int, qimage):
 
-        print("INSERT", page_index, "scaled exists?", page_index in self.cache_scaled)
-        print("raw exists?", (page_index, zoom_int) in self.cache_raw)
+        # print("INSERT", page_index, "scaled exists?", page_index in self.cache_scaled)
+        # print("raw exists?", (page_index, zoom_int) in self.cache_raw)
 
         # --- SAFETY: Seite existiert noch? ---
         if page_index < 0 or page_index >= len(self.page_sizes):
