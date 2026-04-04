@@ -828,7 +828,6 @@ class Ui_Dialog_pdfviewer(object):
     def setupUi(self, Dialog: QDialog, file_path: str, dict_pdf_chosen_examples, typ, show_selection_list=False, gesammeltedateien=None):
         self.gesammeltedateien = gesammeltedateien or []
         # --- State ---
-        self.test_value = 0
         if typ != 'cria':
             self.typ = 'lama'
         else:
@@ -1754,12 +1753,6 @@ class Ui_Dialog_pdfviewer(object):
         return 1
     
     def selected_item_changed(self):
-        print(self.test_value)
-        self.test_value +=1
-
-
-       
-
         row = self.list.currentRow()
         if row < 0:
             return
