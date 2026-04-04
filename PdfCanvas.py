@@ -46,6 +46,7 @@ class PdfCanvas(QWidget):
         self.sel_label_rects = []
         self.selected_text = ""
 
+
         self._compute_positions()
         self.setFocusPolicy(Qt.StrongFocus)
         self.setCursor(Qt.IBeamCursor)
@@ -125,6 +126,12 @@ class PdfCanvas(QWidget):
                 img
             )
 
+        # ✅ Auswahl malen
+        painter.setBrush(QColor(150, 200, 255, 120))
+        painter.setPen(Qt.NoPen)
+        for rect in self.sel_label_rects:
+            painter.drawRect(rect)
+
         painter.end()
 
     # -------------------------------------------------------
@@ -149,19 +156,18 @@ class PdfCanvas(QWidget):
             return
 
 
-        # ✅ Linksklick = Textauswahl
+
+
+        # ✅ START DER TEXTAUSWAHL WIE FRÜHER
         if e.button() == Qt.LeftButton:
             self.sel_label_rects = []
             self.selected_text = ""
-            self.update()
-
-            self.sel_page = self._page_at(e.pos())
-            if self.sel_page is None:
-                return
-
-            self._selecting = True
+            self.sel_page = self._page_at(e.pos())   # <-- WICHTIG
             self.sel_start = e.pos()
             self.sel_end = e.pos()
+            self._selecting = True
+
+
 
     def mouseMoveEvent(self, e):
         if self._selecting:
@@ -200,25 +206,20 @@ class PdfCanvas(QWidget):
         # ------------------------------------------------------------
         # 1) Auswahlrechteck (Widget → PDF Koordinaten)
         # ------------------------------------------------------------
-        # Positions-Offset der Seite herausfinden
         page_y, total_h = self.page_positions[page_index]
         page_x = max(0, (self.width() - (page.rect.width * self.zoom + 2*self.PAGE_PADDING)) // 2)
 
-        # Maus-Start/Endpunkt in Widget-Space
         p0 = self.sel_start
         p1 = self.sel_end
 
-        # Normiertes Auswahlrechteck in Widget-Space
         wx0, wy0 = min(p0.x(), p1.x()), min(p0.y(), p1.y())
         wx1, wy1 = max(p0.x(), p1.x()), max(p0.y(), p1.y())
 
-        # In PDF-Space umrechnen
         pdf_x0 = (wx0 - page_x - self.PAGE_PADDING) / self.zoom
         pdf_y0 = (wy0 - page_y - self.PAGE_PADDING) / self.zoom
         pdf_x1 = (wx1 - page_x - self.PAGE_PADDING) / self.zoom
         pdf_y1 = (wy1 - page_y - self.PAGE_PADDING) / self.zoom
 
-        # Auswahl speichern
         sel_x0, sel_y0, sel_x1, sel_y1 = pdf_x0, pdf_y0, pdf_x1, pdf_y1
 
         # ------------------------------------------------------------
@@ -241,7 +242,6 @@ class PdfCanvas(QWidget):
             bh = y1 - y0
 
             if bw > page.rect.width * 0.40 and bh > page.rect.height * 0.20:
-                # Wasserzeichen erkannt → nicht aufnehmen
                 continue
 
             filtered.append(b)
@@ -288,25 +288,13 @@ class PdfCanvas(QWidget):
         lines.append(current)
 
         # ------------------------------------------------------------
-        # 6) SUMATRA-PDF-STYLE AUSWAHL: rein nach Zeichenreihenfolge
+        # 6) SUMATRA-PDF-STYLE AUSWAHL
         # ------------------------------------------------------------
-
-        # 1. PDF-Koordinaten der beiden Punkte
-        p0 = self.sel_start
-        p1 = self.sel_end
-
-        # Umrechnung ins PDF-Koordinatensystem
         pdf_x0 = (p0.x() - page_x - self.PAGE_PADDING) / self.zoom
         pdf_y0 = (p0.y() - page_y - self.PAGE_PADDING) / self.zoom
         pdf_x1 = (p1.x() - page_x - self.PAGE_PADDING) / self.zoom
         pdf_y1 = (p1.y() - page_y - self.PAGE_PADDING) / self.zoom
 
-        # 2. Char-Liste flatten:
-        # Wir haben alle chars bereits extrahiert → in der Variablen 'chars'
-        # (Liste von [x0,y0,x1,y1,char])
-        # UND sie ist bereits sortiert, das passt perfekt.
-
-        # 3. Finde Start- und Endindex
         idx_start = self._char_index_from_pdf_pos(chars, pdf_x0, pdf_y0)
         idx_end   = self._char_index_from_pdf_pos(chars, pdf_x1, pdf_y1)
 
@@ -315,19 +303,14 @@ class PdfCanvas(QWidget):
 
         selected = chars[idx_start:idx_end+1]
 
-        # 4. Text erzeugen
+        # TEXT
         self.selected_text = "".join(c[4] for c in selected)
 
-        # 5. Rechtecke erzeugen (Zeilenbasiert aber nur für Darstellung)
-        #    → wir gruppieren die ausgewählten Zeichen nach Linien
-
-        # Linien finden
+        # ------------------------------------------------------------
+        # 7) Rechtecke erzeugen (für Darstellung)
+        # ------------------------------------------------------------
         line_groups = []
         current = [selected[0]]
-
-        def same_line(a, b):
-            return abs(a[1] - b[1]) < 5
-
         for c in selected[1:]:
             if same_line(current[-1], c):
                 current.append(c)
