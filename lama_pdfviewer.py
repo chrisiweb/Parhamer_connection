@@ -1309,6 +1309,13 @@ class Ui_Dialog_pdfviewer(object):
             page, y_ratio = data
             self.viewer.scrollToPageLocation(page, y_ratio)
 
+
+
+        # Seite manuell setzen
+        self.spin_page.blockSignals(True)
+        self.spin_page.setValue(page)
+        self.spin_page.blockSignals(False)
+
         # Nach kurzer Zeit wieder Auto-Sync erlauben
         QTimer.singleShot(200, lambda: setattr(self, "_manual_selection", False))
 
@@ -1764,6 +1771,13 @@ class Ui_Dialog_pdfviewer(object):
 
         # Jetzt PDF springen lassen
         self.viewer.scrollToPageLocation(page, ratio)
+
+
+
+        # Seite manuell setzen
+        self.spin_page.blockSignals(True)
+        self.spin_page.setValue(page)
+        self.spin_page.blockSignals(False)
 
 
         # nach kurzer Zeit Automatik wieder erlauben
