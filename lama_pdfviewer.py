@@ -833,6 +833,7 @@ class Ui_Dialog_pdfviewer(object):
     def setupUi(self, Dialog: QDialog, file_path: str, dict_pdf_chosen_examples, typ, show_selection_list=False, gesammeltedateien=None):
         self.gesammeltedateien = gesammeltedateien or []
         # --- State ---
+        self.test_value = 0
         if typ != 'cria':
             self.typ = 'lama'
         else:
@@ -942,6 +943,7 @@ class Ui_Dialog_pdfviewer(object):
 
         self.list.setContextMenuPolicy(Qt.CustomContextMenu)
         self.list.customContextMenuRequested.connect(self._on_list_context_menu)
+        self.list.currentRowChanged.connect(self.selected_item_changed)
 
         # self.icon_green  = make_square(QColor("#b7f5a9"))
         # self.icon_red    = make_square(QColor("#ffb4b4"))
@@ -1099,6 +1101,54 @@ class Ui_Dialog_pdfviewer(object):
         # 🔹 Strg+C überall im Dialog -> kopiert die aktuelle Bildauswahl
         sc_copy = QShortcut(QKeySequence.Copy, self.Dialog)
         sc_copy.setContext(Qt.ApplicationShortcut)
+
+        class ArrowKeyFilter(QObject):
+            def __init__(self, ui):
+                super().__init__(ui.Dialog)
+                self.ui = ui
+
+            def eventFilter(self, obj, ev):
+                if ev.type() != QEvent.KeyPress:
+                    return False
+
+                key = ev.key()
+                if key not in (Qt.Key_Up, Qt.Key_Down):
+                    return False
+
+                # linkes Panel nicht sichtbar → abbrechen
+                if not self.ui.left_panel.isVisible():
+                    return False
+
+                lw = self.ui.list
+                row = lw.currentRow()
+                if row < 0:
+                    return False
+
+                # neue Zeile bestimmen
+                if key == Qt.Key_Up:
+                    new_row = max(0, row - 1)
+                else:
+                    new_row = min(lw.count() - 1, row + 1)
+
+                lw.setCurrentRow(new_row)
+                item = lw.item(new_row)
+
+                # ✅ HIER die Korrektur:
+                page, ratio = item.data(self.ui.ROLE_TARGET)
+
+                # PDF anspringen
+                self.ui.viewer.scrollToPageLocation(page, ratio)
+
+                return True
+            
+
+            
+        self._arrowFilter = ArrowKeyFilter(self)
+        Dialog.installEventFilter(self._arrowFilter)
+
+
+
+
 
         def _on_copy():
             from PyQt5.QtWidgets import QApplication
@@ -1707,6 +1757,30 @@ class Ui_Dialog_pdfviewer(object):
                 return page_index + 1
 
         return 1
+    
+    def selected_item_changed(self):
+        print(self.test_value)
+        self.test_value +=1
+
+
+       
+
+        row = self.list.currentRow()
+        if row < 0:
+            return
+
+        self._manual_selection = True
+
+        item = self.list.item(row)
+        page, ratio = item.data(self.ROLE_TARGET)
+
+        # Jetzt PDF springen lassen
+        self.viewer.scrollToPageLocation(page, ratio)
+    
+
+        # nach kurzer Zeit Automatik wieder erlauben
+        QTimer.singleShot(150, lambda: setattr(self, "_manual_selection", False))
+
     # def _hide_splitter_handle(self):
     #     handle = self.splitter.handle(1)
     #     handle.setEnabled(False)
