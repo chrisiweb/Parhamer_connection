@@ -8760,7 +8760,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             pdf_list = dict_pdf_chosen_examples
             #use predefined dict_pdf_chosen_examples from config
-        print(pdf_list)
+        # print(pdf_list)
         Dialog = QtWidgets.QDialog(
             None,
             Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint,
