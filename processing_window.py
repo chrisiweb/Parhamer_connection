@@ -216,6 +216,7 @@ def working_window_latex_output(worker, text, *args):
     Dialog.exec()
     thread.quit()
     thread.wait()
+    
     return ui.latex_error_occured #, ui.terminal_error_occured
 
 

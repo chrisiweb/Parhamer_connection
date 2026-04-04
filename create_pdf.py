@@ -587,7 +587,9 @@ def prepare_tex_for_pdf(self):
         elif self.chosen_program == "cria":
             typ = "cria"
 
-        create_pdf("Teildokument", 0, 0, typ, gesammeltedateien=gesammeltedateien)
+        rsp = create_pdf("Teildokument", 0, 0, typ, gesammeltedateien=gesammeltedateien)
+        if rsp == 'abort':
+            return
 
 def get_output_size(gesammeltedateien, variation, spezielle_suche, language_index):
     if language_index == 2:
@@ -1023,7 +1025,7 @@ def loading_animation(process):
 def try_to_delete_file(file):
     try:
         os.unlink(file)
-    except FileNotFoundError:
+    except (FileNotFoundError, PermissionError):
         pass
 
 
@@ -1091,7 +1093,8 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
     errors_latex_output = working_window_latex_output(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
        
     if errors_latex_output == 'abort':
-        return
+        QApplication.restoreOverrideCursor()
+        return 'abort'
 
 
     if errors_latex_output != False:

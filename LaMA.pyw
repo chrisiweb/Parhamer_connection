@@ -904,7 +904,9 @@ class Ui_MainWindow(object):
             # create_pdf(name, index, range_limit)
 
             if range_limit > 2:
-                create_pdf.create_pdf(name, index, range_limit)
+                rsp = create_pdf.create_pdf(name, index, range_limit)
+                if rsp == 'abort':
+                    return 'abort'
                 temp_filename = name + ".pdf"
 
                 if index % 2 == 0:
@@ -929,8 +931,9 @@ class Ui_MainWindow(object):
 
             else:
 
-                create_pdf.create_pdf(name, index, 2)
-
+                rsp = create_pdf.create_pdf(name, index, 2)
+                if rsp == 'abort':
+                    return 'abort'
                 temp_filename = name + ".pdf"
                 if index % 2 == 0:
                     new_filename = name + "_Loesung.pdf"
@@ -1054,7 +1057,11 @@ class Ui_MainWindow(object):
                     filename_vorschau=filename_vorschau,
                 )
 
+                if rsp == 'abort':
+                    QApplication.restoreOverrideCursor()
+                    return
                 if rsp == False:
+                    QApplication.restoreOverrideCursor()
                     return
 
                 if single_file_index != None:
@@ -1312,17 +1319,7 @@ class Ui_MainWindow(object):
                 return version
 
             latest_version = get_latest_version()
-            # print(latest_version)
-            # r = requests.post('https://httpbin.org/post', data = {'key':'value'})
-            # f = urlopen(link)
-            # url_readme_version = f.read().decode("utf-8")
-            # readme_content = requests.get(link)
 
-            # latest_version = re.search(
-            #     r"\[(v\d+.\d+.\d+)\]", readme_content.text
-            # ).group(1)
-            # latest_version = requests.get(link).text
-            # print(latest_version)
             if __version__ == latest_version:
                 return
         except Exception as e:
@@ -4194,7 +4191,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
 
         if rsp == True:
-            create_pdf.create_pdf("preview")
+            rsp = create_pdf.create_pdf("preview")
+            if rsp == 'abort':
+                return 'abort'
         else:
             critical_window(
                 "Die PDF Datei konnte nicht erstellt werden", detailed_text=rsp
@@ -6395,7 +6394,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             file.write(tex_end)
 
-        create_pdf.create_pdf("worksheet")
+        rsp = create_pdf.create_pdf("worksheet")
+        if rsp == 'abort':
+            return 'abort'
 
     def edit_worksheet_instructions(self):
         Dialog = QtWidgets.QDialog(
@@ -6539,7 +6540,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             name, extension = os.path.splitext(path_file)
 
-            create_pdf.create_pdf(name, index, 2)
+            rsp = create_pdf.create_pdf(name, index, 2)
+            if rsp == 'abort':
+                return 'abort'
 
             temp_filename = name + ".pdf"
             if index == 0:
@@ -9448,8 +9451,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             name, extension = os.path.splitext(filename_vorschau)
 
             if pdf == True:
-                create_pdf.create_pdf(name, index, 2)
-
+                rsp = create_pdf.create_pdf(name, index, 2)
+                if rsp == 'abort':
+                    return 'abort'
                 temp_filename = name + ".pdf"
                 if index % 2 == 0:
                     new_filename = name + "_Loesung.pdf"
@@ -9581,7 +9585,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         # return ## WORKING RETURN
         if ausgabetyp == "vorschau":
-            create_pdf.create_pdf("Schularbeit_Vorschau", 0, 0)
+            rsp = create_pdf.create_pdf("Schularbeit_Vorschau", 0, 0)
+            if rsp == 'abort':
+                return 'abort'
 
         if ausgabetyp == "schularbeit":
             name, extension = os.path.splitext(filename_vorschau)
@@ -9591,10 +9597,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     show_warning = False
                 else:
                     show_warning = None
-                create_pdf.create_pdf(
+                rsp = create_pdf.create_pdf(
                     name, index, maximum, show_latex_error_warning=show_warning
                 )
-
+                if rsp == 'abort':
+                    return 'abort'
                 temp_filename = name + ".pdf"
 
                 if maximum > 2:
