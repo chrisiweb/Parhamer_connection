@@ -16,29 +16,24 @@ PDF-Viewer (PyQt5 + PyMuPDF) mit:
 
 import os
 import re
-import sys
-from typing import List, Tuple, Optional
 from config import get_icon_path
 import fitz  # PyMuPDF
 from PyQt5.QtWidgets import (
-    QLabel, QWidget, QScrollArea, QVBoxLayout,
+    QLabel, QWidget, QVBoxLayout,
     QToolBar, QLineEdit, QSizePolicy, QShortcut,
     QListWidget, QListWidgetItem, QSplitter, QHBoxLayout,
     QStyledItemDelegate, QStyle, QStyleOptionViewItem,
-    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QAction, QToolButton, QMenu, QMessageBox, QDialogButtonBox, QAbstractItemView
+    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QToolButton, QMessageBox, QDialogButtonBox, QAbstractItemView
 )
 from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon, QPainter
 from PyQt5.QtCore import Qt, pyqtSignal, QRect, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
 from config import logo_path, save_pdf_selection_dict, lama_pdf_selection_file
 from PdfViewer_gui import PdfViewer
 from create_new_widgets import create_new_label
-# ---------- Überschriften-Extraktion aus PDF ----------
-# ---------- Überschriften-Extraktion aus PDF (erweitert) ----------
+
 import re
 
-# 1) „AG/WS/AN … 1.4 - 3“-artige Muster (wie bisher)
-# ALLE erlaubten Aufgaben-Formate in EINER Regex
-
+# ---------- Überschriften-Extraktion aus PDF ----------
 _HEADING = re.compile(
     r"""(?xmi)
     ^
@@ -1776,18 +1771,7 @@ class Ui_Dialog_pdfviewer(object):
 
         # Jetzt PDF springen lassen
         self.viewer.scrollToPageLocation(page, ratio)
-    
+
 
         # nach kurzer Zeit Automatik wieder erlauben
         QTimer.singleShot(150, lambda: setattr(self, "_manual_selection", False))
-
-    # def _hide_splitter_handle(self):
-    #     handle = self.splitter.handle(1)
-    #     handle.setEnabled(False)
-    #     handle.setStyleSheet("""
-    #         QSplitter::handle {
-    #             background: transparent;
-    #             width: 0px;
-    #         }
-    #     """)
-    #     self.splitter.setSizes([0, 1_000_000])
