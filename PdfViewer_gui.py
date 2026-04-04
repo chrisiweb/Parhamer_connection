@@ -168,6 +168,9 @@ class PdfViewer(QWidget):
         self.canvas.quick_scale()
         self.canvas._compute_positions()
 
+        # neue Mindestbreite setzen
+        self.canvas.updateGeometry()
+
         # JETZT ERNEUT Breite + Offsets HOLEN
         if page_index in self.canvas.cache_scaled:
             new_scaled = self.canvas.cache_scaled[page_index]

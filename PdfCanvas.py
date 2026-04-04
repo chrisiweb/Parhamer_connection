@@ -73,6 +73,16 @@ class PdfCanvas(QWidget):
             y += h + self.PAGE_MARGIN
 
         self.setMinimumHeight(y)
+
+
+        # Mindestbreite anhand der größten Seite berechnen
+        max_width = 0
+        for page in self.doc:
+            w = int(page.rect.width * self.zoom) + 2 * self.PAGE_PADDING
+            max_width = max(max_width, w)
+
+        self.setMinimumWidth(max_width + self.PAGE_MARGIN * 2)
+
     # -------------------------------------------------------
     # Rendering
     # -------------------------------------------------------
