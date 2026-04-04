@@ -439,8 +439,6 @@ class Ui_MainWindow(object):
         self.dict_variablen_translation = {}
         self.dict_variablen_AB = {}
         self.dict_variablen_abstand = {}
-        # self.dict_variablen_label = {}
-        # self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_sage_hide_show_items_chosen = {}
         self.dict_sage_individual_change = {}
         self.dict_chosen_topics = {}

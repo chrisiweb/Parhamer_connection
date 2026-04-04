@@ -89,6 +89,11 @@ class Ui_Dialog_processing(object):
             self.plainTextEdit.setFixedHeight(70)
             gridLayout.addWidget(self.plainTextEdit, 1,0,1,3)
 
+        
+        self.btn_cancel = QtWidgets.QPushButton("Abbrechen")
+        self.btn_cancel.setObjectName("btn_cancel")
+        self.btn_cancel.setStyleSheet("padding: 6px; color: white;")
+        gridLayout.addWidget(self.btn_cancel, 2, 1, 1, 1, QtCore.Qt.AlignCenter)
 
 
 class Ui_ProgressBar(object):
@@ -184,16 +189,33 @@ def working_window_latex_output(worker, text, *args):
     ui.latex_error_occured = False
     # ui.terminal_error_occured = False
     thread = QtCore.QThread(Dialog)
+    worker.moveToThread(thread)
+
+    def cancel():
+        worker.stop()
+        thread.quit()
+        ui.latex_error_occured = 'abort'
+        Dialog.reject()
+        return ui.latex_error_occured
+
+
+    # Hole den Button aus dem UI
+
+    btn_cancel = ui.btn_cancel
+    btn_cancel.clicked.connect(cancel)
+
+    # btn_cancel = Dialog.findChild(QtWidgets.QPushButton, "Abbrechen")
+    # btn_cancel.clicked.connect(cancel)
+
     # worker = Worker_RefreshDDB()
     worker.signalUpdateOutput.connect(signalUpdateOutput)
     worker.finished.connect(Dialog.close)
-    worker.moveToThread(thread)
-
+    
     thread.started.connect(partial(worker.task,ui, *args)) 
     thread.start()
-    thread.exit()
     Dialog.exec()
-    
+    thread.quit()
+    thread.wait()
     return ui.latex_error_occured #, ui.terminal_error_occured
 
 

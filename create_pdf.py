@@ -53,59 +53,63 @@ dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 class Worker_CreatePDF(QObject):
     finished = pyqtSignal()
     signalUpdateOutput = pyqtSignal(object, str)
+
+    def __init__(self):
+        super().__init__()
+        self._stop_requested = False
+        self._process = None
+
+
+
+    def stop(self):
+        """Wird aufgerufen, wenn Abbrechen gedrückt wird"""
+        self._stop_requested = True
+        if self._process is not None:
+            try:
+                self._process.kill()
+            except Exception:
+                pass
+
     @pyqtSlot()
     def task(self, ui, folder_name, file_name, latex_output_file):
-        process = build_pdf_file(ui, folder_name, file_name, latex_output_file)
+        # Prozess starten und speichern
+        self._process = build_pdf_file(ui, folder_name, file_name, latex_output_file)
 
         ui.latex_error_occured = False
         logfile = ""
         total_output_logfile = ""
 
-        while process.poll() is None:
-            output = process.stdout.readline().strip()
-            total_output_logfile += output.decode("utf-8", 'ignore')
-            if output:
-                msg = output.decode("utf-8", 'ignore')
-                logfile += msg
-                if ui.latex_error_occured != False:
-                    ui.latex_error_occured += msg    
-                possible_errors = [
-                    "! Emergency stop.",
-                    "! LaTeX Error:",
-                    "Unrecoverable error",
-                    "! Undefined control sequence",
-                    "! Missing $ inserted",
-                    "! Missing } inserted",
-                ]
+        while True:
+            # Abbruch drücken → SOFORT raus
+            if self._stop_requested:
+                if self._process is not None:
+                    try:
+                        self._process.kill()
+                    except:
+                        pass
+                break
 
-                for all in possible_errors:
-                    if all in msg: 
-                        ui.latex_error_occured = logfile
-                        break
-                # if ("! Emergency stop." in msg or 
-                # "! LaTeX Error:" in msg or 
-                # "Unrecoverable error" in msg or
-                # "! Missing $ inserted" in msg or
-                # "! Missing } inserted" in msg
-                # ):
-                #     ui.latex_error_occured = logfile
+            line = self._process.stdout.readline()
+            if not line:
+                if self._process.poll() is not None:
+                    break
+                continue
 
-                self.signalUpdateOutput.emit(ui, msg)
+            msg = line.decode("utf-8", "ignore")
+            total_output_logfile += msg
+            logfile += msg
+            self.signalUpdateOutput.emit(ui, msg)
 
-        process.wait()
+        # Ausgabe speichern
+        try:
+            with open(latex_output_file, "w", encoding="utf-8", errors="replace") as f:
+                f.write(total_output_logfile)
+        except:
+            pass
 
-
-        # **GESAMTLOG SPEICHERN**
-        # try:
-        with open(latex_output_file, "w", encoding="utf-8", errors="replace") as f:
-            f.write(total_output_logfile)
-        # except Exception as e:
-        #     # Optional: Fehlerbehandlung / UI-Hinweis
-        #     self.signalUpdateOutput.emit(ui, f"[Log speichern fehlgeschlagen: {e}]")
-
-
-
+        # Thread wirklich sauber beenden
         self.finished.emit()
+
 
 
 
@@ -434,7 +438,7 @@ def check_if_suchbegriffe_is_empty(suchbegriffe, language_index):
 def prepare_tex_for_pdf(self):
     QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
     suchbegriffe = collect_suchbegriffe(self)
-    # print(suchbegriffe)
+
     response = check_if_suchbegriffe_is_empty(suchbegriffe, self.combobox_translation.currentIndex())
     if response == True:
         QApplication.restoreOverrideCursor()
@@ -516,8 +520,6 @@ def prepare_tex_for_pdf(self):
     else:
         infos = "info_off"
 
-    # print(suchbegriffe)
-    # print(self.chosen_program)
     if self.chosen_program == "lama" and (suchbegriffe['klasse'] == [] and suchbegriffe['info'] == [] and suchbegriffe['erweiterte_suche'] == ""):
         spezielle_suche = False
     elif self.chosen_program == "cria" and suchbegriffe['erweiterte_suche'] == "":
@@ -682,7 +684,6 @@ def construct_tex_file(file_name, gesammeltedateien, current_program, solutions,
             except KeyError:
                     language = ""
 
-            # print(f"{all['name']} : {language}")
 
             file.write("\\smallskip\\begin{minipage}{1\\textwidth}\n")
             green = "green!40!black!60!"
@@ -825,7 +826,7 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')
 
         process = subprocess.Popen(
-            f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"',
+            f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=0 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=0 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"',
             stdout=subprocess.PIPE,
             shell=True,
         )
@@ -850,9 +851,9 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         gs = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'bin', 'gswin64c.exe')
 
         if is_empty(drive):
-            terminal_command = f'cd "{folder_name}" & "{latex}" -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & "{latex}" -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & "{dvips}" "{file_name}.dvi" & "{gs}" -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'
+            terminal_command = f'cd "{folder_name}" & "{latex}" -interaction=nonstopmode --synctex=0 "{file_name}.tex" & "{latex}" -interaction=nonstopmode --synctex=0 "{file_name}.tex" & "{dvips}" "{file_name}.dvi" & "{gs}" -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'
         else:
-            terminal_command = f'{drive} & cd "{folder_name}" & "{latex}" -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & "{latex}" -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & "{dvips}" "{file_name}.dvi" & "{gs}" -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'
+            terminal_command = f'{drive} & cd "{folder_name}" & "{latex}" -interaction=nonstopmode --synctex=0 "{file_name}.tex" & "{latex}" -interaction=nonstopmode --synctex=0 "{file_name}.tex" & "{dvips}" "{file_name}.dvi" & "{gs}" -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'
 
         process = subprocess.Popen(
             terminal_command,
@@ -1088,8 +1089,9 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
 
     
     errors_latex_output = working_window_latex_output(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
-    
-
+       
+    if errors_latex_output == 'abort':
+        return
 
 
     if errors_latex_output != False:
