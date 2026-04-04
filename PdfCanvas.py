@@ -658,3 +658,13 @@ class PdfCanvas(QWidget):
                 return entry.get("content")
 
         return None
+    
+
+    def clear_selection(self):
+        self._selecting = False
+        self.sel_page = None
+        self.sel_start = None
+        self.sel_end = None
+        self.sel_label_rects = []
+        self.selected_text = ""
+        self.update()

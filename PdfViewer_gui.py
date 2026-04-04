@@ -215,9 +215,11 @@ class PdfViewer(QWidget):
         super().keyPressEvent(e)
 
     def zoom_in(self, step=0.1):
+        self.canvas.clear_selection()
         self.apply_zoom_factor(1 + step)
 
     def zoom_out(self, step=0.1):
+        self.canvas.clear_selection()
         self.apply_zoom_factor(1 - step)
 
 
@@ -235,23 +237,23 @@ class PdfViewer(QWidget):
         return visible[:4]
     
     def eventFilter(self, obj, e):
-        # ✅ STRG + rechte Maustaste -> Notizfenster öffnen
-        if obj == self.scroll.viewport() and e.type() == QEvent.MouseButtonPress:
-            if e.button() == Qt.RightButton and QApplication.keyboardModifiers() & Qt.ControlModifier:
+        # # ✅ STRG + rechte Maustaste -> Notizfenster öffnen
+        # if obj == self.scroll.viewport() and e.type() == QEvent.MouseButtonPress:
+        #     if e.button() == Qt.RightButton and QApplication.keyboardModifiers() & Qt.ControlModifier:
                 
-                # Aufgabennummer bestimmen
-                page = self.currentPage()      # 1-based
+        #         # Aufgabennummer bestimmen
+        #         page = self.currentPage()      # 1-based
                 
-                aufgabe = f"Aufgabe {page}"
+        #         aufgabe = f"Aufgabe {page}"
 
-                # Fenster öffnen
-                dlg = NoteWindow(aufgabe, parent=self)
-                dlg.exec_()
+        #         # Fenster öffnen
+        #         dlg = Sour(aufgabe, parent=self)
+        #         dlg.exec_()
 
-                return True
+        #         return True
         if obj == self.scroll.viewport() and e.type() == QEvent.Wheel:
             if e.modifiers() & Qt.ControlModifier:
-
+                self.canvas.clear_selection()
                 # Viewport-Koordinate der Maus
                 vp_x = e.pos().x()
                 vp_y = e.pos().y()
@@ -268,6 +270,7 @@ class PdfViewer(QWidget):
                     self.apply_zoom_factor(0.7, focal_point=focal)
 
                 # ScrollEvent vollständig blockieren
+                
                 return True
 
         return super().eventFilter(obj, e)
