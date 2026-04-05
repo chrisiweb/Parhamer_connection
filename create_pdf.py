@@ -7,17 +7,10 @@ import re
 import json
 import subprocess
 
-from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader, path_home
+from config_start import path_programm, path_localappdata_lama
 from config import *
 from lama_pdfviewer import Ui_Dialog_pdfviewer
-# (
-#     config_file,
-#     config_loader,
-#     logo_path,
-#     is_empty,
-#     shorten_gk,
 
-# )
 import json
 import shutil
 from datetime import date, timedelta 
@@ -26,9 +19,8 @@ from refresh_ddb import refresh_ddb, modification_date
 from sort_items import order_gesammeltedateien, sortTopics
 from standard_dialog_windows import critical_window,question_window, warning_window
 from processing_window import working_window_latex_output
-import webbrowser
 from tinydb import Query
-from database_commands import _database, _database_addon, _local_database, get_aufgabentyp
+from database_commands import _database, _database_addon, _local_database
 from tex_minimal import tex_preamble, tex_end, begin_beispiel, end_beispiel, begin_beispiel_lang, end_beispiel_lang
 
 
@@ -934,81 +926,81 @@ def open_pdf_file(folder_name, file_name, typ, show_selection_list, gesammelteda
     # ui.setupUi(Dialog, file_path)
 
     # Dialog.exec()
-    try:
-        print('test')
-    except:
-        try:
-            with open(lama_settings_file, "r", encoding="utf8") as f:
-                lama_settings = json.load(f)
-            if is_empty(lama_settings['pdf_reader']):
-                if os.path.isfile(path_standard_pdf_reader):
-                    path_pdf_reader = path_standard_pdf_reader
-                else:
-                    path_pdf_reader = ""
-            else:
-                path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
-        except (FileNotFoundError, KeyError):
-            if os.path.isfile(path_standard_pdf_reader):
-                path_pdf_reader = path_standard_pdf_reader
-            else:
-                path_pdf_reader = ""
-        file_path = os.path.join(folder_name, file_name)
+    # try:
+    #     print('test')
+    # except:
+    #     try:
+    #         with open(lama_settings_file, "r", encoding="utf8") as f:
+    #             lama_settings = json.load(f)
+    #         if is_empty(lama_settings['pdf_reader']):
+    #             if os.path.isfile(path_standard_pdf_reader):
+    #                 path_pdf_reader = path_standard_pdf_reader
+    #             else:
+    #                 path_pdf_reader = ""
+    #         else:
+    #             path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
+    #     except (FileNotFoundError, KeyError):
+    #         if os.path.isfile(path_standard_pdf_reader):
+    #             path_pdf_reader = path_standard_pdf_reader
+    #         else:
+    #             path_pdf_reader = ""
+    #     file_path = os.path.join(folder_name, file_name)
 
-        if sys.platform.startswith("linux"):
+    #     if sys.platform.startswith("linux"):
 
-            file_path = file_path + ".pdf"
+    #         file_path = file_path + ".pdf"
 
-            #subprocess.run(["evince", "--unique", file_path])
-            #webbrowser.open(file_path, new=2, autoraise=True)
+    #         #subprocess.run(["evince", "--unique", file_path])
+    #         #webbrowser.open(file_path, new=2, autoraise=True)
 
-            # os.system("xdg-open {0}".format(file_path))
+    #         # os.system("xdg-open {0}".format(file_path))
 
-            try:
-                subprocess.Popen(
-                    [
-                        "evince",
-                        file_path,
-                    ]
-                )
-            except FileNotFoundError:
-                subprocess.Popen(
-                    [
-                        "xdg-open",
-                        file_path,
-                    ]
-                )            
-        elif sys.platform.startswith("darwin"):
-            if is_empty(path_pdf_reader) == False:
-                if os.path.exists(path_pdf_reader)== False:
-                    warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+    #         try:
+    #             subprocess.Popen(
+    #                 [
+    #                     "evince",
+    #                     file_path,
+    #                 ]
+    #             )
+    #         except FileNotFoundError:
+    #             subprocess.Popen(
+    #                 [
+    #                     "xdg-open",
+    #                     file_path,
+    #                 ]
+    #             )            
+    #     elif sys.platform.startswith("darwin"):
+    #         if is_empty(path_pdf_reader) == False:
+    #             if os.path.exists(path_pdf_reader)== False:
+    #                 warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
                 
                 
-                subprocess.run(
-                    ["open","-a","{}".format(path_pdf_reader), "{0}.pdf".format(file_path)]
-                )            
+    #             subprocess.run(
+    #                 ["open","-a","{}".format(path_pdf_reader), "{0}.pdf".format(file_path)]
+    #             )            
 
-            else:
-                subprocess.run(
-                    ["open", "{0}.pdf".format(file_path)]
-                )
+    #         else:
+    #             subprocess.run(
+    #                 ["open", "{0}.pdf".format(file_path)]
+    #             )
             
-        else:
-            if os.path.isfile(path_pdf_reader) == False:
-                if is_empty(path_pdf_reader)== False:
-                    warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
-                path_pdf_reader = ""
-            else:
-                path_pdf_reader = '"{}"'.format(path_pdf_reader) 
+    #     else:
+    #         if os.path.isfile(path_pdf_reader) == False:
+    #             if is_empty(path_pdf_reader)== False:
+    #                 warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+    #             path_pdf_reader = ""
+    #         else:
+    #             path_pdf_reader = '"{}"'.format(path_pdf_reader) 
 
-            if is_empty(drive):
-                subprocess.Popen(
-                    'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
-                    shell = True).poll()
-            else:
-                drive = "{} &".format(drive)
-                subprocess.Popen(
-                    '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
-                    shell = True).poll()            
+    #         if is_empty(drive):
+    #             subprocess.Popen(
+    #                 'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
+    #                 shell = True).poll()
+    #         else:
+    #             drive = "{} &".format(drive)
+    #             subprocess.Popen(
+    #                 '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
+    #                 shell = True).poll()            
 
 def loading_animation(process):
     animation = "|/-\\"

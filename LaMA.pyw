@@ -2374,25 +2374,24 @@ class Ui_MainWindow(object):
         def create_string_of_relevant_pathes():
             from config_start import (
                 lama_individual_titlepage,
-                path_standard_pdf_reader,
                 cria_individual_titlepage,
             )
 
-            try:
-                with open(lama_settings_file, "r", encoding="utf8") as f:
-                    lama_settings = json.load(f)
-                if is_empty(lama_settings["pdf_reader"]):
-                    if os.path.isfile(path_standard_pdf_reader):
-                        path_pdf_reader = path_standard_pdf_reader
-                    else:
-                        path_pdf_reader = ""
-                else:
-                    path_pdf_reader = "{}".format(lama_settings["pdf_reader"])
-            except (FileNotFoundError, KeyError):
-                if os.path.isfile(path_standard_pdf_reader):
-                    path_pdf_reader = path_standard_pdf_reader
-                else:
-                    path_pdf_reader = ""
+            # try:
+            #     with open(lama_settings_file, "r", encoding="utf8") as f:
+            #         lama_settings = json.load(f)
+            #     if is_empty(lama_settings["pdf_reader"]):
+            #         if os.path.isfile(path_standard_pdf_reader):
+            #             path_pdf_reader = path_standard_pdf_reader
+            #         else:
+            #             path_pdf_reader = ""
+            #     else:
+            #         path_pdf_reader = "{}".format(lama_settings["pdf_reader"])
+            # except (FileNotFoundError, KeyError):
+            #     if os.path.isfile(path_standard_pdf_reader):
+            #         path_pdf_reader = path_standard_pdf_reader
+            #     else:
+            #         path_pdf_reader = ""
             dict_paths = {
                 "path_programm": path_programm,
                 "path_localappdata_lama": path_localappdata_lama,
@@ -2402,7 +2401,6 @@ class Ui_MainWindow(object):
                 "cria_titlepage_save": cria_titlepage_save,
                 "cria_individual_titlepage": cria_individual_titlepage,
                 "lama_notenschluessel_file": lama_notenschluessel_file,
-                "path_pdf_reader": path_pdf_reader,
             }
             _string = ""
             for name, value in dict_paths.items():

@@ -2340,7 +2340,6 @@ class Ui_Dialog_setup(object):
         self.MainWindow = MainWindow
         standard_settings = {
             'start_program' : 0,
-            'pdf_reader' : "",
             'database' : 2,
             'display' : 0,
             'search_output': 0,
@@ -2429,27 +2428,27 @@ class Ui_Dialog_setup(object):
         verticallayout_tab_general.addWidget(groupbox_start_program)
         # row +=1
 
-        groupbox_path_pdf = create_new_groupbox(self.tab_general, "Dateipfad PDF Reader")
-        groupbox_path_pdf.setSizePolicy(SizePolicy_fixed_height)
-        horizontallayout_path_pdf = create_new_horizontallayout(groupbox_path_pdf)
+        # groupbox_path_pdf = create_new_groupbox(self.tab_general, "Dateipfad PDF Reader")
+        # groupbox_path_pdf.setSizePolicy(SizePolicy_fixed_height)
+        # horizontallayout_path_pdf = create_new_horizontallayout(groupbox_path_pdf)
 
-        # label_pdf_reader = create_new_label(Dialog,"Dateipfad:")
-        # horizontallayout_path_pdf.addWidget(label_pdf_reader)
+        # # label_pdf_reader = create_new_label(Dialog,"Dateipfad:")
+        # # horizontallayout_path_pdf.addWidget(label_pdf_reader)
 
-        self.lineedit_pdf_reader = create_new_lineedit(groupbox_path_pdf)
-        horizontallayout_path_pdf.addWidget(self.lineedit_pdf_reader)
-        try:
-            self.lineedit_pdf_reader.setText(self.lama_settings['pdf_reader'])
-        except KeyError:
-            self.lama_settings['pdf_reader'] = ""
+        # self.lineedit_pdf_reader = create_new_lineedit(groupbox_path_pdf)
+        # horizontallayout_path_pdf.addWidget(self.lineedit_pdf_reader)
+        # try:
+        #     self.lineedit_pdf_reader.setText(self.lama_settings['pdf_reader'])
+        # except KeyError:
+        #     self.lama_settings['pdf_reader'] = ""
 
 
-        self.button_search_pdf_reader = create_new_button(groupbox_path_pdf, "Durchsuchen", self.search_pdf_reader)
-        self.button_search_pdf_reader.setIcon(QIcon(get_icon_path('folder.svg')))
-        horizontallayout_path_pdf.addWidget(self.button_search_pdf_reader)
+        # self.button_search_pdf_reader = create_new_button(groupbox_path_pdf, "Durchsuchen", self.search_pdf_reader)
+        # self.button_search_pdf_reader.setIcon(QIcon(get_icon_path('folder.svg')))
+        # horizontallayout_path_pdf.addWidget(self.button_search_pdf_reader)
 
-        verticallayout_tab_general.addWidget(groupbox_path_pdf)
-        # row +=1
+        # verticallayout_tab_general.addWidget(groupbox_path_pdf)
+        # # row +=1
 
         groupbox_database = create_new_groupbox(self.tab_general, "Automatische Aktualisierung der Datenbank")
         groupbox_database.setSizePolicy(SizePolicy_fixed_height)
@@ -2775,14 +2774,14 @@ class Ui_Dialog_setup(object):
     #         for widget in list_widgets_notenschluessel_individual:
     #             widget.show()
 
-    def search_pdf_reader(self):
-        list_filename = QtWidgets.QFileDialog.getOpenFileName(
-            None, "Durchsuchen", self.lama_settings['pdf_reader'], "Alle Dateien (*)"
-            )
-        if list_filename[0] == '':
-            return
+    # def search_pdf_reader(self):
+    #     list_filename = QtWidgets.QFileDialog.getOpenFileName(
+    #         None, "Durchsuchen", self.lama_settings['pdf_reader'], "Alle Dateien (*)"
+    #         )
+    #     if list_filename[0] == '':
+    #         return
 
-        self.lineedit_pdf_reader.setText(list_filename[0])
+    #     self.lineedit_pdf_reader.setText(list_filename[0])
 
     def reject_dialog(self):
         self.Dialog.reject()
@@ -2791,7 +2790,7 @@ class Ui_Dialog_setup(object):
         # self.lama_settings
         dict_={}
         dict_['start_program'] = self.combobox_start_program.currentIndex()
-        dict_['pdf_reader'] = self.lineedit_pdf_reader.text()
+        # dict_['pdf_reader'] = self.lineedit_pdf_reader.text()
         dict_['database'] = self.combobox_database.currentIndex()
         dict_['display'] = self.combobox_display.currentIndex()
         dict_['search_output'] = self.combobox_search_output.currentIndex()

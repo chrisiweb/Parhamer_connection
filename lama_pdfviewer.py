@@ -79,7 +79,7 @@ _HEADING = re.compile(
                 \d{1,3}(?:\[\d+\])?
               | [il]\.\d+                   # auch i.74 ohne Prefix erlauben
             )
-            \s*[-–—]\s*
+            \s+[-–—]\s+
             .+                              # Titel muss folgen
         )
 
