@@ -16,7 +16,7 @@ from create_new_widgets import create_new_verticallayout, create_new_gridlayout,
 blue_7 = colors_ui["blue_7"]
 
 class Ui_Dialog_processing(object):
-    def setupUi(self, Dialog, worker_text, show_output = False, icon=True, show_donation_notice=False):
+    def setupUi(self, Dialog, worker_text, show_output = False, icon=True, show_donation_notice=False, enable_cancel_button=False):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
 
@@ -89,11 +89,11 @@ class Ui_Dialog_processing(object):
             self.plainTextEdit.setFixedHeight(70)
             gridLayout.addWidget(self.plainTextEdit, 1,0,1,3)
 
-        
-        self.btn_cancel = QtWidgets.QPushButton("Abbrechen")
-        self.btn_cancel.setObjectName("btn_cancel")
-        self.btn_cancel.setStyleSheet("padding: 6px; color: white;")
-        gridLayout.addWidget(self.btn_cancel, 2, 1, 1, 1, QtCore.Qt.AlignCenter)
+        if enable_cancel_button == True:
+            self.btn_cancel = QtWidgets.QPushButton("Abbrechen")
+            self.btn_cancel.setObjectName("btn_cancel")
+            self.btn_cancel.setStyleSheet("padding: 6px; color: white;")
+            gridLayout.addWidget(self.btn_cancel, 2, 1, 1, 1, QtCore.Qt.AlignCenter)
 
 
 class Ui_ProgressBar(object):
@@ -183,8 +183,8 @@ def working_window(worker, text, *args, show_donation_notice=False):
 def working_window_latex_output(worker, text, *args):
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog_processing()
-
-    ui.setupUi(Dialog, text, show_output=True)
+    print(text)
+    ui.setupUi(Dialog, text, show_output=True, enable_cancel_button=True)
 
     ui.latex_error_occured = False
     # ui.terminal_error_occured = False
