@@ -2,8 +2,9 @@
 from PyQt5.QtWidgets import (
     QWidget, QLineEdit, QHBoxLayout, QPushButton, QLabel
 )
+from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
-
+from config import get_icon_path
 
 class SearchOverlay(QWidget):
     searchRequested = pyqtSignal(str)
@@ -67,15 +68,18 @@ class SearchOverlay(QWidget):
         layout.addWidget(self.lbl_count)
 
 
-        self.btn_prev = QPushButton("▲")
+        self.btn_prev = QPushButton()
+        self.btn_prev.setIcon(QIcon(get_icon_path("chevron-up")))
         self.btn_prev.clicked.connect(self.prevRequested.emit)
         layout.addWidget(self.btn_prev)
 
-        self.btn_next = QPushButton("▼")
+        self.btn_next = QPushButton()
+        self.btn_next.setIcon(QIcon(get_icon_path("chevron-down")))
         self.btn_next.clicked.connect(self.nextRequested.emit)
         layout.addWidget(self.btn_next)
 
-        self.btn_close = QPushButton("✕")
+        self.btn_close = QPushButton()
+        self.btn_close.setIcon(QIcon(get_icon_path("x")))
         self.btn_close.clicked.connect(self._close)
         layout.addWidget(self.btn_close)
 

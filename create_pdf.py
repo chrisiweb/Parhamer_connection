@@ -895,25 +895,18 @@ def open_pdf_file(folder_name, file_name, typ, show_selection_list, gesammelteda
             _PDF_UI = Ui_Dialog_pdfviewer()
             _PDF_UI.setupUi(_PDF_DIALOG, pdf_file_path, dict_pdf_chosen_examples, typ, show_selection_list, gesammeltedateien)
             _PDF_DIALOG.setWindowTitle("PDF Viewer")
-            _old_move_event = _PDF_DIALOG.moveEvent
-
-            def _new_move_event(ev):
-                _old_move_event(ev)
-                try:
-                    _PDF_UI.viewer.position_search_popup()
-                except Exception:
-                    pass
-
-            _PDF_DIALOG.moveEvent = _new_move_event
-
             
-
-
             # Soft-Close: nur verstecken
             def _soft_close(ev):
                 ev.ignore()
+                try:
+                    if _PDF_UI.viewer.search.isVisible():
+                        _PDF_UI.viewer.search.close()
+                except Exception:
+                    pass
                 _PDF_DIALOG.hide()
             _PDF_DIALOG.closeEvent = _soft_close
+
         else:
             _PDF_UI.refresh_pdf(pdf_file_path, typ, show_selection_list)
 

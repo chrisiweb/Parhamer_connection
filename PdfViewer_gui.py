@@ -46,6 +46,7 @@ class PdfViewer(QWidget):
 
         self._search_results = []
         self._search_index = -1
+        self.setMinimumWidth(400)
 
     # ========== API-KOMPATIBILITÄT ZU DEINEM ALTEN PdfWidget ==========
 
