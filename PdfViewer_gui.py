@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QWidget, QScrollArea, QVBoxLayout, QApplication
-from PyQt5.QtCore import pyqtSignal, QThread, Qt, QEvent, QPoint
+from PyQt5.QtCore import pyqtSignal, QThread, Qt, QEvent, QPoint, QTimer
 import fitz
 
 from PdfCanvas import PdfCanvas
-
+from SearchOverlay import SearchOverlay
 
 
 class PdfViewer(QWidget):
@@ -33,6 +33,19 @@ class PdfViewer(QWidget):
 
         self.scroll.viewport().setAttribute(Qt.WA_NoMousePropagation, True)
         self.scroll.viewport().installEventFilter(self)
+
+
+        # --- Such-Overlay ---
+        self.search = SearchOverlay(None)
+        self.search.hide()
+
+        self.search.searchRequested.connect(self._on_search)
+        self.search.nextRequested.connect(self._on_search_next)
+        self.search.prevRequested.connect(self._on_search_prev)
+        self.search.closeRequested.connect(self._on_search_close)
+
+        self._search_results = []
+        self._search_index = -1
 
     # ========== API-KOMPATIBILITÄT ZU DEINEM ALTEN PdfWidget ==========
 
@@ -207,7 +220,34 @@ class PdfViewer(QWidget):
         return super().event(ev)
 
 
+    def resizeEvent(self, ev):
+
+        super().resizeEvent(ev)
+        if self.search and self.search.isVisible():
+            self.position_search_popup()
+
+
+
     def keyPressEvent(self, e):
+
+        if e.modifiers() == Qt.ControlModifier and e.key() == Qt.Key_F:
+
+            self.search.show()
+            self.search.raise_()
+            self.position_search_popup()
+            self.start_popup_tracking()   # ✅ HIER
+
+            QTimer.singleShot(0, lambda: (
+                self.search.activateWindow(),
+                self.search.edt.setFocus()
+            ))
+
+
+            self.search.setCount(0, 0)
+            self.search.edt.clear()
+            return
+
+
         if e.modifiers() == Qt.ControlModifier:
             if e.key() == Qt.Key_Plus:
                 self.zoom_in(step=0.1)
@@ -295,3 +335,114 @@ class PdfViewer(QWidget):
 
     def closeEvent(self, e):
         pass
+
+
+    def _on_search(self, text):
+        text = text.strip().lower()
+
+        # ✅ ALLES zurücksetzen
+        self._search_results = []
+        self._search_index = -1
+        self.canvas.search_highlights = []
+        self.canvas.update()
+
+        # ✅ Leeres Feld → nichts suchen, nichts markieren
+        if text == "":
+            self.search.setCount(0, 0)
+            return
+
+        # ✅ Treffer suchen
+        for pno in range(self.doc.page_count):
+            page = self.doc[pno]
+            rects = page.search_for(text)
+            for r in rects:
+                self._search_results.append((pno, r))
+
+        # ✅ Keine Treffer → Zähler auf 0
+        if not self._search_results:
+            self.search.setCount(0, 0)
+            return
+
+        # ✅ Ersten Treffer anspringen
+        self._search_index = 0
+        self._goto_search_result(0)
+
+        # ✅ Trefferzähler setzen
+        self.search.setCount(self._search_index, len(self._search_results))
+
+
+
+    def _on_search_next(self):
+        if not self._search_results:
+            return
+        self._search_index = (self._search_index + 1) % len(self._search_results)
+        self._goto_search_result(self._search_index)
+        self.search.setCount(self._search_index, len(self._search_results))
+
+
+    def _on_search_prev(self):
+        if not self._search_results:
+            return
+        self._search_index = (self._search_index - 1) % len(self._search_results)
+        self._goto_search_result(self._search_index)
+        self.search.setCount(self._search_index, len(self._search_results))
+
+
+    def _on_search_close(self):
+        if self.canvas:
+            self.canvas.search_highlights = []
+            self.canvas.update()
+            self.search.setCount(0, 0)
+
+
+    def _goto_search_result(self, i):
+        page_index, rect = self._search_results[i]
+
+        self.scrollToPage(page_index + 1)
+
+        # highlight setzen
+        if hasattr(self.canvas, "apply_search_highlight"):
+            self.canvas.apply_search_highlight(page_index, rect)
+
+
+
+    def position_search_popup(self):
+        if not self.search.isVisible():
+            return
+
+        margin_x = 20
+        margin_y = 50
+
+        # ✅ globale Position des QDialogs holen
+        dialog_global = self.ui_dialog.Dialog.mapToGlobal(QPoint(0, 0))
+
+        # ✅ relative Position des PdfViewers innerhalb des QDialogs
+        relative = self.mapTo(self.ui_dialog.Dialog, QPoint(0, 0))
+
+        # ✅ finale globale Position des Suchfensters
+        x = dialog_global.x() + relative.x() + self.width() - self.search.width() - margin_x
+        y = dialog_global.y() + relative.y() + margin_y
+
+        self.search.move(x, y)
+
+
+    def start_popup_tracking(self):
+        self._last_dialog_pos = None
+
+        def check_position():
+            if not self.search.isVisible():
+                return
+
+            dialog = self.ui_dialog.Dialog
+            if dialog is None:
+                return
+
+            current = dialog.pos()
+            if self._last_dialog_pos != current:
+                self._last_dialog_pos = current
+                self.position_search_popup()
+
+        # alle 30 ms prüfen
+        self._popup_tracker = QTimer(self)
+        self._popup_tracker.timeout.connect(check_position)
+        self._popup_tracker.start(30)

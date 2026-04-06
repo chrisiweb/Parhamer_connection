@@ -1090,6 +1090,8 @@ class Ui_Dialog_pdfviewer(object):
         # self.viewer.zoomChanged.connect(self._on_viewer_zoom_changed)
         # --- Start ---
         Dialog.showMaximized()
+        # ✅ MoveEvent des echten Dialogs überwachen
+        Dialog.moveEvent = self._on_dialog_moved
 
 
         # 🔹 Strg+C überall im Dialog -> kopiert die aktuelle Bildauswahl
@@ -1782,3 +1784,25 @@ class Ui_Dialog_pdfviewer(object):
 
         # nach kurzer Zeit Automatik wieder erlauben
         QTimer.singleShot(150, lambda: setattr(self, "_manual_selection", False))
+
+
+
+    def moveEvent(self, event):
+        super(type(self.Dialog), self.Dialog).moveEvent(event)
+        if hasattr(self, "viewer"):
+            self.viewer.position_search_popup()
+
+
+    def _on_dialog_moved(self, event):
+        # super aufrufen, damit alles normal weiterläuft
+        try:
+            super(type(self.Dialog), self.Dialog).moveEvent(event)
+        except Exception:
+            pass
+        
+        # ✅ Wenn PdfViewer existiert → Position aktualisieren
+        if hasattr(self, "viewer"):
+            try:
+                self.viewer.position_search_popup()
+            except:
+                pass

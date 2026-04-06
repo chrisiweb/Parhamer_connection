@@ -13,7 +13,6 @@ class SourceCodeWindow(QDialog):
             self.windowFlags()
             & ~Qt.WindowContextHelpButtonHint
         )
-
         layout = QVBoxLayout(self)
         self.editor = QPlainTextEdit()
         self.editor.setPlainText(text)
@@ -37,7 +36,7 @@ class PdfCanvas(QWidget):
         self.cache_raw = {}
         self.cache_scaled = {}
         self.cache_preview = {}
-
+        self.search_highlights = []
         # ✅ Auswahl
         self._selecting = False
         self.sel_page = None
@@ -95,55 +94,62 @@ class PdfCanvas(QWidget):
         view_bottom = view_top + scroll.viewport().height()
 
         for index, (y, total_h) in enumerate(self.page_positions):
-            # Seite außerhalb des Sichtbereichs → ignorieren
+
+            # --- Sichtbarkeit check ---
             if y + total_h < view_top - 50:
                 continue
             if y > view_bottom + 50:
                 break
 
-            # Seitenrahmen zeichnen
             page = self.doc[index]
             w = int(page.rect.width * self.zoom)
             h = int(page.rect.height * self.zoom)
 
-            x_page = max(0, (self.width() - (w + 2 * self.PAGE_PADDING)) // 2)
+            x_page = max(0, (self.width() - (w + 2*self.PAGE_PADDING)) // 2)
 
             # Hintergrund
-            painter.fillRect(
-                QRect(x_page, y, w + 2*self.PAGE_PADDING, h + 2*self.PAGE_PADDING),
-                self.PAGE_BG
-            )
-            painter.setPen(self.PAGE_BORDER)
-            painter.drawRect(
-                QRect(x_page, y, w + 2*self.PAGE_PADDING, h + 2*self.PAGE_PADDING)
-            )
+            # painter.fillRect(
+            #     QRect(x_page, y, w + 2*self.PAGE_PADDING, h + 2*self.PAGE_PADDING),
+            #     self.PAGE_BG
+            # )
+            # painter.setPen(self.PAGE_BORDER)
+            # painter.drawRect(
+            #     QRect(x_page, y, w + 2*self.PAGE_PADDING, h + 2*self.PAGE_PADDING)
+            # )
 
-            # ✅ WICHTIG: Pixmap JETZT rendern – On‑Demand
-            # Kein Cache nötig – PyMuPDF ist extrem schnell
+            # Seite rendern
             mat = fitz.Matrix(self.zoom, self.zoom)
             pix = page.get_pixmap(matrix=mat, alpha=False)
-
-            img = QImage(
-                pix.samples,
-                pix.width,
-                pix.height,
-                pix.stride,
-                QImage.Format_RGB888
-            )
+            img = QImage(pix.samples, pix.width, pix.height, pix.stride, QImage.Format_RGB888)
 
             painter.drawImage(
                 QPoint(x_page + self.PAGE_PADDING, y + self.PAGE_PADDING),
                 img
             )
 
-        # ✅ Auswahl malen
-        painter.setBrush(QColor(150, 200, 255, 120))
-        painter.setPen(Qt.NoPen)
-        for rect in self.sel_label_rects:
-            painter.drawRect(rect)
+            # ✅ --- TEXT-AUSWAHL ---
+            painter.setBrush(QColor(150, 200, 255, 120))
+            painter.setPen(Qt.NoPen)
+            for rect in self.sel_label_rects:
+                painter.drawRect(rect)
+
+            # ✅ --- SUCHTREFFER (nur GENAU auf dieser Seite) ---
+            painter.setBrush(QColor(255, 240, 100, 160))
+            painter.setPen(Qt.NoPen)
+
+            for (pi, r) in self.search_highlights:
+                if pi != index:
+                    continue  # Treffer gehört zu einer anderen Seite
+
+                # PDF → Widget-Koordinaten
+                wx0 = int(x_page + self.PAGE_PADDING + r.x0 * self.zoom)
+                wy0 = int(y       + self.PAGE_PADDING + r.y0 * self.zoom)
+                wx1 = int(x_page + self.PAGE_PADDING + r.x1 * self.zoom)
+                wy1 = int(y       + self.PAGE_PADDING + r.y1 * self.zoom)
+
+                painter.drawRect(wx0, wy0, wx1 - wx0, wy1 - wy0)
 
         painter.end()
-
     # -------------------------------------------------------
     # Mouse
     # -------------------------------------------------------
@@ -677,4 +683,9 @@ class PdfCanvas(QWidget):
         self.sel_end = None
         self.sel_label_rects = []
         self.selected_text = ""
+        self.update()
+
+
+    def apply_search_highlight(self, page_index, rect):
+        self.search_highlights = [(page_index, rect)]
         self.update()
