@@ -741,12 +741,14 @@ class TagPopup(QWidget):
         # Checkboxen dynamisch bauen
         self.checkboxes = {}
 
-        for tagname, label in categories:
-            cb = QCheckBox(label)
+        for idx, (tagname, label, enabled) in enumerate(categories):
+            cb = QCheckBox(f"{idx+1} {label}")  # ✅ Nummer fix anzeigen
             cb.setChecked(tagname in tags)
-            cb.stateChanged.connect(lambda _, t=tagname: self._update(t))
+            cb.setEnabled(enabled)
+            cb.stateChanged.connect(lambda _, t=tagname, en=enabled: en and self._update(t))
             layout.addWidget(cb)
             self.checkboxes[tagname] = cb
+
 
     def _update(self, tagname):
         if tagname in self.tags:
@@ -760,28 +762,27 @@ class TagPopup(QWidget):
 
 
     def keyPressEvent(self, ev):
-        key = ev.key()
+        if ev.key() in (Qt.Key_1, Qt.Key_2, Qt.Key_3):
+            index = ev.key() - Qt.Key_1  # 0,1,2
 
-        # 1,2,3 → die drei Kategorien toggeln
-        if key in (Qt.Key_1, Qt.Key_2, Qt.Key_3):
-            index = key - Qt.Key_1  # 0,1,2
+            if index >= len(self.categories):
+                return
 
-            if 0 <= index < len(self.categories):
-                tagname, _ = self.categories[index]
+            tagname, _, enabled = self.categories[index]
+            if not enabled:
+                return  # ✅ inaktiv → ignorieren
 
-                # Toggle wie Checkbox
-                if tagname in self.tags:
-                    self.tags.remove(tagname)
-                else:
-                    self.tags.add(tagname)
+            # Toggle
+            if tagname in self.tags:
+                self.tags.remove(tagname)
+            else:
+                self.tags.add(tagname)
 
-                # Callback ausführen
-                self.on_change()
-
-            # Popup sofort schließen (genau wie bei Checkbox-Klick)
+            self.on_change()
             self.close()
-        else:
-            super().keyPressEvent(ev)
+            return
+
+        super().keyPressEvent(ev)
 
 class _BlockNumberNavigation(QObject):
     def eventFilter(self, obj, ev):
@@ -1601,13 +1602,13 @@ class Ui_Dialog_pdfviewer(object):
             return
 
         # ✅ FALL 2 → mehrere Kategorien aktiv → Popup anzeigen
-        categories = []
-        if self.header.categoryEnabled(0):
-            categories.append(("uebung", self.header.labels()[0]))
-        if self.header.categoryEnabled(1):
-            categories.append(("schularbeit", self.header.labels()[1]))
-        if self.header.categoryEnabled(2):
-            categories.append(("nachschularbeit", self.header.labels()[2]))
+
+        categories = [
+            ("uebung",        self.header.labels()[0], self.header.categoryEnabled(0)),
+            ("schularbeit",   self.header.labels()[1], self.header.categoryEnabled(1)),
+            ("nachschularbeit", self.header.labels()[2], self.header.categoryEnabled(2)),
+        ]
+
 
         def on_tag_change():
             self._update_item_icons(item)
