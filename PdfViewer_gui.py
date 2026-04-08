@@ -1,9 +1,16 @@
-from PyQt5.QtWidgets import QWidget, QScrollArea, QVBoxLayout, QApplication
-from PyQt5.QtCore import pyqtSignal, QThread, Qt, QEvent, QPoint, QTimer
+from PyQt5.QtWidgets import QWidget, QScrollArea, QVBoxLayout, QApplication, QShortcut
+from PyQt5.QtCore import pyqtSignal, QThread, Qt, QEvent, QPoint, QTimer, QObject
+from PyQt5.QtGui import QKeySequence 
 import fitz
 
 from PdfCanvas import PdfCanvas
 from SearchOverlay import SearchOverlay
+
+class _DialogEscBlocker(QObject):
+    def eventFilter(self, obj, ev):
+        if ev.type() == QEvent.KeyPress and ev.key() == Qt.Key_Escape:
+            return True  # ESC komplett blockieren
+        return False
 
 
 class PdfViewer(QWidget):
@@ -47,6 +54,22 @@ class PdfViewer(QWidget):
         self._search_results = []
         self._search_index = -1
         self.setMinimumWidth(400)
+
+
+
+        # ESC global abfangen
+        self._esc_shortcut = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        self._esc_shortcut.setContext(Qt.ApplicationShortcut)
+        self._esc_shortcut.activated.connect(self._on_escape)      
+
+        self._esc_blocker = _DialogEscBlocker()
+        self.ui_dialog.Dialog.installEventFilter(self._esc_blocker)
+
+
+        self._find_shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_F), self)
+        self._find_shortcut.setContext(Qt.ApplicationShortcut)
+        self._find_shortcut.activated.connect(self._open_search)
+
 
     # ========== API-KOMPATIBILITÄT ZU DEINEM ALTEN PdfWidget ==========
 
@@ -231,22 +254,22 @@ class PdfViewer(QWidget):
 
     def keyPressEvent(self, e):
 
-        if e.modifiers() == Qt.ControlModifier and e.key() == Qt.Key_F:
+        # if e.modifiers() == Qt.ControlModifier and e.key() == Qt.Key_F:
 
-            self.search.show()
-            self.search.raise_()
-            self.position_search_popup()
-            self.start_popup_tracking()   # ✅ HIER
+        #     self.search.show()
+        #     self.search.raise_()
+        #     self.position_search_popup()
+        #     self.start_popup_tracking()   # ✅ HIER
 
-            QTimer.singleShot(0, lambda: (
-                self.search.activateWindow(),
-                self.search.edt.setFocus()
-            ))
+        #     QTimer.singleShot(0, lambda: (
+        #         self.search.activateWindow(),
+        #         self.search.edt.setFocus()
+        #     ))
 
 
-            self.search.setCount(0, 0)
-            self.search.edt.clear()
-            return
+        #     self.search.setCount(0, 0)
+        #     self.search.edt.clear()
+        #     return
 
 
         if e.modifiers() == Qt.ControlModifier:
@@ -411,7 +434,7 @@ class PdfViewer(QWidget):
         if not self.search.isVisible():
             return
 
-        margin_x = 20
+        margin_x = 100
         margin_y = 50
 
         # ✅ globale Position des QDialogs holen
@@ -447,3 +470,21 @@ class PdfViewer(QWidget):
         self._popup_tracker = QTimer(self)
         self._popup_tracker.timeout.connect(check_position)
         self._popup_tracker.start(30)
+
+
+    def _on_escape(self):
+        # 1) Wenn Suche offen → schließen
+        if self.search and self.search.isVisible():
+            self._on_search_close()
+            self.search.hide()
+            return
+
+    def _open_search(self):
+        self.search.show()
+        self.search.raise_()
+        self.position_search_popup()
+        self.start_popup_tracking()
+
+        self.search.setCount(0, 0)
+        self.search.edt.clear()
+        self.search.edt.setFocus()

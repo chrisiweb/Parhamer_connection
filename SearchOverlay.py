@@ -3,8 +3,27 @@ from PyQt5.QtWidgets import (
     QWidget, QLineEdit, QHBoxLayout, QPushButton, QLabel
 )
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, QEvent, QObject
 from config import get_icon_path
+
+
+class _SearchKeyFilter(QObject):
+    def __init__(self, overlay):
+        super().__init__(overlay)
+        self.overlay = overlay
+
+    def eventFilter(self, obj, ev):
+        if ev.type() == QEvent.KeyPress and ev.key() in (Qt.Key_Return, Qt.Key_Enter):
+            if ev.modifiers() & Qt.ShiftModifier:
+                self.overlay.prevRequested.emit()
+            else:
+                self.overlay.nextRequested.emit()
+            return True  # Event NICHT weiterreichen
+        if ev.type() == QEvent.KeyPress and ev.key() == Qt.Key_Escape:
+            self.overlay.closeRequested.emit()
+            return True
+        return False
+
 
 class SearchOverlay(QWidget):
     searchRequested = pyqtSignal(str)
@@ -53,6 +72,12 @@ class SearchOverlay(QWidget):
         self.edt.setPlaceholderText("Suchen...")
         self.edt.textChanged.connect(self._trigger_search)
         layout.addWidget(self.edt)
+
+
+        self._key_filter = _SearchKeyFilter(self)
+        self.edt.installEventFilter(self._key_filter)
+
+
 
         self.lbl_count = QLabel("")
 
