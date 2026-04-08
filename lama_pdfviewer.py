@@ -567,37 +567,8 @@ class CategoryHeaderWidget(QWidget):
         return mask
     
 
-class _CtrlWheelFilter(QObject):
-    """Fängt STRG+Mausrad am Viewport ab und delegiert ans PdfWidget (kein Scrollen)."""
-    def __init__(self, pdf_widget, parent=None):
-        super().__init__(parent)
-        self._pdf = pdf_widget
-
-    def eventFilter(self, obj, ev):
-        if ev.type() == QEvent.Wheel:
-            if ev.modifiers() & Qt.ControlModifier:
-                # unser eigenes Zoom-Handling; verhindert Standard-Scrollen
-                self._pdf._on_ctrl_wheel(ev)
-                return True  # Event konsumiert -> QScrollArea scrollt NICHT
-        return False
 
 
-
-# # --- nötige Imports ---
-# import os
-# from PyQt5 import QtCore, QtWidgets
-# from PyQt5.QtCore import Qt, QEvent
-# from PyQt5.QtGui import QKeySequence, QColor
-# from PyQt5.QtWidgets import (
-#     QDialog, QWidget, QVBoxLayout, QHBoxLayout, QToolBar, QStatusBar, QSplitter,
-#     QLabel, QLineEdit, QSizePolicy, QShortcut, QListWidget, QListWidgetItem
-# )
-
-# Annahme: Diese Klassen/Funktionen existieren in deinem Projekt:
-# - CategoryHeaderWidget  (mit .colors() und .colorChanged/.labelChanged)
-# - ColorAwareBorderDelegate
-# - PdfWidget             (mit .pageCount(), .currentPageChanged, .scrollToPage(), .scrollToPageLocation(), .gotoPrev(), .gotoNext())
-# - extract_headings_with_positions(pdf_path) -> [(text, page, y_ratio_or_None), ...]
 
 class PageImage(QLabel):
     """
@@ -821,6 +792,64 @@ class _BlockNumberNavigation(QObject):
         return False
 
 
+class _TaskListShortcutFilter(QObject):
+    def __init__(self, ui):
+        super().__init__()
+        self.ui = ui
+
+    def eventFilter(self, obj, ev):
+        if ev.type() == QEvent.KeyPress:
+            print("FILTER SEES:", ev.type(), ev.key(), ev.modifiers())
+            if ev.modifiers() == Qt.ControlModifier and ev.key() in (Qt.Key_1, Qt.Key_2, Qt.Key_3):
+                cat_index = ev.key() - Qt.Key_1  # 0,1,2
+
+                lw = obj.parent()
+                item = lw.currentItem()
+
+                if item is None:
+                    return True  # nichts tun, aber Taste schlucken
+
+                # Kategorie abgehakt? → ignorieren
+                if not self.ui.header.categoryEnabled(cat_index):
+                    return True
+
+                # Kategorie setzen (wie bei Klick)
+                item.setData(
+                    Ui_Dialog_pdfviewer.ROLE_COLORSTATE,
+                    cat_index + 1
+                )
+
+                obj.viewport().update()
+                return True
+
+        return False
+
+
+class TaskListWidget(QListWidget):
+    def __init__(self, ui, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ui = ui
+
+    def keyPressEvent(self, ev):
+        # ✅ NUR Pfeilnavigation hier
+        if ev.key() in (Qt.Key_Up, Qt.Key_Down):
+            row = self.currentRow()
+            if row < 0:
+                return
+
+            if ev.key() == Qt.Key_Up:
+                new_row = max(0, row - 1)
+            else:
+                new_row = min(self.count() - 1, row + 1)
+
+            self.setCurrentRow(new_row)
+            item = self.item(new_row)
+            page, ratio = item.data(self.ui.ROLE_TARGET)
+            self.ui.viewer.scrollToPageLocation(page, ratio)
+            return
+
+        super().keyPressEvent(ev)
+
 class Ui_Dialog_pdfviewer(object):
     ROLE_TARGET = Qt.UserRole          # (page, y_ratio)
     ROLE_COLORSTATE = Qt.UserRole + 1  # 0..3 (0=weiß,1=cat0,2=cat1,3=cat2)
@@ -837,6 +866,12 @@ class Ui_Dialog_pdfviewer(object):
         self.show_selection_list = show_selection_list
         self._manual_selection = False
         self.Dialog = Dialog
+
+        for i in range(3):
+            sc = QShortcut(QKeySequence(f"Ctrl+{i+1}"), self.Dialog)
+            sc.setContext(Qt.WidgetWithChildrenShortcut)
+            sc.activated.connect(lambda ix=i: self.toggle_category_for_current_item(ix))
+
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("PDF Viewer")
         Dialog.setWindowIcon(QIcon(logo_path))  # logo_path muss gültig sein
@@ -918,7 +953,7 @@ class Ui_Dialog_pdfviewer(object):
 
         # --- Linkes Panel: Header + Liste ---
 
-        self.list = QListWidget()
+        self.list = TaskListWidget(self)
         self.list.setAlternatingRowColors(False)
         self.list.setSelectionBehavior(self.list.SelectionBehavior.SelectItems)
         self.list.setSelectionMode(self.list.SelectionMode.SingleSelection)
@@ -934,6 +969,11 @@ class Ui_Dialog_pdfviewer(object):
         self.list.setItemDelegate(
             ColorAwareBorderDelegate(border_color="#0078D4", border_width=2, radius=6, parent=self.list)
         )
+
+        # self._tasklist_filter = _TaskListShortcutFilter(self)
+        # self.list.viewport().installEventFilter(self._tasklist_filter)
+
+
 
         self.list.setContextMenuPolicy(Qt.CustomContextMenu)
         self.list.customContextMenuRequested.connect(self._on_list_context_menu)
@@ -1069,8 +1109,8 @@ class Ui_Dialog_pdfviewer(object):
         self.list.itemClicked.connect(self._on_task_clicked)
 
         # verhindert, dass 1/2/3 die Listen-Auswahl verändern
-        self._numberBlocker = _BlockNumberNavigation()
-        self.list.installEventFilter(self._numberBlocker)
+        # self._numberBlocker = _BlockNumberNavigation()
+        # self.list.installEventFilter(self._numberBlocker)
 
         # Header-Änderungen -> Anzeige aktualisieren
         self.header.categoryToggled.connect(self._on_category_toggled)
@@ -1098,49 +1138,49 @@ class Ui_Dialog_pdfviewer(object):
         sc_copy = QShortcut(QKeySequence.Copy, self.Dialog)
         sc_copy.setContext(Qt.ApplicationShortcut)
 
-        class ArrowKeyFilter(QObject):
-            def __init__(self, ui):
-                super().__init__(ui.Dialog)
-                self.ui = ui
+        # class ArrowKeyFilter(QObject):
+        #     def __init__(self, ui):
+        #         super().__init__(ui.Dialog)
+        #         self.ui = ui
 
-            def eventFilter(self, obj, ev):
-                if ev.type() != QEvent.KeyPress:
-                    return False
+        #     def eventFilter(self, obj, ev):
+        #         if ev.type() != QEvent.KeyPress:
+        #             return False
 
-                key = ev.key()
-                if key not in (Qt.Key_Up, Qt.Key_Down):
-                    return False
+        #         key = ev.key()
+        #         if key not in (Qt.Key_Up, Qt.Key_Down):
+        #             return False
 
-                # linkes Panel nicht sichtbar → abbrechen
-                if not self.ui.left_panel.isVisible():
-                    return False
+        #         # linkes Panel nicht sichtbar → abbrechen
+        #         if not self.ui.left_panel.isVisible():
+        #             return False
 
-                lw = self.ui.list
-                row = lw.currentRow()
-                if row < 0:
-                    return False
+        #         lw = self.ui.list
+        #         row = lw.currentRow()
+        #         if row < 0:
+        #             return False
 
-                # neue Zeile bestimmen
-                if key == Qt.Key_Up:
-                    new_row = max(0, row - 1)
-                else:
-                    new_row = min(lw.count() - 1, row + 1)
+        #         # neue Zeile bestimmen
+        #         if key == Qt.Key_Up:
+        #             new_row = max(0, row - 1)
+        #         else:
+        #             new_row = min(lw.count() - 1, row + 1)
 
-                lw.setCurrentRow(new_row)
-                item = lw.item(new_row)
+        #         lw.setCurrentRow(new_row)
+        #         item = lw.item(new_row)
 
-                # ✅ HIER die Korrektur:
-                page, ratio = item.data(self.ui.ROLE_TARGET)
+        #         # ✅ HIER die Korrektur:
+        #         page, ratio = item.data(self.ui.ROLE_TARGET)
 
-                # PDF anspringen
-                self.ui.viewer.scrollToPageLocation(page, ratio)
+        #         # PDF anspringen
+        #         self.ui.viewer.scrollToPageLocation(page, ratio)
 
-                return True
+        #         return True
             
 
             
-        self._arrowFilter = ArrowKeyFilter(self)
-        Dialog.installEventFilter(self._arrowFilter)
+        # self._arrowFilter = ArrowKeyFilter(self)
+        # Dialog.installEventFilter(self._arrowFilter)
 
 
 
@@ -1806,3 +1846,33 @@ class Ui_Dialog_pdfviewer(object):
                 self.viewer.position_search_popup()
             except:
                 pass
+
+    def toggle_category_for_current_item(self, cat_index: int):
+        """
+        cat_index: 0 = Übung, 1 = Schularbeit, 2 = Nachschularbeit
+        Wirkt auf die aktuell ausgewählte Aufgabe der Liste.
+        """
+        item = self.list.currentItem()
+        if item is None:
+            return
+
+        # Kategorie deaktiviert → ignorieren
+        if not self.header.categoryEnabled(cat_index):
+            return
+
+        tag_map = ["uebung", "schularbeit", "nachschularbeit"]
+        tag = tag_map[cat_index]
+
+        tags = item.data(Qt.UserRole + 5) or set()
+
+        # Toggle
+        if tag in tags:
+            tags.remove(tag)
+        else:
+            tags.add(tag)
+
+        item.setData(Qt.UserRole + 5, tags)
+
+        # UI + Daten aktualisieren
+        self._update_item_icons(item)
+        self._update_dict_for_item(item)
