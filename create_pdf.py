@@ -909,7 +909,7 @@ def open_pdf_file(folder_name, file_name, typ, show_selection_list, gesammelteda
             _PDF_DIALOG.closeEvent = _soft_close
 
         else:
-            _PDF_UI.refresh_pdf(pdf_file_path, typ, show_selection_list)
+            _PDF_UI.refresh_pdf(pdf_file_path, typ, show_selection_list, gesammeltedateien)
 
         _PDF_DIALOG.show()
         _PDF_DIALOG.raise_()

@@ -1242,6 +1242,8 @@ class Ui_MainWindow(object):
         row, column = self.create_list_of_all_gk_checkboxes(
             scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary
         )
+        # gridLayout_scrollarea.addStretch()
+        gridLayout_scrollarea.setRowStretch(row+1,10)
         # gridLayout_scrollarea.setRowStretch(row, 10)
 
         if mode == "search" or mode == "quiz":

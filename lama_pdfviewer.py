@@ -34,60 +34,39 @@ from create_new_widgets import create_new_label
 import re
 
 # ---------- Überschriften-Extraktion aus PDF ----------
-_HEADING = re.compile(
+HEADING_LAMA = re.compile(
     r"""(?xmi)
     ^
     (?P<full>
-
-        #######################################################
-        # (A) Kapitelbasierte Aufgaben: AG/WS/AN/FA 1.1 - 3...
-        #######################################################
+        # Prefix + Chapter + Number (AG 1.1 - 8, WS 3.1 - i.22, ...)
         (?:
-            (?P<prefixA>AG|WS|AN|FA)        # feste Präfixe
-            \s+
-            (?P<chapter>\d+(?:\.\d+)*)      # Kapitelnummer
+            [A-Z][A-Z0-9]{1,}
+            (?:\s+\d+(?:\.\d+)*)?        # optional Kapitel
             \s*[-–—]\s*
-            (?P<numA>
-                \d+(?:\[\d+\])?             # 3 oder 3[1]
-              | [il]\.\d+                   # i.74 oder l.74
-            )
-            (?:\s*[-–—]\s*.*)?              # optionaler Titel
+            (?:\d+(?:\[\d+\])?|[il]\.\d+)
         )
-
-        |
-
-        #######################################################
-        # (B) Zusatzthemen: KKK - 1 - Titel, LGM1 - i.74 ...
-        #######################################################
-        (?:
-            (?P<prefixB>[A-Z][A-Z0-9]{1,})  # beliebiges Kürzel ≥2 Zeichen
-            \s*[-–—]\s*
-            (?P<numB>
-                \d+(?:\[\d+\])?
-              | [il]\.\d+
-            )
-            (?:\s*[-–—]\s*.*)?
-        )
-
-        |
-
-        #######################################################
-        # (C) Rein numerische Aufgaben: 4 - Titel, 118[2] - ...
-        #######################################################
-        (?:
-            (?P<numC>
-                \d{1,3}(?:\[\d+\])?
-              | [il]\.\d+                   # auch i.74 ohne Prefix erlauben
-            )
-            \s+[-–—]\s+
-            .+                              # Titel muss folgen
-        )
-
     )
-    $
+    (?:\s*[-–—]\s+.*)?$                   # Titel optional
     """
 )
 
+HEADING_NUM = re.compile(
+    r"""(?xmi)
+    ^
+    (?P<full>
+        # Numerische Aufgabe: 3 - Titel
+        \d{1,4}(?:\[\d+\])?
+
+        |
+
+        # i.74 - Titel oder l.12 - Titel
+        [il]\.\d{1,4}
+    )
+    \s*-\s+        # <<< HARDCODED: MUSS " - " folgen
+    .+             # Titel
+    $
+    """
+)
 
 # --- Neu: Deutsche Übersetzungen aktivieren ---------------------------------
 def enable_german_ui(app):
@@ -149,6 +128,13 @@ def normalize_heading(s: str) -> str:
 
 
 def extract_headings_with_positions(pdf_path: str):
+
+    if "teildokument_1" in pdf_path.lower():
+        heading_re = HEADING_LAMA
+    else:
+        heading_re = HEADING_NUM
+ 
+
     results = []
     seen = set()
 
@@ -164,7 +150,7 @@ def extract_headings_with_positions(pdf_path: str):
                 if not line:
                     continue
 
-                m = _HEADING.match(line)
+                m = heading_re.match(line)
                 if not m:
                     continue
 
@@ -193,7 +179,7 @@ def extract_headings_with_positions(pdf_path: str):
                 except:
                     y_ratio = None
 
-                results.append((full, pno + 1, y_ratio))
+                results.append((full, pno + 1, y_ratio, raw_line))
 
     return results
 
@@ -1212,7 +1198,12 @@ class Ui_Dialog_pdfviewer(object):
     def get_current_dict(self):
         return self.dict_pdf_chosen_examples
 
-    def refresh_pdf(self, file_path: str, typ=None, show_selection_list=None):
+    def refresh_pdf(self, file_path: str, typ=None, show_selection_list=None, gesammeltedateien=None):
+        if gesammeltedateien is not None:
+            self.tindb_data = gesammeltedateien
+            self.viewer.tindb_data = gesammeltedateien
+            self.viewer.canvas.tindb_data = gesammeltedateien
+
         if typ is not None:
             if typ != 'cria':
                 self.typ = 'lama'  # <--- neuer typ wird hier aktualisiert!
@@ -1328,8 +1319,14 @@ class Ui_Dialog_pdfviewer(object):
         if not headings:
             return
 
-        for text, page, y_ratio in headings:
-            it = QListWidgetItem(text)
+
+        for full, page, y_ratio, raw_line in headings:
+            visible_text = raw_line.strip()    # GANZE ZEILE ALS TITEL
+            it = QListWidgetItem(visible_text)
+
+            # interne Aufgabenkennung getrennt speichern
+            it.setData(Qt.UserRole + 10, full)
+
             it.setData(self.ROLE_TARGET, (page, y_ratio))
             it.setData(self.ROLE_COLORSTATE, 0)  # 0=weiß
             it.setData(Qt.UserRole + 5, set())
