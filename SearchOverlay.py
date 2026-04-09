@@ -37,7 +37,6 @@ class SearchOverlay(QWidget):
 
         self.setWindowFlags(
             Qt.FramelessWindowHint
-            | Qt.WindowStaysOnTopHint      # bleibt oben
             | Qt.Window                      # eigener Fokus, aber schließt sich NICHT automatisch
         )
 

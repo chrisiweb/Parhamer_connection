@@ -13,6 +13,21 @@ class _DialogEscBlocker(QObject):
         return False
 
 
+# class _DialogDeactivateFilter(QObject):
+#     def __init__(self, viewer):
+#         super().__init__()
+#         self.viewer = viewer
+
+#     def eventFilter(self, obj, ev):
+#         # Nur schließen, wenn wir NICHT gerade öffnen
+#         if ev.type() == QEvent.WindowDeactivate:
+#             if not self.viewer._opening_search:
+#                 if self.viewer.search.isVisible():
+#                     self.viewer.search.hide()
+#                     self.viewer._on_search_close()
+#         return False
+
+
 class PdfViewer(QWidget):
     currentPageChanged = pyqtSignal(int)  # 1-based
 
@@ -21,7 +36,7 @@ class PdfViewer(QWidget):
         self.ui_dialog = ui_dialog
         self.tindb_data = tindb_data
         self.doc = fitz.open(pdf_path)
-
+        self._opening_search = False
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
 
@@ -62,8 +77,13 @@ class PdfViewer(QWidget):
         self._esc_shortcut.setContext(Qt.ApplicationShortcut)
         self._esc_shortcut.activated.connect(self._on_escape)      
 
+        # ESC blockieren
         self._esc_blocker = _DialogEscBlocker()
         self.ui_dialog.Dialog.installEventFilter(self._esc_blocker)
+
+        # # ALT+TAB schließen
+        # self._deact_filter = _DialogDeactivateFilter(self)
+        # self.ui_dialog.Dialog.installEventFilter(self._deact_filter)
 
 
         self._find_shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_F), self)
@@ -318,6 +338,16 @@ class PdfViewer(QWidget):
         #         dlg.exec_()
 
         #         return True
+
+        # # ✅ ALT+TAB / Taskleiste → Fenster verliert Fokus
+        # if e.type() == QEvent.WindowDeactivate:
+        #     if self.search.isVisible():
+        #         self.search.hide()
+        #         self._on_search_close()
+        #     return False
+
+
+
         if obj == self.scroll.viewport() and e.type() == QEvent.Wheel:
             if e.modifiers() & Qt.ControlModifier:
                 self.canvas.clear_selection()
@@ -480,11 +510,18 @@ class PdfViewer(QWidget):
             return
 
     def _open_search(self):
+
+        self._opening_search = True  # ✅ SCHUTZ AN
+
         self.search.show()
         self.search.raise_()
+        self.search.activateWindow()
+
         self.position_search_popup()
         self.start_popup_tracking()
 
-        self.search.setCount(0, 0)
         self.search.edt.clear()
-        self.search.edt.setFocus()
+        self.search.edt.setFocus(Qt.OtherFocusReason)
+        self.search.setCount(0, 0)
+
+        QTimer.singleShot(100, lambda: setattr(self, "_opening_search", False))  # ✅ SCHUTZ AUS
