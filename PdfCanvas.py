@@ -661,9 +661,7 @@ class PdfCanvas(QWidget):
         """
         if not self.tindb_data:
             return None
-        
-        print(task_name)
-        print(self.tindb_data)
+
         # exakte Übereinstimmung (z.B. "WS 3.3 - 2")
         for entry in self.tindb_data:
             if entry.get("name") == task_name:
