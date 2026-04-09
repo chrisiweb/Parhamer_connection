@@ -154,48 +154,63 @@ class PdfCanvas(QWidget):
     # Mouse
     # -------------------------------------------------------
     def mousePressEvent(self, e):
-        # ✅ STRG + rechte Maustaste → Notizfenster öffnen
+        # STRG + Rechts → Quellcodefenster
         if e.button() == Qt.RightButton and (e.modifiers() & Qt.ControlModifier):
-
             title = self._find_task_by_click(e.pos())
-
-
             latex = self._find_latex_for_task(title)
-
-            dlg = SourceCodeWindow(
-                title,
-                latex or f"Kein Quellcode gefunden für: {title}",
-                parent=self
-            )
+            dlg = SourceCodeWindow(title, latex or f"Kein Quellcode gefunden für: {title}", parent=self)
             dlg.exec_()
-
             return
 
-
-
-
-        # ✅ START DER TEXTAUSWAHL WIE FRÜHER
         if e.button() == Qt.LeftButton:
-            self.sel_label_rects = []
-            self.selected_text = ""
-            self.sel_page = self._page_at(e.pos())   # <-- WICHTIG
-            self.sel_start = e.pos()
-            self.sel_end = e.pos()
+            # Start merken, aber NICHT selektieren
             self._selecting = True
+            self.sel_page  = self._page_at(e.pos())
+            self.sel_start = e.pos()
+            self.sel_end   = e.pos()
+            self.setCursor(Qt.IBeamCursor)
+
+        super().mousePressEvent(e)
 
 
 
     def mouseMoveEvent(self, e):
         if self._selecting:
+
             self.sel_end = e.pos()
-            self._recompute_selection()
+
+            # DRAG-SCHWELLE
+            if (self.sel_start - self.sel_end).manhattanLength() < 6:
+                self.sel_label_rects = []
+                self.update()
+                super().mouseMoveEvent(e)
+                return
+
+            # ECHTE Markierung
+            self._recompute_selection(final=False)
             self.update()
+
+        super().mouseMoveEvent(e)
+
 
     def mouseReleaseEvent(self, e):
         if e.button() == Qt.LeftButton and self._selecting:
             self._selecting = False
+            self.setCursor(Qt.IBeamCursor)
+
+            # Klick → alles löschen
+            if (self.sel_start - self.sel_end).manhattanLength() < 6:
+                self.sel_label_rects = []
+                self.selected_text = ""
+                self.update()
+                super().mouseReleaseEvent(e)
+                return
+
+            # Drag → Auswahl finalisieren
             self._recompute_selection(final=True)
             self.update()
+
+        super().mouseReleaseEvent(e)
 
     # -------------------------------------------------------
     # Selection
