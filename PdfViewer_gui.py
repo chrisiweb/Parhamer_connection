@@ -43,7 +43,7 @@ class PdfViewer(QWidget):
 
 
         # --- Such-Overlay ---
-        self.search = SearchOverlay(None)
+        self.search = SearchOverlay(self.ui_dialog.Dialog)
         self.search.hide()
 
         self.search.searchRequested.connect(self._on_search)
