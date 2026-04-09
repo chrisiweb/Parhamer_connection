@@ -855,7 +855,7 @@ class Ui_Dialog_pdfviewer(object):
         self.Dialog = Dialog
 
         for i in range(3):
-            sc = QShortcut(QKeySequence(f"Ctrl+{i+1}"), self.Dialog)
+            sc = QShortcut(QKeySequence(f"{i+1}"), self.Dialog) #f"Ctrl+{i+1}"
             sc.setContext(Qt.WidgetWithChildrenShortcut)
             sc.activated.connect(lambda ix=i: self.toggle_category_for_current_item(ix))
 
