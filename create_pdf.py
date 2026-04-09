@@ -7,7 +7,7 @@ import re
 import json
 import subprocess
 
-from config_start import path_programm, path_localappdata_lama
+from config_start import path_programm, path_localappdata_lama, latex, dvips, gs
 from config import *
 from lama_pdfviewer import Ui_Dialog_pdfviewer
 
@@ -799,25 +799,25 @@ def extract_error_from_output(latex_output):
 def build_pdf_file(ui, folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
 
-        if sys.platform.startswith('darwin'):
-            lama_path = os.path.dirname(sys.argv[0])
-            if lama_path == "":
-                lama_path = "."
-            folder = 'universal-darwin'
-            gs = os.path.join(lama_path, 'portable', 'ghostscript', 'bin', 'gs')
-        elif sys.platform.startswith('linux'):
-            if getattr(sys, 'frozen', False):
-                # Wenn aus AppImage oder PyInstaller gestartet
-                lama_path = os.path.dirname(sys.executable)
-            else:
-                # Normaler Python-Start
-                lama_path = os.path.dirname(os.path.abspath(__file__))
-            folder = 'x86_64-linux'  
-            gs = "gs"
+        # if sys.platform.startswith('darwin'):
+        #     lama_path = os.path.dirname(sys.argv[0])
+        #     if lama_path == "":
+        #         lama_path = "."
+        #     folder = 'universal-darwin'
+        #     gs = os.path.join(lama_path, 'portable', 'ghostscript', 'bin', 'gs')
+        # elif sys.platform.startswith('linux'):
+        #     if getattr(sys, 'frozen', False):
+        #         # Wenn aus AppImage oder PyInstaller gestartet
+        #         lama_path = os.path.dirname(sys.executable)
+        #     else:
+        #         # Normaler Python-Start
+        #         lama_path = os.path.dirname(os.path.abspath(__file__))
+        #     folder = 'x86_64-linux'  
+        #     gs = "gs"
 
             
-        latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder,'latex')
-        dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')
+        # latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder,'latex')
+        # dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')
 
         process = subprocess.Popen(
             f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=0 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=0 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {gs} -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"',
@@ -840,9 +840,11 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
 
 
 
-        latex = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
-        dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
-        gs = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'bin', 'gswin64c.exe')
+
+
+        # if os.path.isfile(latex):
+        #     critical_window("Keine LaTeX distribution")
+        #     return False
 
         if is_empty(drive):
             terminal_command = f'cd "{folder_name}" & "{latex}" -interaction=nonstopmode --synctex=0 "{file_name}.tex" & "{latex}" -interaction=nonstopmode --synctex=0 "{file_name}.tex" & "{dvips}" "{file_name}.dvi" & "{gs}" -dNOSAFER -dBATCH -dNOPAUSE -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -sOutputFile="{file_name}.pdf" "{file_name}.ps"'
@@ -855,7 +857,6 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
             stdout=subprocess.PIPE,
             shell=True
         )
-
 
     return process
 
@@ -1088,7 +1089,6 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
 
     
     errors_latex_output = working_window_latex_output(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
-       
     if errors_latex_output == 'abort':
         QApplication.restoreOverrideCursor()
         return 'abort'
@@ -1130,6 +1130,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=Tr
     try:
         delete_unneeded_files(folder_name, file_name)
     except Exception as e:
+        print('FEHLER')
         print("Error: " + str(e))
         return
         

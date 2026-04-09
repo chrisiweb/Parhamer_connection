@@ -171,8 +171,10 @@ from config_start import (
     lama_notenschluessel_file,
     lama_titlepage_save,
     cria_titlepage_save,
+    latex,
+    dvips,
+    gs
 )
-
 
 
 # app = SafeApplication(sys.argv)
@@ -456,6 +458,18 @@ class Ui_MainWindow(object):
                 password = file.read()
             if bcrypt.checkpw(password, hashed_pw):
                 self.developer_mode_active = True
+
+        missing_latex_paths=[]
+        for all in [latex, dvips, gs]:
+            if not os.path.isfile(all):
+                missing_latex_paths.append(all)
+
+        if missing_latex_paths != []:
+            splash.hide()        
+            critical_window("Die integrierte LaTeX Distribution konnte nicht gefunden werden.\nDies passiert durch eine fehlerhafte Installation oder durch unvollständiges Verschieben von LaMA.",
+                            "Bitte de- und installieren Sie LaMA erneut, um die Anwendung wieder verwenden zu können. Bei Fragen oder Problemen melden Sie sich bitte unter lama.helpme@gmail.com",
+                            detailed_text=f"Fehlende Dateipfade:\n{"\n".join(missing_latex_paths)}")
+            sys.exit(0)
 
 
         try:

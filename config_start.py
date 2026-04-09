@@ -74,6 +74,10 @@ if sys.platform.startswith("win"):
                 os.getenv('LOCALAPPDATA'), "LaMA", "lama_notenschluessel.json"
             )
     
+
+    latex = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
+    dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
+    gs = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'bin', 'gswin64c.exe')    
     
     path_standard_pdf_reader = os.path.join(os.path.dirname(sys.argv[0]), "SumatraPDF-3.4.6-64.exe")
 
@@ -135,6 +139,19 @@ elif sys.platform.startswith("darwin"):
                 path_programm, "lama_notenschluessel.json"
             )
 
+
+    lama_path = os.path.dirname(sys.argv[0])
+    if lama_path == "":
+        lama_path = "."
+    folder = 'universal-darwin'
+    gs = os.path.join(lama_path, 'portable', 'ghostscript', 'bin', 'gs')
+
+        
+    latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder,'latex')
+    dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')
+
+
+
     path_standard_pdf_reader = ""
 
 elif sys.platform.startswith("linux"):
@@ -167,6 +184,19 @@ elif sys.platform.startswith("linux"):
     lama_notenschluessel_file = os.path.join(
                 path_programm, "lama_notenschluessel.json"
             )
+    
+
+    if getattr(sys, 'frozen', False):
+        # Wenn aus AppImage oder PyInstaller gestartet
+        lama_path = os.path.dirname(sys.executable)
+    else:
+        # Normaler Python-Start
+        lama_path = os.path.dirname(os.path.abspath(__file__))
+    folder = 'x86_64-linux'  
+    gs = "gs"
+       
+    latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder,'latex')
+    dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')
     path_standard_pdf_reader = ""
 
 path_home = Path.home()
