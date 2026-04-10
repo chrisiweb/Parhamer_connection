@@ -8891,6 +8891,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # progress.cancel()
         progress.close()
 
+        self.update_punkte()
+        
         if not is_empty(list_aufgaben_errors):
             str_error = ", ".join(list_aufgaben_errors)
             warning_window(
@@ -8911,6 +8913,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         information_window(
             f"Insgesamt wurde {num_imported_files} von {progress_maximum} Aufgaben erfolgreich importiert."
         )
+
+        
 
     def delete_zeros_at_beginning(self, string):
         while string.startswith("0"):
