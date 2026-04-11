@@ -148,8 +148,7 @@ reload_ddb = False
 # latest_version = re.search(
 #     r"\[(v\d+.\d+.\d+)\]", readme_content.text
 # ).group(1)
-# show_popup = False
-
+show_popup = True
 
 from start_window import check_if_database_exists
 
@@ -572,15 +571,22 @@ class Ui_MainWindow(object):
                 refresh_ddb(self, auto_update=True)  ## auto_update = True
 
 
-        check_for_messages = os.path.join(database, "_config", "show_popup.txt")
-        if os.path.isfile(check_for_messages):
-            with open(check_for_messages) as f:
-                show_popup = eval(f.read().strip())
-        else:
-            show_popup = False
 
-        if show_popup == True:
+
+        try:
+            self.lama_settings["popup_off"]
+        except KeyError:
+            self.lama_settings["popup_off"] = False
+
+
+        if self.lama_settings["popup_off"] == False and show_popup==True:
             rsp = self.show_popup_window()
+            if rsp == True:
+                self.lama_settings["popup_off"] = True
+
+                with open(lama_settings_file, "w+", encoding="utf8") as f:
+                    json.dump(self.lama_settings, f, ensure_ascii=False)
+
 
 
         if self.chosen_program == "wizard":
@@ -771,18 +777,25 @@ class Ui_MainWindow(object):
         if loaded_lama_file_path != "":
             self.sage_load(external_file_loaded=True)
 
-    def show_popup_window(self):  # , show_checkbox = True
-        popup_message = os.path.join(database, "_config", "popup_message.txt")
-        if os.path.isfile(popup_message):
-            with open(popup_message, "r", encoding="utf-8") as f:
-                popup_message_text = f.read()
-            rsp = custom_window(
-                f"""{popup_message_text}""",
-                titel="Benachrichtigung",
-                set_width=600,
-            )
-            return rsp
-        return False
+
+    def show_popup_window(self, show_checkbox=True):
+        rsp = custom_window(f"""
+        <b>Integrierter PDF‑Viewer in LaMA</b><br><br>
+
+        LaMA enthält ab dieser Version ({__version__}) einen vollständig integrierten PDF-Viewer.<br><br>
+
+        Dadurch können Aufgaben direkt im PDF-Viewer farblich markiert werden, um sie zu Aufgabenlisten hinzuzufügen.<br><br>
+                            
+        Die erstellten Aufgabenlisten sind dann direkt im Prüfungsgenerator importierbar.<br><br>
+
+        Bei Fragen und Problemen wenden Sie sich bitte an:<br>
+        <i>lama.helpme@gmail.com</i><br>
+        """,
+            titel="LaMA – Integrierter PDF Viewer",
+            show_checkbox=show_checkbox,
+            set_width=600,
+        )
+        return rsp
 
     ##### PREVIOUS MESSAGES
     #### Update DDB
@@ -1371,9 +1384,11 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         if ret == True:
-            # self.lama_settings["popup_off"] = False
-            # with open(lama_settings_file, "w+", encoding="utf8") as f:
-            #     json.dump(self.lama_settings, f, ensure_ascii=False)
+            self.lama_settings["popup_off"] = False
+            with open(lama_settings_file, "w+", encoding="utf8") as f:
+                json.dump(self.lama_settings, f, ensure_ascii=False)
+  
+
 
             refresh_ddb(self, auto_update=True)
             text = "Neue Version von LaMA wird heruntergeladen ..."
@@ -8892,7 +8907,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         progress.close()
 
         self.update_punkte()
-        
+
         if not is_empty(list_aufgaben_errors):
             str_error = ", ".join(list_aufgaben_errors)
             warning_window(
