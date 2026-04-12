@@ -4,7 +4,8 @@ setlocal
 :: ==============================
 :: Variablen
 :: ==============================
-set "PYINSTALLER_EXE=C:\Users\cwebe\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller.exe"
+set "PYINSTALLER_EXE=C:\Program Files\Python313\python.exe"
+:: WORKING: C:\Users\cwebe\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller.exe
 :: C:\Users\cwebe\AppData\Roaming\Python\Python313\Scripts\pyinstaller.exe
 set "EXE_NAME=LaMA.exe"
 set "BUILD_DIR=dist"
@@ -19,7 +20,7 @@ set /p APP_VERSION=Bitte Versionsnummer eingeben (z.B. 1.2.3):
 echo Aktuelle Version:%APP_VERSION%
 
 echo ==============================
-echo Schritt 1: Lösche dist & build
+echo Schritt 1: Lï¿½sche dist & build
 echo ==============================
 if exist "%BUILD_DIR%" rd /s /q "%BUILD_DIR%"
 if exist build rd /s /q build

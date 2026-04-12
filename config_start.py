@@ -5,7 +5,16 @@ from pathlib import Path
 #### Version number ###
 __version__ = "v5.0.9"
 
+def resource_path(*relative_path):
+    """ermittelt den Pfad zu Ressourcen im Entwicklermodus UND im Build"""
+    if hasattr(sys, '_MEIPASS'):
+        # PyInstaller Build
+        base = sys._MEIPASS
+    else:
+        # Entwicklungsmodus
+        base = os.path.dirname(os.path.abspath(__file__))
 
+    return os.path.join(base, *relative_path)
 
 
 def get_running_file_extension() -> str:
@@ -75,11 +84,14 @@ if sys.platform.startswith("win"):
             )
     
 
-    latex = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
-    dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
-    gs = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'bin', 'gswin64c.exe')    
+    # latex = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
+    # dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
+    # gs = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'bin', 'gswin64c.exe')    
     
-    path_standard_pdf_reader = os.path.join(os.path.dirname(sys.argv[0]), "SumatraPDF-3.4.6-64.exe")
+    latex = resource_path('portable', 'tinytex', 'bin', 'windows', 'latex.exe')
+    dvips = resource_path('portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
+    gs = resource_path('portable', 'ghostscript', 'bin', 'gswin64c.exe')
+    # path_standard_pdf_reader = os.path.join(os.path.dirname(sys.argv[0]), "SumatraPDF-3.4.6-64.exe")
 
 
     # ## OLD VERSION!!
@@ -140,16 +152,20 @@ elif sys.platform.startswith("darwin"):
             )
 
 
-    lama_path = os.path.dirname(sys.argv[0])
-    if lama_path == "":
-        lama_path = "."
+    # lama_path = os.path.dirname(sys.argv[0])
+    # if lama_path == "":
+    #     lama_path = "."
     folder = 'universal-darwin'
-    gs = os.path.join(lama_path, 'portable', 'ghostscript', 'bin', 'gs')
+
+    # gs = os.path.join(lama_path, 'portable', 'ghostscript', 'bin', 'gs')
 
         
-    latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder,'latex')
-    dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')
+    # latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder,'latex')
+    # dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin',folder, 'dvips')
 
+    latex = resource_path('portable', 'tinytex', 'bin', folder , 'latex')
+    dvips = resource_path('portable', 'tinytex', 'bin',folder, 'dvips')
+    gs = resource_path('portable', 'ghostscript', 'bin', 'gs')
 
 
     path_standard_pdf_reader = ""
