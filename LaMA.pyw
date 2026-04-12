@@ -4732,9 +4732,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             variation = create_pdf.check_if_variation(file["name"])
             if typ == "typ1":
-                _, num = file["name"].split(" - ")
+                try:
+                    _, num = file["name"].split(" - ")
+                except ValueError:
+                    num=0
             else:
-                num = file["name"]
+                def is_number_or_variation(text):
+                    return bool(re.fullmatch(r"\d+(\[\d+\])?", text))
+                if is_number_or_variation(file["name"]):
+                    num = file["name"]
+                else:
+                    num = 0
             if variation == True:
                 x = re.split(r"\[|\]", num)
                 num = int(x[0])
