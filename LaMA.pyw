@@ -11,6 +11,9 @@ import os
 from PyQt5.QtWidgets import QApplication
 import traceback
 
+
+show_popup = True
+reload_ddb = False
 # ---------------------------
 # GLOBALER CRASH-HANDLER
 # ---------------------------
@@ -133,7 +136,7 @@ if sys.platform.startswith(
 #     reload_ddb = True
 # else:
 #     reload_ddb = False
-reload_ddb = False
+
 
 # link = (
 #     "https://raw.githubusercontent.com/chrisiweb/lama_latest_update/master/README.md"
@@ -148,7 +151,7 @@ reload_ddb = False
 # latest_version = re.search(
 #     r"\[(v\d+.\d+.\d+)\]", readme_content.text
 # ).group(1)
-show_popup = True
+
 
 from start_window import check_if_database_exists
 
@@ -1337,18 +1340,31 @@ class Ui_MainWindow(object):
 
             def get_latest_version():
                 # 1) Neuesten Commit für version.txt im master-Branch abfragen
-                api_url = "https://api.github.com/repos/chrisiweb/lama_latest_update/commits?path=version.txt&sha=master"
-                commits = requests.get(api_url).json()
-                latest_commit = commits[0]["sha"]
+                try:
+                    api_url = "https://api.github.com/repos/chrisiweb/lama_latest_update/commits?path=version.txt&sha=master"
+                    commits = requests.get(api_url).json()
+                    latest_commit = commits[0]["sha"]
 
-                # 2) Datei exakt aus diesem Commit laden (nie gecached)
-                raw_url = f"https://raw.githubusercontent.com/chrisiweb/lama_latest_update/{latest_commit}/version.txt"
-                version = requests.get(raw_url).text.strip()
-
+                    # 2) Datei exakt aus diesem Commit laden (nie gecached)
+                    raw_url = f"https://raw.githubusercontent.com/chrisiweb/lama_latest_update/{latest_commit}/version.txt"
+                    version = requests.get(raw_url).text.strip()
+                except Exception as e:
+                    return None
                 return version
 
             latest_version = get_latest_version()
-
+            if latest_version == None:
+                print("Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ...")
+                print(f"Fehlermeldung:{e}")
+                backup_link = "https://mylama.github.io/lama/lama_update_backup"
+                try:
+                    readme_content_backup = requests.get(backup_link)
+                    force_new_update = int(readme_content_backup.text)
+                    if force_new_update == 0:
+                        print(False)
+                        return
+                except Exception as e:
+                    return
             if __version__ == latest_version:
                 return
         except Exception as e:
@@ -9232,7 +9248,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def add_content_to_tex_file(
         self, aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
     ):
-
+        aufgabe = str(aufgabe)
         if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             if first_typ2 == False:
                 header = "\\newpage \n\n\\textbf{Typ 2 Aufgaben}\n\n"
