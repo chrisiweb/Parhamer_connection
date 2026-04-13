@@ -14,15 +14,32 @@ echo "🧹 Entferne alte Build-Dateien..."
 # Entfernt alle Schutzattribute
 rm -rf build "$DIST_DIR" "$APP_NAME.spec"
 
+echo "📦 Erstelle macOS-spezifischen portable-Ordner..."
+rm -rf portable_mac
+mkdir -p portable_mac/tinytex/bin
+mkdir -p portable_mac/ghostscript
 
-# === 🐍 App mit PyInstaller erstellen ===
-echo "🐍 Erstelle macOS App..."
+# ✅ 1. Gesamten portable Ordner kopieren
+cp -R portable/* portable_mac/
+
+# ✅ 2. Bin-Verzeichnis bereinigen → nur universal-darwin behalten
+rm -rf portable_mac/tinytex/bin/windows
+rm -rf portable_mac/tinytex/bin/x86_64-linux
+
+echo "✅ Fertig! portable_mac enthält nur die macOS-Binaries."
+
+echo "🐍 Baue macOS App..."
 python3 -m PyInstaller \
   --windowed \
   --name="$APP_NAME" \
   --icon="$ICON_APP" \
-  --add-data="portable:portable" \
+  --add-data="portable_mac:portable" \
   "$PYTHON_SCRIPT"
+
+echo "🧹 Bereinige temporäre Dateien..."
+rm -rf portable_mac
+
+echo "✅ macOS Build abgeschlossen!"
 
 # === 🔏 App lokal signieren (ad-hoc) ===
 echo "🔏 Entferne .DS_Store-Dateien..."
