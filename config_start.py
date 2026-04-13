@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 #### Version number ###
-__version__ = "v5.0.9"
+__version__ = "v5.1.0"
 
 def resource_path(*relative_path):
     """ermittelt den Pfad zu Ressourcen im Entwicklermodus UND im Build"""
