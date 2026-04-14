@@ -4,7 +4,7 @@ setlocal
 :: ==============================
 :: Variablen
 :: ==============================
-set "PYINSTALLER_EXE=C:\Users\cwebe\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller.exe"
+set "PYINSTALLER_EXE=C:\Users\cwebe\AppData\Roaming\Python\Python313\Scripts\pyinstaller.exe"
 :: WORKING: C:\Users\cwebe\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller.exe
 :: C:\Users\cwebe\AppData\Roaming\Python\Python313\Scripts\pyinstaller.exe
 set "EXE_NAME=LaMA.exe"
