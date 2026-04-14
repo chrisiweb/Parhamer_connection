@@ -1400,9 +1400,13 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         if ret == True:
-            self.lama_settings["popup_off"] = False
-            with open(lama_settings_file, "w+", encoding="utf8") as f:
-                json.dump(self.lama_settings, f, ensure_ascii=False)
+            try:
+                self.lama_settings["popup_off"] = False
+                with open(lama_settings_file, "w+", encoding="utf8") as f:
+                    json.dump(self.lama_settings, f, ensure_ascii=False)
+            except Exception as e:
+                print('Reset of lama_settings["popup_off"] not possible! - Skip Reset!')
+                print(f"Exception: {e}")
   
 
 

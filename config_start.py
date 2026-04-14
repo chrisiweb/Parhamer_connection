@@ -17,6 +17,28 @@ def resource_path(*relative_path):
     return os.path.join(base, *relative_path)
 
 
+
+def app_base_dir():
+    """
+    Liefert das Basisverzeichnis der Anwendung:
+    - Entwicklungsmodus: Ordner der .py-Datei
+    - PyInstaller: Ordner der EXE
+    """
+    if getattr(sys, 'frozen', False):
+        # PyInstaller / EXE
+        return os.path.dirname(sys.executable)
+    else:
+        # Direkt ausgeführte .py-Datei
+        return os.path.dirname(os.path.abspath(__file__))
+
+
+def portable_path(*parts):
+    return os.path.join(app_base_dir(), 'portable', *parts)
+
+
+
+
+
 def get_running_file_extension() -> str:
     # Wenn es eine PyInstaller-EXE ist → sys.frozen = True
     if getattr(sys, "frozen", False):
@@ -88,9 +110,9 @@ if sys.platform.startswith("win"):
     # dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
     # gs = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'bin', 'gswin64c.exe')    
     
-    latex = resource_path('portable', 'tinytex', 'bin', 'windows', 'latex.exe')
-    dvips = resource_path('portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
-    gs = resource_path('portable', 'ghostscript', 'bin', 'gswin64c.exe')
+    latex = portable_path('tinytex', 'bin', 'windows', 'latex.exe')
+    dvips = portable_path('tinytex', 'bin', 'windows', 'dvips.exe')
+    gs = portable_path('ghostscript', 'bin', 'gswin64c.exe')
     # path_standard_pdf_reader = os.path.join(os.path.dirname(sys.argv[0]), "SumatraPDF-3.4.6-64.exe")
 
 
