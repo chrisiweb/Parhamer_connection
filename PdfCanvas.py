@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QApplication, QDialog, QPlainTextEdit, QVBo
 from PyQt5.QtGui import QPainter, QColor, QPixmap, QKeySequence, QImage
 from PyQt5.QtCore import QRect, Qt, QPoint
 import fitz
+from standard_dialog_windows import warning_window
 
 class SourceCodeWindow(QDialog):
     def __init__(self, title, text="", parent=None):
@@ -157,6 +158,11 @@ class PdfCanvas(QWidget):
         # STRG + Rechts → Quellcodefenster
         if e.button() == Qt.RightButton and (e.modifiers() & Qt.ControlModifier):
             title = self._find_task_by_click(e.pos())
+
+            if not title:
+                warning_window("Der Quellcode konnte nicht gefunden werden.")
+                return
+            
             latex = self._find_latex_for_task(title)
             dlg = SourceCodeWindow(title, latex or f"Kein Quellcode gefunden für: {title}", parent=self)
             dlg.exec_()
