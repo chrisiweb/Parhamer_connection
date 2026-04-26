@@ -7603,28 +7603,36 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def erase_aufgabe(self, aufgabe):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
-        del self.dict_variablen_punkte[aufgabe]
-        if typ == 1:
-            del self.dict_variablen_punkte_halb[aufgabe]
-        del self.dict_variablen_abstand[aufgabe]
 
-        del self.dict_variablen_translation[aufgabe]
-        del self.dict_variablen_AB[aufgabe]
+
+
+        # Dictionaries sicher bereinigen
+        self.dict_variablen_punkte.pop(aufgabe, None)
+        self.dict_variablen_abstand.pop(aufgabe, None)
+        self.dict_variablen_translation.pop(aufgabe, None)
+        self.dict_variablen_AB.pop(aufgabe, None)
+
+
+        if typ == 1:
+            self.dict_variablen_punkte_halb.pop(aufgabe, None)
+
 
         if typ == 2:
             # del self.dict_variablen_label[aufgabe]
-            self.list_alle_aufgaben_sage[1].remove(aufgabe)
+            if aufgabe in self.list_alle_aufgaben_sage[1]:
+                self.list_alle_aufgaben_sage[1].remove(aufgabe)
         else:
-            self.list_alle_aufgaben_sage[0].remove(aufgabe)
+            if aufgabe in self.list_alle_aufgaben_sage[0]:
+                self.list_alle_aufgaben_sage[0].remove(aufgabe)
 
-        # if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
-        #     del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-        if aufgabe in self.dict_sage_hide_show_items_chosen:
-            del self.dict_sage_hide_show_items_chosen[aufgabe]
-        if aufgabe in self.dict_sage_individual_change:
-            del self.dict_sage_individual_change[aufgabe]
 
-    ##@report_exception.s
+
+        # Optionale Dicts
+
+        self.dict_sage_hide_show_items_chosen.pop(aufgabe, None)
+        self.dict_sage_individual_change.pop(aufgabe, None)
+
+
     def btn_delete_pressed(self, aufgabe):
         try:
             self.dict_sage_individual_change[aufgabe]

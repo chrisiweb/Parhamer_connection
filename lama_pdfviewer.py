@@ -459,6 +459,14 @@ class CategoryHeaderWidget(QWidget):
         dlg = QColorDialog(start, self)
         dlg.setOption(QColorDialog.ShowAlphaChannel, False)
 
+
+
+        # ✅ Sicherstellen, dass ein Layout EXISTIERT
+        base_layout = dlg.layout()
+        if base_layout is None:
+            base_layout = QVBoxLayout(dlg)
+            dlg.setLayout(base_layout)
+
         # reset_btn = dlg.findChild(QPushButton, "qt_colorreset")
         # if reset_btn is None:
         reset_btn = QPushButton("Standard wiederherstellen", dlg)
@@ -486,12 +494,20 @@ class CategoryHeaderWidget(QWidget):
         reset_btn.clicked.connect(reset_color)
 
 
-        # ---- ButtonBox finden ----
-        buttonbox = None
-        for child in dlg.children():
-            if isinstance(child, QDialogButtonBox):
-                buttonbox = child
-                break
+
+        # ✅ ButtonBox korrekt finden
+        buttonbox = dlg.findChild(QDialogButtonBox)
+
+        # ✅ Fallback-Sicherheit (SEHR wichtig)
+        if buttonbox is None:
+            buttonbox = QDialogButtonBox(
+                QDialogButtonBox.Ok | QDialogButtonBox.Cancel,
+                dlg
+            )
+            buttonbox.accepted.connect(dlg.accept)
+            buttonbox.rejected.connect(dlg.reject)
+            base_layout.addWidget(buttonbox)
+
 
         # ---- Untere Zeile bauen: [Standard] ... [OK][Abbrechen] ----
         bottom = QHBoxLayout()
