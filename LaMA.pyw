@@ -9261,6 +9261,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self, aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
     ):
         aufgabe = str(aufgabe)
+        sprache_aufgabe = self.dict_variablen_translation.get(aufgabe, "DE")
         if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             if first_typ2 == False:
                 header = "\\newpage \n\n\\textbf{Typ 2 Aufgaben}\n\n"
@@ -9306,10 +9307,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             individual_changes = False
 
         if individual_changes == True:
-            if self.dict_variablen_translation[aufgabe] == "DE":
+            if sprache_aufgabe == "DE":
                 index = 0
                 entry_key = "content"
-            elif self.dict_variablen_translation[aufgabe] == "EN":
+            elif sprache_aufgabe == "EN":
                 index = 1
                 entry_key = "content_translation"
 
@@ -9319,9 +9320,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 content = aufgabe_total[entry_key]
 
         elif aufgabe in self.dict_sage_hide_show_items_chosen:
-            if self.dict_variablen_translation[aufgabe] == "DE":
+            if sprache_aufgabe == "DE":
                 aufgabentext = "content"
-            elif self.dict_variablen_translation[aufgabe] == "EN":
+            elif sprache_aufgabe == "EN":
                 aufgabentext = "content_translation"
             full_content = aufgabe_total[aufgabentext]
             split_content = self.split_content(aufgabe, aufgabe_total[aufgabentext])
@@ -9332,7 +9333,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self, aufgabe, split_content, full_content
             )
 
-        elif self.dict_variablen_translation[aufgabe] == "EN":
+        elif sprache_aufgabe == "EN":
             content = aufgabe_total["content_translation"]
 
         # elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
