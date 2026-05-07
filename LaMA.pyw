@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-__lastupdate__ = "04/26"
+__lastupdate__ = "05/26"
 
 # minor change##
 ##################
@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QApplication
 import traceback
 
 
-show_popup = True
+show_popup = False
 reload_ddb = False
 # ---------------------------
 # GLOBALER CRASH-HANDLER
