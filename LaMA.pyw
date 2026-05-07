@@ -3790,11 +3790,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 # elif typ == 2:
                 num = name
 
-            if self.chosen_variation == None:
-                num = int(num.split("[")[0])
-            else:
-                num = re.search(r"\[(.*)\]", num)
-                num = int(num.group(1))
+            try:
+                if self.chosen_variation == None:
+                    num = int(num.split("[")[0])
+                else:
+                    num = re.search(r"\[(.*)\]", num)
+                    num = int(num.group(1))
+            except ValueError:
+                num = 0
 
             if num > max_integer:
                 max_integer = num
@@ -4630,6 +4633,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             abstand,
         )
         QtWidgets.QApplication.restoreOverrideCursor()
+
 
         if rsp == False:
             critical_window(
