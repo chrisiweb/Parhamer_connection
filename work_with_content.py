@@ -3,7 +3,6 @@ from database_commands import get_aufgabe_total, get_aufgabentyp
 
 
 def collect_content(self, aufgabe, readlines=False):
-    print(self.dict_variablen_translation)
     aufgabe = aufgabe.replace(" (lokal)","")
     try:
         language = self.dict_variablen_translation[aufgabe]
