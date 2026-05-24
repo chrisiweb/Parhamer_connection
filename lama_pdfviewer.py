@@ -16,20 +16,22 @@ PDF-Viewer (PyQt5 + PyMuPDF) mit:
 
 import os
 import re
-from config import get_icon_path
 import fitz  # PyMuPDF
 from PyQt5.QtWidgets import (
     QLabel, QWidget, QVBoxLayout,
     QToolBar, QLineEdit, QSizePolicy, QShortcut,
     QListWidget, QListWidgetItem, QSplitter, QHBoxLayout,
     QStyledItemDelegate, QStyle, QStyleOptionViewItem,
-    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QToolButton, QMessageBox, QDialogButtonBox, QAbstractItemView
+    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QToolButton, QMessageBox, QDialogButtonBox, QAbstractItemView, QFileDialog
 )
 from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon, QPainter
-from PyQt5.QtCore import Qt, pyqtSignal, QRect, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
-from config import logo_path, save_pdf_selection_dict, lama_pdf_selection_file
+from PyQt5.QtCore import Qt, pyqtSignal, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
+from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
+from config import logo_path, save_pdf_selection_dict, lama_pdf_selection_file, get_icon_path
+from config_start import path_home
 from PdfViewer_gui import PdfViewer
 from create_new_widgets import create_new_label
+import shutil
 
 import re
 
@@ -900,8 +902,20 @@ class Ui_Dialog_pdfviewer(object):
         tb.setFloatable(False)
         main.addWidget(tb)
 
-        spacer_left = QWidget(); spacer_left.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        tb.addWidget(spacer_left)
+        # # --- SPEICHERN ---
+        # self.btn_save = QToolButton(tb)   # ✅ Parent setzen!
+        # self.btn_save.setIcon(QIcon(get_icon_path("save.svg")))
+        # self.btn_save.setToolTip("Speichern unter...")
+        # # tb.addWidget(self.btn_save)
+
+        # # --- DRUCKEN ---
+        # self.btn_print = QToolButton(tb)  # ✅ Parent setzen!
+        # self.btn_print.setIcon(QIcon(get_icon_path("printer.svg")))
+        # self.btn_print.setToolTip("Drucken")
+        # # tb.addWidget(self.btn_print)        
+
+        # spacer_left = QWidget(); spacer_left.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        # tb.addWidget(spacer_left)
 
         center = QWidget(); row_layout = QHBoxLayout(center)
         row_layout.setContentsMargins(0, 0, 0, 0)
@@ -911,6 +925,21 @@ class Ui_Dialog_pdfviewer(object):
         # self.edt_current.setFixedWidth(56)
         # self.edt_current.setAlignment(Qt.AlignCenter)
         # self.edt_current.setToolTip("Aktuelle Seite (Enter zum Springen)")
+
+
+        # --- SPEICHERN ---
+        self.btn_save = QToolButton(center)
+        self.btn_save.setIcon(QIcon(get_icon_path("save.svg")))
+        self.btn_save.setToolTip("Speichern unter...")
+        row_layout.addWidget(self.btn_save)
+
+        # --- DRUCKEN ---
+        self.btn_print = QToolButton(center)
+        self.btn_print.setIcon(QIcon(get_icon_path("printer.svg")))
+        self.btn_print.setToolTip("Drucken")
+        row_layout.addWidget(self.btn_print)
+
+        row_layout.addStretch()
 
         self.spin_page = QSpinBox()
         self.spin_page.setButtonSymbols(QSpinBox.NoButtons)     # „modern“ ohne kleine Pfeile; weglassen, wenn du Pfeile willst
@@ -942,7 +971,8 @@ class Ui_Dialog_pdfviewer(object):
         # Verbindungen
         btn_zoom_out.clicked.connect(lambda: self.viewer.zoom_out())
         btn_zoom_in.clicked.connect(lambda: self.viewer.zoom_in())
-
+        self.btn_print.clicked.connect(lambda: self.print_pdf())
+        self.btn_save.clicked.connect(lambda: self.save_pdf())
         # (optional) Shortcuts
         btn_zoom_in.setShortcut(QKeySequence.ZoomIn)
         btn_zoom_out.setShortcut(QKeySequence.ZoomOut)
@@ -951,7 +981,8 @@ class Ui_Dialog_pdfviewer(object):
         # row_layout.addWidget(self.lbl_total)
         tb.addWidget(center)
 
-        spacer_right = QWidget(); spacer_right.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        spacer_right = QWidget()
+        spacer_right.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         tb.addWidget(spacer_right)
 
         # --- Linkes Panel: Header + Liste ---
@@ -1207,6 +1238,91 @@ class Ui_Dialog_pdfviewer(object):
                     return
 
         sc_copy.activated.connect(_on_copy)
+
+    def save_pdf(self):
+        if not hasattr(self, "saved_file_path"):
+            self.saved_file_path = os.path.join(path_home, "Desktop")
+
+
+        if not self._current_pdf_path:
+            QMessageBox.warning(None, "Fehler", "Keine PDF geladen.")
+            return
+
+        file_name = os.path.basename(self._current_pdf_path)
+        dict_save_filename = {
+            'Teildokument_1.pdf': 'Suche_Typ1.pdf',
+            'Teildokument_2.pdf': 'Suche_Typ2.pdf',
+            'Teildokument_cria.pdf': 'Suche_Unterstufe.pdf',
+            'preview.pdf': 'Vorschau.pdf',
+            'worksheet.pdf': 'WorksheetWizard_Arbeitsblatt.pdf'
+        }
+
+        if file_name in dict_save_filename:
+            file_name = dict_save_filename[file_name]
+
+
+        start_dir = os.path.join(self.saved_file_path, file_name)
+
+        file_path, _ = QFileDialog.getSaveFileName(
+            None,
+            "PDF speichern unter...",
+            start_dir,
+            "PDF Files (*.pdf)"
+        )
+
+        if file_path:
+            try:
+                shutil.copyfile(self._current_pdf_path, file_path)
+                self.saved_file_path = file_path  # Merken für nächsten Start
+            except Exception as e:
+                QMessageBox.critical(None, "Fehler", str(e))
+
+
+    def print_pdf(self):
+            # ✅ FIX: nur _current_pdf_path verwenden
+            if not getattr(self, "_current_pdf_path", None):
+                QMessageBox.warning(None, "Fehler", "Keine PDF geladen.")
+                return
+
+            printer = QPrinter(QPrinter.HighResolution)
+
+
+            dialog = QPrintDialog(printer, None)
+
+            
+            if dialog.exec_() == QPrintDialog.Accepted:
+                painter = QPainter()
+                if not painter.begin(printer):
+                    return
+
+                doc = fitz.open(self._current_pdf_path)
+
+                for i in range(len(doc)):
+                    page = doc[i]
+
+                    pix = page.get_pixmap()
+                    img = QImage(
+                        pix.samples,
+                        pix.width,
+                        pix.height,
+                        pix.stride,
+                        QImage.Format_RGB888
+                    )
+
+                    rect = painter.viewport()
+                    size = img.size()
+                    size.scale(rect.size(), Qt.KeepAspectRatio)
+
+                    painter.setViewport(rect.x(), rect.y(), size.width(), size.height())
+                    painter.setWindow(img.rect())
+
+                    painter.drawImage(0, 0, img)
+
+                    if i != len(doc) - 1:
+                        printer.newPage()
+
+                painter.end()
+
 
     def set_typ(self, new_typ):
         self.typ = new_typ

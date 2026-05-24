@@ -143,3 +143,6 @@ pdftex.map
 
 ./fonts/map/dvipdfmx/updmap:
 kanjix.map
+
+./fonts/pk/ljfour/public/wasy:
+wasy10.600pk
