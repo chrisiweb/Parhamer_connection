@@ -579,8 +579,6 @@ class Ui_MainWindow(object):
 
 
 
-
-
         try:
             self.lama_settings["popup_off"]
         except KeyError:
@@ -2913,13 +2911,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
 
     def comboBox_pruefungstyp_changed(self):
+
+        if self.chosen_program not in ("lama", "cria"):
+            return
+
+
         self.comboBox_pruefungstyp.setEditable(False)
         self.widgetNummer.setEnabled(True)
         self.widget_datum.setEnabled(True)
 
         self.spinBox_nummer.setValue(self.spinBox_nummer_setvalue)
-        # self.checkBox_date.hide()
-        # self.checkBox_date.setChecked(True)
+
 
         if self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck":
             self.combobox_beurteilung.setEnabled(False)
