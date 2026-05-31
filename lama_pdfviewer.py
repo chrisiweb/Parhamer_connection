@@ -1279,50 +1279,45 @@ class Ui_Dialog_pdfviewer(object):
 
 
     def print_pdf(self):
-            # ✅ FIX: nur _current_pdf_path verwenden
-            if not getattr(self, "_current_pdf_path", None):
-                QMessageBox.warning(None, "Fehler", "Keine PDF geladen.")
-                return
+        if not getattr(self, "_current_pdf_path", None):
+            QMessageBox.warning(None, "Fehler", "Keine PDF geladen.")
+            return
 
-            printer = QPrinter(QPrinter.HighResolution)
+        printer = QPrinter(QPrinter.HighResolution)
+        printer.setResolution(600)
 
+        dialog = QPrintDialog(printer, None)
 
-            dialog = QPrintDialog(printer, None)
+        if dialog.exec_() != QPrintDialog.Accepted:
+            return
 
-            
-            if dialog.exec_() == QPrintDialog.Accepted:
-                painter = QPainter()
-                if not painter.begin(printer):
-                    return
+        painter = QPainter()
+        if not painter.begin(printer):
+            return
 
-                doc = fitz.open(self._current_pdf_path)
+        doc = fitz.open(self._current_pdf_path)
 
-                for i in range(len(doc)):
-                    page = doc[i]
+        for i in range(len(doc)):
+            page = doc[i]
 
-                    pix = page.get_pixmap()
-                    img = QImage(
-                        pix.samples,
-                        pix.width,
-                        pix.height,
-                        pix.stride,
-                        QImage.Format_RGB888
-                    )
+            # 🔥 hohe Auflösung
+            pix = page.get_pixmap(dpi=600)
 
-                    rect = painter.viewport()
-                    size = img.size()
-                    size.scale(rect.size(), Qt.KeepAspectRatio)
+            img = QImage(
+                pix.samples,
+                pix.width,
+                pix.height,
+                pix.stride,
+                QImage.Format_RGB888
+            )
 
-                    painter.setViewport(rect.x(), rect.y(), size.width(), size.height())
-                    painter.setWindow(img.rect())
+            # ✅ DIREKT zeichnen → vermeidet zusätzliche Skalierungsartefakte
+            painter.drawImage(printer.pageRect(), img)
 
-                    painter.drawImage(0, 0, img)
+            if i != len(doc) - 1:
+                printer.newPage()
 
-                    if i != len(doc) - 1:
-                        printer.newPage()
-
-                painter.end()
-
+        painter.end()
 
     def set_typ(self, new_typ):
         self.typ = new_typ
