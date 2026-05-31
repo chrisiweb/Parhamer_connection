@@ -7079,20 +7079,25 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except KeyError:
             self.dict_sage_individual_change = {}
 
-        if isinstance(
-            list(
-                self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"].values()
-            )[0][0],
-            int,
-        ):  # Check of points of examples are int or float (halfpoints)
-            point_settings_loadedfile = False
-        else:
-            point_settings_loadedfile = True
+        try:
+            if isinstance(
+                list(
+                    self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"].values()
+                )[0][0],
+                int,
+            ):  # Check of points of examples are int or float (halfpoints)
+                point_settings_loadedfile = False
+            else:
+                point_settings_loadedfile = True
 
-        if loaded_file["data_gesamt"]["program"] == "cria":
-            self.lama_settings["halfpoints_cria"] = point_settings_loadedfile
-        else:
-            self.lama_settings["halfpoints"] = point_settings_loadedfile
+
+            if loaded_file["data_gesamt"]["program"] == "cria":
+                self.lama_settings["halfpoints_cria"] = point_settings_loadedfile
+            else:
+                self.lama_settings["halfpoints"] = point_settings_loadedfile
+        except IndexError:
+            pass
+
 
         list_aufgaben_errors = self.sage_load_files()
 
