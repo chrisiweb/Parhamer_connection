@@ -555,23 +555,28 @@ class Ui_MainWindow(object):
             refresh_ddb(self, auto_update=True)  # auto_update = True
 
         else:
-            database_file = os.path.join(database, ".git", "index")
-            refresh_date_ddb = modification_date(database_file).strftime("%Y%m%d")
-            refresh_date_ddb_month = modification_date(database_file).strftime("%m")
-            today = datetime.datetime.today().strftime("%Y%m%d")
-            today_month = datetime.datetime.today().strftime("%m")
+            try:
+                database_file = os.path.join(database, ".git", "index")
+                refresh_date_ddb = modification_date(database_file).strftime("%Y%m%d")
+                refresh_date_ddb_month = modification_date(database_file).strftime("%m")
+                today = datetime.datetime.today().strftime("%Y%m%d")
+                today_month = datetime.datetime.today().strftime("%m")
 
-            difference = int(today) - int(refresh_date_ddb)
+                difference = int(today) - int(refresh_date_ddb)
 
-            if (
-                (self.lama_settings["database"] == 1 and difference != 0)
-                or (self.lama_settings["database"] == 2 and difference > 6)
-                or (
-                    self.lama_settings["database"] == 3
-                    and refresh_date_ddb_month != today_month
-                )
-            ):
-                refresh_ddb(self, auto_update=True)  ## auto_update = True
+                if (
+                    (self.lama_settings["database"] == 1 and difference != 0)
+                    or (self.lama_settings["database"] == 2 and difference > 6)
+                    or (
+                        self.lama_settings["database"] == 3
+                        and refresh_date_ddb_month != today_month
+                    )
+                ):
+                    refresh_ddb(self, auto_update=True)  ## auto_update = True
+
+            except FileNotFoundError:
+                refresh_ddb(self, auto_update=True)
+
 
 
 
