@@ -1,4 +1,3 @@
-from ctypes import alignment
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon, QCursor, QTextCursor, QPixmap, QRegExpValidator
 from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication, QThread, QObject, pyqtSignal, pyqtSlot, QRegExp
@@ -18,7 +17,6 @@ from config import (
     colors_ui,
     get_color,
     logo_path,
-    logo_cria_button_path,
     is_empty,
     get_icon_path,
     still_to_define,
@@ -93,20 +91,108 @@ def get_color(color):
     color = "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
     return color
 
-
-# StyleSheet_tabWidget = """
-# QTabBar::tab:selected {{
-# background: {0}; color: {1};
-# padding-right: 10px; padding-left: 10px;
-# border-top: 2px solid {3};
-# border-left: 2px solid {3};
-# border-right: 2px solid {3};
-# }}
-
-# QWidget {{color: {2};background-color: {3}}}
-# """.format(
-#     get_color(blue_2), get_color(black), get_color(white), get_color(blue_7)
-# )
+autocomplete_list = {
+    "multiplechoice": {
+        "display": r"\multiplechoice{...}",
+        "insert": r"""\multiplechoice[5]{
+    L1={•},
+    L2={•},
+    L3={•},
+    L4={•},
+    L5={•},
+    L6={},
+    L7={},
+    L8={},
+    L9={},
+    %% LOESUNG: %%
+    A1=0,
+    A2=0,
+    A3=0,
+    A4=0,
+    A5=0,
+}"""
+    },
+    "lueckentext": {
+        "display": r"\lueckentext{...}",
+        "insert": r"""\lueckentext{
+    text={•}, 	%Lueckentext Luecke=\gap
+    L1={•}, 		%1.Moeglichkeit links  
+    L2={•}, 		%2.Moeglichkeit links
+    L3={•}, 		%3.Moeglichkeit links
+    R1={•}, 		%1.Moeglichkeit rechts 
+    R2={•}, 		%2.Moeglichkeit rechts
+    R3={•}, 		%3.Moeglichkeit rechts
+    %% LOESUNG: %%
+    A1=0,   % Antwort links
+    A2=0		% Antwort rechts 
+}"""
+    },
+    "zurordnen": {
+        "display": r"\zuordnen{...}",
+        "insert": r"""\zuordnen{
+    R1={•},				% Response 1
+    R2={•},				% Response 2
+    R3={•},				% Response 3
+    R4={•},				% Response 4
+    %% Moegliche Zuordnungen: %%
+    A={•}, 				%Moeglichkeit A  
+    B={•}, 				%Moeglichkeit B  
+    C={•}, 				%Moeglichkeit C  
+    D={•}, 				%Moeglichkeit D  
+    E={•}, 				%Moeglichkeit E  
+    F={•}, 				%Moeglichkeit F  
+    %% LOESUNG: %%
+    A1={•},				% 1. richtige Zuordnung
+    A2={•},				% 2. richtige Zuordnung
+    A3={•},				% 3. richtige Zuordnung
+    A4={•},				% 4. richtige Zuordnung
+}"""
+    },
+    "variation": {
+        "display": r"variation{...}{...}",
+        "insert": r"""\variation{•}{•}"""
+    }, 
+    "antwort": {
+        "display": r"antwort{...}",
+        "insert": r"""\antwort[•]{•}"""
+    },
+    "rfmultiplechoice": {
+        "display": r"\rfmultiplechoice{...}",
+        "insert": r"""\rfmultiplechoice[5]{Aussage}{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+    L1={•},   %1. Antwortmoeglichkeit 
+    L2={•},   %2. Antwortmoeglichkeit
+    L3={•},   %3. Antwortmoeglichkeit
+    L4={•},   %4. Antwortmoeglichkeit
+    L5={•},	 %5. Antwortmoeglichkeit
+    L6={},	 %6. Antwortmoeglichkeit
+    L7={},	 %7. Antwortmoeglichkeit
+    L8={},	 %8. Antwortmoeglichkeit
+    L9={},	 %9. Antwortmoeglichkeit
+    %% LOESUNG: %%
+    A1=0,  % 1. Antwort
+    A2=0,	 % 2. Antwort
+    A3=0,  % 3. Antwort
+    A4=0,  % 4. Antwort
+    A5=0,  % 5. Antwort
+}"""
+    },
+    "Vek": {
+        "display": r"\Vek{...}{...}{}",
+        "insert": r"""\Vek{•}{•}{}"""
+    },
+    "includegraphics": {
+        "display": r"\includegraphics[width=1\textwidth]{Titel.eps}",
+        "insert": r"""\includegraphics[width=1\textwidth]{Titel.eps}"""
+    },
+    "rule": {
+        "display": r"\rule{...}{0.3pt}",
+        "insert": r"""\rule{•}{0.3pt}"""
+    },
+    "dfrac": {
+        "display": r"\dfrac{...}{...}",
+        "insert": r"""\dfrac{•}{•}"""
+    },
+}
 
 class Worker_UpdateDatabase(QObject):
     finished = pyqtSignal()
@@ -1195,6 +1281,156 @@ class Ui_Dialog_individual_titlepage(object):
         buttonBox.accepted.connect(Dialog.accept)
 
 
+class AutoCompletePlainTextEdit(QtWidgets.QPlainTextEdit):
+    def __init__(self, snippets, parent=None):
+        super().__init__(parent)
+
+        self.snippets = snippets
+
+
+        self.setFocusPolicy(Qt.StrongFocus)
+        self.setTabChangesFocus(False)
+
+        # Anzeige-Liste bauen
+        self.display_list = [v["display"] for v in snippets.values()]
+
+        # Mapping display → key
+        self.display_to_key = {
+            v["display"]: k for k, v in snippets.items()
+        }
+
+        self.completer = QtWidgets.QCompleter(self.display_list, self)
+        self.completer.setWidget(self)
+        self.completer.setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
+        self.completer.setCaseSensitivity(Qt.CaseInsensitive)
+
+        self.completer.setFilterMode(Qt.MatchContains)
+        self.completer.setCompletionPrefix("")
+
+        self.completer.activated.connect(self.insert_completion)
+
+
+    def insert_completion(self, completion):
+        tc = self.textCursor()
+
+        full_text = self.toPlainText()
+        cursor_pos = tc.position()
+
+        start = full_text.rfind("\\", 0, cursor_pos)
+
+        if start != -1:
+            tc.setPosition(start)
+            tc.setPosition(cursor_pos, QTextCursor.KeepAnchor)
+            tc.removeSelectedText()
+
+        key = self.display_to_key.get(completion)
+
+        if key:
+            text = self.snippets[key]["insert"]
+        else:
+            text = completion
+
+        insert_start = tc.position()
+        tc.insertText(text)
+
+
+        # 🔥 erste • finden
+        full_text = self.toPlainText()
+        first_pos = full_text.find("•", insert_start)
+
+        if first_pos != -1:
+            # Cursor zum ersten Marker setzen
+            tc.setPosition(first_pos)
+            tc.movePosition(QTextCursor.NextCharacter, QTextCursor.KeepAnchor)
+            tc.removeSelectedText()  # Marker entfernen
+        else:
+            # ✅ Kein Marker mehr → ans Ende des eingefügten Blocks
+            tc.setPosition(insert_start + len(text))
+
+        self.setTextCursor(tc)
+
+
+
+
+    def text_under_cursor(self):
+        full_text = self.toPlainText()
+        cursor_pos = self.textCursor().position()
+
+        start = full_text.rfind("\\", 0, cursor_pos)
+
+        if start != -1:
+            return full_text[start+1:cursor_pos]
+
+        return ""
+
+    def keyPressEvent(self, event):
+
+        if event.key() == Qt.Key_Tab:
+            tc = self.textCursor()
+            full_text = self.toPlainText()
+            pos = tc.position()
+
+            next_pos = full_text.find("•", pos)
+
+            if next_pos != -1:
+                tc.setPosition(next_pos)
+                tc.movePosition(QTextCursor.NextCharacter, QTextCursor.KeepAnchor)
+                tc.removeSelectedText()
+            else: # funktioniert, aber noch nicht sicher, ob ich das will
+                # ✅ Kein Marker mehr → ans Ende
+                tc.movePosition(QTextCursor.End)
+
+            self.setTextCursor(tc)
+            return
+
+
+
+        if self.completer.popup().isVisible():
+            if event.key() in (Qt.Key_Return, Qt.Key_Enter):
+                event.ignore()   # wichtig!
+                self.completer.popup().hide()
+                return
+
+            elif event.key() in (Qt.Key_Up, Qt.Key_Down):
+                super().keyPressEvent(event)
+                return
+
+
+
+
+        super().keyPressEvent(event)
+
+        prefix = self.text_under_cursor()
+
+        if len(prefix) < 1:
+            self.completer.popup().hide()
+            return
+
+        # 🔥 HIER kommt dein Matching rein
+        matching = [
+            v["display"] for k, v in self.snippets.items()
+            if k.startswith(prefix)
+        ]
+
+        if not matching:
+            self.completer.popup().hide()
+            return
+
+        self.completer.model().setStringList(matching)
+
+        popup = self.completer.popup()
+        popup.setCurrentIndex(self.completer.model().index(0, 0))
+
+        rect = self.cursorRect()
+        rect.setWidth(
+            popup.sizeHintForColumn(0) +
+            popup.verticalScrollBar().sizeHint().width()
+        )
+
+        self.completer.complete(rect)
+
+
+
 class Ui_Dialog_ausgleichspunkte(object):
     ##@report_exception.s
     def setupUi(
@@ -1297,7 +1533,14 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         # self.scrollArea.hide()
 
-        self.plainTextEdit_content = QtWidgets.QPlainTextEdit()
+        # self.plainTextEdit_content = QtWidgets.QPlainTextEdit()
+
+
+        # autocomplete_words = list(set(content.split()))
+
+
+        self.plainTextEdit_content = AutoCompletePlainTextEdit(autocomplete_list)
+
         if display_mode == 0:
             background_color = StyleSheet_subwindow_ausgleichspunkte
         else:

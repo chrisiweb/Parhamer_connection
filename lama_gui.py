@@ -27,7 +27,7 @@ from create_pdf import prepare_tex_for_pdf
 from standard_dialog_windows import warning_window
 from worksheet_wizard import dict_themen_wizard, list_stellenwerte, index_E
 from create_nonograms import all_nonogramms
-
+from subwindows import AutoCompletePlainTextEdit, autocomplete_list
 
 
 
@@ -2025,9 +2025,10 @@ def setup_stackCreator(self):
     self.label.setWordWrap(True)
     self.label.setObjectName("label")
     self.gridLayout_10.addWidget(self.label, 0, 0, 1, 1)
-    self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox_beispieleingabe)
+    self.plainTextEdit = AutoCompletePlainTextEdit(autocomplete_list, self.groupBox_beispieleingabe)
+    # self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox_beispieleingabe)
     self.plainTextEdit.setObjectName("plainTextEdit")
-    self.plainTextEdit.setTabChangesFocus(True)
+    self.plainTextEdit.setTabChangesFocus(False)
     self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
     self.verticalLayout_splitter_creator_right_widget.addWidget(self.groupBox_beispieleingabe)
 
