@@ -262,7 +262,15 @@ class PdfCanvas(QWidget):
         # ------------------------------------------------------------
         # 2) PAGE TEXT LADEN
         # ------------------------------------------------------------
-        raw = page.get_text("rawdict")
+
+        try:
+            raw = page.get_text("rawdict")
+        except Exception as e:
+            print("MuPDF Fehler:", e)
+            self.sel_label_rects = []
+            self.selected_text = ""
+            return
+
         blocks = raw.get("blocks", [])
 
         # ------------------------------------------------------------
@@ -289,6 +297,7 @@ class PdfCanvas(QWidget):
         # 4) ALLE ZEICHEN EXTRAHIEREN
         # ------------------------------------------------------------
         chars = []
+
         for b in blocks:
             if b.get("type", 0) != 0:
                 continue
@@ -311,6 +320,13 @@ class PdfCanvas(QWidget):
 
             # Filter anwenden: nur Chars innerhalb des Haupttextblocks behalten
             chars = [c for c in chars if c[0] <= max_x_main + 2]  # kleine Toleranz
+
+
+        if not chars:
+            self.sel_label_rects = []
+            self.selected_text = ""
+            return
+
 
         # ------------------------------------------------------------
         # NEU ✅: Große vertikale Lücke erkennen (z.B. beim Überschreiten der Trennlinie)
@@ -335,10 +351,18 @@ class PdfCanvas(QWidget):
                 # ✅ ALLES unterhalb der Trennlinie rausfiltern
                 chars = [c for c in chars if c[1] < cutoff_y + 2]
 
+
+        if not chars:
+            self.sel_label_rects = []
+            self.selected_text = ""
+            return    
         # ------------------------------------------------------------
         # 5) ZEILEN GRUPPIEREN
         # ------------------------------------------------------------
         lines = []
+
+
+         
         current = [chars[0]]
 
         def same_line(a, b):
@@ -368,6 +392,13 @@ class PdfCanvas(QWidget):
             idx_start, idx_end = idx_end, idx_start
 
         selected = chars[idx_start:idx_end+1]
+        
+        if not selected:
+            self.sel_label_rects = []
+            self.selected_text = ""
+            return
+
+
 
         # TEXT
         self.selected_text = "".join(c[4] for c in selected)
@@ -376,6 +407,10 @@ class PdfCanvas(QWidget):
         # 7) Rechtecke erzeugen (für Darstellung)
         # ------------------------------------------------------------
         line_groups = []
+
+
+
+
         current = [selected[0]]
         for c in selected[1:]:
             if same_line(current[-1], c):
