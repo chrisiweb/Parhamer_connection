@@ -15,6 +15,7 @@ PDF-Viewer (PyQt5 + PyMuPDF) mit:
 """
 
 import os
+from pydoc import doc
 import re
 import fitz  # PyMuPDF
 from PyQt5.QtWidgets import (
@@ -1297,11 +1298,25 @@ class Ui_Dialog_pdfviewer(object):
 
         doc = fitz.open(self._current_pdf_path)
 
-        for i in range(len(doc)):
+
+        from_page = printer.fromPage()
+        to_page = printer.toPage()
+
+
+        page_count = len(doc)
+
+        # ✅ Bereich bestimmen
+        if from_page == 0 and to_page == 0:
+            start = 0
+            end = page_count - 1
+        else:
+            start = max(0, from_page - 1)
+            end = min(page_count - 1, to_page - 1)
+
+        for i in range(start, end + 1):
             page = doc[i]
 
-            # 🔥 hohe Auflösung
-            pix = page.get_pixmap(dpi=600)
+            pix = page.get_pixmap(matrix=fitz.Matrix(6, 6))
 
             img = QImage(
                 pix.samples,
@@ -1311,11 +1326,11 @@ class Ui_Dialog_pdfviewer(object):
                 QImage.Format_RGB888
             )
 
-            # ✅ DIREKT zeichnen → vermeidet zusätzliche Skalierungsartefakte
             painter.drawImage(printer.pageRect(), img)
 
-            if i != len(doc) - 1:
+            if i != end:
                 printer.newPage()
+
 
         painter.end()
 
