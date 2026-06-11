@@ -23,7 +23,7 @@ from PyQt5.QtWidgets import (
     QToolBar, QLineEdit, QSizePolicy, QShortcut,
     QListWidget, QListWidgetItem, QSplitter, QHBoxLayout,
     QStyledItemDelegate, QStyle, QStyleOptionViewItem,
-    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QToolButton, QMessageBox, QDialogButtonBox, QAbstractItemView, QFileDialog
+    QColorDialog, QPushButton, QGridLayout, QDialog, QCheckBox, QSpinBox, QToolButton, QMessageBox, QDialogButtonBox, QAbstractItemView, QFileDialog, QApplication
 )
 from PyQt5.QtGui import QPixmap, QImage, QKeySequence, QColor, QBrush, QPen, QIcon, QPainter
 from PyQt5.QtCore import Qt, pyqtSignal, QModelIndex, QEvent, QTranslator, QLocale, QLibraryInfo, QObject, QPoint, QTimer
@@ -696,7 +696,6 @@ class PageImage(QLabel):
         p.end()
 
     def copy_to_clipboard(self):
-        from PyQt5.QtWidgets import QApplication
         QApplication.clipboard().setText(self._selected_text or "")
 
     def keyPressEvent(self, ev):
@@ -1222,8 +1221,6 @@ class Ui_Dialog_pdfviewer(object):
 
 
         def _on_copy():
-            from PyQt5.QtWidgets import QApplication
-
             # 1) Canvas direkt fragen
             if hasattr(self.viewer, "canvas"):
                 txt = self.viewer.canvas.selected_text
@@ -1292,20 +1289,31 @@ class Ui_Dialog_pdfviewer(object):
         if dialog.exec_() != QPrintDialog.Accepted:
             return
 
+
+        import threading
+
+        def run():
+            self._do_print(printer)
+
+
+        t = threading.Thread(target=run, daemon=True)
+        t.start()
+
+
+
+    def _do_print(self, printer):
+        doc = fitz.open(self._current_pdf_path)
+
         painter = QPainter()
         if not painter.begin(printer):
             return
 
-        doc = fitz.open(self._current_pdf_path)
-
-
+        # Seitenbereich holen
         from_page = printer.fromPage()
         to_page = printer.toPage()
 
-
         page_count = len(doc)
 
-        # ✅ Bereich bestimmen
         if from_page == 0 and to_page == 0:
             start = 0
             end = page_count - 1
@@ -1330,7 +1338,6 @@ class Ui_Dialog_pdfviewer(object):
 
             if i != end:
                 printer.newPage()
-
 
         painter.end()
 
