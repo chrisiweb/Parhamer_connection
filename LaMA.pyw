@@ -8473,6 +8473,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             | QtCore.Qt.WindowMinimizeButtonHint,
         )
 
+        try:
+            language = self.dict_variablen_translation[aufgabe]
+        except KeyError:
+            language = "DE"
+
         ui = Ui_Dialog_ausgleichspunkte()
         ui.setupUi(
             Dialog,
@@ -8482,7 +8487,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             split_content,
             list_sage_hide_show_items_chosen,
             sage_individual_change,
-            self.dict_variablen_translation[aufgabe],
+            language,
             self.display_mode,
             self.developer_mode_active,
             self.chosen_program,
