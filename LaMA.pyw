@@ -3,7 +3,7 @@
 
 __lastupdate__ = "06/26"
 
-# minor change##
+# minor change#
 ##################
 import sys
 import os
