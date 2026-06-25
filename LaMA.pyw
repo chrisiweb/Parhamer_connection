@@ -7120,7 +7120,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 QtGui.QCursor(QtCore.Qt.WaitCursor)
             )
             for aufgabe in list_aufgaben_errors:
-                self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
+                for sublist in self.dict_all_infos_for_file["list_alle_aufgaben"]:
+                    if aufgabe in sublist:
+                        sublist.remove(aufgabe)
+
+            # for aufgabe in list_aufgaben_errors:
+            #     self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
 
         try:
             self.lineedit_sg_lower_limit.setText(
