@@ -10000,7 +10000,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.adapt_choosing_list("sage")
         if chosen_gui == "widgets_feedback" or chosen_gui == "widgets_feedback_cria":
             self.adapt_choosing_list("feedback")
-        return
+        # return
         if self.developer_mode_active == False:
             self.menuBar.removeAction(self.menuDeveloper.menuAction())
 
