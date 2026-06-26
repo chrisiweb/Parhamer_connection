@@ -56,26 +56,60 @@ def get_running_file_extension() -> str:
 
 
 if sys.platform.startswith("win"):
-    extension = get_running_file_extension()
-    # programdata = os.getenv('PROGRAMDATA')
-    if extension == ".exe":
-        exe_dir = os.path.dirname(sys.executable)
-        
-        if exe_dir.lower().startswith(r"c:\program files") or exe_dir.lower().startswith(r"c:\programme"):
-            programdata = os.getenv('PROGRAMDATA')
+
+    def safe_mkdir(path):
+        try:
+            os.makedirs(path, exist_ok=True)
+            return path
+        except PermissionError:
+            fallback = os.path.join(os.getenv("LOCALAPPDATA"), "LaMA")
+            os.makedirs(fallback, exist_ok=True)
+            return fallback
+
+
+
+    def get_lama_path():
+        extension = get_running_file_extension()
+
+        # Standardbasis festlegen
+        if extension == ".exe":
+            exe_dir = os.path.dirname(sys.executable).lower()
+
+            if exe_dir.startswith(r"c:\program files") or exe_dir.startswith(r"c:\programme"):
+                base = os.getenv("PROGRAMDATA")
+            else:
+                base = os.getenv("LOCALAPPDATA")
         else:
-            programdata = os.getenv('LOCALAPPDATA')
-        path_programm = os.path.join(programdata, "LaMA")
-        if not os.path.isdir(path_programm):
-            os.mkdir(path_programm)
-    else:
-        programdata = os.getenv('PROGRAMDATA')
-        path_programm = os.path.join(programdata, "LaMA")
-        if not os.path.isdir(path_programm):
-            programdata = os.getenv('LOCALAPPDATA')
-            path_programm = os.path.join(programdata, "LaMA")
-            if not os.path.isdir(path_programm):
-                os.mkdir(path_programm)
+            base = os.getenv("PROGRAMDATA")
+
+        return safe_mkdir(os.path.join(base, "LaMA"))
+
+
+    # Verwendung:
+    path_programm = get_lama_path()
+
+
+
+    # extension = get_running_file_extension()
+    # # programdata = os.getenv('PROGRAMDATA')
+    # if extension == ".exe":
+    #     exe_dir = os.path.dirname(sys.executable)
+        
+    #     if exe_dir.lower().startswith(r"c:\program files") or exe_dir.lower().startswith(r"c:\programme"):
+    #         programdata = os.getenv('PROGRAMDATA')
+    #     else:
+    #         programdata = os.getenv('LOCALAPPDATA')
+    #     path_programm = os.path.join(programdata, "LaMA")
+    #     if not os.path.isdir(path_programm):
+    #         os.mkdir(path_programm)
+    # else:
+    #     programdata = os.getenv('PROGRAMDATA')
+    #     path_programm = os.path.join(programdata, "LaMA")
+    #     if not os.path.isdir(path_programm):
+    #         programdata = os.getenv('LOCALAPPDATA')
+    #         path_programm = os.path.join(programdata, "LaMA")
+    #         if not os.path.isdir(path_programm):
+    #             os.mkdir(path_programm)
 
 
     path_localappdata_lama = path_programm
