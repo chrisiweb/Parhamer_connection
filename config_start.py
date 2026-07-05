@@ -67,11 +67,14 @@ if sys.platform.startswith("win"):
             return fallback
 
 
+    # config_file = os.path.join(database, "_config", "config.yml")
+    # if not os.path.isfile(config_file):
+    #     print(f"config in {config_file} does not exist")
 
     def get_lama_path():
         extension = get_running_file_extension()
-
-        # Standardbasis festlegen
+        
+        #Standardbasis festlegen
         if extension == ".exe":
             exe_dir = os.path.dirname(sys.executable).lower()
 
@@ -80,7 +83,13 @@ if sys.platform.startswith("win"):
             else:
                 base = os.getenv("LOCALAPPDATA")
         else:
-            base = os.getenv("PROGRAMDATA")
+            base = os.getenv('PROGRAMDATA')
+            path_programm = os.path.join(base, "LaMA")
+            if not os.path.isdir(path_programm):
+                base = os.getenv('LOCALAPPDATA')
+                path_programm = os.path.join(base, "LaMA")
+                if not os.path.isdir(path_programm):
+                    os.mkdir(path_programm)
 
         return safe_mkdir(os.path.join(base, "LaMA"))
 

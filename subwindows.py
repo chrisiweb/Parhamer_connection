@@ -2592,7 +2592,7 @@ class Ui_Dialog_setup(object):
             'halfpoints_cria': False,
             'prozente_cria': [91, 80, 64, 50],
             'notenschluessel_cria': [False, False],
-            'autosave' : 2,
+            'autosave' : 1,
             'quelle' : '',
             'popup_off': False,
         }
@@ -2775,7 +2775,7 @@ class Ui_Dialog_setup(object):
         try:
             self.spinbox_autosave.setValue(self.lama_settings['autosave'])
         except KeyError:
-            self.lama_settings['autosave'] = 2
+            self.lama_settings['autosave'] = 1
         self.spinbox_autosave.setSizePolicy(SizePolicy_fixed)
         horizontallayout_autosave.addWidget(self.spinbox_autosave)
 
