@@ -37,6 +37,11 @@ dict_themen_wizard = {
                 'self.widget_coordinatesystem_points',
                 'self.widget_numberline_fraction',
             ],
+            "Runden":[
+                'self.widget_zahlenbereich_1_combobox',
+                'self.widget_zahlenbereich_2_combobox',
+                'self.widget_specific_stellenwert',
+            ]
         },
         "Teiler && Vielfache":{
             "Primfaktorenzerlegung": [
@@ -164,6 +169,7 @@ dict_wizard_variables = {
     'maximum_division_2' :  'self.spinbox_divisor_max_wizard.value()',
     'maximum_index' : 'self.combobox_zahlenbereich_1_leq.currentIndex()',
     'general_direction_index' : 'self.pushbutton_general_direction',
+    'specific_stellenwert': 'self.combobox_specific_stellenwert.currentIndex()',
     'starting_value' : 'self.spinbox_zahlenbereich_startingvalue.value()',
     'starting_value' : 'self.spinbox_zahlenbereich_startingvalue.value()',
     'steps' : 'self.spinbox_zahlenbereich_steps.value()',
@@ -593,6 +599,47 @@ def convert_to_powers(list_of_factors):
             list_of_factors_powers.append(str(all))
 
     return list_of_factors_powers
+
+
+
+def create_single_example_round_numbers(dict_all_settings_wizard):
+    # print(dict_all_settings_wizard)
+    minimum = dict_all_settings_wizard['minimum_combobox']
+    minimum_index = dict_all_settings_wizard['minimum_index']
+    maximum = dict_all_settings_wizard['maximum_combobox']
+    maximum_index = dict_all_settings_wizard['maximum_index']
+    specific_stellenwert = dict_all_settings_wizard['specific_stellenwert']
+
+    print(minimum)
+    print(minimum_index)
+    print(maximum)
+    print(maximum_index)
+    print(specific_stellenwert)
+
+    num = maximum+1
+    commas = minimum
+
+    def max_with_digits(n):
+        if n < 1:
+            raise ValueError("n muss >= 1 sein")
+        return 10**(n+1) - 1
+
+
+    x = max_with_digits(num)
+    print(x)
+    number = get_random_number(0,x,commas,False, force_decimals=True)
+
+    print(number)
+
+    if specific_stellenwert !=0:
+        stellen=6-specific_stellenwert
+        index=specific_stellenwert-1
+    else:
+        stellen = 0
+        index = 6
+    sol = round(number, stellen)
+    
+    return [number,[sol, stellen],f"{number} =  {sol} ({list_stellenwerte[index]})"]
 
 def create_single_example_primenumbers(dict_all_settings_wizard):
     minimum = dict_all_settings_wizard['minimum_spinbox']

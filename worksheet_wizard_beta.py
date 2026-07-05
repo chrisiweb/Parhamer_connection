@@ -371,49 +371,77 @@ def expand_powers(powers):
 
 
 
+
+
+x= round(452.11, -2)
+print(x)
+
 anzahl_zahlen = 3
-minimum = 2
-maximum = 80
+minimum = 0
+maximum += 1
+maximum = -maximum
+
+
+
+
 
 list_of_numbers = []
 
-list_of_primenumbers= get_list_of_primenumbers(30)
+index_min = 4
+index_max = 3
+num = index_max
+commas = index_min
+print(num)
+
+
+def max_with_digits(n):
+    if n < 1:
+        raise ValueError("n muss >= 1 sein")
+    return 10**n
+
+
+n=3
+print(10**n)
+
+x = max_with_digits(num)
 # print(x)
 
+y = get_random_number(0,x,commas,False, force_decimals=True)
+# print(y)
 list_of_numbers = []
-while True:
-    x = get_random_number(minimum, maximum)
+# while True:
+#     x = get_random_number(minimum, maximum)
 
-    if len(primfaktorzerlegung(x))>2:
-        list_of_numbers.append(x)
-        break
+#     if len(primfaktorzerlegung(x))>2:
+#         list_of_numbers.append(x)
+#         break
 
-first_number = list_of_numbers[0]
-primefactors_first_number = primfaktorzerlegung(first_number)
-
-print(first_number)
-print(primefactors_first_number)
 
 for i in range(anzahl_zahlen-1):
     print(f"index: {i}")
-    number = 1
-    loop = 0
-    while loop<2:
-        if random_switch(60):
-            temp_primenumber = random.choice(primefactors_first_number)
-        else:
-            temp_primenumber = random.choice(list_of_primenumbers)
-        if number*temp_primenumber <= maximum and (number*temp_primenumber not in list_of_numbers):
-            number = number*temp_primenumber
-        else:
-            loop+=1
-    list_of_numbers.append(number)
-print(list_of_numbers)
-for all in list_of_numbers:
-    print(primfaktorzerlegung(all))
-kgv = lcm_list(list_of_numbers)
-print(kgv)
+
+    # number = 1
+    # loop = 0
+    # while loop<2:
+    #     if random_switch(60):
+    #         temp_primenumber = random.choice(primefactors_first_number)
+    #     else:
+    #         temp_primenumber = random.choice(list_of_primenumbers)
+    #     if number*temp_primenumber <= maximum and (number*temp_primenumber not in list_of_numbers):
+    #         number = number*temp_primenumber
+    #     else:
+    #         loop+=1
+    # list_of_numbers.append(number)
+# print(list_of_numbers)
+# for all in list_of_numbers:
+#     print(primfaktorzerlegung(all))
+# kgv = lcm_list(list_of_numbers)
+# print(kgv)
     
+
+
+
+#######################################    
 # j=0
 # common_primenumber = 1
 # processing = True

@@ -8,7 +8,7 @@ __lastupdate__ = "06/26"
 import sys
 import os
 
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QInputDialog
 import traceback
 
 
@@ -80,7 +80,6 @@ def send_error_report(error_text):
 
     except FileNotFoundError:
         # Passwort manuell abfragen
-        from PyQt5.QtWidgets import QInputDialog
         pw_msg = QInputDialog()
         pw_msg.setInputMode(QInputDialog.TextInput)
         pw_msg.setWindowTitle("Passworteingabe nötig")
@@ -5326,6 +5325,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # horizontalLayout.addWidget(button_delete)
         self.dict_aufgaben_wizard[index] = label
 
+
+
     ##@report_exception.s
     def delete_example(self, index):
         self.list_of_examples_wizard.pop(index)
@@ -5540,12 +5541,33 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if row + 1 < items_per_column:
                 row += 1
             else:
-                row += 1
-                self.gridLayout_scrollArea_wizard.setColumnStretch(row, 1)
-                self.gridLayout_scrollArea_wizard.setRowStretch(row, 1)
+                # row += 1
+                # self.gridLayout_scrollArea_wizard.setColumnStretch(row, 1)
+                # self.gridLayout_scrollArea_wizard.setRowStretch(row, 1)
                 row = 0
                 column += 1
             index += 1
+
+        # Add a stretch row at the end so the grid layout doesn't leave the last row glued to the top
+        # if num_of_examples > 0:
+        #     self.gridLayout_scrollArea_wizard.setRowStretch(row + 1, 1)
+        # else:
+        #     self.gridLayout_scrollArea_wizard.setRowStretch(0, 1)
+        for c in range(columns):
+            self.gridLayout_scrollArea_wizard.setColumnStretch(c, 1)
+
+        self.gridLayout_scrollArea_wizard.setRowStretch(9999, 1)
+
+        self.gridLayout_scrollArea_wizard.setAlignment(Qt.AlignTop)
+
+        # print(type(self.gridLayout_scrollArea_wizard))
+        # for r in range(20):
+        #     print(
+        #         r,
+        #         self.gridLayout_scrollArea_wizard.rowStretch(r)
+        #     )
+
+
 
         # pushButton_create_new_example = create_new_button(
         #     self.scrollAreaWidgetContents_wizard,
@@ -5601,8 +5623,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 _dict[key] = None
 
         return _dict
-        # widget = eval(str_widget)
-
+        # widget = eval(str_widget) 
+        
     def create_all_examples_wizard(self, single_example=False):
         thema = self.get_current_topic_wizard()
         # thema_index = self.total_list_of_topics_wizard.index(thema)
@@ -5652,6 +5674,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 single_example,
             )
             # list_of_examples_wizard = create_list_of_examples_number_line(examples, starting_value, steps, subticks, setting_decimal_fraction)
+
+        elif shorten_topic == "ari_dar_run":
+            all_examples_wizard = create_examples_all_topics(
+                create_single_example_round_numbers,
+                dict_all_settings_wizard,
+                single_example,
+            )
 
         elif shorten_topic == "ari_tei_pri":
             # minimum = self.spinbox_zahlenbereich_minimum.value()
@@ -10522,6 +10551,7 @@ if __name__ == "__main__":
         create_single_example_roman_numerals,
         dict_of_roman_max,
         create_single_example_number_line,
+        create_single_example_round_numbers,
         create_single_example_primenumbers,
         create_single_example_ggt,
         create_single_example_kgv,

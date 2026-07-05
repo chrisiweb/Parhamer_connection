@@ -2880,6 +2880,23 @@ def setup_stackWizard(self):
     self.horizontallayout_general_direction_CB.addWidget(self.combobox_general_direction_CB)
     self.widget_general_direction_CB.hide()
 
+    self.widget_specific_stellenwert = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_specific_stellenwert, 0,4,1,1)
+
+    self.horizontallayout_specific_stellenwert = create_new_horizontallayout(self.widget_specific_stellenwert)
+    self.label_specific_stellenwert = create_new_label(self.widget_specific_stellenwert, "Runden auf:")
+    self.horizontallayout_specific_stellenwert.addWidget(self.label_specific_stellenwert)
+
+    self.combobox_specific_stellenwert = create_new_combobox(self.widget_specific_stellenwert)
+
+    add_new_option(self.combobox_specific_stellenwert, 0, "beliebig")
+    for i, all in enumerate(list_stellenwerte):
+        add_new_option(self.combobox_specific_stellenwert, i+1, all)
+
+    self.horizontallayout_specific_stellenwert.addWidget(self.combobox_specific_stellenwert)
+    self.widget_specific_stellenwert.hide()
+
+
     self.gridLayout_zahlenbereich_wizard.setColumnStretch(5, 1)
 
     self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben")
