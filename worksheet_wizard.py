@@ -610,6 +610,8 @@ def create_single_example_round_numbers(dict_all_settings_wizard):
     maximum_index = dict_all_settings_wizard['maximum_index']
     specific_stellenwert = dict_all_settings_wizard['specific_stellenwert']
 
+    print(dict_all_settings_wizard)
+
     print(minimum)
     print(minimum_index)
     print(maximum)
@@ -631,13 +633,18 @@ def create_single_example_round_numbers(dict_all_settings_wizard):
 
     print(number)
 
+
     if specific_stellenwert !=0:
         stellen=6-specific_stellenwert
         index=specific_stellenwert-1
     else:
         stellen = 0
         index = 6
-    sol = round(number, stellen)
+
+    # sol = number
+    sol =  round(number, stellen)
+    print(sol)
+    # sol = 0
     
     return [number,[sol, stellen],f"{number} =  {sol} ({list_stellenwerte[index]})"]
 

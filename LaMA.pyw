@@ -5294,16 +5294,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         groupbox = create_new_groupbox(
             self.scrollAreaWidgetContents_wizard, "{}. Aufgabe".format(index + 1)
         )
-        groupbox.setSizePolicy(SizePolicy_maximum_width)
+        groupbox.setSizePolicy(SizePolicy_minimum)
         # groupbox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
 
-        self.gridLayout_scrollArea_wizard.addWidget(groupbox, row, column, 1, 1)
+        self.gridLayout_scrollArea_wizard.addWidget(
+            groupbox, row, column, 1, 1, Qt.AlignLeft | Qt.AlignTop
+        )
 
         horizontalLayout = create_new_horizontallayout(groupbox)
-        label = create_new_label(self.scrollArea_chosen_wizard, example[-1])
+        label = create_new_label(groupbox, example[-1])
+        label.setSizePolicy(SizePolicy_expanding)
         horizontalLayout.addWidget(label)
-
-        # horizontalLayout.addStretch()
+        horizontalLayout.addStretch()
         # button_refresh = create_new_button(groupbox, "Refresh", still_to_define)
         button_refresh = create_new_button(
             groupbox, "", partial(self.reload_example, index), icon="refresh-cw.svg"
@@ -5553,12 +5555,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     self.gridLayout_scrollArea_wizard.setRowStretch(row + 1, 1)
         # else:
         #     self.gridLayout_scrollArea_wizard.setRowStretch(0, 1)
-        for c in range(columns):
-            self.gridLayout_scrollArea_wizard.setColumnStretch(c, 1)
+        # columns should keep their minimal width instead of stretching across the full area
+        # for c in range(columns):
+        #     self.gridLayout_scrollArea_wizard.setColumnStretch(c, 1)
 
         self.gridLayout_scrollArea_wizard.setRowStretch(9999, 1)
 
-        self.gridLayout_scrollArea_wizard.setAlignment(Qt.AlignTop)
+        self.gridLayout_scrollArea_wizard.setAlignment(Qt.AlignLeft | Qt.AlignTop)
 
         # print(type(self.gridLayout_scrollArea_wizard))
         # for r in range(20):
