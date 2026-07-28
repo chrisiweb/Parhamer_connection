@@ -373,52 +373,107 @@ def expand_powers(powers):
 
 
 
-x= round(452.11, -2)
-print(x)
-
-anzahl_zahlen = 3
-minimum = 0
-maximum += 1
-maximum = -maximum
-
-
-
-
-
-list_of_numbers = []
-
-index_min = 4
-index_max = 3
-num = index_max
-commas = index_min
-print(num)
-
-
-def max_with_digits(n):
-    if n < 1:
-        raise ValueError("n muss >= 1 sein")
-    return 10**n
-
-
-n=3
-print(10**n)
-
-x = max_with_digits(num)
+# x= round(452.11, -2)
 # print(x)
 
-y = get_random_number(0,x,commas,False, force_decimals=True)
-# print(y)
+# anzahl_zahlen = 3
+# minimum = 0
+# maximum += 1
+# maximum = -maximum
+
+minimum=0 # Einer (index:5)
+minimum_index=0
+maximum=5 # Million (index: 11)
+maximum_index=0
+specific_stellenwert = 0
+
+list_stellenwerte = ['ht','zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Md', 'ZMd', 'HMd', 'B', 'ZB', 'HB']
 list_of_numbers = []
-# while True:
-#     x = get_random_number(minimum, maximum)
 
-#     if len(primfaktorzerlegung(x))>2:
-#         list_of_numbers.append(x)
-#         break
+commas = minimum
+maximum +=2
+
+# minimum_num = int('1'+'0'*(maximum-1))
+if maximum_index==1:
+    s = get_random_number(2,maximum)
+    maximum_num = int('9'*s)
+    minimum_num=0
+else:
+    maximum_num = int('9'*maximum)
+    minimum_num = int('1'+'0'*(maximum-1)) 
+
+print(minimum_num)
+print(maximum_num)
+
+# if commas == 0:
+#     force_decimals = False
+# else:
+#     force_decimals = True
+y = get_random_number(minimum_num, maximum_num, decimal=commas, zero_allowed=False, force_decimals=True)
+print(y)
 
 
-for i in range(anzahl_zahlen-1):
-    print(f"index: {i}")
+if specific_stellenwert !=0:
+    stellen=6-specific_stellenwert
+    index=specific_stellenwert-1
+else:
+    temp_min= minimum+1
+    temp_max = -maximum
+    print(temp_min)
+    print(temp_max)
+    stellen = get_random_number(temp_min, temp_max)
+    print(stellen)
+    index = -stellen+4
+    print(index)
+    print(list_stellenwerte[index])
+    # stellen
+    # stellen = 0
+    # index = 6
+
+
+# for i in range(3):
+y = get_random_number(minimum_num, maximum_num, decimal=commas, zero_allowed=False, force_decimals=True)
+# y = get_random_number(minimum_num,maximum_num,commas,False, force_decimals=True)
+
+print(y)
+
+z = round(y,stellen)
+print(z)
+# # index_min = 0
+
+# # index_max = 5
+# # num = index_max
+# # commas = index_min
+# # print(num)
+
+# print(list_stellenwerte[minimum])
+# print(list_stellenwerte[maximum])
+
+# def max_with_digits(n):
+#     if n < 1:
+#         raise ValueError("n muss >= 1 sein")
+#     return 10**n
+
+
+# n=3
+# print(10**n)
+
+# x = max_with_digits(num)
+# print(x)
+
+# y = get_random_number(0,x,commas,False, force_decimals=True)
+# print(y)
+# list_of_numbers = []
+# # while True:
+# #     x = get_random_number(minimum, maximum)
+
+# #     if len(primfaktorzerlegung(x))>2:
+# #         list_of_numbers.append(x)
+# #         break
+
+
+# for i in range(anzahl_zahlen-1):
+#     print(f"index: {i}")
 
     # number = 1
     # loop = 0

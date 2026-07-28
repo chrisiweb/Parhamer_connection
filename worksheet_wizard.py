@@ -610,43 +610,49 @@ def create_single_example_round_numbers(dict_all_settings_wizard):
     maximum_index = dict_all_settings_wizard['maximum_index']
     specific_stellenwert = dict_all_settings_wizard['specific_stellenwert']
 
-    print(dict_all_settings_wizard)
 
-    print(minimum)
-    print(minimum_index)
-    print(maximum)
-    print(maximum_index)
-    print(specific_stellenwert)
+    maximum +=2
 
-    num = maximum+1
-    commas = minimum
+    if maximum_index==1:
+        s = get_random_number(2,maximum)
+        maximum_num = int('9'*s)
+        minimum_num=0
+    else:
+        maximum_num = int('9'*maximum)
+        minimum_num = int('1'+'0'*(maximum-1)) 
 
-    def max_with_digits(n):
-        if n < 1:
-            raise ValueError("n muss >= 1 sein")
-        return 10**(n+1) - 1
-
-
-    x = max_with_digits(num)
-    print(x)
-    number = get_random_number(0,x,commas,False, force_decimals=True)
-
-    print(number)
+    if minimum_index == 1:
+        commas = get_random_number(0,minimum, zero_allowed=True)
+    else:
+        commas = minimum
 
 
     if specific_stellenwert !=0:
         stellen=6-specific_stellenwert
         index=specific_stellenwert-1
     else:
-        stellen = 0
-        index = 6
+        if commas > 0:
+            temp_min= commas-1
+        else:
+            temp_min = commas
+        temp_max = -maximum
+        stellen = get_random_number(temp_min, temp_max)
+        index = -stellen+5
 
-    # sol = number
-    sol =  round(number, stellen)
-    print(sol)
-    # sol = 0
+    number = get_random_number(minimum_num, maximum_num, decimal=commas, zero_allowed=False, force_decimals=True)
+
+
+    solution = round(number, stellen)
+
     
-    return [number,[sol, stellen],f"{number} =  {sol} ({list_stellenwerte[index]})"]
+    if isinstance(solution, float):
+        solution = format(solution, '.15f').rstrip('0').rstrip('.')
+    elif isinstance(solution, D):
+        solution = format(solution, 'f')
+
+    
+    return [number,solution,f"{number} =  {solution} ({list_stellenwerte[index]})"]
+
 
 def create_single_example_primenumbers(dict_all_settings_wizard):
     minimum = dict_all_settings_wizard['minimum_spinbox']
@@ -2304,6 +2310,26 @@ def primfaktorzerlegung(n):
 
     return faktoren
 
+
+def create_latex_string_round_numbers(content, example):
+    number = str(example[0]).replace('.', ',')
+    solution = str(example[1]).replace('.', ',')
+    string = example[-1]
+
+    match = re.search(r"\(([A-Za-z]{1,2})\)", string)
+
+    if match:
+        stellenwert = match.group(1)
+
+    
+    # print(index)
+    # print(list_stellenwerte[index])
+    content += f"\\task ${number} = \\antwort[\\rule{{3.5cm}}{{0.3pt}}]{{{solution}}}~$({stellenwert})" 
+
+    # list_stellenwerte[]
+
+    return content
+
 def create_latex_string_ggt(content, example, solution_type):
  
     string = example[-1]
@@ -2877,6 +2903,8 @@ def create_latex_worksheet(
                 content = create_latex_string_roman_numerals(content, example)
             elif shorten_topic == 'ari_dar_zah':
                 content = create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index)
+            elif shorten_topic == "ari_dar_run":
+                content = create_latex_string_round_numbers(content, example)
             elif shorten_topic == 'ari_tei_pri':
                 content = create_latex_string_primenumbers(content, example, solution_type, powers_enabled)
             elif shorten_topic == 'ari_tei_ggt':
@@ -3258,7 +3286,7 @@ def create_nonogramm(nonogram, coordinates_nonogramm, columns, size_solution_ind
         if coordinates_nonogramm[all][1] == None:
             continue
         elif type(coordinates_nonogramm[all][1])==list:
-            result = ", ".join(coordinates_nonogramm[all][1])
+            result = ", ".join(str(coordinates_nonogramm[all][1]))
             result = f"${result}$"
         else:
             result = coordinates_nonogramm[all][1]

@@ -1357,7 +1357,6 @@ class Ui_MainWindow(object):
             latest_version = get_latest_version()
             if latest_version == None:
                 print("Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ...")
-                print(f"Fehlermeldung:{e}")
                 backup_link = "https://mylama.github.io/lama/lama_update_backup"
                 try:
                     readme_content_backup = requests.get(backup_link)
